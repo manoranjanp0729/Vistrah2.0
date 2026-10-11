@@ -159,3 +159,5 @@ Implementation references:
 [Router](https://docs.expo.dev/router/installation/),
 [SecureStore](https://docs.expo.dev/versions/v57.0.0/sdk/securestore/),
 [Location](https://docs.expo.dev/versions/v57.0.0/sdk/location/).
+
+Category tile photographs reuse the existing website assets (resume, property, construction, marketing, finance, technology, collaboration and home-maintenance). Their photographer/source/license records are in `mobile/assets/photo-provenance.json`; all retain the recorded Unsplash license.

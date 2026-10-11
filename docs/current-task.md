@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Added local category photo thumbnails to Services for you, retaining four columns. Existing licensed website images and their provenance are bundled in mobile. Typecheck/lint verified.
+
 - Changed Grow your business featured photograph to the existing licensed Dylan Gillis collaboration image, updated accessible description and provenance. Typecheck/lint verified.
 
 - Every mobile service detail now includes a compact 112px illustration banner. Current service subjects have specific visual mappings, with category fallback for future catalogue services; illustrations are local code-native graphics with accessible descriptions. Typecheck/lint verified.

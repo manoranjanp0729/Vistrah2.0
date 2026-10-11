@@ -14,6 +14,6 @@ export default function MembershipScreen(){
     {status.error?<ErrorPanel error={status.error} retry={status.retry}/>:user&&status.loading?<Loading/>:status.data&&<Text style={styles.text}>{status.data.active?'Active membership'+(status.data.expires_at?' · Until '+new Date(status.data.expires_at).toLocaleDateString('en-IN'):''):'No eligible active membership'}</Text>}
     <Text style={styles.muted}>Genuine paid access is not configured. Membership checkout remains on the website and is sandbox-only. You may need to sign in again in your browser.</Text>
     {!user&&<Action label="Sign in" onPress={()=>router.push('/auth')}/>}
-    <Action label="Review membership on website ↗" secondary onPress={()=>{void openWebsite('/membership').catch(e=>setError(e.message));}}/>{error&&<ErrorPanel error={error}/>}
+    <Action label="Review membership on website ↗" secondary onPress={()=>{void openWebsite('/membership').catch(e=>setError(e.message));}}/>{Boolean(error)&&<ErrorPanel error={error}/>}
   </Page>;
 }

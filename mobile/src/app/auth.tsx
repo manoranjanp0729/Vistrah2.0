@@ -11,7 +11,7 @@ export default function Auth(){
     setError('');if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?'Enter your name, email and a password of at least 10 characters.':'Enter your email and password.');return;}
     setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined);setPassword('');if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
-  return <Page><Heading title={register?'Create your account':'Welcome back'}/><Text style={styles.muted}>One VISTRAH identity for customer and seller access.</Text>{error&&<ErrorPanel error={error}/>}
+  return <Page><Heading title={register?'Create your account':'Welcome back'}/><Text style={styles.muted}>One VISTRAH identity for customer and seller access.</Text>{Boolean(error)&&<ErrorPanel error={error}/>}
     {register&&<Field label="Your name" value={name} onChangeText={setName} autoComplete="name" maxLength={100}/>}
     <Field label="Email address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" maxLength={254}/>
     <Field label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete={register?'new-password':'current-password'} maxLength={128}/>

@@ -8,7 +8,7 @@ const copy = {
   },
   "home": {
     "tagline": "DISCOVER. CONNECT. GROW.",
-    "title": "Discover VISTRAH",
+    "title": "What can we help you with?",
     "description": "Explore services, products, and opportunities in one place.",
     "quick": "QUICK ACCESS",
     "categories": "Services for you",

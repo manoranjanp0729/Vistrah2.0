@@ -1,6 +1,8 @@
 # Current task
 
-- User replaced local logo image and confirms visibility. Requested slightly larger header/logo: tab header row increased 56→68px and light logo 144×36→176×44. No image bytes changed, preserving user local replacement. Location action retains shrinking/truncation on narrow widths. Typecheck/lint passed; visual size confirmation pending.
+- User approved mobile homepage heading “What can we help you with?” replacing “Discover VISTRAH” to avoid nearby brand/tab repetition. Scoped text-only change; copy parsing verified. Website wording unchanged.
+
+- User replaced local logo image and confirms visibility. Requested slightly larger header/logo: tab header row increased 56→68px and light logo 144×36→176×44. No image bytes changed, preserving user local replacement. Location action retains shrinking/truncation on narrow widths. Source checks pending; visual size confirmation pending.
 
 - User identified logo behind header bar and authorized layout repair. Tab navigator now renders a single custom header containing logo and location action in one 56px row, with explicit safe-area top inset and theme-matched background; removes separate navigator title/background layering. Light logo 144×36, dark wording preserved, location truncates on narrow screens. Typecheck/lint pending; user visual confirmation required.
 

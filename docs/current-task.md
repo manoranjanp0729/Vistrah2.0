@@ -1,5 +1,7 @@
 # Current task
 
+- Account list cleanup: removed Choose location from mobile Account and website ReplicaAccount actions. Header location chooser and dedicated location route retained. Mobile/web typecheck and lint passed; source review branch only.
+
 - Customer appearance settings: Account → Settings offers an accessible Dark theme switch (off = Light) in mobile/settings and website/account/settings. Mobile ThemeProvider supplies reactive palettes/styles to screens, navigation and shared cards; native preference uses existing SecureStore and Expo browser uses localStorage. Website preference uses a one-year cookie read in root layout for matching server-rendered colours (routes now render on demand); CSS variables cover headers/forms/tiles with preserved hero/art illustration contrast. Serialized native writes handle rapid toggles; storage failures are disclosed. Existing wording and separate admin styling preserved. Mobile/web typecheck/lint, website production build, Expo web export and isolated cookie/default/invalid-preference/accessibility HTTP checks passed. Browser click/visual and physical-device persistence review pending; source review branch only, no deployment/DB changes.
 
 - Softer category tiles: mobile CategoryCard (Services and homepage Services for you) and matching website reference-category use charcoal backgrounds at 70% opacity with subtle translucent borders. Images, label opacity, wording and tile layout unchanged. Mobile/web typecheck and lint passed; source only, visual review pending. Admin light theme unaffected.

@@ -1,20 +1,23 @@
 'use client';
-import {HelpPair} from './context-help';
 import {officialContact,emailHref} from '@/lib/contact';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {useState,useEffect} from 'react';
-import {Menu,X,Search,UserRound,ArrowUpRight,Mail} from 'lucide-react';
+import {useState,useEffect,useRef} from 'react';
+import {House,Grid2X2,FileText,UserRound,MapPin,X,Mail} from 'lucide-react';
 import {api} from '@/lib/api';
-import type {User,Category} from '@/lib/types';
+import type {Category} from '@/lib/types';
 import {urls} from '@/lib/urls';
 import {positioning} from '@/lib/positioning';
-export function Brand({light=false}:{light?:boolean}) {return <Link href="/" aria-label="VISTRAH home" className={`brand${light?' brand-light':''}`}>VISTRAH<span>{positioning.descriptor}</span></Link>;}
-export function Header() {
-  const [open,setOpen]=useState(false);const [user,setUser]=useState<User|null>(null);const path=usePathname();
-  useEffect(()=>{let active=true;api<User>('/me').then(u=>{if(active)setUser(u);}).catch(()=>{if(active)setUser(null);});return()=>{active=false;};},[path]);
-  const accountHref=user?.role==='ADMIN'?'/admin':user?'/account':'/login';
-  const accountLabel=user?.role==='ADMIN'?'Admin dashboard':user?'My account':'Sign in';
-  return <><a className="skip-link" href="#main-content">Skip to content</a><header className="public-header"><div className="container header-inner"><Brand/><nav className="desktop-nav" aria-label="Main navigation">{[['Home','/'],['Services','/services'],['Membership','/membership']].map(([name,href])=><HelpPair key={href} className="help-nav-row" id={href==='/'?'public.home':href==='/services'?'public.services':'public.membership'}><Link href={href} className={path===href?'active':''}>{name}</Link></HelpPair>)}</nav><div className="header-actions"><Link className="icon-button header-search" href="/services" aria-label="Search services"><Search size={20}/></Link>{user?.seller_enabled&&<Link href="/seller" className="account-link seller-dashboard-link">Seller Dashboard</Link>}<Link href={accountHref} className="account-link"><UserRound size={18}/><span>{accountLabel}</span></Link><Link href={emailHref(officialContact.email)!} className="button header-contact">Email VISTRAH<ArrowUpRight size={15}/></Link><button className="icon-button menu-toggle" aria-label={open?'Close menu':'Open menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div></div>{open&&<nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation">{[['Home','/'],['Services','/services'],['Membership','/membership'],[accountLabel,accountHref],...(user?.seller_enabled?[['Seller Dashboard','/seller']]:[]),['Email VISTRAH',emailHref(officialContact.email)!]].map(([name,href])=><HelpPair key={href} className="help-nav-row" id={href.startsWith('mailto:')?'public.email':href==='/'?'public.home':href==='/services'?'public.services':href==='/membership'?'public.membership':'public.account'}><Link href={href} onClick={()=>setOpen(false)}>{name}<ArrowUpRight size={16}/></Link></HelpPair>)}</nav>}</header></>;
+import copy from '@/lib/interface-copy.json';
+import {LocationChooser,useCustomerLocation} from './customer-location';
+export function Brand({light=false}:{light?:boolean}) {return <Link href="/" aria-label="VISTRAH home" className={`brand${light?' brand-light':''}`}>VISTRAH</Link>;}
+const destinations=[{label:copy.nav.discover,href:'/',Icon:House},{label:copy.nav.services,href:'/services',Icon:Grid2X2},{label:copy.nav.requests,href:'/account/requests',Icon:FileText},{label:copy.nav.account,href:'/account',Icon:UserRound}];
+export function Header(){
+ const path=usePathname();const [open,setOpen]=useState(false);const {active}=useCustomerLocation();const dialog=useRef<HTMLDialogElement>(null);
+ useEffect(()=>{const element=dialog.current;if(open)element?.showModal();return()=>element?.close();},[open]);
+ const selected=(href:string)=>href==='/'?path==='/':href==='/account'?path.startsWith('/account')&&!path.startsWith('/account/requests'):path.startsWith(href);
+ const links=destinations.map(({label,href,Icon})=><Link key={href} href={href} aria-current={selected(href)?'page':undefined} className={selected(href)?'active':''}><Icon size={19}/><span>{label}</span></Link>);
+ return <><a className="skip-link" href="#main-content">Skip to content</a><header className="public-header"><div className="container header-inner"><Brand/><nav className="desktop-nav replica-navigation" aria-label="Main navigation">{links}</nav><button type="button" className="replica-location-trigger" onClick={()=>setOpen(true)}><MapPin size={16}/><span>{active?active.locality:copy.nav.location}</span></button></div></header><nav className="replica-bottom-nav" aria-label="Main navigation">{links}</nav>{open&&<dialog ref={dialog} aria-label="Choose location" className="replica-location-dialog" onCancel={()=>setOpen(false)}><button type="button" className="icon-button" aria-label="Close location" onClick={()=>setOpen(false)}><X/></button><h2>Find services near you</h2><LocationChooser expanded/></dialog>}</>;
 }
 export function Footer() {const [categories,setCategories]=useState<Category[]>([]);useEffect(()=>{api<Category[]>('/catalogue').then(setCategories).catch(()=>{});},[]);return <footer className="footer"><div className="container footer-grid"><div><Brand/><p>{positioning.description}</p><a className="footer-email" href={emailHref(officialContact.email)!}><Mail size={16}/>{officialContact.email}</a></div><div><h3>Discover</h3><Link href="/services">All services</Link><Link href="/jobs">Public vacancies</Link><Link href="/membership">Membership</Link><Link href="/call-vistrah">Contact VISTRAH</Link></div><div><h3>Your VISTRAH</h3><Link href="/account">My account</Link><Link href="/account/requests">My requests</Link><Link href="/account/membership">My membership</Link><Link href="/register">Sign up as user</Link><Link href="/login">Login as user</Link><Link href="/seller/register">Sign up as seller</Link><Link href="/seller/login">Login as seller</Link></div><div><h3>Explore categories</h3>{categories.slice(0,3).map(category=><Link key={category.id} href={urls.category(category)}>{category.title}</Link>)}</div></div><div className="container footer-bottom"><span>© {new Date().getFullYear()} VISTRAH. All rights reserved.</span><span>{positioning.motto}</span></div></footer>;}
+

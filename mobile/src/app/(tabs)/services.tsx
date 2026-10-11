@@ -1,3 +1,4 @@
+import copy from '../../lib/interface-copy';
 import {useState} from 'react';
 import {ScrollView,Text,View,useWindowDimensions} from 'react-native';
 import {useLocalSearchParams} from 'expo-router';
@@ -18,8 +19,8 @@ export default function Services(){
   const needle=query.trim().toLocaleLowerCase();
   const categories=(catalogue.data??[]).filter(category=>!needle||matching.has(category.id)||[category.title,category.description].join(' ').toLocaleLowerCase().includes(needle));
   return <SafeAreaView edges={['left','right']} style={styles.page}><ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-    <Heading title="Service categories"/><Field label="Search categories" placeholder="Property, tax, jobs…" value={query} onChangeText={setTyped}/>
-    <Text style={styles.muted}>Choose a main category to see its services.</Text>
-    {catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:categories.length?<View style={styles.grid}>{categories.map((category,index)=><CategoryCard key={category.id} category={category} index={index} columns={columns}/>)}</View>:<Text style={styles.muted}>No categories match your search.</Text>}
+    <Heading title={copy.catalogue.title}/><Field label={copy.catalogue.search} placeholder={copy.catalogue.placeholder} value={query} onChangeText={setTyped}/>
+    <Text style={styles.muted}>{copy.catalogue.intro}</Text>
+    {catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:categories.length?<View style={styles.grid}>{categories.map((category,index)=><CategoryCard key={category.id} category={category} index={index} columns={columns}/>)}</View>:<Text style={styles.muted}>{copy.catalogue.empty}</Text>}
   </ScrollView></SafeAreaView>;
 }

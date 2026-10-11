@@ -1,3 +1,4 @@
+import copy from '../lib/interface-copy';
 import type {ReactNode} from 'react';
 import {ActivityIndicator,KeyboardAvoidingView,Platform,Pressable,ScrollView,Text,TextInput,View,type TextInputProps} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -17,9 +18,9 @@ export function Heading({title,action,onPress}:{title:string;action?:string;onPr
 export function MemberGate({children}:{children:ReactNode}){
   const {user,ready}=useSession();const membership=useResource<Membership>(user?'/me/membership':null,user?.id??null);
   if(!ready)return <Loading/>;
-  if(!user)return <View style={styles.card}><Text style={styles.heading}>Sign in to continue</Text><Text style={styles.muted}>Provider information and service enquiries require eligible membership.</Text><Action label="Sign in" onPress={()=>router.push('/auth')}/></View>;
+  if(!user)return <View style={styles.card}><Text style={styles.heading}>{copy.service.signIn}</Text><Text style={styles.muted}>{copy.service.signInCopy}</Text><Action label="Sign in" onPress={()=>router.push('/auth')}/></View>;
   if(membership.error)return <ErrorPanel error={membership.error} retry={membership.retry}/>;
   if(!membership.data)return <Loading/>;
-  if(!membership.data.active)return <View style={styles.card}><Text style={styles.heading}>Active membership required</Text><Text style={styles.muted}>Explore membership for service access. Sandbox activation is development testing only.</Text><Action label="Explore membership" onPress={()=>router.push('/membership')}/></View>;
+  if(!membership.data.active)return <View style={styles.card}><Text style={styles.heading}>{copy.service.membership}</Text><Text style={styles.muted}>{copy.service.membershipCopy}</Text><Action label={copy.service.exploreMembership} onPress={()=>router.push('/membership')}/></View>;
   return <>{children}</>;
 }

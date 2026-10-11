@@ -34,11 +34,12 @@ The hero artwork is a local procedural visual interpretation of the reference.
   enquiries and the customer's request history.
 - Manual temporary coordinates and explicit foreground GPS action; 2/5/10/25 km
   radius selection and an explicitly triggered nearby search. No geocoder,
-  external map, background tracking or automatic location saving.
-- Membership plan and current eligibility. No real-payment activation.
+  external map, background tracking or automatic location saving. Explicit save/clear is available.
+- Membership plan, current eligibility and active offers; native sandbox checkout and payment history. No real-payment activation.
+- Native password-recovery request; reset links retain the existing secure website flow.
 
 Provider evidence forms, ownership claims, business/listing drafts, admin
-management, password recovery and sandbox checkout open the existing website.
+management and career workflow tools open the existing website.
 They are not native implementations in this first mobile release. Browser
 authentication is separate; tokens are never placed in URLs or sent to the
 website. Seller membership exemption and independent reviews remain enforced
@@ -93,7 +94,7 @@ clears native storage and attempts server revocation; an unreachable server is
 reported after local sign-out. The web preview keeps its token in memory only.
 No passwords or session data are logged or checked into source.
 
-Location lives in memory. Selecting coordinates does not write `/me/location`.
+Location stays temporary unless the user explicitly selects Save this location. Selecting coordinates does not write `/me/location`; save/clear actions use that endpoint and report unavailability on an older API. Saved preferences can be restored on sign-in; account changes clear the previous location.
 Coordinates are sent only when the user explicitly starts nearby discovery;
 the backend applies radius and provider coverage. Coordinates are not included
 in enquiries. A missing nearby endpoint reports that the API version does not
@@ -161,3 +162,31 @@ Implementation references:
 [Location](https://docs.expo.dev/versions/v57.0.0/sdk/location/).
 
 Category tile photographs reuse the existing website assets (resume, property, construction, marketing, finance, technology, collaboration and home-maintenance). Their photographer/source/license records are in `mobile/assets/photo-provenance.json`; all retain the recorded Unsplash license.
+
+## Matched website and mobile interface
+
+`shared/interface-copy.json` is the source for common labels and descriptions.
+Run `python scripts/sync-interface-copy.py` after editing it, then
+`python scripts/check-interface-parity.py`. Each client bundles its own generated
+copy snapshot, so builds keep independent dependencies and release settings.
+
+Matched primary navigation: Discover, Services, Requests, Account. Both offer a
+header location selector, the same homepage section order, Digital Marketing
+first in Quick Access, five-service hero, photo categories, and business feature.
+Website Quick Access retains 6.5/4.5/3.5 cards at desktop/tablet/phone sizes;
+native Quick Access shows 3.5. Category/service/search, service-tab descriptions,
+member gates, enquiries including PIN and consent-based exact address, requests,
+profile, membership/active offers, payment history and provider entry share their
+main copy/options. Website rendering retains wider desktop grids.
+
+Mobile added native sandbox checkout and recovery requests. Seller registration,
+evidence uploads, owned business/listing drafts, admin management, career workflows,
+provider-application history and additional discovery remain established website
+flows, with matching account/provider entry labels. These specialized tools are
+not new native implementations. Browser handoff/privacy instructions necessarily
+explain the mobile behavior. Reset email links open the existing secure website.
+Authentication uses secure native tokens versus website HTTP-only cookies.
+
+The live API may not support newer source-level location or publication features.
+No API rollout, migrations, seeding, normal-container changes or production
+payment setup is authorized by this interface work.

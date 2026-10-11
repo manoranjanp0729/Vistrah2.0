@@ -104,7 +104,7 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
     <div className="location-entry-heading"><button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}><MapPin size={18} aria-hidden="true"/>Choose your location</button>
       <p>{active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}</p>
     </div>
-    <p className="location-entry-privacy">Temporary location. Provider details and enquiries require eligible membership.</p>
+    <p className="location-entry-privacy">Location is temporary unless explicitly saved. GPS runs only when you choose “Use my location”. Coordinates are sent to VISTRAH only when you search nearby providers.</p>
     <div id={id} hidden={!open}>
       <p>{providerBlocker} Enter coordinates to place your pin; an address or PIN alone is insufficient.</p>
       {error&&<p className="notice error" role="alert">{error}{error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}>Sign in</Link></>}</p>}
@@ -127,3 +127,4 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
     </div>
   </section>;
 }
+

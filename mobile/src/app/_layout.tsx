@@ -14,6 +14,6 @@ export default function RootLayout(){
     <Stack.Screen name="location" options={{title:'Choose your location'}}/>
     <Stack.Screen name="provider" options={{title:'Offer your services'}}/>
     <Stack.Screen name="profile" options={{title:'Your profile'}}/>
-    <Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
+    <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:'Services'}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
   </Stack></LocationProvider></SessionProvider></SafeAreaProvider>;
 }

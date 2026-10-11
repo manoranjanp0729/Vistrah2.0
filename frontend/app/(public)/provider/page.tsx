@@ -1,0 +1,3 @@
+import Link from 'next/link';
+import copy from '@/lib/interface-copy.json';
+export default function Provider(){return <div className="container page replica-page"><h1>{copy.provider.title}</h1><p>{copy.provider.subtitle}</p><p>{copy.provider.intro}</p><div className="panel"><h2>{copy.provider.business}</h2><p>{copy.provider.businessCopy}</p><div className="replica-actions"><Link href="/seller/register">{copy.provider.register}</Link><Link href="/seller/login">{copy.provider.login}</Link></div></div><div className="replica-actions"><Link href="/provide-service">{copy.provider.application}</Link><Link href="/seller">{copy.provider.dashboard}</Link></div></div>;}

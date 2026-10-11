@@ -1,3 +1,4 @@
+import copy from './interface-copy.ts';
 import type {Category,ServiceContext} from './types';
 export type {Category,Service,ServiceContext,User,Membership,Provider,RequestRecord} from './types';
 export function allServices(categories:Category[]):ServiceContext[] {
@@ -15,9 +16,9 @@ export function servicePath(context:ServiceContext) {
   return '/service/'+context.category.slug+'/'+(context.subcategory?context.subcategory.slug+'/':'')+'service/'+context.service.slug;
 }
 export const pathways=[
-  {id:'providers',title:'Find Service Provider',copy:'Browse active, verified providers. Confirm scope and availability directly.'},
-  {id:'recommendations',title:'VISTRAH Recommended',copy:'Save an enquiry for human review. No automated matching or guaranteed turnaround.'},
-  {id:'in-house',title:'VISTRAH Services',copy:'No VISTRAH-managed offering is currently listed for this service. Enquire about delivery options.'},
+  {id:'providers',title:copy.service.providers,copy:copy.service.providersCopy},
+  {id:'recommendations',title:copy.service.recommended,copy:copy.service.recommendedCopy},
+  {id:'in-house',title:copy.service.inHouse,copy:copy.service.inHouseCopy},
 ] as const;
 export type Intent=typeof pathways[number]['id'];
 export function enquiryPrefix(intent:Intent) {

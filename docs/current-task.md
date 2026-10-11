@@ -1,4 +1,14 @@
-﻿# Current task
+# Current task
+
+## Matched website/mobile interface - 12 October 2026
+
+- Authorized: match primary options, consumer copy and layouts, using mobile as reference while retaining desktop 6.5/tablet 4.5/phone 3.5 Quick Access widths and independent builds.
+- Added canonical shared/interface-copy.json, independent frontend/mobile snapshots and sync/check scripts. Main navigation, homepage order, category/service search, service banners/tabs/gates, provider entry, account/requests/profile, membership/offers and enquiry consent fields aligned. Existing specialist routes preserved.
+- Native additions: sandbox checkout/payment history, password recovery request, explicit location save/clear and identity-safe restoration. Corrected membership plan fields to actual API amount/days. Exact addresses require explicit enquiry consent; no automatic GPS or real payments.
+- Specialized seller/admin/evidence/workflow tools still open the established website from mobile, with matching entry labels. Reset email links retain the website flow; native storage versus cookie authentication and browser handoff hints differ intentionally. These are not complete native ports of the specialist tools.
+- Verification passed: copy equality, native/web typecheck/lint, 101 website tests, four native API/catalogue tests, production build, Android/iOS/web exports and 15 isolated HTTP routes/member gates. Browser visual/device testing remains pending.
+- Source only; deployment and paused API/worker migration scope remain untouched. Published through the existing review branch; review before deployment.
+
 
 - Website responsive refinement: Quick Access shows 6.5/4.5/3.5 individual-service cards at desktop/tablet/phone widths, Digital Marketing first. Added five-service automatic hero with pause/reduced-motion behavior, charcoal photo category cards (4–6 columns), and compact desktop typography/spacing. Website typecheck/lint/production build and 101 focused tests passed. Browser visual review remains pending. Source only; normal deployed web unchanged.
 

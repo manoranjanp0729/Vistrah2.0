@@ -1,38 +1,29 @@
 import Link from 'next/link';
+import copy from '@/lib/interface-copy.json';
 import {HorizontalCarousel} from '@/components/horizontal-carousel';
 import {ReferenceHeroCarousel} from '@/components/reference-hero-carousel';
-import {ArrowRight,BriefcaseBusiness,House,Megaphone,Building2,Wallet,Compass} from 'lucide-react';
-import {LocationChooser} from '@/components/customer-location';
-import {ProvideServiceLink} from '@/components/seller';
+import {BriefcaseBusiness,House,Megaphone,Building2,Wallet,Compass} from 'lucide-react';
 import {Visual} from '@/components/visual';
-import {pagePhoto,categoryPhoto,servicePhoto} from '@/lib/imagery';
-import {positioning} from '@/lib/positioning';
-import {serverApi,protectedServerApi,ServerApiError} from '@/lib/server';
-import {HomeNearby,AffiliateBrands} from '@/components/home-discovery';
+import {photos,categoryPhoto} from '@/lib/imagery';
+import {serverApi} from '@/lib/server';
 import {allServices,urls} from '@/lib/urls';
-import type {Category,Membership} from '@/lib/types';
-import {SearchForm,SectionHeading,ServiceCard,ButtonLink,ContactBanner,EmptyState} from '@/components/ui';
+import type {Category} from '@/lib/types';
+import {SectionHeading,ButtonLink,EmptyState} from '@/components/ui';
 export const dynamic='force-dynamic';
 const categoryIcons:Record<string,typeof Building2>={'real-estate':Building2,'tax-compliance':Wallet,'jobs-careers':BriefcaseBusiness,marketing:Megaphone,'civil-construction':House};
 const categoryPriority=(slug:string)=>slug==='real-estate'?0:slug==='tax-compliance'?1:2;
 export default async function Home() {
   const categories=await serverApi<Category[]>('/catalogue');
-  const services=allServices(categories);const popular=services.filter(s=>s.service.popular).slice(0,4);
+  const services=allServices(categories);
   const topServices=[...services].filter(item=>item.service.active).sort((a,b)=>Number(b.service.popular)-Number(a.service.popular));
   const shortcuts=[...topServices].sort((a,b)=>Number(b.service.slug==='digital-marketing')-Number(a.service.slug==='digital-marketing')).slice(0,10);
   const displayCategories=[...categories].sort((a,b)=>categoryPriority(a.slug)-categoryPriority(b.slug));
-  let accessStatus=0;
-  try{const membership=await protectedServerApi<Membership>('/me/membership');if(membership.active!==true)accessStatus=403;}catch(error){accessStatus=error instanceof ServerApiError?error.status:503;}
   return <div className="reference-home">
-    <section className="container reference-hero"><div><p className="reference-label">DISCOVER. CONNECT. GROW.</p><h1>Discover VISTRAH</h1><p className="reference-lead">Explore services, products, and opportunities in one place.</p><p className="reference-description">{positioning.description}</p><div className="button-row"><ButtonLink href="/services">Explore services</ButtonLink><ProvideServiceLink/></div><div className="seller-access-summary"><details id="seller-access-status"><summary>Provider access and review</summary><p>{positioning.sellerAccess}</p><Link className="text-link" href="/provide-service">Existing provider application</Link></details></div></div><ReferenceHeroCarousel>{topServices.slice(0,5).map(context=><Link href={urls.service(context.category,context.service,context.subcategory)} key={context.service.id} className="reference-hero-slide"><Visual photo={servicePhoto(context)} variant="hero" decorative/><div><p className="reference-label">{context.category.title}</p><h2>{context.service.title}</h2><span>Explore service <ArrowRight size={16}/></span></div></Link>)}</ReferenceHeroCarousel></section>
-    <section className="container reference-discovery" aria-label="Search and location"><div className="discovery-bar"><LocationChooser/><SearchForm large/></div></section>
-    <section className="container reference-section"><p className="reference-label">QUICK ACCESS</p><div className="reference-shortcuts"><HorizontalCarousel label="Quick access services">{shortcuts.map(context=><Link key={context.service.id} href={urls.service(context.category,context.service,context.subcategory)}><Compass size={24} aria-hidden="true"/><span>{context.service.title}</span></Link>)}</HorizontalCarousel></div></section>
-    <section className="container reference-section"><SectionHeading title="Services for you" href="/services" label="View all"/>{categories.length?<div className="reference-categories">{displayCategories.map(category=>{const Icon=categoryIcons[category.slug]??Compass;return <Link key={category.id} href={urls.category(category)} className="reference-category"><Visual photo={categoryPhoto(category)} variant="card" decorative/><Icon size={22} aria-hidden="true"/><h3>{category.title}</h3><p>{category.description}</p><span>Explore services <ArrowRight size={16}/></span></Link>;})}</div>:<EmptyState title="Our catalogue is being prepared" description="Email VISTRAH about the service you need." href="/call-vistrah" label="Contact VISTRAH"/>}</section>
-    <section className="container reference-section"><SectionHeading title="Featured opportunities"/><article className="reference-feature"><Visual photo={pagePhoto('home')} variant="editorial" decorative/><div><span className="reference-badge">Featured</span><h2>Grow your business</h2><p>Connect with customers and present your services through VISTRAH.</p><Link className="text-link" href="/seller/register">Discover more <ArrowRight size={18}/></Link><small>Business ownership and service listings require review.</small></div></article></section>
-    {popular.length>0&&<section className="container reference-section"><SectionHeading title="Popular services" href="/services" label="View all"/><div className="service-grid">{popular.map(context=><ServiceCard key={context.service.id} context={context}/>)}</div></section>}
-    <HomeNearby services={services} accessStatus={accessStatus}/><AffiliateBrands/>
-    <section className="container reference-section reference-membership"><div><p className="reference-label">SERVICE ACCESS FOR MEMBERS</p><h2>Your next step starts here.</h2><p>{positioning.access} Service costs are separate.</p></div><ButtonLink href="/membership">Explore membership</ButtonLink></section>
-    <div className="container call-wrap"><ContactBanner/></div>
+    <section className="container reference-hero"><div><p className="reference-label">{copy.home.tagline}</p><h1>{copy.home.title}</h1><p className="reference-lead">{copy.home.description}</p></div><ReferenceHeroCarousel>{topServices.slice(0,5).map((context,index)=><Link href={urls.service(context.category,context.service,context.subcategory)} key={context.service.id} className={`reference-hero-slide reference-slide-tone-${index%2}`}><div><p className="reference-label">{context.category.title}</p><h2>{context.service.title}</h2><p>{context.service.description}</p><span>{copy.catalogue.explore}</span></div></Link>)}</ReferenceHeroCarousel></section>
+    <section className="container reference-section"><p className="reference-label">{copy.home.quick}</p><div className="reference-shortcuts"><HorizontalCarousel label="Quick access services">{shortcuts.map(context=>{const Icon=context.service.slug==='digital-marketing'?Megaphone:context.category.slug==='real-estate'?House:context.category.slug==='tax-compliance'?Wallet:BriefcaseBusiness;return <Link key={context.service.id} href={urls.service(context.category,context.service,context.subcategory)}><Icon size={24} aria-hidden="true"/><span>{context.service.title}</span></Link>;})}</HorizontalCarousel></div></section>
+    <section className="container reference-section"><SectionHeading title={copy.home.categories} href="/services" label={copy.home.viewAll}/>{categories.length?<div className="reference-categories">{displayCategories.map(category=>{const Icon=categoryIcons[category.slug]??Compass;return <Link key={category.id} href={urls.category(category)} className="reference-category"><Visual photo={categoryPhoto(category)} variant="card" decorative/><Icon size={22} aria-hidden="true"/><h3>{category.title}</h3></Link>;})}</div>:<EmptyState title="Our catalogue is being prepared" description="Email VISTRAH about the service you need." href="/call-vistrah" label="Contact VISTRAH"/>}</section>
+    <section className="container reference-section"><SectionHeading title={copy.home.featured}/><article className="reference-feature"><Visual photo={{id:'page/business-feature',kind:'photo',page:'home',subject:'Team collaboration',photo:'collaboration',alt:photos.collaboration.alt,aspectRatio:'3 / 2',position:photos.collaboration.position,surfaces:['home']}} variant="editorial" decorative/><div><span className="reference-badge">{copy.home.badge}</span><h2>{copy.home.business}</h2><p>{copy.home.businessDescription}</p><Link className="button secondary" href="/provider">{copy.home.more}</Link><small>{copy.home.review}</small></div></article></section><div className="container reference-section"><ButtonLink secondary href="/provider">{copy.home.provider}</ButtonLink></div>
+
   </div>;
 }
 

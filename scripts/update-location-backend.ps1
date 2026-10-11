@@ -19,6 +19,27 @@ function Run-Native {
     if ($exitCode -ne 0) { throw "$Program failed (exit $exitCode). Update stopped." }
     if ($Capture) { return $result }
 }
+function Preserve-Image {
+    param([string]$Image, [string]$Container, [string]$Tag)
+    # A running container can survive removal of its original image metadata.
+    $priorPreference = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
+    try {
+        & docker.exe image inspect $Image *> $null
+        $imageExists = ($LASTEXITCODE -eq 0)
+    } finally { $ErrorActionPreference = $priorPreference }
+    if ($imageExists) {
+        Run-Native -Program 'docker.exe' -Arguments @('image', 'tag', $Image, $Tag)
+        $method = 'original-image-tag'
+    } else {
+        Write-Host 'Original image is unavailable; preserving the existing container as a local recovery image (brief pause).'
+        Run-Native -Program 'docker.exe' -Arguments @('container', 'commit', '--pause=true', $Container, $Tag)
+        $method = 'container-snapshot'
+    }
+    $preserved = ((Run-Native -Program 'docker.exe' -Arguments @('image', 'inspect', '--format', '{{.Id}}', $Tag) -Capture) -join '').Trim()
+    if ($preserved -notmatch '^sha256:[a-f0-9]{64}$') { throw 'Recovery image could not be verified.' }
+    return [ordered]@{image=$preserved;method=$method;tag=$Tag}
+}
 function Compose {
     param([string[]]$Arguments, [switch]$Capture)
     Run-Native -Program 'docker.exe' -Arguments ($compose + $Arguments) -Capture:$Capture
@@ -77,9 +98,9 @@ try {
     Run-Native -Program 'icacls.exe' -Arguments @($backupDirectory, '/inheritance:r', '/grant:r', "*${userSid}:(OI)(CI)F", '*S-1-5-18:(OI)(CI)F')
     $apiTag = "vistrah-api:before-location-$stamp"
     $workerTag = "vistrah-worker:before-location-$stamp"
-    Run-Native -Program 'docker.exe' -Arguments @('image', 'tag', $oldApiImage, $apiTag)
-    Run-Native -Program 'docker.exe' -Arguments @('image', 'tag', $oldWorkerImage, $workerTag)
-    $manifest = [ordered]@{source_commit=$sourceCommit;original_revision='006';target_revision='011';api_image=$oldApiImage;api_backup_tag=$apiTag;worker_image=$oldWorkerImage;worker_backup_tag=$workerTag;database_container=$databaseId;created_at=(Get-Date).ToString('o')}
+    $apiRecovery = Preserve-Image -Image $oldApiImage -Container $apiId -Tag $apiTag
+    $workerRecovery = Preserve-Image -Image $oldWorkerImage -Container $workerId -Tag $workerTag
+    $manifest = [ordered]@{source_commit=$sourceCommit;original_revision='006';target_revision='011';api_image=$oldApiImage;api_backup_tag=$apiTag;worker_image=$oldWorkerImage;worker_backup_tag=$workerTag;api_recovery=$apiRecovery;worker_recovery=$workerRecovery;database_container=$databaseId;created_at=(Get-Date).ToString('o')}
     $manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $backupDirectory 'manifest.json') -Encoding UTF8
     Write-Host 'Building the new API and worker before maintenance. Existing services stay running during this step.'
     Compose -Arguments @('build', 'api', 'worker')

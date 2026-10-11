@@ -12,3 +12,6 @@ test-results
 **/.runtime-secret
 **/playwright-report
 **/test-results
+**/.env.local
+**/.env
+**/*.tsbuildinfo

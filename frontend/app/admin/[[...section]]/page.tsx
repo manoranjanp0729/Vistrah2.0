@@ -1,4 +1,2 @@
-import {notFound} from 'next/navigation';
-import {AdminApp} from '@/components/admin';
-export const metadata={title:'Admin dashboard'};
-export default async function AdminPage({params}:{params:Promise<{section?:string[]}>}) {const {section=[]}=await params;if(section.length>1||!['','requests','providers','provider-services','catalogue','offers','payments','audit','workflows','job-sources','provider-applications','provider-requirements'].includes(section[0]||''))notFound();return <AdminApp section={section[0]||''}/>;}
+import {redirect} from 'next/navigation';
+export default async function AdminRedirect({params}:{params:Promise<{section?:string[]}>}){const {section=[]}=await params;const base=process.env.ADMIN_APP_URL||'http://localhost:3200';redirect(base.replace(/\/$/,'')+'/admin'+(section.length?'/'+section.map(encodeURIComponent).join('/') :''));}

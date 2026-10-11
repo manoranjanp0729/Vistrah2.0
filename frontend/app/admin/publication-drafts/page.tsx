@@ -1,3 +1,2 @@
-import {AdminPublicationDrafts} from '@/components/publication';
-export const metadata={title:'Publication drafts'};
-export default function PublicationDraftsPage(){return <AdminPublicationDrafts/>;}
+import {redirect} from 'next/navigation';
+export default function AdminRedirect(){redirect((process.env.ADMIN_APP_URL||'http://localhost:3200').replace(/\/$/,'')+'/admin/publication-drafts');}

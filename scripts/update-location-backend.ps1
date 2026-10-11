@@ -6,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $maintenanceStarted = $false
 $backupDirectory = $null
-$compose = @('compose', '-p', 'vistrah20', '-f', 'compose.yaml', '-f', 'compose.api-runtime.yaml')
+$compose = @('compose', '--ansi', 'never', '-p', 'vistrah20', '-f', 'compose.yaml', '-f', 'compose.api-runtime.yaml')
 function Run-Native {
     param([string]$Program, [string[]]$Arguments, [switch]$Capture)
     # Windows PowerShell treats native stderr as errors; Alembic writes progress there.
@@ -103,7 +103,7 @@ try {
     $manifest = [ordered]@{source_commit=$sourceCommit;original_revision='006';target_revision='011';api_image=$oldApiImage;api_backup_tag=$apiTag;worker_image=$oldWorkerImage;worker_backup_tag=$workerTag;api_recovery=$apiRecovery;worker_recovery=$workerRecovery;database_container=$databaseId;created_at=(Get-Date).ToString('o')}
     $manifest | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $backupDirectory 'manifest.json') -Encoding UTF8
     Write-Host 'Building the new API and worker before maintenance. Existing services stay running during this step.'
-    Compose -Arguments @('build', 'api', 'worker')
+    Compose -Arguments @('--progress', 'plain', 'build', 'api', 'worker')
     $heads = ((Compose -Arguments @('run', '--rm', '--no-deps', '-T', 'api', 'alembic', 'heads') -Capture) -join "`n").Trim()
     if ($heads -notmatch '^011 \(head\)$') { throw "Unexpected migration head: $heads" }
     Write-Host 'Pausing API and worker; database remains running.'

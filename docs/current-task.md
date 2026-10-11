@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Mobile homepage categories now use four compact icon/title tiles per row, including phone widths; category descriptions stay on the service/category journey. Services-tab layout unchanged. Typecheck/lint verified.
+
 - Fixed native raw-text warning: empty error/optional text values now use boolean JSX guards across Jobs and related screens. Typecheck/lint verified.
 
 - Services-tab refinement: main categories first (four columns on wide displays, two on phones); selecting a category opens a dedicated service list. Mobile package typecheck and lint verified.

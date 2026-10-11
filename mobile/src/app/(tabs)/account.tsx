@@ -17,7 +17,7 @@ export default function Account(){
     {session.user&&<Action label="Edit profile" secondary onPress={()=>router.push('/profile')}/>}
     {session.user&&<><Action label={copy.nav.requests} secondary onPress={()=>router.push('/requests')}/><Action label={copy.account.history} secondary onPress={()=>router.push('/payments')}/><Action label={copy.account.finds} secondary onPress={()=>web('/account/finds')}/><Action label={copy.account.applications} secondary onPress={()=>web('/account/provider-applications')}/><Action label={copy.account.seller} secondary onPress={()=>web('/seller')}/></>}
     <Action label={copy.account.discovery} secondary onPress={()=>web('/discover-more')}/>
-    {session.user?.role==='ADMIN' &&<Action label={copy.account.admin} secondary onPress={()=>web('/admin')}/>}
+    {session.user?.role==='ADMIN' &&<Action label="Admin dashboard on website ↗" secondary onPress={()=>web('/admin')}/>}
     <Text style={styles.muted}>Website actions open your browser and may require a separate sign-in. The mobile app does not share your token with the browser.</Text>
   </Page>;
 }

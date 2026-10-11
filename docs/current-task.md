@@ -1,5 +1,7 @@
 # Current task
 
+- Wording correction: the existing mobile wording is the source of truth. Restored original seller entry labels and business paragraph, recovery/admin labels, and removed the added registration hint. Main mobile discovery/category/service/account/profile/request wording was already unchanged. Added-feature labels and factual native checkout/location disclosures remain; obsolete claims that checkout is website-only are not restored. Layout and functional additions retained.
+
 ## Matched website/mobile interface - 12 October 2026
 
 - Authorized: match primary options, consumer copy and layouts, using mobile as reference while retaining desktop 6.5/tablet 4.5/phone 3.5 Quick Access widths and independent builds.

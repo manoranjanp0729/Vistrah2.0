@@ -15,8 +15,8 @@ export default function Auth(){
     {register&&<Field label="Your name" value={name} onChangeText={setName} autoComplete="name" maxLength={100}/>}
     <Field label={copy.auth.email} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" maxLength={254}/>
     <Field label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete={register?'new-password':'current-password'} maxLength={128}/>
-    <Text style={styles.muted}>{register?'Use at least 10 characters.':''}</Text><Action label={busy?'Please wait…':register?copy.auth.create:'Sign in'} disabled={busy} onPress={()=>void submit()}/>
+    <Action label={busy?'Please wait…':register?copy.auth.create:'Sign in'} disabled={busy} onPress={()=>void submit()}/>
     <Action label={register?copy.auth.existing:copy.auth.new} disabled={busy} secondary onPress={()=>{setRegister(!register);setError('');setPassword('');}}/>
-    {!register&&<Action label={copy.auth.forgot} secondary onPress={()=>{router.push('/forgot-password');}}/>}
+    {!register&&<Action label="Forgot password? Open recovery ↗" secondary onPress={()=>{router.push('/forgot-password');}}/>}
   </Page>;
 }

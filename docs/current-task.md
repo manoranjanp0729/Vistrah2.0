@@ -1,5 +1,7 @@
 # Current task
 
+- Mobile light-theme tab header now uses generated VISTRAH light logo asset; header background sampled from image corner (#F8F7F3). Original full-resolution image preserved, displayed within compact clipped title container to remove empty vertical margins. Location action and dark-theme text header retained. Typecheck/lint passed; browser/device visual review pending.
+
 - User confirmed controlled rollout SUCCESS: normal revision 011, API/worker healthy, location GET/PUT endpoint present; protected backup E:\Vistrah-backups\20261012-032908-394. Actual authenticated location persistence remains pending. Mobile hero refinement: pagination overlaid inside bottom of hero, Play/Pause row removed, automatic rotation retained, first divider removed to leave standard 12px Quick Access gap; content reserves bottom space for dots. Typecheck/lint passed; visual review pending (attached screenshot unavailable locally).
 
 - Second Windows attempt preserved missing worker image successfully, then failed before maintenance at Compose build: invalid console handle. Disabled Compose ANSI output and selected plain build progress for redirected Windows PowerShell output. Database unchanged, API/worker not stopped. Scoped source checks passed; actual Docker build/update remains pending.

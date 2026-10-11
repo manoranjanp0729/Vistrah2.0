@@ -64,6 +64,7 @@ This is a working first version, not a declaration that every possible operation
 
 ```text
 frontend/                 Next.js app, shared CSS/components, unit/browser tests
+mobile/                   Expo React Native Android/iOS application; see docs/MOBILE.md
 backend/app/              Models, schemas, authentication, catalogue, payment service, REST controllers
 backend/migrations/       Versioned schema and append-only database triggers
 backend/tests/            Backend integration tests
@@ -128,7 +129,13 @@ Use `-DockerCommand` and `-NpmCommand` when those executables are not on PATH. T
 
 See [architecture](docs/ARCHITECTURE.md), [API guide](docs/API.md), [validation results](docs/VALIDATION.md) and [security/deployment notes](docs/SECURITY.md).
 
+The new [mobile application](docs/MOBILE.md) shares the existing API and reference
+dark visual theme. Native catalogue, accounts, public jobs and enquiries are
+implemented; specialized seller/evidence flows and checkout open the website.
+Device validation and signed app-store builds remain pending.
+
 Provider entry points, dynamic requirements, manual per-service review and private
 evidence are documented in [provider onboarding](docs/PROVIDER_ONBOARDING.md).
 Use admin **Provider Requirements** to draft/preview/publish service-specific forms
 and **Provider Applications** to review submitted evidence.
+

@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Homepage Quick Access now scrolls horizontally with up to ten functional cards: public jobs, up to eight API categories and provider entry. No placeholder destinations. Typecheck/lint verified.
+
 - Mobile homepage categories now use four compact icon/title tiles per row, including phone widths; category descriptions stay on the service/category journey. Services-tab layout unchanged. Typecheck/lint verified.
 
 - Fixed native raw-text warning: empty error/optional text values now use boolean JSX guards across Jobs and related screens. Typecheck/lint verified.

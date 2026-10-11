@@ -1,5 +1,7 @@
 # Current task
 
+- Header logo visibility repair: replaced absolutely positioned/clipped child with directly sized Image (160×40, cover) for reliable navigator title measurement and centered removal of source whitespace. Asset remains unchanged. Typecheck/lint passed; Windows Expo cache reset and user visual confirmation required. Screenshot attachment unavailable locally.
+
 - Mobile light-theme tab header now uses generated VISTRAH light logo asset; header background sampled from image corner (#F8F7F3). Original full-resolution image preserved, displayed within compact clipped title container to remove empty vertical margins. Location action and dark-theme text header retained. Typecheck/lint passed; browser/device visual review pending.
 
 - User confirmed controlled rollout SUCCESS: normal revision 011, API/worker healthy, location GET/PUT endpoint present; protected backup E:\Vistrah-backups\20261012-032908-394. Actual authenticated location persistence remains pending. Mobile hero refinement: pagination overlaid inside bottom of hero, Play/Pause row removed, automatic rotation retained, first divider removed to leave standard 12px Quick Access gap; content reserves bottom space for dots. Typecheck/lint passed; visual review pending (attached screenshot unavailable locally).

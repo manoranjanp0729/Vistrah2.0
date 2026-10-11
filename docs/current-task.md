@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Services-tab refinement: main categories first (four columns on wide displays, two on phones); selecting a category opens a dedicated service list. Mobile package typecheck and lint verified.
+
 ## Reference theme and new mobile source prepared - 11 October 2026
 
 - New authorized source scope: apply the supplied dark/orange layout to the website and create mobile application code inside Vistrah 2.0. Working base main: b15b7805164267693c5412add227e736b66a079b.

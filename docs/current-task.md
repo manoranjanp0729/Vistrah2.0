@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Reduced mobile typography, line heights and section/card spacing. Replaced static homepage hero with up to five active catalogue services, prioritizing popular flags, auto-advancing every four seconds while focused; swipe pauses rotation and Play/Pause control is available. Cards link to real service pages. Typecheck/lint verified; device visual review pending.
+
 - Quick Access card width now derives from its measured viewport: three full cards and half of the fourth, accounting for three 12px gaps. Typecheck/lint verified.
 
 - Homepage Quick Access now scrolls horizontally with up to ten functional cards: public jobs, up to eight API categories and provider entry. No placeholder destinations. Typecheck/lint verified.

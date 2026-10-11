@@ -1,5 +1,7 @@
 # Current task
 
+- Mobile estimates: Get Estimate button sits after service includes and before the three tabs. New estimate/[id] route uses three distinct scope questions per each of 59 catalogue services, plus timing/budget/contact/details. Existing MemberGate and /requests enforcement retained; answers are stored as an [Estimate request] human-review enquiry. No automatic price or guaranteed response claimed. New unknown services show an explicit unavailable-form fallback rather than generic estimate questions. Existing mobile wording and website source untouched. Typecheck/lint and six tests passed (coverage, valid serialization, missing/invalid choice/number validation); Expo web export verified. Source review branch only; device review pending.
+
 - Wording correction: the existing mobile wording is the source of truth. Restored original seller entry labels and business paragraph, recovery/admin labels, and removed the added registration hint. Main mobile discovery/category/service/account/profile/request wording was already unchanged. Added-feature labels and factual native checkout/location disclosures remain; obsolete claims that checkout is website-only are not restored. Layout and functional additions retained.
 
 ## Matched website/mobile interface - 12 October 2026

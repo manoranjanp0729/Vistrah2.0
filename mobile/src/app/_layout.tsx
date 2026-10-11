@@ -8,6 +8,7 @@ export default function RootLayout(){
   return <SafeAreaProvider><SessionProvider><LocationProvider><StatusBar style="light"/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false}}>
     <Stack.Screen name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
+    <Stack.Screen name="estimate/[id]" options={{title:'Get Estimate'}}/>
     <Stack.Screen name="request/[id]" options={{title:'Service enquiry'}}/>
     <Stack.Screen name="auth" options={{title:'Your VISTRAH account'}}/>
     <Stack.Screen name="membership" options={{title:'Membership'}}/>

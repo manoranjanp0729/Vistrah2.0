@@ -15,6 +15,7 @@ export default function ServiceDetail(){
   const catalogue=useResource<Category[]>('/catalogue');const context=allServices(catalogue.data??[]).find(item=>String(item.service.id)===id);
   return <Page>{catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:!context?<Text style={styles.muted}>{copy.service.unavailable}</Text>:<>
     <ServiceBanner context={context}/><Text style={styles.label}>{context.category.title}</Text><Heading title={context.service.title}/><Text style={styles.text}>{context.service.description}</Text>{context.service.includes.map(item=><Text style={styles.muted} key={item}>✓ {item}</Text>)}
+    <Action label="Get Estimate" onPress={()=>router.push({pathname:'/estimate/[id]',params:{id:context.service.id}})}/>
     <View style={styles.divider}/><Heading title={copy.service.options}/><Text style={styles.muted}>{copy.service.intro}</Text>
     <View accessibilityRole="tablist" style={{gap:10}}>{pathways.map(path=><Pressable key={path.id} accessibilityRole="tab" accessibilityState={{selected:tab===path.id}} onPress={()=>setTab(path.id)} style={{padding:16,borderRadius:15,backgroundColor:tab===path.id?colors.accent:colors.surface,minHeight:50}}><Text style={{color:tab===path.id?colors.ink:colors.text,fontWeight:'600'}}>{path.title}</Text></Pressable>)}</View>
     <MemberGate><ServiceOptions context={context} tab={tab}/></MemberGate>

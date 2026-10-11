@@ -8,6 +8,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/ .
 COPY shared/ /shared/
+ARG NEXT_PUBLIC_MAPTILER_API_KEY
+ENV NEXT_PUBLIC_MAPTILER_API_KEY=$NEXT_PUBLIC_MAPTILER_API_KEY
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 FROM node:22.16.0-alpine AS runner
@@ -19,3 +21,4 @@ COPY --from=builder --chown=node:node /app/public ./public
 USER node
 EXPOSE 3000
 CMD ["node", "server.js"]
+

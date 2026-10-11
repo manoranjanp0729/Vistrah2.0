@@ -33,8 +33,9 @@ The hero artwork is a local procedural visual interpretation of the reference.
 - Member provider directory, service preparation guides, intent-preserving
   enquiries and the customer's request history.
 - Manual temporary coordinates and explicit foreground GPS action; 2/5/10/25 km
-  radius selection and an explicitly triggered nearby search. No geocoder,
-  external map, background tracking or automatic location saving. Explicit save/clear is available.
+  radius selection and an explicitly triggered nearby search. Configurable MapTiler
+  reverse lookup turns GPS into area/city labels, with a tiled map preview and zoom
+  controls. No background tracking or automatic location saving. Explicit save/clear is available.
 - Membership plan, current eligibility and active offers; native sandbox checkout and payment history. No real-payment activation.
 - Native password-recovery request; reset links retain the existing secure website flow.
 
@@ -95,8 +96,9 @@ reported after local sign-out. The web preview keeps its token in memory only.
 No passwords or session data are logged or checked into source.
 
 Location stays temporary unless the user explicitly selects Save this location. Selecting coordinates does not write `/me/location`; save/clear actions use that endpoint and report unavailability on an older API. Saved preferences can be restored on sign-in; account changes clear the previous location.
-Coordinates are sent only when the user explicitly starts nearby discovery;
-the backend applies radius and provider coverage. Coordinates are not included
+MapTiler receives coordinates after Use my location for place lookup, and receives
+tile requests when a map is displayed. The backend receives coordinates only for
+explicit nearby discovery or Save this location and applies radius/provider coverage. Coordinates are not included
 in enquiries. A missing nearby endpoint reports that the API version does not
 support the feature and leaves the member directory available.
 
@@ -190,3 +192,55 @@ Authentication uses secure native tokens versus website HTTP-only cookies.
 The live API may not support newer source-level location or publication features.
 No API rollout, migrations, seeding, normal-container changes or production
 payment setup is authorized by this interface work.
+
+
+## Live MapTiler location setup
+
+The customer website uses an interactive Leaflet basemap; mobile uses a centred
+raster-tile preview with zoom controls, not the paid static-image endpoint.
+Use my location requests GPS once, reverse-geocodes the area/city, and immediately
+sets a temporary header label. The actual GPS coordinates remain the search point;
+a geocoder city centroid never replaces them. Exact street addresses are not
+copied from geocoding into enquiry/address fields. No typed-address autocomplete
+or automatic reverse lookup on map drags is enabled. Lookup failures leave valid
+coordinates for manual locality entry; missing keys keep manual controls available.
+
+1. Create an account at https://cloud.maptiler.com/ and open **API keys**. Choose a
+   plan appropriate for your intended commercial use and quotas. No subscription
+   or provider account is created by this repository.
+2. Create a browser key. For local development, Allowed HTTP origins should list
+   `localhost` and `127.0.0.1` (without protocol/port, per provider guidance). Use a
+   separate production key restricted to your deployed domain. Keep website and
+   native keys separate; origin and User-Agent restrictions combine with AND logic.
+3. Add the browser key locally, without committing it:
+   - Docker website: root `.env`: `NEXT_PUBLIC_MAPTILER_API_KEY=your_browser_key`
+   - Local website dev: `frontend/.env.local`: same variable.
+   - Expo browser preview: `mobile/.env`: `EXPO_PUBLIC_MAPTILER_WEB_API_KEY=your_browser_key`
+4. For Android/iOS, create a separate key with Allowed User-Agent header set to
+   `Vistrah-Mobile-2.0`, then add `EXPO_PUBLIC_MAPTILER_API_KEY=your_native_key` to
+   `mobile/.env`. Native geocoding and tile images send that User-Agent.
+5. Pull the source and rebuild only the Docker website with:
+
+   ```powershell
+   Set-Location 'E:\Vistrah 2.0'
+   git pull --ff-only origin reference-theme-mobile
+   if ($LASTEXITCODE -eq 0) {
+       docker compose -p vistrah20 -f compose.yaml up -d --no-deps --build web
+   }
+   ```
+
+   Stop the mobile dev server with Ctrl+C, then restart in another terminal:
+
+   ```powershell
+   Set-Location 'E:\Vistrah 2.0\mobile'
+   npm.cmd start -- --clear
+   ```
+
+Public map keys are bundled into clients intentionally; protect them with the
+provider's restrictions. Backend passwords/tokens must never be put in these
+variables. Native/production restrictions and device headers need a live device
+check before release. HTTPS is needed for browser GPS outside localhost.
+
+References: [API keys](https://docs.maptiler.com/guides/credentials/api-key/),
+[reverse geocoding](https://docs.maptiler.com/cloud/api/geocoding/),
+[Leaflet raster tiles](https://docs.maptiler.com/leaflet/examples/raster-tiles-in-leaflet-js/).

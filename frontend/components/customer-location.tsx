@@ -6,7 +6,8 @@ import Link from 'next/link';
 import {MapPin} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
 import {destinationLink} from '@/lib/destinations';
-import {providerBlocker,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
+import {LocationMap} from './location-map';
+import {lookupGpsPlace,providerBlocker,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
 
 export const defaultMapPoint={latitude:20.5937,longitude:78.9629};
 const emptyLocation:CustomerLocation={latitude:NaN,longitude:NaN,locality:'',postal_code:'',address:'',landmark:''};
@@ -63,12 +64,15 @@ function useLocationState(){
     setMessage('Location is temporary unless you choose Save this location.');return true;
   },[]);
   async function gps(){
-    const generation=++gpsGeneration.current;hasEdits.current=true;edits.current++;setError('');
+    const generation=++gpsGeneration.current;hasEdits.current=true;edits.current++;setError('');setMessage('');setBusy(true);
     try{
       const fix=await requestGps(navigator.geolocation);if(generation!==gpsGeneration.current)return;
-      setDraft(previous=>({...previous,...fix.point}));
-      setMessage(`GPS accuracy: approximately ${Math.round(fix.accuracy)} metres.${fix.accuracy>100?' This position may be inaccurate. Adjust the coordinates or pin.':''} Enter locality/PIN and confirm Use this location.`);
+      setDraft({...emptyLocation,...fix.point});setActive(null);
+      const place=await lookupGpsPlace(fix.point);if(generation!==gpsGeneration.current)return;
+      const chosen={...emptyLocation,...fix.point,locality:place.label,postal_code:place.postal_code};setDraft(chosen);setActive(chosen);
+      setMessage(`Using ${place.label} temporarily. GPS accuracy: approximately ${Math.round(fix.accuracy)} metres.${fix.accuracy>100?' This position may be inaccurate; adjust the pin.':''} Save this location only if you want it remembered.`);
     }catch(e){if(generation===gpsGeneration.current)setError((e as Error).message);}
+    finally{if(generation===gpsGeneration.current)setBusy(false);}
   }
   async function save(){
     if(!active)return;setBusy(true);setError('');
@@ -104,12 +108,13 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
     <div className="location-entry-heading"><button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}><MapPin size={18} aria-hidden="true"/>Choose your location</button>
       <p>{active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}</p>
     </div>
-    <p className="location-entry-privacy">Location is temporary unless explicitly saved. GPS runs only when you choose “Use my location”. Coordinates are sent to VISTRAH only when you search nearby providers.</p>
+    <p className="location-entry-privacy">Location is temporary unless explicitly saved. GPS runs only when you choose “Use my location”. MapTiler receives coordinates for place lookup and maps. VISTRAH receives them when you search nearby providers or save a location.</p>
     <div id={id} hidden={!open}>
-      <p>{providerBlocker} Enter coordinates to place your pin; an address or PIN alone is insufficient.</p>
+      <p>{providerBlocker}</p>
       {error&&<p className="notice error" role="alert">{error}{error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}>Sign in</Link></>}</p>}
       <p role="status">{message}</p>
       <button type="button" className="button secondary" onClick={()=>void state.gps()} disabled={busy}>Use my location</button>
+      {open&&<LocationMap point={validPoint(draft)?draft:defaultMapPoint} onPin={point=>{if(!busy)state.edit({...point,locality:'',postal_code:'',address:'',landmark:''});}} onView={()=>{}} onSelect={()=>{}}/>}
       <form className="form location-controls" onSubmit={event=>{event.preventDefault();state.confirmLocation(draft);}}>
         <div className="location-field-grid">
           <label>Manual address<input value={draft.address} maxLength={500} disabled={busy} onChange={event=>state.edit({address:event.target.value})}/></label>

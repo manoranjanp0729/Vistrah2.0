@@ -1,3 +1,4 @@
+import {reversePlace} from './maptiler';
 export type Point={latitude:number;longitude:number};
 export type CustomerLocation=Point&{locality:string;postal_code:string;address:string;landmark:string};
 export type NearbyProvider=Point&{id:number;slug:string;company:string;name:string;location:string;description:string;verification_status:string;distance_km:number};
@@ -7,13 +8,13 @@ export type Radius=typeof radii[number];
 export function validPoint(point:Point){return Number.isFinite(point.latitude)&&Number.isFinite(point.longitude)&&Math.abs(point.latitude)<=90&&Math.abs(point.longitude)<=180;}
 export function wrapPoint(point:Point):Point{return {latitude:Math.max(-90,Math.min(90,point.latitude)),longitude:((point.longitude+180)%360+360)%360-180};}
 
-// Providers are injected by a reviewed integration. There is intentionally no
-// OSM/Nominatim/public-tile URL or external network fallback here.
 export type Geocoder={id:string;search:(query:string,signal:AbortSignal)=>Promise<CustomerLocation[]>};
 export type TileProvider={id:string;urlTemplate:string;attribution:string};
 export type LocationProviders={tiles:TileProvider|null;geocoder:Geocoder|null};
-export const locationProviders:LocationProviders={tiles:null,geocoder:null};
-export const providerBlocker='Live map tiles and address lookup are unavailable until provider terms and costs are approved. Enter locality/PIN/landmark and adjust the manual coordinate pin.';
+export const maptilerKey=process.env.NEXT_PUBLIC_MAPTILER_API_KEY??'';
+export const locationProviders:LocationProviders={tiles:maptilerKey?{id:'maptiler',urlTemplate:`https://api.maptiler.com/maps/streets-v4/256/{z}/{x}/{y}.png?key=${encodeURIComponent(maptilerKey)}`,attribution:'<a href="https://www.maptiler.com/copyright/">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>'}:null,geocoder:null};
+export const providerBlocker=maptilerKey?'Map powered by MapTiler. GPS place lookup and maps share your search coordinates with MapTiler. Confirm a pin or adjust coordinates; typed addresses do not move the pin.':'Live maps and place lookup need a configured MapTiler API key. Enter locality/PIN and coordinates manually.';
+export const lookupGpsPlace=(point:Point)=>reversePlace(point,maptilerKey);
 
 export async function resolveAddress(query:string,providers:LocationProviders,signal:AbortSignal):Promise<CustomerLocation[]>{
   if(!providers.geocoder)throw new Error(providerBlocker);
@@ -43,3 +44,4 @@ export class LatestSearch{
     catch(error){if(generation!==this.generation)return {current:false};throw error;}
   }
 }
+

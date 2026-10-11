@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Website responsive refinement: Quick Access shows 6.5/4.5/3.5 individual-service cards at desktop/tablet/phone widths, Digital Marketing first. Added five-service automatic hero with pause/reduced-motion behavior, charcoal photo category cards (4–6 columns), and compact desktop typography/spacing. Website typecheck/lint/production build and 101 focused tests passed. Browser visual review remains pending. Source only; normal deployed web unchanged.
+
 - Services for you compact category tiles now use uniform charcoal grey, soft-white labels and subtle grey borders; photos and four-column layout preserved. Typecheck/lint verified.
 
 - Added local category photo thumbnails to Services for you, retaining four columns. Existing licensed website images and their provenance are bundled in mobile. Typecheck/lint verified.

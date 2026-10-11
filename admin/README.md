@@ -24,7 +24,7 @@ Set-Location 'E:\Vistrah 2.0'
 docker compose -p vistrah20 -f compose.yaml up -d --no-deps --build admin
 ```
 
-Compose exposes localhost:${ADMIN_PORT:-3200}; the container uses port 3000. Set ADMIN_APP_URL to this app's public HTTPS URL when deploying separately. The customer website's old `/admin` routes redirect there (default http://localhost:3200); applying those redirects to a running website requires its own rebuild.
+Compose exposes localhost:${ADMIN_PORT:-3200}; the container uses port 3000. Deploy this app at its own hostname. The customer website's `/admin` routes return 404; admin access is through this app's `/login` page. Website login always stays in customer/seller journeys, even with an administrator account. Applying the website changes to a running Docker website requires its own web-only rebuild.
 
 Admin sign-in uses a separate HttpOnly cookie `vistrah_admin_session`. Cookies are not isolated by port, so distinct names prevent overwriting the customer session. Admin proxy forwards only admin endpoints, login/logout, identity and health; checks administrator role before forwarding admin requests; backend role checks remain authoritative. Mutation origins must match ALLOWED_ORIGINS. Use COOKIE_SECURE=true with HTTPS and separate hostnames in production. Do not expose development servers publicly.
 

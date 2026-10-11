@@ -80,7 +80,6 @@ services:
       API_URL: http://api:8000
       COOKIE_SECURE: ${COOKIE_SECURE:-false}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:${WEB_PORT:-3000},http://127.0.0.1:${WEB_PORT:-3000}}
-      ADMIN_APP_URL: ${ADMIN_APP_URL:-http://localhost:${ADMIN_PORT:-3200}}
       HOSTNAME: 0.0.0.0
     ports:
       - '127.0.0.1:${WEB_PORT:-3000}:3000'

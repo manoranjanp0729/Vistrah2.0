@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Services for you compact category tiles now use uniform charcoal grey, soft-white labels and subtle grey borders; photos and four-column layout preserved. Typecheck/lint verified.
+
 - Added local category photo thumbnails to Services for you, retaining four columns. Existing licensed website images and their provenance are bundled in mobile. Typecheck/lint verified.
 
 - Changed Grow your business featured photograph to the existing licensed Dylan Gillis collaboration image, updated accessible description and provenance. Typecheck/lint verified.

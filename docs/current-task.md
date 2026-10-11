@@ -1,6 +1,8 @@
 # Current task
 
-- Category service lists now use rectangular horizontal cards with an 80px square category-relevant existing local photo on the left, centered beside title/description/explore action. Consultation photo fallback for unknown categories; text flexes on narrow screens and descriptions cap at two lines. No remote photo calls or dependencies. Typecheck/lint passed; device visual review pending.
+- Service-list photos corrected to service-specific mapping: all 59 catalogue services have unique image assets. Reuses 57 distinct existing website photo blobs with provenance; newly generated illustrative Retractable Roofing and Bioclimatic Pergolas images cover two missing specialist subjects. Square left-aligned layout retained, alt text describes subjects and labels generated illustrations. Typecheck/lint passed; mapping uniqueness and existing Git asset references verified. No header/logo asset changed; user local logo replacement preserved. Browser/device visual review pending.
+
+- Category service lists now use rectangular horizontal cards with an 80px square category-relevant existing local photo on the left, centered beside title/description/explore action. Consultation photo fallback for unknown categories; text flexes on narrow screens and descriptions cap at two lines. No remote photo calls or dependencies. Typecheck/lint pending; device visual review pending.
 
 - Homepage provider entry now uses the existing orange primary Action styling in mobile instead of secondary styling, as requested. Label/destination unchanged; scoped prop change verified.
 

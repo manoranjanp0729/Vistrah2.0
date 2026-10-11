@@ -31,3 +31,9 @@ Admin sign-in uses a separate HttpOnly cookie `vistrah_admin_session`. Cookies a
 Existing overview, request reviews/estimates, providers, catalogue, offers, payments, audit, jobs, workflow operations, provider applications/requirements, ownership claims and publication review remain at `/admin/...`.
 
 Validation: `npm.cmd run typecheck`, `npm.cmd run lint`, `npm.cmd run build`. With Python installed, `python scripts/check-isolation.py` runs isolated HTTP checks without touching the normal backend/database. Full browser interaction and production deployment require their own review.
+
+## Simplified workspace
+
+Daily work contains Overview and Enquiries & estimates. Providers & approvals contains provider applications, businesses, ownership claims, publication reviews and service approvals. Services & membership contains the catalogue, offers and payments. Advanced tools contains application requirements, activity logs, job sources and workflow operations. Advanced tools expands automatically on its active page.
+
+Enquiries can be filtered by status and estimate type. Scope details expand inside each row. Overview links directly to the three approval queues; counts use existing API data only. No new automatic pricing, customer-management or membership-plan editor is implied. Dedicated ownership/publication pages use the same navigation. Catalogue is fetched only by screens that need it, and specialized screens own their data loading.

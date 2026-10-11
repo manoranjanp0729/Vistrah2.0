@@ -26,14 +26,15 @@ class Fixture(BaseHTTPRequestHandler):
 def run():
  root=Path(__file__).resolve().parents[1];fixture=ThreadingHTTPServer(('127.0.0.1',0),Fixture);Thread(target=fixture.serve_forever,daemon=True).start()
  port=int(os.environ.get('ADMIN_QA_PORT','13200'));base='http://127.0.0.1:'+str(port)
- env={**os.environ,'API_URL':'http://127.0.0.1:'+str(fixture.server_port),'ALLOWED_ORIGINS':base}
- process=subprocess.Popen(['node','node_modules/next/dist/bin/next','start','--port',str(port),'--hostname','127.0.0.1'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+ env={**os.environ,'API_URL':'http://127.0.0.1:'+str(fixture.server_port),'ALLOWED_ORIGINS':base,'PORT':str(port),'HOSTNAME':'127.0.0.1'}
+ process=subprocess.Popen(['node','.next/standalone/server.js'],cwd=root,env=env,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+ client=urllib.request.build_opener(urllib.request.ProxyHandler({}))
  def request(path,body=None,cookie='',origin=None):
   headers={'Cookie':cookie}
   if body is not None:headers.update({'Content-Type':'application/json','Origin':origin or base})
   req=urllib.request.Request(base+path,json.dumps(body).encode() if body is not None else None,headers)
   try:
-   with urllib.request.urlopen(req,timeout=5) as response:return response.status,response.headers,response.read()
+   with client.open(req,timeout=5) as response:return response.status,response.headers,response.read()
   except urllib.error.HTTPError as response:return response.code,response.headers,response.read()
  try:
   for _ in range(100):
@@ -44,6 +45,10 @@ def run():
   else:raise AssertionError('Admin app failed to start')
   for path in ['/admin','/admin/requests','/admin/ownership-claims','/admin/publication-drafts']:assert request(path)[0]==200,path
   assert "'unsafe-eval'" not in request('/login')[1].get('Content-Security-Policy','')
+  navigation=request('/admin/ownership-claims')[2]
+  assert (root/'.next/BUILD_ID').read_text().strip().encode() in navigation,'Response does not match the current build; run a clean build.'
+  for slug in ['requests','provider-applications','providers','ownership-claims','publication-drafts','provider-services','catalogue','offers','payments','provider-requirements','audit','job-sources','workflows']:assert ('href="/admin/'+slug+'"').encode() in navigation,slug
+  assert b'Advanced tools' in navigation
   assert request('/services')[0]==404
   assert request('/api/auth/register',{})[0]==404
   assert request('/api/admin/overview')[0]==401

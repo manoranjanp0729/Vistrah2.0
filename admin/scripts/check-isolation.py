@@ -43,6 +43,7 @@ def run():
    time.sleep(.1)
   else:raise AssertionError('Admin app failed to start')
   for path in ['/admin','/admin/requests','/admin/ownership-claims','/admin/publication-drafts']:assert request(path)[0]==200,path
+  assert "'unsafe-eval'" not in request('/login')[1].get('Content-Security-Policy','')
   assert request('/services')[0]==404
   assert request('/api/auth/register',{})[0]==404
   assert request('/api/admin/overview')[0]==401

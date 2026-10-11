@@ -1,5 +1,7 @@
 # Current task
 
+- Category service lists now use rectangular horizontal cards with an 80px square category-relevant existing local photo on the left, centered beside title/description/explore action. Consultation photo fallback for unknown categories; text flexes on narrow screens and descriptions cap at two lines. No remote photo calls or dependencies. Typecheck/lint passed; device visual review pending.
+
 - Homepage provider entry now uses the existing orange primary Action styling in mobile instead of secondary styling, as requested. Label/destination unchanged; scoped prop change verified.
 
 - User approved mobile homepage heading “What can we help you with?” replacing “Discover VISTRAH” to avoid nearby brand/tab repetition. Scoped text-only change; copy parsing verified. Website wording unchanged.

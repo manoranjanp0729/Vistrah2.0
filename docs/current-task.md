@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Changed Grow your business featured photograph to the existing licensed Dylan Gillis collaboration image, updated accessible description and provenance. Typecheck/lint verified.
+
 - Every mobile service detail now includes a compact 112px illustration banner. Current service subjects have specific visual mappings, with category fallback for future catalogue services; illustrations are local code-native graphics with accessible descriptions. Typecheck/lint verified.
 
 - Location selection moved into the tab header with existing temporary location behavior. Quick Access now links to up to ten individual active services; Digital Marketing leads, then popular-flagged services. Preserves 3.5-card viewport and category grid. Typecheck/lint verified.

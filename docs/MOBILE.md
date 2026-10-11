@@ -148,8 +148,8 @@ npx expo export --platform all
 
 ## Assets and references
 
-The native featured image reuses the existing consultation photograph by
-Amy Hirschi, [source](https://unsplash.com/photos/JaoVGh5aJ3E), under the
+The native featured image reuses the existing collaboration photograph by
+Dylan Gillis, [source](https://unsplash.com/photos/KdeqA3aTnBY), under the
 [Unsplash License](https://unsplash.com/license). Its authoritative provenance
 is in `frontend/lib/photo-assets.json`. Mobile's V mark is a code-generated
 placeholder based on the current VISTRAH wordmark, not a newly approved logo.

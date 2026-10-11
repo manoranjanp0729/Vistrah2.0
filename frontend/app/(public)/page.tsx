@@ -1,29 +1,35 @@
-import {LocationChooser} from '@/components/customer-location';
-import {positioning} from '@/lib/positioning';
-import {ProvideServiceLink} from '@/components/seller';
-import {pagePhoto} from '@/lib/imagery';
-import {Visual} from '@/components/visual';
 import Link from 'next/link';
-import {ArrowUpRight,Check,Compass,MessageCircle,ClipboardCheck,ShieldCheck} from 'lucide-react';
+import {ArrowRight,BriefcaseBusiness,House,Calculator,Megaphone,Building2,Wallet,Compass} from 'lucide-react';
+import {LocationChooser} from '@/components/customer-location';
+import {ProvideServiceLink} from '@/components/seller';
+import {Visual} from '@/components/visual';
+import {pagePhoto} from '@/lib/imagery';
+import {positioning} from '@/lib/positioning';
 import {serverApi,protectedServerApi,ServerApiError} from '@/lib/server';
 import {HomeNearby,AffiliateBrands} from '@/components/home-discovery';
-import {allServices} from '@/lib/urls';
+import {allServices,urls} from '@/lib/urls';
 import type {Category,Membership} from '@/lib/types';
-import {SearchForm,SectionHeading,CategoryCard,ServiceCard,ButtonLink,ContactBanner,EmptyState} from '@/components/ui';
+import {SearchForm,SectionHeading,ServiceCard,ButtonLink,ContactBanner,EmptyState} from '@/components/ui';
 export const dynamic='force-dynamic';
+const shortcuts=[{title:'Jobs',href:'/jobs',icon:BriefcaseBusiness},{title:'Property',href:'/services?q=property',icon:House},{title:'Tax',href:'/services?q=tax',icon:Calculator},{title:'Marketing',href:'/services?q=marketing',icon:Megaphone}];
+const categoryIcons:Record<string,typeof Building2>={'real-estate':Building2,'tax-compliance':Wallet,'jobs-careers':BriefcaseBusiness,marketing:Megaphone,'civil-construction':House};
+const categoryPriority=(slug:string)=>slug==='real-estate'?0:slug==='tax-compliance'?1:2;
 export default async function Home() {
-  const categories=await serverApi<Category[]>('/catalogue');const popular=allServices(categories).filter(s=>s.service.popular).slice(0,4);
+  const categories=await serverApi<Category[]>('/catalogue');
+  const services=allServices(categories);const popular=services.filter(s=>s.service.popular).slice(0,4);
+  const displayCategories=[...categories].sort((a,b)=>categoryPriority(a.slug)-categoryPriority(b.slug));
   let accessStatus=0;
   try{const membership=await protectedServerApi<Membership>('/me/membership');if(membership.active!==true)accessStatus=403;}catch(error){accessStatus=error instanceof ServerApiError?error.status:503;}
-  return <>
-    <section className="hero discovery-hero"><div className="container hero-grid"><div className="hero-copy"><p className="eyebrow"><span className="tiny-line"/>CUSTOMERS AND SERVICE PROVIDERS</p><h1>{positioning.heroLead}<br/><em>{positioning.heroOffer}</em></h1><p className="hero-description">{positioning.description}</p><div className="discovery-bar"><LocationChooser/><SearchForm large/></div><div className="button-row"><ButtonLink href="/services">Find a service</ButtonLink><ProvideServiceLink/></div><div className="seller-access-summary"><p>Provider applications require review. Customer membership is not required.</p><details id="seller-access-status"><summary>Provider access and review</summary><p>{positioning.sellerAccess}</p><Link className="text-link" href="/provide-service">Existing provider application</Link></details></div><div className="hero-suggestions"><span>Try searching:</span><Link href="/services?q=construction">Construction</Link><Link href="/services?q=resume">Resume building</Link><Link href="/services?q=tax">Tax filing</Link></div><div className="hero-note"><ShieldCheck size={17}/><span>Public catalogue. Member-only service access.</span></div></div><div className="hero-art"><Visual photo={pagePhoto('home')} variant="hero" preload/><div className="hero-art-label"><span className="green-dot"/>{positioning.descriptor}</div><div className="floating-card"><span className="floating-icon"><Check size={18}/></span><div><strong>Customers meet service providers.</strong><span>Explore the service catalogue.</span></div></div></div></div></section>
-    <div className="intro-strip"><div className="container"><span>ONE PLATFORM. CUSTOMERS AND SELLERS.</span><p>{positioning.motto}</p><span className="strip-end">That’s VISTRAH.<ArrowUpRight size={17}/></span></div></div>
-    <section className="container section"><SectionHeading eyebrow="EXPLORE THE CATALOGUE" title="What service are you looking for?" description="Browse service categories for your home, career and business." href="/services"/>{categories.length?<div className="category-grid scan-categories">{categories.map((c,i)=><CategoryCard key={c.id} category={c} index={i} compact/>)}</div>:<EmptyState title="Our catalogue is being prepared" description="Email VISTRAH about the service you need." href="/call-vistrah" label="Contact VISTRAH"/>}</section>
-    {popular.length>0&&<section className="popular-section"><div className="container section"><SectionHeading eyebrow="A GOOD PLACE TO START" title="Popular services" description="Explore frequently requested services." href="/services" label="View all services"/><div className="service-grid">{popular.map(s=><ServiceCard key={s.service.id} context={s}/>)}</div></div></section>}
-    <HomeNearby services={allServices(categories)} accessStatus={accessStatus}/><AffiliateBrands/>
-    <section className="container section how-section"><SectionHeading eyebrow="LESS COMPLEXITY. MORE CLARITY." title="From discovery to enquiry." description="A straightforward process, with you at the centre."/><div className="steps">{[{icon:Compass,title:'Find your service',text:'Browse public categories and service descriptions.'},{icon:MessageCircle,title:'Submit an enquiry',text:'Eligible members can save service requirements for human review. Enquiries are not bookings.'},{icon:ClipboardCheck,title:'Take the next step',text:'Review the proposed scope and costs before you decide to proceed.'}].map((s,i)=><div className="step" key={s.title}><div className="step-top"><s.icon size={25}/><span>0{i+1}</span></div><h3>{s.title}</h3><p>{s.text}</p></div>)}</div></section>
-    <section className="container membership-promo"><div className="membership-mark" aria-hidden="true">V<span>MEMBER</span></div><div><p className="eyebrow">SERVICE ACCESS FOR MEMBERS</p><h2>Explore membership<br/>for service access.</h2><p>{positioning.access} Service costs are separate.</p><ButtonLink href="/membership">Discover membership</ButtonLink></div><div className="membership-price"><span>VISTRAH MEMBERSHIP</span><strong>₹129<small>/ month</small></strong><p>Sandbox example. No real money.</p></div></section>
-    <section className="container section trust-section"><div><p className="eyebrow">BUILT AROUND TRUST</p><h2>Know what to expect<br/>before proceeding.</h2></div><div className="trust-items">{[['Clarity before commitment','Understand the scope and proposed cost before purchasing a service.'],['Verification with evidence','Providers appear as verified only after an administrator reviews their verification evidence.'],['Stay in the loop','Track your submitted requests and their progress in your account.']].map(([title,desc])=><div key={title}><Check size={20}/><div><h3>{title}</h3><p>{desc}</p></div></div>)}</div></section>
+  return <div className="reference-home">
+    <section className="container reference-hero"><div><p className="reference-label">DISCOVER. CONNECT. GROW.</p><h1>Discover VISTRAH</h1><p className="reference-lead">Explore services, products, and opportunities in one place.</p><p className="reference-description">{positioning.description}</p><div className="button-row"><ButtonLink href="/services">Explore services</ButtonLink><ProvideServiceLink/></div><div className="seller-access-summary"><details id="seller-access-status"><summary>Provider access and review</summary><p>{positioning.sellerAccess}</p><Link className="text-link" href="/provide-service">Existing provider application</Link></details></div></div><div className="reference-art" role="img" aria-label="Abstract flowing layers in blue, turquoise and orange"><span/><span/><span/></div></section>
+    <section className="container reference-discovery" aria-label="Search and location"><div className="discovery-bar"><LocationChooser/><SearchForm large/></div></section>
+    <section className="container reference-section"><p className="reference-label">QUICK ACCESS</p><nav className="reference-shortcuts" aria-label="Quick access">{shortcuts.map(({title,href,icon:Icon})=><Link key={title} href={href}><Icon size={30} aria-hidden="true"/><span>{title}</span></Link>)}</nav></section>
+    <section className="container reference-section"><SectionHeading title="Services for you" href="/services" label="View all"/>{categories.length?<div className="reference-categories">{displayCategories.map((category,index)=>{const Icon=categoryIcons[category.slug]??Compass;return <Link key={category.id} href={urls.category(category)} className={`reference-category reference-tone-${index%4}`}><Icon size={30} aria-hidden="true"/><h3>{category.title}</h3><p>{category.description}</p><span>Explore services <ArrowRight size={16}/></span></Link>;})}</div>:<EmptyState title="Our catalogue is being prepared" description="Email VISTRAH about the service you need." href="/call-vistrah" label="Contact VISTRAH"/>}</section>
+    <section className="container reference-section"><SectionHeading title="Featured opportunities"/><article className="reference-feature"><Visual photo={pagePhoto('home')} variant="editorial" decorative/><div><span className="reference-badge">Featured</span><h2>Grow your business</h2><p>Connect with customers and present your services through VISTRAH.</p><Link className="text-link" href="/seller/register">Discover more <ArrowRight size={18}/></Link><small>Business ownership and service listings require review.</small></div></article></section>
+    {popular.length>0&&<section className="container reference-section"><SectionHeading title="Popular services" href="/services" label="View all"/><div className="service-grid">{popular.map(context=><ServiceCard key={context.service.id} context={context}/>)}</div></section>}
+    <HomeNearby services={services} accessStatus={accessStatus}/><AffiliateBrands/>
+    <section className="container reference-section reference-membership"><div><p className="reference-label">SERVICE ACCESS FOR MEMBERS</p><h2>Your next step starts here.</h2><p>{positioning.access} Service costs are separate.</p></div><ButtonLink href="/membership">Explore membership</ButtonLink></section>
     <div className="container call-wrap"><ContactBanner/></div>
-  </>;
+  </div>;
 }
+

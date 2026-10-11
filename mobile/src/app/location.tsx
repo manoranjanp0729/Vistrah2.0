@@ -4,8 +4,8 @@ import * as GPS from 'expo-location';
 import {Page,Action,Field,ErrorPanel,Heading} from '../components/ui';
 import {parsePoint,useLocation,type Location} from '../lib/location';
 import {api} from '../lib/api';
-import {styles} from '../lib/theme';
-export default function ChooseLocation(){
+import {useTheme} from '../lib/theme';
+export default function ChooseLocation(){const {styles}=useTheme();
   const {location,setLocation}=useLocation();const [label,setLabel]=useState(location?.label??'');const [lat,setLat]=useState(location?String(location.latitude):'');const [lon,setLon]=useState(location?String(location.longitude):'');const [radius,setRadius]=useState<Location['radius']>(location?.radius??5);const [pin,setPin]=useState(location?.postal_code??'');const [address,setAddress]=useState(location?.address??'');const [landmark,setLandmark]=useState(location?.landmark??'');const [message,setMessage]=useState('');const [error,setError]=useState('');const [busy,setBusy]=useState(false);
   async function gps(){
     setBusy(true);setError('');

@@ -8,8 +8,8 @@ import {ServiceCarousel} from '../../components/service-carousel';
 import {CategoryCard} from '../../components/category-card';
 import {useResource} from '../../lib/resource';
 import {allServices,type Category} from '../../lib/catalogue';
-import {colors,styles} from '../../lib/theme';
-export default function Discover(){
+import {useTheme} from '../../lib/theme';
+export default function Discover(){const {colors,styles}=useTheme();
   const [quickWidth,setQuickWidth]=useState(0);
   const quickCardWidth=quickWidth>0?(quickWidth-36)/3.5:96;
   const catalogue=useResource<Category[]>('/catalogue');

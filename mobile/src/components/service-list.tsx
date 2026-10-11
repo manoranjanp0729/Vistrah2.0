@@ -6,8 +6,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {Field,Heading,Loading,ErrorPanel,Action} from './ui';
 import {useResource} from '../lib/resource';
 import {filterServices,type Category} from '../lib/catalogue';
-import {colors,styles} from '../lib/theme';
-export default function ServiceList(){
+import {useTheme} from '../lib/theme';
+export default function ServiceList(){const {colors,styles}=useTheme();
   const params=useLocalSearchParams<{q?:string;slug?:string}>();const [typed,setTyped]=useState<string|null>(null);
   const query=typed??(typeof params.q==='string'?params.q:'');const category=typeof params.slug==='string'?params.slug:undefined;
   const catalogue=useResource<Category[]>('/catalogue');const rows=filterServices(catalogue.data??[],query,category);

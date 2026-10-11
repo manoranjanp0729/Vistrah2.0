@@ -9,8 +9,8 @@ import {useResource} from '../../lib/resource';
 import {useSession} from '../../lib/session';
 import {useLocation} from '../../lib/location';
 import {api,ApiError} from '../../lib/api';
-import {colors,styles} from '../../lib/theme';
-export default function ServiceDetail(){
+import {useTheme} from '../../lib/theme';
+export default function ServiceDetail(){const {colors,styles}=useTheme();
   const {id}=useLocalSearchParams<{id:string}>();const [tab,setTab]=useState<Intent>('providers');
   const catalogue=useResource<Category[]>('/catalogue');const context=allServices(catalogue.data??[]).find(item=>String(item.service.id)===id);
   return <Page>{catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:!context?<Text style={styles.muted}>{copy.service.unavailable}</Text>:<>
@@ -21,7 +21,7 @@ export default function ServiceDetail(){
     <MemberGate><ServiceOptions context={context} tab={tab}/></MemberGate>
   </>}</Page>;
 }
-function ServiceOptions({context,tab}:{context:ServiceContext;tab:Intent}){
+function ServiceOptions({context,tab}:{context:ServiceContext;tab:Intent}){const {colors,styles}=useTheme();
   const {user}=useSession();const {location}=useLocation();const path=pathways.find(item=>item.id===tab)!;
   const providers=useResource<Provider[]>(tab==='providers'?'/services/'+context.service.id+'/providers':null,user?.id??null);
   const guide=useResource<{notes:string[]}>('/services/'+context.service.id+'/member-information',user?.id??null);

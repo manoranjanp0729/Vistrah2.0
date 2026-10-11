@@ -7,8 +7,8 @@ import {Field,Heading,Loading,ErrorPanel} from '../../components/ui';
 import {CategoryCard} from '../../components/category-card';
 import {useResource} from '../../lib/resource';
 import {filterServices,type Category} from '../../lib/catalogue';
-import {styles} from '../../lib/theme';
-export default function Services(){
+import {useTheme} from '../../lib/theme';
+export default function Services(){const {styles}=useTheme();
   const params=useLocalSearchParams<{q?:string}>();
   const [typed,setTyped]=useState<string|null>(null);
   const query=typed??(typeof params.q==='string'?params.q:'');

@@ -9,12 +9,12 @@ import {estimateRequirements} from '../../lib/estimate';
 import {useSession} from '../../lib/session';
 import {useLocation} from '../../lib/location';
 import {api} from '../../lib/api';
-import {colors,styles} from '../../lib/theme';
-export default function Estimate(){
+import {useTheme} from '../../lib/theme';
+export default function Estimate(){const {styles}=useTheme();
  const {id}=useLocalSearchParams<{id:string}>();const catalogue=useResource<Category[]>('/catalogue');const context=allServices(catalogue.data??[]).find(item=>String(item.service.id)===id);
  return <Page>{catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:!context?<Text style={styles.muted}>This service is unavailable.</Text>:<MemberGate><EstimateForm key={context.service.id} context={context}/></MemberGate>}</Page>;
 }
-function EstimateForm({context}:{context:ServiceContext}){
+function EstimateForm({context}:{context:ServiceContext}){const {colors,styles}=useTheme();
  const {user}=useSession();const {location}=useLocation();const fields=estimateScopes[context.service.slug];
  const [answers,setAnswers]=useState<Record<string,string>>({}),[city,setCity]=useState(location?.label??''),[phone,setPhone]=useState(user?.phone??''),[details,setDetails]=useState(''),[budget,setBudget]=useState(''),[timing,setTiming]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false),[saved,setSaved]=useState(false);
  async function submit(){

@@ -3,8 +3,8 @@ import {useState} from 'react';
 import {Text,View} from 'react-native';
 import {Page,Heading,Action,ErrorPanel} from '../components/ui';
 import {openWebsite} from '../lib/web';
-import {styles} from '../lib/theme';
-export default function ProviderScreen(){
+import {useTheme} from '../lib/theme';
+export default function ProviderScreen(){const {styles}=useTheme();
   const [error,setError]=useState('');const open=(path:string)=>{void openWebsite(path).catch(e=>setError(e.message));};
   return <Page><Heading title={copy.provider.title}/><Text style={styles.text}>{copy.provider.subtitle}</Text><Text style={styles.muted}>{copy.provider.intro}</Text>
     <View style={styles.card}><Text style={styles.heading}>{copy.provider.business}</Text><Text style={styles.muted}>{copy.provider.businessCopy}</Text><Action label={copy.provider.register} onPress={()=>open('/seller/register')}/><Action label={copy.provider.login} secondary onPress={()=>open('/seller/login')}/></View>

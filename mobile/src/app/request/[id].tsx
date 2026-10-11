@@ -8,9 +8,9 @@ import {useResource} from '../../lib/resource';
 import {api} from '../../lib/api';
 import {useSession} from '../../lib/session';
 import {useLocation} from '../../lib/location';
-import {styles} from '../../lib/theme';
+import {useTheme} from '../../lib/theme';
 export default function Enquiry(){return <Page><MemberGate><Form/></MemberGate></Page>;}
-function Form(){
+function Form(){const {styles}=useTheme();
   const params=useLocalSearchParams<{id:string;intent?:string}>();const {user}=useSession();const {location}=useLocation();const catalogue=useResource<Category[]>('/catalogue');
   const context=allServices(catalogue.data??[]).find(item=>String(item.service.id)===params.id);
   const intent:Intent=pathways.some(path=>path.id===params.intent)?params.intent as Intent:'providers';

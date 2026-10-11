@@ -6,8 +6,8 @@ import {Page,Heading,Action,ErrorPanel,Loading} from '../components/ui';
 import {useResource} from '../lib/resource';
 import {useSession} from '../lib/session';
 import type {Membership,Offer} from '../lib/types';
-import {styles} from '../lib/theme';
-export default function MembershipScreen(){
+import {useTheme} from '../lib/theme';
+export default function MembershipScreen(){const {styles}=useTheme();
   const {user}=useSession();const plan=useResource<{name:string;amount:number;days:number}>('/membership/plan');const status=useResource<Membership>(user?'/me/membership':null,user?.id??null);const offers=useResource<Offer[]>(user?'/membership/offers':null,user?.id??null);
   return <Page><Heading title={copy.membership.title}/><Text style={styles.text}>{copy.membership.subtitle}</Text><Text style={styles.muted}>{copy.membership.intro}</Text>
     {plan.loading?<Loading/>:plan.error?<ErrorPanel error={plan.error} retry={plan.retry}/>:plan.data&&<View style={styles.card}><Text style={styles.heading}>{plan.data.name}</Text><Text style={styles.title}>{new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR'}).format(plan.data.amount/100)}</Text><Text style={styles.muted}>{plan.data.days} days · Sandbox example. No real money.</Text></View>}

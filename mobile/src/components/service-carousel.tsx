@@ -3,8 +3,8 @@ import {Pressable,ScrollView,Text,View} from 'react-native';
 import {router,useFocusEffect} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import {allServices,type Category} from '../lib/catalogue';
-import {colors,styles} from '../lib/theme';
-export function ServiceCarousel({categories}:{categories:Category[]}){
+import {useTheme} from '../lib/theme';
+export function ServiceCarousel({categories}:{categories:Category[]}){const {colors,styles}=useTheme();
   const slides=allServices(categories).filter(item=>item.service.active).sort((a,b)=>Number(b.service.popular)-Number(a.service.popular)).slice(0,5);
   const scroll=useRef<ScrollView>(null);const current=useRef(0);
   const [width,setWidth]=useState(0);const [index,setIndex]=useState(0);const [playing,setPlaying]=useState(true);
@@ -20,7 +20,7 @@ export function ServiceCarousel({categories}:{categories:Category[]}){
         {slides.map(({category,service},position)=><Pressable key={service.id} accessibilityRole="button" accessibilityLabel={service.title+', '+category.title} onPress={()=>router.push({pathname:'/service/[id]',params:{id:service.id}})} style={{width:width||300}}>
           <LinearGradient colors={position%2?['#452b1d','#211c29']:['#18394b','#17202e']} style={{minHeight:176,padding:18,gap:8,justifyContent:'center'}}>
             <Text style={[styles.label,{color:'#c5d9e6'}]}>{category.title}</Text>
-            <Text style={[styles.heading,{fontSize:21,lineHeight:25}]} numberOfLines={2}>{service.title}</Text>
+            <Text style={[styles.heading,{color:'#fafafa',fontSize:21,lineHeight:25}]} numberOfLines={2}>{service.title}</Text>
             <Text style={[styles.muted,{color:'#d2d5db',fontSize:12,lineHeight:17}]} numberOfLines={2}>{service.description}</Text>
             <Text style={{color:colors.accent,fontSize:12,fontWeight:'600'}}>Explore service →</Text>
           </LinearGradient>

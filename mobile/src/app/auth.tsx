@@ -4,8 +4,8 @@ import {Text} from 'react-native';
 import {router} from 'expo-router';
 import {Action,ErrorPanel,Field,Heading,Page} from '../components/ui';
 import {useSession} from '../lib/session';
-import {styles} from '../lib/theme';
-export default function Auth(){
+import {useTheme} from '../lib/theme';
+export default function Auth(){const {styles}=useTheme();
   const {signIn}=useSession();const [register,setRegister]=useState(false);const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   async function submit(){
     setError('');if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?'Enter your name, email and a password of at least 10 characters.':'Enter your email and password.');return;}

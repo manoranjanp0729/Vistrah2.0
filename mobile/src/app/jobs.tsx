@@ -5,8 +5,8 @@ import {Linking,Text,View} from 'react-native';
 import type {Vacancy} from '../lib/types';
 import {Page,Heading,Field,Action,Loading,ErrorPanel} from '../components/ui';
 import {useResource} from '../lib/resource';
-import {styles} from '../lib/theme';
-export default function Jobs(){
+import {useTheme} from '../lib/theme';
+export default function Jobs(){const {styles}=useTheme();
   const [input,setInput]=useState('');const [query,setQuery]=useState('');const [page,setPage]=useState(1);const [error,setError]=useState('');
   const result=useResource<{items:Vacancy[];total:number;note:string}>('/jobs?page='+page+'&q='+encodeURIComponent(query));
   async function open(value:string){try{const url=new URL(value);if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw new Error('This listing has an invalid source link.');await Linking.openURL(value);}catch(e){setError((e as Error).message);}}

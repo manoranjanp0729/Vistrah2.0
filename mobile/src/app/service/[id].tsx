@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import {ServiceBanner} from '../../components/service-banner';
 import {Pressable,Text,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {Page,Action,ErrorPanel,Heading,Loading,MemberGate} from '../../components/ui';
@@ -12,7 +13,7 @@ export default function ServiceDetail(){
   const {id}=useLocalSearchParams<{id:string}>();const [tab,setTab]=useState<Intent>('providers');
   const catalogue=useResource<Category[]>('/catalogue');const context=allServices(catalogue.data??[]).find(item=>String(item.service.id)===id);
   return <Page>{catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:!context?<Text style={styles.muted}>This service is unavailable.</Text>:<>
-    <Text style={styles.label}>{context.category.title}</Text><Heading title={context.service.title}/><Text style={styles.text}>{context.service.description}</Text>{context.service.includes.map(item=><Text style={styles.muted} key={item}>✓ {item}</Text>)}
+    <ServiceBanner context={context}/><Text style={styles.label}>{context.category.title}</Text><Heading title={context.service.title}/><Text style={styles.text}>{context.service.description}</Text>{context.service.includes.map(item=><Text style={styles.muted} key={item}>✓ {item}</Text>)}
     <View style={styles.divider}/><Heading title="Explore this service"/><Text style={styles.muted}>These three service options require eligible membership. Enquiries are saved for human review and do not create bookings.</Text>
     <View accessibilityRole="tablist" style={{gap:10}}>{pathways.map(path=><Pressable key={path.id} accessibilityRole="tab" accessibilityState={{selected:tab===path.id}} onPress={()=>setTab(path.id)} style={{padding:16,borderRadius:15,backgroundColor:tab===path.id?colors.accent:colors.surface,minHeight:50}}><Text style={{color:tab===path.id?colors.ink:colors.text,fontWeight:'600'}}>{path.title}</Text></Pressable>)}</View>
     <MemberGate><ServiceOptions context={context} tab={tab}/></MemberGate>

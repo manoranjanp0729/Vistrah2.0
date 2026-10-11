@@ -1,5 +1,7 @@
 ﻿# Current task
 
+- Every mobile service detail now includes a compact 112px illustration banner. Current service subjects have specific visual mappings, with category fallback for future catalogue services; illustrations are local code-native graphics with accessible descriptions. Typecheck/lint verified.
+
 - Location selection moved into the tab header with existing temporary location behavior. Quick Access now links to up to ten individual active services; Digital Marketing leads, then popular-flagged services. Preserves 3.5-card viewport and category grid. Typecheck/lint verified.
 
 - Reduced mobile typography, line heights and section/card spacing. Replaced static homepage hero with up to five active catalogue services, prioritizing popular flags, auto-advancing every four seconds while focused; swipe pauses rotation and Play/Pause control is available. Cards link to real service pages. Typecheck/lint verified; device visual review pending.

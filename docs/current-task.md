@@ -1,5 +1,7 @@
 # Current task
 
+- User confirmed controlled rollout SUCCESS: normal revision 011, API/worker healthy, location GET/PUT endpoint present; protected backup E:\Vistrah-backups\20261012-032908-394. Actual authenticated location persistence remains pending. Mobile hero refinement: pagination overlaid inside bottom of hero, Play/Pause row removed, automatic rotation retained, first divider removed to leave standard 12px Quick Access gap; content reserves bottom space for dots. Typecheck/lint passed; visual review pending (attached screenshot unavailable locally).
+
 - Second Windows attempt preserved missing worker image successfully, then failed before maintenance at Compose build: invalid console handle. Disabled Compose ANSI output and selected plain build progress for redirected Windows PowerShell output. Database unchanged, API/worker not stopped. Scoped source checks passed; actual Docker build/update remains pending.
 
 - First Windows rollout attempt stopped before build/maintenance/backup: running worker referenced a missing original image. No services stopped or database migrated. Added verified recovery-image preservation: tag existing image or, only when absent, commit the running container with a brief pause and record snapshot provenance in the manifest. Mounted volumes are not captured; existing normal volumes remain retained. Source/order checks passed; Windows execution pending. Local recovery images may contain deployment configuration and must remain private.

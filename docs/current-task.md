@@ -1,6 +1,8 @@
 # Current task
 
-- Header logo visibility repair: replaced absolutely positioned/clipped child with directly sized Image (160×40, cover) for reliable navigator title measurement and centered removal of source whitespace. Asset remains unchanged. Typecheck/lint passed; Windows Expo cache reset and user visual confirmation required. Screenshot attachment unavailable locally.
+- User identified logo behind header bar and authorized layout repair. Tab navigator now renders a single custom header containing logo and location action in one 56px row, with explicit safe-area top inset and theme-matched background; removes separate navigator title/background layering. Light logo 144×36, dark wording preserved, location truncates on narrow screens. Typecheck/lint passed; user visual confirmation required.
+
+- Header logo visibility repair: replaced absolutely positioned/clipped child with directly sized Image (160×40, cover) for reliable navigator title measurement and centered removal of source whitespace. Asset remains unchanged. Typecheck/lint verification pending; Windows Expo cache reset and user visual confirmation required. Screenshot attachment unavailable locally.
 
 - Mobile light-theme tab header now uses generated VISTRAH light logo asset; header background sampled from image corner (#F8F7F3). Original full-resolution image preserved, displayed within compact clipped title container to remove empty vertical margins. Location action and dark-theme text header retained. Typecheck/lint passed; browser/device visual review pending.
 

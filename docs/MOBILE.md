@@ -244,3 +244,33 @@ check before release. HTTPS is needed for browser GPS outside localhost.
 References: [API keys](https://docs.maptiler.com/guides/credentials/api-key/),
 [reverse geocoding](https://docs.maptiler.com/cloud/api/geocoding/),
 [Leaflet raster tiles](https://docs.maptiler.com/leaflet/examples/raster-tiles-in-leaflet-js/).
+
+
+## Restart the local Expo browser preview
+
+Keep Docker Desktop open. Closing PowerShell stops Expo and the local CORS helper,
+but normally leaves Docker containers running. Check API health before changing
+backend services; this helper never starts, rebuilds or restarts them.
+
+Window 1 (keep open):
+
+```powershell
+Set-Location 'E:\Vistrah 2.0'
+git pull --ff-only origin reference-theme-mobile
+if ($LASTEXITCODE -eq 0) { node.exe mobile/scripts/dev-api-proxy.cjs }
+```
+
+In `mobile/.env`, the browser API address must be
+`EXPO_PUBLIC_API_URL=http://127.0.0.1:18100`. Keep map keys and other settings.
+
+Window 2 (keep open):
+
+```powershell
+Set-Location 'E:\Vistrah 2.0\mobile'
+npm.cmd start -- --clear
+```
+
+Open the URL Expo displays. The helper allows only localhost/127.0.0.1 origins
+on ports 8081 and 8082; it binds only to 127.0.0.1 and is not a production server.
+If it reports the backend is unreachable, run the read-only check
+`Invoke-RestMethod 'http://127.0.0.1:8100/health'` and share the result.

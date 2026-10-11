@@ -20,7 +20,7 @@ export default function Discover(){const {colors,styles}=useTheme();
     <View style={styles.divider}/><Heading title={copy.home.categories} action="View all" onPress={()=>router.push('/services')}/>
     {catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:categories.length?<View style={[styles.grid,{gap:8,justifyContent:'space-between'}]}>{categories.map((category,index)=><CategoryCard key={category.id} category={category} index={index} columns={4} compact/>)}</View>:<Text style={styles.muted}>The catalogue is being prepared.</Text>}
     <View style={styles.divider}/><Heading title={copy.home.featured}/><View style={styles.card}><Image source={require('../../../assets/collaboration.webp')} accessibilityLabel="People collaborating around a sunlit table" style={{height:130,width:'100%',borderRadius:18}}/><Text style={styles.label}>FEATURED</Text><Text style={styles.heading}>{copy.home.business}</Text><Text style={styles.muted}>{copy.home.businessDescription}</Text><Action secondary label={copy.home.more} onPress={()=>router.push('/provider')}/><Text style={styles.muted}>{copy.home.review}</Text></View>
-    <Action label={copy.home.provider} secondary onPress={()=>router.push('/provider')}/>
+    <Action label={copy.home.provider} onPress={()=>router.push('/provider')}/>
   </Page>;
 }
 function priority(slug:string){return slug==='real-estate'?0:slug==='tax-compliance'?1:2;}

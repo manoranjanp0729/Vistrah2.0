@@ -1,5 +1,7 @@
 # Current task
 
+- Homepage provider entry now uses the existing orange primary Action styling in mobile instead of secondary styling, as requested. Label/destination unchanged; scoped prop change verified.
+
 - User approved mobile homepage heading “What can we help you with?” replacing “Discover VISTRAH” to avoid nearby brand/tab repetition. Scoped text-only change; copy parsing verified. Website wording unchanged.
 
 - User replaced local logo image and confirms visibility. Requested slightly larger header/logo: tab header row increased 56→68px and light logo 144×36→176×44. No image bytes changed, preserving user local replacement. Location action retains shrinking/truncation on narrow widths. Source checks pending; visual size confirmation pending.

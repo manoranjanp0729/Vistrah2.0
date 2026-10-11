@@ -97,7 +97,7 @@ th,.admin-table th,.table-actions button,.admin-search button{background:#292929
 .reference-shortcuts .carousel-track>a{flex:0 0 calc((100% - 72px)/6.5);min-width:0;padding:14px 8px;min-height:100px;gap:10px;font-size:12px;text-align:center;scroll-snap-align:start}
 .reference-shortcuts .carousel-controls{margin-bottom:8px}
 .reference-categories{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.reference-category{background:#202124;color:#ededee;border:1px solid #383a3e;padding:14px;gap:8px;border-radius:18px}
+.reference-category{background:rgba(32,33,36,.70);color:#ededee;border:1px solid rgba(237,237,238,.10);padding:14px;gap:8px;border-radius:18px}
 .reference-category>.visual{width:100%;height:100px;aspect-ratio:auto!important;border-radius:12px}
 .reference-category>svg{display:none}
 .reference-category h3{font-size:16px;line-height:1.3}

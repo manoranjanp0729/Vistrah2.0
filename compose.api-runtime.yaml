@@ -1,0 +1,7 @@
+# Use with compose.yaml after the controlled database rollout.
+# Migration and seeding are deliberately separate from API startup.
+services:
+  api:
+    command: [uvicorn, app.main:app, --host, 0.0.0.0, --port, '8000']
+    environment:
+      SEED_CATALOGUE: 'false'

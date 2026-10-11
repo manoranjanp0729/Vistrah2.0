@@ -274,3 +274,40 @@ Open the URL Expo displays. The helper allows only localhost/127.0.0.1 origins
 on ports 8081 and 8082; it binds only to 127.0.0.1 and is not a production server.
 If it reports the backend is unreachable, run the read-only check
 `Invoke-RestMethod 'http://127.0.0.1:8100/health'` and share the result.
+
+
+## Controlled update of the existing local backend
+
+For the existing `vistrah20` deployment confirmed at database revision `006`,
+run the prepared script only after pulling `reference-theme-mobile`:
+
+```powershell
+Set-Location 'E:\Vistrah 2.0'
+git pull --ff-only origin reference-theme-mobile
+if ($LASTEXITCODE -eq 0) {
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File '.\scripts\update-location-backend.ps1'
+}
+```
+
+Keep Docker Desktop open. The API and worker briefly pause; Expo and its helper
+can remain open. The script protects a backup under `E:\Vistrah-backups`, verifies
+its hash and archive, restores it into a disposable database, rehearses migrations
+007–011 and checks existing table row counts before the real migration. It checks
+API health and `/me/location` before restarting the worker. It does not seed,
+replace the normal database, rebuild the website or automatically restore/downgrade.
+PowerShell/Docker execution must be verified on the Windows machine; source review
+alone does not establish a successful live update.
+
+If it prints `STOPPED` during maintenance, leave API/worker paused and share the
+output for review. Preserve the protected backup folder; do not upload its contents.
+After success reload Expo, sign in, select a location and save it; confirm persistence
+by reloading again. Real saving has not been verified until this check passes.
+
+Future API/worker Compose startup commands must include the persistent override:
+
+```powershell
+docker compose -p vistrah20 -f compose.yaml -f compose.api-runtime.yaml up -d --no-deps api worker
+```
+
+This override runs Uvicorn directly with catalogue seeding disabled. Using only the
+base compose file for the API would invoke its automatic migration/seed startup.

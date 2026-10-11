@@ -1,6 +1,8 @@
 # Current task
 
-- User identified logo behind header bar and authorized layout repair. Tab navigator now renders a single custom header containing logo and location action in one 56px row, with explicit safe-area top inset and theme-matched background; removes separate navigator title/background layering. Light logo 144×36, dark wording preserved, location truncates on narrow screens. Typecheck/lint passed; user visual confirmation required.
+- User replaced local logo image and confirms visibility. Requested slightly larger header/logo: tab header row increased 56→68px and light logo 144×36→176×44. No image bytes changed, preserving user local replacement. Location action retains shrinking/truncation on narrow widths. Typecheck/lint passed; visual size confirmation pending.
+
+- User identified logo behind header bar and authorized layout repair. Tab navigator now renders a single custom header containing logo and location action in one 56px row, with explicit safe-area top inset and theme-matched background; removes separate navigator title/background layering. Light logo 144×36, dark wording preserved, location truncates on narrow screens. Typecheck/lint pending; user visual confirmation required.
 
 - Header logo visibility repair: replaced absolutely positioned/clipped child with directly sized Image (160×40, cover) for reliable navigator title measurement and centered removal of source whitespace. Asset remains unchanged. Typecheck/lint verification pending; Windows Expo cache reset and user visual confirmation required. Screenshot attachment unavailable locally.
 

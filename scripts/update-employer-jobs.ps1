@@ -74,7 +74,8 @@ try {
     }
     $branch = ((Run-Native -Program 'git.exe' -Arguments @('branch', '--show-current') -Capture) -join '').Trim()
     if ($branch -ne 'reference-theme-mobile') { throw 'Use the reference-theme-mobile branch for this prepared update.' }
-    Run-Native -Program 'git.exe' -Arguments @('diff', '--quiet', 'HEAD', '--', 'backend', 'admin', 'shared', 'scripts/update-employer-jobs.ps1', 'compose.yaml', 'compose.api-runtime.yaml')
+    # Next.js regenerates this declaration file during dev/build; retain the local copy.
+    Run-Native -Program 'git.exe' -Arguments @('diff', '--quiet', 'HEAD', '--', 'backend', 'admin', 'shared', 'scripts/update-employer-jobs.ps1', 'compose.yaml', 'compose.api-runtime.yaml', ':(exclude)admin/next-env.d.ts')
     $sourceCommit = ((Run-Native -Program 'git.exe' -Arguments @('rev-parse', 'HEAD') -Capture) -join '').Trim()
     $script:apiId = ((Compose -Arguments @('ps', '-q', 'api') -Capture) -join '').Trim()
     $script:workerId = ((Compose -Arguments @('ps', '-q', 'worker') -Capture) -join '').Trim()

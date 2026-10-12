@@ -1,5 +1,7 @@
 # Current task
 
+- Fixed half-loading Retractable Roofing and Bioclimatic Pergolas photos: both previous PNGs failed full Pillow decode with broken data streams. Replaced with distinct imagegen illustrations, encoded as complete 320×320 RGB PNGs (188,896 / 208,069 bytes). Both replacement files pass PNG verification and full pixel decoding. Existing paths, service mapping and AI provenance retained. Asset-only change; TypeScript/lint not run in this connector-only checkout. Expo/device visual verification pending after pulling and clearing Metro cache.
+
 - Service-list photos corrected to service-specific mapping: all 59 catalogue services have unique image assets. Reuses 57 distinct existing website photo blobs with provenance; newly generated illustrative Retractable Roofing and Bioclimatic Pergolas images cover two missing specialist subjects. Square left-aligned layout retained, alt text describes subjects and labels generated illustrations. Typecheck/lint passed; mapping uniqueness and existing Git asset references verified. No header/logo asset changed; user local logo replacement preserved. Browser/device visual review pending.
 
 - Category service lists now use rectangular horizontal cards with an 80px square category-relevant existing local photo on the left, centered beside title/description/explore action. Consultation photo fallback for unknown categories; text flexes on narrow screens and descriptions cap at two lines. No remote photo calls or dependencies. Typecheck/lint pending; device visual review pending.

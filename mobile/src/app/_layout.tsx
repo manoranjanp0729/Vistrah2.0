@@ -9,6 +9,7 @@ function ThemedRoot(){const {colors,mode}=useTheme();
   return <SafeAreaProvider><SessionProvider><LocationProvider><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false}}>
     <Stack.Screen name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
+    <Stack.Screen name="service/find-jobs" options={{title:'Find Jobs'}}/>
     <Stack.Screen name="estimate/[id]" options={{title:'Get Estimate'}}/>
     <Stack.Screen name="request/[id]" options={{title:'Service enquiry'}}/>
     <Stack.Screen name="auth" options={{title:'Your VISTRAH account'}}/>
@@ -20,3 +21,4 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:'Services'}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
   </Stack></LocationProvider></SessionProvider></SafeAreaProvider>;
 }
+

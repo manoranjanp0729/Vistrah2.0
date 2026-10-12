@@ -1,4 +1,9 @@
 {
+  "find-jobs": {
+    "source": "AI-generated with imagegen",
+    "alt": "A job seeker browsing vacancies on a laptop — AI-generated illustrative image",
+    "illustrative": true
+  },
   "resume": {
     "key": "resume",
     "source": "https://unsplash.com/photos/9si2noVCVH8",
@@ -1321,3 +1326,4 @@
     "crop": "Retain sofa, windows and material finishes."
   }
 }
+

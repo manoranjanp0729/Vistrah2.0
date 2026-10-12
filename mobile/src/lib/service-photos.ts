@@ -1,5 +1,6 @@
 // Service-specific local images; specialist renders are illustrative.
 export const servicePhotos:Record<string,{source:number;alt:string}>={
+  "find-jobs":{source:require('../../assets/services/find-jobs.png'),alt:"A job seeker browsing vacancies on a laptop — AI-generated illustrative image"},
   "resume-building":{source:require('../../assets/services/resume.webp'),alt:"A candidate presenting a printed resume across a desk"},
   "job-application-assistance":{source:require('../../assets/services/application-desk.webp'),alt:"Resume papers beside a laptop and coffee on a wooden desk"},
   "linkedin-profile":{source:require('../../assets/services/professional-profile.webp'),alt:"A smartphone displaying a LinkedIn profile page on a wooden table"},
@@ -60,3 +61,4 @@ export const servicePhotos:Record<string,{source:number;alt:string}>={
   "professional-consultation":{source:require('../../assets/services/professional-advice.webp'),alt:"Two professionals discussing documents across a meeting table"},
   "interior-design":{source:require('../../assets/services/interior.webp'),alt:"A bright living room with a teal sofa, timber floor and large windows"},
 };
+

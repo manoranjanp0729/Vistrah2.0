@@ -1,3 +1,10 @@
+# AWS temporary Terraform preparation — 12 October 2026
+
+- User authorized temporary public AWS testing using Free Plan ($66 reported credits), vistrah.in/GoDaddy, then teardown after test. Switched from console setup to Terraform at user's request. Screenshot shows launch form only; actual absence of manually created instances must be confirmed before apply.
+- Local Windows image archive exported successfully: E:\Vistrah-deploy\vistrah-images.tar, 303290880 bytes. Images do not include DB records.
+- Prepared infra/aws-test: dedicated VPC/subnet/IGW/routes, security rules SSH IPv4 /32 and public HTTP/HTTPS, AL2023 x86 t3.small, encrypted 20GiB gp3 deletion-on-termination, IMDSv2, Standard CPU credits, account ID guard and Docker Engine bootstrap. Existing EC2 key referenced; no new private key or credentials stored.
+- Formatting/HCL parser checks passed. Provider init succeeded but validate failed twice due cached provider checksum mismatch; no more repair attempts. User-PC init/validate and authenticated plan pending. No apply, DNS, normal DB or AWS changes. Cloud Compose/HTTPS/image upload/data initialization remain pending. Terraform destroy deletes cloud root disk/data; backup before teardown and remove temporary DNS separately.
+
 # Current task
 
 - Native seller/employer port completed in source: capability-aware signup/login and account enablement; business/service applications with API-published dynamic conditions, declarations, version review/adoption, private PDF/JPEG/PNG uploads, drafts/submission/history; native seller dashboard, owned profile/listing/pin/coverage publication proposals, ownership evidence/email-code/resubmission and leads; existing employer job setup now links to native applications. Also ports Finds plan inputs/results/approvals/discovery-preparation/status/retry/cancel, More discovery and password reset by parsing an email token/link locally. Only the independent admin app opens externally for VISTRAH navigation; third-party job/application links retained by explicit user choice. Adds SDK-compatible document-picker/file-system and public ADMIN_URL config; no backend/migration/container changes required. Passed mobile TypeScript/lint, 18 tests and raw JSX text scan. Native file-picker/device UI, production exports and signed builds remain unverified. Pull, npm.cmd ci and clear/restart Expo; existing custom development builds need rebuilding for new modules. Mobile handoff wording intentionally differs from website-copy snapshots. User logo files untouched.
@@ -118,6 +125,7 @@
 - Updated frontend/scripts/location-entry-live-check.mjs and four planning documents. Initial script run failed due to scrolling caused by tab checks; test corrected and rerun passed eight combinations. Focused lint/whitespace checks passed. Evidence in artifacts/wp05-entry/live-diagnosis.json and live-home-initial-{1440,390}.png, plus full-page screenshots. No account login or normal database writes.
 - API rollout remains stopped at earlier maintenance preflight: last observed normal revision 006, worker heartbeat writes prevent a verified write-free window while worker must remain untouched. No API build/replacement, protected backup/image tagging or migrations performed. Revision not queried again during frontend deployment.
 - Next prerequisite: explicit authorization to quiesce worker writes, or externally established verified write-free maintenance window, before separately resuming approved API rollout. Do not stop/fence worker implicitly. Recheck revision 006, preserve image/protected backup, apply 007-011 without seeds, use direct-Uvicorn API override and stop on failure. Never automatically downgrade/restore. No further development authorized by this handoff.
+
 
 
 

@@ -4,3 +4,6 @@
 *.tfvars
 *.tfplan
 crash.log
+.env
+*.dump
+*.tar

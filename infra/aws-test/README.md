@@ -40,6 +40,39 @@ Preserve the local state and provider lockfile; state is required for cleanup.
 The public IP may change after stop/start; update DNS if that happens.
 No DNS records, database backup, cloud database or running application are created.
 
+## Run the exported images with the existing database
+
+Copy `compose.cloud.yaml`, `Caddyfile`, `prepare-cloud.sh`, and `restore-cloud.sh`
+to `/home/ec2-user/vistrah` beside the verified `database.dump`. If Windows Git
+converted shell-script line endings, run `sed -i 's/\r$//' prepare-cloud.sh restore-cloud.sh`
+on the server. Run `bash prepare-cloud.sh` once, then `bash restore-cloud.sh HASH`
+with the matching full backup hash. The restore script refuses running app services
+or a populated database and uses an atomic, no-owner/no-ACL restore, with no seed or
+migration. Account passwords and database-stored private evidence are retained.
+Fresh JWT signing credentials require existing users to sign in again; local tokens
+are not copied. Keep `.env` private and back it up securely with the cloud data.
+
+This is a temporary sandbox deployment: backend APP_ENV remains development so
+existing simulated memberships retain their current test behavior. No real payments
+or production membership mode is activated. SMTP is not copied; password recovery
+and ownership email-code delivery need separate private mail configuration. External
+job-source acquisition is disabled initially. Worker is an optional profile and stays
+off while restored workflow plans are reviewed, so copied plans do not resume yet.
+
+After GoDaddy A records for `@`, `api`, and `admin` point to the current server IP,
+run `sudo docker compose -f compose.cloud.yaml up -d --wait`. Caddy is a separately
+pulled public image and obtains HTTPS certificates once DNS resolves. Only Caddy
+publishes ports; API, database and admin remain on the Docker network. The deployed
+web paths are `https://vistrah.in` and `https://admin.vistrah.in`; native mobile uses
+`EXPO_PUBLIC_API_URL=https://api.vistrah.in` and
+`EXPO_PUBLIC_ADMIN_URL=https://admin.vistrah.in`. No website/mobile rebuild occurs.
+The Expo browser development preview still requires its own CORS/proxy configuration.
+
+Review restored workflow statuses before explicitly starting the worker with
+`sudo docker compose -f compose.cloud.yaml --profile worker up -d --wait worker`.
+Monitor memory on the 2 GiB host. Verify website, API health, admin login and native
+account/service flows before declaring the public test complete.
+
 After the public test and export of any data you want to retain:
 
 ```powershell

@@ -136,11 +136,11 @@ const copy = {
     "subtitle": "Opportunities for every provider.",
     "intro": "Use one account as a customer and seller. Customer membership is not required for seller onboarding. Business ownership and each service listing require separate review.",
     "business": "Start with your business",
-    "businessCopy": "Add your business, submit ownership evidence, and present the services you provide. Provider application forms and evidence uploads are available through the website.",
-    "register": "Sign up as seller on website \u2197",
-    "login": "Existing seller: sign in \u2197",
-    "application": "Provider application \u2197",
-    "dashboard": "Seller dashboard \u2197"
+    "businessCopy": "Add your business, submit ownership evidence, and present the services you provide. Complete business details and evidence uploads in the app.",
+    "register": "Sign up as seller",
+    "login": "Existing seller: sign in",
+    "application": "Provider application",
+    "dashboard": "Seller dashboard"
   },
   "common": {
     "loading": "Loading\u2026",
@@ -149,3 +149,4 @@ const copy = {
   }
 } as const;
 export default copy;
+

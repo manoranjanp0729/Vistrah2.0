@@ -5,7 +5,6 @@ import {Page,Action,Heading,Field,ErrorPanel,Loading} from '../components/ui';
 import {useSession} from '../lib/session';
 import {useResource} from '../lib/resource';
 import {api} from '../lib/api';
-import {openWebsite} from '../lib/web';
 import {emptyJob,jobDraft,type JobDraft,type OwnedJob,type JobPage} from '../lib/employer-jobs';
 import {useTheme} from '../lib/theme';
 type Business={id:number;company:string;name:string;active:boolean;verification_status:string};
@@ -17,12 +16,12 @@ export default function EmployerJobs(){
   </Page>;
 }
 function EmployerManager({userId}:{userId:number}){
-  const {styles}=useTheme();const businesses=useResource<Business[]>('/seller/businesses',userId);const [selected,setSelected]=useState<number|null>(null),[error,setError]=useState('');
+  const {styles}=useTheme();const businesses=useResource<Business[]>('/seller/businesses',userId);const [selected,setSelected]=useState<number|null>(null);
   const provider=businesses.data?.find(item=>item.id===selected)??businesses.data?.[0];
-  return <>{businesses.loading?<Loading/>:businesses.error?<ErrorPanel error={businesses.error} retry={businesses.retry}/>:!businesses.data?.length?<><Text style={styles.muted}>Add your employer business and complete ownership review before posting jobs.</Text><Action label="Add employer business on website ↗" onPress={()=>void openWebsite('/seller').catch(e=>setError(e.message))}/></>:<>
+  return <>{businesses.loading?<Loading/>:businesses.error?<ErrorPanel error={businesses.error} retry={businesses.retry}/>:!businesses.data?.length?<><Text style={styles.muted}>Add your employer business and complete ownership review before posting jobs.</Text><Action label="Add employer business" onPress={()=>router.push('/provider-applications/new')}/></>:<>
     <Text style={styles.label}>CHOOSE YOUR EMPLOYER BUSINESS</Text>{businesses.data.map(item=><Action key={item.id} label={(provider?.id===item.id?'✓ ':'')+(item.company||item.name)} secondary={provider?.id!==item.id} onPress={()=>setSelected(item.id)}/>)}
     {provider&&<BusinessJobs key={provider.id} provider={provider} userId={userId}/>}
-  </>}{Boolean(error)&&<ErrorPanel error={error}/>}</>;
+  </>}</>;
 }
 function BusinessJobs({provider,userId}:{provider:Business;userId:number}){
   const {styles,colors}=useTheme();const [page,setPage]=useState(1),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[form,setForm]=useState<JobDraft|null>(null),[editing,setEditing]=useState<OwnedJob|null>(null);

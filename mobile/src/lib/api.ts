@@ -1,6 +1,7 @@
 export class ApiError extends Error {
   status:number;
-  constructor(status:number,message:string){super(message);this.status=status;}
+  errors:{field:string;message:string}[];
+  constructor(status:number,message:string,errors:{field:string;message:string}[]=[]){super(message);this.status=status;this.errors=errors;}
 }
 export function validateBase(value:string,development:boolean) {
   if(!value)throw new ApiError(0,'Set EXPO_PUBLIC_API_URL in mobile/.env to your reachable VISTRAH API.');
@@ -27,7 +28,7 @@ export async function api<T>(path:string,options:RequestInit={}):Promise<T> {
       const detail=data?.detail;
       const message=typeof detail==='string'?detail:typeof detail?.message==='string'?detail.message:
         Array.isArray(detail)?detail.map((item:{msg:string})=>item.msg).join('. '):'This service is unavailable. Please try again.';
-      throw new ApiError(response.status,message);
+      throw new ApiError(response.status,message,Array.isArray(detail?.errors)?detail.errors:[]);
     }
     return data as T;
   }catch(error){
@@ -35,3 +36,4 @@ export async function api<T>(path:string,options:RequestInit={}):Promise<T> {
     throw new ApiError(0,'Could not reach VISTRAH. Check your connection and API configuration, then retry.');
   }finally{clearTimeout(timer);}
 }
+

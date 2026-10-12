@@ -11,8 +11,8 @@ Deploy the website from `frontend/` using the existing web build/hosting setup.
 Build Android/iOS from `mobile/` using its EAS profiles and approved HTTPS API
 configuration. A mobile release does not rebuild the website, and a website
 release does not rebuild mobile. The Expo web output is a development preview;
-`frontend/` remains the production website. Website handoff features require
-`EXPO_PUBLIC_WEB_URL` to point to the deployed website.
+`frontend/` remains the production website. Only the independent admin dashboard opens outside the app. Set
+`EXPO_PUBLIC_ADMIN_URL` to its reachable HTTPS address for release builds.
 
 Both interfaces follow the October 11 reference: black canvas, charcoal
 surfaces, orange primary actions, white headings, rounded cards, pastel service
@@ -37,14 +37,9 @@ The hero artwork is a local procedural visual interpretation of the reference.
   reverse lookup turns GPS into area/city labels, with a tiled map preview and zoom
   controls. No background tracking or automatic location saving. Explicit save/clear is available.
 - Membership plan, current eligibility and active offers; native sandbox checkout and payment history. No real-payment activation.
-- Native password-recovery request; reset links retain the existing secure website flow.
+- Native password recovery and reset. Paste the emailed code or complete link into the app; it is parsed locally rather than opened.
 
-Provider evidence forms, ownership claims, business/listing drafts, admin
-management and career workflow tools open the existing website.
-They are not native implementations in this first mobile release. Browser
-authentication is separate; tokens are never placed in URLs or sent to the
-website. Seller membership exemption and independent reviews remain enforced
-by the existing server flows.
+Seller/employer sign-in, account capability, business/service applications, declarative requirements, declarations, PDF/JPEG/PNG evidence uploads, application history, reviewed business/listing/pin/coverage proposals, ownership claims and email-code verification are native. Employer job forms and VISTRAH Finds plans also run in the app. Seller access remains independent of customer membership; ownership and approval are enforced by the existing API. The admin dashboard opens the independent admin app with its own browser sign-in. No native token is placed in that URL. Third-party vacancy and employer application links remain external by user choice.
 
 ## Configure and run
 
@@ -54,12 +49,12 @@ From the repository root:
 cd mobile
 npm ci
 Copy-Item .env.example .env
-# Edit .env with reachable API and website addresses.
+# Edit .env with reachable API and independent admin addresses.
 npm start
 ```
 
 For an Android emulator, the example uses `http://10.0.2.2:8100` for the API
-and `http://10.0.2.2:3100` for the website. Use the actual ports selected in
+and `http://10.0.2.2:3200` for the independent admin app. Use the actual ports selected in
 your root development configuration. The app does not change Compose ports,
 bind addresses, containers or backend startup.
 
@@ -181,12 +176,8 @@ member gates, enquiries including PIN and consent-based exact address, requests,
 profile, membership/active offers, payment history and provider entry share their
 main copy/options. Website rendering retains wider desktop grids.
 
-Mobile added native sandbox checkout and recovery requests. Seller registration,
-evidence uploads, owned business/listing drafts, admin management, career workflows,
-provider-application history and additional discovery remain established website
-flows, with matching account/provider entry labels. These specialized tools are
-not new native implementations. Browser handoff/privacy instructions necessarily
-explain the mobile behavior. Reset email links open the existing secure website.
+Mobile now includes native sandbox checkout, recovery/reset, seller/employer authentication, business and service forms, evidence, ownership/publication management, history, career plans and additional discovery. Native entry labels intentionally omit website handoff wording, so those platform-specific disclosures differ from the canonical website copy. Only the admin dashboard opens the independent browser app. The original third-party job sources and employer application destinations remain external.
+
 Authentication uses secure native tokens versus website HTTP-only cookies.
 
 The live API may not support newer source-level location or publication features.
@@ -319,4 +310,15 @@ Mobile Account → Employer job postings uses the existing account and seller ac
 Find Jobs → VISTRAH Jobs lists only approved, unexpired postings from active verified employers with retained ownership. Applications open the employer’s public HTTPS application page; no application or resume is submitted by VISTRAH. External Jobs remains the independent external vacancy feed. Admin → Employer job approvals supports independent approval/rejection with a required reason and current revision.
 
 Source requires backend migration 012 and deployment of the backend/admin changes before live use. No normal database or running containers were changed during implementation. Until runtime update, new endpoints can be unavailable. Native/device and browser interaction verification remains pending.
+
+
+## Install the native seller/employer update
+
+Pull the review branch and run `npm.cmd ci` in `mobile/`, then `npx.cmd expo start --clear`. This client update uses the existing deployed API; no further backend migration or container replacement is required.
+
+Document uploads add Expo SDK 57-compatible `expo-document-picker` and `expo-file-system`. They support Expo Go where this SDK is supported; an existing custom development build must be rebuilt to include the new native modules. Use a development build if Expo Go does not support your installed SDK. Device/browser picker interaction remains to be checked; no signed app-store build was produced.
+
+Only Admin opens `EXPO_PUBLIC_ADMIN_URL`. In local development only, the app can derive the same host with port 3200 from the old `EXPO_PUBLIC_WEB_URL`; release builds require an explicit admin URL. All other VISTRAH account and seller/employer navigation is native. Password-reset email delivery remains configured on the server; the mobile reset screen accepts the existing emailed token/link without browser navigation. External job sources/employer application pages remain external as selected by the user.
+
+Validation: mobile TypeScript/lint, 18 tests (including capability endpoints, conditional questions, evidence size/types, submitted-answer normalization, local reset-token parsing and admin-only VISTRAH handoff), and raw JSX text scan passed. Actual native file picking, physical devices, production exports and end-to-end authenticated UI flows are not verified in this environment.
 

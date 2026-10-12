@@ -311,3 +311,12 @@ docker compose -p vistrah20 -f compose.yaml -f compose.api-runtime.yaml up -d --
 
 This override runs Uvicorn directly with catalogue seeding disabled. Using only the
 base compose file for the API would invoke its automatic migration/seed startup.
+
+## Employer job postings
+
+Mobile Account → Employer job postings uses the existing account and seller access; customer membership is not required. Employers choose a business they own, save/edit job drafts, submit for admin review and close postings. A business must be active and verified before submission. Rejected postings must be edited and resubmitted; approved/submitted postings cannot be edited in place.
+
+Find Jobs → VISTRAH Jobs lists only approved, unexpired postings from active verified employers with retained ownership. Applications open the employer’s public HTTPS application page; no application or resume is submitted by VISTRAH. External Jobs remains the independent external vacancy feed. Admin → Employer job approvals supports independent approval/rejection with a required reason and current revision.
+
+Source requires backend migration 012 and deployment of the backend/admin changes before live use. No normal database or running containers were changed during implementation. Until runtime update, new endpoints can be unavailable. Native/device and browser interaction verification remains pending.
+

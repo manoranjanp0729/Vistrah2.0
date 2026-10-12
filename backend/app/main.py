@@ -28,11 +28,13 @@ from .publication_routes import router as publication_router
 app.include_router(publication_router)
 from .location_routes import router as location_router
 app.include_router(location_router)
+from .employer_job_routes import router as employer_job_router
+app.include_router(employer_job_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith(('/seller/', '/admin/ownership-claims', '/admin/publication-drafts', '/me/location')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
+    if request.url.path.startswith(('/seller/', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/me/location')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
         request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'
@@ -44,14 +46,14 @@ from fastapi.exception_handlers import request_validation_exception_handler
 
 @app.exception_handler(RequestValidationError)
 async def validated_input_error(request, exc):
-    if request.url.path.startswith(('/auth/','/finds/','/admin/job-sources','/provider-','/admin/provider-','/seller/','/admin/ownership-','/admin/publication-','/services/','/me/location','/requests')):
+    if request.url.path.startswith(('/auth/','/finds/','/admin/job-sources','/provider-','/admin/provider-','/seller/','/admin/ownership-','/admin/publication-','/admin/employer-jobs','/services/','/me/location','/requests')):
         # Do not echo document/profile values; invalid Unicode is unsafe to echo.
         return JSONResponse(status_code=422,content={'detail':[{'loc':error['loc'],'msg':error['msg'],'type':error['type']} for error in exc.errors()]})
     return await request_validation_exception_handler(request, exc)
 
 @app.middleware('http')
 async def workflow_body_limit(request, call_next):
-    provider_path=request.url.path.startswith(('/provider-','/admin/provider-','/seller/','/admin/publication-','/admin/ownership-'))
+    provider_path=request.url.path.startswith(('/provider-','/admin/provider-','/seller/','/admin/publication-','/admin/ownership-','/admin/employer-jobs'))
     if (request.url.path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
         limit=3000000 if provider_path and request.url.path.endswith(('/documents','/evidence')) else 128000
         chunks=[]
@@ -515,3 +517,4 @@ def export_audit(q: str = '', action: str = '', user: User = Depends(admin_user)
         values = [row.id,row.actor_id,row.action,row.entity,row.entity_id,row.created_at.isoformat(),str(row.details)]
         writer.writerow(["'"+v if isinstance(v,str) and v.startswith(('=','+','-','@')) else v for v in values])
     return Response(output.getvalue(), media_type='text/csv', headers={'Content-Disposition': 'attachment; filename=vistrah-audit.csv'})
+

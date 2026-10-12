@@ -118,3 +118,12 @@ Document upload supplies service_id, field_id, filename, media_type and content_
 Validation failures return a message and field errors; stale revisions return 409.
 See [provider onboarding](PROVIDER_ONBOARDING.md) for safe configuration examples,
 limits and lifecycle behavior.
+
+## Reviewed employer jobs
+
+- Public `GET /employer-jobs?page=1&q=` and `GET /employer-jobs/{id}` expose only approved jobs with an inclusive, unexpired deadline (India Standard Time calendar), an active verified employer business and unchanged ownership. Public output excludes review notes and account/reviewer IDs. This table/feed is separate from acquired `/jobs` vacancies.
+- Seller `GET/POST /seller/businesses/{provider_id}/jobs` list owned postings and save a draft. `PATCH .../jobs/{id}` edits only the author's DRAFT/REJECTED record and resets it to DRAFT. Payload: title, description, location, arrangement (ONSITE/HYBRID/REMOTE), employment_type (FULL_TIME/PART_TIME/CONTRACT/INTERNSHIP/TEMPORARY), optional salary_text/deadline and required public HTTPS application_url; PATCH adds revision.
+- Seller `POST .../jobs/{id}/submit` and `/close` take `{revision}`. Submission requires an active verified business, current ownership and unexpired deadline. Closing immediately removes a job from the public feed.
+- Admin `GET /admin/employer-jobs?page=1&status=SUBMITTED` serves a private review queue. `POST /admin/employer-jobs/{id}/review` takes `{revision,status,reason}` with APPROVED/REJECTED and a 10–2000 character reason. Author/current employer owner cannot self-review. Only the current submitted revision can be decided. Mutations are audited and compare revisions atomically.
+- Migration 012 creates employer_jobs; no changes to external vacancy ingestion or memberships. Applications use the employer link and are not stored by this API. Runtime rollout is separate from source verification.
+

@@ -10,6 +10,7 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
     <Stack.Screen name="service/find-jobs" options={{title:'Find Jobs'}}/>
+    <Stack.Screen name="employer-jobs" options={{title:'Employer job postings'}}/>
     <Stack.Screen name="estimate/[id]" options={{title:'Get Estimate'}}/>
     <Stack.Screen name="request/[id]" options={{title:'Service enquiry'}}/>
     <Stack.Screen name="auth" options={{title:'Your VISTRAH account'}}/>

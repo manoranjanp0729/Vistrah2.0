@@ -1,7 +1,7 @@
 import {createContext,useContext,useEffect,useRef,useState,type ReactNode} from 'react';
 import {Platform} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {api,ApiError,onUnauthorized,setToken} from './api';
+import {api,ApiError,onUnauthorized,setToken,usesBrowserCookies} from './api';
 import type {User} from './catalogue';
 import {authEndpoint} from './seller-auth';
 const key='vistrah.session';
@@ -20,7 +20,7 @@ export function SessionProvider({children}:{children:ReactNode}) {
     onUnauthorized(expire);
     const restore=async()=>{
       try{const saved=await readToken();if(!active||generation.current!==serial)return;setToken(saved);
-        if(saved){const current=await api<User>('/me');if(active&&generation.current===serial){setUser(current);setError('');}}
+        if(saved||usesBrowserCookies){const current=await api<User>('/me');if(active&&generation.current===serial){setUser(current);setError('');}}
       }catch(e){if(active&&generation.current===serial){setUser(null);setToken(null);if(!(e instanceof ApiError&&e.status===401))setError((e as Error).message);}}
       finally{if(active)setReady(true);}
     };
@@ -28,9 +28,11 @@ export function SessionProvider({children}:{children:ReactNode}) {
   },[attempt]);
   async function signIn(email:string,password:string,name?:string,seller=false) {
     generation.current++;const serial=generation.current;
-    const result=await api<{access_token:string;user:User}>(authEndpoint(Boolean(name),seller),{method:'POST',body:JSON.stringify({email,password,...(name?{name}:{})})});
+    const result=await api<{access_token?:string;user:User}>(authEndpoint(Boolean(name),seller),{method:'POST',body:JSON.stringify({email,password,...(name?{name}:{})})});
     if(serial!==generation.current)return;
-    await storeToken(result.access_token);setToken(result.access_token);setUser(result.user);setError('');
+    if(!usesBrowserCookies&&!result.access_token)throw new Error('Sign-in could not be completed. Please try again.');
+    if(result.access_token&&!usesBrowserCookies)await storeToken(result.access_token);
+    setToken(usesBrowserCookies?null:result.access_token!);setUser(result.user);setError('');
   }
   async function signOut(){
     generation.current++;let revocationError:Error|null=null;

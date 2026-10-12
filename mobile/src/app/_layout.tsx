@@ -4,6 +4,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SessionProvider} from '../lib/session';
 import {LocationProvider} from '../lib/location';
 import {ThemeProvider,useTheme} from '../lib/theme';
+import {WebsiteRouteBridge} from '../components/website-route-bridge';
 export default function RootLayout(){return <ThemeProvider><ThemedRoot/></ThemeProvider>;}
 function ThemedRoot(){const {colors,mode}=useTheme();
   return <SafeAreaProvider><SessionProvider><LocationProvider><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false}}>
@@ -32,6 +33,6 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="settings" options={{title:'Settings'}}/>
     <Stack.Screen name="profile" options={{title:'Your profile'}}/>
     <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:'Services'}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
-  </Stack></LocationProvider></SessionProvider></SafeAreaProvider>;
+  </Stack><WebsiteRouteBridge/></LocationProvider></SessionProvider></SafeAreaProvider>;
 }
 

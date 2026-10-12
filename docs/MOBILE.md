@@ -1,8 +1,8 @@
 # VISTRAH mobile application
 
 The new `mobile/` project is an Expo SDK 57 / React Native application for
-Android and iOS, with a web preview for development. It uses the existing
-FastAPI API directly. It is not a WebView wrapper. The Next.js website remains
+Android and iOS, with a browser build using the same mobile screens. It uses the existing
+FastAPI API directly. It is not a WebView wrapper. The Next.js desktop website remains
 in `frontend/`; the two projects keep independent dependency lockfiles. Mobile
 owns its API type declarations and has no build-time imports from frontend.
 Both clients use the same backend accounts and data, while releases are independent.
@@ -10,8 +10,7 @@ Both clients use the same backend accounts and data, while releases are independ
 Deploy the website from `frontend/` using the existing web build/hosting setup.
 Build Android/iOS from `mobile/` using its EAS profiles and approved HTTPS API
 configuration. A mobile release does not rebuild the website, and a website
-release does not rebuild mobile. The Expo web output is a development preview;
-`frontend/` remains the production website. Only the independent admin dashboard opens outside the app. Set
+release does not rebuild mobile. The phone website is now exported from the same mobile source and served at `/app/` behind the existing website proxy. Phone/tablet visitors are directed there; the Next.js desktop layout remains available. A separate Docker image packages the shared browser screens. Only the independent admin dashboard opens outside the app. Set
 `EXPO_PUBLIC_ADMIN_URL` to its reachable HTTPS address for release builds.
 
 Both interfaces follow the October 11 reference: black canvas, charcoal
@@ -87,7 +86,7 @@ Native JWTs are stored in Expo SecureStore and validated with `/me` on startup.
 API requests send bearer credentials to the configured API only, with a timeout
 and redirects rejected. A rejected session clears the device token. Sign-out
 clears native storage and attempts server revocation; an unreachable server is
-reported after local sign-out. The web preview keeps its token in memory only.
+reported after local sign-out. The local web preview keeps its token in memory only. The deployed phone website instead uses the existing same-origin HttpOnly `vistrah_session` cookie, restores `/me` after reload, and never stores a bearer token in browser storage.
 No passwords or session data are logged or checked into source.
 
 Location stays temporary unless the user explicitly selects Save this location. Selecting coordinates does not write `/me/location`; save/clear actions use that endpoint and report unavailability on an older API. Saved preferences can be restored on sign-in; account changes clear the previous location.
@@ -321,4 +320,17 @@ Document uploads add Expo SDK 57-compatible `expo-document-picker` and `expo-fil
 Only Admin opens `EXPO_PUBLIC_ADMIN_URL`. In local development only, the app can derive the same host with port 3200 from the old `EXPO_PUBLIC_WEB_URL`; release builds require an explicit admin URL. All other VISTRAH account and seller/employer navigation is native. Password-reset email delivery remains configured on the server; the mobile reset screen accepts the existing emailed token/link without browser navigation. External job sources/employer application pages remain external as selected by the user.
 
 Validation: mobile TypeScript/lint, 18 tests (including capability endpoints, conditional questions, evidence size/types, submitted-answer normalization, local reset-token parsing and admin-only VISTRAH handoff), and raw JSX text scan passed. Actual native file picking, physical devices, production exports and end-to-end authenticated UI flows are not verified in this environment.
+
+
+## Website using the native mobile screens
+
+The production phone website reuses `mobile/src/app`, components, styles, assets and API contracts. It includes current account groups, unique service photos, Find Jobs source tabs, employer drafts, conditional business/service/evidence forms, ownership and publication tools, enquiry/estimate forms, membership, settings, recovery and Finds. No second phone UI is maintained in Next.js. Native files remain native; the browser uses React Native Web with browser file/GPS permissions. Browser address bars, keyboards and permission dialogs are platform UI and cannot be made identical to Android/iOS system UI.
+
+`mobile/app.config.js` extends the existing app.json (including local EAS project linkage); only the cookie browser build selects SPA output and `/app` base URL. Native APK and ordinary Expo preview configuration remain unchanged. Website release mode is enabled by the Docker builder, not by changing the user's mobile `.env`. Same-origin `/api` remains the Next.js secure-cookie/Origin proxy; larger seller/enquiry forms use its 128 KB cap while evidence remains capped at 3 MB. Native authentication retains SecureStore/bearer tokens. Legacy website account/seller/service URLs map to corresponding shared screen routes.
+
+Build/export on the user PC with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\build-phone-website.ps1`. It exports `E:\\Vistrah-deploy\\phone-website.tar` and `website-proxy.tar`, preserving only configured public MapTiler browser/desktop keys and the user's local mobile logo assets. No running containers change during build. Upload both images to the test host and load them. Upload updated Compose and outer Caddy configuration as `compose.cloud.yaml.pending` and `Caddyfile.pending`, plus `activate-phone.sh`. After CRLF normalization, `bash activate-phone.sh` checks images/configuration, retains old configuration/image tags, updates only website/phone/proxy services and restores previous configuration on activation failure. API, database, admin and worker are not replaced; startup migration and seed remain disabled.
+
+Check `https://vistrah.in` on an actual Android/iPhone browser, `https://vistrah.in/app/` on desktop, and the original desktop root. Verify sign-in/reload/logout, settings/theme, category/service photos, both job tabs, estimates, seller applications/drafts/evidence, business/ownership and career screens. Existing cloud SMTP and worker limitations are independent of the UI.
+
+Verification: mobile TypeScript/lint and 22 tests; Next.js production build/TypeScript/scoped lint and 38 proxy/auth/access tests; production shared web export; real Caddy config validation and isolated HTTP phone/desktop routing, API forwarding, JS/photo assets and eight deep-route fallbacks. Reproducible HTTP check: `PHONE_EXPORT_DIR=<export> CADDY_EXECUTABLE=<caddy> node frontend/scripts/phone-website-http-check.cjs`. Browser screenshot/interaction QA is pending because two local browser launches failed on environment socket permissions. Physical-device visual comparison and cloud rollout remain pending; do not claim pixel verification or live deployment from source checks.
 

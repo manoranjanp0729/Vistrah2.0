@@ -85,3 +85,12 @@ terraform apply cleanup.tfplan
 Destroy removes this server and its root disk, including any Docker database
 volumes stored there. It takes the hosted app offline. Remove temporary GoDaddy
 DNS records separately. Do not delete your local database, domain or AWS account.
+
+## Shared phone website rollout
+
+The phone website uses the exact mobile screen source via React Native Web. Phone/tablet visitors to the root domain are directed to `/app/`; desktop visitors keep the Next.js site. `/app/` is also directly available on desktop. Caddy routes `/api/*` to the existing website's secure-cookie proxy before phone detection. The separate API/admin hosts remain unchanged.
+
+Run `scripts/build-phone-website.ps1` on the PC to create the phone/static image and refreshed website proxy image. It exports `phone-website.tar` and `website-proxy.tar`. Load both on the host before uploading `compose.cloud.yaml` as `compose.cloud.yaml.pending`, `Caddyfile` as `Caddyfile.pending`, and `activate-phone.sh`. Normalize CRLF, then run the activation script. Backups of previous configurations and image tags remain on the server. The script updates web/phone/proxy only; it does not recreate DB/API/admin/worker or run migrations/seeding. The full Docker runtime activation still requires user-host verification.
+
+The restore helper also refuses a running phone-web service. Browser sign-in uses HttpOnly cookies and should persist after reload. Mail/worker behavior is unchanged. Test phone screen appearance and seller/customer flows before considering this rollout complete. The native APK already in the EAS queue is independent of this website image update.
+

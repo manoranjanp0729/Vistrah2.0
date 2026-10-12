@@ -7,7 +7,7 @@ expected_hash=${1:?Pass the verified database.dump SHA256}
 printf '%s  database.dump\n' "$expected_hash" | sha256sum --check --status
 compose=(sudo docker compose -f compose.cloud.yaml)
 "${compose[@]}" config --quiet
-for service in api worker web admin proxy; do
+for service in api worker web admin proxy phone-web; do
     if [[ -n $("${compose[@]}" ps --status running -q "$service") ]]; then
         echo "Restore stopped: $service is running." >&2
         exit 1

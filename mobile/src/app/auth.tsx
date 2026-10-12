@@ -7,7 +7,7 @@ import {useSession} from '../lib/session';
 import {useTheme} from '../lib/theme';
 export default function Auth(){const {styles}=useTheme();
   const params=useLocalSearchParams<{mode?:string;register?:string}>();const seller=params.mode==='seller';
-  const {signIn}=useSession();const [register,setRegister]=useState(false);const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+  const {signIn}=useSession();const [register,setRegister]=useState(params.register==='1');const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   async function submit(){
     setError('');if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?'Enter your name, email and a password of at least 10 characters.':'Enter your email and password.');return;}
     setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined,seller);setPassword('');if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}

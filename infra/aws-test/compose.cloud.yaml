@@ -100,6 +100,17 @@ services:
         condition: service_healthy
       admin:
         condition: service_healthy
+      phone-web:
+        condition: service_healthy
+  phone-web:
+    image: vistrah20-phone-web:latest
+    pull_policy: never
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, 'http://127.0.0.1:8080/']
+      interval: 5s
+      timeout: 5s
+      retries: 10
 volumes:
   postgres_data:
   caddy_data:

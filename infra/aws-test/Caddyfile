@@ -1,15 +1,30 @@
 vistrah.in {
-    reverse_proxy web:3000
+	@phone header_regexp User-Agent (?i)(android|iphone|ipad|ipod|mobile)
+	handle /app {
+		redir * /app/ permanent
+	}
+	handle_path /app/* {
+		reverse_proxy phone-web:8080
+	}
+	handle /api/* {
+		reverse_proxy web:3000
+	}
+	handle @phone {
+		redir * /app{uri} temporary
+	}
+	handle {
+		reverse_proxy web:3000
+	}
 }
 
 www.vistrah.in {
-    redir https://vistrah.in{uri} permanent
+	redir https://vistrah.in{uri} permanent
 }
 
 api.vistrah.in {
-    reverse_proxy api:8000
+	reverse_proxy api:8000
 }
 
 admin.vistrah.in {
-    reverse_proxy admin:3000
+	reverse_proxy admin:3000
 }

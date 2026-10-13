@@ -16,6 +16,9 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
     <Stack.Screen name="service/find-jobs" options={{title:'Find Jobs'}}/>
     <Stack.Screen name="employer-jobs" options={{title:'Employer job postings'}}/>
+    <Stack.Screen name="commerce/index" options={{title:'Products & service packages'}}/>
+    <Stack.Screen name="commerce/[id]" options={{title:'Listing details'}}/>
+    <Stack.Screen name="seller/commerce/[id]" options={{title:'Your products & packages'}}/>
     <Stack.Screen name="seller/index" options={{title:'Seller dashboard'}}/>
     <Stack.Screen name="seller/business/[id]" options={{title:'Business details & listings'}}/>
     <Stack.Screen name="seller/ownership" options={{title:'Business ownership'}}/>
@@ -39,4 +42,3 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:'Services'}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
   </Stack><WebsiteRouteBridge/><StartupLoading/></View></LocationProvider></SessionProvider></SafeAreaProvider>;
 }
-

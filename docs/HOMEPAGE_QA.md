@@ -114,3 +114,32 @@ Stops only this test project's containers and retains its test data. It does not
 delete volumes or stop normal services. Normal migration 013/rollout remains a
 separate backup/recovery and activation gate. The mobile dependency audit and
 other production gaps stay open in PRODUCTION_PLAN.md.
+
+## Phase 4 listing screens — separate manual acceptance
+
+After pulling the commerce source, explicitly rerun the existing test setup
+helper above to rebuild only the disposable project and apply its current head
+(014). It retains synthetic test data. Normal vistrah20 remains untouched.
+Do not use this helper against normal or production data.
+
+Use the test clients in a private browser window. Create a synthetic seller
+account and owned business through the existing provider application flow; use
+the independent test admin to approve the business and at least one service grant.
+Do not submit real business documents, credentials or customer data to this project.
+
+- [ ] Desktop /seller and phone /app/seller: owned business exposes product/package controls.
+- [ ] Save a product draft with price 0.29; confirm ₹0.29, draft privacy and no rounding.
+- [ ] Invalid/zero/negative/three-decimal prices show a useful error without a write.
+- [ ] Package selector contains only active approved services for this business.
+- [ ] Submit a draft; edit controls disappear while SUBMITTED.
+- [ ] Test admin /admin/commerce-listings: inspect description/price/business, enter reason, reject; seller sees reason, edits and resubmits.
+- [ ] Approve as independent admin; desktop /commerce and phone /app/commerce show the same listing and exact unit price. Package browsing requires membership.
+- [ ] Detail screens show full description, business and price; no ordering or payment action yet.
+- [ ] Approved edit warns before save and unpublishes; independent reapproval is required.
+- [ ] Stale revision returns reload guidance; Reload listings permits selecting the current row.
+- [ ] Archive confirmation hides the listing; unavailable/ineligible listings stay out of public browsing.
+- [ ] Pagination, retries, empty lists and 320px/390px/tablet/desktop layouts work.
+
+This is a pending manual checklist. API/contract tests and bundle/build checks do
+not prove browser interactions or physical Android compatibility. Admin dashboard
+simplification, media uploads, cart/orders and live payments remain later slices.

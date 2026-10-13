@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
+import path from 'node:path';
 const config: NextConfig = {
   distDir: process.env.TEST_NEXT_DIST_DIR || '.next',
   output: 'standalone',
+  turbopack: {root:path.resolve(process.cwd(), '..')},
   poweredByHeader: false,
   async headers() {
     return [{ source: '/:path*', headers: [
@@ -19,4 +21,5 @@ const config: NextConfig = {
   }
 };
 export default config;
+
 

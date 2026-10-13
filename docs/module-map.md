@@ -28,3 +28,12 @@ Phase 4 reviewed listing API: `backend/app/commerce_models.py`, `commerce_routes
 `backend/migrations/versions/014_commerce_listings.py`; scoped tests in
 `backend/tests/test_commerce_listings.py` and `test_commerce_migration.py`.
 Cart/orders and client purchase screens remain the next slices.
+
+Commerce clients: shared contract/price parsing in `shared/commerce.ts`;
+desktop `frontend/components/commerce.tsx` and public `commerce/` routes;
+native/phone `mobile/src/components/commerce-browser.tsx`, `seller-commerce.tsx`,
+`mobile/src/app/commerce/` and `seller/commerce/[id].tsx`;
+admin `admin/components/commerce-reviews.tsx` and `/admin/commerce-listings`.
+Desktop seller workspace embeds listing controls; native business details link
+into them. Contract checks: `frontend/lib/commerce.test.ts`. Shared-source build
+boundaries: frontend Next root/Dockerfile and mobile Metro/Dockerfile.phone.

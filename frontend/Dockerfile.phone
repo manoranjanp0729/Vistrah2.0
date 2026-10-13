@@ -3,6 +3,7 @@ WORKDIR /app
 COPY mobile/package.json mobile/package-lock.json ./
 RUN npm ci
 COPY mobile/ .
+COPY shared/ /shared/
 ENV EXPO_PUBLIC_WEB_SESSION_MODE=cookie
 ENV EXPO_PUBLIC_API_URL=https://api.vistrah.in
 ARG EXPO_PUBLIC_ADMIN_URL=https://admin.vistrah.in

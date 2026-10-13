@@ -190,3 +190,10 @@ Mutations are audited; private fields are excluded from public output. Productio
 membership remains fail-closed for sandbox transactions. Migration 014 seeds no
 listings and refuses downgrade while seller data exists. Existing /me/orders
 (enquiry history) and membership payments are unchanged.
+
+Commerce screens: desktop `/commerce`, `/commerce/{id}` and seller dashboard;
+native/shared-phone `/commerce`, `/commerce/{id}` and
+`/seller/commerce/{businessId}`; independent admin `/admin/commerce-listings`.
+Package UI access never substitutes for API membership checks. Price formatting
+and input preparation are shared in `shared/commerce.ts`; approval/status fields
+are never accepted as seller input. Checkout remains a later contract.

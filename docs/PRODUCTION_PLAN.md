@@ -124,3 +124,22 @@ fulfilment rules, then server-priced cart/orders and lifecycle tests. Checkout,
 stock reservation, booking schedules, delivery/tax, cancellation/refund and live
 payments remain unfinished. Admin dashboard simplification is deferred per user.
 Phase 3 browser journey and production security/release gates remain open.
+
+## Phase 4 client slice — 14 October 2026
+
+Desktop and native/shared-phone customer listing/detail screens, seller draft
+create/edit/submit/archive screens and a minimal existing-layout admin review queue
+now consume the shared listing APIs. More discovery exposes browsing; native
+business details and the desktop seller dashboard expose seller listing controls.
+Both clients use shared/commerce.ts for exact rupee-to-paise conversion and input
+preparation. Submitted/archived rows cannot be edited; approved edits warn that
+publication is removed until review. The admin queue supports status filters,
+pagination, review reasons and approve/reject; dashboard redesign stays deferred.
+
+21 shared commerce tests and six native seller/privacy regressions passed;
+three client typechecks/scoped lint, desktop build, phone export, Android Hermes
+bundle export and standalone desktop route HTTP smoke passed. No real browser
+interaction or APK/device test is claimed. Full admin hosted build and user-host
+commerce journey remain open. Next: remaining commercial policy decisions,
+server-priced cart/orders and shared lifecycle tests. All checkout/live payment
+and normal runtime rollout gates remain intact.

@@ -15,7 +15,7 @@ async function run(){
     const base='http://127.0.0.1:19400',headers={'User-Agent':'Mozilla/5.0 (Linux; Android 14) Mobile'};
     const desktop=await fetch(base+'/');assert.equal((await desktop.json()).desktop,true);
     const rootPhone=await fetch(base+'/',{headers,redirect:'manual'});assert.equal(rootPhone.status,302);assert.equal(rootPhone.headers.get('location'),'/app/');
-    const html=await fetch(base+'/app/',{headers});assert.equal(html.status,200);assert.match(html.headers.get('content-security-policy'),/frame-ancestors 'none'/);const markup=await html.text();assert.match(markup,/<title>VISTRAH<\/title>/);const bundle=markup.match(/src="([^\"]+\.js)"/)[1];assert.ok(bundle.startsWith('/app/'));assert.equal((await fetch(base+bundle,{headers})).status,200);
+    const html=await fetch(base+'/app/',{headers});assert.equal(html.status,200);assert.match(html.headers.get('content-security-policy'),/frame-ancestors 'none'/);const markup=await html.text();assert.match(markup,/<title>VISTRAH<\/title>/);const bundle=markup.match(/src="([^"]+\.js)"/)[1];assert.ok(bundle.startsWith('/app/'));assert.equal((await fetch(base+bundle,{headers})).status,200);
     const api=await fetch(base+'/api/me',{headers});assert.equal((await api.json()).path,'/api/me');
     for(const p of ['/app/account','/app/employer-jobs','/app/provider-applications/new','/app/finds','/app/service/find-jobs','/app/service/1','/app/estimate/1','/app/seller/ownership']){
       const result=await fetch(base+p,{headers});assert.equal(result.status,200);assert.equal(await result.text(),markup);
@@ -26,4 +26,5 @@ async function run(){
   }finally{server.kill('SIGTERM');fixture.close();}
 }
 run().catch(error=>{console.error(error);process.exitCode=1;});
+
 

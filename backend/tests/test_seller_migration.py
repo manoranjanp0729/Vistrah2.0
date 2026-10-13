@@ -2,11 +2,10 @@
 import os
 import subprocess
 import sys
-import uuid
 from pathlib import Path
 
-def test_additive_ownership_migration_preserves_legacy_records():
-    database=Path(__file__).resolve().parents[2]/'.tools'/f'i3-migration-{uuid.uuid4()}.db'
+def test_additive_ownership_migration_preserves_legacy_records(tmp_path):
+    database=tmp_path/'seller-migration.db'
     env={**os.environ,'DATABASE_URL':'sqlite:///'+database.as_posix(),'JWT_SECRET':'isolated-migration-fixture-only-not-production','APP_ENV':'development'}
     script="""
 from alembic import command
@@ -42,3 +41,4 @@ engine.dispose()
 """
     result=subprocess.run([sys.executable,'-c',script],env=env,cwd=Path(__file__).resolve().parents[1],text=True,capture_output=True)
     assert result.returncode==0,result.stdout+result.stderr
+

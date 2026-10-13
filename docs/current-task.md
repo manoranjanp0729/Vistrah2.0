@@ -1,3 +1,9 @@
+# Phase 2 first hosted failures repaired — 13 October 2026
+
+- First hosted PR run 38441146916 confirms environment checks, admin client/audit, mobile client and frontend dependency audit passed. Backend: 238 passed, four migration fixture failures. Frontend lint failed only for the CommonJS phone HTTP check. Mobile audit: 29 vulnerabilities (11 moderate, 18 high); braces/node-forge advisories report all versions vulnerable and npm recommends breaking Expo/router changes. Do not force upgrades or bypass the security gate.
+- Fixed three historical migration tests to use pytest tmp_path instead of assuming ignored .tools exists. Contact 009/010 test reflects revision 009 tables for fixture inserts instead of current ORM fields added in 011; preserves evidence/history/FK round-trip and guarded downgrade assertions. Frontend eslint config recognizes scripts/**/*.cjs as Node CommonJS; removed one unnecessary regex escape. No application/schema/migration/runtime changes.
+- Passed four focused migration tests on fresh temporary SQLite databases (including actual upgrade/downgrade and immutable-history guards), frontend lint and Node script syntax. Full PostgreSQL hosted rerun pending; client builds/tests not repeated for tooling-only edits. Next fix compatible mobile dependency advisories, inspect the new hosted run, then close Phase 2 only after its remaining publication/protection/rollback gates. No normal data, containers, AWS or DNS changes.
+
 # Production implementation — Phase 2 CI/release source prepared (13 October 2026)
 
 - User-PC Phase 1 helper passed: db/api/web/admin healthy, API health ok, website localhost:3100. Native/browser preview still needs its separate proxy/Expo processes.

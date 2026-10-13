@@ -1,3 +1,8 @@
+# Browser startup logo visibility fix — 13 October 2026
+
+- User reported the mobile browser reload skipped the logo screen. The cover previously dismissed as soon as theme/session restoration finished, before the asynchronous logo image painted. StartupLoading now waits for the logo load-end event and one second of display before dismissal, also waiting for theme/session readiness. Existing seven-second bound and once-per-root-mount behavior remain. Native and shared phone website inherit this source.
+- Passed scoped TypeScript/lint and Expo production web export, including both logo assets. Browser/device timing still needs user confirmation after a full reload; hot refresh may retain the already-dismissed startup state. Pull and restart the Expo web server with clear cache; retain the local API proxy. Standalone APK/shared production website need rebuild for this source change. No backend/DB/container changes.
+
 # Homepage logo, light defaults and startup loading — 13 October 2026
 
 - User requested homepage navigation on the logo, light default for app/web and branded launch loading. Native/shared-phone header logo is an accessible home link using router.navigate('/'); existing desktop header/footer links already target home. Mobile initial theme and native UI default light; website absent/invalid preference cookie defaults light while saved dark/light preferences remain honored.
@@ -156,5 +161,4 @@
 - Updated frontend/scripts/location-entry-live-check.mjs and four planning documents. Initial script run failed due to scrolling caused by tab checks; test corrected and rerun passed eight combinations. Focused lint/whitespace checks passed. Evidence in artifacts/wp05-entry/live-diagnosis.json and live-home-initial-{1440,390}.png, plus full-page screenshots. No account login or normal database writes.
 - API rollout remains stopped at earlier maintenance preflight: last observed normal revision 006, worker heartbeat writes prevent a verified write-free window while worker must remain untouched. No API build/replacement, protected backup/image tagging or migrations performed. Revision not queried again during frontend deployment.
 - Next prerequisite: explicit authorization to quiesce worker writes, or externally established verified write-free maintenance window, before separately resuming approved API rollout. Do not stop/fence worker implicitly. Recheck revision 006, preserve image/protected backup, apply 007-011 without seeds, use direct-Uvicorn API override and stop on failure. Never automatically downgrade/restore. No further development authorized by this handoff.
-
 

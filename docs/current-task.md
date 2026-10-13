@@ -1,3 +1,11 @@
+# Homepage browser timeout diagnostics corrected — 14 October 2026
+
+- User-PC QA stack completed: all four test images built, six test containers healthy, guarded fixture initialized and 31 tests passed. This closes build/startup checks for the disposable stack; normal vistrah20 unchanged.
+- First browser run timed out at 120s, but the reported stack points to draft() inside the main test's finally cleanup. This can mask the first UI/action failure. Original cause is unverified; error-context.md/trace are needed before changing application code.
+- Moved restoration into afterEach with a separate 35s hook budget and independent API request context (5s request deadlines). Cleanup failure attaches a generic note and preserves an existing failure; cleanup failure after an otherwise passing test still fails the run. Added stage progress messages, 15s action and 20s navigation limits, and 10s core API deadlines. Overall 120s test budget is unchanged.
+- Passed frontend TypeScript/scoped lint, Playwright collection, and a request-only synthetic timeout regression proving original timeout remains the sole primary error while cleanup attempts and separate note occur. No browser/database/container used for that regression. Real Windows browser journey still failing/unverified. Docker rebuild is unnecessary for this test-source-only change.
+- Next: read the saved error context before rerunning/overwriting its artifacts; diagnose the actual stuck control or page. Pull updated test source and rerun only the dedicated test when ready. Hold Phase 4 and keep production gaps open. No normal DB/migration/container/AWS/DNS change.
+
 # Phase 3 isolated build/browser QA prepared — 14 October 2026
 
 - User asked to build/test functionality before the next phase. Latest hosted run for ea586b2 confirms backend, frontend, admin, mobile and environment checks passed; only mobile dependency audit failed. Earlier local admin incomplete-mirror build limitation is superseded by hosted full-repository success.

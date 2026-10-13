@@ -29,10 +29,11 @@ function storeTheme(mode:ThemeMode){const write=pending.then(async()=>{if(Platfo
 type Theme={mode:ThemeMode;colors:Palette;styles:ReturnType<typeof makeStyles>;ready:boolean;error:string;setMode:(mode:ThemeMode)=>void};
 const Context=createContext<Theme|null>(null);
 export function ThemeProvider({children}:{children:ReactNode}){
- const [mode,updateMode]=useState<ThemeMode>('dark'),[ready,setReady]=useState(false),[error,setError]=useState('');
+ const [mode,updateMode]=useState<ThemeMode>('light'),[ready,setReady]=useState(false),[error,setError]=useState('');
  useEffect(()=>{let active=true;const restore=async()=>{try{const saved=Platform.OS==='web'?localStorage.getItem(key):await SecureStore.getItemAsync(key);if(active&&(saved==='light'||saved==='dark'))updateMode(saved);}catch{if(active)setError('Could not restore your theme preference.');}finally{if(active)setReady(true);}};void restore();return()=>{active=false;};},[]);
  const colors=palettes[mode];const styles=useMemo(()=>makeStyles(colors),[colors]);
  function setMode(next:ThemeMode){updateMode(next);setError('');void storeTheme(next).catch(()=>setError('Theme changed, but could not be saved on this device.'));}
  return createElement(Context.Provider,{value:{mode,colors,styles,ready,error,setMode}},children);
 }
 export function useTheme(){const theme=useContext(Context);if(!theme)throw new Error('Missing ThemeProvider');return theme;}
+

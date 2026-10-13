@@ -1,3 +1,9 @@
+# Homepage logo, light defaults and startup loading — 13 October 2026
+
+- User requested homepage navigation on the logo, light default for app/web and branded launch loading. Native/shared-phone header logo is an accessible home link using router.navigate('/'); existing desktop header/footer links already target home. Mobile initial theme and native UI default light; website absent/invalid preference cookie defaults light while saved dark/light preferences remain honored.
+- Added SDK-compatible expo-splash-screen, plugin-configured light launch image using the selected VISTRAH lockup, native auto-hide coordination and React startup logo/spinner while session/theme restore. Seven-second bound prevents a stalled session request permanently covering the mounted navigation; later session retries do not re-show the startup cover. Desktop public route loading fallback also shows the selected logo and reduced-motion-aware spinner. app.config.js retains local EAS linkage/package settings and existing plugins.
+- Passed mobile/frontend TypeScript, scoped lint, all 22 mobile tests, resolved Expo configuration/plugin and lock consistency, Next production build, isolated HTTP absent/dark/invalid cookie checks and Android production bundle export. Native launch animation/cold-start timing and device/browser clicks remain unverified. Source only: pull/install dependencies and rebuild the standalone APK to activate the native splash; website/phone export needs rebuild/rollout. No API/DB/AWS/DNS changes.
+
 # Selected VISTRAH logo rollout — 13 October 2026
 
 - User selected the uploaded silver V with narrow orange diagonal accent. Added production SVG lockups with outlined original VISTRAH lettering and theme-appropriate silver/white (dark) or navy (light) symbol/lettering; native PNG equivalents, opaque navy app icon, transparent adaptive foreground, monochrome icon and favicon. Production vector geometry follows the selected silhouette and avoids background-extraction edge artifacts. Original uploaded reference and existing logo files retained; no app.json/local EAS linkage overwrite.
@@ -150,6 +156,5 @@
 - Updated frontend/scripts/location-entry-live-check.mjs and four planning documents. Initial script run failed due to scrolling caused by tab checks; test corrected and rerun passed eight combinations. Focused lint/whitespace checks passed. Evidence in artifacts/wp05-entry/live-diagnosis.json and live-home-initial-{1440,390}.png, plus full-page screenshots. No account login or normal database writes.
 - API rollout remains stopped at earlier maintenance preflight: last observed normal revision 006, worker heartbeat writes prevent a verified write-free window while worker must remain untouched. No API build/replacement, protected backup/image tagging or migrations performed. Revision not queried again during frontend deployment.
 - Next prerequisite: explicit authorization to quiesce worker writes, or externally established verified write-free maintenance window, before separately resuming approved API rollout. Do not stop/fence worker implicitly. Recheck revision 006, preserve image/protected backup, apply 007-011 without seeds, use direct-Uvicorn API override and stop on failure. Never automatically downgrade/restore. No further development authorized by this handoff.
-
 
 

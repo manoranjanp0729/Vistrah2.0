@@ -1,3 +1,11 @@
+# Phase 2 mobile audit blocked upstream — 13 October 2026
+
+- Verified the reported advisory pages and npm registry: braces latest 3.0.3 (GHSA-vfj7-8cjw-p6xm) and node-forge latest 1.4.0 (GHSA-86w9-cpqp-85rv) are affected; both GitHub advisories list no patched version. A version-only upgrade cannot currently clear these high findings. The 29 affected-package findings trace to four root advisories, including moderate decode-uri-component and uuid issues.
+- Patched moderate versions are decode-uri-component 0.5.0 and uuid 11.1.1; do not assume transitive major-version overrides are compatible. Current query-string 7.1.3 uses a CommonJS callable decoder and xcode 3.0.1 uses uuid.v4. Any replacement requires router/query and native project-generation compatibility tests. No dependency override, SDK downgrade, handwritten cryptographic patch or audit exclusion was applied.
+- Keep the blocking audit and manual publishing gate. Phase 2 remains open pending reviewed upstream fixes or a separately reviewed remediation with compatibility and security tests; development source work can continue without promoting runtime. No normal DB, containers, AWS, DNS or billing changes.
+
+Advisories: https://github.com/advisories/GHSA-vfj7-8cjw-p6xm and https://github.com/advisories/GHSA-86w9-cpqp-85rv
+
 # Phase 2 first hosted failures repaired — 13 October 2026
 
 - First hosted PR run 38441146916 confirms environment checks, admin client/audit, mobile client and frontend dependency audit passed. Backend: 238 passed, four migration fixture failures. Frontend lint failed only for the CommonJS phone HTTP check. Mobile audit: 29 vulnerabilities (11 moderate, 18 high); braces/node-forge advisories report all versions vulnerable and npm recommends breaking Expo/router changes. Do not force upgrades or bypass the security gate.

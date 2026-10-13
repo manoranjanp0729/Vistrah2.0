@@ -1,3 +1,9 @@
+# Selected VISTRAH logo rollout — 13 October 2026
+
+- User selected the uploaded silver V with narrow orange diagonal accent. Added production SVG lockups with outlined original VISTRAH lettering and theme-appropriate silver/white (dark) or navy (light) symbol/lettering; native PNG equivalents, opaque navy app icon, transparent adaptive foreground, monochrome icon and favicon. Production vector geometry follows the selected silhouette and avoids background-extraction edge artifacts. Original uploaded reference and existing logo files retained; no app.json/local EAS linkage overwrite.
+- Mobile tab header now uses contained 176x44 theme lockups in both themes; desktop website header/footer use theme-responsive SVGs. app.config.js overrides only branding icon paths/adaptive background and retains local project/package settings and cookie-mode /app export. New Next app/icon.png browser icon. Scoped config test asserts EAS identity/package preservation.
+- Passed mobile/frontend TypeScript, scoped lint, all 22 mobile tests, website production build and PNG full-decode/dimensions/transparency checks. Visually inspected both asset lockups and the icon; actual device/browser layout remains pending. Source only: installed APK requires rebuild; website/shared phone export requires rebuild/rollout. No AWS/DNS/API/database changes. Existing old logo assets and user local variants untouched.
+
 # Discovery engagement update — 13 October 2026
 
 - User requested more interactive, engaging information across app and website. Added accessible customer/provider journey selector, three-step explanations, careers/discovery/employer shortcuts and expandable FAQs; kept existing hero, quick access and categories ahead of the guide. Updated matching interface copy for home, catalogue, authentication, account, enquiries, jobs and provider onboarding. Membership, three service pathways, ownership/publication approval, genuine listing rules and enquiry-not-booking behavior retained. No fabricated social proof or guarantees. Native and shared phone website use mobile/src/components/discovery-guide.tsx; desktop uses frontend/components/discovery-guide.tsx with scoped CSS.
@@ -144,7 +150,6 @@
 - Updated frontend/scripts/location-entry-live-check.mjs and four planning documents. Initial script run failed due to scrolling caused by tab checks; test corrected and rerun passed eight combinations. Focused lint/whitespace checks passed. Evidence in artifacts/wp05-entry/live-diagnosis.json and live-home-initial-{1440,390}.png, plus full-page screenshots. No account login or normal database writes.
 - API rollout remains stopped at earlier maintenance preflight: last observed normal revision 006, worker heartbeat writes prevent a verified write-free window while worker must remain untouched. No API build/replacement, protected backup/image tagging or migrations performed. Revision not queried again during frontend deployment.
 - Next prerequisite: explicit authorization to quiesce worker writes, or externally established verified write-free maintenance window, before separately resuming approved API rollout. Do not stop/fence worker implicitly. Recheck revision 006, preserve image/protected backup, apply 007-011 without seeds, use direct-Uvicorn API override and stop on failure. Never automatically downgrade/restore. No further development authorized by this handoff.
-
 
 
 

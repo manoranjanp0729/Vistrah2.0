@@ -7,13 +7,17 @@ test('website export keeps the local EAS linkage and native build configuration 
   const previous=process.env.EXPO_PUBLIC_WEB_SESSION_MODE;
   try{
     delete process.env.EXPO_PUBLIC_WEB_SESSION_MODE;
-    assert.equal(configure({config}),config);
+    const native=configure({config});
+    assert.equal(native.android.package,config.android.package);
+    assert.deepEqual(native.extra,config.extra);
+    assert.equal(native.icon,'./assets/brand/icon.png');
     process.env.EXPO_PUBLIC_WEB_SESSION_MODE='cookie';
     const website=configure({config});
     assert.equal(website.experiments.baseUrl,'/app');
     assert.equal(website.web.output,'single');
     assert.deepEqual(website.extra,config.extra);
-    assert.deepEqual(website.android,config.android);
-    assert.equal(website.web.favicon,config.web.favicon);
+    assert.deepEqual(website.android,native.android);
+    assert.equal(website.web.favicon,'./assets/brand/favicon.png');
+    assert.equal(config.web.favicon,'./assets/favicon.png');
   }finally{if(previous===undefined)delete process.env.EXPO_PUBLIC_WEB_SESSION_MODE;else process.env.EXPO_PUBLIC_WEB_SESSION_MODE=previous;}
 });

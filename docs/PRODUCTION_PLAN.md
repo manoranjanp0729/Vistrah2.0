@@ -96,3 +96,13 @@ section/card sequence; absent/empty/unavailable configuration preserves the
 existing homepage. Reuse bundled service imagery; media uploads remain later.
 Source checks do not migrate or replace normal runtime. The API/editor/renderers
 must pass hosted checks and user-host/physical-device QA before this gate closes.
+## Phase 3 build/test gate — 14 October 2026
+
+User requested building and exercising functionality before advancing phases.
+Use scripts/test-homepage.ps1 and compose.homepage-test.yaml for the separate
+local QA stack; see HOMEPAGE_QA.md. Docker/PowerShell and actual browser execution
+must be confirmed on the user PC. Source guard/API/migration tests and test
+collection are not browser journey evidence. Hosted API/admin/web/mobile checks
+for ea586b2 passed; the mobile audit remains blocked. Do not activate normal
+migration 013 or advance the next implementation phase until the functional
+test gate is reviewed. Physical native Android remains a separate device gate.

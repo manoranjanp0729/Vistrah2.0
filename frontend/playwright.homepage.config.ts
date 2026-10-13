@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./e2e',testMatch:'homepage-editor.spec.ts',timeout:120000,expect:{timeout:15000},workers:1,retries:0,reporter:[['list'],['html',{outputFolder:'playwright-report/homepage',open:'never'}]],use:{baseURL:'http://127.0.0.1:3211',browserName:'chromium',trace:'retain-on-failure',screenshot:'only-on-failure'},outputDir:'test-results/homepage'});

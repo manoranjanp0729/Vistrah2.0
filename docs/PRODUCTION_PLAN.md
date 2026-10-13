@@ -1,6 +1,6 @@
 # Production implementation plan
 
-Status: Phase 1 source checked and user-PC local startup verified 13 October 2026. Phase 2 CI/release source is prepared; hosted checks, publication and rollback gates remain open. This plan is the
+Status: Phase 1 source checked and user-PC local startup verified 13 October 2026. Phase 2 checks run; mobile audit and release gates remain open. User authorized deferring these gaps and continuing Phase 3 source implementation. This plan is the
 implementation sequence; the earlier 85-item audit is a dated baseline, not a
 production readiness certificate. Complete and verify each gate before moving
 the running application forward. Work in the existing repository and stack.
@@ -67,3 +67,32 @@ User-PC Phase 1 output confirms db/api/web/admin healthy and API health ok.
 CI execution, private image publication and rollback rehearsal are not yet
 verified. Repository rulesets are blocked by the current GitHub account plan;
 no protection, account upgrade or AWS deployment was performed.
+## Deferred gates — retain through launch
+
+User authorized feature implementation to continue while these gaps are open.
+Deferral never changes the production publishing gate.
+
+| Gap | Required follow-up | Timing |
+|---|---|---|
+| Mobile dependency audit: braces/node-forge have no patched published version; moderate decoder/uuid advisories | Reviewed compatible remediation and full audit/build tests; preserve blocking CI audit | Before production image publication |
+| GitHub private-repository rulesets account limitation | Owner decision on enforceable protection; preserve private repository and PR review | Before production release |
+| Private registry visibility/pull access and complete release digests | Verify first manual publication, package privacy/access and retention | After checks pass, before staging |
+| Image/config rollback rehearsal | Run prior/candidate/prior app versions against an explicitly disposable project; verify health/persistence | Before runtime promotion |
+| Homepage runtime migration, admin/phone/device QA | Backup/recovery preflight and separate controlled migration 013 rollout; publish/refresh/restore journey on all clients | Before closing Phase 3 runtime gate |
+| Commerce pricing, stock/availability, fulfilment and cancellation scope | Agree business rules before purchase schema/API implementation | Phase 4 |
+| Live merchant/gateway and Android payment-policy decision | Verified payment/entitlement/refund/reconciliation implementation; sandbox remains fail-closed | Phase 5 |
+| Recovery email, dependency/image/Python scans, private media, backup/monitoring | Complete operational/security checks and restoration drill | Phase 6 before launch |
+| Current AWS resource state, budget/IAM/capacity/DNS/HTTPS | Review and authorize staging infrastructure and costs | Phase 7 |
+| Physical Android, full journeys, performance, store/policy and release approval | Complete launch evidence and approve production promotion | Phase 8 |
+
+## Phase 3 source implementation
+
+Migration 013 and homepage models/routes provide the singleton draft, immutable
+published snapshots, guarded restore/publish and template/card/service validation.
+Admin /admin/homepage supplies template library, section/card ordering,
+duplicate/remove, draft save, content preview, explicit publish and version
+restore/history. Desktop and native/shared-phone render the same published
+section/card sequence; absent/empty/unavailable configuration preserves the
+existing homepage. Reuse bundled service imagery; media uploads remain later.
+Source checks do not migrate or replace normal runtime. The API/editor/renderers
+must pass hosted checks and user-host/physical-device QA before this gate closes.

@@ -1,4 +1,5 @@
 import {DiscoveryGuide} from '@/components/discovery-guide';
+import {PublishedHomepage,type Homepage} from '@/components/published-homepage';
 import Link from 'next/link';
 import copy from '@/lib/interface-copy.json';
 import {HorizontalCarousel} from '@/components/horizontal-carousel';
@@ -14,11 +15,12 @@ export const dynamic='force-dynamic';
 const categoryIcons:Record<string,typeof Building2>={'real-estate':Building2,'tax-compliance':Wallet,'jobs-careers':BriefcaseBusiness,marketing:Megaphone,'civil-construction':House};
 const categoryPriority=(slug:string)=>slug==='real-estate'?0:slug==='tax-compliance'?1:2;
 export default async function Home() {
-  const categories=await serverApi<Category[]>('/catalogue');
+  const [categories,homepage]=await Promise.all([serverApi<Category[]>('/catalogue'),serverApi<Homepage>('/homepage').catch(()=>null)]);
   const services=allServices(categories);
   const topServices=[...services].filter(item=>item.service.active).sort((a,b)=>Number(b.service.popular)-Number(a.service.popular));
   const shortcuts=[...topServices].sort((a,b)=>Number(b.service.slug==='digital-marketing')-Number(a.service.slug==='digital-marketing')).slice(0,10);
   const displayCategories=[...categories].sort((a,b)=>categoryPriority(a.slug)-categoryPriority(b.slug));
+  if(homepage?.version&&homepage.layout.schema_version===1&&homepage.layout.sections.length)return <div className="reference-home"><section className="container reference-hero"><div><p className="reference-label">{copy.home.tagline}</p><h1>{copy.home.title}</h1><p className="reference-lead">{copy.home.description}</p></div></section><PublishedHomepage homepage={homepage} categories={categories}/><div className="container reference-section"><DiscoveryGuide/><ButtonLink secondary href="/provider">{copy.home.provider}</ButtonLink></div></div>;
   return <div className="reference-home">
     <section className="container reference-hero"><div><p className="reference-label">{copy.home.tagline}</p><h1>{copy.home.title}</h1><p className="reference-lead">{copy.home.description}</p></div><ReferenceHeroCarousel>{topServices.slice(0,5).map((context,index)=><Link href={urls.service(context.category,context.service,context.subcategory)} key={context.service.id} className={`reference-hero-slide reference-slide-tone-${index%2}`}><div><p className="reference-label">{context.category.title}</p><h2>{context.service.title}</h2><p>{context.service.description}</p><span>{copy.catalogue.explore}</span></div></Link>)}</ReferenceHeroCarousel></section>
     <section className="container reference-section"><p className="reference-label">{copy.home.quick}</p><div className="reference-shortcuts"><HorizontalCarousel label="Quick access services">{shortcuts.map(context=>{const Icon=context.service.slug==='digital-marketing'?Megaphone:context.category.slug==='real-estate'?House:context.category.slug==='tax-compliance'?Wallet:BriefcaseBusiness;return <Link key={context.service.id} href={urls.service(context.category,context.service,context.subcategory)}><Icon size={24} aria-hidden="true"/><span>{context.service.title}</span></Link>;})}</HorizontalCarousel></div></section>

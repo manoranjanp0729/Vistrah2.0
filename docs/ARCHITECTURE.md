@@ -68,10 +68,12 @@ admin reviews do not expose private customer workflow profiles/results.
 Employer jobs are drafted for an owned business and independently approved
 before eligible public publication.
 
-Homepage catalogue cards and carousels are currently source-composed. The
-provider requirement editor and publication workflows are not homepage layout
-editors. Phase 3 adds a separate draft/published homepage configuration that
-desktop and native clients render from the same API contract.
+Homepage migration 013, admin /admin/homepage and GET /homepage now provide
+private draft/publish/restore configuration for banners, grids and carousels.
+Desktop and native/shared-phone clients render the same published sequence;
+the original source-composed homepage remains the fallback. Provider requirement
+and publication editors retain their separate purpose. Source implementation
+has not migrated/replaced the normal runtime; see the Phase 3 rollout gate.
 
 ## Payments and production boundary
 
@@ -115,7 +117,8 @@ new provider/billing choices require separate authorization.
   compose.api-runtime.yaml and the cloud test runtime run Uvicorn directly after
   controlled schema rollout. Normal restart verification must use the existing
   controlled runtime and never silently migrate or seed the normal database.
-- Migration 012 adds employer jobs. Migrations and domain tests must first run
+- Migration 012 adds employer jobs; source migration 013 adds homepage draft and
+  immutable published history without seeding content. Migrations and domain tests must first run
   against disposable data; normal rollout needs backup/recovery and explicit
   authorization. Existing requirements/publication schemas retain immutability
   triggers and history guards.

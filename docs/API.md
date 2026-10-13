@@ -127,3 +127,37 @@ limits and lifecycle behavior.
 - Admin `GET /admin/employer-jobs?page=1&status=SUBMITTED` serves a private review queue. `POST /admin/employer-jobs/{id}/review` takes `{revision,status,reason}` with APPROVED/REJECTED and a 10–2000 character reason. Author/current employer owner cannot self-review. Only the current submitted revision can be decided. Mutations are audited and compare revisions atomically.
 - Migration 012 creates employer_jobs; no changes to external vacancy ingestion or memberships. Applications use the employer link and are not stored by this API. Runtime rollout is separate from source verification.
 
+## Shared homepage configuration (source migration 013)
+
+Public `GET /homepage` returns only `{version,layout}`. Before publication, and
+for an empty published layout, clients use the existing homepage. The layout
+has `schema_version:1` and at most 12 ordered sections. Every section contains
+`id`, `template`, `title`, `subtitle`, `size` and ordered `service_ids`.
+Banner: exactly one card, wide/square. Service grid: 2–16 cards, compact.
+Service carousel: 2–12 cards, compact. Section IDs and per-section service IDs
+must be unique; IDs must reference active services/categories/subcategories.
+There are no arbitrary HTML, URL or media-upload fields.
+
+Admin-only endpoints, all private/no-store:
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /admin/homepage/templates` | Supported templates, sizes and card/section limits |
+| `GET /admin/homepage/draft` | Saved private draft, revision and published version; revision 0 when absent |
+| `PUT /admin/homepage/draft` | Save `{revision,layout}`; revision 0 creates the first draft |
+| `POST /admin/homepage/publish` | Publish saved draft using `{revision}`; revalidate availability; advances revision |
+| `GET /admin/homepage/versions?offset=0&limit=20` | Published history; maximum page size 50 |
+| `POST /admin/homepage/restore` | Copy `{revision,version}` into draft; publication is a separate action |
+
+Stale writes/publishes/restores return 409. Mutations are audited; published
+snapshots have database update/delete guards. Restore plus publish creates a
+new version and preserves history. Migration 013 creates only new tables and
+triggers, seeds no layout, and refuses downgrade with drafts/history. Runtime
+migration and backup/rollout authorization remain separate from source work.
+
+Admin editor: `/admin/homepage`. Draft preview is a private content preview,
+with phone/desktop widths; clients retain their respective final styles.
+Desktop reads the published API on page refresh; native/phone website reads it
+when Discover gains focus or is reloaded. Disabled/missing service cards are
+omitted, with no invented destinations. Existing service-detail membership
+rules remain authoritative.

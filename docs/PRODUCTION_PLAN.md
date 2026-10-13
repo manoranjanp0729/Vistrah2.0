@@ -1,6 +1,6 @@
 # Production implementation plan
 
-Status: Phase 1 source prepared and checked 13 October 2026; user-PC runtime verification is pending. This plan is the
+Status: Phase 1 source checked and user-PC local startup verified 13 October 2026. Phase 2 CI/release source is prepared; hosted checks, publication and rollback gates remain open. This plan is the
 implementation sequence; the earlier 85-item audit is a dated baseline, not a
 production readiness certificate. Complete and verify each gate before moving
 the running application forward. Work in the existing repository and stack.
@@ -57,3 +57,13 @@ It refuses an API container whose command would migrate/seed on startup.
 
 See ENVIRONMENTS.md for commands. Source verification is followed by user-PC
 health confirmation; native/browser visual confirmation remains separate.
+
+## Phase 2 execution
+
+Added read-only PR/push checks and main-only manual image publishing, with pinned
+actions, disposable PostgreSQL tests, client builds and blocking JavaScript
+dependency audits. See RELEASES.md for registry, review and rollback controls.
+User-PC Phase 1 output confirms db/api/web/admin healthy and API health ok.
+CI execution, private image publication and rollback rehearsal are not yet
+verified. Repository rulesets are blocked by the current GitHub account plan;
+no protection, account upgrade or AWS deployment was performed.

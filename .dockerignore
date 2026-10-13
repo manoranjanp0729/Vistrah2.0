@@ -15,3 +15,17 @@ test-results
 **/.env.local
 **/.env
 **/*.tsbuildinfo
+**/.env.*
+**/*.pem
+**/*.key
+**/*.dump
+**/*.tar
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+**/*.tfvars.json
+**/.terraform
+**/credentials.json
+**/*.jks
+**/*.keystore
+**/*.p12

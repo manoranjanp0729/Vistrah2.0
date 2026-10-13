@@ -17,6 +17,7 @@ Use only rows relevant to the task. Paths describe source, not deployment status
 | Database/schema | `backend/app/database.py`, `models.py`, domain model files; `backend/migrations/versions/`, `backend/alembic.ini`; `backend/tests/conftest.py` |
 | Homepage configuration/editor (planned) | Phase 3 in `docs/PRODUCTION_PLAN.md`; current homepage UI is source-composed. Provider requirement/publication editors are different features. |
 | Environment and phase gates | `docs/ENVIRONMENTS.md`, `docs/PRODUCTION_PLAN.md`, root/mobile env examples, `scripts/check-environment.py`, `scripts/tests/test_environment.py`, `scripts/start-local.ps1` |
+| CI and release controls | `.github/workflows/ci.yml`, `publish-images.yml`; `docs/RELEASES.md`; hosted execution/publication gates remain separate from source checks |
 | Runtime and configuration | `compose.yaml`: `web`, `api`, `worker`, `db`, `admin`; `frontend/Dockerfile`, `backend/Dockerfile`; frontend `package.json`, backend `requirements.txt`/`requirements.lock`; `shared/catalogue.json` |
 
 Frontend component names above are relative to `frontend/components/`; backend module names are relative to `backend/app/`. `services/page.tsx` and `service/[...segments]/page.tsx` are under the public route group. Tests are in `frontend/lib/`, `frontend/scripts/`, `frontend/e2e/` and `backend/tests/`; explicit QA utilities are under `scripts/`.

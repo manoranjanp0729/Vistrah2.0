@@ -261,3 +261,28 @@ Per-customer idempotency repeats the same request without creating another order
 changed payload with the same key returns 409. Private paths are no-store, bounded
 and validated without echoing submitted contact data. Migration 015 seeds nothing
 and refuses downgrade with cart/order/reviewed-term data.
+
+Commerce client availability: `GET /commerce/ordering-status` publicly returns
+`{test_orders_enabled,live_orders_enabled:false}` with no-store. Admin uses
+`GET /admin/commerce-ordering-status` with existing role/cookie checks. These
+flags do not grant permission; order mutation guards remain authoritative.
+`GET /admin/commerce-listings` additionally accepts `provider_id` (positive)
+and `operator=SELLER|VISTRAH` for the admin-owned service workspace.
+
+Desktop cart/orders: `/commerce/cart`, `/commerce/orders`; native/phone same
+logical routes, with `/app` prefix on the deployed phone website. Native seller
+orders: `/seller/orders/{businessId}`; desktop embeds them in seller businesses.
+VISTRAH management: `/admin/vistrah-services` and `/admin/commerce-orders`.
+Request confirmation displays the reviewed unit/subtotal/delivery fee/cutoff;
+client totals are never posted. Private contact/address fields are submitted only
+for the explicitly selected order method and remain scoped to authenticated
+customer/seller/admin order views. Browser request retry payload lives only in
+component memory; check purchase orders after reload/uncertain response.
+
+Cart responses include `customer_id` and each line's immutable `id`. New clients
+bind updates to `expected_customer_id` and `line_id`, and removals to `line_id`
+plus revision. Order requests include `expected_customer_id` and `cart_line_id`.
+These optional compatibility fields are checked against the authenticated account
+and owned cart row; they grant no access. Removing/re-adding a row cannot reuse a
+stale quote even if its revision restarts. Absent fields preserve legacy request
+fingerprints; supplied cart IDs participate in duplicate-request matching.

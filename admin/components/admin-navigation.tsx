@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 export const adminGroups=[
  {title:'Daily work',items:[['','Overview'],['requests','Enquiries & estimates']]},
- {title:'Providers & approvals',items:[['provider-applications','Provider applications'],['providers','Businesses & providers'],['ownership-claims','Ownership claims'],['publication-drafts','Publication reviews'],['employer-jobs','Employer job approvals'],['commerce-listings','Product & package approvals'],['provider-services','Service approvals']]},
+ {title:'Providers & approvals',items:[['provider-applications','Provider applications'],['providers','Businesses & providers'],['ownership-claims','Ownership claims'],['publication-drafts','Publication reviews'],['employer-jobs','Employer job approvals'],['commerce-listings','Product & package approvals'],['vistrah-services','VISTRAH service packages'],['commerce-orders','Purchase orders'],['provider-services','Service approvals']]},
  {title:'Services & membership',items:[['homepage','Homepage editor'],['catalogue','Service catalogue'],['offers','Member offers'],['payments','Payments']]},
  {title:'Advanced tools',advanced:true,items:[['provider-requirements','Application requirements'],['audit','Activity log'],['job-sources','Job sources'],['workflows','Workflow operations']]},
 ];

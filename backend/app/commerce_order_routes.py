@@ -4,7 +4,7 @@ import json
 import os
 from typing import Literal
 from uuid import uuid4
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from pydantic import Field, field_validator, model_validator
 from sqlalchemy import select, update, func
 from sqlalchemy.orm import Session
@@ -20,6 +20,8 @@ router=APIRouter(tags=['Commerce cart and test orders'])
 
 
 class CartInput(Strict):
+    line_id:str | None=Field(default=None,min_length=36,max_length=36,pattern=r'^[0-9a-f-]{36}$')
+    expected_customer_id:int | None=Field(default=None,gt=0,strict=True)
     quantity:int=Field(ge=1,le=999,strict=True)
     revision:int=Field(ge=0,strict=True)
 
@@ -32,6 +34,8 @@ class RequestOrder(Strict):
     listing_id:str=Field(min_length=36,max_length=36,pattern=r'^[0-9a-f-]{36}$')
     listing_revision:int=Field(gt=0,strict=True)
     cart_revision:int=Field(gt=0,strict=True)
+    cart_line_id:str | None=Field(default=None,min_length=36,max_length=36,pattern=r'^[0-9a-f-]{36}$')
+    expected_customer_id:int | None=Field(default=None,gt=0,strict=True)
     fulfilment_method:Literal['PICKUP','DELIVERY','SERVICE']
     phone:str=Field(min_length=7,max_length=20,pattern=r'^\+?[0-9 ()-]+$')
     delivery_address:str | None=Field(default=None,min_length=10,max_length=1000)
@@ -78,12 +82,23 @@ def orderable(row,quantity,method=None):
     if method is not None and method not in row.fulfilment_modes:raise HTTPException(422,'Choose an approved fulfilment method')
 
 
+@router.get('/commerce/ordering-status')
+def ordering_status(response:Response):
+    response.headers['Cache-Control']='no-store'
+    return {'test_orders_enabled':os.getenv('APP_ENV','production')=='development','live_orders_enabled':False}
+
+
+@router.get('/admin/commerce-ordering-status')
+def admin_ordering_status(response:Response,user:User=Depends(admin_user)):
+    return ordering_status(response)
+
+
 @router.get('/commerce/cart')
 def cart(user:User=Depends(current_user),db:Session=Depends(get_db)):
     lines=db.scalars(select(CartLine).where(CartLine.customer_id==user.id).order_by(CartLine.id)).all()
     member=bool(eligible_memberships(db,user));items=[]
     for line in lines:
-        item={'listing_id':line.listing_id,'quantity':line.quantity,'revision':line.revision}
+        item={'id':line.id,'listing_id':line.listing_id,'quantity':line.quantity,'revision':line.revision}
         try:
             row,provider=published(db,line.listing_id)
             if row.kind=='SERVICE_PACKAGE' and not member:raise HTTPException(403,'Membership is required to view this service package')
@@ -92,33 +107,35 @@ def cart(user:User=Depends(current_user),db:Session=Depends(get_db)):
         except HTTPException as exc:
             item.update(available=False,reason=exc.detail)
         items.append(item)
-    return {'items':items,'maximum_items':50}
+    return {'items':items,'maximum_items':50,'customer_id':user.id}
 
 
 @router.put('/commerce/cart/items/{listing_id}')
 def put_cart(listing_id:str,data:CartInput,user:User=Depends(current_user),db:Session=Depends(get_db)):
-    customer_lock(db,user);row,_=published(db,listing_id,True)
+    customer_lock(db,user)
+    if data.expected_customer_id is not None and data.expected_customer_id!=user.id:raise HTTPException(409,'Your account changed; reload the cart')
+    row,_=published(db,listing_id,True)
     if row.kind=='SERVICE_PACKAGE':member_user(user,db)
     orderable(row,data.quantity)
     line=db.scalar(select(CartLine).where(CartLine.customer_id==user.id,CartLine.listing_id==listing_id).with_for_update())
     if line is None:
-        if data.revision!=0:raise HTTPException(409,'Cart changed; reload before saving')
+        if data.line_id is not None or data.revision!=0:raise HTTPException(409,'Cart changed; reload before saving')
         if db.scalar(select(func.count()).select_from(CartLine).where(CartLine.customer_id==user.id))>=50:raise HTTPException(409,'Remove a cart item before adding more')
         line=CartLine(id=str(uuid4()),customer_id=user.id,listing_id=listing_id,quantity=data.quantity)
         db.add(line)
     else:
-        if line.revision!=data.revision:raise HTTPException(409,'Cart changed; reload before saving')
+        if (data.line_id is not None and line.id!=data.line_id) or line.revision!=data.revision:raise HTTPException(409,'Cart changed; reload before saving')
         line.quantity=data.quantity;line.revision+=1
     db.commit();db.refresh(line)
-    return {'listing_id':line.listing_id,'quantity':line.quantity,'revision':line.revision}
+    return {'id':line.id,'listing_id':line.listing_id,'quantity':line.quantity,'revision':line.revision}
 
 
 @router.delete('/commerce/cart/items/{listing_id}')
-def delete_cart(listing_id:str,revision:int=Query(...,ge=1),user:User=Depends(current_user),db:Session=Depends(get_db)):
+def delete_cart(listing_id:str,revision:int=Query(...,ge=1),line_id:str|None=Query(None,min_length=36,max_length=36),user:User=Depends(current_user),db:Session=Depends(get_db)):
     customer_lock(db,user)
     line=db.scalar(select(CartLine).where(CartLine.customer_id==user.id,CartLine.listing_id==listing_id).with_for_update())
     if not line:raise HTTPException(404,'Cart item not found')
-    if line.revision!=revision:raise HTTPException(409,'Cart changed; reload before removing')
+    if (line_id is not None and line.id!=line_id) or line.revision!=revision:raise HTTPException(409,'Cart changed; reload before removing')
     db.delete(line);db.commit();return {'removed':True}
 
 
@@ -132,7 +149,10 @@ def order_output(row):
 @router.post('/commerce/orders',status_code=201)
 def request_order(data:RequestOrder,user:User=Depends(current_user),db:Session=Depends(get_db)):
     test_ordering();customer_lock(db,user)
-    request_hash=hashlib.sha256(json.dumps(data.model_dump(exclude={'idempotency_key'}),sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    if data.expected_customer_id is not None and data.expected_customer_id!=user.id:raise HTTPException(409,'Your account changed; reload the cart before requesting an order')
+    fingerprint=data.model_dump(exclude={'idempotency_key','expected_customer_id'})
+    if data.cart_line_id is None:fingerprint.pop('cart_line_id')
+    request_hash=hashlib.sha256(json.dumps(fingerprint,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     existing=db.scalar(select(CommerceOrder).where(CommerceOrder.customer_id==user.id,CommerceOrder.idempotency_key==data.idempotency_key))
     if existing:
         if existing.request_hash!=request_hash:raise HTTPException(409,'Use a new idempotency key for a changed order request')
@@ -143,7 +163,7 @@ def request_order(data:RequestOrder,user:User=Depends(current_user),db:Session=D
     row,provider=published(db,data.listing_id,True)
     if row.kind=='SERVICE_PACKAGE':member_user(user,db)
     line=db.scalar(select(CartLine).where(CartLine.customer_id==user.id,CartLine.listing_id==row.id).with_for_update())
-    if line is None or line.revision!=data.cart_revision:raise HTTPException(409,'Cart changed; reload before requesting this order')
+    if line is None or line.revision!=data.cart_revision or (data.cart_line_id is not None and line.id!=data.cart_line_id):raise HTTPException(409,'Cart changed; reload before requesting this order')
     if row.revision!=data.listing_revision:raise HTTPException(409,'Listing price or terms changed; review them before requesting an order')
     orderable(row,line.quantity,data.fulfilment_method)
     if db.scalar(select(func.count()).select_from(CommerceOrder).where(CommerceOrder.customer_id==user.id,CommerceOrder.status.in_(('REQUESTED','CONFIRMED','BUILDING','DISPATCHED','IN_PROGRESS'))))>=100:raise HTTPException(409,'Too many active test orders')
@@ -168,7 +188,7 @@ def paged_orders(db,query,page):
 
 @router.get('/commerce/orders')
 def my_orders(page:int=Query(1,ge=1,le=10000),user:User=Depends(current_user),db:Session=Depends(get_db)):
-    return paged_orders(db,select(CommerceOrder).where(CommerceOrder.customer_id==user.id),page)
+    return {**paged_orders(db,select(CommerceOrder).where(CommerceOrder.customer_id==user.id),page),'customer_id':user.id}
 
 
 @router.get('/commerce/orders/{order_id}')

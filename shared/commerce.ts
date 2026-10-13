@@ -1,5 +1,6 @@
 export type ListingInput={kind:'PRODUCT'|'SERVICE_PACKAGE';service_id:number|null;title:string;description:string;unit_price_paise:number;currency:'INR';available:boolean};
-export type CommerceListing=ListingInput&{id:string;business:string;revision:number};
+import type {OrderTerms} from './commerce-orders';
+export type CommerceListing=ListingInput&{id:string;business:string;revision:number;fulfilment_operator?:'SELLER'|'VISTRAH';order_terms?:OrderTerms};
 export type SellerListing=CommerceListing&{status:'DRAFT'|'SUBMITTED'|'APPROVED'|'REJECTED'|'ARCHIVED';review_note:string};
 export type ListingPage<T>={items:T[];total:number;page:number;page_size:number};
 export type ListingForm={kind:ListingInput['kind'];service_id:string;title:string;description:string;price:string;available:boolean};

@@ -166,3 +166,28 @@ terms. Seller/customer cart, stock and order UI plus VISTRAH controls are the ne
 slice; runtime 015 rollout and full user-host/device QA remain pending. Retain
 mobile audit, homepage browser, registry/protection, live payment/tax/refund and
 security/recovery/staging gates.
+
+## Phase 4 client and QA slice — 14 October 2026
+
+Stock/delivery/cancellation proposals, customer cart/request/history/cancellation
+and seller confirmation/fulfilment now have desktop and native/shared-phone
+screens. VISTRAH admin service-package management and fulfilment use explicit
+owned-business/admin routes. UI shows reviewed fees/cutoffs, explicit confirmations
+and unpaid-test labels; server capability and mutation guards keep live ordering
+disabled. Shared helpers align methods/statuses/revision-bound payloads; existing
+enquiry history is not repurposed as purchases. Scheduling remains manual.
+
+105 focused tests passed, along with typechecks/scoped lint, desktop build/HTTP
+route smoke, phone and Android bundle exports, PowerShell grammar and dedicated
+Playwright collection. The preceding backend commit passed hosted PostgreSQL
+concurrency/migrations and all clients; mobile audit remains blocked. A guarded
+-Commerce fixture and browser journey are prepared in HOMEPAGE_QA.md. Actual
+browser/device and new full admin/Compose execution remain unverified. Do not
+close Phase 4 or promote a runtime based on compilation alone. Next is functional
+QA; live tax/payment/refund and production fulfilment/ownership exceptions remain
+Phase 5/6 prerequisites. Broader admin simplification remains deferred.
+
+Customer identity and immutable cart-row IDs bind new requests to the reviewed
+cart instance. Forms reset on account/row/revision changes, and quantity controls
+lock while reviewing confirmation. Regression tests reject stale account scope
+and remove/re-add requests even when line revisions coincide.

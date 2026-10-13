@@ -16,6 +16,9 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
     <Stack.Screen name="service/find-jobs" options={{title:'Find Jobs'}}/>
     <Stack.Screen name="employer-jobs" options={{title:'Employer job postings'}}/>
+    <Stack.Screen name="commerce/cart" options={{title:'Your cart'}}/>
+    <Stack.Screen name="commerce/orders" options={{title:'Purchase orders'}}/>
+    <Stack.Screen name="seller/orders/[id]" options={{title:'Customer purchase orders'}}/>
     <Stack.Screen name="commerce/index" options={{title:'Products & service packages'}}/>
     <Stack.Screen name="commerce/[id]" options={{title:'Listing details'}}/>
     <Stack.Screen name="seller/commerce/[id]" options={{title:'Your products & packages'}}/>

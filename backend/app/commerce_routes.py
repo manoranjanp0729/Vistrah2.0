@@ -203,9 +203,11 @@ def archive_listing(provider_id: int, listing_id: str, data: Revision, user: Use
 
 
 @router.get('/admin/commerce-listings')
-def review_queue(user: User = Depends(admin_user), db: Session = Depends(get_db), page: int = Query(1, ge=1, le=10000), status: Literal['DRAFT','SUBMITTED','APPROVED','REJECTED','ARCHIVED']|None=None):
+def review_queue(user: User = Depends(admin_user), db: Session = Depends(get_db), page: int = Query(1, ge=1, le=10000), status: Literal['DRAFT','SUBMITTED','APPROVED','REJECTED','ARCHIVED']|None=None, provider_id:int|None=Query(None,ge=1), operator:Literal['SELLER','VISTRAH']|None=None):
     query=select(CommerceListing,Provider).join(Provider,Provider.id==CommerceListing.provider_id)
     if status:query=query.where(CommerceListing.status==status)
+    if provider_id is not None:query=query.where(CommerceListing.provider_id==provider_id)
+    if operator is not None:query=query.where(CommerceListing.fulfilment_operator==operator)
     total=db.scalar(select(func.count()).select_from(query.subquery()))
     rows=db.execute(query.order_by(CommerceListing.updated_at.desc(),CommerceListing.id).offset((page-1)*20).limit(20))
     return {'items':[output(row,provider,True) for row,provider in rows],'total':total,'page':page,'page_size':20}

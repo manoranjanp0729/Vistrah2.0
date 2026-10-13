@@ -46,3 +46,16 @@ Tests: `test_commerce_orders.py`, `test_commerce_orders_migration.py`,
 Existing `admin/components/commerce-reviews.tsx` displays/acknowledges terms.
 Commerce client cart/order controls remain pending; existing /me/orders is enquiry
 history and is not repurposed. Live order mutations remain disabled.
+
+Commerce purchase clients: `shared/commerce-orders.ts`;
+`frontend/components/commerce-orders.tsx`, `lib/use-commerce-resource.ts`,
+public `commerce/cart` and `commerce/orders`; native
+`mobile/src/components/commerce-orders.tsx`, `app/commerce/cart.tsx`,
+`orders.tsx`, `app/seller/orders/[id].tsx`.
+VISTRAH/admin: `admin/components/commerce-workspace.tsx`,
+`app/admin/vistrah-services` and `commerce-orders`; admin Next/Docker shared-root
+layout mirrors desktop. QA: `backend/app/commerce_test_fixture.py`,
+`tests/test_commerce_fixture.py`, helper optional `-Commerce`,
+`frontend/playwright.commerce.config.ts`/`e2e/commerce-orders.spec.ts` and
+`lib/commerce-orders.test.ts`. New ordering-status endpoints and admin listing
+provider/operator filters stay in existing commerce route modules.

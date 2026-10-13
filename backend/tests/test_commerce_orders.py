@@ -236,3 +236,43 @@ def test_approving_order_terms_requires_explicit_acknowledgement(client,merchant
     row=submit(client,merchant,path,terms)
     assert listing_review(client,admin,row).status_code==422
     assert review(client,admin,row).status_code==200
+
+
+def test_order_capabilities_and_admin_listing_filters(client,merchant,admin,monkeypatch):
+    response=client.get('/commerce/ordering-status')
+    assert response.json()=={'test_orders_enabled':True,'live_orders_enabled':False}
+    assert 'no-store' in response.headers['cache-control']
+    assert client.get('/admin/commerce-ordering-status').status_code==401
+    assert client.get('/admin/commerce-ordering-status',headers=merchant['headers']).status_code==403
+    assert client.get('/admin/commerce-ordering-status',headers=admin).json()['test_orders_enabled']
+    _,row=configured(client,merchant,admin)
+    assert client.get('/admin/commerce-listings?provider_id='+str(merchant['provider'].id)+'&operator=SELLER',headers=admin).json()['total']==1
+    assert client.get('/admin/commerce-listings?provider_id='+str(merchant['provider'].id)+'&operator=VISTRAH',headers=admin).json()['total']==0
+    assert client.get('/admin/commerce-listings?provider_id=0',headers=admin).status_code==422
+    monkeypatch.setenv('APP_ENV','production')
+    assert not client.get('/commerce/ordering-status').json()['test_orders_enabled']
+    assert not client.get('/admin/commerce-ordering-status',headers=admin).json()['test_orders_enabled']
+
+
+def test_order_intent_is_bound_to_the_cart_customer(client,merchant,admin,customer):
+    _,row=configured(client,merchant,admin);line=add(client,customer,row)
+    scope=client.get('/commerce/cart',headers=customer).json()['customer_id']
+    data={'listing_id':row['id'],'listing_revision':row['revision'],'cart_revision':line['revision'],'fulfilment_method':'PICKUP','phone':'9000000000','idempotency_key':str(uuid4()),'expected_customer_id':scope+1000}
+    assert client.post('/commerce/orders',headers=customer,json=data).status_code==409
+    data['expected_customer_id']=scope
+    assert client.post('/commerce/orders',headers=customer,json=data).status_code==201
+    assert client.get('/commerce/orders',headers=customer).json()['customer_id']==scope
+
+
+def test_recreated_cart_line_cannot_reuse_a_stale_quote_or_update_token(client,merchant,admin,customer):
+    _,row=configured(client,merchant,admin);original=add(client,customer,row)
+    data={'listing_id':row['id'],'listing_revision':row['revision'],'cart_revision':original['revision'],'cart_line_id':original['id'],'fulfilment_method':'PICKUP','phone':'9000000000','idempotency_key':str(uuid4())}
+    assert client.delete('/commerce/cart/items/'+row['id']+'?revision=1&line_id='+original['id'],headers=customer).status_code==200
+    replacement=add(client,customer,row,3)
+    assert replacement['revision']==original['revision'] and replacement['id']!=original['id']
+    assert client.post('/commerce/orders',headers=customer,json=data).status_code==409
+    assert client.put('/commerce/cart/items/'+row['id'],headers=customer,json={'revision':1,'line_id':original['id'],'quantity':2}).status_code==409
+    assert client.delete('/commerce/cart/items/'+row['id']+'?revision=1&line_id='+original['id'],headers=customer).status_code==409
+    data['cart_line_id']=replacement['id']
+    created=client.post('/commerce/orders',headers=customer,json=data);assert created.status_code==201
+    assert created.json()['quantity']==3

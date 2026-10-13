@@ -31,8 +31,10 @@ the running application forward. Work in the existing repository and stack.
   uploads/storage separately. Preserve existing private evidence access.
 - Commerce listing scope is agreed: products and fixed-price service packages,
   seller-set INR prices, independent admin approval and seller fulfilment.
-  Stock, schedules, delivery/tax, cancellation and refund decisions remain
-  required before checkout/order implementation. If a
+  Stock and delivery charges are seller-set/admin-approved; service packages
+  require seller confirmation, VISTRAH services admin confirmation. Product
+  cancellation is before dispatch or before building; service cancellation is
+  before start. Tax/live payment/refund treatment remains required before launch. If a
   services/jobs-only launch is selected, move commerce to a later release;
   do not silently remove it from the requested full-app scope.
 - Phase 5 is essential before paid production access. Current payments are
@@ -81,7 +83,7 @@ Deferral never changes the production publishing gate.
 | Private registry visibility/pull access and complete release digests | Verify first manual publication, package privacy/access and retention | After checks pass, before staging |
 | Image/config rollback rehearsal | Run prior/candidate/prior app versions against an explicitly disposable project; verify health/persistence | Before runtime promotion |
 | Homepage runtime migration, admin/phone/device QA | Backup/recovery preflight and separate controlled migration 013 rollout; publish/refresh/restore journey on all clients | Before closing Phase 3 runtime gate |
-| Commerce stock/reservations, package schedules, delivery/tax and cancellation/refund scope | Listing pricing/approval/fulfilment agreed; settle remaining rules before checkout | Phase 4 |
+| Commerce client cart/orders and live tax/refund rules | Implement screens and QA for the agreed stock/confirmation/cancellation backend; settle tax/refund/payment treatment before production ordering | Phase 4/5 |
 | Live merchant/gateway and Android payment-policy decision | Verified payment/entitlement/refund/reconciliation implementation; sandbox remains fail-closed | Phase 5 |
 | Recovery email, dependency/image/Python scans, private media, backup/monitoring | Complete operational/security checks and restoration drill | Phase 6 before launch |
 | Current AWS resource state, budget/IAM/capacity/DNS/HTTPS | Review and authorize staging infrastructure and costs | Phase 7 |
@@ -143,3 +145,24 @@ interaction or APK/device test is claimed. Full admin hosted build and user-host
 commerce journey remain open. Next: remaining commercial policy decisions,
 server-priced cart/orders and shared lifecycle tests. All checkout/live payment
 and normal runtime rollout gates remain intact.
+
+## Phase 4 stock/cart/order API slice — 14 October 2026
+
+Business rules agreed by user: seller-set product quantities and delivery charges
+with admin review; seller confirmation for service packages; VISTRAH-admin control
+for VISTRAH services; product cancellation before dispatch/build. Source 015 adds
+reviewed order terms, protected allocated stock, private carts, single-listing
+order requests, snapshots, duplicate-request protection and guarded fulfilment.
+Product stock is allocated atomically at confirmation, released on eligible
+cancellation, retained for completed sales. No stock is held by an abandoned cart
+or an unconfirmed request. Manual service confirmation does not reserve a booking
+slot or establish a schedule. Cancellation cutoffs are copied into each order.
+
+Order requests/lifecycle mutations are explicitly development-only TEST records.
+Tax is NOT_CONFIGURED and payment is NOT_STARTED; quoted amounts are not final
+invoices or production payment authorizations. Existing enquiry/membership paths
+remain unchanged. Admin approval displays and acknowledges all configured order
+terms. Seller/customer cart, stock and order UI plus VISTRAH controls are the next
+slice; runtime 015 rollout and full user-host/device QA remain pending. Retain
+mobile audit, homepage browser, registry/protection, live payment/tax/refund and
+security/recovery/staging gates.

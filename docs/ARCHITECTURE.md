@@ -77,9 +77,11 @@ has not migrated/replaced the normal runtime; see the Phase 3 rollout gate.
 
 ## Payments and production boundary
 
-Current checkout purchases a sandbox membership plan only. There is no product
-cart, service-purchase checkout or commerce order lifecycle. /me/orders does not
-establish that those modules exist. Payment amount/ownership/signature/timestamp,
+Current payment checkout purchases a sandbox membership plan only. Commerce
+migration 015 provides private carts and an unpaid development-only TEST order
+request/confirmation/fulfilment lifecycle. /commerce/orders is separate from
+/me/orders (enquiry history). Client cart/order screens and live ordering remain
+pending; no tax invoice, gateway charge or appointment reservation is implied. Payment amount/ownership/signature/timestamp,
 idempotency and refund/reconciliation rules are enforced on the API; financial
 history is append-only at the application/database-trigger level.
 
@@ -146,3 +148,14 @@ Android/browser, live gateway, SMTP, backup and production rollout verification.
 Use module-map.md to find code, API.md for routes, MOBILE.md for device/build
 details, SECURITY.md for current safeguards/limits, and PRODUCTION_PLAN.md for
 phase completion gates. Only read the references relevant to the current task.
+
+Commerce operator is explicit SELLER or admin-created VISTRAH (services only),
+not inferred from names. Seller-entered stock batch quantity, delivery methods/
+fees and cancellation cutoffs are proposed/unpublished until independent review;
+admin approval requires an acknowledgement of configured terms. Cart/request
+holds no units; confirmation atomically allocates approved stock. Cancellable
+orders return that allocation once; completed sales retain it. Order price and
+policy snapshots survive later listing edits. VISTRAH services are managed by
+admin-owned businesses and fulfilled via admin-only transitions. Seller-managed
+orders retain current business ownership guards. Mutations are development-only
+until live tax/payment/refund integration; all operational/release gates remain.

@@ -197,3 +197,67 @@ native/shared-phone `/commerce`, `/commerce/{id}` and
 Package UI access never substitutes for API membership checks. Price formatting
 and input preparation are shared in `shared/commerce.ts`; approval/status fields
 are never accepted as seller input. Checkout remains a later contract.
+
+## Reviewed fulfilment terms, cart and unpaid test orders — Phase 4
+
+Migration 015 adds stock/fulfilment/cancellation proposals and private cart/order
+records. Existing 014 listings remain readable with no invented stock or delivery
+policy; they cannot enter cart/order flow until terms are configured and reviewed.
+Existing listing edits preserve terms unless kind/service binding changes, which
+clears terms and requires new review. Changing a stock-backed listing kind after
+allocation is refused; archive/create a new listing instead.
+
+| Route | Contract |
+|---|---|
+| `PATCH /seller/businesses/{provider}/commerce-listings/{id}/order-terms` | Current revision plus reviewed stock/method/fee/cutoff proposal; unpublishes |
+| `POST /admin/vistrah/businesses/{provider}/commerce-listings` | Admin-owned business; service package only; explicit VISTRAH operator |
+| `PATCH /admin/vistrah/businesses/{provider}/commerce-listings/{id}` | Admin-owned VISTRAH package listing edit |
+| `PATCH …/{id}/order-terms` and `POST …/{id}/submit` / `archive` | VISTRAH-admin term proposal and draft lifecycle |
+| `GET /commerce/cart` | Current customer's private cart; inaccessible package details withheld |
+| `PUT /commerce/cart/items/{listing}` | Strict quantity 1–999, revision 0 to add or current revision to update |
+| `DELETE /commerce/cart/items/{listing}?revision=N` | Current owned cart revision; unavailable items can still be removed |
+| `POST /commerce/orders` | Single owned cart listing, current cart/listing revisions, fulfilment method, phone, delivery address only for DELIVERY, idempotency key |
+| `GET /commerce/orders?page=1` / `GET /commerce/orders/{id}` | Customer-owned order history/detail; not /me/orders enquiries |
+| `POST /commerce/orders/{id}/cancel` | Current revision; customer only, before snapshotted cutoff |
+| `GET /seller/businesses/{provider}/commerce-orders?page=1` | Current owner, seller-managed historical orders only |
+| `POST …/commerce-orders/{id}/transition` | Current revision and permitted status; seller-owned fulfilment |
+| `GET /admin/commerce-orders?operator=VISTRAH&page=1` | Admin supervision, optional operator filter |
+| `POST /admin/commerce-orders/{id}/transition` | Admin fulfilment for VISTRAH orders only |
+
+Order terms: stock_quantity is approved total batch units (0–1,000,000), including
+already confirmed/sold units. Remaining stock is stock_quantity minus protected
+allocated_quantity; sellers cannot post allocated_quantity. Products select
+PICKUP and/or DELIVERY; DELIVERY requires a nonnegative INR delivery_fee_paise
+(flat per single-listing order), other methods require no delivery fee. Product
+cutoff is BEFORE_DISPATCH or BEFORE_BUILD. Packages require null stock, SERVICE
+method and BEFORE_SERVICE_START. These terms are independently reviewed; approval
+requires `order_terms_acknowledged:true` whenever terms are configured. Review
+revision binds acknowledgement to the submitted proposal; self-review is refused.
+
+Cart holds no stock, maximum 50 lines. Order requests hold no stock. Confirmation
+atomically allocates approved product units after ownership/eligibility/revision
+checks; two confirmations cannot consume the same remaining units. Cancellation
+returns allocated stock once before the copied cutoff. Completed sales keep their
+allocation; new quantity proposals cannot erase confirmed/sold units. Membership
+is enforced on package cart edits, requests and confirmation; ownership-protected
+historical orders remain private, with no public contact/address disclosure.
+
+Requests snapshot title/business/kind/operator, price, quantity, delivery charge
+and cancellation cutoff. Client totals are rejected; current price/revision must
+be reviewed after a listing changes. REQUESTED → CONFIRMED/REJECTED; confirmed
+products can dispatch (DELIVERY), begin building (BEFORE_BUILD) or complete pickup;
+delivery must dispatch before completion. Packages require CONFIRMED → IN_PROGRESS
+→ COMPLETED. BEFORE_BUILD closes on BUILDING; BEFORE_DISPATCH closes on dispatch
+(or pickup completion); BEFORE_SERVICE_START closes on IN_PROGRESS. Terminal and
+stale transitions fail with 409. A changed listing blocks pending confirmation;
+already confirmed orders retain their agreed snapshots.
+
+All order mutations fail closed outside explicit development. Records are mode
+TEST, payment_status NOT_STARTED, tax_status NOT_CONFIGURED. quoted_total_paise
+is unit price × quantity + approved delivery fee, stored as BIGINT; it is not a
+final tax invoice, paid transaction, guaranteed stock or reserved appointment.
+Live gateway/tax/refunds remain Phase 5; current membership checkout is unchanged.
+Per-customer idempotency repeats the same request without creating another order;
+changed payload with the same key returns 409. Private paths are no-store, bounded
+and validated without echoing submitted contact data. Migration 015 seeds nothing
+and refuses downgrade with cart/order/reviewed-term data.

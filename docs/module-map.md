@@ -37,3 +37,12 @@ admin `admin/components/commerce-reviews.tsx` and `/admin/commerce-listings`.
 Desktop seller workspace embeds listing controls; native business details link
 into them. Contract checks: `frontend/lib/commerce.test.ts`. Shared-source build
 boundaries: frontend Next root/Dockerfile and mobile Metro/Dockerfile.phone.
+
+Phase 4 cart/orders: `backend/app/commerce_order_models.py`,
+`commerce_order_routes.py`, migration `015_commerce_orders.py`;
+listing order terms/platform management remain in `commerce_routes.py`.
+Tests: `test_commerce_orders.py`, `test_commerce_orders_migration.py`,
+`test_commerce_order_concurrency.py` (guarded disposable PostgreSQL schema).
+Existing `admin/components/commerce-reviews.tsx` displays/acknowledges terms.
+Commerce client cart/order controls remain pending; existing /me/orders is enquiry
+history and is not repurposed. Live order mutations remain disabled.

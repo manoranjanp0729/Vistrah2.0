@@ -25,7 +25,11 @@ test('draft, preview, publish, web/phone refresh, stale revision and restore',as
    await group.getByLabel('Title',{exact:true}).fill(titles[index]);
    await group.getByRole('checkbox').nth(0).check();
    if(template!=='banner')await group.getByRole('checkbox').nth(1).check();
-   if(template==='banner')await group.getByLabel('Size',{exact:true}).selectOption('square');
+   if(template==='banner'){
+    const size=group.getByRole('combobox',{name:'Size',exact:true});
+    await size.selectOption('square');
+    await expect(size).toHaveValue('square');
+   }
   }
   console.log('[Homepage QA] Duplicate, remove and reorder sections/cards');
   await page.getByRole('group',{name:'1. banner',exact:true}).getByRole('button',{name:'Duplicate',exact:true}).click();

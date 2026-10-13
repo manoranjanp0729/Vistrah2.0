@@ -1,3 +1,10 @@
+# Homepage browser dropdown selector corrected — 14 October 2026
+
+- Uploaded error-context snapshot shows only the first banner, its title filled, Resume Building checkbox checked/active, and Size still wide. No grid/carousel or publication occurred. This places the stall at the next banner-size selection; the reported cleanup timeout masked it.
+- Test used exact getByLabel('Size') on a label wrapping a select and its options. Switched to the snapshot's accessible combobox role/name ('Size') and added toHaveValue('square') assertion. Keeps testing square banners and all later behaviours; no UI, API or database change.
+- Frontend typecheck/scoped lint and dedicated Playwright collection pass. Real Windows browser reproduction/pass remains pending; the independent cleanup/progress/deadline fixes are retained. No Chromium reinstall or Docker rebuild needed for this source-only selector change.
+- Next: pull and rerun the dedicated browser suite against the already healthy disposable stack; inspect its first bounded failure if any. Phase 4 remains on hold. Normal runtime and deferred production gates remain unchanged.
+
 # Homepage browser timeout diagnostics corrected — 14 October 2026
 
 - User-PC QA stack completed: all four test images built, six test containers healthy, guarded fixture initialized and 31 tests passed. This closes build/startup checks for the disposable stack; normal vistrah20 unchanged.

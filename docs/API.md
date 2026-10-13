@@ -161,3 +161,32 @@ Desktop reads the published API on page refresh; native/phone website reads it
 when Discover gains focus or is reloaded. Disabled/missing service cards are
 omitted, with no invented destinations. Existing service-detail membership
 rules remain authoritative.
+
+## Reviewed commerce listings — Phase 4 first slice
+
+Products and fixed-price service packages use seller-set INR unit prices (integer
+paise), independent admin approval and seller fulfilment. Quote-required services
+retain enquiries. This slice provides listings only; no stock reservation,
+booking, cart, order or live payment is implied by approval or availability.
+
+| Route | Contract |
+|---|---|
+| `GET /commerce/products?page=1` | Published eligible products; 20 per page |
+| `GET /commerce/service-packages?page=1` | Published eligible packages; existing membership required |
+| `GET /commerce/listings/{id}` | Published eligible detail; packages require membership |
+| `GET/POST /seller/businesses/{provider_id}/commerce-listings` | Current seller-owned business list/create draft |
+| `PATCH /seller/businesses/{provider_id}/commerce-listings/{id}` | Full listing plus current revision; every edit becomes draft |
+| `POST …/{id}/submit` / `POST …/{id}/archive` | Current revision; submit eligible draft or soft archive |
+| `GET /admin/commerce-listings?status=SUBMITTED&page=1` | Private review queue |
+| `POST /admin/commerce-listings/{id}/review` | Current revision, APPROVED/REJECTED status, reason |
+
+Input: kind PRODUCT or SERVICE_PACKAGE, service_id only for packages, title,
+description, unit_price_paise (1–1,000,000,000), currency INR and available boolean.
+Approval requires an active verified business, unchanged seller ownership and,
+for packages, an approved grant for an active catalogue service. These conditions
+are rechecked on public reads. Self-review is forbidden. Stale revisions return
+409. Editing an approved listing immediately hides it until independent review.
+Mutations are audited; private fields are excluded from public output. Production
+membership remains fail-closed for sandbox transactions. Migration 014 seeds no
+listings and refuses downgrade while seller data exists. Existing /me/orders
+(enquiry history) and membership payments are unchanged.

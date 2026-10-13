@@ -1,3 +1,11 @@
+# Phase 4 commerce listing foundation — 13 October 2026
+
+- User authorized the next phase while deferring simpler admin dashboard/functionality. Phase 3 browser/device journey and mobile audit/release gaps remain open; no phase-completion claim.
+- Agreed scope: products and fixed-price service packages; sellers set INR prices, independent admin approves, seller fulfils. Quote-required services retain enquiries.
+- Added commerce models/routes and migration 014 after 013. Seller-owned draft/edit/submit/archive, private admin review, paginated publication, strict paise prices, revision conflicts, ownership/verification/service grant checks and audit. Approved edits unpublish until reapproval. Packages preserve membership; sandbox access fails closed in production.
+- Verification: 21 commerce API tests and 21 existing homepage API tests passed on disposable SQLite; 1 migration roundtrip/data-preservation/downgrade guard test passed (43 total). Hosted PostgreSQL/client checks remain separate. Normal database and containers untouched; source-only slice, no browser UI changes yet.
+- Next: client listing screens and remaining availability/stock/scheduling/delivery/tax/cancellation rules, followed by server-priced cart/orders and lifecycle tests. Live gateway remains Phase 5. No checkout/payment schema or policy invented; existing enquiry history and membership payments unchanged.
+
 # Homepage browser dropdown selector corrected — 14 October 2026
 
 - Uploaded error-context snapshot shows only the first banner, its title filled, Resume Building checkbox checked/active, and Size still wide. No grid/carousel or publication occurred. This places the stall at the next banner-size selection; the reported cleanup timeout masked it.

@@ -29,8 +29,10 @@ the running application forward. Work in the existing repository and stack.
   templates, plus button-based reordering. Add drag-and-drop only when it helps.
 - Use existing bundled media for the first editor slice; add controlled media
   uploads/storage separately. Preserve existing private evidence access.
-- Commerce scope needs concrete pricing, stock/availability, fulfilment,
-  cancellation and refund decisions before Phase 4 schema work. If a
+- Commerce listing scope is agreed: products and fixed-price service packages,
+  seller-set INR prices, independent admin approval and seller fulfilment.
+  Stock, schedules, delivery/tax, cancellation and refund decisions remain
+  required before checkout/order implementation. If a
   services/jobs-only launch is selected, move commerce to a later release;
   do not silently remove it from the requested full-app scope.
 - Phase 5 is essential before paid production access. Current payments are
@@ -79,7 +81,7 @@ Deferral never changes the production publishing gate.
 | Private registry visibility/pull access and complete release digests | Verify first manual publication, package privacy/access and retention | After checks pass, before staging |
 | Image/config rollback rehearsal | Run prior/candidate/prior app versions against an explicitly disposable project; verify health/persistence | Before runtime promotion |
 | Homepage runtime migration, admin/phone/device QA | Backup/recovery preflight and separate controlled migration 013 rollout; publish/refresh/restore journey on all clients | Before closing Phase 3 runtime gate |
-| Commerce pricing, stock/availability, fulfilment and cancellation scope | Agree business rules before purchase schema/API implementation | Phase 4 |
+| Commerce stock/reservations, package schedules, delivery/tax and cancellation/refund scope | Listing pricing/approval/fulfilment agreed; settle remaining rules before checkout | Phase 4 |
 | Live merchant/gateway and Android payment-policy decision | Verified payment/entitlement/refund/reconciliation implementation; sandbox remains fail-closed | Phase 5 |
 | Recovery email, dependency/image/Python scans, private media, backup/monitoring | Complete operational/security checks and restoration drill | Phase 6 before launch |
 | Current AWS resource state, budget/IAM/capacity/DNS/HTTPS | Review and authorize staging infrastructure and costs | Phase 7 |
@@ -103,6 +105,22 @@ Use scripts/test-homepage.ps1 and compose.homepage-test.yaml for the separate
 local QA stack; see HOMEPAGE_QA.md. Docker/PowerShell and actual browser execution
 must be confirmed on the user PC. Source guard/API/migration tests and test
 collection are not browser journey evidence. Hosted API/admin/web/mobile checks
-for ea586b2 passed; the mobile audit remains blocked. Do not activate normal
-migration 013 or advance the next implementation phase until the functional
-test gate is reviewed. Physical native Android remains a separate device gate.
+for ea586b2 passed; the mobile audit remains blocked. Normal migration 013 remains separately gated. The user subsequently authorized
+Phase 4 source implementation with browser/device QA still open, and deferred
+admin dashboard simplification. Physical native Android remains a separate device gate.
+
+## Phase 4 first slice — 13 October 2026
+
+User selected products plus fixed-price service packages, seller pricing with
+admin approval, and seller fulfilment. Added commerce listing models, migration
+014 and shared API for draft/edit/submit/independent review/archive and paginated
+eligible publication. Package browsing preserves membership and approved service
+grants. Editing an approved listing unpublishes it; revisions prevent stale writes.
+Backend tests cover API rules, sandbox-production separation and migration data
+preservation/downgrade refusal. No normal migration or runtime replacement occurred.
+
+Next slices: seller/customer web/native listing screens, agreed availability and
+fulfilment rules, then server-priced cart/orders and lifecycle tests. Checkout,
+stock reservation, booking schedules, delivery/tax, cancellation/refund and live
+payments remain unfinished. Admin dashboard simplification is deferred per user.
+Phase 3 browser journey and production security/release gates remain open.

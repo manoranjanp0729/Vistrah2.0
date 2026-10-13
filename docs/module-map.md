@@ -23,3 +23,8 @@ Use only rows relevant to the task. Paths describe source, not deployment status
 Frontend component names above are relative to `frontend/components/`; backend module names are relative to `backend/app/`. `services/page.tsx` and `service/[...segments]/page.tsx` are under the public route group. Tests are in `frontend/lib/`, `frontend/scripts/`, `frontend/e2e/` and `backend/tests/`; explicit QA utilities are under `scripts/`.
 
 Existing references: [architecture](ARCHITECTURE.md), [API](API.md), [security](SECURITY.md), [workflows](WORKFLOWS.md), [provider onboarding](PROVIDER_ONBOARDING.md), [refinement backlog](REFINEMENT_BACKLOG.md), [validation](VALIDATION.md). Do not read them all by default.
+
+Phase 4 reviewed listing API: `backend/app/commerce_models.py`, `commerce_routes.py`,
+`backend/migrations/versions/014_commerce_listings.py`; scoped tests in
+`backend/tests/test_commerce_listings.py` and `test_commerce_migration.py`.
+Cart/orders and client purchase screens remain the next slices.

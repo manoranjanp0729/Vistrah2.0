@@ -60,3 +60,9 @@ volumes/
 postgres-data/
 .DS_Store
 Thumbs.db
+
+# Safe public environment templates; actual environment files stay ignored.
+!.env.test.example
+!.env.production.example
+!mobile/.env.browser.example
+!mobile/.env.production.example

@@ -8,7 +8,7 @@ from .models import *
 from .schemas import *
 from .security import current_user, admin_user, member_user, eligible_memberships, passwords, DUMMY_HASH, issue_token, token_session, bearer
 from .catalogue import catalogue, serialize, active_service, lookup
-from .marketplace_taxonomy import master_taxonomy
+from .marketplace_taxonomy import master_taxonomy, resolve_selection
 from .payments import payments, aware
 from datetime import timedelta
 import hashlib
@@ -113,6 +113,14 @@ def read_catalogue(db: Session = Depends(get_db)):
 @app.get('/marketplace/taxonomy')
 def read_marketplace_taxonomy():
     return master_taxonomy()
+
+@app.get('/marketplace/taxonomy/resolve')
+def resolve_marketplace_taxonomy(category: str, subcategory: str, listing_type: str):
+    """Validate a seller's classification choice without creating a listing."""
+    selection = resolve_selection(category, subcategory, listing_type)
+    if selection is None:
+        raise HTTPException(422, 'Choose a valid category, subcategory and listing type')
+    return selection
 
 @app.get('/catalogue/lookup')
 def catalogue_lookup(category: str, service: str, subcategory: str | None = None, db: Session = Depends(get_db)):

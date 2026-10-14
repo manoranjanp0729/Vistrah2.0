@@ -13,6 +13,9 @@ class CommerceListing(Base):
     seller_id: Mapped[int] = mapped_column(ForeignKey('users.id'), index=True)
     kind: Mapped[str] = mapped_column(String(20))
     service_id: Mapped[int | None] = mapped_column(ForeignKey('services.id'), nullable=True)
+    taxonomy_category_slug: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    taxonomy_subcategory_slug: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    taxonomy_listing_type_slug: Mapped[str | None] = mapped_column(String(100), nullable=True)
     title: Mapped[str] = mapped_column(String(150))
     description: Mapped[str] = mapped_column(Text)
     unit_price_paise: Mapped[int] = mapped_column()
@@ -39,6 +42,7 @@ class CommerceListing(Base):
         CheckConstraint("cancellation_rule IS NULL OR cancellation_rule IN ('BEFORE_DISPATCH','BEFORE_BUILD','BEFORE_SERVICE_START')", name='ck_commerce_cancellation'),
         CheckConstraint("kind IN ('PRODUCT','SERVICE_PACKAGE')", name='ck_commerce_kind'),
         CheckConstraint("status IN ('DRAFT','SUBMITTED','APPROVED','REJECTED','ARCHIVED')", name='ck_commerce_status'),
+        CheckConstraint("(taxonomy_category_slug IS NULL AND taxonomy_subcategory_slug IS NULL AND taxonomy_listing_type_slug IS NULL) OR (taxonomy_category_slug IS NOT NULL AND taxonomy_subcategory_slug IS NOT NULL AND taxonomy_listing_type_slug IS NOT NULL)", name='ck_commerce_taxonomy_complete'),
         CheckConstraint("currency = 'INR'", name='ck_commerce_currency'),
         CheckConstraint('unit_price_paise > 0 AND unit_price_paise <= 1000000000', name='ck_commerce_price'),
         CheckConstraint('revision > 0', name='ck_commerce_revision'),

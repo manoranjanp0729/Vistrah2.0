@@ -1,6 +1,6 @@
 import copy from '../../lib/interface-copy';
 import {useState} from 'react';
-import {ScrollView,Text,View,useWindowDimensions} from 'react-native';
+import {Pressable,ScrollView,Text,View,useWindowDimensions} from 'react-native';
 import {useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Field,Heading,Loading,ErrorPanel} from '../../components/ui';
@@ -14,6 +14,8 @@ export default function Services(){const {styles}=useTheme();
   const query=typed??(typeof params.q==='string'?params.q:'');
   const {width}=useWindowDimensions();
   const columns=width>=760?4:width>=360?2:1;
+  const taxonomy=useResource<{categories:{slug:string;title:string;subcategories:{slug:string;title:string;listing_types:{slug:string;title:string}[]}[]}[]}>('/marketplace/taxonomy');
+  const [expanded,setExpanded]=useState<string|null>(null);
   const catalogue=useResource<Category[]>('/catalogue');
   const matching=new Set(filterServices(catalogue.data??[],query).map(item=>item.category.id));
   const needle=query.trim().toLocaleLowerCase();

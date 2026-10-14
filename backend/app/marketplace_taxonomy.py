@@ -1,0 +1,27 @@
+"""Read-only master taxonomy metadata; never seeds or remaps existing records.
+
+The live catalogue remains backed by categories/subcategories/services until
+an audited, separately approved reconciliation of legacy database IDs.
+"""
+import json
+from functools import lru_cache
+from pathlib import Path
+
+TAXONOMY_FILE = Path(__file__).resolve().parents[2] / "shared" / "marketplace-taxonomy.json"
+
+@lru_cache(maxsize=1)
+def master_taxonomy():
+    data = json.loads(TAXONOMY_FILE.read_text(encoding="utf-8"))
+    categories = data["categories"]
+    assert len(categories) == 13
+    assert len({c["slug"] for c in categories}) == 13
+    return data
+
+def taxonomy_summary():
+    data = master_taxonomy()
+    return {
+        "version": data["version"],
+        "categories": len(data["categories"]),
+        "subcategories": sum(len(c["subcategories"]) for c in data["categories"]),
+        "listing_types": sum(len(s["listing_types"]) for c in data["categories"] for s in c["subcategories"]),
+    }

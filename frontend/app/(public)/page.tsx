@@ -11,7 +11,7 @@ import {allServices,urls} from '@/lib/urls';
 import type {Category,Membership} from '@/lib/types';
 import {SearchForm,SectionHeading,ServiceCard,ButtonLink,ContactBanner,EmptyState} from '@/components/ui';
 export const dynamic='force-dynamic';
-const shortcuts=[{title:'Jobs',href:'/jobs',icon:BriefcaseBusiness},{title:'Property',href:'/services?q=property',icon:House},{title:'Tax',href:'/services?q=tax',icon:Calculator},{title:'Marketing',href:'/services?q=marketing',icon:Megaphone}];
+const shortcuts=[{title:'Jobs',href:'/jobs',icon:BriefcaseBusiness},{title:'Property',href:'/services?q=property',icon:House},{title:'Tax',href:'/services?q=tax',icon:Calculator}];
 const categoryIcons:Record<string,typeof Building2>={'real-estate':Building2,'tax-compliance':Wallet,'jobs-careers':BriefcaseBusiness,marketing:Megaphone,'civil-construction':House};
 const categoryPriority=(slug:string)=>slug==='real-estate'?0:slug==='tax-compliance'?1:2;
 export default async function Home() {

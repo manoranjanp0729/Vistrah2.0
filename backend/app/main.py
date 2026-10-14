@@ -8,6 +8,7 @@ from .models import *
 from .schemas import *
 from .security import current_user, admin_user, member_user, eligible_memberships, passwords, DUMMY_HASH, issue_token, token_session, bearer
 from .catalogue import catalogue, serialize, active_service, lookup
+from .marketplace_taxonomy import master_taxonomy
 from .payments import payments, aware
 from datetime import timedelta
 import hashlib
@@ -108,6 +109,10 @@ def health(db: Session = Depends(get_db)):
 @app.get('/catalogue')
 def read_catalogue(db: Session = Depends(get_db)):
     return catalogue(db)
+
+@app.get('/marketplace/taxonomy')
+def read_marketplace_taxonomy():
+    return master_taxonomy()
 
 @app.get('/catalogue/lookup')
 def catalogue_lookup(category: str, service: str, subcategory: str | None = None, db: Session = Depends(get_db)):

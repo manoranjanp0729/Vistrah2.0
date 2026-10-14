@@ -25,3 +25,20 @@ def taxonomy_summary():
         "subcategories": sum(len(c["subcategories"]) for c in data["categories"]),
         "listing_types": sum(len(s["listing_types"]) for c in data["categories"] for s in c["subcategories"]),
     }
+
+def resolve_selection(category_slug: str, subcategory_slug: str, listing_type_slug: str):
+    """Resolve a complete master-taxonomy selection without touching legacy IDs."""
+    for category in master_taxonomy()["categories"]:
+        if category["slug"] != category_slug:
+            continue
+        for subcategory in category["subcategories"]:
+            if subcategory["slug"] != subcategory_slug:
+                continue
+            for listing_type in subcategory["listing_types"]:
+                if listing_type["slug"] == listing_type_slug:
+                    return {
+                        "category": {"slug": category["slug"], "title": category["title"]},
+                        "subcategory": {"slug": subcategory["slug"], "title": subcategory["title"]},
+                        "listing_type": {"slug": listing_type["slug"], "title": listing_type["title"]},
+                    }
+    return None

@@ -8,7 +8,7 @@ import {useResource} from '../../lib/resource';
 import {allServices,type Category} from '../../lib/catalogue';
 import {colors,styles} from '../../lib/theme';
 import {useLocation} from '../../lib/location';
-const shortcuts=[{title:'Jobs',q:'jobs',icon:'briefcase'},{title:'Property',q:'property',icon:'home'},{title:'Tax',q:'tax',icon:'credit-card'},{title:'Marketing',q:'marketing',icon:'volume-2'}] as const;
+const shortcuts=[{title:'Jobs',q:'jobs',icon:'briefcase'},{title:'Property',q:'property',icon:'home'},{title:'Tax',q:'tax',icon:'credit-card'}] as const;
 export default function Discover(){
   const catalogue=useResource<Category[]>('/catalogue');const {location}=useLocation();
   const marketing=catalogue.data?.find(category=>category.slug==='marketing');

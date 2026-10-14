@@ -9,6 +9,7 @@ from .models import User, Provider, ProviderService, Service, Category, Subcateg
 from .security import seller_user, admin_user, member_user, current_user, bearer
 from .workflow_schemas import Strict
 from .commerce_models import CommerceListing
+from .marketplace_taxonomy import resolve_selection
 
 router = APIRouter(tags=['Reviewed commerce listings'])
 
@@ -21,11 +22,18 @@ class ListingInput(Strict):
     unit_price_paise: int = Field(gt=0, le=1000000000, strict=True)
     currency: Literal['INR'] = 'INR'
     available: bool = Field(default=True, strict=True)
+    taxonomy_category_slug: str | None = Field(default=None, min_length=1, max_length=100)
+    taxonomy_subcategory_slug: str | None = Field(default=None, min_length=1, max_length=100)
+    taxonomy_listing_type_slug: str | None = Field(default=None, min_length=1, max_length=100)
 
     @model_validator(mode='after')
     def service_binding(self):
         if (self.kind == 'PRODUCT') != (self.service_id is None):
             raise ValueError('Only service packages must reference a catalogue service')
+        selection = (self.taxonomy_category_slug, self.taxonomy_subcategory_slug, self.taxonomy_listing_type_slug)
+        if any(value is not None for value in selection):
+            if not all(value is not None for value in selection) or resolve_selection(*selection) is None:
+                raise ValueError('Select a valid category, subcategory and listing type')
         return self
 
 
@@ -106,6 +114,7 @@ def change(db, row, user, revision, action, **values):
 def output(row, provider, private=False):
     data={key:getattr(row,key) for key in ListingInput.model_fields}
     data.update(id=row.id, business=provider.company or provider.name, revision=row.revision,
+        taxonomy_selection=resolve_selection(row.taxonomy_category_slug, row.taxonomy_subcategory_slug, row.taxonomy_listing_type_slug) if row.taxonomy_category_slug and row.taxonomy_subcategory_slug and row.taxonomy_listing_type_slug else None,
         fulfilment_operator=row.fulfilment_operator,
         order_terms={'stock_quantity':row.stock_quantity,'stock_available':None if row.stock_quantity is None else row.stock_quantity-row.allocated_quantity,
             'fulfilment_modes':row.fulfilment_modes,'delivery_fee_paise':row.delivery_fee_paise,'cancellation_rule':row.cancellation_rule})
@@ -189,6 +198,7 @@ def edit_listing(provider_id: int, listing_id: str, data: ListingEdit, user: Use
 def submit_listing(provider_id: int, listing_id: str, data: Revision, user: User = Depends(seller_user), db: Session = Depends(get_db)):
     provider=owned_business(db,provider_id,user);row=own_listing(db,listing_id,provider_id,user)
     if row.status!='DRAFT':raise HTTPException(409,'Only a current draft can be submitted')
+    if any((row.taxonomy_category_slug,row.taxonomy_subcategory_slug,row.taxonomy_listing_type_slug)) and resolve_selection(row.taxonomy_category_slug,row.taxonomy_subcategory_slug,row.taxonomy_listing_type_slug) is None:raise HTTPException(422,'Listing taxonomy selection is no longer valid')
     eligible(db,provider,row)
     change(db,row,user,data.revision,'COMMERCE_LISTING_SUBMITTED',status='SUBMITTED',submitted_by=user.id)
     return output(row,provider,True)
@@ -222,6 +232,7 @@ def review_listing(listing_id: str, data: Review, user: User = Depends(admin_use
     if user.id in (row.seller_id,provider.owner_user_id,row.submitted_by):raise HTTPException(403,'An independent administrator must review this listing')
     if row.status!='SUBMITTED':raise HTTPException(409,'Only a submitted listing can be reviewed')
     if data.status=='APPROVED':
+        if any((row.taxonomy_category_slug,row.taxonomy_subcategory_slug,row.taxonomy_listing_type_slug)) and resolve_selection(row.taxonomy_category_slug,row.taxonomy_subcategory_slug,row.taxonomy_listing_type_slug) is None:raise HTTPException(422,'Listing taxonomy selection is no longer valid')
         if row.cancellation_rule and not data.order_terms_acknowledged:raise HTTPException(422,'Review and acknowledge the stock, fulfilment and cancellation terms before approval')
         eligible(db,provider,row)
     change(db,row,user,data.revision,'COMMERCE_LISTING_'+data.status,status=data.status,reviewer_id=user.id,review_note=data.reason,published_at=now() if data.status=='APPROVED' else None)

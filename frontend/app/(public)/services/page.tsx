@@ -39,7 +39,7 @@ export default async function Services({searchParams}:{searchParams:Promise<{q?:
   <section className="reference-section">
    <h2>Services currently available</h2>
    <p>Only approved, published services in the existing catalogue are available for booking or provider enquiries.</p>
-   <p><Link href="/service">Explore currently published services</Link></p>
+   <ul>{live.filter(cat=>cat.active).map(cat=><li key={cat.id}><Link href={`/service/${encodeURIComponent(cat.slug)}`}>{cat.title}</Link></li>)}</ul>
    <p>{live.filter(cat=>cat.active).length} existing active catalogue categories. Existing links and listings are preserved.</p>
   </section>
  </div>;

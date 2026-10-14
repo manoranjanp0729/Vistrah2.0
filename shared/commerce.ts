@@ -1,10 +1,10 @@
-export type ListingInput={kind:'PRODUCT'|'SERVICE_PACKAGE';service_id:number|null;title:string;description:string;unit_price_paise:number;currency:'INR';available:boolean};
+export type ListingInput={taxonomy_category_slug:string|null;taxonomy_subcategory_slug:string|null;taxonomy_listing_type_slug:string|null;kind:'PRODUCT'|'SERVICE_PACKAGE';service_id:number|null;title:string;description:string;unit_price_paise:number;currency:'INR';available:boolean};
 import type {OrderTerms} from './commerce-orders';
 export type CommerceListing=ListingInput&{id:string;business:string;revision:number;fulfilment_operator?:'SELLER'|'VISTRAH';order_terms?:OrderTerms};
 export type SellerListing=CommerceListing&{status:'DRAFT'|'SUBMITTED'|'APPROVED'|'REJECTED'|'ARCHIVED';review_note:string};
 export type ListingPage<T>={items:T[];total:number;page:number;page_size:number};
-export type ListingForm={kind:ListingInput['kind'];service_id:string;title:string;description:string;price:string;available:boolean};
-export function emptyListing():ListingForm{return {kind:'PRODUCT',service_id:'',title:'',description:'',price:'',available:true};}
+export type ListingForm={taxonomy_category_slug:string;taxonomy_subcategory_slug:string;taxonomy_listing_type_slug:string;kind:ListingInput['kind'];service_id:string;title:string;description:string;price:string;available:boolean};
+export function emptyListing():ListingForm{return {taxonomy_category_slug:'',taxonomy_subcategory_slug:'',taxonomy_listing_type_slug:'',kind:'PRODUCT',service_id:'',title:'',description:'',price:'',available:true};}
 export function priceInPaise(value:string):number {
   const match=/^(\d+)(?:\.(\d{1,2}))?$/.exec(value.trim());
   if(!match)throw new Error('Enter a rupee price with at most two decimal places.');
@@ -21,9 +21,11 @@ export function listingInput(form:ListingForm):ListingInput {
     if(!/^[1-9]\d*$/.test(form.service_id)||!Number.isSafeInteger(Number(form.service_id)))throw new Error('Choose an approved catalogue service.');
     service_id=Number(form.service_id);
   }
-  return {kind:form.kind,service_id,title,description,unit_price_paise:priceInPaise(form.price),currency:'INR',available:form.available};
+  const selected=[form.taxonomy_category_slug,form.taxonomy_subcategory_slug,form.taxonomy_listing_type_slug];
+  if(selected.some(Boolean)&&!selected.every(Boolean))throw new Error('Choose all three classification levels.');
+  return {taxonomy_category_slug:form.taxonomy_category_slug||null,taxonomy_subcategory_slug:form.taxonomy_subcategory_slug||null,taxonomy_listing_type_slug:form.taxonomy_listing_type_slug||null,kind:form.kind,service_id,title,description,unit_price_paise:priceInPaise(form.price),currency:'INR',available:form.available};
 }
 export function listingForm(row:SellerListing):ListingForm {
-  return {kind:row.kind,service_id:row.service_id===null?'':String(row.service_id),title:row.title,description:row.description,price:(row.unit_price_paise/100).toFixed(2),available:row.available};
+  return {taxonomy_category_slug:row.taxonomy_category_slug??'',taxonomy_subcategory_slug:row.taxonomy_subcategory_slug??'',taxonomy_listing_type_slug:row.taxonomy_listing_type_slug??'',kind:row.kind,service_id:row.service_id===null?'':String(row.service_id),title:row.title,description:row.description,price:(row.unit_price_paise/100).toFixed(2),available:row.available};
 }
 export function listingPrice(paise:number):string{return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:2}).format(paise/100);}

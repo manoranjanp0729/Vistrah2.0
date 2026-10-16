@@ -37,11 +37,13 @@ from .commerce_routes import router as commerce_router
 app.include_router(commerce_router)
 from .commerce_order_routes import router as commerce_order_router
 app.include_router(commerce_order_router)
+from .business_membership_routes import router as business_membership_router
+app.include_router(business_membership_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith(('/seller/', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
+    if request.url.path.startswith(('/seller/', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
         request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'

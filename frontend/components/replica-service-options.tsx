@@ -2,7 +2,7 @@
 import {useEffect,useState} from 'react';
 import Link from 'next/link';
 import {useSearchParams} from 'next/navigation';
-import copy from '@/lib/interface-copy.json';
+import {useLanguage} from './language-provider';
 import {api,ApiError} from '@/lib/api';
 import type {ServiceContext,Provider} from '@/lib/types';
 import {servicePathways,serviceTab,serviceTabUrl,enquiryUrl} from '@/lib/service-pathways';
@@ -10,7 +10,7 @@ import {useCustomerLocation} from './customer-location';
 import {ServiceAccessState} from './service-access';
 import {Notice} from './ui';
 type Nearby={nearby:(Provider&{distance_km:number})[];also_serves:(Provider&{distance_km:number})[];has_more_nearby:boolean;has_more_also_serves:boolean};
-export function ReplicaServiceOptions({context,accessStatus}:{context:ServiceContext;accessStatus:number}){
+export function ReplicaServiceOptions({context,accessStatus}:{context:ServiceContext;accessStatus:number}){const {copy}=useLanguage();
  const query=useSearchParams();const selected=serviceTab(query.get('tab'),query.get('intent'));const paths=servicePathways(context);const {active,radius}=useCustomerLocation();
  const [data,setData]=useState<{id:number;providers?:Provider[];notes?:string[];error?:string}>();const [nearby,setNearby]=useState<{key:string;value:Nearby}>(),[error,setError]=useState(''),[busy,setBusy]=useState(false);const current=data?.id===context.service.id?data:undefined;
  const searchKey=JSON.stringify({id:context.service.id,active,radius});const visible=nearby?.key===searchKey?nearby.value:undefined;

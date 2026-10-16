@@ -8,6 +8,7 @@ from app import employer_job_models
 from app import homepage_models
 from app import commerce_models
 from app import commerce_order_models
+from app import business_membership_models
 
 with engine.connect() as connection:
     context.configure(connection=connection, target_metadata=Base.metadata, compare_type=True)

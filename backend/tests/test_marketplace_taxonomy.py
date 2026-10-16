@@ -12,10 +12,10 @@ def test_taxonomy_complete_and_ordered():
         "Beauty, Fashion & Lifestyle", "Automobiles", "Rental Services",
         "Travel, Stay & Experiences", "Health, Fitness & Wellness",
         "Education & Skills", "Jobs & Careers", "Professional Services",
-        "Events & Celebrations", "Pet Care",
+        "Events & Celebrations", "Pet Care", "Agriculture & Farming",
     ]
     assert taxonomy_summary() == {
-        "version": 1, "categories": 13, "subcategories": 117, "listing_types": 695
+        "version": 1, "categories": 14, "subcategories": 126, "listing_types": 749
     }
     for category in data["categories"]:
         assert category["subcategories"]

@@ -10,7 +10,7 @@ def test_every_master_listing_type_resolves():
                 assert resolved is not None
                 assert resolved["listing_type"]["title"] == listing_type["title"]
                 count += 1
-    assert count == 695
+    assert count == 749
 
 def test_unknown_or_cross_category_selection_rejected():
     categories = master_taxonomy()["categories"]

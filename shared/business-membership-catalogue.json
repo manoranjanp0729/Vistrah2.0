@@ -1,0 +1,463 @@
+{
+  "version": 3,
+  "currency": "INR",
+  "payment_mode": "UNAVAILABLE",
+  "checkout_supported": false,
+  "automatic_renewal": false,
+  "annual_notice": "Annual pricing coming soon.",
+  "credit_validity_days": 90,
+  "plans": [
+    {
+      "key": "BASIC",
+      "name": "Basic",
+      "periods": {
+        "MONTHLY": {
+          "amount": 14900,
+          "available": true
+        },
+        "ANNUAL": {
+          "amount": null,
+          "available": false
+        }
+      },
+      "allowances": {
+        "JOB": 5,
+        "STANDARD_REPORT": 1
+      },
+      "benefits": [
+        {
+          "kind": "JOB",
+          "label": "Job-posting credits",
+          "quantity": 5,
+          "unit": "count"
+        },
+        {
+          "kind": "STANDARD_REPORT",
+          "label": "Standard listings and leads reporting",
+          "quantity": 1,
+          "unit": "count"
+        }
+      ],
+      "sections": [
+        {
+          "title": "VISTRAH Ads & Marketing",
+          "items": [
+            {
+              "text": "VISTRAH Recommendations & Visibility",
+              "included": true
+            },
+            {
+              "text": "Standard visibility and recommendations within the VISTRAH app and website."
+            },
+            {
+              "text": "No monthly social advertising credit is included.",
+              "included": false
+            },
+            {
+              "text": "Creative designs are not included.",
+              "included": false
+            },
+            {
+              "text": "Marketing campaigns are not included.",
+              "included": false
+            },
+            {
+              "text": "AI promotional video is not included.",
+              "included": false
+            },
+            {
+              "text": "Additional creative designs, campaigns, and video production can be requested separately at applicable prices."
+            },
+            {
+              "text": "Outdoor and billboard advertising require separate quotations."
+            },
+            {
+              "text": "Advertising placement costs are not included in the membership price.",
+              "included": false
+            },
+            {
+              "text": "Additional advertising charges are based on the advertising requirements selected by your business."
+            }
+          ]
+        },
+        {
+          "title": "Job Opportunities",
+          "items": [
+            {
+              "benefit": "JOB",
+              "included": true
+            },
+            {
+              "text": "New job-posting credits are issued per verified successful monthly billing cycle."
+            },
+            {
+              "text": "Unused job credits roll forward until their individual 90-day expiry. Earliest-expiring credits are consumed first."
+            }
+          ]
+        },
+        {
+          "title": "Reporting",
+          "items": [
+            {
+              "benefit": "STANDARD_REPORT",
+              "included": true
+            }
+          ]
+        },
+        {
+          "title": "Plan Conditions",
+          "items": [
+            {
+              "text": "{monthlyPrice} per month."
+            },
+            {
+              "text": "Each issued job credit remains valid for 90 days."
+            },
+            {
+              "text": "Marketing allowances are not included in this tier.",
+              "included": false
+            },
+            {
+              "text": "No guaranteed leads, impressions, conversions, or advertising results."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "PLUS",
+      "name": "Plus",
+      "periods": {
+        "MONTHLY": {
+          "amount": 79900,
+          "available": true
+        },
+        "ANNUAL": {
+          "amount": null,
+          "available": false
+        }
+      },
+      "allowances": {
+        "JOB": 15,
+        "DESIGN": 2,
+        "CAMPAIGN": 1,
+        "SOCIAL_PAISE": 20000,
+        "BASIC_REPORT": 1
+      },
+      "benefits": [
+        {
+          "kind": "JOB",
+          "label": "Job-posting credits",
+          "quantity": 15,
+          "unit": "count"
+        },
+        {
+          "kind": "DESIGN",
+          "label": "Creative designs",
+          "quantity": 2,
+          "unit": "count"
+        },
+        {
+          "kind": "CAMPAIGN",
+          "label": "Marketing campaigns (up to 7 days each)",
+          "quantity": 1,
+          "unit": "count"
+        },
+        {
+          "kind": "SOCIAL_PAISE",
+          "label": "Social advertising credit",
+          "quantity": 20000,
+          "unit": "paise"
+        },
+        {
+          "kind": "BASIC_REPORT",
+          "label": "Basic campaign reporting",
+          "quantity": 1,
+          "unit": "count"
+        }
+      ],
+      "sections": [
+        {
+          "title": "VISTRAH Ads & Marketing",
+          "items": [
+            {
+              "text": "VISTRAH Recommendations & Visibility",
+              "included": false
+            },
+            {
+              "text": "Planned: Enhanced visibility and recommendations within the VISTRAH app and website. Membership-based visibility priority is not currently supported."
+            },
+            {
+              "benefit": "SOCIAL_PAISE",
+              "included": true
+            },
+            {
+              "text": "Social advertising credit is an allowance toward eligible advertising, not withdrawable cash."
+            },
+            {
+              "text": "Unused monthly social advertising credit does not roll forward."
+            },
+            {
+              "benefit": "DESIGN",
+              "included": true
+            },
+            {
+              "benefit": "CAMPAIGN",
+              "included": true
+            },
+            {
+              "text": "AI promotional video is not included.",
+              "included": false
+            },
+            {
+              "text": "Additional creative designs, campaigns, and video production can be requested separately at applicable prices."
+            },
+            {
+              "text": "Outdoor and billboard advertising require separate quotations."
+            },
+            {
+              "text": "Advertising placement costs are not included in the membership price.",
+              "included": false
+            },
+            {
+              "text": "Additional advertising charges are based on the advertising requirements selected by your business."
+            }
+          ]
+        },
+        {
+          "title": "Job Opportunities",
+          "items": [
+            {
+              "benefit": "JOB",
+              "included": true
+            },
+            {
+              "text": "New job-posting credits are issued per verified successful monthly billing cycle."
+            },
+            {
+              "text": "Unused job credits roll forward until their individual 90-day expiry. Earliest-expiring credits are consumed first."
+            }
+          ]
+        },
+        {
+          "title": "Reporting",
+          "items": [
+            {
+              "benefit": "BASIC_REPORT",
+              "included": true
+            }
+          ]
+        },
+        {
+          "title": "Plan Conditions",
+          "items": [
+            {
+              "text": "{monthlyPrice} per month."
+            },
+            {
+              "text": "Each issued job credit remains valid for 90 days."
+            },
+            {
+              "text": "Creative designs, campaigns, and social advertising credit are monthly allowances."
+            },
+            {
+              "text": "Unused monthly marketing allowances do not roll forward."
+            },
+            {
+              "text": "No guaranteed leads, impressions, conversions, or advertising results."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "PREMIUM",
+      "name": "Premium",
+      "periods": {
+        "MONTHLY": {
+          "amount": 189900,
+          "available": true
+        },
+        "ANNUAL": {
+          "amount": null,
+          "available": false
+        }
+      },
+      "allowances": {
+        "JOB": 50,
+        "DESIGN": 4,
+        "CAMPAIGN": 2,
+        "VIDEO": 1,
+        "SOCIAL_PAISE": 50000,
+        "DETAILED_REPORT": 1,
+        "BILLBOARD_PRIORITY": 1
+      },
+      "benefits": [
+        {
+          "kind": "JOB",
+          "label": "Job-posting credits",
+          "quantity": 50,
+          "unit": "count"
+        },
+        {
+          "kind": "DESIGN",
+          "label": "Creative designs",
+          "quantity": 4,
+          "unit": "count"
+        },
+        {
+          "kind": "CAMPAIGN",
+          "label": "Marketing campaigns (up to 7 days each)",
+          "quantity": 2,
+          "unit": "count"
+        },
+        {
+          "kind": "VIDEO",
+          "label": "AI promotional video (up to 30 seconds)",
+          "quantity": 1,
+          "unit": "count"
+        },
+        {
+          "kind": "SOCIAL_PAISE",
+          "label": "Social advertising credit",
+          "quantity": 50000,
+          "unit": "paise"
+        },
+        {
+          "kind": "DETAILED_REPORT",
+          "label": "Detailed campaign reporting",
+          "quantity": 1,
+          "unit": "count"
+        },
+        {
+          "kind": "BILLBOARD_PRIORITY",
+          "label": "Priority billboard booking and quotation",
+          "quantity": 1,
+          "unit": "count"
+        }
+      ],
+      "sections": [
+        {
+          "title": "VISTRAH Ads & Marketing",
+          "items": [
+            {
+              "text": "VISTRAH Recommendations & Visibility",
+              "included": false
+            },
+            {
+              "text": "Planned: Premium visibility and recommendations within the VISTRAH app and website. Membership-based visibility priority is not currently supported."
+            },
+            {
+              "benefit": "SOCIAL_PAISE",
+              "included": true
+            },
+            {
+              "text": "Social advertising credit is an allowance toward eligible advertising, not withdrawable cash."
+            },
+            {
+              "text": "Unused monthly social advertising credit does not roll forward."
+            },
+            {
+              "benefit": "DESIGN",
+              "included": true
+            },
+            {
+              "benefit": "CAMPAIGN",
+              "included": true
+            },
+            {
+              "benefit": "VIDEO",
+              "included": true
+            },
+            {
+              "text": "Additional creative designs, campaigns, and video production can be requested separately at applicable prices."
+            },
+            {
+              "text": "The included AI promotional video is free: 1 promotional video up to 30 seconds per month.",
+              "included": true
+            },
+            {
+              "benefit": "BILLBOARD_PRIORITY",
+              "included": true
+            },
+            {
+              "text": "Outdoor and billboard advertising require separate quotations."
+            },
+            {
+              "text": "Advertising placement costs are not included in the membership price.",
+              "included": false
+            },
+            {
+              "text": "Additional advertising charges are based on the advertising requirements selected by your business."
+            }
+          ]
+        },
+        {
+          "title": "Job Opportunities",
+          "items": [
+            {
+              "benefit": "JOB",
+              "included": true
+            },
+            {
+              "text": "New job-posting credits are issued per verified successful monthly billing cycle."
+            },
+            {
+              "text": "Unused job credits roll forward until their individual 90-day expiry. Earliest-expiring credits are consumed first."
+            }
+          ]
+        },
+        {
+          "title": "Reporting",
+          "items": [
+            {
+              "benefit": "DETAILED_REPORT",
+              "included": true
+            }
+          ]
+        },
+        {
+          "title": "Plan Conditions",
+          "items": [
+            {
+              "text": "{monthlyPrice} per month."
+            },
+            {
+              "text": "Each issued job credit remains valid for 90 days."
+            },
+            {
+              "text": "Creative designs, campaigns, AI video, and social advertising credit are monthly allowances."
+            },
+            {
+              "text": "Unused monthly marketing allowances do not roll forward."
+            },
+            {
+              "text": "Priority billboard booking does not guarantee inventory or placement availability."
+            },
+            {
+              "text": "No guaranteed leads, impressions, conversions, or advertising results."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "annual_reference": "The listed benefits and allowances describe the approved monthly plan. Annual pricing and benefit quantities are not configured.",
+  "rules_title": "How VISTRAH Membership Works",
+  "rules": [
+    "Memberships are intended for eligible, approved business sellers/providers.",
+    "Job-posting credits are issued after a verified successful billing cycle.",
+    "Each job-credit batch expires 90 days after issuance.",
+    "Valid unused job credits roll forward until their individual expiry.",
+    "Credits are consumed from the earliest-expiring batch first.",
+    "Monthly marketing benefits reset according to the applicable billing cycle.",
+    "Unused creative designs, campaigns, AI video allowances, and social advertising credits do not roll forward.",
+    "Social advertising credits are not cash and cannot be withdrawn.",
+    "Outdoor advertising and billboard placements require separate quotations.",
+    "Additional marketing services beyond included allowances are separately chargeable.",
+    "Membership benefits do not guarantee leads, bookings, advertising performance, or sales.",
+    "Membership activation and benefit issuance require verified successful payment.",
+    "Payment subscriptions are not yet available in the current public interface.",
+    "Annual pricing has not been approved or configured."
+  ]
+}

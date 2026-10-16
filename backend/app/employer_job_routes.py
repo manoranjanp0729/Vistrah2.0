@@ -177,5 +177,9 @@ def review_job(job_id:str,data:JobReview,user:User=Depends(admin_user),db:Sessio
         eligible(provider)
         if provider.owner_user_id!=row.actor_id or (row.deadline and row.deadline<today()):
             raise HTTPException(409,'Employer ownership or deadline changed; reject this posting')
+        from .business_membership import process_cycles, consume
+        owner=db.get(User,row.actor_id)
+        process_cycles(db,owner)
+        consume(db,owner,'JOB',1,'job:'+row.id,'Published job '+row.id)
     change(db,row,user,'EMPLOYER_JOB_'+data.status,{'status':data.status,'reviewer_id':user.id,'review_note':data.reason,'reviewed_at':now(),'published_at':now() if data.status=='APPROVED' else None})
     return output(row,provider,True)

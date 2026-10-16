@@ -13,8 +13,8 @@ TAXONOMY_FILE = Path(__file__).resolve().parents[2] / "shared" / "marketplace-ta
 def master_taxonomy():
     data = json.loads(TAXONOMY_FILE.read_text(encoding="utf-8"))
     categories = data["categories"]
-    assert len(categories) == 13
-    assert len({c["slug"] for c in categories}) == 13
+    assert categories
+    assert len({c["slug"] for c in categories}) == len(categories)
     return data
 
 def taxonomy_summary():

@@ -1,5 +1,12 @@
 import {discoverableServices,mobileServiceId,type Category} from './catalogue.ts';
 
+// Local Expo serves /membership; the hosted phone website adds /app itself.
+// Accept old website bookmarks without enabling cookie authentication locally.
+export function membershipRoute(pathname:string):'/membership'|null {
+  if(pathname==='/membership')return null;
+  return /^\/(?:app\/)?(?:account\/)?membership\/?$/i.test(pathname)?'/membership':null;
+}
+
 // Translate existing website bookmarks into the shared mobile screen routes.
 export function websiteRoute(pathname:string,search:string,categories:Category[]):string|null {
   const path=pathname.replace(/^\/app(?=\/|$)/,'')||'/';

@@ -1,4 +1,4 @@
-import copy from '../../lib/interface-copy';
+import {useLanguage} from '../../lib/language';
 import {useState} from 'react';
 import {ServiceBanner} from '../../components/service-banner';
 import {Pressable,Text,View} from 'react-native';
@@ -10,7 +10,7 @@ import {useSession} from '../../lib/session';
 import {useLocation} from '../../lib/location';
 import {api,ApiError} from '../../lib/api';
 import {useTheme} from '../../lib/theme';
-export default function ServiceDetail(){const {colors,styles}=useTheme();
+export default function ServiceDetail(){const {copy}=useLanguage();const {colors,styles}=useTheme();
   const {id}=useLocalSearchParams<{id:string}>();const [tab,setTab]=useState<Intent>('providers');
   const catalogue=useResource<Category[]>('/catalogue');const context=allServices(catalogue.data??[]).find(item=>String(item.service.id)===id);
   return <Page>{catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:!context?<Text style={styles.muted}>{copy.service.unavailable}</Text>:<>
@@ -21,7 +21,7 @@ export default function ServiceDetail(){const {colors,styles}=useTheme();
     <MemberGate><ServiceOptions context={context} tab={tab}/></MemberGate>
   </>}</Page>;
 }
-function ServiceOptions({context,tab}:{context:ServiceContext;tab:Intent}){const {colors,styles}=useTheme();
+function ServiceOptions({context,tab}:{context:ServiceContext;tab:Intent}){const {copy}=useLanguage();const {colors,styles}=useTheme();
   const {user}=useSession();const {location}=useLocation();const path=pathways.find(item=>item.id===tab)!;
   const providers=useResource<Provider[]>(tab==='providers'?'/services/'+context.service.id+'/providers':null,user?.id??null);
   const guide=useResource<{notes:string[]}>('/services/'+context.service.id+'/member-information',user?.id??null);

@@ -8,19 +8,34 @@ const palettes={
 };
 type Palette=typeof palettes.dark;
 export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',text:'#6d4524'},{background:'#e8e4f5',text:'#493a69'},{background:'#dfece3',text:'#294934'}];
+// Existing visual values only; component headings retain their Android-specific sizing.
+export const typography={
+ title:{fontSize:24,lineHeight:29,fontWeight:'600'},
+ heading:{fontSize:18,lineHeight:23,fontWeight:'600'},
+ sectionHeading:{fontSize:Platform.OS==='android'?22:18,lineHeight:Platform.OS==='android'?28:23,fontWeight:'600'},
+ body:{fontSize:14,lineHeight:20},
+ supporting:{fontSize:12,lineHeight:18},
+ label:{fontSize:10,lineHeight:14,letterSpacing:.7},
+ action:{fontSize:Platform.OS==='android'?14:13,fontWeight:'600'},
+ input:{fontSize:14},
+} as const;
+export const spacing={small:4,fieldGap:8,cardGap:10,regular:12,controlPadding:14,pagePadding:16,pageBottom:28} as const;
+export const radii={input:14,action:17,surface:20} as const;
+export const controlHeights={compact:44,standard:50,multiline:120} as const;
+export const layout={pageMaxWidth:900,borderWidth:1} as const;
 const makeStyles=(colors:Palette)=>StyleSheet.create({
   page:{flex:1,backgroundColor:colors.background},
-  content:{padding:16,paddingBottom:28,gap:12,width:'100%',maxWidth:900,alignSelf:'center'},
-  title:{fontSize:24,lineHeight:29,fontWeight:'600',color:colors.text},
-  heading:{fontSize:18,lineHeight:23,fontWeight:'600',color:colors.text},
-  text:{fontSize:14,lineHeight:20,color:colors.text},
-  muted:{fontSize:12,lineHeight:18,color:colors.muted},
-  label:{fontSize:10,lineHeight:14,letterSpacing:.7,color:colors.muted},
-  card:{padding:16,borderRadius:20,backgroundColor:colors.surface,gap:10},
-  row:{flexDirection:'row',alignItems:'center',gap:12,flexWrap:'wrap'},
-  grid:{flexDirection:'row',flexWrap:'wrap',gap:12},
-  input:{backgroundColor:colors.surface,color:colors.text,borderWidth:1,borderColor:colors.border,borderRadius:14,padding:12,fontSize:14,minHeight:50},
-  divider:{height:1,backgroundColor:colors.border,marginVertical:4},
+  content:{padding:spacing.pagePadding,paddingBottom:spacing.pageBottom,gap:spacing.regular,width:'100%',maxWidth:layout.pageMaxWidth,alignSelf:'center'},
+  title:{...typography.title,color:colors.text},
+  heading:{...typography.heading,color:colors.text},
+  text:{...typography.body,color:colors.text},
+  muted:{...typography.supporting,color:colors.muted},
+  label:{...typography.label,color:colors.muted},
+  card:{padding:spacing.pagePadding,borderRadius:radii.surface,backgroundColor:colors.surface,gap:spacing.cardGap},
+  row:{flexDirection:'row',alignItems:'center',gap:spacing.regular,flexWrap:'wrap'},
+  grid:{flexDirection:'row',flexWrap:'wrap',gap:spacing.regular},
+  input:{backgroundColor:colors.surface,color:colors.text,borderWidth:layout.borderWidth,borderColor:colors.border,borderRadius:radii.input,padding:spacing.regular,...typography.input,minHeight:controlHeights.standard},
+  divider:{height:layout.borderWidth,backgroundColor:colors.border,marginVertical:spacing.small},
 });
 
 const key='vistrah.theme';

@@ -130,6 +130,8 @@ th,.admin-table th,.table-actions button,.admin-search button{background:var(--i
 .replica-location-trigger{display:flex;align-items:center;gap:6px;border:0;background:transparent;color:var(--text-secondary);min-height:44px;max-width:200px;cursor:pointer;font-size:12px}
 .replica-location-trigger span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .replica-location-trigger svg{color:var(--accent-orange);flex-shrink:0}
+@media(max-width:360px){.public-header .replica-location-trigger{min-width:0;flex:1;justify-content:flex-end;padding-inline:0}}
+.service-grid{grid-template-columns:repeat(auto-fill,148px);gap:12px}
 .replica-bottom-nav{display:none}
 .replica-location-overlay{position:fixed;inset:0;background:#0009;z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:5vh 20px;overflow:auto}
 .replica-location-dialog{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:min(700px,100%);padding:20px;max-height:85vh;overflow:auto}
@@ -176,3 +178,5 @@ dialog.replica-location-dialog{margin:auto;max-height:85vh;color:var(--text-prim
 .theme-switch[aria-checked="true"]{background:var(--accent-orange);border-color:var(--accent-orange)}.theme-switch[aria-checked="true"] span{transform:translateX(22px)}
 .theme-switch:focus-visible{outline:2px solid var(--text-primary);outline-offset:4px}
 @media(prefers-reduced-motion:reduce){.theme-switch span{transition:none}}
+
+.reference-section.homepage-categories>.section-heading{margin-bottom:8px;gap:8px;flex-direction:row;align-items:center}.homepage-categories>.section-heading>.text-link{white-space:nowrap;flex-shrink:0;margin-bottom:0}

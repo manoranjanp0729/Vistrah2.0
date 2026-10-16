@@ -1,3 +1,4 @@
+import {useLanguage} from '../lib/language';
 import {useRef,useState} from 'react';
 import {Text,View} from 'react-native';
 import {router} from 'expo-router';
@@ -7,8 +8,7 @@ import {useResource} from '../lib/resource';
 import {api} from '../lib/api';
 import type {Payment} from '../lib/types';
 import {useTheme} from '../lib/theme';
-import copy from '../lib/interface-copy';
-export default function Checkout(){const {user,ready}=useSession();return <Page>{!ready?<Loading/>:!user?<Action label={copy.auth.signIn} onPress={()=>router.push('/auth')}/>:<CheckoutForm key={user.id}/>}</Page>;}
+export default function Checkout(){const {copy}=useLanguage();const {user,ready}=useSession();return <Page>{!ready?<Loading/>:!user?<Action label={copy.auth.signIn} onPress={()=>router.push('/auth')}/>:<CheckoutForm key={user.id}/>}</Page>;}
 function CheckoutForm(){const {styles}=useTheme();const plan=useResource<{amount:number;days:number}>('/membership/plan');const key=useRef('');const [payment,setPayment]=useState<Payment|null>(null);const [busy,setBusy]=useState(false),[error,setError]=useState('');
  async function create(){if(!key.current)key.current='mobile_'+Date.now()+'_'+Math.random().toString(36).slice(2);setBusy(true);setError('');try{setPayment(await api<Payment>('/payments/checkout',{method:'POST',body:JSON.stringify({idempotency_key:key.current})}));}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
  async function simulate(outcome:'SUCCEEDED'|'FAILED'){if(!payment)return;setBusy(true);setError('');try{setPayment(await api<Payment>('/payments/'+payment.id+'/simulate',{method:'POST',body:JSON.stringify({outcome})}));}catch(e){setError((e as Error).message);}finally{setBusy(false);}}

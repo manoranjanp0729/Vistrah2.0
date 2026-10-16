@@ -1,3 +1,5 @@
+import {LanguageProvider,useLanguage} from '../lib/language';
+import {BackButton} from '../components/back-button';
 import * as SplashScreen from 'expo-splash-screen';
 import {Platform,View} from 'react-native';
 import {StartupLoading} from '../components/startup-loading';
@@ -9,9 +11,9 @@ import {LocationProvider} from '../lib/location';
 import {ThemeProvider,useTheme} from '../lib/theme';
 import {WebsiteRouteBridge} from '../components/website-route-bridge';
 if(Platform.OS!=='web')void SplashScreen.preventAutoHideAsync().catch(()=>{});
-export default function RootLayout(){return <ThemeProvider><ThemedRoot/></ThemeProvider>;}
-function ThemedRoot(){const {colors,mode}=useTheme();
-  return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false}}>
+export default function RootLayout(){return <ThemeProvider><LanguageProvider><ThemedRoot/></LanguageProvider></ThemeProvider>;}
+function ThemedRoot(){const {colors,mode}=useTheme();const {t}=useLanguage();
+  return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false,headerBackVisible:false,headerLeft:()=> <BackButton/>}}>
     <Stack.Screen name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
     <Stack.Screen name="service/find-jobs" options={{title:'Find Jobs'}}/>
@@ -37,11 +39,14 @@ function ThemedRoot(){const {colors,mode}=useTheme();
     <Stack.Screen name="request/[id]" options={{title:'Service enquiry'}}/>
     <Stack.Screen name="reset-password" options={{title:'Reset password'}}/>
     <Stack.Screen name="auth" options={{title:'Your VISTRAH account'}}/>
-    <Stack.Screen name="membership" options={{title:'Membership'}}/>
-    <Stack.Screen name="location" options={{title:'Choose your location'}}/>
+    <Stack.Screen name="health-connect" options={{title:'VISTRAH HealthConnect',headerTitleStyle:{fontSize:16},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen name="agri-connect" options={{title:'VISTRAH AgriConnect',headerTitleStyle:{fontSize:16},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen name="marketing-solutions" options={{title:t('marketing.title'),headerTitleStyle:{fontSize:16},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen name="membership" options={{title:t('account.membership')}}/>
+    <Stack.Screen name="location" options={{title:t('nav.location')}}/>
     <Stack.Screen name="provider" options={{title:'Offer your services'}}/>
-    <Stack.Screen name="settings" options={{title:'Settings'}}/>
+    <Stack.Screen name="settings" options={{title:t('settings.title')}}/>
     <Stack.Screen name="profile" options={{title:'Your profile'}}/>
-    <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:'Services'}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
+    <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:t('nav.services')}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>
   </Stack><WebsiteRouteBridge/><StartupLoading/></View></LocationProvider></SessionProvider></SafeAreaProvider>;
 }

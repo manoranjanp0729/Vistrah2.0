@@ -1,11 +1,34 @@
+import {T} from '@/components/language-provider';
+import {notFound} from 'next/navigation';
 import Link from 'next/link';
-import {Visual} from '@/components/visual';
-import {categoryPhoto} from '@/lib/imagery';
+import {MarketplaceBrowser} from '@/components/marketplace-browser';
+import {PhotoCard} from '@/components/photo-card';
+import {PhotoCardRail} from '@/components/photo-card-rail';
+import {servicePhoto,photos} from '@/lib/imagery';
 import {serverApi} from '@/lib/server';
 import {allServices,urls} from '@/lib/urls';
-import copy from '@/lib/interface-copy.json';
+import {resolveMarketplaceSelection,type MarketplaceSelection} from '@/lib/marketplace-taxonomy';
+import styles from '@/components/marketplace.module.css';
 import type {Category} from '@/lib/types';
-type Taxonomy={categories:{slug:string;title:string;subcategories:{slug:string;title:string;listing_types:{slug:string;title:string}[]}[]}[]};
+
 export const dynamic='force-dynamic';
 export const metadata={title:'Service categories'};
-export default async function Services({searchParams}:{searchParams:Promise<{q?:string}>}){const {q=''}=await searchParams;const [categories,taxonomy]=await Promise.all([serverApi<Category[]>('/catalogue'),serverApi<Taxonomy>('/marketplace/taxonomy')]);const needle=q.trim().toLocaleLowerCase();const matches=new Set(allServices(categories).filter(item=>[item.service.title,item.service.description,item.category.title,item.subcategory?.title??''].join(' ').toLocaleLowerCase().includes(needle)).map(item=>item.category.id));const rows=categories.filter(category=>category.slug!=="marketing"&&(!needle||matches.has(category.id)||[category.title,category.description].join(' ').toLocaleLowerCase().includes(needle)));return <div className="container page replica-page"><h1>{copy.catalogue.title}</h1><form className="form replica-search" action="/services"><label>{copy.catalogue.search}<input name="q" defaultValue={q} placeholder={copy.catalogue.placeholder}/></label><button className="button" type="submit">Search</button></form><p>{copy.catalogue.intro}</p><h2>Marketplace categories</h2><p>Browse classification options. Listing types are not yet published services.</p><div className="reference-categories">{taxonomy.categories.filter(cat=>!needle||[cat.title,...cat.subcategories.flatMap(sub=>[sub.title,...sub.listing_types.map(t=>t.title)])].some(t=>t.toLowerCase().includes(needle))).map(cat=><details key={cat.slug} className="reference-category"><summary><h3>{cat.title}</h3></summary>{cat.subcategories.map(sub=><details key={sub.slug}><summary>{sub.title}</summary><ul>{sub.listing_types.map(t=><li key={t.slug}>{t.title}</li>)}</ul></details>)}</details>)}</div><h2>Currently published services</h2>{rows.length?<div className="reference-categories">{rows.map(category=><Link href={urls.category(category)} key={category.id} className="reference-category"><Visual photo={categoryPhoto(category)} variant="card" decorative/><h3>{category.title}</h3><p>{category.description}</p></Link>)}</div>:<p>{copy.catalogue.empty}</p>}</div>;}
+export default async function Services({searchParams}:{searchParams:Promise<MarketplaceSelection>}) {
+  const params=await searchParams;
+  const {q=''}=params;
+  const selection=resolveMarketplaceSelection(params);
+  if(!selection)notFound();
+  const needle=q.trim().toLocaleLowerCase();
+  const showPublished=!selection.category||Boolean(needle);
+  const categories=showPublished?await serverApi<Category[]>('/catalogue').catch(()=>null):null;
+  const services=allServices(categories??[]).filter(({category,subcategory,service})=>
+    category.active&&service.active&&(!subcategory||subcategory.active)&&
+    [service.title,service.description,category.title,category.description,subcategory?.title??''].join(' ').toLocaleLowerCase().includes(needle));
+  return <div className={`container ${styles.servicesPage}`}>
+    <MarketplaceBrowser selection={selection} query={q}/>
+    <section id="published-services" className={styles.published} aria-label="Service catalogue"><h2>{showPublished?<T id="nav.services"/>:<T id="discovery.looking"/>}</h2>
+      <p><T id="discovery.catalogueIntro"/></p>
+      {!showPublished?<Link href="/services#published-services" className={styles.backLink}><T id="common.exploreServices"/> &rarr;</Link>:categories===null?<p><T id="discovery.temporarilyUnavailable"/></p>:services.length?<PhotoCardRail label="Services" labelKey="nav.services">{services.map(context=>{const image=servicePhoto(context);return <PhotoCard key={context.service.id} kind="service" slug={String(context.service.id)} imageId={image.id} title={context.service.title} meta="Service" href={urls.service(context.category,context.service,context.subcategory)} photo={image.photo?{src:photos[image.photo].src,alt:image.alt}:null}/>;})}</PhotoCardRail>:<p><T id="catalogue.noServices"/></p>}
+    </section>
+  </div>;
+}

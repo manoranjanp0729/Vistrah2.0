@@ -9,13 +9,16 @@ from app.employer_job_routes import today
 DATA={'title':'Project Engineer','description':'Coordinate construction projects and review site plans with our engineering team.','location':'Bengaluru','arrangement':'ONSITE','employment_type':'FULL_TIME','salary_text':'Salary discussed at interview','application_url':'https://employer.example.com/careers/engineer','deadline':None}
 
 @pytest.fixture
-def employer(db):
+def employer(db,client):
     user=User(name='Employer',email='employer@example.com',password_hash=passwords.hash('fixture-only-password'),seller_enabled=True)
     other=User(name='Other employer',email='other-employer@example.com',password_hash=passwords.hash('fixture-only-password'),seller_enabled=True)
     db.add_all([user,other]); db.flush()
     provider=Provider(owner_user_id=user.id,slug='synthetic-employer',name='Employer',company='Synthetic Employer',email='employer@example.com',phone='9000000000',address='Test address',location='Bengaluru',provenance='Synthetic disposable test fixture',verification_status='VERIFIED',active=True)
     db.add(provider); db.commit()
-    return {'provider':provider,'user':user,'headers':{'Authorization':'Bearer '+issue_token(db,user)},'other':{'Authorization':'Bearer '+issue_token(db,other)}}
+    headers={'Authorization':'Bearer '+issue_token(db,user)}
+    payment=client.post('/membership/subscriptions/checkout',headers=headers,json={'plan_key':'BASIC','billing_period':'MONTHLY','idempotency_key':'employer-membership-fixture'}).json()
+    assert client.post('/payments/'+payment['id']+'/simulate',headers=headers,json={'outcome':'SUCCEEDED'}).status_code==200
+    return {'provider':provider,'user':user,'headers':headers,'other':{'Authorization':'Bearer '+issue_token(db,other)}}
 
 def create(client,employer,data=None):
     path=f'/seller/businesses/{employer["provider"].id}/jobs'

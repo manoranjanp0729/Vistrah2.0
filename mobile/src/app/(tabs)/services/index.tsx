@@ -1,5 +1,5 @@
 import {useLanguage} from '../../../lib/language';
-import {useState} from 'react';
+import {useState,type ReactElement} from 'react';
 import {ScrollView,Text,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -20,7 +20,7 @@ export default function Services(){
   const {styles}=useTheme();const {t,label}=useLanguage();
   const {user}=useSession();const sellerMode=Boolean(user?.seller_enabled);
   const startSellerApplication=()=>router.push('/provider-applications/new');
-  const sellerCard=(key:string,title:string,card:React.ReactNode)=>sellerMode?<SellerAddCard key={key} label={title} onAdd={startSellerApplication}>{card}</SellerAddCard>:card;
+  const sellerCard=(key:string,title:string,card:ReactElement)=>sellerMode?<SellerAddCard key={key} label={title} onAdd={startSellerApplication}>{card}</SellerAddCard>:card;
   const raw=useLocalSearchParams<{category?:string;subcategory?:string;type?:string;q?:string}>();
   const params:MarketplaceSelection={category:typeof raw.category==='string'?raw.category:undefined,subcategory:typeof raw.subcategory==='string'?raw.subcategory:undefined,type:typeof raw.type==='string'?raw.type:undefined,q:typeof raw.q==='string'?raw.q:undefined};
   const scope=JSON.stringify(params),[draft,setDraft]=useState<{scope:string;value:string}|null>(null);

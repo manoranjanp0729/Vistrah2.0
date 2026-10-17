@@ -1,6 +1,6 @@
 import {LocationChooser} from '@/components/customer-location';
 import {NearbyProviders} from './nearby-providers';
-import {SellerCatalogueRequestCTA} from './seller';
+import {SellerCatalogueRequestCTA} from './catalogue-request';
 import {Visual,ContextVisual} from './visual';
 import {onboardingUrl} from '@/lib/provider-requirements';
 import {categoryPhoto,servicePhoto,subcategoryPhoto} from '@/lib/imagery';

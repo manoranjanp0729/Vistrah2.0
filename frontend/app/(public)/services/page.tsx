@@ -1,5 +1,5 @@
 import {LocationChooser} from '@/components/customer-location';
-import {SellerCatalogueRequestCTA} from '@/components/seller';
+import {SellerCatalogueRequestCTA} from '@/components/catalogue-request';
 import {pagePhoto} from '@/lib/imagery';
 import {ContextVisual} from '@/components/visual';
 import {serverApi} from '@/lib/server';

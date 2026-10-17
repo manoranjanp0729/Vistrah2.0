@@ -5,6 +5,7 @@ import {useUser} from './customer';
 import {ProviderApplications} from './provider-onboarding';
 import {Notice,EmptyState,ButtonLink} from './ui';
 import {api} from '@/lib/api';
+import {officialContact} from '@/lib/contact';
 import type {User} from '@/lib/types';
 import {BusinessPublicationEditor,type OwnedBusiness} from './publication';
 import {SellerOwnershipClaims,AdminOwnershipClaimQueue} from './ownership-claims';
@@ -38,7 +39,7 @@ export function SellerCatalogueRequestCTA({level,parent}:{level:'category'|'subc
   if(loading||!user?.seller_enabled)return null;
   const subject=`VISTRAH catalogue request: new ${level}`;
   const body=`Please review my request to add a new ${level} to the VISTRAH catalogue.\n\nExisting catalogue location: ${parent||'Top-level catalogue'}\nProposed name: \nDescription: \nBusiness name: \nRelated category/subcategory: \n\nI understand this requires VISTRAH admin approval.`;
-  const mailto=`mailto:contact@vistrah.in?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  const mailto=`mailto:${officialContact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   return <section className="nested-section" aria-label={`Request new ${level}`}>
     <a href={mailto} className="help-card" style={{display:'flex',alignItems:'center',gap:20,textDecoration:'none',padding:'24px',border:'2px dashed currentColor',borderRadius:16}}>
       <span aria-hidden="true" style={{display:'grid',placeItems:'center',fontSize:48,fontWeight:700,lineHeight:1,width:76,height:76,flexShrink:0,borderRadius:18,background:'rgba(245,132,36,0.13)',color:'#d66b1c'}}>+</span>

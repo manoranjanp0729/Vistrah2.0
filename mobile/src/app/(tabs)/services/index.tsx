@@ -13,9 +13,11 @@ import {marketplaceItemId,resolveMarketplaceSelection,searchMarketplaceEntries,t
 import {nativeMarketplacePhoto,nativeMarketplaceAlt} from '../../../lib/marketplace-photo';
 import {servicePhotos} from '../../../lib/service-photos';
 import {useTheme} from '../../../lib/theme';
+import {useSession} from '../../../lib/session';
 
 export default function Services(){
   const {styles}=useTheme();const {t,label}=useLanguage();
+  const {user}=useSession();
   const raw=useLocalSearchParams<{category?:string;subcategory?:string;type?:string;q?:string}>();
   const params:MarketplaceSelection={category:typeof raw.category==='string'?raw.category:undefined,subcategory:typeof raw.subcategory==='string'?raw.subcategory:undefined,type:typeof raw.type==='string'?raw.type:undefined,q:typeof raw.q==='string'?raw.q:undefined};
   const scope=JSON.stringify(params),[draft,setDraft]=useState<{scope:string;value:string}|null>(null);
@@ -28,6 +30,7 @@ export default function Services(){
   const {category,subcategory,listingType}=selected;
   const results=searchMarketplaceEntries(query);
   return <SafeAreaView edges={['left','right']} style={styles.page}><ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+    <View style={{alignItems:'flex-end'}}><Action secondary label={user?'Seller dashboard':'Seller login'} onPress={()=>router.push(user?'/seller':{pathname:'/auth',params:{mode:'seller'}})}/></View>
     <Heading title={listingType?label(marketplaceItemId(category!.slug,subcategory!.slug,listingType.slug),listingType.title):subcategory?label(marketplaceItemId(category!.slug,subcategory.slug),subcategory.title):category?label(marketplaceItemId(category.slug),category.title):t('discovery.title')}/>
     <Field hideLabel label={t('discovery.searchLabel')} placeholder={t('discovery.searchPlaceholder')} value={query} onChangeText={value=>setDraft({scope,value})}/>
     {needle?<View style={{gap:12}}><Heading title={t('discovery.results')} action={t('common.clear')} onPress={()=>{setDraft({scope,value:''});}}/><PhotoCardRail vertical label={t('discovery.resultsLabel')} cards={results.map(result=><PhotoCard list discovery key={result.id} title={label(result.id,result.title)} meta="" source={nativeMarketplacePhoto(result.id)} imageAlt={nativeMarketplaceAlt(result.id)} onPress={()=>open(result.selection)}/>)}/>{!results.length&&<Text style={styles.muted}>{t('discovery.noMatches')}</Text>}</View>:listingType?<View style={{gap:12}}>

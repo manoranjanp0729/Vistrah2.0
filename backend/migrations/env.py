@@ -3,6 +3,7 @@ from app.database import engine, Base
 from app import models
 from app import workflow_models
 from app import discovery_models
+from app import homepage_models
 from app import provider_models
 
 with engine.connect() as connection:

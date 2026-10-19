@@ -15,14 +15,41 @@ export function ProviderOnboarding({categories,categoryId,applicationId,provider
   return <AuthGate next={next}>{()=> <div className="container page"><OnboardingInner categories={categories} categoryId={categoryId} applicationId={applicationId} providerId={providerId}/></div>}</AuthGate>;
 }
 function OnboardingInner({categories,categoryId,applicationId,providerId}:{categories:Category[];categoryId?:number;applicationId?:string;providerId?:number}){
-  const [selected,setSelected]=useState(categoryId??categories[0]?.id??0);const [subcategory,setSubcategory]=useState<number|null>(null);const [ids,setIds]=useState<number[]>([]);
+  const [selected,setSelected]=useState(categoryId??categories[0]?.id??0);const [subcategory,setSubcategory]=useState<number|null>(null);const [ids,setIds]=useState<number[]>([]);const [createdDrafts,setCreatedDrafts]=useState<string[]>([]);
   const [app,setApp]=useState<ProviderApplication|null>(null);const [common,setCommon]=useState<Answers>({});const [answers,setAnswers]=useState<Record<string,Answers>>({});
   const [step,setStep]=useState(0);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [errors,setErrors]=useState<FieldError[]>([]);const [message,setMessage]=useState('');const [dirty,setDirty]=useState(false);const [ack,setAck]=useState(false);
   const accept=useCallback((data:ProviderApplication)=>{setApp(data);setCommon(data.common);setAnswers(Object.fromEntries(data.services.map(s=>[s.service_id,s.answers])));setDirty(false);},[]);
   useEffect(()=>{let alive=true;if(applicationId)api<ProviderApplication>(`/provider-applications/${applicationId}`).then(data=>{if(alive){accept(data);setStep(editable(data.status)?1:3);}}).catch(e=>{if(alive)setError(e.message);});return()=>{alive=false;};},[applicationId,accept]);
   useEffect(()=>{if(!dirty)return;const warn=(event:BeforeUnloadEvent)=>event.preventDefault();window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[dirty]);
   function failure(e:unknown){setError((e as Error).message);setErrors(e instanceof ApiError?e.errors:[]);}
-  async function create(){setBusy(true);setError('');try{const data=await api<ProviderApplication>('/provider-applications',{method:'POST',body:JSON.stringify({category_id:selected,subcategory_id:subcategory,service_ids:ids,...(providerId?{provider_id:providerId}:{})})});accept(data);setStep(1);window.history.replaceState(null,'',`/provide-service?application=${data.id}`);}catch(e){failure(e);}finally{setBusy(false);}}
+  async function create(){
+    if(!ids.length||busy)return;
+    setBusy(true);setError('');
+    const groups=new Map<string,{category_id:number;subcategory_id:number|null;service_ids:number[]}>();
+    for(const id of ids){
+      const category=categories.find(c=>c.services.some(service=>service.id===id)||c.subcategories.some(sub=>sub.services.some(service=>service.id===id)));
+      if(!category){setError('One of the selected services is unavailable. Recheck your selection.');setBusy(false);return;}
+      const sub=category.subcategories.find(item=>item.services.some(service=>service.id===id));
+      const subId=sub?.id??null;
+      const key=`${category.id}:${subId??'direct'}`;
+      const group=groups.get(key)??{category_id:category.id,subcategory_id:subId,service_ids:[]};
+      group.service_ids.push(id);groups.set(key,group);
+    }
+    const completed:string[]=[];
+    try{
+      for(const group of groups.values()){
+        const data=await api<ProviderApplication>('/provider-applications',{method:'POST',body:JSON.stringify({...group,...(providerId?{provider_id:providerId}:{})})});
+        completed.push(data.id);
+        setCreatedDrafts(previous=>[...previous,data.id]);
+        if(completed.length===1){accept(data);setStep(1);}
+      }
+      setMessage(completed.length===1?'Draft created. Continue with business details.':`${completed.length} drafts created for your selected catalogue sections. Complete each draft from My provider applications. The first draft is open below.`);
+      window.history.replaceState(null,'',`/provide-service?application=${completed[0]}`);
+    }catch(e){
+      failure(e);
+      if(completed.length)setMessage(`${completed.length} draft(s) saved successfully before the error. Continue with the first draft below; other saved drafts are available under My provider applications. Do not retry the full selection without reviewing those drafts.`);
+    }finally{setBusy(false);}
+  }
   async function save(){
     if(!app)return null;
     const data=await api<ProviderApplication>(`/provider-applications/${app.id}`,{method:'PUT',body:JSON.stringify({revision:app.revision,common,services:answers})});accept(data);return data;
@@ -44,7 +71,7 @@ function OnboardingInner({categories,categoryId,applicationId,providerId}:{categ
   }
   const canEdit=app&&editable(app.status);const commonFrozen=!!app?.services.some(s=>s.status==='APPROVED');
   return <div className="provider-onboarding"><p className="eyebrow">PROVIDE A SERVICE</p><h1>{app?'Your provider application':'Apply to provide services.'}</h1><p>Submit business details and service-specific evidence for manual review. Customer membership is not required. An application does not grant verification. Customer and seller access share one account; manage existing applications and explicit business ownership in Seller Dashboard.</p><Link className="text-link" href="/account/provider-applications">My provider applications</Link>{error&&<Notice error message={error}/>} {!!errors.length&&<ul className="provider-error-list" role="alert">{errors.map((e,i)=><li key={i}>{e.message}</li>)}</ul>}{message&&<Notice message={message}/>} {applicationId&&!app&&!error&&<p role="status">Loading your private application…</p>}
-    {!app&&!applicationId&&<section className="provider-section form"><SellerCataloguePicker categories={categories} selected={selected} onCategory={id=>{setSelected(id);setSubcategory(null);setIds([]);}} subcategory={subcategory} onSubcategory={id=>{setSubcategory(id);setIds([]);}} ids={ids} onServices={setIds}/><p>{providerId?`Business #${providerId}: new services use this explicit owner record. `:''}Common business information is entered once. Each service keeps its own requirements version, answers and decision.</p><button className="button" disabled={busy||!ids.length} onClick={create}>{busy?'Creating draft…':'Continue to business details'}</button></section>}
+    {!app&&!applicationId&&<section className="provider-section form"><SellerCataloguePicker categories={categories} selected={selected} onCategory={id=>{setSelected(id);setSubcategory(null);}} subcategory={subcategory} onSubcategory={setSubcategory} ids={ids} onServices={setIds}/><p>{providerId?`Business #${providerId}: new services use this explicit owner record. `:''}Services in different categories or subcategories create separate drafts; each draft needs its own business details and submission. Every service is reviewed independently.</p><button className="button" disabled={busy||!ids.length} onClick={create}>{busy?'Creating drafts…':ids.length?`Continue with ${ids.length} selected service(s)`:'Select services to continue'}</button></section>}
     {app&&<><div className="provider-reference"><strong>Application reference: {app.id}</strong><Status context="application" value={app.status}/><span>{dirty?'Unsaved answers — save your draft before leaving.':'Saved application'}</span></div><nav className="provider-steps" aria-label="Application steps">{['Business details','Service requirements','Review & submit'].map((label,i)=><button type="button" className={`button ${step===i+1?'':'secondary'}`} aria-current={step===i+1?'step':undefined} key={label} onClick={()=>setStep(i+1)}>{i+1}. {label}</button>)}</nav>
       {step===1&&<><h2>Common business information</h2>{commonFrozen&&<p className="notice">Approved services freeze shared business details. Ask the reviewer to reopen those services before changing them.</p>}<RequirementForm configuration={app.common_configuration} answers={common} onChange={value=>{setCommon(value);setDirty(true);}} disabled={!canEdit||busy||commonFrozen} errors={errors} prefix="common."/></>}
       {step===2&&app.services.map(s=>{const update=s.required_requirements??s.latest_requirements;return <section className="provider-service-form" key={s.service_id}><div className="row-between"><h2>{s.title}</h2><Status context="service" value={s.status}/></div><p>Requirements version {s.requirements.version} · effective {date(s.requirements.effective_at)}</p>{update&&update.id!==s.requirement_id&&<details className="notice"><summary>Version {update.version} is available{s.required_requirement_id?' and required by your reviewer':''}</summary><p>{update.change_note}</p><RequirementForm configuration={update.configuration} answers={{}} onChange={()=>{}} disabled/><HelpPair id="provider.adopt"><button className="button secondary" disabled={busy||!editable(s.status)} onClick={()=>adopt(s.service_id,update!.id)}>Adopt version {update.version}</button></HelpPair></details>}<RequirementForm configuration={s.requirements.configuration} answers={answers[s.service_id]??{}} onChange={value=>{setAnswers(previous=>({...previous,[s.service_id]:value}));setDirty(true);}} disabled={!canEdit||!editable(s.status)||busy} errors={errors} prefix={`${s.service_id}.`} onUpload={(field,file)=>upload(s.service_id,field,file)}/></section>;})}

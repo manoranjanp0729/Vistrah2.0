@@ -2,7 +2,7 @@ import {Image,Pressable,Text,View} from 'react-native';
 import {router} from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import {Page,Action,Heading,Loading,ErrorPanel} from '../../components/ui';
-import {Art} from '../../components/art';
+import {HomepageHeroCarousel} from '../../components/homepage-hero-carousel';
 import {CategoryCard} from '../../components/category-card';
 import {useResource} from '../../lib/resource';
 import {allServices,type Category} from '../../lib/catalogue';
@@ -14,7 +14,7 @@ export default function Discover(){
   const marketing=catalogue.data?.find(category=>category.slug==='marketing');
   const marketingServices=marketing?allServices([marketing]):[];
   const categories=catalogue.data?catalogue.data.filter(category=>category.slug!=='marketing').sort((a,b)=>priority(a.slug)-priority(b.slug)):[];
-  return <Page><Text style={styles.label}>DISCOVER. CONNECT. GROW.</Text><Text accessibilityRole="header" style={styles.title}>Discover VISTRAH</Text><Text style={[styles.text,{fontSize:23,lineHeight:34}]}>Explore services, products, and opportunities in one place.</Text><Action label="Explore services →" onPress={()=>router.push('/services')}/><Art/>
+  return <Page><Text style={styles.label}>DISCOVER. CONNECT. GROW.</Text><Text accessibilityRole="header" style={styles.title}>Discover VISTRAH</Text><Text style={[styles.text,{fontSize:23,lineHeight:34}]}>Explore services, products, and opportunities in one place.</Text><Action label="Explore services →" onPress={()=>router.push('/services')}/><HomepageHeroCarousel/>
     <Action secondary label={location?location.label+' · Change location':'Choose your location'} onPress={()=>router.push('/location')}/>
     <View style={styles.divider}/><Text style={styles.label}>QUICK ACCESS</Text><View style={styles.grid}>{shortcuts.map(item=><Pressable key={item.title} accessibilityRole="button" onPress={()=>item.title==='Jobs'?router.push('/jobs'):router.push({pathname:'/services',params:{q:item.q}})} style={({pressed})=>({width:'22%',flexGrow:1,backgroundColor:colors.surface,padding:12,borderRadius:18,alignItems:'center',gap:12,opacity:pressed?.7:1})}><Feather name={item.icon} size={28} color={colors.text}/><Text style={[styles.text,{fontSize:12}]}>{item.title}</Text></Pressable>)}</View>
     <View style={styles.divider}/><Heading title="Services for you" action="View all" onPress={()=>router.push('/services')}/>

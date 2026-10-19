@@ -28,6 +28,8 @@ from .publication_routes import router as publication_router
 app.include_router(publication_router)
 from .location_routes import router as location_router
 app.include_router(location_router)
+from .homepage_routes import router as homepage_router
+app.include_router(homepage_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):

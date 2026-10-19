@@ -9,7 +9,7 @@ import {api} from '@/lib/api';
 import type {User,Category} from '@/lib/types';
 import {urls} from '@/lib/urls';
 import {positioning} from '@/lib/positioning';
-export function Brand({light=false}:{light?:boolean}) {return <Link href="/" aria-label="VISTRAH home" className={`brand${light?' brand-light':''}`}>VISTRAH<span>{positioning.descriptor}</span></Link>;}
+export function Brand({light=false}:{light?:boolean}) {return <Link href="/" aria-label="VISTRAH home" className={`brand brand-image${light?' brand-light':''}`}><img src="/vistrah-brand.svg" alt="VISTRAH" width="216" height="67" /><span className="brand-descriptor">{positioning.descriptor}</span></Link>;}
 export function Header() {
   const [open,setOpen]=useState(false);const [user,setUser]=useState<User|null>(null);const path=usePathname();
   useEffect(()=>{let active=true;api<User>('/me').then(u=>{if(active)setUser(u);}).catch(()=>{if(active)setUser(null);});return()=>{active=false;};},[path]);

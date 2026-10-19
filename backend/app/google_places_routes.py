@@ -5,7 +5,7 @@ import math
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from .catalogue import active_service
@@ -15,6 +15,24 @@ from .location_schemas import NearbySearch
 from .security import member_user
 
 router = APIRouter(tags=["Google Places discovery"])
+# A conservative per-process ceiling; enforce Google Cloud project quotas too.
+from collections import defaultdict, deque
+from threading import Lock
+from time import monotonic
+_limits = defaultdict(deque)
+_limits_lock = Lock()
+
+
+def check_rate_limit(user_id):
+    now = monotonic()
+    with _limits_lock:
+        timestamps = _limits[user_id]
+        while timestamps and timestamps[0] <= now - 60:
+            timestamps.popleft()
+        if len(timestamps) >= 10:
+            raise HTTPException(429, "Google business discovery limit reached. Try again shortly.")
+        timestamps.append(now)
+
 GOOGLE_ENDPOINT = "https://places.googleapis.com/v1/places:searchText"
 
 
@@ -61,6 +79,7 @@ def service_google_places(service_id: int, location: NearbySearch, user: User = 
     key = os.environ.get("GOOGLE_PLACES_API_KEY", "").strip()
     if not key:
         return {"status": "unconfigured", "source": "google_places", "places": []}
+    check_rate_limit(user.id)
     try:
         places = google_search(service_query(db, service), location.latitude, location.longitude, location.radius_km, key)
     except (HTTPError, URLError, TimeoutError, ValueError, OSError):

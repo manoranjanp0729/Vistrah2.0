@@ -23,3 +23,12 @@ def test_query_uses_specific_service_and_taxonomy():
         def get(self, model, id):
             return {1: category, 2: subcategory}[id]
     assert service_query(Database(), service) == "Water Heater Repair Plumbing Home Services"
+
+
+def test_radius_rejects_nonfinite_coordinates():
+    assert not within_radius({"location": {"latitude": float("nan"), "longitude": 77.59}}, 12.97, 77.59, 5)
+
+
+def test_radius_includes_small_nearby_offset():
+    close = {"location": {"latitude": 12.972, "longitude": 77.595}}
+    assert within_radius(close, 12.9716, 77.5946, 2)

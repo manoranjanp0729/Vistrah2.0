@@ -26,6 +26,11 @@ _limits_lock = Lock()
 def check_rate_limit(user_id):
     now = monotonic()
     with _limits_lock:
+        # Remove expired identities so a long-lived worker does not grow without bound.
+        if len(_limits) > 5000:
+            for identity, entries in list(_limits.items()):
+                if not entries or entries[-1] <= now - 60:
+                    del _limits[identity]
         timestamps = _limits[user_id]
         while timestamps and timestamps[0] <= now - 60:
             timestamps.popleft()
@@ -46,7 +51,7 @@ def service_query(db, service):
 def within_radius(place, latitude, longitude, radius_km):
     point = place.get("location") or {}
     lat, lon = point.get("latitude"), point.get("longitude")
-    if not isinstance(lat, (int, float)) or not isinstance(lon, (int, float)):
+    if not isinstance(lat, (int, float)) or not isinstance(lon, (int, float)) or not math.isfinite(lat) or not math.isfinite(lon):
         return False
     p1, p2 = math.radians(latitude), math.radians(lat)
     dlat, dlon = p2 - p1, math.radians(lon - longitude)
@@ -61,13 +66,13 @@ def google_search(query, latitude, longitude, radius_km, key):
             "center": {"latitude": latitude, "longitude": longitude},
             "radius": min(radius_km * 1000, 50000)
         }},
-        "pageSize": 15,
+        "pageSize": 10,
         "languageCode": "en",
     }).encode("utf-8")
     request = Request(GOOGLE_ENDPOINT, data=body, method="POST", headers={
         "Content-Type": "application/json",
         "X-Goog-Api-Key": key,
-        "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.location,places.googleMapsUri,places.rating,places.userRatingCount",
+        "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.location,places.googleMapsUri",
     })
     with urlopen(request, timeout=5) as response:
         return json.load(response).get("places", [])
@@ -90,7 +95,6 @@ def service_google_places(service_id: int, location: NearbySearch, user: User = 
          "latitude": p.get("location", {}).get("latitude"),
          "longitude": p.get("location", {}).get("longitude"),
          "google_maps_url": p.get("googleMapsUri"),
-         "rating": p.get("rating"), "rating_count": p.get("userRatingCount"),
          "source": "Google Maps", "verified_service": False}
         for p in places if p.get("id") and p.get("displayName", {}).get("text") and within_radius(p, location.latitude, location.longitude, location.radius_km)
     ]}

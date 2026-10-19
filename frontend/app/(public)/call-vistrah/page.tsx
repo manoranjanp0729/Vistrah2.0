@@ -1,7 +1,0 @@
-import {pagePhoto} from '@/lib/imagery';
-import {officialContact,emailHref} from '@/lib/contact';
-import {Visual} from '@/components/visual';
-import {Mail,ArrowUpRight,MessageCircle} from 'lucide-react';
-import {Breadcrumbs,ButtonLink} from '@/components/ui';
-export const metadata={title:'Email VISTRAH'};
-export default function Contact() {return <div className="container page"><Breadcrumbs items={[{label:'Email VISTRAH'}]}/><div className="contact-grid"><div><p className="eyebrow">CONTACT VISTRAH</p><h1>Questions about<br/>the platform?</h1><p className="lead">Contact VISTRAH about finding services, provider applications or an existing enquiry.</p><a className="contact-email" href={emailHref(officialContact.email)!}><Mail size={30}/>{officialContact.email}<ArrowUpRight size={28}/></a><p>India · {officialContact.email}</p><ButtonLink secondary href="/services">Explore services</ButtonLink></div><div className="contact-card"><Visual photo={pagePhoto('contact')} className="inline-editorial"/><MessageCircle size={36}/><h2>Tell us about<br/>your requirements.</h2><p>Have a few details ready:</p><ul className="process-list"><li>The service or application you are asking about.</li><li>Your location and preferred timeline.</li><li>Any documents or project details that may help.</li></ul><p>Prefer to write down your requirements? Open a service and submit a request through your account.</p></div></div></div>;}

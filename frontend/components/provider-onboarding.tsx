@@ -15,7 +15,7 @@ export function ProviderOnboarding({categories,categoryId,applicationId,provider
   return <AuthGate next={next}>{()=> <div className="container page"><OnboardingInner categories={categories} categoryId={categoryId} applicationId={applicationId} providerId={providerId}/></div>}</AuthGate>;
 }
 function OnboardingInner({categories,categoryId,applicationId,providerId}:{categories:Category[];categoryId?:number;applicationId?:string;providerId?:number}){
-  const [selected,setSelected]=useState(categoryId??categories[0]?.id??0);const [subcategory,setSubcategory]=useState<number|null>(null);const [ids,setIds]=useState<number[]>([]);const [createdDrafts,setCreatedDrafts]=useState<string[]>([]);
+  const [selected,setSelected]=useState(categoryId??categories[0]?.id??0);const [subcategory,setSubcategory]=useState<number|null>(null);const [ids,setIds]=useState<number[]>([]);
   const [app,setApp]=useState<ProviderApplication|null>(null);const [common,setCommon]=useState<Answers>({});const [answers,setAnswers]=useState<Record<string,Answers>>({});
   const [step,setStep]=useState(0);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [errors,setErrors]=useState<FieldError[]>([]);const [message,setMessage]=useState('');const [dirty,setDirty]=useState(false);const [ack,setAck]=useState(false);
   const accept=useCallback((data:ProviderApplication)=>{setApp(data);setCommon(data.common);setAnswers(Object.fromEntries(data.services.map(s=>[s.service_id,s.answers])));setDirty(false);},[]);
@@ -40,7 +40,6 @@ function OnboardingInner({categories,categoryId,applicationId,providerId}:{categ
       for(const group of groups.values()){
         const data=await api<ProviderApplication>('/provider-applications',{method:'POST',body:JSON.stringify({...group,...(providerId?{provider_id:providerId}:{})})});
         completed.push(data.id);
-        setCreatedDrafts(previous=>[...previous,data.id]);
         if(completed.length===1){accept(data);setStep(1);}
       }
       setMessage(completed.length===1?'Draft created. Continue with business details.':`${completed.length} drafts created for your selected catalogue sections. Complete each draft from My provider applications. The first draft is open below.`);

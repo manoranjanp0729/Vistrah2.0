@@ -1,0 +1,5 @@
+# Opt-in homepage API rollout. Never run the Dockerfile's automatic 'alembic upgrade head'.
+# Combine with compose.yaml only for the homepage rollout.
+services:
+  api:
+    command: ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

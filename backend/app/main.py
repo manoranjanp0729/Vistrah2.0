@@ -35,7 +35,7 @@ app.include_router(google_places_router)
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
     if request.url.path.startswith(('/seller/', '/admin/ownership-claims', '/admin/publication-drafts', '/me/location')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
-        request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
+        request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby','/google-places')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'
         response.headers['Vary'] = 'Authorization'

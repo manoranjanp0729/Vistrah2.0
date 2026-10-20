@@ -6,7 +6,7 @@ import imagery from '../../shared/marketplace-imagery.json';
 import releases from '../../shared/catalogue-image-releases.json';
 import {marketplacePhoto} from './marketplace-photos';
 const records=Object.entries(imagery.items).filter(([id])=>id.includes('/agriculture-and-farming'));
-const assets=imagery.assets as Record<string,{src:string;alt:string;source:string;downloadUrl:string;photographer:string;licence:string;licenceUrl:string;width:number;height:number;bytes:number;sha256:string;originalSha256?:string}>;
+const assets=imagery.assets as Record<string,{src:string;alt:string;source:string;downloadUrl?:string;photographer?:string;licence?:string;licenceUrl?:string;width:number;height:number;bytes:number;sha256:string;originalSha256?:string}>;
 describe('Reviewed agricultural photographs',()=>{
  it('covers all 64 classifications with unique subjects, source photos and optimized bytes',()=>{
   expect(records).toHaveLength(64);

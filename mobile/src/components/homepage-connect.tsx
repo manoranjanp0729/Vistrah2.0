@@ -61,7 +61,7 @@ export function HomepageConnect(){
     <Text accessibilityRole="header" style={[s.heading,{color:section.ink}]}>{section.heading}</Text>
    </View>
    <Pressable accessibilityRole="link" accessibilityLabel={label('category/'+category.slug,category.title)} onPress={()=>router.push(agri?'/agri-connect':'/health-connect')} style={({pressed})=>[s.card,{opacity:pressed?.85:1}]}>
-    <View style={s.photo}>{failedPhotos[section.key]?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<Image source={photos[section.key]} resizeMode="cover" accessibilityLabel={t(agri?'agri.photoAlt':'health.photoAlt')} onError={()=>setFailedPhotos(value=>({...value,[section.key]:true}))} style={[StyleSheet.absoluteFillObject,{width:'100%',height:'100%'}]}/>}</View>
+    <View style={s.photo}>{failedPhotos[section.key]?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<Image source={photos[section.key]} resizeMode="cover" accessibilityLabel={t(agri?'agri.photoAlt':'health.photoAlt')} onError={()=>setFailedPhotos(value=>({...value,[section.key]:true}))} style={[StyleSheet.absoluteFill,{width:'100%',height:'100%'}]}/>}</View>
     <View style={s.copy}><Text style={[s.title,{color:section.ink}]}>{label('category/'+category.slug,category.title)}</Text><Text style={s.description}>{t(section.key==='agri'?'connect.agriCopy':'connect.healthCopy')}</Text></View>
     <Ionicons name="chevron-forward" size={19} color={accent} accessible={false}/>
    </Pressable>

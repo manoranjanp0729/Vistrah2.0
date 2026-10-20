@@ -36,7 +36,7 @@ describe('Catalogue-specific unique photographs',()=>{
  });
  it('rejects the same source photo disguised by a different encoded-file hash',()=>{
   const changed=structuredClone(approved),ready=Object.values(plan.items).filter(item=>item.photo!==null);
-  const assets=changed.assets as Record<string,{source:string;downloadUrl:string}>;
+  const assets=changed.assets as Record<string,{source:string;downloadUrl?:string}>;
   assets[ready[1].photo!].source=assets[ready[0].photo!].source;
   assets[ready[1].photo!].downloadUrl=assets[ready[0].photo!].downloadUrl;
   expect(validateCatalogue(plan,changed,taxonomy).errors.some((message:string)=>message.startsWith('Duplicate photograph:'))).toBe(true);

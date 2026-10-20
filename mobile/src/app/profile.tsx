@@ -8,6 +8,7 @@ import {api} from '../lib/api';
 import type {User} from '../lib/catalogue';
 import {useTheme} from '../lib/theme';
 export default function Profile(){
+  const {copy}=useLanguage();
   const session=useSession();
   return <Page>{!session.ready?<Loading/>:!session.user?<><Heading title={copy.profile.title}/><Action label={copy.auth.signIn} onPress={()=>router.push('/auth')}/></>:<ProfileForm key={session.user.id} user={session.user}/>}</Page>;
 }

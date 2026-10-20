@@ -1,8 +1,13 @@
 FROM python:3.12.10-slim
 WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
 COPY backend/requirements.txt backend/requirements.lock ./
 RUN pip install --no-cache-dir -r requirements.lock
-COPY backend/ .
+COPY backend/app/ ./app/
+COPY backend/migrations/ ./migrations/
+COPY backend/alembic.ini ./alembic.ini
 COPY shared/ /shared/
 RUN useradd --create-home app && mkdir /data && chown app:app /data
 USER app

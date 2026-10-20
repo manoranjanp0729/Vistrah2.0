@@ -34,3 +34,4 @@ test-results
 hero-backup-*
 backups/
 **/*.bak
+backend/artifacts/

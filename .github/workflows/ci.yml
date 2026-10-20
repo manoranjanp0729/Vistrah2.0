@@ -1,7 +1,7 @@
 name: Application checks
 on:
   push:
-    branches: [main, reference-theme-mobile]
+    branches: [main, reference-theme-mobile, chore/protect-local-source-20261020]
   pull_request:
   workflow_call:
     inputs:

@@ -56,6 +56,51 @@ A failed matrix can leave some candidate images uploaded. Promote a release
 only when all four publish jobs succeed; record every digest and the workflow
 run URL together. Retain the previously verified release for rollback.
 
+## Manual test candidates — Task 013
+
+Reuse the existing registered `Publish release images` workflow, selecting
+`chore/protect-local-source-20261020` and supplying `candidate_sha` as the full
+lowercase 40-character commit SHA. The commit must be an ancestor of the selected
+workflow commit and contain the updated FFmpeg `backend/Dockerfile`. Main with a
+blank candidate SHA retains the existing production-release process; a candidate
+SHA on main cannot start either publishing path. Nothing deploys automatically.
+
+Before the first candidate run:
+
+1. Separately authorize pushing these local workflow changes and dependencies.
+   The protected development branch must contain the exact source commit.
+2. Configure repository environment `test-candidates` with required reviewers,
+   prevention of self-approval, and a branch policy allowing only the protected
+   development branch. Disable administrative bypass where supported. Keep the
+   environment free of AWS, database or runtime credentials. No environment or
+   repository settings were created by this source change.
+3. Confirm the private repository's GitHub plan supports required-reviewer
+   environment gates. The workflow reads environment metadata with Actions-read
+   permission and fails closed if reviewers/self-review protection are missing
+   or access is denied. Do not weaken the gate or make the repository public.
+   [GitHub environment availability and API permissions](https://docs.github.com/en/rest/deployments/environments)
+   remain an owner/account dependency; existing branch protection is not proven.
+4. Confirm Actions/GHCR permissions, private package visibility, available quota
+   and approved public map-key variables. No paid capacity is enabled implicitly.
+   Existing CI type/lint/test/dependency findings must pass; no checks are bypassed.
+
+After approval, the existing reusable CI checks out the exact candidate SHA in
+every job. The three image jobs use that same SHA and publish only Linux amd64
+`candidate-api`, `candidate-web` and `candidate-admin` packages. API uses the
+updated default Dockerfile with FFmpeg. Phone-web/native artifacts are separate
+and are not published by the candidate matrix.
+
+Tags contain full source SHA, run ID and run attempt, so reruns never intentionally
+reuse a tag. GHCR tags are not inherently immutable: deploy only the recorded
+`image@sha256:digest`. Each image job summary records commit, unique tag, digest
+and run URL. A partial/failed matrix is not a usable candidate set. Verify all
+three jobs succeeded and retain their digests together. Actual image/codec
+execution, vulnerability scans and isolated persistence/rollback checks remain
+separate release gates. API startup must use the existing direct-Uvicorn override
+because the default image command still migrates/seeds. No AWS/SSH/deployment
+credentials, runtime activation, database migration or service command exists
+in this workflow.
+
 ## Review and protection
 
 Review changes through pull requests into `main`. Required checks should be

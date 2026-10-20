@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {authEndpoint} from '../src/lib/seller-auth.ts';
 import {matches,visibleAnswers,preparedAnswers,type RequirementField} from '../src/lib/provider-requirements.ts';
 import {evidenceMeta,evidenceLimit} from '../src/lib/evidence-validation.ts';
@@ -38,14 +39,15 @@ test('reset email links are parsed locally without browser handoff',()=>{
   assert.equal(resetToken('vistrah://reset-password?token='+token),token);
   assert.throws(()=>resetToken('https://vistrah.example/reset-password'));
 });
-test('only the admin account action can open the VISTRAH website',()=>{
-  const root=new URL('../src/',import.meta.url).pathname;
+test('only the guarded admin dashboard can open the independent admin website',()=>{
+  const root=fileURLToPath(new URL('../src/',import.meta.url));
   function files(dir:string):string[]{return readdirSync(dir,{withFileTypes:true}).flatMap(entry=>entry.isDirectory()?files(join(dir,entry.name)):/\.tsx?$/.test(entry.name)?[join(dir,entry.name)]:[]);}
-  const source=files(root).map(file=>({file,text:readFileSync(file,'utf8')}));
+  const source=files(root).map(file=>({file:file.replaceAll('\\','/'),text:readFileSync(file,'utf8')}));
   assert.equal(source.some(item=>item.text.includes('openWebsite')),false);
   const callers=source.filter(item=>item.text.includes('openAdminDashboard')&&!item.file.endsWith('/lib/web.ts'));
-  assert.equal(callers.length,1);assert.ok(callers[0].file.endsWith('/app/(tabs)/account.tsx'));
+  assert.equal(callers.length,1);assert.ok(callers[0].file.endsWith('/app/admin-dashboard.tsx'));
   assert.match(callers[0].text,/role==='ADMIN'/);
+  assert.match(callers[0].text,/if\(!allowed\)return/);
   const helper=source.find(item=>item.file.endsWith('/lib/web.ts'))!.text;
   assert.match(helper,/EXPO_PUBLIC_ADMIN_URL/);assert.doesNotMatch(helper,/Authorization|access_token/);
 });

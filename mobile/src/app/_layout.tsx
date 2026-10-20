@@ -15,6 +15,7 @@ export default function RootLayout(){return <ThemeProvider><LanguageProvider><Th
 function ThemedRoot(){const {colors,mode}=useTheme();const {t}=useLanguage();
   return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false,headerBackVisible:false,headerLeft:()=> <BackButton/>}}>
     <Stack.Screen name="(tabs)" options={{headerShown:false}}/>
+    <Stack.Screen name="admin-dashboard" options={{title:'Admin dashboard'}}/>
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
     <Stack.Screen name="service/find-jobs" options={{title:'Find Jobs'}}/>
     <Stack.Screen name="employer-jobs" options={{title:'Employer job postings'}}/>

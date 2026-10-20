@@ -13,7 +13,8 @@ test('website export keeps the local EAS linkage and native build configuration 
     assert.equal(native.icon,'./assets/brand/icon.png');
     assert.equal(native.userInterfaceStyle,'light');
     assert.equal(native.plugins[0],'expo-router');
-    assert.equal(native.plugins[1][0],'expo-splash-screen');
+    assert(native.plugins.includes('expo-video'));
+    assert.deepEqual(native.plugins.find(plugin=>Array.isArray(plugin)&&plugin[0]==='expo-splash-screen'),['expo-splash-screen',{image:'./assets/brand/lockup-light.png',imageWidth:240,resizeMode:'contain',backgroundColor:'#f7f7f8'}]);
     assert.deepEqual(config.plugins,['expo-router']);
     process.env.EXPO_PUBLIC_WEB_SESSION_MODE='cookie';
     const website=configure({config});

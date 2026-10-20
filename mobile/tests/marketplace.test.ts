@@ -45,8 +45,8 @@ test('uses one two-row rail contract without losing an odd final card',()=>{
 test('search links to the right classification, never to a service or request',()=>{
  const result=marketplace.searchMarketplaceEntries('  DOG WALKING  ');assert.equal(result.length,1);
  assert.equal(result[0].selection.type,'dog-walking');assert.ok(!result[0].href.includes('/service/'));
- const source=readFileSync(new URL('../src/app/(tabs)/services.tsx',import.meta.url),'utf8');
- assert.ok(source.includes('This classification cannot be booked or requested.'));assert.ok(!source.includes('/marketplace/taxonomy'));
+ const source=readFileSync(new URL('../src/app/(tabs)/services/index.tsx',import.meta.url),'utf8');
+ assert.ok(source.includes("t('discovery.unavailableType')"));assert.ok(!source.includes('/marketplace/taxonomy'));
  assert.ok(source.includes('mobileServiceId(item)'));
 });
 
@@ -60,5 +60,5 @@ test('agriculture keeps the original taxonomy intact and uses distinct approved 
 
 test('homepage alone opts into compact category rails with mobile swipe and desktop controls',()=>{
  const home=readFileSync(new URL('../src/app/(tabs)/index.tsx',import.meta.url),'utf8'),categories=readFileSync(new URL('../src/components/marketplace-categories.tsx',import.meta.url),'utf8'),rail=readFileSync(new URL('../src/components/photo-card-rail.tsx',import.meta.url),'utf8');
- assert.equal((home.match(/<MarketplaceCategories compact exclude=\{connectCategorySlugs\}\/>/g)??[]).length,2);assert(home.includes('action="View all"'));assert(categories.includes("meta={compact?'':"));assert(categories.includes('!compact&&<Text'));assert(rail.includes('width>=768&&(previous||next)'));assert(rail.includes('!compact&&<Text'));assert(rail.includes('<ScrollView ref={scroll} horizontal'));
+ assert.equal((home.match(/<MarketplaceCategories compact homepage exclude=\{connectCategorySlugs\}\/>/g)??[]).length,2);assert(home.includes('action="View all"'));assert(categories.includes('meta=""'));assert(categories.includes('vertical={!homepage}'));assert(categories.includes('uniformHomepage={homepage}'));assert(rail.includes('width>=768&&(previous||next)'));assert(rail.includes('!compact&&<Text'));assert(rail.includes('<ScrollView ref={scroll} horizontal'));
 });

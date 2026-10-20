@@ -1,5 +1,8 @@
-import {createElement} from 'react';
-import {renderToStaticMarkup} from 'react-dom/server';
+import {createElement,type ReactNode} from 'react';
+import {renderToStaticMarkup as renderMarkup} from 'react-dom/server';
+import english from '../../shared/locales/en.json';
+import {LanguageProvider} from '../components/language-provider';
+const renderToStaticMarkup=(node:ReactNode)=>renderMarkup(createElement(LanguageProvider,null,node));
 import {beforeEach,describe,expect,it,vi} from 'vitest';
 import source from '../../shared/catalogue.json';
 import type {Category} from './types';
@@ -55,7 +58,7 @@ describe('Public taxonomy page behavior',()=>{
     serverApi.mockRejectedValue(new Error('Unavailable'));
     const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({})}));
     expect(html.match(/data-marketplace-category=/g)).toHaveLength(14);
-    expect(html).toContain('Published services are temporarily unavailable');
+    expect(html).toContain(english['discovery.temporarilyUnavailable']);
     expect(serverApi.mock.calls).toEqual([['/catalogue']]);
   });
   it('searches published services while retaining their original URLs and photos',async()=>{
@@ -85,7 +88,7 @@ describe('Public taxonomy page behavior',()=>{
   it('keeps classification journeys compact and independent of catalogue availability',async()=>{
     serverApi.mockRejectedValue(new Error('Unavailable'));
     const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({category:'pet-care',subcategory:'pet-walking-and-sitting',type:'dog-walking'})}));
-    expect(html).toContain('cannot be booked or requested');
+    expect(html).toContain(english['discovery.unavailableType']);
     expect(html).toContain('/services#published-services');
     expect(html).not.toContain('class="service-card"');
     expect(serverApi).not.toHaveBeenCalled();

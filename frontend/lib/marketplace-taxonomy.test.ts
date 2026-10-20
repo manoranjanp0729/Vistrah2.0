@@ -1,6 +1,9 @@
-import {createElement} from 'react';
+import {createElement,type ReactNode} from 'react';
 import {describe,it,expect,vi} from 'vitest';
-import {renderToStaticMarkup} from 'react-dom/server';
+import {renderToStaticMarkup as renderMarkup} from 'react-dom/server';
+import english from '../../shared/locales/en.json';
+import {LanguageProvider} from '../components/language-provider';
+const renderToStaticMarkup=(node:ReactNode)=>renderMarkup(createElement(LanguageProvider,null,node));
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import {marketplaceCategories,searchMarketplace,taxonomyCounts,marketplaceCategoryUrl,marketplaceUrl,resolveMarketplaceSelection,searchMarketplaceEntries} from './marketplace-taxonomy';
@@ -69,7 +72,7 @@ describe('Canonical marketplace discovery',()=>{
     const html=renderToStaticMarkup(createElement(MarketplaceBrowser,{selection:{category,subcategory,listingType}}));
     expect(html).toContain('Marketplace breadcrumb');expect(html).toContain('aria-current="page"');
     expect(html).toContain(marketplaceUrl({category:category.slug,subcategory:subcategory.slug}).replaceAll('&','&amp;'));
-    expect(html).toContain('cannot be booked or requested');expect(html).not.toContain('/request');
+    expect(html).toContain(english['discovery.unavailableType']);expect(html).not.toContain('/request');
   });
   it('preserves all published service and request route IDs',()=>{
     const categories=structuredClone(catalogue) as unknown as Category[];
@@ -97,7 +100,7 @@ describe('additive Agriculture & Farming classification',()=>{
   const entries=agriculture.subcategories.flatMap(s=>s.listing_types);expect(entries).toHaveLength(54);expect(new Set(entries.map(t=>t.slug)).size).toBe(54);
   const old=new Set(marketplaceCategories.slice(0,13).flatMap(c=>c.subcategories.flatMap(s=>s.listing_types.map(t=>t.slug))));expect(entries.every(t=>!old.has(t.slug))).toBe(true);
   expect(searchMarketplaceEntries('tractor rental')[0].selection.category).toBe(agriculture.slug);
-  const subcategory=agriculture.subcategories[0],listingType=subcategory.listing_types[0];const html=renderToStaticMarkup(createElement(MarketplaceBrowser,{selection:{category:agriculture,subcategory,listingType}}));expect(html).toContain('agriculture-farm-land-preparation.webp');expect(html).not.toContain('Photograph unavailable');expect(html).toContain('cannot be booked or requested');expect(html).not.toContain('/request');
+  const subcategory=agriculture.subcategories[0],listingType=subcategory.listing_types[0];const html=renderToStaticMarkup(createElement(MarketplaceBrowser,{selection:{category:agriculture,subcategory,listingType}}));expect(html).toContain('agriculture-farm-land-preparation.webp');expect(html).not.toContain('Photograph unavailable');expect(html).toContain(english['discovery.unavailableType']);expect(html).not.toContain('/request');
  });
 });
 

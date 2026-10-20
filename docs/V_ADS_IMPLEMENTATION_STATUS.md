@@ -1,5 +1,20 @@
 # V Ads implementation status
 
+## Registration / runtime checkpoint - 20 October 2026
+
+Approved registration-only main commit `902c88e` is applied and byte-verified;
+workflow `390740934` is active. Exact candidate source remains `4cc5e2f`.
+Development CI #51 passed all application jobs; known mobile audit still fails.
+Candidate publishing is **ON HOLD by explicit user instruction**: quota and
+private package/Actions access are unverified (billing 404, package listing 403).
+No images/digests or FFmpeg runtime result exist for this candidate.
+Public AWS website/API/admin HTTPS health checks pass, but the approved feed
+returns 404 and its V Ads workspace/admin paths are absent from public OpenAPI.
+AWS administrative login is still expired. No deployment, DB/service/AWS changes.
+Existing linked Android AWS-test APK configuration is prepared; signing, EAS
+authentication/quota, actual APK and device verification remain pending.
+See [the current release checkpoint](RELEASES.md) for exact evidence and hold gates.
+
 ## Integrated AWS Test checkpoint - 20 October 2026
 
 Current protected source branch: `chore/protect-local-source-20261020`.

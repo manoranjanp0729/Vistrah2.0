@@ -2,6 +2,61 @@
 
 Phase 2 source preparation, 13 October 2026. No production deployment is wired.
 
+## Registration completed; candidate publishing ON HOLD - 20 October 2026
+
+The user approved only the documented default-branch registration change, then
+explicitly answered **Hold candidate publishing** when quota/package access
+could not be verified. No workflow dispatch, Docker build, registry publication,
+AWS mutation, migration or deployment was performed.
+
+- Verified `main` at `d365d7ca7f5fea58e67e0583afa4d86c002b1a6d` had no
+  `.github/workflows/publish-images.yml`. GitHub Contents API created commit
+  `902c88e371e3fd7a1626dd40d0c679f123638dc4` with ONLY that new file.
+  Remote bytes match the approved stub below; SHA-256
+  `340baaec789628093b7dc1ec7d32e584cb72523ec05c1cf97547f58fc2315b10`.
+  No application files, existing workflows or local branches were changed.
+- GitHub workflow ID `390740934` is active. The protected development branch
+  still points to `4cc5e2ff54c9d33504a671657d43d15adb947588`, whose existing
+  dispatch definition accepts the exact SHA and confirmation. Branch selection
+  is prepared; execution has deliberately not been tested by dispatching.
+- Development CI #51 completed: backend, all three clients, environment and
+  frontend/admin audits passed. Only the unchanged mobile dependency audit
+  failed. The server-candidate scope remains an isolated-test exception, never
+  production or Android release approval.
+- Actions is enabled and permits the pinned actions. Default token permissions
+  are read; candidate publishing explicitly requests `packages: write`.
+  Billing usage returned 404 even with the current API version; package listing
+  returned 403 and individual candidate lookups returned 404. These responses
+  do NOT prove available quota, package absence/privacy or registry write access.
+  No credentials, spending limits or account settings were changed.
+- Prepared, not submitted: `artifacts/milestone-release/candidate-publication-request.json`
+  targets the exact protected SHA above, workflow `publish-images.yml`, and
+  `PUBLISH TEST CANDIDATE`. Ten standard Linux runner jobs have a combined
+  timeout ceiling of 205 runner-minutes (5 resolve + 5 environment + 20 backend
+  + 2x25 clients + 2x10 audits + 3x35 image builds); actual usage is unknown.
+  Do not publish until the user resumes and confirms included quota/no paid
+  overage plus private GHCR package/repository Actions access.
+
+Read-only AWS Test endpoint evidence: `vistrah.in`, `api.vistrah.in` and
+`admin.vistrah.in` resolve to `35.154.22.29`. HTTPS returns 200 for the website
+and admin `/api/health`, and the direct API `/health`; direct API `/api/health`
+returns 404, which does not invalidate its working `/health`. Public API
+`/openapi.json` returns 200, but `/v-ads/reels`, `/v-ads/me` and
+`/admin/v-ads/advertisers` are absent; a public feed request returns 404.
+Current health therefore does not establish the new V Ads runtime is deployed.
+AWS CLI `vistrah-login` still reports an expired session; host RAM/disk/images,
+database revision, media/backup capacity and snapshot recovery remain unverified.
+
+Android preparation reuses the linked `in.vistrah.app` project and existing
+`aws-test` profile: internal APK, development client false, HTTPS AWS-test API,
+website and admin origins. No `EXPO_TOKEN` is present in this process; that
+alone does not establish whether an EAS account has a saved session. EAS CLI,
+account/signing access and included build quota remain unverified; no install,
+cloud build or signing change was attempted. With those prerequisites approved,
+the existing command is `eas build --platform android --profile aws-test
+--non-interactive` from `mobile/`. It must not silently enable paid capacity or
+create/replace credentials. Physical-device acceptance remains pending.
+
 ## Integrated AWS Test milestone - 20 October 2026
 
 The current master directive authorizes routine verified development-branch
@@ -70,10 +125,11 @@ from `main` (Contents API 404); its workflow API also returns 404. Earlier
 [GitHub's manual-run documentation](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow?tool=cli)
 requires the workflow file on the default branch. No dispatch was attempted.
 
-### Reviewable registration-only proposal (NOT APPLIED)
+### Approved registration-only stub (applied 20 October 2026)
 
-Smallest approval: add ONLY the following new
-`.github/workflows/publish-images.yml` file to `main`, then manually select
+The user approved adding ONLY the following new
+`.github/workflows/publish-images.yml` file to `main`; it is now applied. Once
+publishing is resumed and prerequisite gates pass, manually select
 `chore/protect-local-source-20261020` to run the full reviewed candidate workflow
 from that branch with an exact protected source SHA and confirmation phrase.
 This proposal merges no application source, changes no existing main workflow,
@@ -106,8 +162,8 @@ jobs:
           exit 1
 ```
 
-This is a proposal in documentation, not an applied main-branch file or a
-verified candidate run. Package privacy/read permissions, available Actions/GHCR
+The applied main-branch file matches this stub exactly; no candidate run has
+occurred. Package privacy/read permissions, available Actions/GHCR
 quota, image scans and immutable runtime smoke remain acceptance gates after
 registration. No AWS/registry credentials are embedded in this proposal.
 

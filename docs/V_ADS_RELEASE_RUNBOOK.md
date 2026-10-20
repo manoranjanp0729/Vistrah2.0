@@ -1,13 +1,28 @@
 # V Ads controlled-release runbook
 
-## Current preparation checkpoint - 20 October 2026
+## Current execution boundary - 20 October 2026
+
+The approved registration-only stub is now the sole addition in main commit
+`902c88e`; GitHub recognizes workflow `390740934`. User subsequently instructed
+**Hold candidate publishing**. The exact `4cc5e2f` development source and manual
+request are prepared; no dispatch, image build, FFmpeg smoke or publication ran.
+Before resuming, verify included Actions quota/no paid overage and private GHCR
+package/repository Actions access; the configured credentials cannot read those
+prerequisites. No production exception is granted by the isolated test scope.
+AWS Test public HTTPS health passes, but new V Ads routes are not deployed;
+administrative login remains expired. Preserve existing running services/data.
+Android APK auth/signing/quota and device checks remain open. Detailed evidence
+and the exact approval/hold history are maintained in [RELEASES.md](RELEASES.md).
+
+## Earlier preparation checkpoint - 20 October 2026 (historical)
 
 Use the protected source branch `chore/protect-local-source-20261020`.
 [RELEASES.md](RELEASES.md#integrated-aws-test-milestone---20-october-2026)
-records current passing hosted application checks, the authorized isolated
+records passing hosted application checks, the authorized isolated
 server-image CI scope, unexecuted bounded FFmpeg/validator smoke, and a concrete
-registration-only default-branch proposal. The candidate workflow is not yet
-registered on GitHub; do not attempt a deployment to solve that source gate.
+registration-only default-branch proposal. At this earlier checkpoint the
+workflow was unregistered; the execution boundary above records its subsequent
+registration and explicit publication hold. Do not deploy to solve a source gate.
 AWS login remains expired; no cloud resource/capacity/recovery claim is verified.
 Existing media limits, backup/restore, writer fencing, migration approval and
 direct-Uvicorn activation gates below remain mandatory. No deployment, main

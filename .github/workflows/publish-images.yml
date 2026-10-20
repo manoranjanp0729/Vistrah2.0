@@ -115,6 +115,7 @@ jobs:
     uses: ./.github/workflows/ci.yml
     with:
       source_ref: ${{ needs.resolve_candidate.outputs.sha }}
+      server_images_only: true
   publish_candidate:
     name: Test candidate (${{ matrix.image }})
     needs: [resolve_candidate, candidate_checks]

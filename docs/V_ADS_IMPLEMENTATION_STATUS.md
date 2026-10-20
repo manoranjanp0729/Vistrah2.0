@@ -1,5 +1,24 @@
 # V Ads implementation status
 
+## Integrated AWS Test checkpoint - 20 October 2026
+
+Current protected source branch: `chore/protect-local-source-20261020`.
+Reused Phase 1-4 functionality; 100 MiB limit and all UI/assets remain unchanged.
+Public reel/profile engagement queries now batch counts (six videos: 13/14 to
+3/4 SELECTs), with approved-only visibility and visible-only comments retained.
+Run #50 verifies 457 backend tests passed/six skipped on disposable PostgreSQL,
+249 frontend tests and 40 mobile tests passed; all three client jobs pass.
+The known mobile dependency audit still fails; production remains BLOCKED.
+No new Docker candidate, AWS deployment, migration, normal-service change or
+Android hardware verification. Candidate-only FFmpeg/validator smoke and scoped
+API/web/admin checks are prepared, statically verified and not executed.
+Actual external gates: candidate workflow absent from default main/unregistered;
+AWS CLI session still expired and earlier SSH authentication unresolved; target
+capacity/media backup/restore, images/scans and physical Android QA unverified.
+Exact evidence, scope, registration-only approval proposal and remaining
+acceptance are in [RELEASES.md](RELEASES.md#integrated-aws-test-milestone---20-october-2026).
+The dated implementation/preview evidence below is historical, not live proof.
+
 Updated 19 October 2026. Branch: `feature/recovered-design-taxonomy-integration`.
 Scope: Phase 1 source work followed by explicitly authorized Phase 2 integration
 and Phase 3 advertiser/admin management.

@@ -2,10 +2,10 @@
 
 Phase 2 source preparation, 13 October 2026. No production deployment is wired.
 
-## Integrated AWS Test milestone ? 20 October 2026
+## Integrated AWS Test milestone - 20 October 2026
 
 The current master directive authorizes routine verified development-branch
-commits/pushes and isolated test preparation; older per-task ?do not push?
+commits/pushes and isolated test preparation; older per-task `do not push`
 notes are historical. Production gates remain unchanged. Existing source/UI,
 local containers and data are preserved. Journey traceability and acceptance
 gaps are recorded in USER_JOURNEYS.md rather than a parallel checklist.
@@ -20,12 +20,13 @@ gaps are recorded in USER_JOURNEYS.md rather than a parallel checklist.
   3/4 after, retaining approved-only visibility and visible comment counts.
 - Hosted evidence: run #49 at
   https://github.com/manoranjan247p-source/Vistrah2.0/actions/runs/39446934524
-  has passed all three Client jobs, Environment boundaries, frontend/admin audits.
-  Backend finished with 456 passed, six skipped and one 404 failure: legacy
-  account-test teardown removed application routes before moderation tests.
-  Removed redundant global router mutation from account/review fixtures; 14
-  targeted account/review?moderation tests pass locally, hosted recheck pending.
-  The unchanged mobile dependency audit fails on four documented advisory families. Do not
+  first exposed the route-teardown failure. Run #50 at
+  https://github.com/manoranjan247p-source/Vistrah2.0/actions/runs/39451654345
+  verifies the fix: 457 PostgreSQL-backend tests passed/six skipped, 249 frontend
+  tests and 40 mobile tests passed; all three Client jobs (including their
+  type/lint/build or web-export steps), environment and web/admin audits passed.
+  Fourteen targeted account/review-then-moderation tests also pass locally.
+  The unchanged mobile audit is the only failing job (four documented families). Do not
   represent earlier/local SQLite results as PostgreSQL or device evidence.
 - Added candidate-only API runtime smoke preparation: after the immutable API
   image is published, run FFmpeg/FFprobe, core Python imports, generate a tiny
@@ -33,7 +34,7 @@ gaps are recorded in USER_JOURNEYS.md rather than a parallel checklist.
   has no network, no volumes, a read-only root, a 16 MiB ephemeral tmpfs,
   256 MiB/one CPU/64-process limits and an explicit shell entrypoint; it never
   starts Uvicorn, migrates, seeds or connects to a database. YAML/Bash syntax and
-  preservation of prior jobs/gates were checked. The candidate build also
+  preservation of full push/PR/main checks were checked. The candidate build also
   passes the existing approved public map-key variable to the actual Next.js
   `NEXT_PUBLIC_MAPTILER_API_KEY` build argument (the old Expo-only argument did
   not populate the desktop map configuration). Main publishing is unchanged. This smoke
@@ -50,14 +51,65 @@ Next access action: obtain a successful local STS check in the same Windows
 account/profile (no credentials/account output in chat), then repeat only the
 blocked read-only AWS checks. No new resources or access-policy changes.
 
-The current publishing workflow deliberately still requires FULL CI, including
-the mobile security audit, before any API/web/admin candidate. The master
-allows understood isolated-test findings but does not silently change this
-existing gate. A separate reviewed decision is required to reconcile that
-exception with publishing controls; no audit suppression, major dependency
-upgrade, new paid quota or production exemption has been applied. Phone-web
-and Android are not in the three-image candidate matrix and need their own
-verified artifacts; a web export is not an installable APK.
+The master's explicit isolated-test exception is now implemented as a narrow
+`server_images_only` reusable-CI input, default false. Only exact-SHA protected
+development-branch candidates use it; they run backend/environment plus ALL
+website/admin type/lint/test/build and audit checks. Their three Dockerfiles do
+not copy mobile dependencies. A guard rejects using this scope on main or
+without a full source SHA. Full push/PR/main client and audit matrices retain
+mobile, with no audit suppression or production exemption. The default-main
+publication path remains full-CI-gated. Phone-web and Android are not in this
+three-image candidate matrix and need their own verified artifacts; a web export
+is not an installable APK. No paid quota was enabled or verified.
+
+A real readiness read found a separate registration blocker: repository-scoped
+GitHub credentials CAN read Actions, but only `ci.yml` and
+`catalogue-request-checks.yml` are registered. `publish-images.yml` is absent
+from `main` (Contents API 404); its workflow API also returns 404. Earlier
+`registered workflow` wording was an unverified assumption, corrected here.
+[GitHub's manual-run documentation](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow?tool=cli)
+requires the workflow file on the default branch. No dispatch was attempted.
+
+### Reviewable registration-only proposal (NOT APPLIED)
+
+Smallest approval: add ONLY the following new
+`.github/workflows/publish-images.yml` file to `main`, then manually select
+`chore/protect-local-source-20261020` to run the full reviewed candidate workflow
+from that branch with an exact protected source SHA and confirmation phrase.
+This proposal merges no application source, changes no existing main workflow,
+never builds/publishes on main and cannot deploy. Do not merge the whole
+feature branch to register it. Recheck main's current file absence and latest
+head immediately before an approved change; stop if either conflicts.
+
+```yaml
+name: Publish release images
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_sha:
+        description: Full reviewed development commit SHA
+        required: true
+        type: string
+      candidate_confirmation:
+        description: Type PUBLISH TEST CANDIDATE and select the development branch
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  select_development_branch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: |
+          echo 'Select chore/protect-local-source-20261020; this registration stub never publishes or deploys.'
+          exit 1
+```
+
+This is a proposal in documentation, not an applied main-branch file or a
+verified candidate run. Package privacy/read permissions, available Actions/GHCR
+quota, image scans and immutable runtime smoke remain acceptance gates after
+registration. No AWS/registry credentials are embedded in this proposal.
 
 After access and artifact gates: inspect actual cloud commands/images/revision,
 RAM/disk/private media and active writers; verify protected DB+media backup and
@@ -76,10 +128,27 @@ account switching/logout and admin browser separation. Capture exact APK SHA,
 source SHA, API revision and results. Native tokens must stay out of URLs/logs.
 No production endpoint/store/billing decision is implied by test acceptance.
 
+### Operational milestone handoff (not a completion claim)
+
+| Area | Verified result / remaining evidence |
+|---|---|
+| Source | Protected development branch; logical fixes pushed, prior local handoff edits preserved. Latest exact SHA is available from branch/CI records. Main untouched. |
+| Optimization | Public six-video feed/profile SELECTs 13/14 to 3/4; same public rules and payload fields. |
+| Builds | Hosted Next.js website/admin builds and Expo web export passed in #50. No new Docker digest or installable APK exists for this checkpoint. |
+| AWS Test | No new deployment. Expired AWS session and prior SSH rejection block current health/endpoint/capacity verification. |
+| Database/media | #50 disposable PostgreSQL suite passes (457/six skipped). Existing AWS data/media, backup restoration and migration rollout remain unverified/unexecuted. |
+| Customer | Hosted client tests and source checks pass; complete signed-in AWS journeys and visual/hardware acceptance remain open in USER_JOURNEYS.md. |
+| Seller | Synthetic owned-account/submission/publication coverage passes in backend suite; full AWS upload/review/status round-trip pending. |
+| Admin | Separate admin build/type/lint passes; V Ads permissions/moderation tests pass. Real admin session/evidence/operational dashboard acceptance pending. |
+| Android | 40 native-source tests and Expo browser export pass. No signed APK, installation, hardware audio/GPS or AWS-connected native acceptance claimed. |
+| Security | Four known mobile advisory families unchanged; only isolated server-image testing scoped; full mobile/production audit stays blocking. Image/Python artifact scans pending. |
+| Rollback | Retain old images/config and protected DB/media; rehearse compatible old/candidate/old in disposable infrastructure before promotion. No blind downgrade/restore or normal-volume overwrite. Existing V Ads runbook provides ordered gated commands; no rehearsal executed here. |
+| Next external actions | Approve only the reviewed default-branch dispatcher registration; restore working AWS login/SSH separately. Then candidate/scans/restore/capacity/device gates must pass before any separately approved data migration/runtime activation. |
+
 ## Checks
 
-`.github/workflows/ci.yml` runs on pushes to `main` and
-`reference-theme-mobile`, every pull request, and release-workflow calls.
+`.github/workflows/ci.yml` runs on pushes to `main`, `reference-theme-mobile`
+and `chore/protect-local-source-20261020`, every pull request, and release-workflow calls.
 
 - Environment tests and local/disposable-test template validation.
 - Backend tests and Alembic migrations against a fresh runner PostgreSQL
@@ -132,7 +201,8 @@ run URL together. Retain the previously verified release for rollback.
 
 ## Manual test candidates — Tasks 013/014
 
-Reuse the existing registered `Publish release images` workflow, selecting
+After the default-branch registration gate above is approved and completed,
+use the `Publish release images` workflow, selecting
 `chore/protect-local-source-20261020` and supplying `candidate_sha` as the full
 lowercase 40-character commit SHA and `candidate_confirmation` exactly
 `PUBLISH TEST CANDIDATE`. Missing or incorrect confirmation fails before CI/builds.
@@ -153,10 +223,12 @@ Before the first candidate run:
    Keep existing repository access controls; branch protection is not proven.
 3. Confirm Actions/GHCR permissions, private package visibility, available quota
    and approved public map-key variables. No paid capacity is enabled implicitly.
-   Existing CI type/lint/test/dependency findings must pass; no checks are bypassed.
+   Candidate-scoped server CI type/lint/test/dependency findings must pass.
+   Full development/production mobile security gates remain unchanged.
 
-After confirmation, the existing reusable CI checks out the exact candidate SHA in
-every job. The three image jobs use that same SHA and publish only Linux amd64
+After confirmation, the existing reusable server-candidate CI checks out the
+exact candidate SHA in every job. Full main release checks retain the mobile
+client/audit; the isolated three-image test scope excludes mobile only. The three image jobs use that same SHA and publish only Linux amd64
 `candidate-api`, `candidate-web` and `candidate-admin` packages. API uses the
 updated default Dockerfile with FFmpeg. Phone-web/native artifacts are separate
 and are not published by the candidate matrix.

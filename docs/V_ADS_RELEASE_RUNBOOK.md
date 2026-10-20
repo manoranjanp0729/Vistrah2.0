@@ -1,5 +1,20 @@
 # V Ads controlled-release runbook
 
+## Current preparation checkpoint - 20 October 2026
+
+Use the protected source branch `chore/protect-local-source-20261020`.
+[RELEASES.md](RELEASES.md#integrated-aws-test-milestone---20-october-2026)
+records current passing hosted application checks, the authorized isolated
+server-image CI scope, unexecuted bounded FFmpeg/validator smoke, and a concrete
+registration-only default-branch proposal. The candidate workflow is not yet
+registered on GitHub; do not attempt a deployment to solve that source gate.
+AWS login remains expired; no cloud resource/capacity/recovery claim is verified.
+Existing media limits, backup/restore, writer fencing, migration approval and
+direct-Uvicorn activation gates below remain mandatory. No deployment, main
+change, candidate build/dispatch or normal database/container action occurred.
+Physical Android APK and hardware acceptance remain pending; Expo web export
+and passing source tests do not establish a working installed application.
+
 Preparation completed 19 October 2026. **Production verdict: BLOCKED.**
 This document does not authorize execution. No command in the deployment,
 backup, migration, build or rollback blocks below was executed during Phase 4.

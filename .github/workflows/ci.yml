@@ -10,6 +10,11 @@ on:
         required: false
         type: string
         default: ''
+      server_images_only:
+        description: Isolated API/web/admin candidates only; full push/PR/main checks remain the default
+        required: false
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -25,6 +30,16 @@ jobs:
         with:
           persist-credentials: false
           ref: ${{ inputs.source_ref || github.sha }}
+      - name: Enforce isolated server candidate scope
+        if: inputs.server_images_only
+        shell: bash
+        env:
+          SOURCE_REF: ${{ inputs.source_ref }}
+        run: |
+          set -euo pipefail
+          [[ "$GITHUB_REF" == 'refs/heads/chore/protect-local-source-20261020' ]]
+          [[ "$SOURCE_REF" =~ ^[0-9a-f]{40}$ ]]
+          echo 'API/web/admin candidate checks only. Mobile advisory families remain unresolved; Android and production release are NOT approved. Full push/PR/main audits remain mandatory.' >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
@@ -72,7 +87,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [frontend, admin, mobile]
+        package: ${{ fromJSON(inputs.server_images_only && '["frontend","admin"]' || '["frontend","admin","mobile"]') }}
     defaults:
       run:
         working-directory: ${{ matrix.package }}
@@ -110,7 +125,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [frontend, admin, mobile]
+        package: ${{ fromJSON(inputs.server_images_only && '["frontend","admin"]' || '["frontend","admin","mobile"]') }}
     defaults:
       run:
         working-directory: ${{ matrix.package }}

@@ -32,3 +32,5 @@ test-results
 **/.next-*
 **/*.conflict-backup
 hero-backup-*
+backups/
+**/*.bak

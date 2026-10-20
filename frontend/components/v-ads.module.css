@@ -1,8 +1,8 @@
 .page{max-width:760px;margin:auto;padding:16px;display:grid;gap:16px}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.feed{height:calc(100dvh - 168px);min-height:360px;max-height:900px;overflow-y:auto;scroll-snap-type:y mandatory;border-radius:var(--radius-md,22px);background:#080b11}
+.feed{width:100%;max-width:440px;margin:0 auto;height:calc(100dvh - 168px);min-height:360px;max-height:900px;overflow-y:auto;scroll-snap-type:y mandatory;border-radius:var(--radius-md,22px);background:#080b11}
 .reel{height:100%;min-height:360px;position:relative;scroll-snap-align:start;scroll-snap-stop:always;isolation:isolate;background:#080b11;color:#fff}
-.video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;z-index:-1}
+.video{width:100%;height:100%;object-fit:contain;position:absolute;inset:0;z-index:-1}
 .tap{position:absolute;inset:25% 65px 30%;border:0;background:transparent;color:#fff;display:grid;place-items:center;font-size:28px}
 .details{position:absolute;left:16px;right:80px;bottom:24px;display:grid;gap:9px;text-shadow:0 1px 4px #000}
 .details h2,.details p{margin:0;color:#fff}.details h2{font-size:18px}.details p{font-size:13px}.details a{color:#fff;font-weight:700}

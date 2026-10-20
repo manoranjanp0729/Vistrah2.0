@@ -147,7 +147,7 @@ function ReelCard({reel, active, height}: {
       <VideoView
         player={player}
         style={StyleSheet.absoluteFill}
-        contentFit="cover"
+        contentFit="contain"
         nativeControls={false}
         fullscreenOptions={{enable: true}}
       />

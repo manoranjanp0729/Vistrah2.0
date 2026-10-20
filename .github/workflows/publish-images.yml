@@ -1,0 +1,22 @@
+name: Publish release images
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_sha:
+        description: Full reviewed development commit SHA
+        required: true
+        type: string
+      candidate_confirmation:
+        description: Type PUBLISH TEST CANDIDATE and select the development branch
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  select_development_branch:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: |
+          echo 'Select chore/protect-local-source-20261020; this registration stub never publishes or deploys.'
+          exit 1

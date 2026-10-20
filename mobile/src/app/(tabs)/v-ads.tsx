@@ -1,4 +1,4 @@
-﻿import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useFocusEffect,router,useLocalSearchParams} from 'expo-router';
 import {
   AppState, FlatList, Pressable, Share, StyleSheet, Text,
@@ -81,9 +81,9 @@ function ReelCard({reel, active, height}: {
   const viewSent=useRef(false);
   useEffect(()=>{
     if(!user||!active||!screenFocused||!appActive||paused||commentsOpen||viewSent.current)return;
-    let previous=player.currentTime,watched=0;
+    let previous=0,watched=0;try{previous=player.currentTime;}catch{}
     const timer=setInterval(()=>{if(viewSent.current)return;
-      watched=advanceView(watched,player.currentTime-previous,player.playing);previous=player.currentTime;
+      try{watched=advanceView(watched,player.currentTime-previous,player.playing);previous=player.currentTime;}catch{return;}
       if(watched>=3){viewSent.current=true;void management.view(reel.id).catch(()=>{});}
     },500);
     return()=>clearInterval(timer);
@@ -92,7 +92,7 @@ function ReelCard({reel, active, height}: {
     const subscription=player.addListener('statusChange',event=>{
       setPlaybackError(event.status==='error'?'Video could not load. Check your connection and try again.':'');
     });
-    return()=>subscription.remove();
+    return()=>{try{subscription.remove();}catch{}};
   },[player]);
   useEffect(()=>{
     let alive=true;
@@ -111,16 +111,16 @@ function ReelCard({reel, active, height}: {
   useEffect(() => {
     playbackAllowed.current=active && !commentsOpen && !paused && screenFocused && appActive;
     if (active && !commentsOpen && !paused && screenFocused && appActive) {
-      player.play();
+      try{player.play();}catch{}
     } else {
-      player.pause();
+      try{player.pause();}catch{}
     }
-    return () => {playbackAllowed.current=false;player.pause();};
+    return () => {playbackAllowed.current=false;try{player.pause();}catch{}};
   }, [active, commentsOpen, paused, player, screenFocused, appActive]);
 
   function toggleSound() {
     // eslint-disable-next-line react-hooks/immutability -- expo-video exposes mutable player controls.
-    player.muted = !muted;
+    try{player.muted = !muted;}catch{}
     setMuted(!muted);
   }
 

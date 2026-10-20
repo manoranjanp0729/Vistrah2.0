@@ -14,7 +14,7 @@ def test_commerce_fixture_refuses_normal_target_before_connecting(monkeypatch):
 def test_commerce_fixture_is_synthetic_opt_in_and_preserves_existing_edits(tmp_path):
     env={**os.environ,'DATABASE_URL':'sqlite:///'+(tmp_path/'commerce-fixture.db').as_posix(),'JWT_SECRET':'disposable-commerce-fixture-tests'}
     script='''
-from sqlalchemy import select
+from sqlalchemy import select,text
 from app import homepage_test_fixture as homepage
 from app import commerce_test_fixture as commerce
 # Bypass PostgreSQL target checks only in this separate SQLite subprocess test.
@@ -26,6 +26,7 @@ from app.database import SessionLocal,engine
 from app.models import User,Provider
 from app.commerce_models import CommerceListing
 with SessionLocal() as db:
+ assert db.execute(text('SELECT version_num FROM alembic_version')).scalar()=='020'
  assert len(db.scalars(select(User)).all())==4
  assert len(db.scalars(select(Provider)).all())==2
  listings=db.scalars(select(CommerceListing)).all()

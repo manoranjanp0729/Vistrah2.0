@@ -11,17 +11,21 @@ from .v_ads_models import (
 router = APIRouter(prefix="/v-ads", tags=["V Ads"])
 
 
-def video_payload(db: Session, video: VAdsVideo, advertiser: VAdsAdvertiser):
-    likes = db.scalar(
-        select(func.count(VAdsLike.id)).where(VAdsLike.video_id == video.id)
-    ) or 0
+def engagement_counts(db: Session, video_ids: list[str]) -> dict[str, tuple[int, int]]:
+    if not video_ids:
+        return {}
+    likes = dict(db.execute(select(VAdsLike.video_id, func.count(VAdsLike.id))
+        .where(VAdsLike.video_id.in_(video_ids)).group_by(VAdsLike.video_id)).all())
+    comments = dict(db.execute(select(VAdsComment.video_id, func.count(VAdsComment.id))
+        .where(VAdsComment.video_id.in_(video_ids), VAdsComment.status == "VISIBLE")
+        .group_by(VAdsComment.video_id)).all())
+    return {identity: (likes.get(identity, 0), comments.get(identity, 0)) for identity in video_ids}
 
-    comments = db.scalar(
-        select(func.count(VAdsComment.id)).where(
-            VAdsComment.video_id == video.id,
-            VAdsComment.status == "VISIBLE",
-        )
-    ) or 0
+
+def video_payload(db: Session, video: VAdsVideo, advertiser: VAdsAdvertiser,
+                  counts: dict[str, tuple[int, int]] | None = None):
+    counts = engagement_counts(db, [video.id]) if counts is None else counts
+    likes, comments = counts.get(video.id, (0, 0))
 
     return {
         "id": video.id,
@@ -65,10 +69,11 @@ def list_reels(
 
     rows = db.execute(statement).all()
     has_more = len(rows) > page_size
+    counts = engagement_counts(db, [video.id for video, _ in rows[:page_size]])
 
     return {
         "items": [
-            video_payload(db, video, advertiser)
+            video_payload(db, video, advertiser, counts)
             for video, advertiser in rows[:page_size]
         ],
         "page": page,
@@ -104,13 +109,14 @@ def advertiser_profile(
         .limit(30)
     ).all()
 
+    counts = engagement_counts(db, [video.id for video in videos])
     return {
         "id": advertiser.id,
         "name": advertiser.name,
         "handle": advertiser.handle,
         "description": advertiser.description,
         "videos": [
-            video_payload(db, video, advertiser)
+            video_payload(db, video, advertiser, counts)
             for video in videos
         ],
     }

@@ -174,7 +174,9 @@ def test_queue_pagination_rejected_accounts_and_reason_validation(management, db
     client, headers, _, account, video, _ = management
     account.status = 'REJECTED'
     db.commit()
-    queue = client.get('/admin/v-ads/advertisers?status=REJECTED', headers=headers['admin']).json()
+    response = client.get('/admin/v-ads/advertisers?status=REJECTED', headers=headers['admin'])
+    assert response.status_code == 200, response.text
+    queue = response.json()
     assert queue['items'][0]['id'] == account.id and queue['has_more'] is False
     assert len(queue['items'][0]['review_token']) == 64
     assert client.get('/admin/v-ads/videos?page=0', headers=headers['admin']).status_code == 422

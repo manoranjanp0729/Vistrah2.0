@@ -5,6 +5,8 @@ from .homepage_test_fixture import validate_target,MARKER as HOMEPAGE_MARKER,ADM
 MARKER='commerce-test-fixture-v1'
 SELLER_EMAIL='commerce-seller@example.com'
 REVIEWER_EMAIL='commerce-reviewer@example.com'
+# Explicitly reviewed additive descendants; unknown future schemas still fail closed.
+REVIEWED_SCHEMA_REVISIONS=frozenset({'015','016','017','018','019','020'})
 
 
 def main():
@@ -21,7 +23,7 @@ def main():
         if db.get(BootstrapState,MARKER):
             print('Commerce QA fixture already exists. Seller edits, stock, memberships and orders retained.')
             return
-        if db.execute(text('SELECT version_num FROM alembic_version')).scalar()!='015':raise RuntimeError('Commerce fixture requires the reviewed 015 test schema')
+        if db.execute(text('SELECT version_num FROM alembic_version')).scalar() not in REVIEWED_SCHEMA_REVISIONS:raise RuntimeError('Commerce fixture requires a reviewed 015-020 test schema')
         owner=db.scalar(select(User).where(User.email==ADMIN_EMAIL,User.role=='ADMIN'))
         if owner is None:raise RuntimeError('Guarded test administrator missing')
         if db.scalar(select(User.id).where(User.email.in_((SELLER_EMAIL,REVIEWER_EMAIL)))):raise RuntimeError('Refusing to replace existing commerce fixture account identities')

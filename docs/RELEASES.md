@@ -56,11 +56,15 @@ A failed matrix can leave some candidate images uploaded. Promote a release
 only when all four publish jobs succeed; record every digest and the workflow
 run URL together. Retain the previously verified release for rollback.
 
-## Manual test candidates — Task 013
+## Manual test candidates — Tasks 013/014
 
 Reuse the existing registered `Publish release images` workflow, selecting
 `chore/protect-local-source-20261020` and supplying `candidate_sha` as the full
-lowercase 40-character commit SHA. The commit must be an ancestor of the selected
+lowercase 40-character commit SHA and `candidate_confirmation` exactly
+`PUBLISH TEST CANDIDATE`. Missing or incorrect confirmation fails before CI/builds.
+This is explicit operator confirmation, not independent reviewer approval; no
+GitHub environment or paid reviewer feature is required.
+The commit must be an ancestor of the selected
 workflow commit and contain the updated FFmpeg `backend/Dockerfile`. Main with a
 blank candidate SHA retains the existing production-release process; a candidate
 SHA on main cannot start either publishing path. Nothing deploys automatically.
@@ -69,22 +73,15 @@ Before the first candidate run:
 
 1. Separately authorize pushing these local workflow changes and dependencies.
    The protected development branch must contain the exact source commit.
-2. Configure repository environment `test-candidates` with required reviewers,
-   prevention of self-approval, and a branch policy allowing only the protected
-   development branch. Disable administrative bypass where supported. Keep the
-   environment free of AWS, database or runtime credentials. No environment or
-   repository settings were created by this source change.
-3. Confirm the private repository's GitHub plan supports required-reviewer
-   environment gates. The workflow reads environment metadata with Actions-read
-   permission and fails closed if reviewers/self-review protection are missing
-   or access is denied. Do not weaken the gate or make the repository public.
-   [GitHub environment availability and API permissions](https://docs.github.com/en/rest/deployments/environments)
-   remain an owner/account dependency; existing branch protection is not proven.
-4. Confirm Actions/GHCR permissions, private package visibility, available quota
+2. An authorized repository operator reviews the exact SHA and manually enters
+   the confirmation phrase on the protected development branch. No environment
+   policy API call, Actions-read permission or separate reviewer job is used.
+   Keep existing repository access controls; branch protection is not proven.
+3. Confirm Actions/GHCR permissions, private package visibility, available quota
    and approved public map-key variables. No paid capacity is enabled implicitly.
    Existing CI type/lint/test/dependency findings must pass; no checks are bypassed.
 
-After approval, the existing reusable CI checks out the exact candidate SHA in
+After confirmation, the existing reusable CI checks out the exact candidate SHA in
 every job. The three image jobs use that same SHA and publish only Linux amd64
 `candidate-api`, `candidate-web` and `candidate-admin` packages. API uses the
 updated default Dockerfile with FFmpeg. Phone-web/native artifacts are separate

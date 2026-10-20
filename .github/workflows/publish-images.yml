@@ -7,6 +7,11 @@ on:
         required: false
         type: string
         default: ''
+      candidate_confirmation:
+        description: 'To publish test candidates, type PUBLISH TEST CANDIDATE. This does not deploy.'
+        required: false
+        type: string
+        default: ''
 permissions:
   contents: read
 concurrency:
@@ -82,7 +87,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      actions: read
     outputs:
       sha: ${{ steps.source.outputs.sha }}
     steps:
@@ -91,47 +95,29 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - name: Validate exact candidate and approval configuration
+      - name: Validate exact candidate and manual confirmation
         id: source
         shell: bash
         env:
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
-          GH_TOKEN: ${{ github.token }}
+          CANDIDATE_CONFIRMATION: ${{ inputs.candidate_confirmation }}
         run: |
           set -euo pipefail
+          [[ "$CANDIDATE_CONFIRMATION" == 'PUBLISH TEST CANDIDATE' ]] || { echo 'Explicit candidate publication confirmation is required.' >&2; exit 1; }
           [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'A full lowercase commit SHA is required.' >&2; exit 1; }
           git cat-file -e "$CANDIDATE_SHA^{commit}"
           git merge-base --is-ancestor "$CANDIDATE_SHA" "$GITHUB_SHA"
           git show "$CANDIDATE_SHA:backend/Dockerfile" | grep -Fq 'apt-get install -y --no-install-recommends ffmpeg'
-          gh api "repos/$GITHUB_REPOSITORY/environments/test-candidates" > "$RUNNER_TEMP/candidate-environment.json"
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          configuration = json.loads((Path(os.environ['RUNNER_TEMP']) / 'candidate-environment.json').read_text())
-          rules = configuration.get('protection_rules', [])
-          if not any(rule.get('type') == 'required_reviewers' and rule.get('reviewers')
-                     and rule.get('prevent_self_review') is True for rule in rules):
-              raise SystemExit('STOP: test-candidates needs required reviewers and prevention of self-approval; no candidate will be built.')
-          PY
           echo "sha=$CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
           echo "Candidate commit: $CANDIDATE_SHA" >> "$GITHUB_STEP_SUMMARY"
-  approve_candidate:
-    needs: resolve_candidate
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    environment:
-      name: test-candidates
-      url: https://github.com/${{ github.repository }}/tree/${{ needs.resolve_candidate.outputs.sha }}
-    steps:
-      - run: echo 'Candidate image publication approved; no runtime deployment is configured.'
   candidate_checks:
-    needs: [resolve_candidate, approve_candidate]
+    needs: resolve_candidate
     uses: ./.github/workflows/ci.yml
     with:
       source_ref: ${{ needs.resolve_candidate.outputs.sha }}
   publish_candidate:
     name: Test candidate (${{ matrix.image }})
-    needs: [resolve_candidate, approve_candidate, candidate_checks]
+    needs: [resolve_candidate, candidate_checks]
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     permissions:

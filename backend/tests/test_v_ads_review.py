@@ -7,20 +7,12 @@ from sqlalchemy import select
 from app.models import User, Audit
 from app.security import issue_token
 from app.v_ads_models import VAdsAdvertiser
-from app.v_ads_review_routes import router
 
 
 @pytest.fixture
 def review_client(client):
-    from app.main import app
-    app.include_router(router)
-    try:
-        yield client
-    finally:
-        app.router.routes[:] = [
-            route for route in app.router.routes
-            if route not in router.routes
-        ]
+    # Exercise the registered application router without mutating global routes.
+    yield client
 
 
 @pytest.fixture

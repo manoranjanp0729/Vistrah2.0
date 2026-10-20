@@ -5,7 +5,6 @@ from sqlalchemy import select, func
 from app.models import User, Audit
 from app.security import issue_token
 from app.v_ads_models import VAdsAdvertiser
-from app.v_ads_account_routes import router
 
 
 DATA = {
@@ -51,14 +50,9 @@ def accounts(db):
 
 @pytest.fixture
 def account_client(client):
-    from app.main import app
-    app.include_router(router)
+    # The integrated application already registers this router. Do not remove
+    # production routes from the process shared with later moderation tests.
     yield client
-    # Router is installed only for this isolated test process.
-    app.router.routes[:] = [
-        route for route in app.router.routes
-        if route not in router.routes
-    ]
 
 
 def test_seller_can_request_advertiser(account_client, accounts, db):

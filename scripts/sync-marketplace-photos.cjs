@@ -1,6 +1,7 @@
 // Curated subject pools are ordered by the canonical subcategory order.
 // This only writes presentation manifests and bundled image copies, never taxonomy or records.
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
+const {canonicalizePhotos,applyVerifiedReleases}=require('./catalogue-photo-manifest.cjs');
 const root=path.resolve(__dirname,'..'),read=file=>JSON.parse(fs.readFileSync(path.join(root,file),'utf8'));
 const taxonomy=read('shared/marketplace-taxonomy.json');
 const assets={...read('frontend/lib/photo-assets.json'),...read('frontend/lib/marketplace-imagery.json'),...read('shared/marketplace-imagery.json').assets};
@@ -48,17 +49,20 @@ for(const category of taxonomy.categories){
   if(new Set(ids.map(id=>items[id].photo)).size===1)ids.forEach((id,typeIndex)=>{items[id].photo=pool[typeIndex%pool.length];});
  });
 }
-const used=new Set(Object.values(items).map(item=>item.photo));const selectedAssets=Object.fromEntries([...used].sort().map(key=>[key,assets[key]]));
+const releases=fs.existsSync(path.join(root,'shared/catalogue-image-releases.json'))?read('shared/catalogue-image-releases.json'):{items:[]};
+const used=new Set([...Object.values(items).map(item=>item.photo),...releases.items.map(item=>item.photo)]);const selectedAssets=Object.fromEntries([...used].sort().map(key=>[key,assets[key]]));
+const canonical=canonicalizePhotos({assets:selectedAssets,items});
+canonical.manifest=applyVerifiedReleases(canonical.manifest,releases);
 const destination=path.join(root,'mobile/assets/marketplace');fs.mkdirSync(destination,{recursive:true});
 const requires=[];
-for(const [key,asset] of Object.entries(selectedAssets)){
+for(const [key,asset] of Object.entries(canonical.manifest.assets)){
  const bytes=fs.readFileSync(path.join(root,'frontend/public',asset.src));if(crypto.createHash('sha256').update(bytes).digest('hex')!==asset.sha256)throw new Error('Source photo integrity mismatch: '+key);
  const name=path.basename(asset.src),target=path.join(destination,name);
  if(fs.existsSync(target)&&!fs.readFileSync(target).equals(bytes))throw new Error('Refusing to overwrite different native asset: '+name);
  if(!fs.existsSync(target))fs.writeFileSync(target,bytes);
  requires.push(`  ${JSON.stringify(key)}:require('../../assets/marketplace/${name}'),`);
 }
-fs.writeFileSync(path.join(root,'shared/marketplace-imagery.json'),JSON.stringify({assets:selectedAssets,items},null,2)+'\n');
+fs.writeFileSync(path.join(root,'shared/marketplace-imagery.json'),JSON.stringify(canonical.manifest,null,2)+'\n');
 fs.writeFileSync(path.join(root,'mobile/src/lib/marketplace-photos.ts'),"// Static Metro requires mirror the exact website photo bytes.\nexport const marketplacePhotos:Record<string,number>={\n"+requires.join('\n')+'\n};\n');
 const sameParent=[];for(const c of taxonomy.categories)for(const s of c.subcategories){const parent=items[`subcategory/${c.slug}/${s.slug}`].photo;if(s.listing_types.every(t=>items[`type/${c.slug}/${s.slug}/${t.slug}`].photo===parent))sameParent.push(c.slug+'/'+s.slug);}
 console.log(JSON.stringify({items:Object.keys(items).length,photos:used.size,sameParentGroups:sameParent}));

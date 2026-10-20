@@ -17,13 +17,13 @@ export const usesBrowserCookies=process.env.EXPO_PUBLIC_WEB_SESSION_MODE==='cook
 let unauthorized:()=>void=()=>{};
 export function setToken(value:string|null){token=value;}
 export function onUnauthorized(handler:()=>void){unauthorized=handler;}
-export async function api<T>(path:string,options:RequestInit={}):Promise<T> {
+export async function api<T>(path:string,options:RequestInit={},transport:{timeoutMs?:number;fetcher?:typeof fetch}={}):Promise<T> {
   if(!path.startsWith('/')||path.startsWith('//')||path.includes('..')||path.includes('\\'))throw new ApiError(0,'Invalid API path.');
   const base=usesBrowserCookies?'/api':validateBase(process.env.EXPO_PUBLIC_API_URL??'',__DEV__);
-  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),15000);
+  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),transport.timeoutMs??15000);
   const session=token;
   try {
-    const response=await fetch(base+path,{...options,signal:controller.signal,redirect:'error',
+    const response=await (transport.fetcher??fetch)(base+path,{...options,signal:controller.signal,redirect:'error',
       ...(usesBrowserCookies?{credentials:'same-origin' as const}:{}),
       headers:{'Content-Type':'application/json',...options.headers,...(session&&!usesBrowserCookies?{Authorization:'Bearer '+session}:{})}});
     const data=await response.json().catch(()=>null);

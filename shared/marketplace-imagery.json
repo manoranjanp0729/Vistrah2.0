@@ -795,27 +795,6 @@
       "fit": "cover",
       "crop": "Portrait source: lower focal position retains the foreground attendee and seated audience."
     },
-    "events-and-celebrations": {
-      "key": "events",
-      "source": "https://www.pexels.com/photo/engaged-audience-in-conference-hall-38786014/",
-      "photographer": "Caleb Oquendo",
-      "licence": "Pexels License",
-      "licenceUrl": "https://www.pexels.com/license/",
-      "licenceVerified": "2026-10-09",
-      "verificationUrl": "https://www.pexels.com/photo/engaged-audience-in-conference-hall-38786014/",
-      "downloadUrl": "https://images.pexels.com/photos/38786014/pexels-photo-38786014.jpeg?auto=compress&cs=tinysrgb&w=1600",
-      "src": "/images/photos/events.webp",
-      "width": 1067,
-      "height": 1600,
-      "sourceWidth": 1600,
-      "sourceHeight": 2400,
-      "bytes": 55416,
-      "sha256": "14e074e86e56dacc1cf9ce8a49e38ed7cc8052058a9eb20a8ca3ce99247d307c",
-      "alt": "Audience members listening to a conference presentation",
-      "position": "50% 75%",
-      "fit": "cover",
-      "crop": "Portrait source: lower focal position retains the foreground attendee and seated audience."
-    },
     "finance": {
       "key": "finance",
       "source": "https://www.pexels.com/photo/a-person-examining-documents-8296970/",
@@ -1084,30 +1063,6 @@
       "sourceHeight": 5792,
       "bytes": 77336,
       "sha256": "570730589c3dee93d225e9100b193fd70e87ee9f3970b4f886034f6743d7231d",
-      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
-    },
-    "jobs-and-careers": {
-      "key": "career-workplace",
-      "source": "https://www.pexels.com/photo/people-working-in-front-of-the-computer-3184357/",
-      "alt": "A diverse team working together at computers in an office",
-      "position": "50% 50%",
-      "fit": "cover",
-      "photographer": "fauxels",
-      "downloadUrl": "https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg?cs=srgb&dl=pexels-fauxels-3184357.jpg&fm=jpg",
-      "licence": "Pexels License",
-      "licenceUrl": "https://www.pexels.com/license/",
-      "licenceVerified": "2026-10-09",
-      "verificationUrl": "https://www.pexels.com/photo/people-working-in-front-of-the-computer-3184357/",
-      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
-      "originalSha256": "b70ead53f8a313e46c6b224f72e3dafc8b3da25162b63a2ad32c03dbc638f119",
-      "downloadedAt": "2026-10-09T13:13:14.508701+00:00",
-      "src": "/images/photos/career-workplace.webp",
-      "width": 1440,
-      "height": 961,
-      "sourceWidth": 6000,
-      "sourceHeight": 4004,
-      "bytes": 89878,
-      "sha256": "d53eb5f73bfffb236aace5167beaf482947faea6db6d4457f37a974930454116",
       "crop": "Subject-preserving crop; cover unless a portrait needs containment."
     },
     "lab": {
@@ -1506,27 +1461,6 @@
       "fit": "cover",
       "crop": "Keep the notebook and laptop as personal-planning context."
     },
-    "plumbing": {
-      "key": "plumbing",
-      "source": "https://unsplash.com/photos/Vve7XkiUq_Y",
-      "photographer": "Jacek Dylag",
-      "licence": "Unsplash License",
-      "licenceUrl": "https://unsplash.com/license",
-      "licenceVerified": "2026-10-09",
-      "verificationUrl": "https://unsplash.com/s/photos/plumber",
-      "downloadUrl": "https://images.unsplash.com/photo-1542013936693-884638332954?w=1600&q=85&fm=jpg&fit=max",
-      "src": "/images/photos/plumbing.webp",
-      "width": 1067,
-      "height": 1600,
-      "sourceWidth": 1600,
-      "sourceHeight": 2400,
-      "bytes": 138434,
-      "sha256": "2180dcf30b8b5b1317a7c6ca02fe1890e7a382a4d5f54fc9f917442832d7eb49",
-      "alt": "A hand adjusting a kitchen tap over a sink",
-      "position": "50% 20%",
-      "fit": "cover",
-      "crop": "Portrait source: upper crop retains the hand, tap and running water."
-    },
     "printing": {
       "key": "printing",
       "source": "https://www.pexels.com/photo/complex-press-in-a-graphic-design-studio-6620985/",
@@ -1594,30 +1528,6 @@
       "sourceHeight": 2080,
       "bytes": 60330,
       "sha256": "b7ab2b2205d604f8106a9f85b85cca5d41160316f4c8839ee7c2b19f4c6ecf6a",
-      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
-    },
-    "professional-services": {
-      "key": "professional-advice",
-      "source": "https://www.pexels.com/photo/man-in-gray-shirt-sitting-by-the-table-7821707/",
-      "alt": "Two professionals discussing documents across a meeting table",
-      "position": "50% 50%",
-      "fit": "cover",
-      "photographer": "RDNE Stock project",
-      "downloadUrl": "https://images.pexels.com/photos/7821707/pexels-photo-7821707.jpeg?cs=srgb&dl=pexels-rdne-7821707.jpg&fm=jpg",
-      "licence": "Pexels License",
-      "licenceUrl": "https://www.pexels.com/license/",
-      "licenceVerified": "2026-10-09",
-      "verificationUrl": "https://www.pexels.com/photo/man-in-gray-shirt-sitting-by-the-table-7821707/",
-      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
-      "originalSha256": "7d0fc805c0ab2ea3c9418b55b327bfd5669ce63fe686d901b7b1ac44c1a41a4d",
-      "downloadedAt": "2026-10-09T13:13:15.163318+00:00",
-      "src": "/images/photos/professional-advice.webp",
-      "width": 1440,
-      "height": 960,
-      "sourceWidth": 4311,
-      "sourceHeight": 2874,
-      "bytes": 64136,
-      "sha256": "de45f5408db5f4768be3d6446fd458feb499f0baa7668accb6508cbe0d8305b2",
       "crop": "Subject-preserving crop; cover unless a portrait needs containment."
     },
     "property": {
@@ -1737,30 +1647,6 @@
       "sha256": "fe17a0780fed478c2cf231747bdc534d4cdcb3f9546533c5e1a7a90ee67b043c",
       "crop": "Subject-preserving crop; cover unless a portrait needs containment."
     },
-    "rental-services": {
-      "key": "construction-equipment",
-      "source": "https://www.pexels.com/photo/excavator-on-a-construction-site-in-front-of-a-building-9322525/",
-      "alt": "A backhoe loader beside a building undergoing construction",
-      "position": "50% 100%",
-      "fit": "cover",
-      "photographer": "Kaan Durmuş",
-      "downloadUrl": "https://images.pexels.com/photos/9322525/pexels-photo-9322525.jpeg?cs=srgb&dl=pexels-kaandurmus-9322525.jpg&fm=jpg",
-      "licence": "Pexels License",
-      "licenceUrl": "https://www.pexels.com/license/",
-      "licenceVerified": "2026-10-09",
-      "verificationUrl": "https://www.pexels.com/photo/excavator-on-a-construction-site-in-front-of-a-building-9322525/",
-      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
-      "originalSha256": "d9c513aca2e8f83fe8471e03f175c3a51a28c3d13e595054541226a51ada726b",
-      "downloadedAt": "2026-10-09T13:13:07.175104+00:00",
-      "src": "/images/photos/construction-equipment.webp",
-      "width": 1200,
-      "height": 1600,
-      "sourceWidth": 3000,
-      "sourceHeight": 4000,
-      "bytes": 227892,
-      "sha256": "2eccadacb36ccd00e605834270cd9a8aac679c75d76bed1b30ffc0ef40c831e4",
-      "crop": "Lower crop keeps the backhoe loader and construction equipment visible."
-    },
     "restaurant": {
       "src": "/images/marketplace/detail-restaurant.webp",
       "alt": "A restaurant with set dining tables",
@@ -1856,30 +1742,6 @@
       "licence": "Pexels License",
       "licenceUrl": "https://www.pexels.com/license/",
       "licenceVerified": "2026-10-14"
-    },
-    "store-signage": {
-      "key": "store-signage",
-      "source": "https://www.pexels.com/photo/white-and-blue-come-on-in-we-ere-open-signage-2432221/",
-      "alt": "A hanging open sign at the entrance to a shop",
-      "position": "50% 50%",
-      "fit": "cover",
-      "photographer": "Tim Mossholder",
-      "downloadUrl": "https://images.pexels.com/photos/2432221/pexels-photo-2432221.jpeg?cs=srgb&dl=pexels-timmossholder-2432221.jpg&fm=jpg",
-      "licence": "Pexels License",
-      "licenceUrl": "https://www.pexels.com/license/",
-      "licenceVerified": "2026-10-09",
-      "verificationUrl": "https://www.pexels.com/photo/white-and-blue-come-on-in-we-ere-open-signage-2432221/",
-      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
-      "originalSha256": "9e81bfabfeced8804d52aa0a1bca440f1f595494ac3fc955e3056fb3c5a74e64",
-      "downloadedAt": "2026-10-09T13:13:10.094637+00:00",
-      "src": "/images/photos/store-signage.webp",
-      "width": 1067,
-      "height": 1600,
-      "sourceWidth": 7000,
-      "sourceHeight": 10500,
-      "bytes": 66480,
-      "sha256": "6367652ddd52704a16d3f5a7103012d6bf59d13033049297f7d90cbe690e8c8e",
-      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
     },
     "tattoo": {
       "src": "/images/marketplace/detail-tattoo.webp",
@@ -3212,6 +3074,686 @@
       "licenceVerified": "2026-10-15",
       "attributionRequired": false,
       "reviewed": "2026-10-15"
+    },
+    "catalogue-first25-food-and-dining--restaurants-and-dining": {
+      "src": "/images/marketplace/catalogue-first25--food-and-dining--restaurants-and-dining.webp",
+      "alt": "A waiter serving diners in a warm restaurant",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 13652,
+      "sha256": "6005741603d80991992d755a1b6cbef171218aca5fbdc6a36c895e180ce07b14",
+      "originalSha256": "6005741603d80991992d755a1b6cbef171218aca5fbdc6a36c895e180ce07b14",
+      "source": "user-supplied:vistrah-first25/food-and-dining--restaurants-and-dining.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "food-and-dining--restaurants-and-dining.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-home-and-everyday-services--cleaning-services": {
+      "src": "/images/marketplace/catalogue-first25--home-and-everyday-services--cleaning-services.webp",
+      "alt": "A cleaner wiping a table in a residential living room",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 13560,
+      "sha256": "72f20b636913498c61892fcf63ccd784eb664c15268790e6ea46508ec5b26fb0",
+      "originalSha256": "72f20b636913498c61892fcf63ccd784eb664c15268790e6ea46508ec5b26fb0",
+      "source": "user-supplied:vistrah-first25/home-and-everyday-services--cleaning-services.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "home-and-everyday-services--cleaning-services.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-shopping-and-local-retail--grocery-and-daily-needs": {
+      "src": "/images/marketplace/catalogue-first25--shopping-and-local-retail--grocery-and-daily-needs.webp",
+      "alt": "A shopper selecting fresh produce in a grocery shop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 315,
+      "height": 161,
+      "bytes": 20832,
+      "sha256": "3ba421dca89977f0efc34c152da7a6b7e5b1df7d90f8fdc4362ecaf3b43ea591",
+      "originalSha256": "3ba421dca89977f0efc34c152da7a6b7e5b1df7d90f8fdc4362ecaf3b43ea591",
+      "source": "user-supplied:vistrah-first25/shopping-and-local-retail--grocery-and-daily-needs.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "shopping-and-local-retail--grocery-and-daily-needs.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-beauty-fashion-and-lifestyle--salons-and-haircare": {
+      "src": "/images/marketplace/catalogue-first25--beauty-fashion-and-lifestyle--salons-and-haircare.webp",
+      "alt": "A hairstylist drying a client’s hair in a salon",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 12124,
+      "sha256": "b8bd7e5979314112202a277eb9bb0a879bc7e8a8d0ae54779583d211e48b126d",
+      "originalSha256": "b8bd7e5979314112202a277eb9bb0a879bc7e8a8d0ae54779583d211e48b126d",
+      "source": "user-supplied:vistrah-first25/beauty-fashion-and-lifestyle--salons-and-haircare.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "beauty-fashion-and-lifestyle--salons-and-haircare.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-automobiles--new-vehicles": {
+      "src": "/images/marketplace/catalogue-first25--automobiles--new-vehicles.webp",
+      "alt": "Customers viewing a new vehicle with a showroom representative",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 13844,
+      "sha256": "771a5ae204afb125cd7e56e283c584395bbba7ff9cae13684c50dee0d2267f80",
+      "originalSha256": "771a5ae204afb125cd7e56e283c584395bbba7ff9cae13684c50dee0d2267f80",
+      "source": "user-supplied:vistrah-first25/automobiles--new-vehicles.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "automobiles--new-vehicles.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-rental-services--residential-property-rentals": {
+      "src": "/images/marketplace/catalogue-first25--rental-services--residential-property-rentals.webp",
+      "alt": "An agent showing a bright apartment to prospective tenants",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 11938,
+      "sha256": "823c7edc9d135a7c7679c1c9fbffb9d4fc5627174b146d1d47c05cbd2a57c8c5",
+      "originalSha256": "823c7edc9d135a7c7679c1c9fbffb9d4fc5627174b146d1d47c05cbd2a57c8c5",
+      "source": "user-supplied:vistrah-first25/rental-services--residential-property-rentals.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "rental-services--residential-property-rentals.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-travel-stay-and-experiences--hotels-and-accommodation": {
+      "src": "/images/marketplace/catalogue-first25--travel-stay-and-experiences--hotels-and-accommodation.webp",
+      "alt": "A neatly prepared hotel bedroom with bedside lighting",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 7644,
+      "sha256": "1fa90efd1b7c8efb5ffe82c41d738f9ac7cece2b2e04d267f95c118d714de5a5",
+      "originalSha256": "1fa90efd1b7c8efb5ffe82c41d738f9ac7cece2b2e04d267f95c118d714de5a5",
+      "source": "user-supplied:vistrah-first25/travel-stay-and-experiences--hotels-and-accommodation.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "travel-stay-and-experiences--hotels-and-accommodation.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-health-fitness-and-wellness--hospitals-and-clinics": {
+      "src": "/images/marketplace/catalogue-first25--health-fitness-and-wellness--hospitals-and-clinics.webp",
+      "alt": "A clinic reception desk and patient waiting area",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 315,
+      "height": 161,
+      "bytes": 9560,
+      "sha256": "2eb0f7fcf744df8c2fdabb5c5eef1aac680b8b55b3f1e2819a7741783ac888e3",
+      "originalSha256": "2eb0f7fcf744df8c2fdabb5c5eef1aac680b8b55b3f1e2819a7741783ac888e3",
+      "source": "user-supplied:vistrah-first25/health-fitness-and-wellness--hospitals-and-clinics.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "health-fitness-and-wellness--hospitals-and-clinics.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-education-and-skills--schools-and-academic-education": {
+      "src": "/images/marketplace/catalogue-first25--education-and-skills--schools-and-academic-education.webp",
+      "alt": "A teacher leading a lesson in a classroom",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 10626,
+      "sha256": "d7e44bb5b41cdb1839ae0806b1d3582b128d8f37d5ecffc6b49db1ff50758fc8",
+      "originalSha256": "d7e44bb5b41cdb1839ae0806b1d3582b128d8f37d5ecffc6b49db1ff50758fc8",
+      "source": "user-supplied:vistrah-first25/education-and-skills--schools-and-academic-education.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "education-and-skills--schools-and-academic-education.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-jobs-and-careers--jobs-by-industry": {
+      "src": "/images/marketplace/catalogue-first25--jobs-and-careers--jobs-by-industry.webp",
+      "alt": "Two construction professionals reviewing work on a tablet",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 14202,
+      "sha256": "06da9b3a0bbfd58fc616c8a4c8bb3924dabf6de628b9645aaffc8f489d9e57bf",
+      "originalSha256": "06da9b3a0bbfd58fc616c8a4c8bb3924dabf6de628b9645aaffc8f489d9e57bf",
+      "source": "user-supplied:vistrah-first25/jobs-and-careers--jobs-by-industry.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "jobs-and-careers--jobs-by-industry.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-professional-services--legal-services": {
+      "src": "/images/marketplace/catalogue-first25--professional-services--legal-services.webp",
+      "alt": "A legal adviser reviewing paperwork with a client",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 162,
+      "bytes": 11882,
+      "sha256": "d450f59a009b74d3b6af6dc14883496e1a6f9748dc4268a2636afbe5f46e56fc",
+      "originalSha256": "d450f59a009b74d3b6af6dc14883496e1a6f9748dc4268a2636afbe5f46e56fc",
+      "source": "user-supplied:vistrah-first25/professional-services--legal-services.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "professional-services--legal-services.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-events-and-celebrations--venues": {
+      "src": "/images/marketplace/catalogue-first25--events-and-celebrations--venues.webp",
+      "alt": "An event hall arranged with banquet tables and warm lighting",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 162,
+      "bytes": 18664,
+      "sha256": "1d7c9ebfdfcf93c89030f029f812f749b8b1963102a9a5d4ed07a526df8a8185",
+      "originalSha256": "1d7c9ebfdfcf93c89030f029f812f749b8b1963102a9a5d4ed07a526df8a8185",
+      "source": "user-supplied:vistrah-first25/events-and-celebrations--venues.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "events-and-celebrations--venues.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-pet-care--veterinary-services": {
+      "src": "/images/marketplace/catalogue-first25--pet-care--veterinary-services.webp",
+      "alt": "A veterinarian examining a dog beside its owner",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 315,
+      "height": 162,
+      "bytes": 11074,
+      "sha256": "8c6e0dd72eeaf4f0402492e2ed39d971ef3ce4c66f2e96094377a53aa2308789",
+      "originalSha256": "8c6e0dd72eeaf4f0402492e2ed39d971ef3ce4c66f2e96094377a53aa2308789",
+      "source": "user-supplied:vistrah-first25/pet-care--veterinary-services.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "pet-care--veterinary-services.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-food-and-dining--quick-bites-and-street-food": {
+      "src": "/images/marketplace/catalogue-first25--food-and-dining--quick-bites-and-street-food.webp",
+      "alt": "A cook preparing fresh food at a street-food stall",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 162,
+      "bytes": 17758,
+      "sha256": "c475dc107a0e29b0cf3dd0e21bcf24ae34ab92ca2dd3086e677242d02a9a3adc",
+      "originalSha256": "c475dc107a0e29b0cf3dd0e21bcf24ae34ab92ca2dd3086e677242d02a9a3adc",
+      "source": "user-supplied:vistrah-first25/food-and-dining--quick-bites-and-street-food.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "food-and-dining--quick-bites-and-street-food.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-home-and-everyday-services--repairs-and-maintenance": {
+      "src": "/images/marketplace/catalogue-first25--home-and-everyday-services--repairs-and-maintenance.webp",
+      "alt": "A maintenance worker repairing plumbing beneath a sink",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 162,
+      "bytes": 7602,
+      "sha256": "6316ea496a0172c2e4e73b7537942e9a6876b28eb3ab4d6741d8c2d47a6447ab",
+      "originalSha256": "6316ea496a0172c2e4e73b7537942e9a6876b28eb3ab4d6741d8c2d47a6447ab",
+      "source": "user-supplied:vistrah-first25/home-and-everyday-services--repairs-and-maintenance.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "home-and-everyday-services--repairs-and-maintenance.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-shopping-and-local-retail--electronics": {
+      "src": "/images/marketplace/catalogue-first25--shopping-and-local-retail--electronics.webp",
+      "alt": "An electronics shop assistant advising a customer",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 14444,
+      "sha256": "b2d1631a29300a5ff0f0ad3d0e56dc95ad6bdff97da08534b4f70680960e5d17",
+      "originalSha256": "b2d1631a29300a5ff0f0ad3d0e56dc95ad6bdff97da08534b4f70680960e5d17",
+      "source": "user-supplied:vistrah-first25/shopping-and-local-retail--electronics.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "shopping-and-local-retail--electronics.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-beauty-fashion-and-lifestyle--beauty-and-skincare": {
+      "src": "/images/marketplace/catalogue-first25--beauty-fashion-and-lifestyle--beauty-and-skincare.webp",
+      "alt": "A skincare professional applying a facial treatment",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 11054,
+      "sha256": "75fdb6ddfc9c14af7b8579ab1e91fb07aa2cbf213d4bc0dea707fc36bd32c462",
+      "originalSha256": "75fdb6ddfc9c14af7b8579ab1e91fb07aa2cbf213d4bc0dea707fc36bd32c462",
+      "source": "user-supplied:vistrah-first25/beauty-fashion-and-lifestyle--beauty-and-skincare.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "beauty-fashion-and-lifestyle--beauty-and-skincare.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-automobiles--used-vehicles": {
+      "src": "/images/marketplace/catalogue-first25--automobiles--used-vehicles.webp",
+      "alt": "A buyer and mechanic inspecting a used vehicle’s engine",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 315,
+      "height": 161,
+      "bytes": 13332,
+      "sha256": "bf504daf1062822375211f9c072440c5b14ae798a2974cdd356c2bd9d7bf841c",
+      "originalSha256": "bf504daf1062822375211f9c072440c5b14ae798a2974cdd356c2bd9d7bf841c",
+      "source": "user-supplied:vistrah-first25/automobiles--used-vehicles.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "automobiles--used-vehicles.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-rental-services--vehicle-rentals": {
+      "src": "/images/marketplace/catalogue-first25--rental-services--vehicle-rentals.webp",
+      "alt": "A rental representative handing vehicle keys to a customer",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 11984,
+      "sha256": "7e6ddd0ac639405cb5716e98f69a869eab14c30699018e7beb058748ce65f9ae",
+      "originalSha256": "7e6ddd0ac639405cb5716e98f69a869eab14c30699018e7beb058748ce65f9ae",
+      "source": "user-supplied:vistrah-first25/rental-services--vehicle-rentals.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "rental-services--vehicle-rentals.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-travel-stay-and-experiences--travel-planning": {
+      "src": "/images/marketplace/catalogue-first25--travel-stay-and-experiences--travel-planning.webp",
+      "alt": "A travel adviser planning a trip with a customer",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 13874,
+      "sha256": "c747fed61782a566d19ac19027bb8a78edb08804675221772812e2edfe01b3df",
+      "originalSha256": "c747fed61782a566d19ac19027bb8a78edb08804675221772812e2edfe01b3df",
+      "source": "user-supplied:vistrah-first25/travel-stay-and-experiences--travel-planning.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "travel-stay-and-experiences--travel-planning.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-health-fitness-and-wellness--doctors-and-specialists": {
+      "src": "/images/marketplace/catalogue-first25--health-fitness-and-wellness--doctors-and-specialists.webp",
+      "alt": "A doctor discussing care with a patient",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 9880,
+      "sha256": "8a58335d3205d4f1996c50a66a8b71320490b2542b25bfeeea75501bc9f11d16",
+      "originalSha256": "8a58335d3205d4f1996c50a66a8b71320490b2542b25bfeeea75501bc9f11d16",
+      "source": "user-supplied:vistrah-first25/health-fitness-and-wellness--doctors-and-specialists.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "health-fitness-and-wellness--doctors-and-specialists.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-education-and-skills--tutors-and-coaching": {
+      "src": "/images/marketplace/catalogue-first25--education-and-skills--tutors-and-coaching.webp",
+      "alt": "A tutor helping a student with a written exercise",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 13686,
+      "sha256": "8f53846fd689e392c2fa3f539cb7c59579aac926e80e3a0036817edbcbf4f480",
+      "originalSha256": "8f53846fd689e392c2fa3f539cb7c59579aac926e80e3a0036817edbcbf4f480",
+      "source": "user-supplied:vistrah-first25/education-and-skills--tutors-and-coaching.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "education-and-skills--tutors-and-coaching.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-jobs-and-careers--jobs-by-employment-type": {
+      "src": "/images/marketplace/catalogue-first25--jobs-and-careers--jobs-by-employment-type.webp",
+      "alt": "A professional working at a laptop in a home office",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 315,
+      "height": 161,
+      "bytes": 9558,
+      "sha256": "214c7af7054cca2f5e5f5c5911728af469bf6046d288439102a186aa96d22af3",
+      "originalSha256": "214c7af7054cca2f5e5f5c5911728af469bf6046d288439102a186aa96d22af3",
+      "source": "user-supplied:vistrah-first25/jobs-and-careers--jobs-by-employment-type.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "jobs-and-careers--jobs-by-employment-type.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-professional-services--business-consulting": {
+      "src": "/images/marketplace/catalogue-first25--professional-services--business-consulting.webp",
+      "alt": "A business adviser discussing performance charts with a client",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 11244,
+      "sha256": "17facea86f476f41135fe5b0cb3a23c01b23d304bcf20776046d2237af6253b1",
+      "originalSha256": "17facea86f476f41135fe5b0cb3a23c01b23d304bcf20776046d2237af6253b1",
+      "source": "user-supplied:vistrah-first25/professional-services--business-consulting.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "professional-services--business-consulting.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-first25-events-and-celebrations--weddings": {
+      "src": "/images/marketplace/catalogue-first25--events-and-celebrations--weddings.webp",
+      "alt": "A floral wedding mandap with ceremony seating",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 316,
+      "height": 161,
+      "bytes": 23522,
+      "sha256": "77b95a7e5aa9e003ecc43853e531de353526baebb28328fb3ce00ff941a0ddcd",
+      "originalSha256": "77b95a7e5aa9e003ecc43853e531de353526baebb28328fb3ce00ff941a0ddcd",
+      "source": "user-supplied:vistrah-first25/events-and-celebrations--weddings.webp",
+      "provenance": {
+        "kind": "user-supplied",
+        "archive": "vistrah_first25_images.zip",
+        "archiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+        "filename": "events-and-celebrations--weddings.webp",
+        "reviewedOn": "2026-10-20",
+        "review": "Visual subject, decoding, unique bytes/pixels and dimensions verified; original bytes retained"
+      }
+    },
+    "catalogue-batch2-food-and-dining--caf-s-and-beverages": {
+      "src": "/images/marketplace/catalogue-batch2--food-and-dining--caf-s-and-beverages.webp",
+      "alt": "Photograph illustrating Cafés & Beverages",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 104884,
+      "sha256": "2ba4aa211d20ec7b9c99c35be015adb1d77ae1e7338d881fc8bf1d7df3d784a2",
+      "originalSha256": "2ba4aa211d20ec7b9c99c35be015adb1d77ae1e7338d881fc8bf1d7df3d784a2",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--food-and-dining--caf-s-and-beverages.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--food-and-dining--caf-s-and-beverages.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-home-and-everyday-services--appliance-services": {
+      "src": "/images/marketplace/catalogue-batch2--home-and-everyday-services--appliance-services.webp",
+      "alt": "Photograph illustrating Appliance Services",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 58720,
+      "sha256": "34eb3d89720e4f2011708c4ad47da7af3f9a2951807ccda50c00cc39235f2d1c",
+      "originalSha256": "34eb3d89720e4f2011708c4ad47da7af3f9a2951807ccda50c00cc39235f2d1c",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--home-and-everyday-services--appliance-services.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--home-and-everyday-services--appliance-services.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-shopping-and-local-retail--fashion-and-clothing": {
+      "src": "/images/marketplace/catalogue-batch2--shopping-and-local-retail--fashion-and-clothing.webp",
+      "alt": "Photograph illustrating Fashion & Clothing",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 116214,
+      "sha256": "3ae9c7bcbb25f907ce3669e72551f722127d1cfce5e27f7e7f56098cf54c15fd",
+      "originalSha256": "3ae9c7bcbb25f907ce3669e72551f722127d1cfce5e27f7e7f56098cf54c15fd",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--shopping-and-local-retail--fashion-and-clothing.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--shopping-and-local-retail--fashion-and-clothing.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-beauty-fashion-and-lifestyle--spa-and-relaxation": {
+      "src": "/images/marketplace/catalogue-batch2--beauty-fashion-and-lifestyle--spa-and-relaxation.webp",
+      "alt": "Photograph illustrating Spa & Relaxation",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 49554,
+      "sha256": "673b52f12786510aae0b6724437f0f31728f38624f8b71ef70ab9798d0b22b44",
+      "originalSha256": "673b52f12786510aae0b6724437f0f31728f38624f8b71ef70ab9798d0b22b44",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--beauty-fashion-and-lifestyle--spa-and-relaxation.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--beauty-fashion-and-lifestyle--spa-and-relaxation.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms": {
+      "src": "/images/marketplace/catalogue-batch2--automobiles--vehicle-dealers-and-showrooms.webp",
+      "alt": "Photograph illustrating Vehicle Dealers & Showrooms",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 70692,
+      "sha256": "d8da6dac5313532df86fb5c4d72cf0a106e8d41b53f43f9f4413621e38a249f2",
+      "originalSha256": "d8da6dac5313532df86fb5c4d72cf0a106e8d41b53f43f9f4413621e38a249f2",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--automobiles--vehicle-dealers-and-showrooms.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--automobiles--vehicle-dealers-and-showrooms.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-rental-services--furniture-rentals": {
+      "src": "/images/marketplace/catalogue-batch2--rental-services--furniture-rentals.webp",
+      "alt": "Photograph illustrating Furniture Rentals",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 102520,
+      "sha256": "3967fb28010d2f013a27f6f4a372eff6cb158b9841498874d2825053e0a7abe6",
+      "originalSha256": "3967fb28010d2f013a27f6f4a372eff6cb158b9841498874d2825053e0a7abe6",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--rental-services--furniture-rentals.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--rental-services--furniture-rentals.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-travel-stay-and-experiences--transport-and-transfers": {
+      "src": "/images/marketplace/catalogue-batch2--travel-stay-and-experiences--transport-and-transfers.webp",
+      "alt": "Photograph illustrating Transport & Transfers",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 64504,
+      "sha256": "b4adf9b8b72c23963cc3b35e403ff3677a7c223a1a6b13ee978837ae6da72bac",
+      "originalSha256": "b4adf9b8b72c23963cc3b35e403ff3677a7c223a1a6b13ee978837ae6da72bac",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--travel-stay-and-experiences--transport-and-transfers.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--travel-stay-and-experiences--transport-and-transfers.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-health-fitness-and-wellness--diagnostic-services": {
+      "src": "/images/marketplace/catalogue-batch2--health-fitness-and-wellness--diagnostic-services.webp",
+      "alt": "Photograph illustrating Diagnostic Services",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 50912,
+      "sha256": "70a367e30a9f95d81c2bdd55de9a82c4eda5ddfdf80c1c42bede2250b971d3f1",
+      "originalSha256": "70a367e30a9f95d81c2bdd55de9a82c4eda5ddfdf80c1c42bede2250b971d3f1",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--health-fitness-and-wellness--diagnostic-services.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--health-fitness-and-wellness--diagnostic-services.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-education-and-skills--professional-courses": {
+      "src": "/images/marketplace/catalogue-batch2--education-and-skills--professional-courses.webp",
+      "alt": "Photograph illustrating Professional Courses",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 49596,
+      "sha256": "a449f8c4d4dbcbf059526c465ed21f2c99aaef76edbc357cbca8815def18e142",
+      "originalSha256": "a449f8c4d4dbcbf059526c465ed21f2c99aaef76edbc357cbca8815def18e142",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--education-and-skills--professional-courses.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--education-and-skills--professional-courses.webp",
+        "reviewedOn": "2026-10-20"
+      }
+    },
+    "catalogue-batch2-jobs-and-careers--jobs-by-experience": {
+      "src": "/images/marketplace/catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
+      "alt": "Photograph illustrating Jobs by Experience",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 900,
+      "height": 600,
+      "bytes": 52740,
+      "sha256": "4156e2285c572bcde728c5b4ceb5acf0e69a44d1e47c59b90feaac52b1cbbcf3",
+      "originalSha256": "4156e2285c572bcde728c5b4ceb5acf0e69a44d1e47c59b90feaac52b1cbbcf3",
+      "source": "user-supplied:vistrah-batch2/catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2",
+        "filename": "catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
+        "reviewedOn": "2026-10-20"
+      }
     }
   },
   "items": {
@@ -3220,7 +3762,7 @@
       "subject": "Food & Dining"
     },
     "subcategory/food-and-dining/restaurants-and-dining": {
-      "photo": "restaurant",
+      "photo": "catalogue-first25-food-and-dining--restaurants-and-dining",
       "subject": "Restaurants & Dining"
     },
     "type/food-and-dining/restaurants-and-dining/restaurants": {
@@ -3252,7 +3794,7 @@
       "subject": "Cloud kitchens"
     },
     "subcategory/food-and-dining/quick-bites-and-street-food": {
-      "photo": "burger",
+      "photo": "catalogue-first25-food-and-dining--quick-bites-and-street-food",
       "subject": "Quick Bites & Street Food"
     },
     "type/food-and-dining/quick-bites-and-street-food/fast-food": {
@@ -3284,7 +3826,7 @@
       "subject": "Snacks and chaats"
     },
     "subcategory/food-and-dining/caf-s-and-beverages": {
-      "photo": "cafe",
+      "photo": "catalogue-batch2-food-and-dining--caf-s-and-beverages",
       "subject": "Cafés & Beverages"
     },
     "type/food-and-dining/caf-s-and-beverages/caf-s": {
@@ -3460,7 +4002,7 @@
       "subject": "Home & Everyday Services"
     },
     "subcategory/home-and-everyday-services/cleaning-services": {
-      "photo": "cleaning",
+      "photo": "catalogue-first25-home-and-everyday-services--cleaning-services",
       "subject": "Cleaning Services"
     },
     "type/home-and-everyday-services/cleaning-services/home-cleaning": {
@@ -3492,11 +4034,11 @@
       "subject": "Move-in and move-out cleaning"
     },
     "subcategory/home-and-everyday-services/repairs-and-maintenance": {
-      "photo": "plumbing",
+      "photo": "catalogue-first25-home-and-everyday-services--repairs-and-maintenance",
       "subject": "Repairs & Maintenance"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/plumbing": {
-      "photo": "plumbing",
+      "photo": "home-and-everyday-services",
       "subject": "Plumbing"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/electrical-repairs": {
@@ -3520,11 +4062,11 @@
       "subject": "Door and lock repairs"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/general-handyman-services": {
-      "photo": "plumbing",
+      "photo": "home-and-everyday-services",
       "subject": "General handyman services"
     },
     "subcategory/home-and-everyday-services/appliance-services": {
-      "photo": "air-conditioning",
+      "photo": "catalogue-batch2-home-and-everyday-services--appliance-services",
       "subject": "Appliance Services"
     },
     "type/home-and-everyday-services/appliance-services/ac-installation-and-repair": {
@@ -3568,7 +4110,7 @@
       "subject": "Curtain installation"
     },
     "type/home-and-everyday-services/home-installation/tv-mounting": {
-      "photo": "plumbing",
+      "photo": "home-and-everyday-services",
       "subject": "TV mounting"
     },
     "type/home-and-everyday-services/home-installation/light-and-fan-installation": {
@@ -3580,7 +4122,7 @@
       "subject": "CCTV installation"
     },
     "type/home-and-everyday-services/home-installation/wi-fi-setup": {
-      "photo": "plumbing",
+      "photo": "home-and-everyday-services",
       "subject": "Wi-Fi setup"
     },
     "type/home-and-everyday-services/home-installation/smart-home-installation": {
@@ -3764,7 +4306,7 @@
       "subject": "Shopping & Local Retail"
     },
     "subcategory/shopping-and-local-retail/grocery-and-daily-needs": {
-      "photo": "grocery",
+      "photo": "catalogue-first25-shopping-and-local-retail--grocery-and-daily-needs",
       "subject": "Grocery & Daily Needs"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/supermarkets": {
@@ -3772,7 +4314,7 @@
       "subject": "Supermarkets"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/convenience-stores": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Convenience stores"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/grocery-delivery": {
@@ -3788,7 +4330,7 @@
       "subject": "Household essentials"
     },
     "subcategory/shopping-and-local-retail/electronics": {
-      "photo": "technology",
+      "photo": "catalogue-first25-shopping-and-local-retail--electronics",
       "subject": "Electronics"
     },
     "type/shopping-and-local-retail/electronics/mobile-phones": {
@@ -3820,7 +4362,7 @@
       "subject": "Electronic accessories"
     },
     "subcategory/shopping-and-local-retail/fashion-and-clothing": {
-      "photo": "clothes",
+      "photo": "catalogue-batch2-shopping-and-local-retail--fashion-and-clothing",
       "subject": "Fashion & Clothing"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/men-s-clothing": {
@@ -3940,11 +4482,11 @@
       "subject": "Art and craft supplies"
     },
     "subcategory/shopping-and-local-retail/specialty-stores": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Specialty Stores"
     },
     "type/shopping-and-local-retail/specialty-stores/sports-stores": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Sports stores"
     },
     "type/shopping-and-local-retail/specialty-stores/musical-instruments": {
@@ -3956,7 +4498,7 @@
       "subject": "Pet supplies"
     },
     "type/shopping-and-local-retail/specialty-stores/automobile-accessories": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Automobile accessories"
     },
     "type/shopping-and-local-retail/specialty-stores/hardware-stores": {
@@ -3992,11 +4534,11 @@
       "subject": "Small-business products"
     },
     "subcategory/shopping-and-local-retail/shopping-deals": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Shopping Deals"
     },
     "type/shopping-and-local-retail/shopping-deals/discounts-and-offers": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Discounts and offers"
     },
     "type/shopping-and-local-retail/shopping-deals/seasonal-sales": {
@@ -4004,7 +4546,7 @@
       "subject": "Seasonal sales"
     },
     "type/shopping-and-local-retail/shopping-deals/new-arrivals": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "New arrivals"
     },
     "type/shopping-and-local-retail/shopping-deals/clearance-sales": {
@@ -4012,7 +4554,7 @@
       "subject": "Clearance sales"
     },
     "type/shopping-and-local-retail/shopping-deals/local-store-promotions": {
-      "photo": "store-signage",
+      "photo": "shopping-and-local-retail",
       "subject": "Local store promotions"
     },
     "category/beauty-fashion-and-lifestyle": {
@@ -4020,7 +4562,7 @@
       "subject": "Beauty, Fashion & Lifestyle"
     },
     "subcategory/beauty-fashion-and-lifestyle/salons-and-haircare": {
-      "photo": "barber",
+      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--salons-and-haircare",
       "subject": "Salons & Haircare"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/men-s-salons": {
@@ -4052,7 +4594,7 @@
       "subject": "Hair spas"
     },
     "subcategory/beauty-fashion-and-lifestyle/beauty-and-skincare": {
-      "photo": "makeup",
+      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--beauty-and-skincare",
       "subject": "Beauty & Skincare"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/facials": {
@@ -4080,7 +4622,7 @@
       "subject": "Bridal beauty packages"
     },
     "subcategory/beauty-fashion-and-lifestyle/spa-and-relaxation": {
-      "photo": "spa",
+      "photo": "catalogue-batch2-beauty-fashion-and-lifestyle--spa-and-relaxation",
       "subject": "Spa & Relaxation"
     },
     "type/beauty-fashion-and-lifestyle/spa-and-relaxation/spa-services": {
@@ -4224,7 +4766,7 @@
       "subject": "Automobiles"
     },
     "subcategory/automobiles/new-vehicles": {
-      "photo": "automobiles",
+      "photo": "catalogue-first25-automobiles--new-vehicles",
       "subject": "New Vehicles"
     },
     "type/automobiles/new-vehicles/cars": {
@@ -4252,7 +4794,7 @@
       "subject": "Commercial vehicles"
     },
     "subcategory/automobiles/used-vehicles": {
-      "photo": "automobiles",
+      "photo": "catalogue-first25-automobiles--used-vehicles",
       "subject": "Used Vehicles"
     },
     "type/automobiles/used-vehicles/used-cars": {
@@ -4276,7 +4818,7 @@
       "subject": "Certified pre-owned vehicles"
     },
     "subcategory/automobiles/vehicle-dealers-and-showrooms": {
-      "photo": "automobiles",
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
       "subject": "Vehicle Dealers & Showrooms"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/car-dealerships": {
@@ -4484,11 +5026,11 @@
       "subject": "Vehicle leasing enquiries"
     },
     "category/rental-services": {
-      "photo": "rental-services",
+      "photo": "construction-equipment",
       "subject": "Rental Services"
     },
     "subcategory/rental-services/residential-property-rentals": {
-      "photo": "rental-keys",
+      "photo": "catalogue-first25-rental-services--residential-property-rentals",
       "subject": "Residential Property Rentals"
     },
     "type/rental-services/residential-property-rentals/houses": {
@@ -4552,7 +5094,7 @@
       "subject": "Meeting rooms"
     },
     "subcategory/rental-services/vehicle-rentals": {
-      "photo": "automobiles",
+      "photo": "catalogue-first25-rental-services--vehicle-rentals",
       "subject": "Vehicle Rentals"
     },
     "type/rental-services/vehicle-rentals/cars": {
@@ -4588,7 +5130,7 @@
       "subject": "Commercial vehicles"
     },
     "subcategory/rental-services/furniture-rentals": {
-      "photo": "interior",
+      "photo": "catalogue-batch2-rental-services--furniture-rentals",
       "subject": "Furniture Rentals"
     },
     "type/rental-services/furniture-rentals/beds": {
@@ -4872,7 +5414,7 @@
       "subject": "Travel, Stay & Experiences"
     },
     "subcategory/travel-stay-and-experiences/hotels-and-accommodation": {
-      "photo": "hotel",
+      "photo": "catalogue-first25-travel-stay-and-experiences--hotels-and-accommodation",
       "subject": "Hotels & Accommodation"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/hotels": {
@@ -4904,7 +5446,7 @@
       "subject": "Serviced apartments"
     },
     "subcategory/travel-stay-and-experiences/travel-planning": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "catalogue-first25-travel-stay-and-experiences--travel-planning",
       "subject": "Travel Planning"
     },
     "type/travel-stay-and-experiences/travel-planning/travel-agencies": {
@@ -4936,7 +5478,7 @@
       "subject": "Honeymoon packages"
     },
     "subcategory/travel-stay-and-experiences/transport-and-transfers": {
-      "photo": "airplane",
+      "photo": "catalogue-batch2-travel-stay-and-experiences--transport-and-transfers",
       "subject": "Transport & Transfers"
     },
     "type/travel-stay-and-experiences/transport-and-transfers/airport-transfers": {
@@ -5080,7 +5622,7 @@
       "subject": "Health, Fitness & Wellness"
     },
     "subcategory/health-fitness-and-wellness/hospitals-and-clinics": {
-      "photo": "doctor",
+      "photo": "catalogue-first25-health-fitness-and-wellness--hospitals-and-clinics",
       "subject": "Hospitals & Clinics"
     },
     "type/health-fitness-and-wellness/hospitals-and-clinics/general-clinics": {
@@ -5108,7 +5650,7 @@
       "subject": "Physiotherapy clinics"
     },
     "subcategory/health-fitness-and-wellness/doctors-and-specialists": {
-      "photo": "doctor",
+      "photo": "catalogue-first25-health-fitness-and-wellness--doctors-and-specialists",
       "subject": "Doctors & Specialists"
     },
     "type/health-fitness-and-wellness/doctors-and-specialists/general-practitioners": {
@@ -5136,7 +5678,7 @@
       "subject": "Other medical specialists"
     },
     "subcategory/health-fitness-and-wellness/diagnostic-services": {
-      "photo": "lab",
+      "photo": "catalogue-batch2-health-fitness-and-wellness--diagnostic-services",
       "subject": "Diagnostic Services"
     },
     "type/health-fitness-and-wellness/diagnostic-services/pathology-laboratories": {
@@ -5324,7 +5866,7 @@
       "subject": "Education & Skills"
     },
     "subcategory/education-and-skills/schools-and-academic-education": {
-      "photo": "education-and-skills",
+      "photo": "catalogue-first25-education-and-skills--schools-and-academic-education",
       "subject": "Schools & Academic Education"
     },
     "type/education-and-skills/schools-and-academic-education/schools": {
@@ -5348,7 +5890,7 @@
       "subject": "Academic enrichment"
     },
     "subcategory/education-and-skills/tutors-and-coaching": {
-      "photo": "books",
+      "photo": "catalogue-first25-education-and-skills--tutors-and-coaching",
       "subject": "Tutors & Coaching"
     },
     "type/education-and-skills/tutors-and-coaching/home-tutors": {
@@ -5376,7 +5918,7 @@
       "subject": "Language tutoring"
     },
     "subcategory/education-and-skills/professional-courses": {
-      "photo": "technology",
+      "photo": "catalogue-batch2-education-and-skills--professional-courses",
       "subject": "Professional Courses"
     },
     "type/education-and-skills/professional-courses/cloud-computing": {
@@ -5420,7 +5962,7 @@
       "subject": "Electrical training"
     },
     "type/education-and-skills/vocational-training/plumbing-training": {
-      "photo": "plumbing",
+      "photo": "home-and-everyday-services",
       "subject": "Plumbing training"
     },
     "type/education-and-skills/vocational-training/automotive-training": {
@@ -5576,11 +6118,11 @@
       "subject": "Individual mentoring"
     },
     "category/jobs-and-careers": {
-      "photo": "jobs-and-careers",
+      "photo": "career-workplace",
       "subject": "Jobs & Careers"
     },
     "subcategory/jobs-and-careers/jobs-by-industry": {
-      "photo": "career-workplace",
+      "photo": "catalogue-first25-jobs-and-careers--jobs-by-industry",
       "subject": "Jobs by Industry"
     },
     "type/jobs-and-careers/jobs-by-industry/it-and-software": {
@@ -5640,7 +6182,7 @@
       "subject": "Administration and HR"
     },
     "subcategory/jobs-and-careers/jobs-by-employment-type": {
-      "photo": "career-workplace",
+      "photo": "catalogue-first25-jobs-and-careers--jobs-by-employment-type",
       "subject": "Jobs by Employment Type"
     },
     "type/jobs-and-careers/jobs-by-employment-type/full-time": {
@@ -5676,7 +6218,7 @@
       "subject": "Remote work"
     },
     "subcategory/jobs-and-careers/jobs-by-experience": {
-      "photo": "interview",
+      "photo": "catalogue-batch2-jobs-and-careers--jobs-by-experience",
       "subject": "Jobs by Experience"
     },
     "type/jobs-and-careers/jobs-by-experience/entry-level": {
@@ -5828,11 +6370,11 @@
       "subject": "Employer hiring campaigns"
     },
     "category/professional-services": {
-      "photo": "professional-services",
+      "photo": "professional-advice",
       "subject": "Professional Services"
     },
     "subcategory/professional-services/legal-services": {
-      "photo": "professional-advice",
+      "photo": "catalogue-first25-professional-services--legal-services",
       "subject": "Legal Services"
     },
     "type/professional-services/legal-services/lawyers": {
@@ -5884,7 +6426,7 @@
       "subject": "Financial statement preparation"
     },
     "subcategory/professional-services/business-consulting": {
-      "photo": "consultation",
+      "photo": "catalogue-first25-professional-services--business-consulting",
       "subject": "Business Consulting"
     },
     "type/professional-services/business-consulting/business-strategy": {
@@ -6100,11 +6642,11 @@
       "subject": "Technical inspections"
     },
     "category/events-and-celebrations": {
-      "photo": "events-and-celebrations",
+      "photo": "events",
       "subject": "Events & Celebrations"
     },
     "subcategory/events-and-celebrations/venues": {
-      "photo": "restaurant",
+      "photo": "catalogue-first25-events-and-celebrations--venues",
       "subject": "Venues"
     },
     "type/events-and-celebrations/venues/banquet-halls": {
@@ -6132,7 +6674,7 @@
       "subject": "Private party spaces"
     },
     "subcategory/events-and-celebrations/weddings": {
-      "photo": "wedding",
+      "photo": "catalogue-first25-events-and-celebrations--weddings",
       "subject": "Weddings"
     },
     "type/events-and-celebrations/weddings/wedding-planners": {
@@ -6352,7 +6894,7 @@
       "subject": "Pet Care"
     },
     "subcategory/pet-care/veterinary-services": {
-      "photo": "vet-dog",
+      "photo": "catalogue-first25-pet-care--veterinary-services",
       "subject": "Veterinary Services"
     },
     "type/pet-care/veterinary-services/veterinary-clinics": {

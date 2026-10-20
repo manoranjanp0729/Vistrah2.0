@@ -808,6 +808,21 @@ html { scroll-behavior:auto }
 .provider-error-list { color:var(--text-primary);padding:var(--space-4);list-style-position:inside;border:1px solid currentColor }
 .provider-review h2 { overflow-wrap:anywhere }
 .provider-lead-control { display:grid;gap:var(--space-2);min-width:160px }
+.catalogue-choice-field { border:0;padding:0;margin:var(--space-5) 0;min-width:0 }
+.catalogue-choice-field>legend { font-weight:var(--weight-semibold);margin-bottom:var(--space-3) }
+.catalogue-choice-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:var(--space-3) }
+.catalogue-choice { display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);min-width:0;min-height:84px;padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);color:var(--brand-green-950);font:inherit;text-align:left;line-height:var(--leading-body);overflow-wrap:anywhere }
+.catalogue-choice:hover,.catalogue-choice.selected { border-color:var(--brand-green-700);background:var(--ivory) }
+.catalogue-choice-plus { display:flex;align-items:center;justify-content:center;flex:0 0 52px;height:52px;border-radius:50%;background:var(--accent-orange);color:var(--brand-green-950);font-size:36px;font-weight:var(--weight-semibold);line-height:1 }
+.catalogue-choice[disabled] { opacity:.6 }
+.catalogue-selection { margin:var(--space-5) 0;padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--ivory);min-width:0 }
+.catalogue-selection-group { margin:var(--space-4) 0 }
+.catalogue-selection-group h4 { margin-bottom:var(--space-2) }
+.catalogue-selection-item { display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);padding:var(--space-2) 0;overflow-wrap:anywhere }
+.catalogue-selection-item .icon-button { flex:0 0 44px;min-height:44px }
+.catalogue-request-form,.catalogue-request-history { margin:var(--space-6) 0;padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface) }
+.catalogue-request-queue { margin-top:var(--space-6) }
+.catalogue-request-queue .request-card,.catalogue-request-history .request-card { margin:var(--space-4) 0;overflow-wrap:anywhere }
 @media(max-width:600px) { .provider-section,.provider-service-form,.provider-preview { padding:var(--space-3) }.provider-steps { display:grid }.provider-config-editor .button-row { gap:var(--space-3) } }
 .category-image>.visual { height:100% }
 .service-card>.visual { padding:0 }

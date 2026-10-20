@@ -9,6 +9,7 @@
     "start": "next start --hostname 0.0.0.0",
     "lint": "eslint .",
     "audit:images": "node scripts/audit-images.mjs",
+    "audit:catalogue-images": "node ../scripts/audit-catalogue-photos.cjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test"

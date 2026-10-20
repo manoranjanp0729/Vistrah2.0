@@ -25,6 +25,8 @@ function ThemedRoot(){const {colors,mode}=useTheme();const {t}=useLanguage();
     <Stack.Screen name="commerce/[id]" options={{title:'Listing details'}}/>
     <Stack.Screen name="seller/commerce/[id]" options={{title:'Your products & packages'}}/>
     <Stack.Screen name="seller/index" options={{title:'Seller dashboard'}}/>
+    <Stack.Screen name="seller/v-ads" options={{title:'Your V Ads'}}/>
+    <Stack.Screen name="advertiser-profile" options={{title:'Advertiser profile'}}/>
     <Stack.Screen name="seller/business/[id]" options={{title:'Business details & listings'}}/>
     <Stack.Screen name="seller/ownership" options={{title:'Business ownership'}}/>
     <Stack.Screen name="seller/leads" options={{title:'Assigned enquiries'}}/>
@@ -45,6 +47,8 @@ function ThemedRoot(){const {colors,mode}=useTheme();const {t}=useLanguage();
     <Stack.Screen name="membership" options={{title:t('account.membership')}}/>
     <Stack.Screen name="location" options={{title:t('nav.location')}}/>
     <Stack.Screen name="provider" options={{title:'Offer your services'}}/>
+    <Stack.Screen name="terms" options={{title:'Terms & Conditions'}}/>
+    <Stack.Screen name="privacy" options={{title:'Privacy Policy'}}/>
     <Stack.Screen name="settings" options={{title:t('settings.title')}}/>
     <Stack.Screen name="profile" options={{title:'Your profile'}}/>
     <Stack.Screen name="checkout" options={{title:'Sandbox checkout'}}/><Stack.Screen name="payments" options={{title:'Payment history'}}/><Stack.Screen name="forgot-password" options={{title:'Forgot password'}}/><Stack.Screen name="category/[slug]" options={{title:t('nav.services')}}/><Stack.Screen name="jobs" options={{title:'Public vacancies'}}/>

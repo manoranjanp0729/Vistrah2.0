@@ -6,6 +6,7 @@ import Link from 'next/link';
 import {api,ApiError,date} from '@/lib/api';
 import type {Category} from '@/lib/types';
 import type {Configuration,Requirements,ProviderApplication,ApplicationSummary,FieldError,RequirementField} from '@/lib/provider-requirements';
+import {catalogueKindLabel,type CatalogueRequest} from '@/lib/catalogue-requests';
 import {RequirementForm,downloadEvidence} from './provider-forms';
 import {Notice,Status} from './ui';
 
@@ -15,7 +16,23 @@ export function AdminProviderApplications(){
   const open=useCallback(async(id:string)=>{try{setApp(await api(`/admin/provider-applications/${id}`));setError('');}catch(e){setError((e as Error).message);}},[]);
   useEffect(()=>{void Promise.resolve().then(load);},[load]);
   useEffect(()=>{void Promise.resolve().then(()=>{const params=new URLSearchParams(window.location.search);if(params.get('requirement'))setVersion(params.get('requirement')!);if(params.get('application'))void open(params.get('application')!);});},[open]);
-  return <>{error&&<Notice error message={error}/>}<div className="admin-toolbar"><HelpPair id="requirements.version" className="help-field"><label>Requirements version record<input value={version} onChange={e=>{setVersion(e.target.value);setPage(1);}} placeholder="Optional configuration ID" inputMode="numeric"/></label></HelpPair><button className="button secondary" onClick={load}>Refresh applications</button></div><div className="table-wrap"><table><thead><tr><th>Application</th><th>Business</th><th>Status</th><th>Created</th><th>Review</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><td>{r.id.slice(0,8)}</td><td>{r.business}</td><td><Status context="application" value={r.status}/></td><td>{date(r.created_at)}</td><td><button className="text-link" onClick={()=>open(r.id)}>Review application {r.id.slice(0,8)}</button></td></tr>)}</tbody></table></div>{!rows.length&&<p>No applications on this page.</p>}<div className="pagination"><button disabled={page===1} onClick={()=>setPage(p=>p-1)}>Previous</button><span>Page {page}</span><button disabled={rows.length<30} onClick={()=>setPage(p=>p+1)}>Next</button></div>{app&&<ApplicationReview key={app.id} app={app} onChange={data=>{setApp(data);void load();}}/>}</>;
+  return <>{error&&<Notice error message={error}/>}<div className="admin-toolbar"><HelpPair id="requirements.version" className="help-field"><label>Requirements version record<input value={version} onChange={e=>{setVersion(e.target.value);setPage(1);}} placeholder="Optional configuration ID" inputMode="numeric"/></label></HelpPair><button className="button secondary" onClick={load}>Refresh applications</button></div><div className="table-wrap"><table><thead><tr><th>Application</th><th>Business</th><th>Status</th><th>Created</th><th>Review</th></tr></thead><tbody>{rows.map(r=><tr key={r.id}><td>{r.id.slice(0,8)}</td><td>{r.business}</td><td><Status context="application" value={r.status}/></td><td>{date(r.created_at)}</td><td><button className="text-link" onClick={()=>open(r.id)}>Review application {r.id.slice(0,8)}</button></td></tr>)}</tbody></table></div>{!rows.length&&<p>No applications on this page.</p>}<div className="pagination"><button disabled={page===1} onClick={()=>setPage(p=>p-1)}>Previous</button><span>Page {page}</span><button disabled={rows.length<30} onClick={()=>setPage(p=>p+1)}>Next</button></div><CatalogueRequestQueue/>{app&&<ApplicationReview key={app.id} app={app} onChange={data=>{setApp(data);void load();}}/>}</>;
+}
+
+function CatalogueRequestQueue(){
+  const [rows,setRows]=useState<CatalogueRequest[]>([]);const [reasons,setReasons]=useState<Record<string,string>>({});const [error,setError]=useState('');const [busy,setBusy]=useState(false);
+  const load=useCallback(async()=>{try{setRows(await api<CatalogueRequest[]>('/admin/catalogue-requests'));}catch(e){setError((e as Error).message);}},[]);
+  useEffect(()=>{void Promise.resolve().then(load);},[load]);
+  async function decide(row:CatalogueRequest,status:'APPROVED'|'REJECTED'){
+    const reason=reasons[row.id]?.trim()??'';
+    if(reason.length<10){setError('Enter review feedback of at least 10 characters.');return;}
+    setBusy(true);setError('');
+    try{
+      const updated=await api<CatalogueRequest>(`/admin/catalogue-requests/${row.id}/review`,{method:'POST',body:JSON.stringify({status,reason})});
+      setRows(previous=>previous.map(item=>item.id===row.id?updated:item));
+    }catch(e){setError((e as Error).message);}finally{setBusy(false);}
+  }
+  return <section className="admin-panel catalogue-request-queue"><h2>Catalogue addition requests</h2><p>Approving creates an inactive entry. Activate it only after its public content and, for services, provider requirements are ready.</p>{error&&<Notice error message={error}/>}<button className="button secondary" disabled={busy} onClick={load}>Refresh catalogue requests</button>{rows.map(row=><article className="request-card" key={row.id}><div className="row-between"><h3>{catalogueKindLabel(row.kind)} · {row.title}</h3><Status context="application" value={row.status}/></div><p>Requested by account #{row.user_id}{row.category_title?` · ${row.category_title}`:''}{row.subcategory_title?` · ${row.subcategory_title}`:''}</p><p>{row.description}</p>{row.review_note&&<p><strong>Previous feedback:</strong> {row.review_note}</p>}{row.status==='PENDING'&&<><label className="form">Review feedback<textarea minLength={10} maxLength={2000} value={reasons[row.id]??''} onChange={event=>setReasons(previous=>({...previous,[row.id]:event.target.value}))}/></label><div className="button-row"><button className="button secondary" disabled={busy} onClick={()=>decide(row,'APPROVED')}>Approve as inactive entry</button><button className="button secondary" disabled={busy} onClick={()=>decide(row,'REJECTED')}>Reject request</button></div></>}{row.catalogue_id&&<p>Inactive catalogue entry #{row.catalogue_id} · {row.review_note}</p>}</article>)}{!rows.length&&<p>No catalogue requests to review.</p>}</section>;
 }
 function ApplicationReview({app,onChange}:{app:ProviderApplication;onChange:(app:ProviderApplication)=>void}){
   const [checks,setChecks]=useState<Record<string,Record<string,boolean>>>({});const [reasons,setReasons]=useState<Record<string,string>>({});const [requireCurrent,setRequireCurrent]=useState<Record<string,boolean>>({});const [busy,setBusy]=useState(false);const [error,setError]=useState('');

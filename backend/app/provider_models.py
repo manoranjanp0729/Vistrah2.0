@@ -139,6 +139,27 @@ class ProviderApplicationEvent(Base):
     details: Mapped[dict]=mapped_column(JSON,default=dict)
     created_at: Mapped[object]=mapped_column(DateTime(timezone=True),default=now)
 
+class ProviderCatalogueRequest(Base):
+    __tablename__='provider_catalogue_requests'
+    id: Mapped[str]=mapped_column(String(36),primary_key=True)
+    user_id: Mapped[int]=mapped_column(ForeignKey('users.id'),index=True)
+    kind: Mapped[str]=mapped_column(String(12))
+    category_id: Mapped[int|None]=mapped_column(ForeignKey('categories.id'),nullable=True)
+    subcategory_id: Mapped[int|None]=mapped_column(ForeignKey('subcategories.id'),nullable=True)
+    title: Mapped[str]=mapped_column(String(150))
+    description: Mapped[str]=mapped_column(Text)
+    status: Mapped[str]=mapped_column(String(12),default='PENDING',index=True)
+    review_note: Mapped[str]=mapped_column(Text,default='')
+    reviewer_id: Mapped[int|None]=mapped_column(ForeignKey('users.id'),nullable=True)
+    catalogue_id: Mapped[int|None]=mapped_column(nullable=True)
+    created_at: Mapped[object]=mapped_column(DateTime(timezone=True),default=now)
+    reviewed_at: Mapped[object|None]=mapped_column(DateTime(timezone=True),nullable=True)
+    __table_args__=(
+        CheckConstraint("kind IN ('CATEGORY','SUBCATEGORY','SERVICE')"),
+        CheckConstraint("status IN ('PENDING','APPROVED','REJECTED')"),
+        CheckConstraint("(kind = 'CATEGORY' AND category_id IS NULL AND subcategory_id IS NULL) OR (kind = 'SUBCATEGORY' AND category_id IS NOT NULL AND subcategory_id IS NULL) OR (kind = 'SERVICE' AND category_id IS NOT NULL)"),
+    )
+
 class ProviderLead(Base):
     __tablename__='provider_leads'
     id: Mapped[int]=mapped_column(primary_key=True)

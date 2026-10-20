@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "batch": "user-supplied-first25",
+  "sourceArchiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+  "reviewedOn": "2026-10-20",
+  "items": [
+    {
+      "id": "subcategory/food-and-dining/restaurants-and-dining",
+      "photo": "catalogue-first25-food-and-dining--restaurants-and-dining",
+      "previousPhoto": "restaurant",
+      "sha256": "6005741603d80991992d755a1b6cbef171218aca5fbdc6a36c895e180ce07b14",
+      "verified": true
+    },
+    {
+      "id": "subcategory/home-and-everyday-services/cleaning-services",
+      "photo": "catalogue-first25-home-and-everyday-services--cleaning-services",
+      "previousPhoto": "cleaning",
+      "sha256": "72f20b636913498c61892fcf63ccd784eb664c15268790e6ea46508ec5b26fb0",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/grocery-and-daily-needs",
+      "photo": "catalogue-first25-shopping-and-local-retail--grocery-and-daily-needs",
+      "previousPhoto": "grocery",
+      "sha256": "3ba421dca89977f0efc34c152da7a6b7e5b1df7d90f8fdc4362ecaf3b43ea591",
+      "verified": true
+    },
+    {
+      "id": "subcategory/beauty-fashion-and-lifestyle/salons-and-haircare",
+      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--salons-and-haircare",
+      "previousPhoto": "barber",
+      "sha256": "b8bd7e5979314112202a277eb9bb0a879bc7e8a8d0ae54779583d211e48b126d",
+      "verified": true
+    },
+    {
+      "id": "subcategory/automobiles/new-vehicles",
+      "photo": "catalogue-first25-automobiles--new-vehicles",
+      "previousPhoto": "automobiles",
+      "sha256": "771a5ae204afb125cd7e56e283c584395bbba7ff9cae13684c50dee0d2267f80",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/residential-property-rentals",
+      "photo": "catalogue-first25-rental-services--residential-property-rentals",
+      "previousPhoto": "rental-keys",
+      "sha256": "823c7edc9d135a7c7679c1c9fbffb9d4fc5627174b146d1d47c05cbd2a57c8c5",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/hotels-and-accommodation",
+      "photo": "catalogue-first25-travel-stay-and-experiences--hotels-and-accommodation",
+      "previousPhoto": "hotel",
+      "sha256": "1fa90efd1b7c8efb5ffe82c41d738f9ac7cece2b2e04d267f95c118d714de5a5",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/hospitals-and-clinics",
+      "photo": "catalogue-first25-health-fitness-and-wellness--hospitals-and-clinics",
+      "previousPhoto": "doctor",
+      "sha256": "2eb0f7fcf744df8c2fdabb5c5eef1aac680b8b55b3f1e2819a7741783ac888e3",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/schools-and-academic-education",
+      "photo": "catalogue-first25-education-and-skills--schools-and-academic-education",
+      "previousPhoto": "education-and-skills",
+      "sha256": "d7e44bb5b41cdb1839ae0806b1d3582b128d8f37d5ecffc6b49db1ff50758fc8",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/jobs-by-industry",
+      "photo": "catalogue-first25-jobs-and-careers--jobs-by-industry",
+      "previousPhoto": "career-workplace",
+      "sha256": "06da9b3a0bbfd58fc616c8a4c8bb3924dabf6de628b9645aaffc8f489d9e57bf",
+      "verified": true
+    },
+    {
+      "id": "subcategory/professional-services/legal-services",
+      "photo": "catalogue-first25-professional-services--legal-services",
+      "previousPhoto": "professional-advice",
+      "sha256": "d450f59a009b74d3b6af6dc14883496e1a6f9748dc4268a2636afbe5f46e56fc",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/venues",
+      "photo": "catalogue-first25-events-and-celebrations--venues",
+      "previousPhoto": "restaurant",
+      "sha256": "1d7c9ebfdfcf93c89030f029f812f749b8b1963102a9a5d4ed07a526df8a8185",
+      "verified": true
+    },
+    {
+      "id": "subcategory/pet-care/veterinary-services",
+      "photo": "catalogue-first25-pet-care--veterinary-services",
+      "previousPhoto": "vet-dog",
+      "sha256": "8c6e0dd72eeaf4f0402492e2ed39d971ef3ce4c66f2e96094377a53aa2308789",
+      "verified": true
+    },
+    {
+      "id": "subcategory/food-and-dining/quick-bites-and-street-food",
+      "photo": "catalogue-first25-food-and-dining--quick-bites-and-street-food",
+      "previousPhoto": "burger",
+      "sha256": "c475dc107a0e29b0cf3dd0e21bcf24ae34ab92ca2dd3086e677242d02a9a3adc",
+      "verified": true
+    },
+    {
+      "id": "subcategory/home-and-everyday-services/repairs-and-maintenance",
+      "photo": "catalogue-first25-home-and-everyday-services--repairs-and-maintenance",
+      "previousPhoto": "home-and-everyday-services",
+      "sha256": "6316ea496a0172c2e4e73b7537942e9a6876b28eb3ab4d6741d8c2d47a6447ab",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/electronics",
+      "photo": "catalogue-first25-shopping-and-local-retail--electronics",
+      "previousPhoto": "technology",
+      "sha256": "b2d1631a29300a5ff0f0ad3d0e56dc95ad6bdff97da08534b4f70680960e5d17",
+      "verified": true
+    },
+    {
+      "id": "subcategory/beauty-fashion-and-lifestyle/beauty-and-skincare",
+      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--beauty-and-skincare",
+      "previousPhoto": "makeup",
+      "sha256": "75fdb6ddfc9c14af7b8579ab1e91fb07aa2cbf213d4bc0dea707fc36bd32c462",
+      "verified": true
+    },
+    {
+      "id": "subcategory/automobiles/used-vehicles",
+      "photo": "catalogue-first25-automobiles--used-vehicles",
+      "previousPhoto": "automobiles",
+      "sha256": "bf504daf1062822375211f9c072440c5b14ae798a2974cdd356c2bd9d7bf841c",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/vehicle-rentals",
+      "photo": "catalogue-first25-rental-services--vehicle-rentals",
+      "previousPhoto": "automobiles",
+      "sha256": "7e6ddd0ac639405cb5716e98f69a869eab14c30699018e7beb058748ce65f9ae",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/travel-planning",
+      "photo": "catalogue-first25-travel-stay-and-experiences--travel-planning",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "c747fed61782a566d19ac19027bb8a78edb08804675221772812e2edfe01b3df",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/doctors-and-specialists",
+      "photo": "catalogue-first25-health-fitness-and-wellness--doctors-and-specialists",
+      "previousPhoto": "doctor",
+      "sha256": "8a58335d3205d4f1996c50a66a8b71320490b2542b25bfeeea75501bc9f11d16",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/tutors-and-coaching",
+      "photo": "catalogue-first25-education-and-skills--tutors-and-coaching",
+      "previousPhoto": "books",
+      "sha256": "8f53846fd689e392c2fa3f539cb7c59579aac926e80e3a0036817edbcbf4f480",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/jobs-by-employment-type",
+      "photo": "catalogue-first25-jobs-and-careers--jobs-by-employment-type",
+      "previousPhoto": "career-workplace",
+      "sha256": "214c7af7054cca2f5e5f5c5911728af469bf6046d288439102a186aa96d22af3",
+      "verified": true
+    },
+    {
+      "id": "subcategory/professional-services/business-consulting",
+      "photo": "catalogue-first25-professional-services--business-consulting",
+      "previousPhoto": "consultation",
+      "sha256": "17facea86f476f41135fe5b0cb3a23c01b23d304bcf20776046d2237af6253b1",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/weddings",
+      "photo": "catalogue-first25-events-and-celebrations--weddings",
+      "previousPhoto": "wedding",
+      "sha256": "77b95a7e5aa9e003ecc43853e531de353526baebb28328fb3ce00ff941a0ddcd",
+      "verified": true
+    }
+  ]
+}

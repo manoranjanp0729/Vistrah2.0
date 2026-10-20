@@ -66,3 +66,23 @@ Thumbs.db
 !.env.production.example
 !mobile/.env.browser.example
 !mobile/.env.production.example
+
+# Alternate build directories and local recovery copies (retain on disk).
+.next-*/
+*.bak
+*.conflict-backup
+*.hero-backup
+*.backup-*
+hero-backup-*/
+*.dump
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+*.auto.tfvars
+compose.*.local.yaml

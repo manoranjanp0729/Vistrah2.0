@@ -29,3 +29,6 @@ test-results
 **/*.jks
 **/*.keystore
 **/*.p12
+**/.next-*
+**/*.conflict-backup
+hero-backup-*

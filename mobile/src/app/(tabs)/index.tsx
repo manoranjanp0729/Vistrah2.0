@@ -1,3 +1,4 @@
+import {HomepageHeroCarousel} from '../../components/homepage-hero-carousel';
 import {useState} from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import {HomepageConnect} from '../../components/homepage-connect';
@@ -28,7 +29,7 @@ export default function Discover(){const {styles,mode}=useTheme();const {copy,t}
   const marketingSection=<AdsMarketing categories={catalogue.data??[]}/>;
   const shortcuts=allServices(catalogue.data??[]).filter(item=>item.service.active&&item.category.slug!=='marketing').sort((a,b)=>Number(b.service.slug==='digital-marketing')-Number(a.service.slug==='digital-marketing')||Number(b.service.popular)-Number(a.service.popular)).slice(0,10).map(({category,service})=>({key:String(service.id),title:service.title,photo:servicePhotos[service.slug]?.source,icon:service.slug==='digital-marketing'?'volume-2' as const:category.slug==='real-estate'?'home' as const:category.slug==='tax-compliance'?'credit-card' as const:'briefcase' as const,open:()=>router.push({pathname:'/service/[id]',params:{id:service.id}})}));
   if(homepage.data?.version&&homepage.data.layout.schema_version===1&&homepage.data.layout.sections.length&&catalogue.data)return <Page><Text style={styles.label}>{copy.home.tagline}</Text>{searchInput}<ServiceCarousel/><PublishedHomepage homepage={homepage.data} categories={catalogue.data}/><View testID="homepage-categories" style={{gap:4}}><Heading title={copy.home.categories} action="View all" onPress={()=>router.push('/services')}/><MarketplaceCategories compact homepage exclude={connectCategorySlugs}/></View>{providerBanner}{marketingSection}<HomepageConnect/><DiscoveryGuide/><Action label={copy.home.provider} onPress={()=>router.push('/provider')}/></Page>;
-  return <Page><Text style={styles.label}>{copy.home.tagline}</Text>{searchInput}{catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:<ServiceCarousel/>}
+  return <Page><Text style={styles.label}>{copy.home.tagline}</Text>{searchInput}{<ServiceCarousel/>}
     <View style={styles.divider}/><View testID="homepage-categories" style={{gap:4}}><Heading title={copy.home.categories} action="View all" onPress={()=>router.push('/services')}/>
     <MarketplaceCategories compact homepage exclude={connectCategorySlugs}/></View>
     {providerBanner}{marketingSection}<HomepageConnect/>

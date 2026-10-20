@@ -81,6 +81,15 @@ class CreateApplication(SafeModel):
     subcategory_id: int | None = Field(default=None, gt=0)
     provider_id: int | None = Field(default=None, gt=0)
 
+class ApplicationSelection(SafeModel):
+    category_id: int
+    subcategory_id: int|None=Field(default=None,gt=0)
+    service_ids: list[int]=Field(min_length=1,max_length=15)
+
+class CreateApplicationBatch(SafeModel):
+    groups: list[ApplicationSelection]=Field(min_length=1,max_length=20)
+    provider_id: int|None=Field(default=None,gt=0)
+
 @router.get('/provider-requirements/{service_id}')
 def requirements(service_id:int,user:User=Depends(current_user),db:Session=Depends(get_db)):
     active_service(db,service_id);row=current_configuration(db,service_id)
@@ -119,6 +128,49 @@ def create(data:CreateApplication,user:User=Depends(current_user),db:Session=Dep
     event(db,app,user,'CREATED');db.commit()
     return detail(db,app,user)
 
+@router.post('/provider-applications/batch',status_code=201)
+def create_batch(data:CreateApplicationBatch,user:User=Depends(current_user),db:Session=Depends(get_db)):
+    provider=None
+    if data.provider_id is not None:
+        if not user.seller_enabled:raise HTTPException(403,'Seller capability required')
+        provider=db.scalar(select(Provider).where(Provider.id==data.provider_id,Provider.owner_user_id==user.id).with_for_update())
+        if not provider:raise HTTPException(404,'Owned business not found')
+    seen=set()
+    prepared=[]
+    for group in data.groups:
+        category=db.get(Category,group.category_id)
+        if not category or not category.active:raise HTTPException(404,'Category not found')
+        if group.subcategory_id is not None:
+            sub=db.get(Subcategory,group.subcategory_id)
+            if not sub or not sub.active or sub.category_id!=group.category_id:raise HTTPException(422,'Select a subcategory within the selected category')
+        if len(set(group.service_ids))!=len(group.service_ids):raise HTTPException(422,'Select each service once')
+        rows=[]
+        for sid in group.service_ids:
+            if sid in seen:raise HTTPException(422,'A service can only appear in one application section')
+            seen.add(sid)
+            service=active_service(db,sid)
+            if service.category_id!=group.category_id:raise HTTPException(422,'Select services within the selected category')
+            if 'subcategory_id' in group.model_fields_set and service.subcategory_id!=group.subcategory_id:raise HTTPException(422,'Select services within the selected subcategory, or choose direct category services')
+            if provider and db.get(ProviderService,(provider.id,sid)):raise HTTPException(409,'This business already has a record for one of the selected services. Resume its existing application instead of creating a duplicate listing.')
+            config=current_configuration(db,sid)
+            if not config:raise HTTPException(409,f'Requirements are not published for {service.title}')
+            rows.append((sid,config.id))
+        prepared.append((group.category_id,rows))
+    if not seen:raise HTTPException(422,'Select at least one service')
+    count=db.scalar(select(func.count()).select_from(ProviderApplication).where(ProviderApplication.user_id==user.id,ProviderApplication.status=='DRAFT'))
+    if count+len(prepared)>20:raise HTTPException(409,'Draft limit reached. Resume an existing application.')
+    apps=[]
+    for category_id,rows in prepared:
+        app=ProviderApplication(id=str(uuid.uuid4()),user_id=user.id,provider_id=provider.id if provider else None,category_id=category_id,common={},common_configuration=COMMON.model_dump())
+        db.add(app);db.flush()
+        for sid,cid in rows:
+            db.add(ProviderApplicationService(application_id=app.id,service_id=sid,requirement_id=cid,answers={}))
+            if provider:db.add(ProviderService(provider_id=provider.id,service_id=sid,application_id=app.id,approval_status='PENDING'))
+        event(db,app,user,'CREATED',details={'batch_sections':len(prepared)})
+        apps.append(app)
+    db.commit()
+    return [detail(db,app,user) for app in apps]
+
 @router.get('/provider-applications')
 def applications(user:User=Depends(current_user),db:Session=Depends(get_db),page:int=Query(1,ge=1)):
     return [summary(a) for a in db.scalars(select(ProviderApplication).where(ProviderApplication.user_id==user.id).order_by(ProviderApplication.created_at.desc()).offset((page-1)*30).limit(30))]
@@ -156,6 +208,49 @@ def save(id:str,data:SaveAnswers,user:User=Depends(current_user),db:Session=Depe
         if row.status in EDITABLE:row.answers=copy.deepcopy(value)
     app.common=copy.deepcopy(data.common);app.revision+=1;app.updated_at=now()
     event(db,app,user,'DRAFT_SAVED');db.commit();return detail(db,app,user)
+
+class ChangeServices(SafeModel):
+    revision:int
+    service_ids:list[int]=Field(min_length=1,max_length=15)
+
+@router.put('/provider-applications/{id}/services')
+def change_services(id:str,data:ChangeServices,user:User=Depends(current_user),db:Session=Depends(get_db)):
+    app=applicant(db,id,user,data.revision)
+    if app.status!='DRAFT':raise HTTPException(409,'Services can only be changed before the first submission')
+    previous=selections(db,app)
+    if any(row.status!='DRAFT' for row in previous):raise HTTPException(409,'Services can only be changed before the first review')
+    if len(set(data.service_ids))!=len(data.service_ids):raise HTTPException(422,'Select each service once')
+    if any(db.get(Service,service_id) is None or db.get(Service,service_id).category_id!=app.category_id for service_id in data.service_ids):
+        raise HTTPException(422,'Select services within the application category')
+    existing={row.service_id:row for row in previous}
+    requested=set(data.service_ids)
+    removed=set(existing)-requested
+    added=requested-set(existing)
+    for sid in removed:
+        if app.provider_id:
+            grant=db.get(ProviderService,(app.provider_id,sid))
+            if grant and (grant.application_id!=app.id or grant.approval_status!='PENDING'):
+                raise HTTPException(409,'This service record is no longer an editable application draft')
+    configurations={}
+    for sid in added:
+        service=active_service(db,sid)
+        if app.provider_id and db.get(ProviderService,(app.provider_id,sid)):
+            raise HTTPException(409,'This business already has a record for a selected service')
+        config=current_configuration(db,sid)
+        if not config:raise HTTPException(409,f'Requirements are not published for {service.title}')
+        configurations[sid]=config.id
+    for sid in removed:
+        db.delete(existing[sid])
+        if app.provider_id:
+            grant=db.get(ProviderService,(app.provider_id,sid))
+            if grant:db.delete(grant)
+    for sid,requirement_id in configurations.items():
+        db.add(ProviderApplicationService(application_id=app.id,service_id=sid,requirement_id=requirement_id,answers={}))
+        if app.provider_id:db.add(ProviderService(provider_id=app.provider_id,service_id=sid,application_id=app.id,approval_status='PENDING'))
+    app.revision+=1;app.updated_at=now()
+    event(db,app,user,'SERVICES_CHANGED',details={'added':sorted(added),'removed':sorted(removed)})
+    db.commit()
+    return detail(db,app,user)
 
 class Submit(SafeModel):
     revision:int

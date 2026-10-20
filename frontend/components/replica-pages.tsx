@@ -21,7 +21,7 @@ export function ReplicaRequests(){const {copy}=useLanguage();
   const current=result?.userId===user?.id?result:undefined;
   return <div className="container page replica-page"><h1>{copy.requests.title}</h1>{loading?<p>{copy.common.loading}</p>:error?<Notice error message={error}/>:!user?<><p>{copy.requests.signIn}</p><Link className="button" href="/login?next=/account/requests">{copy.auth.signIn}</Link></>:current?.error?<Notice error message={current.error}/>:!current?.data?<p>{copy.common.loading}</p>:current.data.length?current.data.map(item=><article className="panel" key={item.id}><h2>{item.service_title}</h2><p className="small-label">{item.status.replaceAll('_',' ')}</p><p>{item.requirements}</p><small>{item.location} · {date(item.created_at)}</small></article>):<><p>{copy.requests.empty}</p><Link className="button" href="/services">{copy.requests.explore}</Link></>}</div>;
 }
-export function ReplicaProfile(){
+export function ReplicaProfile(){const {copy}=useLanguage();
   const {user,loading,error}=useUser();return <div className="container page replica-page">{loading?<p>{copy.common.loading}</p>:error?<Notice error message={error}/>:user?<ProfileForm key={user.id} user={user}/>:<><h1>{copy.profile.title}</h1><Link className="button" href="/login?next=/account/profile">{copy.auth.signIn}</Link></>}</div>;
 }
 function ProfileForm({user}:{user:User}){const {copy}=useLanguage();

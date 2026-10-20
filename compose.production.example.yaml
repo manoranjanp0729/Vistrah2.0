@@ -1,0 +1,46 @@
+# PREPARATION ONLY. Merge after compose.yaml, using a separate approved host/project.
+# Validate .env.production with --mode production --compose-project vistrah-production.
+# No build/seed/migration startup. Images and external volumes require prior approval.
+name: vistrah-production
+services:
+  db:
+    pull_policy: never
+  api:
+    build: !reset null
+    image: ${PRODUCTION_API_IMAGE:?Set an approved immutable live API image}
+    pull_policy: never
+    command: [uvicorn, app.main:app, --host, 0.0.0.0, --port, '8000']
+    environment:
+      APP_ENV: production
+      SEED_CATALOGUE: 'false'
+      V_ADS_MEDIA_ENABLED: ${V_ADS_MEDIA_ENABLED:-0}
+      V_ADS_PRIVATE_ROOT: /data/v-ads
+      V_ADS_MIN_FREE_BYTES: '1073741824'
+    volumes:
+      - v_ads_private:/data/v-ads
+  worker:
+    build: !reset null
+    image: ${PRODUCTION_WORKER_IMAGE:?Set an approved immutable live worker image}
+    pull_policy: never
+    profiles: [worker]
+    environment:
+      APP_ENV: production
+      SEED_CATALOGUE: 'false'
+  web:
+    build: !reset null
+    image: ${PRODUCTION_WEB_IMAGE:?Set an approved immutable live website image}
+    pull_policy: never
+  admin:
+    build: !reset null
+    image: ${PRODUCTION_ADMIN_IMAGE:?Set an approved immutable live admin image}
+    pull_policy: never
+volumes:
+  postgres_data:
+    external: true
+    name: ${PRODUCTION_DB_VOLUME:?Approve a separate vistrah-production- database volume}
+  api_data:
+    external: true
+    name: ${PRODUCTION_API_VOLUME:?Approve a separate vistrah-production- API volume}
+  v_ads_private:
+    external: true
+    name: ${V_ADS_PRIVATE_VOLUME:?Approve a separate vistrah-production- media volume}

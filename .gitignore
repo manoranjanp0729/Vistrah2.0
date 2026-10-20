@@ -66,6 +66,8 @@ Thumbs.db
 !.env.production.example
 !mobile/.env.browser.example
 !mobile/.env.production.example
+!mobile/.env.aws-test.example
+!.env.aws-test.example
 
 # Alternate build directories and local recovery copies (retain on disk).
 .next-*/

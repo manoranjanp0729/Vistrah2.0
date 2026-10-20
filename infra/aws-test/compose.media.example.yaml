@@ -1,0 +1,14 @@
+# Preparation only: merge after compose.cloud.yaml in the existing AWS TEST project.
+# Approve/provision an API-owned private volume first; never reuse production media.
+services:
+  api:
+    environment:
+      V_ADS_MEDIA_ENABLED: ${V_ADS_MEDIA_ENABLED:-0}
+      V_ADS_PRIVATE_ROOT: /data/v-ads
+      V_ADS_MIN_FREE_BYTES: '1073741824'
+    volumes:
+      - v_ads_private:/data/v-ads
+volumes:
+  v_ads_private:
+    external: true
+    name: ${V_ADS_PRIVATE_VOLUME:?Approve a vistrah-test- media volume first}

@@ -1,5 +1,6 @@
 ﻿// Extend app.json, retaining local EAS project linkage and native build settings.
 module.exports = ({config}) => {
+  require('./scripts/validate-build-environment.cjs').validateBuildEnvironment();
   const adaptiveIcon = {...config.android?.adaptiveIcon};
   delete adaptiveIcon.backgroundImage;
   const plugins = (config.plugins ?? []).filter(plugin => (Array.isArray(plugin) ? plugin[0] : plugin) !== 'expo-splash-screen');

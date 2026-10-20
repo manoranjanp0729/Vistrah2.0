@@ -1,22 +1,36 @@
 {
   "build": {
     "development": {
+      "environment": "development",
       "developmentClient": true,
       "distribution": "internal"
     },
     "preview": {
+      "environment": "preview",
+      "env": {
+        "EXPO_PUBLIC_APP_ENV": "testing",
+        "EXPO_PUBLIC_API_URL": "https://api.vistrah.in",
+        "EXPO_PUBLIC_WEB_URL": "https://vistrah.in",
+        "EXPO_PUBLIC_ADMIN_URL": "https://admin.vistrah.in"
+      },
       "distribution": "internal",
       "android": {
         "buildType": "apk"
       }
     },
-    "production": {},
+    "production": {
+      "environment": "production",
+      "distribution": "store",
+      "env": {"EXPO_PUBLIC_APP_ENV": "production"}
+    },
     "aws-test": {
       "extends": "preview",
       "developmentClient": false,
       "environment": "preview",
       "env": {
+        "EXPO_PUBLIC_APP_ENV": "testing",
         "EXPO_PUBLIC_API_URL": "https://api.vistrah.in",
+        "EXPO_PUBLIC_WEB_URL": "https://vistrah.in",
         "EXPO_PUBLIC_ADMIN_URL": "https://admin.vistrah.in"
       }
     }

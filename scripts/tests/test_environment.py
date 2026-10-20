@@ -14,8 +14,31 @@ class EnvironmentTests(unittest.TestCase):
     def production(self):
         return {'APP_ENV':'production','POSTGRES_PASSWORD':'p'*32,'JWT_SECRET':'j'*48,
                 'COOKIE_SECURE':'true','SEED_CATALOGUE':'false',
-                'PUBLIC_APP_URL':'https://vistrah.in','ALLOWED_ORIGINS':'https://vistrah.in',
-                'ADMIN_ALLOWED_ORIGINS':'https://admin.vistrah.in'}
+                'POSTGRES_DB':'vistrah_production','COMPOSE_PROJECT_NAME':'vistrah-production',
+                'PUBLIC_APP_URL':'https://live.company.com','PUBLIC_API_URL':'https://api.live.company.com',
+                'ALLOWED_ORIGINS':'https://live.company.com','ADMIN_ALLOWED_ORIGINS':'https://admin.live.company.com',
+                'PRODUCTION_DB_VOLUME':'vistrah-production-db','PRODUCTION_API_VOLUME':'vistrah-production-api',
+                'V_ADS_PRIVATE_VOLUME':'vistrah-production-media',
+                **{key:'registry/image@sha256:'+'a'*64 for key in ('PRODUCTION_API_IMAGE','PRODUCTION_WORKER_IMAGE','PRODUCTION_WEB_IMAGE','PRODUCTION_ADMIN_IMAGE')}}
+
+    def test_production_rejects_test_origins_and_shared_state(self):
+        for key,value in [('PUBLIC_API_URL','https://api.vistrah.in'),('PUBLIC_APP_URL','https://vistrah.in'),
+                          ('V_ADS_PRIVATE_VOLUME','vistrah-test-media'),('POSTGRES_DB','vistrah'),
+                          ('COMPOSE_PROJECT_NAME','vistrah-cloud'),('PRODUCTION_API_IMAGE','api:latest'),
+                          ('PUBLIC_API_URL','https://192.168.1.10'),('PUBLIC_API_URL','https://[bad')]:
+            with self.subTest(key=key,value=value):
+                env=self.production();env[key]=value
+                self.assertTrue(checks.validate(env,'production'))
+
+    def test_aws_test_requires_test_media_and_sandbox_mode(self):
+        env=self.production()
+        env.update(APP_ENV='development', COMPOSE_PROJECT_NAME='vistrah-cloud',
+                   PUBLIC_APP_URL='https://vistrah.in', PUBLIC_API_URL='https://api.vistrah.in',
+                   ALLOWED_ORIGINS='https://vistrah.in', ADMIN_ALLOWED_ORIGINS='https://admin.vistrah.in',
+                   V_ADS_PRIVATE_VOLUME='vistrah-test-media')
+        self.assertEqual(checks.validate(env,'aws-test'),[])
+        env['V_ADS_PRIVATE_VOLUME']='vistrah-production-media'
+        self.assertTrue(checks.validate(env,'aws-test'))
 
     def test_development_defaults(self):
         self.assertEqual(checks.validate({}, 'development'), [])

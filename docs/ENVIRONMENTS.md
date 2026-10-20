@@ -10,7 +10,8 @@ Do not replace a working `.env` just to pick up a new template.
 | Local mobile browser | Existing `mobile/.env` plus API URL override, or `.env.browser.example` | Expo localhost:8082; loopback proxy 18100 forwards to API 8100. Both windows must stay open. |
 | Native development | `mobile/.env.example` | Android emulator API 10.0.2.2:8100; a physical device needs a reachable development API. Loopback proxy is not a physical-phone endpoint. |
 | Disposable integration testing | Private `.env.test` from `.env.test.example` | Separate `vistrah-test` project/database/volumes; web 3111, API 8111, admin 3211. Never apply this to `vistrah20`. |
-| Production preparation | Private `.env.production` and native public-endpoint configuration | Exact HTTPS origins, secure cookies, private credentials, no normal startup seeds. This template alone does not create a production deployment. |
+| AWS testing | Existing private cloud `.env`; `.env.aws-test.example` documents required values | Existing `vistrah-cloud` stack, its own PostgreSQL and approved `vistrah-test-` media volume. Current `vistrah.in`, `api.vistrah.in`, `admin.vistrah.in` are TEST origins. `APP_ENV=development` deliberately preserves sandbox-only entitlements. |
+| Production preparation | Separate private `.env.production`, `compose.production.example.yaml`, EAS production environment | Separate `vistrah-production` project/host, `_production` database and distinct external `vistrah-production-` database/API/media volumes. Live origins remain blank until approved; test hosts are rejected. Preparation only, no provisioning or activation. |
 
 ## Validate values without changing runtime
 
@@ -45,7 +46,7 @@ the validator therefore requires URL-safe password characters. Do not paste
 credentials into chat or commit them.
 
 ```powershell
-python .\scripts\check-environment.py --env-file .env.production --mode production
+python .\scripts\check-environment.py --env-file .env.production --mode production --compose-project vistrah-production
 ```
 
 Passing this check validates values only. It does not verify DNS, certificate
@@ -54,6 +55,40 @@ Current sandbox memberships deliberately do not grant access under
 `APP_ENV=production`; live payment/entitlement work is Phase 5. The existing
 AWS test Compose explicitly uses development mode and is not the production
 runtime. Phase 7 provides staging/runtime wiring after the application gates.
+
+## AWS testing and separate production preparation — Task 006
+
+Do not copy templates over working private files. AWS test values can be checked
+with `python scripts/check-environment.py --env-file <private-test-file> --mode aws-test --compose-project vistrah-cloud`.
+Blank credentials/media identity intentionally fail validation. Existing cloud
+Compose already overrides API startup with Uvicorn; no automatic migrations/seeds.
+`infra/aws-test/compose.media.example.yaml` is an optional preparation overlay for
+an approved API-owned external test media volume, with media disabled by default.
+Volume UID/mode, quota, backup and persistence gates in the V Ads runbook still apply.
+Do not enable media or apply an overlay during configuration checks.
+
+Production preparation reuses `compose.yaml` followed by
+`compose.production.example.yaml`, explicitly using the production env/project.
+The overlay removes app builds, requires immutable images and separate external
+state volumes, runs Uvicorn directly, sets production/sandbox separation and
+keeps worker opt-in. Public origins and credentials are deliberately unconfigured.
+Separate live host, HTTPS proxy/DNS, credentials, protected backups, migrations,
+private media capacity/permissions and image/device verification remain launch
+dependencies. No production proxy or AWS resources are created by this template.
+Never use the AWS test Caddyfile/domains for production or attach test data/media.
+
+Android `preview` and `aws-test` profiles pin API, website/share and admin origins
+to AWS TEST, use internal distribution, and reject laptop/emulator/private URLs.
+`development` retains laptop connectivity. `production` is store distribution,
+uses the EAS production environment and requires three explicitly supplied live
+HTTPS origins; the current AWS test origins and cookie transport are rejected.
+Set `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_WEB_URL`, `EXPO_PUBLIC_ADMIN_URL` only after
+live origins are approved, using `mobile/.env.production.example` as reference.
+`mobile/app.config.js` invokes a configuration-only profile guard; it does not
+change layouts, application transport, signing or package identifiers. Existing
+installed APKs are unchanged and need separately authorized builds for new config.
+The current phone-web Dockerfile remains AWS-test-specific; a production phone
+website artifact is not prepared or approved by Task 006.
 
 ## Resume the existing local application after a Windows restart
 

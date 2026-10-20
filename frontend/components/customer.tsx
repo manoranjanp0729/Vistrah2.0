@@ -31,7 +31,8 @@ export function AuthForm({register=false,seller=false,nextPath}:{register?:boole
   const {syncIdentity}=useCustomerLocation();const router=useRouter();const next=websiteLoginDestination(nextPath,seller?'/seller':'/account');
   const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);
-  useEffect(()=>{setLegalAccepted(false);setWhatsappPromotions(false);},[register,seller]);
+  const [consentMode,setConsentMode]=useState({register,seller});
+  if(consentMode.register!==register||consentMode.seller!==seller){setConsentMode({register,seller});setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(event:React.FormEvent<HTMLFormElement>) {
     event.preventDefault();setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);const form=new FormData(event.currentTarget);
     try {const result=await api<{user:User}>(`/auth/${seller?'seller/':''}${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name')}: {})})});syncIdentity(result.user.id);router.push(nextPath?next:seller?'/seller':'/account');router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}

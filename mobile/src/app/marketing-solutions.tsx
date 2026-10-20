@@ -52,7 +52,7 @@ export default function MarketingSolutions(){
  const [selected,setSelected]=useState<string|undefined>(topic),[focused,setFocused]=useState<string>();
  const [reducedMotion,setReducedMotion]=useState(true),[hovered,setHovered]=useState<string>();
  const scroll=useRef<ScrollView>(null),positions=useRef<Record<string,number>>({});
- const scrollY=useRef(new Animated.Value(0)).current,float=useRef(new Animated.Value(0)).current,entrance=useRef(new Animated.Value(0)).current;
+ const [scrollY]=useState(()=>new Animated.Value(0)),[float]=useState(()=>new Animated.Value(0)),[entrance]=useState(()=>new Animated.Value(0));
  const goTo=(section:string)=>scroll.current?.scrollTo({y:Math.max(0,(positions.current[section]??0)-16),animated:!reducedMotion});
  const requestMarketingSupport=()=>campaign?router.push({pathname:'/request/[id]',params:{id:campaign.service.id}}):goTo('published');
  useEffect(()=>{

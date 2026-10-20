@@ -1,11 +1,14 @@
 'use client';
-import {createContext,useContext,useEffect,useMemo,useState,type ReactNode,type ComponentProps} from 'react';
+import {createContext,useContext,useEffect,useMemo,useState,useSyncExternalStore,type ReactNode,type ComponentProps} from 'react';
+import {readLanguagePreference,subscribeLanguagePreference} from '../lib/language-preference';
 import {displayLabel,isLocale,languages,languageStorageKey,localizedCopy,translate,type Locale,type Parameters} from '../../shared/i18n';
 type Language={locale:Locale;ready:boolean;error:string;setLocale:(locale:Locale)=>void;t:(key:string,parameters?:Parameters,fallback?:string)=>string;label:(id:string,fallback:string)=>string;copy:ReturnType<typeof localizedCopy>};
 const Context=createContext<Language|null>(null);
 export function LanguageProvider({children,initialLocale='en'}:{children:ReactNode;initialLocale?:Locale}){
- const [locale,updateLocale]=useState<Locale>(initialLocale),[ready,setReady]=useState(false),[error,setError]=useState('');
- useEffect(()=>{try{const saved=localStorage.getItem(languageStorageKey);if(isLocale(saved))updateLocale(saved);}catch{setError('settings.restoreError');}finally{setReady(true);}},[]);
+ const saved=useSyncExternalStore<string|null>(subscribeLanguagePreference,readLanguagePreference,()=>null);
+ const [selected,updateLocale]=useState<Locale|null>(null),[saveError,setError]=useState('');
+ const locale=selected??(isLocale(saved)?saved:initialLocale),ready=saved!==null;
+ const error=saveError||(selected===null&&saved==='!restore-error'?'settings.restoreError':'');
  useEffect(()=>{document.documentElement.lang=locale;},[locale]);
  function setLocale(next:Locale){if(!isLocale(next))return;updateLocale(next);setError('');try{localStorage.setItem(languageStorageKey,next);document.cookie=`vistrah_language=${next}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol==='https:'?'; Secure':''}`;}catch{setError('settings.saveError');}}
  const value=useMemo(()=>({locale,ready,error,setLocale,t:(key:string,parameters?:Parameters,fallback?:string)=>translate(locale,key,parameters,fallback),label:(id:string,fallback:string)=>displayLabel(locale,id,fallback),copy:localizedCopy(locale)}),[locale,ready,error]);

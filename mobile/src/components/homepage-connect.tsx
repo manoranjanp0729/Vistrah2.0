@@ -1,5 +1,5 @@
 import {useLanguage} from '../lib/language';
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useState} from 'react';
 import {AccessibilityInfo,Animated,Easing,Image,Platform,Pressable,StyleSheet,Text,View} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {router} from 'expo-router';
@@ -14,8 +14,8 @@ const heartbeat=[[0,7],[4,7],[6,3],[9,11],[12,1],[15,7],[20,7]];
 export function HomepageConnect(){
  const {t,label}=useLanguage();
  const [reducedMotion,setReducedMotion]=useState(true);
- const paddySway=useRef(new Animated.Value(0)).current;
- const ecg=useRef(new Animated.Value(1)).current;
+ const [paddySway]=useState(()=>new Animated.Value(0));
+ const [ecg]=useState(()=>new Animated.Value(1));
  const [failedPhotos,setFailedPhotos]=useState<Record<string,boolean>>({});
  useEffect(()=>{
   let mounted=true;

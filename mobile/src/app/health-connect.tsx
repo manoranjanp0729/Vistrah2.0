@@ -21,7 +21,7 @@ const discoveryHighlights=[
 export default function HealthConnect(){
  const {t,label,locale}=useLanguage();
  const [failed,setFailed]=useState<Record<string,boolean>>({}),[reducedMotion,setReducedMotion]=useState(true);
- const ecg=useRef(new Animated.Value(1)).current;
+ const [ecg]=useState(()=>new Animated.Value(1));
  const scroll=useRef<ScrollView>(null),categoriesY=useRef<number|null>(null);
  // The route header is outside the ScrollView; section layout is content-relative.
  const scrollToCategories=()=>{if(categoriesY.current!==null)scroll.current?.scrollTo({y:categoriesY.current,animated:!reducedMotion});};

@@ -1,6 +1,6 @@
 import {signupLegalCopy} from '../../../shared/legal';
 import {useLanguage} from '../lib/language';
-import {useEffect,useState} from 'react';
+import {useState} from 'react';
 import {Pressable,Text,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {Action,ErrorPanel,Field,Heading,Page} from '../components/ui';
@@ -10,7 +10,8 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
   const params=useLocalSearchParams<{mode?:string;register?:string}>();const seller=params.mode==='seller';
   const {signIn}=useSession();const [register,setRegister]=useState(params.register==='1');const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);
-  useEffect(()=>{setLegalAccepted(false);setWhatsappPromotions(false);},[register,seller]);
+  const [consentMode,setConsentMode]=useState({register,seller});
+  if(consentMode.register!==register||consentMode.seller!==seller){setConsentMode({register,seller});setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(){
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?t('validation.authRegister'):t('validation.authSignIn'));return;}
     setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined,seller);setPassword('');if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}

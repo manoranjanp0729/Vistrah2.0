@@ -164,12 +164,34 @@ jobs:
           tags: ${{ steps.identity.outputs.name }}:${{ steps.identity.outputs.tag }}
           build-args: |
             EXPO_PUBLIC_MAPTILER_WEB_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
+            NEXT_PUBLIC_MAPTILER_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ needs.resolve_candidate.outputs.sha }}
           provenance: mode=min
           cache-from: type=gha,scope=candidate-${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=candidate-${{ matrix.image }}
+      - name: Verify candidate API video runtime without starting the API
+        if: matrix.image == 'api'
+        shell: bash
+        env:
+          IMAGE_NAME: ${{ steps.identity.outputs.name }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --memory 256m --cpus 1 --pids-limit 64 \
+            --tmpfs /tmp:rw,noexec,nosuid,size=16m --entrypoint sh \
+            "$IMAGE_NAME@$IMAGE_DIGEST" -ec '
+              ffmpeg -version >/dev/null
+              ffprobe -version >/dev/null
+              ffmpeg -hide_banner -loglevel error -filter_threads 1 -f lavfi \
+                -i color=c=black:s=96x96:d=0.25 -an -c:v libx264 -threads 1 \
+                -movflags +faststart /tmp/candidate.mp4
+              python -c "from pathlib import Path; import fastapi, sqlalchemy, psycopg; from app.v_ads_video_validation import validate_video; result=validate_video(Path(\"/tmp/candidate.mp4\")); assert result[\"video_codec\"]==\"h264\"; print(\"Candidate FFmpeg, FFprobe, Python imports and private MP4 validation passed\")"
+            '
+          echo 'API media runtime smoke: passed (no network, API startup, database or persistent volume).' >> "$GITHUB_STEP_SUMMARY"
       - name: Record candidate immutable reference
         shell: bash
         env:

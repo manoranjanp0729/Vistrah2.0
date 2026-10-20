@@ -2,6 +2,80 @@
 
 Phase 2 source preparation, 13 October 2026. No production deployment is wired.
 
+## Integrated AWS Test milestone ? 20 October 2026
+
+The current master directive authorizes routine verified development-branch
+commits/pushes and isolated test preparation; older per-task ?do not push?
+notes are historical. Production gates remain unchanged. Existing source/UI,
+local containers and data are preserved. Journey traceability and acceptance
+gaps are recorded in USER_JOURNEYS.md rather than a parallel checklist.
+
+- Published source fixes: `d8879b2` (React patterns), `9ef50e4` (bounded public
+  reel/profile engagement queries and reviewed disposable fixture schemas),
+  `9eef919` (localized/current-contract client test fixtures).
+- Local evidence: 11 targeted backend tests on a fresh disposable SQLite database;
+  43 directly affected frontend tests and affected-file lint; five previously
+  failing native configuration/membership/navigation assertions pass. The
+  query-budget test measured six-video feed/profile SELECTs at 13/14 before,
+  3/4 after, retaining approved-only visibility and visible comment counts.
+- Hosted evidence: run #49 at
+  https://github.com/manoranjan247p-source/Vistrah2.0/actions/runs/39446934524
+  has passed all three Client jobs, Environment boundaries, frontend/admin audits.
+  Backend finished with 456 passed, six skipped and one 404 failure: legacy
+  account-test teardown removed application routes before moderation tests.
+  Removed redundant global router mutation from account/review fixtures; 14
+  targeted account/review?moderation tests pass locally, hosted recheck pending.
+  The unchanged mobile dependency audit fails on four documented advisory families. Do not
+  represent earlier/local SQLite results as PostgreSQL or device evidence.
+- Added candidate-only API runtime smoke preparation: after the immutable API
+  image is published, run FFmpeg/FFprobe, core Python imports, generate a tiny
+  synthetic H.264 MP4 and validate it with the existing validator. The container
+  has no network, no volumes, a read-only root, a 16 MiB ephemeral tmpfs,
+  256 MiB/one CPU/64-process limits and an explicit shell entrypoint; it never
+  starts Uvicorn, migrates, seeds or connects to a database. YAML/Bash syntax and
+  preservation of prior jobs/gates were checked. The candidate build also
+  passes the existing approved public map-key variable to the actual Next.js
+  `NEXT_PUBLIC_MAPTILER_API_KEY` build argument (the old Expo-only argument did
+  not populate the desktop map configuration). Main publishing is unchanged. This smoke
+  has NOT executed: no candidate was built or dispatched. Publication alone is
+  not acceptance if the post-publication smoke fails.
+
+### Remaining external gates and smallest next action
+
+AWS `vistrah-login` still reports an expired session after the user's refresh;
+`vistrah-terraform` correctly delegates to it. No EC2/snapshot/capacity result
+is currently verified. Do not treat snapshot `snap-09f77f82f56f173e3` as a tested
+backup. Prior SSH public-key rejection remains separate from AWS CLI login.
+Next access action: obtain a successful local STS check in the same Windows
+account/profile (no credentials/account output in chat), then repeat only the
+blocked read-only AWS checks. No new resources or access-policy changes.
+
+The current publishing workflow deliberately still requires FULL CI, including
+the mobile security audit, before any API/web/admin candidate. The master
+allows understood isolated-test findings but does not silently change this
+existing gate. A separate reviewed decision is required to reconcile that
+exception with publishing controls; no audit suppression, major dependency
+upgrade, new paid quota or production exemption has been applied. Phone-web
+and Android are not in the three-image candidate matrix and need their own
+verified artifacts; a web export is not an installable APK.
+
+After access and artifact gates: inspect actual cloud commands/images/revision,
+RAM/disk/private media and active writers; verify protected DB+media backup and
+restore into a new disposable target. Obtain explicit approval before fencing
+writers, migrating existing data, replacing services, changing routing/DNS or
+using paid capacity. Use direct-Uvicorn override and immutable references;
+never invoke the default migrate/seed image command for routine startup.
+
+Android acceptance remains pending: authorized EAS account/project/signing and
+quota; AWS-test APK using `aws-test` profile (HTTPS test origins, no laptop),
+install on a physical Android device; registration/customer/seller identity,
+three membership-gated service tabs, temporary/manual/explicit GPS and consent,
+request persistence/status, advertiser upload?independent review?public reel,
+play/pause/swipe/audio/resume, likes/comments/profile/share, errors/offline,
+account switching/logout and admin browser separation. Capture exact APK SHA,
+source SHA, API revision and results. Native tokens must stay out of URLs/logs.
+No production endpoint/store/billing decision is implied by test acceptance.
+
 ## Checks
 
 `.github/workflows/ci.yml` runs on pushes to `main` and

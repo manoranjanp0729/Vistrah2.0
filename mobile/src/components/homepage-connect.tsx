@@ -1,3 +1,4 @@
+import {UiElement} from "./localized-ui";
 import {useLanguage} from '../lib/language';
 import {useEffect,useState} from 'react';
 import {AccessibilityInfo,Animated,Easing,Image,Platform,Pressable,StyleSheet,Text,View} from 'react-native';
@@ -60,11 +61,16 @@ export function HomepageConnect(){
     </View>
     <Text accessibilityRole="header" style={[s.heading,{color:section.ink}]}>{section.heading}</Text>
    </View>
-   <Pressable accessibilityRole="link" accessibilityLabel={label('category/'+category.slug,category.title)} onPress={()=>router.push(agri?'/agri-connect':'/health-connect')} style={({pressed})=>[s.card,{opacity:pressed?.85:1}]}>
-    <View style={s.photo}>{failedPhotos[section.key]?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<Image source={photos[section.key]} resizeMode="cover" accessibilityLabel={t(agri?'agri.photoAlt':'health.photoAlt')} onError={()=>setFailedPhotos(value=>({...value,[section.key]:true}))} style={[StyleSheet.absoluteFill,{width:'100%',height:'100%'}]}/>}</View>
-    <View style={s.copy}><Text style={[s.title,{color:section.ink}]}>{label('category/'+category.slug,category.title)}</Text><Text style={s.description}>{t(section.key==='agri'?'connect.agriCopy':'connect.healthCopy')}</Text></View>
-    <Ionicons name="chevron-forward" size={19} color={accent} accessible={false}/>
-   </Pressable>
+   <UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={label('category/'+category.slug,category.title)} onPress={()=>router.push(agri?'/agri-connect':'/health-connect')} style={({pressed})=>[s.card,{opacity:pressed?.85:1}]}>
+    <View style={s.photo}>{failedPhotos[section.key]?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<UiElement as={Image} source={photos[section.key]} resizeMode="cover" accessibilityLabel={t(agri?'agri.photoAlt':'health.photoAlt')} onError={()=>setFailedPhotos(value=>({...value,[section.key]:true}))} style={s.photoImage}/>}</View>
+    <View style={s.cardBody}>
+     <View style={s.copy}><Text style={[s.title,{color:section.ink}]}>{label('category/'+category.slug,category.title)}</Text><Text style={s.description}>{t(section.key==='agri'?'connect.agriCopy':'connect.healthCopy')}</Text></View>
+     <View style={[s.ctaPill,{backgroundColor:accent}]}>
+      <Text style={s.ctaText}>{t('interface.3b73900b8d29')}</Text>
+      <Ionicons name="arrow-forward" size={13} color="#fff" accessible={false}/>
+     </View>
+    </View>
+   </UiElement>
   </LinearGradient>;
  })}</>;
 }
@@ -73,12 +79,16 @@ const s=StyleSheet.create({
  header:{flexDirection:'row',alignItems:'center',gap:7,zIndex:1},
  icon:{width:32,height:32,alignItems:'center',justifyContent:'center'},
  heading:{flex:1,fontSize:Platform.OS==='android'?19:15,lineHeight:Platform.OS==='android'?25:20,fontWeight:'700'},
- card:{flexDirection:'row',alignItems:'center',gap:9,padding:8,borderRadius:15,backgroundColor:'#fff',zIndex:1,borderWidth:1,borderColor:'#ffffffb3'},
- photo:{width:'37%',aspectRatio:1.5,borderRadius:11,overflow:'hidden',backgroundColor:'#edf1ed',alignItems:'center',justifyContent:'center'},
+ card:{padding:8,borderRadius:16,backgroundColor:'#fff',zIndex:1,borderWidth:1,borderColor:'#ffffffb3',gap:9},
+ photo:{width:'100%',aspectRatio:2.0,borderRadius:11,overflow:'hidden',backgroundColor:'#edf1ed',alignItems:'center',justifyContent:'center'},
+ photoImage:{width:'100%',height:'100%'},
  fallback:{fontSize:10,lineHeight:14,color:'#52636e',textAlign:'center',padding:4},
- copy:{flex:1,minWidth:0,gap:5,paddingVertical:3},
- title:{fontSize:Platform.OS==='android'?16:13,lineHeight:Platform.OS==='android'?22:18,fontWeight:'600'},
- description:{fontSize:Platform.OS==='android'?13:11,lineHeight:Platform.OS==='android'?20:15,color:'#52636e'},
+ cardBody:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10,paddingHorizontal:2,paddingBottom:2},
+ copy:{flex:1,minWidth:0,gap:4},
+ title:{fontSize:Platform.OS==='android'?16:14,lineHeight:Platform.OS==='android'?22:19,fontWeight:'700'},
+ description:{fontSize:Platform.OS==='android'?13:11,lineHeight:Platform.OS==='android'?18:15,color:'#52636e'},
+ ctaPill:{flexDirection:'row',alignItems:'center',gap:5,paddingHorizontal:12,paddingVertical:7,borderRadius:18,flexShrink:0},
+ ctaText:{fontSize:12,fontWeight:'700',color:'#fff'},
  paddy:{position:'absolute',top:0,right:4,width:90,height:57,opacity:.8},
  paddyImage:{width:90,height:56.25},
  medicalDecoration:{position:'absolute',top:16,right:3,width:44,height:24,opacity:.8},

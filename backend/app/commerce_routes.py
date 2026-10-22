@@ -28,12 +28,14 @@ class ListingInput(Strict):
 
     @model_validator(mode='after')
     def service_binding(self):
-        if (self.kind == 'PRODUCT') != (self.service_id is None):
-            raise ValueError('Only service packages must reference a catalogue service')
+        if self.kind == 'PRODUCT' and self.service_id is not None:
+            raise ValueError('Products cannot reference a catalogue service')
         selection = (self.taxonomy_category_slug, self.taxonomy_subcategory_slug, self.taxonomy_listing_type_slug)
         if any(value is not None for value in selection):
             if not all(value is not None for value in selection) or resolve_selection(*selection) is None:
                 raise ValueError('Select a valid category, subcategory and listing type')
+        if self.kind == 'SERVICE_PACKAGE' and self.service_id is None and not all(selection):
+            raise ValueError('Service packages require an approved catalogue service or a complete listing type')
         return self
 
 
@@ -91,12 +93,22 @@ def service_grant():
         or_(Service.subcategory_id.is_(None), Subcategory.active.is_(True))).correlate(CommerceListing).exists()
 
 
+def service_eligibility():
+    # Classified services are reviewed as listings. Legacy service references
+    # still require their separate active, approved provider-service grant.
+    from sqlalchemy import and_
+    return or_(service_grant(), and_(CommerceListing.service_id.is_(None),
+        CommerceListing.taxonomy_category_slug.is_not(None),
+        CommerceListing.taxonomy_subcategory_slug.is_not(None),
+        CommerceListing.taxonomy_listing_type_slug.is_not(None)))
+
+
 def eligible(db, provider, row):
     if provider.owner_user_id != row.seller_id or not provider.active or provider.verification_status != 'VERIFIED':
         raise HTTPException(409, 'Current ownership of an active verified business is required')
     if row.fulfilment_operator=='VISTRAH' and db.get(User,provider.owner_user_id).role!='ADMIN':
         raise HTTPException(409,'VISTRAH service business must remain administrator owned')
-    if row.kind == 'SERVICE_PACKAGE' and not db.scalar(select(CommerceListing.id).where(CommerceListing.id == row.id, service_grant())):
+    if row.kind == 'SERVICE_PACKAGE' and not db.scalar(select(CommerceListing.id).where(CommerceListing.id == row.id, service_eligibility())):
         raise HTTPException(409, 'An active catalogue service and approved business service grant are required')
 
 
@@ -120,6 +132,7 @@ def output(row, provider, private=False):
             'fulfilment_modes':row.fulfilment_modes,'delivery_fee_paise':row.delivery_fee_paise,'cancellation_rule':row.cancellation_rule})
     if private:
         data.update(status=row.status, provider_id=row.provider_id, seller_id=row.seller_id,
+            business_verification_status=provider.verification_status,business_active=provider.active,
             reviewer_id=row.reviewer_id, review_note=row.review_note, published_at=row.published_at)
     return data
 
@@ -128,7 +141,7 @@ def public_query():
     return select(CommerceListing, Provider).join(Provider, Provider.id == CommerceListing.provider_id).where(
         CommerceListing.status == 'APPROVED', CommerceListing.available.is_(True), Provider.active.is_(True),
         Provider.verification_status == 'VERIFIED', Provider.owner_user_id == CommerceListing.seller_id,
-        or_(CommerceListing.kind == 'PRODUCT', service_grant()),
+        or_(CommerceListing.kind == 'PRODUCT', service_eligibility()),
         or_(CommerceListing.fulfilment_operator=='SELLER',select(User.id).where(User.id==CommerceListing.seller_id,User.role=='ADMIN').exists()))
 
 
@@ -148,6 +161,19 @@ def products(response: Response, page: int = Query(1, ge=1, le=10000), db: Sessi
 def packages(response: Response, page: int = Query(1, ge=1, le=10000), user: User = Depends(member_user), db: Session = Depends(get_db)):
     response.headers['Cache-Control']='private, no-store';response.headers['Vary']='Authorization'
     return page_output(db,public_query().where(CommerceListing.kind=='SERVICE_PACKAGE'),page)
+
+
+@router.get('/commerce/classified-services')
+def classified_services(response: Response, category: str, subcategory: str, type: str,
+                        page: int = Query(1, ge=1, le=10000),
+                        user: User = Depends(member_user), db: Session = Depends(get_db)):
+    response.headers['Cache-Control']='private, no-store';response.headers['Vary']='Authorization'
+    if resolve_selection(category,subcategory,type) is None:
+        raise HTTPException(422,'Select a valid category, subcategory and listing type')
+    return page_output(db,public_query().where(CommerceListing.kind=='SERVICE_PACKAGE',
+        CommerceListing.taxonomy_category_slug==category,
+        CommerceListing.taxonomy_subcategory_slug==subcategory,
+        CommerceListing.taxonomy_listing_type_slug==type),page)
 
 
 @router.get('/commerce/listings/{listing_id}')
@@ -199,7 +225,8 @@ def submit_listing(provider_id: int, listing_id: str, data: Revision, user: User
     provider=owned_business(db,provider_id,user);row=own_listing(db,listing_id,provider_id,user)
     if row.status!='DRAFT':raise HTTPException(409,'Only a current draft can be submitted')
     if any((row.taxonomy_category_slug,row.taxonomy_subcategory_slug,row.taxonomy_listing_type_slug)) and resolve_selection(row.taxonomy_category_slug,row.taxonomy_subcategory_slug,row.taxonomy_listing_type_slug) is None:raise HTTPException(422,'Listing taxonomy selection is no longer valid')
-    eligible(db,provider,row)
+    if not (row.kind=='SERVICE_PACKAGE' and row.service_id is None and row.taxonomy_listing_type_slug and provider.verification_status=='PENDING'):
+        eligible(db,provider,row)
     change(db,row,user,data.revision,'COMMERCE_LISTING_SUBMITTED',status='SUBMITTED',submitted_by=user.id)
     return output(row,provider,True)
 

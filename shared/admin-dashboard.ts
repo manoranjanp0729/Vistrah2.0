@@ -20,6 +20,7 @@ export const adminTaskGroups:AdminGroup[] = [
     {slug:'providers',label:'Businesses & providers',description:'Manage business details and availability.'},
     {slug:'catalogue',label:'Service catalogue',description:'Manage categories and discoverable services.'},
     {slug:'homepage',label:'Homepage',description:'Edit and publish homepage content.'},
+    {slug:'edit-vistrah',label:'Edit Vistrah',description:'Define sections, variations, features, and photos for all pages.'},
     {slug:'memberships',label:'Memberships & benefits',description:'Review subscriptions and benefit records.'},
     {slug:'offers',label:'Member offers',description:'Manage membership offers.'},
     {slug:'vistrah-services',label:'VISTRAH packages',description:'Manage platform service packages.'},

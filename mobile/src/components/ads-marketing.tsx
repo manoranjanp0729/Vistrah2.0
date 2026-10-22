@@ -1,3 +1,4 @@
+import {UiText,UiElement} from "./localized-ui";
 import {useState} from 'react';
 import {useLanguage} from '../lib/language';
 import {Platform,Image,Pressable,StyleSheet,Text,View} from 'react-native';
@@ -5,23 +6,24 @@ import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import {photoCardDesign as design} from '../../../shared/photo-card-design';
-import {allServices,type Category} from '../lib/catalogue';
+import {marketingServicePages} from '../../../shared/marketing-services';
+import {marketingVisuals} from '../../../shared/marketing-visuals';
+import brandTheme from '../../../shared/brand-theme.json';
+
 const images=[require('../../assets/ads-marketing/performance-marketing.webp'),require('../../assets/ads-marketing/branding-creative.webp'),require('../../assets/ads-marketing/outdoor-signage.jpg'),require('../../assets/ads-marketing/mobility-billboard.jpg')];
-const highlights=[
- {key:'performance-marketing',title:'Digital Advertising',description:'Digital campaigns, online promotion and performance marketing.',alt:'A marketer reviewing a digital campaign dashboard',serviceSlug:'digital-marketing'},
- {key:'branding-creative',title:'Branding & Creative Production',description:'Brand identity, graphic design, promotional videos and content creation.',alt:'Creative team meeting in a sunlit studio',serviceSlug:null},
- {key:'outdoor-advertising',title:'Outdoor Advertising & Signage',description:'Hoardings, outdoor billboards, shop signboards and display solutions.',alt:'Large outdoor billboard beside illuminated commercial storefront signage',serviceSlug:'outdoor-advertising'},
- {key:'mobility-billboard',title:'Mobility Billboard Advertising',description:'Mobile advertising displays, branded vehicles and location-based promotional campaigns.',alt:'Commercial LED advertising truck displaying a fashion campaign',serviceSlug:null}
-];
-export function AdsMarketing({categories}:{categories:Category[]}){
- const {t}=useLanguage();
+const highlights=marketingServicePages;
+
+export function AdsMarketing(){
+ const {t,locale}=useLanguage();
  const [headingWidth,setHeadingWidth]=useState(0);
  const android=Platform.OS==='android';
- const getStarted=<Pressable accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={s.startText}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color="#6340b8"/></Pressable>;
- const services=allServices(categories).filter(item=>item.category.active&&item.category.slug==='marketing'&&item.service.active&&(!item.subcategory||item.subcategory.active));
- return <LinearGradient testID="ads-marketing" colors={['#283db6','#7741c4','#b63b8d']} locations={[0,.52,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.section}>
+ const brandGradient = [brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]] as const;
+
+ const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={[s.startText,{color:"#6340b8"}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color="#6340b8"/></UiElement>;
+
+ return <LinearGradient testID="ads-marketing" colors={brandGradient} locations={[0,.52,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.section}>
   <View pointerEvents="none" accessible={false} style={s.blueGlow}/><View pointerEvents="none" accessible={false} style={s.pinkGlow}/>
-  <Text accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit onLayout={event=>setHeadingWidth(event.nativeEvent.layout.width)} style={[s.headline,headingWidth>0&&{fontSize:Math.min(Platform.OS==='android'?25:21,headingWidth/15.5)}]}>VISTRAH Ads &amp; Marketing</Text>
+  <Text accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit onLayout={event=>setHeadingWidth(event.nativeEvent.layout.width)} style={[s.headline,headingWidth>0&&{fontSize:Math.min(Platform.OS==='android'?25:21,headingWidth/15.5)}]}><UiText value={"VISTRAH Ads & Marketing"}/></Text>
   <View style={s.hero}>
    <View style={s.heroCopy}>
     <Text style={s.support}>{t('marketing.homeCopy')}</Text>
@@ -40,11 +42,14 @@ export function AdsMarketing({categories}:{categories:Category[]}){
   </View>
   {!android&&getStarted}
   <View style={s.grid}>{highlights.map((card,index)=>{
-   const match=services.find(item=>item.service.slug===card.serviceSlug);
-   return <Pressable key={card.key} accessibilityRole="link" accessibilityLabel={t('marketing.'+(['digitalTitle','brandTitle','outdoorTitle','mobilityTitle'][index]))} onPress={()=>match?router.push({pathname:'/service/[id]',params:{id:match.service.id}}):router.push('/marketing-solutions')} style={({pressed})=>[s.card,{backgroundColor:index%2?'#fff5fb':'#f7f5ff',opacity:pressed?.85:1}]}>
-    <View style={s.image}><Image source={images[index]} accessibilityLabel={t('marketing.'+(['photoDigital','photoCreative','photoOutdoor','photoMobility'][index]))} resizeMode="cover" style={s.cardImage}/></View>
-    <View style={s.cardContent}><Text style={s.cardTitle}>{t('marketing.'+(['digitalTitle','brandTitle','outdoorTitle','mobilityTitle'][index]))}</Text><Text style={s.cardDescription}>{t('marketing.'+(['digitalCopy','brandCopy','outdoorCopy','mobilityCopy'][index]))}</Text></View>
-   </Pressable>;
+   const visual = marketingVisuals[card.key as keyof typeof marketingVisuals];
+   const cardBg = visual ? visual.paper : (index%2 ? '#fff5fb' : '#f7f5ff');
+   const cardAccent = visual ? visual.accent : '#7741c4';
+   const cardInk = visual ? visual.ink : '#382448';
+   return <UiElement as={Pressable} key={card.key} accessibilityRole="link" accessibilityLabel={card.title[locale]} onPress={()=>router.push({pathname:'/marketing-services/[slug]',params:{slug:card.slug}})} style={({pressed})=>[s.card,{backgroundColor:cardBg,borderWidth:1,borderColor:cardAccent+'35',opacity:pressed?.85:1}]}>
+    <View style={s.image}><UiElement as={Image} source={images[index]} accessibilityLabel={t('marketing.'+(['photoDigital','photoCreative','photoOutdoor','photoMobility'][index]))} resizeMode="cover" style={s.cardImage}/></View>
+    <View style={s.cardContent}><Text style={[s.cardTitle,{color:cardInk}]}>{card.title[locale]}</Text><Text style={s.cardDescription}>{t('marketing.'+(['digitalCopy','brandCopy','outdoorCopy','mobilityCopy'][index]))}</Text></View>
+   </UiElement>;
   })}</View>
  </LinearGradient>;
 }

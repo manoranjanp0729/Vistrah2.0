@@ -1,4 +1,4 @@
-﻿"""Public read-only V Ads feed and advertiser profiles."""
+"""Public read-only V Ads feed and advertiser profiles."""
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
@@ -110,6 +110,38 @@ def advertiser_profile(
     ).all()
 
     counts = engagement_counts(db, [video.id for video in videos])
+    products = []
+    if advertiser.owner_id:
+        try:
+            from .commerce_models import CommerceListing
+            listings = db.scalars(
+                select(CommerceListing)
+                .where(
+                    CommerceListing.seller_id == advertiser.owner_id,
+                    CommerceListing.status == "APPROVED",
+                    CommerceListing.available == True,
+                )
+                .order_by(
+                    CommerceListing.published_at.desc(),
+                    CommerceListing.id.desc(),
+                )
+                .limit(20)
+            ).all()
+            products = [
+                {
+                    "id": item.id,
+                    "title": item.title,
+                    "description": item.description,
+                    "unit_price_paise": item.unit_price_paise,
+                    "currency": item.currency,
+                    "delivery_fee_paise": item.delivery_fee_paise,
+                    "fulfilment_modes": item.fulfilment_modes or [],
+                }
+                for item in listings
+            ]
+        except Exception:
+            products = []
+
     return {
         "id": advertiser.id,
         "name": advertiser.name,
@@ -119,4 +151,5 @@ def advertiser_profile(
             video_payload(db, video, advertiser, counts)
             for video in videos
         ],
+        "products": products,
     }

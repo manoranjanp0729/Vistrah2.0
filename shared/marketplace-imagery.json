@@ -3754,6 +3754,405 @@
         "filename": "catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
         "reviewedOn": "2026-10-20"
       }
+    },
+    "catalogue-batch2-professional-services--design-and-creative-services": {
+      "src": "/images/marketplace/catalogue-batch2--professional-services--design-and-creative-services.webp",
+      "alt": "Photograph illustrating Design & Creative Services",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 285,
+      "height": 189,
+      "bytes": 20008,
+      "sha256": "b029f30919e78db5a61d485cac2f0fb2d65cbc46c1a11e36a81e56b2e062c6cc",
+      "originalSha256": "b029f30919e78db5a61d485cac2f0fb2d65cbc46c1a11e36a81e56b2e062c6cc",
+      "source": "user-supplied:vistrah-batch2-36-40/catalogue-batch2--professional-services--design-and-creative-services.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2 (36-40)",
+        "filename": "catalogue-batch2--professional-services--design-and-creative-services.webp",
+        "reviewedOn": "2026-10-21"
+      }
+    },
+    "catalogue-batch2-events-and-celebrations--birthday-and-private-parties": {
+      "src": "/images/marketplace/catalogue-batch2--events-and-celebrations--birthday-and-private-parties.webp",
+      "alt": "Photograph illustrating Birthday & Private Parties",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 289,
+      "height": 189,
+      "bytes": 19378,
+      "sha256": "7abc84821d59cccae4dff1dcf83ae283923810c80c62abee740a61cda0ce376f",
+      "originalSha256": "7abc84821d59cccae4dff1dcf83ae283923810c80c62abee740a61cda0ce376f",
+      "source": "user-supplied:vistrah-batch2-36-40/catalogue-batch2--events-and-celebrations--birthday-and-private-parties.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2 (36-40)",
+        "filename": "catalogue-batch2--events-and-celebrations--birthday-and-private-parties.webp",
+        "reviewedOn": "2026-10-21"
+      }
+    },
+    "catalogue-batch2-pet-care--grooming": {
+      "src": "/images/marketplace/catalogue-batch2--pet-care--grooming.webp",
+      "alt": "Photograph illustrating Grooming",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 285,
+      "height": 189,
+      "bytes": 16148,
+      "sha256": "f3d6c8ad4f613822a654559e527a2d100a79b4a2c0297a4b4dde7034a969b4d8",
+      "originalSha256": "f3d6c8ad4f613822a654559e527a2d100a79b4a2c0297a4b4dde7034a969b4d8",
+      "source": "user-supplied:vistrah-batch2-36-40/catalogue-batch2--pet-care--grooming.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2 (36-40)",
+        "filename": "catalogue-batch2--pet-care--grooming.webp",
+        "reviewedOn": "2026-10-21"
+      }
+    },
+    "catalogue-batch2-food-and-dining--food-delivery-and-takeaway": {
+      "src": "/images/marketplace/catalogue-batch2--food-and-dining--food-delivery-and-takeaway.webp",
+      "alt": "Photograph illustrating Food Delivery & Takeaway",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 287,
+      "height": 189,
+      "bytes": 14396,
+      "sha256": "4ba6539a249f005467febaad4aeb7e97ed32e8f2a39dd0aa81b8c09460282a84",
+      "originalSha256": "4ba6539a249f005467febaad4aeb7e97ed32e8f2a39dd0aa81b8c09460282a84",
+      "source": "user-supplied:vistrah-batch2-36-40/catalogue-batch2--food-and-dining--food-delivery-and-takeaway.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2 (36-40)",
+        "filename": "catalogue-batch2--food-and-dining--food-delivery-and-takeaway.webp",
+        "reviewedOn": "2026-10-21"
+      }
+    },
+    "catalogue-batch2-home-and-everyday-services--home-installation": {
+      "src": "/images/marketplace/catalogue-batch2--home-and-everyday-services--home-installation.webp",
+      "alt": "Photograph illustrating Home Installation",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 280,
+      "height": 189,
+      "bytes": 9738,
+      "sha256": "4577610b82308d017943a59818061f3cd3242522377d5c1dc0021eaad2d7efaf",
+      "originalSha256": "4577610b82308d017943a59818061f3cd3242522377d5c1dc0021eaad2d7efaf",
+      "source": "user-supplied:vistrah-batch2-36-40/catalogue-batch2--home-and-everyday-services--home-installation.webp",
+      "provenance": {
+        "kind": "original-ai-generated",
+        "origin": "ChatGPT VISTRAH Batch 2 (36-40)",
+        "filename": "catalogue-batch2--home-and-everyday-services--home-installation.webp",
+        "reviewedOn": "2026-10-21"
+      }
+    },
+    "billboard": {
+      "key": "billboard",
+      "source": "https://unsplash.com/photos/csDVMvtsS50",
+      "photographer": "Patrick Robert Doyle",
+      "licence": "Unsplash License",
+      "licenceUrl": "https://unsplash.com/license",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://unsplash.com/s/photos/billboard",
+      "downloadUrl": "https://images.unsplash.com/photo-1635873432087-50eba4c4392d?w=1600&q=85&fm=jpg&fit=max",
+      "src": "/images/photos/billboard.webp",
+      "width": 1200,
+      "height": 1600,
+      "sourceWidth": 1600,
+      "sourceHeight": 2133,
+      "bytes": 156912,
+      "sha256": "8696ba1940ce3108cd0d029f7394a30a8281137f61d9a0f7096c889bcd62703b",
+      "alt": "An illuminated blank advertising display at a transit stop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "crop": "Focus on the complete display rectangle, with surrounding architecture as context."
+    },
+    "application-desk": {
+      "key": "application-desk",
+      "source": "https://www.pexels.com/photo/white-ceramic-cup-on-brown-wooden-surface-590044/",
+      "alt": "Resume papers beside a laptop and coffee on a wooden desk",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Lukas Blazek",
+      "downloadUrl": "https://images.pexels.com/photos/590044/pexels-photo-590044.jpeg?cs=srgb&dl=pexels-goumbik-590044.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/white-ceramic-cup-on-brown-wooden-surface-590044/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "4ffc0ffcd54249fc310a5a891569fbdb3595477b3762373112db0c6b09050173",
+      "downloadedAt": "2026-10-09T13:13:00.750225+00:00",
+      "src": "/images/photos/application-desk.webp",
+      "width": 1440,
+      "height": 953,
+      "sourceWidth": 6144,
+      "sourceHeight": 4069,
+      "bytes": 196554,
+      "sha256": "5a790a54326a343133a821bf5abfcbcf7705493363a1d7e7b398ca42eb543f96",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "home-purchase": {
+      "key": "home-purchase",
+      "source": "https://www.pexels.com/photo/real-estate-agent-giving-the-keys-to-the-buyer-7642008/",
+      "alt": "A real estate agent handing house keys to a buyer",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Alena Darmel",
+      "downloadUrl": "https://images.pexels.com/photos/7642008/pexels-photo-7642008.jpeg?cs=srgb&dl=pexels-a-darmel-7642008.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/real-estate-agent-giving-the-keys-to-the-buyer-7642008/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "e914f77901d9ffd4bdde81614a4539152619bd6507343c9fae99f1b7e6567a1d",
+      "downloadedAt": "2026-10-09T13:13:01.451569+00:00",
+      "src": "/images/photos/home-purchase.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 5040,
+      "sourceHeight": 3360,
+      "bytes": 66412,
+      "sha256": "2be3d300563c35345881500e8f0e50e8c4dd0788af94d846f66f2c27a91eb455",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "property-sale": {
+      "key": "property-sale",
+      "source": "https://www.pexels.com/photo/a-person-signing-a-contract-7641842/",
+      "alt": "Hands signing property transaction paperwork at a wooden table",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Alena Darmel",
+      "downloadUrl": "https://images.pexels.com/photos/7641842/pexels-photo-7641842.jpeg?cs=srgb&dl=pexels-a-darmel-7641842.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/a-person-signing-a-contract-7641842/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "9e285a2de94d96473f327c38989569c56969558c677754566eb3c07d46ea1123",
+      "downloadedAt": "2026-10-09T13:13:01.718408+00:00",
+      "src": "/images/photos/property-sale.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 4899,
+      "sourceHeight": 3266,
+      "bytes": 56108,
+      "sha256": "121cf52a50b5d5faeb7df1879a9c71ce005eeb4a891699e985069531528bb11c",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "tender-review": {
+      "key": "tender-review",
+      "source": "https://www.pexels.com/photo/businessmen-signing-documents-6285095/",
+      "alt": "Business professionals reviewing and signing project documents",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Gustavo Fring",
+      "downloadUrl": "https://images.pexels.com/photos/6285095/pexels-photo-6285095.jpeg?cs=srgb&dl=pexels-gustavo-fring-6285095.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/businessmen-signing-documents-6285095/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "16f00f7928a0f1543535ad3760ae75d378fd318c9956131cb7e64afaaa5aee4c",
+      "downloadedAt": "2026-10-09T13:13:05.462134+00:00",
+      "src": "/images/photos/tender-review.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 5760,
+      "sourceHeight": 3840,
+      "bytes": 49046,
+      "sha256": "eb3ceec144c0f3cd4a1eef6217dbae13252c3200c5aa446ad8f70b199d8d9502",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "site-contractors": {
+      "key": "site-contractors",
+      "source": "https://www.pexels.com/photo/men-working-on-a-construction-site-15063590/",
+      "alt": "Construction workers examining reinforcement bars and columns at a building site",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Zahid Iqbal",
+      "downloadUrl": "https://images.pexels.com/photos/15063590/pexels-photo-15063590.jpeg?cs=srgb&dl=pexels-zahid-iqbal-416970650-15063590.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/men-working-on-a-construction-site-15063590/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "05177fc4282d729184e5f6aafe8128e48fcac8db49c48b875d21a7dbe1ade855",
+      "downloadedAt": "2026-10-09T13:13:05.462134+00:00",
+      "src": "/images/photos/site-contractors.webp",
+      "width": 1440,
+      "height": 1080,
+      "sourceWidth": 4000,
+      "sourceHeight": 3000,
+      "bytes": 365060,
+      "sha256": "f61ca81f20034cb912217eddca3c6210878c0985afef85e0c58cb1b84c9f0d3f",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "building-inspection": {
+      "key": "building-inspection",
+      "source": "https://www.pexels.com/photo/man-working-on-a-construction-site-17395035/",
+      "alt": "A construction professional examining a concrete slab at a building site",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "David Brown",
+      "downloadUrl": "https://images.pexels.com/photos/17395035/pexels-photo-17395035.jpeg?cs=srgb&dl=pexels-ninobur-17395035.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/man-working-on-a-construction-site-17395035/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "ca3faf323018bd6135f627f1eaf2dfe0587c6d2e3228b612a3f737ce81c7c5cd",
+      "downloadedAt": "2026-10-09T13:13:05.549165+00:00",
+      "src": "/images/photos/building-inspection.webp",
+      "width": 1440,
+      "height": 962,
+      "sourceWidth": 3472,
+      "sourceHeight": 2320,
+      "bytes": 77962,
+      "sha256": "a8f6d1f4574ac135eaab25890739f501c7346b080b79c5e4692e10d565a643b5",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "glass-enclosure": {
+      "key": "glass-enclosure",
+      "source": "https://www.pexels.com/photo/modern-sunroom-with-outdoor-view-31267704/",
+      "alt": "A modern sunroom enclosed by glazed panels overlooking a garden",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Alexander F Ungerer",
+      "downloadUrl": "https://images.pexels.com/photos/31267704/pexels-photo-31267704.jpeg?cs=srgb&dl=pexels-alexander-f-ungerer-157458816-31267704.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/modern-sunroom-with-outdoor-view-31267704/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "b0f25ec3d4c0d796faa1352495d1fc92919e680460472772c1ea76166d406514",
+      "downloadedAt": "2026-10-09T13:13:07.541692+00:00",
+      "src": "/images/photos/glass-enclosure.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "bytes": 153532,
+      "sha256": "a8c9b7cb05851604e81c50f028013cac74ea388b7edf63f284dd93a4ee1125f6",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "digital-analytics": {
+      "key": "digital-analytics",
+      "source": "https://www.pexels.com/photo/charts-on-a-laptop-7947996/",
+      "alt": "A person reviewing performance charts on a laptop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "RDNE Stock project",
+      "downloadUrl": "https://images.pexels.com/photos/7947996/pexels-photo-7947996.jpeg?cs=srgb&dl=pexels-rdne-7947996.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/charts-on-a-laptop-7947996/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "44923075ad736007036f02742b174dc8b6647663b13c5ee9bca51cfbfd2ef916",
+      "downloadedAt": "2026-10-09T13:13:06.933483+00:00",
+      "src": "/images/photos/digital-analytics.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 6720,
+      "sourceHeight": 4480,
+      "bytes": 39546,
+      "sha256": "2eb118af1a5deeefdd4e8b206399a548ac9b6e5bfdbf314a5d082314caa0a3ee",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "development-operations": {
+      "key": "development-operations",
+      "source": "https://www.pexels.com/photo/men-sitting-at-the-desks-in-an-office-and-using-computers-6804068/",
+      "alt": "Software developers working at computers in a shared technical office",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "cottonbro studio",
+      "downloadUrl": "https://images.pexels.com/photos/6804068/pexels-photo-6804068.jpeg?cs=srgb&dl=pexels-cottonbro-6804068.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/men-sitting-at-the-desks-in-an-office-and-using-computers-6804068/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "61c576c728353ede70c79e24f3da6b4d4b0ab9512c44b0f7ced1fb39101ca6b7",
+      "downloadedAt": "2026-10-09T13:13:11.591920+00:00",
+      "src": "/images/photos/development-operations.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 6472,
+      "sourceHeight": 4315,
+      "bytes": 67640,
+      "sha256": "0aee3155831015f3b3ef2c05633064c964952d51a154f7576a2d783e88cd67e1",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "software-review": {
+      "key": "software-review",
+      "source": "https://www.pexels.com/photo/office-team-looking-at-the-laptop-5466236/",
+      "alt": "Colleagues reviewing a project together on laptops in an office",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Antoni Shkraba",
+      "downloadUrl": "https://images.pexels.com/photos/5466236/pexels-photo-5466236.jpeg?cs=srgb&dl=pexels-shkrabaanthony-5466236.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/office-team-looking-at-the-laptop-5466236/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "0d5fde40114ced39b35ef4229d5bd6ea9ab2188e19933e2f89d5bbe7e788c9b2",
+      "downloadedAt": "2026-10-09T13:28:04.142046+00:00",
+      "src": "/images/photos/software-review.webp",
+      "width": 1440,
+      "height": 957,
+      "sourceWidth": 4000,
+      "sourceHeight": 2657,
+      "bytes": 67264,
+      "sha256": "d7ec477b84da0df065b49eb2443bfaaab47af9e2af5140f060dabeaf81ae5854",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "business-launch": {
+      "key": "business-launch",
+      "source": "https://www.pexels.com/photo/person-holding-a-digital-tablet-with-startup-on-screen-display-6913330/",
+      "alt": "Hands holding a tablet displaying the word startup",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Tima Miroshnichenko",
+      "downloadUrl": "https://images.pexels.com/photos/6913330/pexels-photo-6913330.jpeg?cs=srgb&dl=pexels-tima-miroshnichenko-6913330.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/person-holding-a-digital-tablet-with-startup-on-screen-display-6913330/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "140e2859bb20f0cacb24d9f2324aba6db89198994b7731d69956ce893b29e1a6",
+      "downloadedAt": "2026-10-09T13:13:13.485035+00:00",
+      "src": "/images/photos/business-launch.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 5955,
+      "sourceHeight": 3970,
+      "bytes": 37536,
+      "sha256": "93b7a384b3870283cc3e2d984c8b47959f575cd00cd498f45fcaa1e92e265312",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "office-process": {
+      "key": "office-process",
+      "source": "https://www.pexels.com/photo/a-boss-holding-a-brown-folder-7654452/",
+      "alt": "An office professional organizing files beside a laptop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Pavel Danilyuk",
+      "downloadUrl": "https://images.pexels.com/photos/7654452/pexels-photo-7654452.jpeg?cs=srgb&dl=pexels-pavel-danilyuk-7654452.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/a-boss-holding-a-brown-folder-7654452/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "9385f1e0522fd2e3c9a66db2633b485cd0f22b78d8c0ef9b8f961286dcfac0a6",
+      "downloadedAt": "2026-10-09T13:13:15.821457+00:00",
+      "src": "/images/photos/office-process.webp",
+      "width": 1440,
+      "height": 961,
+      "sourceWidth": 5540,
+      "sourceHeight": 3698,
+      "bytes": 65042,
+      "sha256": "7ca089c81bca2182d66ee1244196c8bb47e432b1a13617b75f2d47199e02bc8a",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
     }
   },
   "items": {
@@ -3774,23 +4173,23 @@
       "subject": "Family restaurants"
     },
     "type/food-and-dining/restaurants-and-dining/fine-dining": {
-      "photo": "restaurant",
+      "photo": "accountant-consultation",
       "subject": "Fine dining"
     },
     "type/food-and-dining/restaurants-and-dining/casual-dining": {
-      "photo": "chef",
+      "photo": "accounting-calculation",
       "subject": "Casual dining"
     },
     "type/food-and-dining/restaurants-and-dining/buffet-restaurants": {
-      "photo": "restaurant",
+      "photo": "air-conditioning",
       "subject": "Buffet restaurants"
     },
     "type/food-and-dining/restaurants-and-dining/specialty-cuisine-restaurants": {
-      "photo": "chef",
+      "photo": "airplane",
       "subject": "Specialty cuisine restaurants"
     },
     "type/food-and-dining/restaurants-and-dining/cloud-kitchens": {
-      "photo": "restaurant",
+      "photo": "architecture",
       "subject": "Cloud kitchens"
     },
     "subcategory/food-and-dining/quick-bites-and-street-food": {
@@ -3798,11 +4197,11 @@
       "subject": "Quick Bites & Street Food"
     },
     "type/food-and-dining/quick-bites-and-street-food/fast-food": {
-      "photo": "burger",
+      "photo": "accountant-consultation",
       "subject": "Fast food"
     },
     "type/food-and-dining/quick-bites-and-street-food/street-food": {
-      "photo": "pizza",
+      "photo": "accounting-calculation",
       "subject": "Street food"
     },
     "type/food-and-dining/quick-bites-and-street-food/burgers-and-sandwiches": {
@@ -3814,7 +4213,7 @@
       "subject": "Pizza"
     },
     "type/food-and-dining/quick-bites-and-street-food/rolls-and-wraps": {
-      "photo": "pizza",
+      "photo": "air-conditioning",
       "subject": "Rolls and wraps"
     },
     "type/food-and-dining/quick-bites-and-street-food/momos": {
@@ -3822,7 +4221,7 @@
       "subject": "Momos"
     },
     "type/food-and-dining/quick-bites-and-street-food/snacks-and-chaats": {
-      "photo": "burger",
+      "photo": "airplane",
       "subject": "Snacks and chaats"
     },
     "subcategory/food-and-dining/caf-s-and-beverages": {
@@ -3842,23 +4241,23 @@
       "subject": "Tea shops"
     },
     "type/food-and-dining/caf-s-and-beverages/juice-shops": {
-      "photo": "cafe",
+      "photo": "accountant-consultation",
       "subject": "Juice shops"
     },
     "type/food-and-dining/caf-s-and-beverages/milkshakes-and-smoothies": {
-      "photo": "coffee",
+      "photo": "accounting-calculation",
       "subject": "Milkshakes and smoothies"
     },
     "type/food-and-dining/caf-s-and-beverages/mocktails": {
-      "photo": "tea",
+      "photo": "air-conditioning",
       "subject": "Mocktails"
     },
     "type/food-and-dining/caf-s-and-beverages/dessert-caf-s": {
-      "photo": "cafe",
+      "photo": "airplane",
       "subject": "Dessert cafés"
     },
     "subcategory/food-and-dining/food-delivery-and-takeaway": {
-      "photo": "chef",
+      "photo": "catalogue-batch2-food-and-dining--food-delivery-and-takeaway",
       "subject": "Food Delivery & Takeaway"
     },
     "type/food-and-dining/food-delivery-and-takeaway/online-food-ordering": {
@@ -3866,23 +4265,23 @@
       "subject": "Online food ordering"
     },
     "type/food-and-dining/food-delivery-and-takeaway/pickup-and-takeaway": {
-      "photo": "food-and-dining",
+      "photo": "accountant-consultation",
       "subject": "Pickup and takeaway"
     },
     "type/food-and-dining/food-delivery-and-takeaway/late-night-food": {
-      "photo": "chef",
+      "photo": "accounting-calculation",
       "subject": "Late-night food"
     },
     "type/food-and-dining/food-delivery-and-takeaway/breakfast-delivery": {
-      "photo": "food-and-dining",
+      "photo": "air-conditioning",
       "subject": "Breakfast delivery"
     },
     "type/food-and-dining/food-delivery-and-takeaway/lunch-and-dinner-meals": {
-      "photo": "chef",
+      "photo": "airplane",
       "subject": "Lunch and dinner meals"
     },
     "type/food-and-dining/food-delivery-and-takeaway/daily-meal-providers": {
-      "photo": "food-and-dining",
+      "photo": "architecture",
       "subject": "Daily meal providers"
     },
     "subcategory/food-and-dining/sweets-and-desserts": {
@@ -3890,11 +4289,11 @@
       "subject": "Sweets & Desserts"
     },
     "type/food-and-dining/sweets-and-desserts/bakeries": {
-      "photo": "cake",
+      "photo": "accountant-consultation",
       "subject": "Bakeries"
     },
     "type/food-and-dining/sweets-and-desserts/cakes-and-pastries": {
-      "photo": "cake",
+      "photo": "accounting-calculation",
       "subject": "Cakes and pastries"
     },
     "type/food-and-dining/sweets-and-desserts/ice-cream": {
@@ -3902,19 +4301,19 @@
       "subject": "Ice cream"
     },
     "type/food-and-dining/sweets-and-desserts/sweets": {
-      "photo": "cake",
+      "photo": "air-conditioning",
       "subject": "Sweets"
     },
     "type/food-and-dining/sweets-and-desserts/chocolates": {
-      "photo": "cake",
+      "photo": "airplane",
       "subject": "Chocolates"
     },
     "type/food-and-dining/sweets-and-desserts/custom-cakes": {
-      "photo": "cake",
+      "photo": "architecture",
       "subject": "Custom cakes"
     },
     "type/food-and-dining/sweets-and-desserts/desserts": {
-      "photo": "cake",
+      "photo": "automobiles",
       "subject": "Desserts"
     },
     "subcategory/food-and-dining/catering-and-bulk-orders": {
@@ -3922,23 +4321,23 @@
       "subject": "Catering & Bulk Orders"
     },
     "type/food-and-dining/catering-and-bulk-orders/home-catering": {
-      "photo": "chef",
+      "photo": "accountant-consultation",
       "subject": "Home catering"
     },
     "type/food-and-dining/catering-and-bulk-orders/corporate-catering": {
-      "photo": "chef",
+      "photo": "accounting-calculation",
       "subject": "Corporate catering"
     },
     "type/food-and-dining/catering-and-bulk-orders/wedding-catering": {
-      "photo": "chef",
+      "photo": "air-conditioning",
       "subject": "Wedding catering"
     },
     "type/food-and-dining/catering-and-bulk-orders/party-catering": {
-      "photo": "chef",
+      "photo": "airplane",
       "subject": "Party catering"
     },
     "type/food-and-dining/catering-and-bulk-orders/bulk-food-orders": {
-      "photo": "chef",
+      "photo": "architecture",
       "subject": "Bulk food orders"
     },
     "type/food-and-dining/catering-and-bulk-orders/packed-meals": {
@@ -3946,11 +4345,11 @@
       "subject": "Packed meals"
     },
     "subcategory/food-and-dining/home-cooked-food": {
-      "photo": "food-and-dining",
+      "photo": "pizza",
       "subject": "Home-Cooked Food"
     },
     "type/food-and-dining/home-cooked-food/homemade-meals": {
-      "photo": "food-and-dining",
+      "photo": "accountant-consultation",
       "subject": "Homemade meals"
     },
     "type/food-and-dining/home-cooked-food/regional-cuisine": {
@@ -3958,7 +4357,7 @@
       "subject": "Regional cuisine"
     },
     "type/food-and-dining/home-cooked-food/homemade-snacks": {
-      "photo": "food-and-dining",
+      "photo": "accounting-calculation",
       "subject": "Homemade snacks"
     },
     "type/food-and-dining/home-cooked-food/homemade-sweets": {
@@ -3966,7 +4365,7 @@
       "subject": "Homemade sweets"
     },
     "type/food-and-dining/home-cooked-food/specialty-homemade-food": {
-      "photo": "food-and-dining",
+      "photo": "air-conditioning",
       "subject": "Specialty homemade food"
     },
     "subcategory/food-and-dining/grocery-and-food-essentials": {
@@ -3978,23 +4377,23 @@
       "subject": "Grocery stores"
     },
     "type/food-and-dining/grocery-and-food-essentials/fruits-and-vegetables": {
-      "photo": "grocery",
+      "photo": "accountant-consultation",
       "subject": "Fruits and vegetables"
     },
     "type/food-and-dining/grocery-and-food-essentials/meat-and-seafood": {
-      "photo": "grocery",
+      "photo": "accounting-calculation",
       "subject": "Meat and seafood"
     },
     "type/food-and-dining/grocery-and-food-essentials/dairy-products": {
-      "photo": "food-and-dining",
+      "photo": "air-conditioning",
       "subject": "Dairy products"
     },
     "type/food-and-dining/grocery-and-food-essentials/organic-food": {
-      "photo": "grocery",
+      "photo": "airplane",
       "subject": "Organic food"
     },
     "type/food-and-dining/grocery-and-food-essentials/specialty-ingredients": {
-      "photo": "food-and-dining",
+      "photo": "architecture",
       "subject": "Specialty ingredients"
     },
     "category/home-and-everyday-services": {
@@ -4014,23 +4413,23 @@
       "subject": "Deep cleaning"
     },
     "type/home-and-everyday-services/cleaning-services/bathroom-cleaning": {
-      "photo": "cleaning",
+      "photo": "accountant-consultation",
       "subject": "Bathroom cleaning"
     },
     "type/home-and-everyday-services/cleaning-services/kitchen-cleaning": {
-      "photo": "cleaning-care",
+      "photo": "accounting-calculation",
       "subject": "Kitchen cleaning"
     },
     "type/home-and-everyday-services/cleaning-services/sofa-and-carpet-cleaning": {
-      "photo": "cleaning",
+      "photo": "air-conditioning",
       "subject": "Sofa and carpet cleaning"
     },
     "type/home-and-everyday-services/cleaning-services/water-tank-cleaning": {
-      "photo": "cleaning-care",
+      "photo": "airplane",
       "subject": "Water tank cleaning"
     },
     "type/home-and-everyday-services/cleaning-services/move-in-and-move-out-cleaning": {
-      "photo": "cleaning",
+      "photo": "architecture",
       "subject": "Move-in and move-out cleaning"
     },
     "subcategory/home-and-everyday-services/repairs-and-maintenance": {
@@ -4038,7 +4437,7 @@
       "subject": "Repairs & Maintenance"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/plumbing": {
-      "photo": "home-and-everyday-services",
+      "photo": "accountant-consultation",
       "subject": "Plumbing"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/electrical-repairs": {
@@ -4054,15 +4453,15 @@
       "subject": "Painting"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/masonry": {
-      "photo": "electrical",
+      "photo": "accounting-calculation",
       "subject": "Masonry"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/door-and-lock-repairs": {
-      "photo": "carpentry",
+      "photo": "air-conditioning",
       "subject": "Door and lock repairs"
     },
     "type/home-and-everyday-services/repairs-and-maintenance/general-handyman-services": {
-      "photo": "home-and-everyday-services",
+      "photo": "airplane",
       "subject": "General handyman services"
     },
     "subcategory/home-and-everyday-services/appliance-services": {
@@ -4082,23 +4481,23 @@
       "subject": "Washing machine repair"
     },
     "type/home-and-everyday-services/appliance-services/microwave-repair": {
-      "photo": "air-conditioning",
+      "photo": "accountant-consultation",
       "subject": "Microwave repair"
     },
     "type/home-and-everyday-services/appliance-services/television-repair": {
-      "photo": "computer-repair",
+      "photo": "accounting-calculation",
       "subject": "Television repair"
     },
     "type/home-and-everyday-services/appliance-services/water-purifier-servicing": {
-      "photo": "electrical",
+      "photo": "airplane",
       "subject": "Water purifier servicing"
     },
     "type/home-and-everyday-services/appliance-services/home-appliance-installation": {
-      "photo": "air-conditioning",
+      "photo": "architecture",
       "subject": "Home appliance installation"
     },
     "subcategory/home-and-everyday-services/home-installation": {
-      "photo": "electrical",
+      "photo": "catalogue-batch2-home-and-everyday-services--home-installation",
       "subject": "Home Installation"
     },
     "type/home-and-everyday-services/home-installation/furniture-assembly": {
@@ -4106,11 +4505,11 @@
       "subject": "Furniture assembly"
     },
     "type/home-and-everyday-services/home-installation/curtain-installation": {
-      "photo": "interior",
+      "photo": "accountant-consultation",
       "subject": "Curtain installation"
     },
     "type/home-and-everyday-services/home-installation/tv-mounting": {
-      "photo": "home-and-everyday-services",
+      "photo": "accounting-calculation",
       "subject": "TV mounting"
     },
     "type/home-and-everyday-services/home-installation/light-and-fan-installation": {
@@ -4118,15 +4517,15 @@
       "subject": "Light and fan installation"
     },
     "type/home-and-everyday-services/home-installation/cctv-installation": {
-      "photo": "interior",
+      "photo": "air-conditioning",
       "subject": "CCTV installation"
     },
     "type/home-and-everyday-services/home-installation/wi-fi-setup": {
-      "photo": "home-and-everyday-services",
+      "photo": "airplane",
       "subject": "Wi-Fi setup"
     },
     "type/home-and-everyday-services/home-installation/smart-home-installation": {
-      "photo": "electrical",
+      "photo": "architecture",
       "subject": "Smart home installation"
     },
     "subcategory/home-and-everyday-services/laundry-and-care": {
@@ -4138,11 +4537,11 @@
       "subject": "Laundry"
     },
     "type/home-and-everyday-services/laundry-and-care/dry-cleaning": {
-      "photo": "laundry",
+      "photo": "accountant-consultation",
       "subject": "Dry cleaning"
     },
     "type/home-and-everyday-services/laundry-and-care/ironing": {
-      "photo": "laundry",
+      "photo": "accounting-calculation",
       "subject": "Ironing"
     },
     "type/home-and-everyday-services/laundry-and-care/shoe-cleaning": {
@@ -4150,11 +4549,11 @@
       "subject": "Shoe cleaning"
     },
     "type/home-and-everyday-services/laundry-and-care/bag-cleaning": {
-      "photo": "cleaning",
+      "photo": "air-conditioning",
       "subject": "Bag cleaning"
     },
     "type/home-and-everyday-services/laundry-and-care/carpet-cleaning": {
-      "photo": "cleaning",
+      "photo": "airplane",
       "subject": "Carpet cleaning"
     },
     "subcategory/home-and-everyday-services/pest-control": {
@@ -4162,15 +4561,15 @@
       "subject": "Pest Control"
     },
     "type/home-and-everyday-services/pest-control/cockroach-control": {
-      "photo": "pest",
+      "photo": "accountant-consultation",
       "subject": "Cockroach control"
     },
     "type/home-and-everyday-services/pest-control/termite-treatment": {
-      "photo": "pest-care",
+      "photo": "accounting-calculation",
       "subject": "Termite treatment"
     },
     "type/home-and-everyday-services/pest-control/mosquito-control": {
-      "photo": "pest",
+      "photo": "air-conditioning",
       "subject": "Mosquito control"
     },
     "type/home-and-everyday-services/pest-control/rodent-control": {
@@ -4190,7 +4589,7 @@
       "subject": "Interior design"
     },
     "type/home-and-everyday-services/home-improvement/home-renovation": {
-      "photo": "architecture",
+      "photo": "accountant-consultation",
       "subject": "Home renovation"
     },
     "type/home-and-everyday-services/home-improvement/modular-kitchens": {
@@ -4198,7 +4597,7 @@
       "subject": "Modular kitchens"
     },
     "type/home-and-everyday-services/home-improvement/bathroom-renovation": {
-      "photo": "interior",
+      "photo": "accounting-calculation",
       "subject": "Bathroom renovation"
     },
     "type/home-and-everyday-services/home-improvement/flooring": {
@@ -4206,11 +4605,11 @@
       "subject": "Flooring"
     },
     "type/home-and-everyday-services/home-improvement/false-ceilings": {
-      "photo": "construction",
+      "photo": "air-conditioning",
       "subject": "False ceilings"
     },
     "type/home-and-everyday-services/home-improvement/waterproofing": {
-      "photo": "interior",
+      "photo": "airplane",
       "subject": "Waterproofing"
     },
     "type/home-and-everyday-services/home-improvement/painting-and-polishing": {
@@ -4230,19 +4629,19 @@
       "subject": "Lawn maintenance"
     },
     "type/home-and-everyday-services/gardening-and-outdoor-care/plant-care": {
-      "photo": "garden",
+      "photo": "accountant-consultation",
       "subject": "Plant care"
     },
     "type/home-and-everyday-services/gardening-and-outdoor-care/landscaping": {
-      "photo": "outdoor",
+      "photo": "accounting-calculation",
       "subject": "Landscaping"
     },
     "type/home-and-everyday-services/gardening-and-outdoor-care/tree-trimming": {
-      "photo": "garden",
+      "photo": "air-conditioning",
       "subject": "Tree trimming"
     },
     "type/home-and-everyday-services/gardening-and-outdoor-care/balcony-garden-setup": {
-      "photo": "outdoor",
+      "photo": "airplane",
       "subject": "Balcony garden setup"
     },
     "subcategory/home-and-everyday-services/moving-and-relocation": {
@@ -4250,15 +4649,15 @@
       "subject": "Moving & Relocation"
     },
     "type/home-and-everyday-services/moving-and-relocation/packers-and-movers": {
-      "photo": "moving",
+      "photo": "accountant-consultation",
       "subject": "Packers and movers"
     },
     "type/home-and-everyday-services/moving-and-relocation/local-shifting": {
-      "photo": "moving",
+      "photo": "accounting-calculation",
       "subject": "Local shifting"
     },
     "type/home-and-everyday-services/moving-and-relocation/intercity-relocation": {
-      "photo": "moving",
+      "photo": "air-conditioning",
       "subject": "Intercity relocation"
     },
     "type/home-and-everyday-services/moving-and-relocation/furniture-transportation": {
@@ -4266,7 +4665,7 @@
       "subject": "Furniture transportation"
     },
     "type/home-and-everyday-services/moving-and-relocation/office-relocation": {
-      "photo": "moving",
+      "photo": "airplane",
       "subject": "Office relocation"
     },
     "type/home-and-everyday-services/moving-and-relocation/loading-and-unloading": {
@@ -4278,7 +4677,7 @@
       "subject": "Domestic Help"
     },
     "type/home-and-everyday-services/domestic-help/housekeeping": {
-      "photo": "cleaning",
+      "photo": "accountant-consultation",
       "subject": "Housekeeping"
     },
     "type/home-and-everyday-services/domestic-help/cook-services": {
@@ -4290,15 +4689,15 @@
       "subject": "Babysitting"
     },
     "type/home-and-everyday-services/domestic-help/elderly-assistance": {
-      "photo": "cleaning",
+      "photo": "accounting-calculation",
       "subject": "Elderly assistance"
     },
     "type/home-and-everyday-services/domestic-help/caretaker-services": {
-      "photo": "chef",
+      "photo": "air-conditioning",
       "subject": "Caretaker services"
     },
     "type/home-and-everyday-services/domestic-help/part-time-domestic-help": {
-      "photo": "home-maintenance",
+      "photo": "airplane",
       "subject": "Part-time domestic help"
     },
     "category/shopping-and-local-retail": {
@@ -4314,19 +4713,19 @@
       "subject": "Supermarkets"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/convenience-stores": {
-      "photo": "shopping-and-local-retail",
+      "photo": "accountant-consultation",
       "subject": "Convenience stores"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/grocery-delivery": {
-      "photo": "grocery",
+      "photo": "accounting-calculation",
       "subject": "Grocery delivery"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/fruits-and-vegetables": {
-      "photo": "grocery",
+      "photo": "air-conditioning",
       "subject": "Fruits and vegetables"
     },
     "type/shopping-and-local-retail/grocery-and-daily-needs/household-essentials": {
-      "photo": "grocery",
+      "photo": "airplane",
       "subject": "Household essentials"
     },
     "subcategory/shopping-and-local-retail/electronics": {
@@ -4338,7 +4737,7 @@
       "subject": "Mobile phones"
     },
     "type/shopping-and-local-retail/electronics/computers-and-laptops": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Computers and laptops"
     },
     "type/shopping-and-local-retail/electronics/televisions": {
@@ -4346,7 +4745,7 @@
       "subject": "Televisions"
     },
     "type/shopping-and-local-retail/electronics/audio-equipment": {
-      "photo": "technology",
+      "photo": "accounting-calculation",
       "subject": "Audio equipment"
     },
     "type/shopping-and-local-retail/electronics/cameras": {
@@ -4354,11 +4753,11 @@
       "subject": "Cameras"
     },
     "type/shopping-and-local-retail/electronics/gaming-devices": {
-      "photo": "servers",
+      "photo": "air-conditioning",
       "subject": "Gaming devices"
     },
     "type/shopping-and-local-retail/electronics/electronic-accessories": {
-      "photo": "technology",
+      "photo": "airplane",
       "subject": "Electronic accessories"
     },
     "subcategory/shopping-and-local-retail/fashion-and-clothing": {
@@ -4370,11 +4769,11 @@
       "subject": "Men's clothing"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/women-s-clothing": {
-      "photo": "clothes",
+      "photo": "accountant-consultation",
       "subject": "Women's clothing"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/children-s-clothing": {
-      "photo": "clothes",
+      "photo": "accounting-calculation",
       "subject": "Children's clothing"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/ethnic-wear": {
@@ -4382,23 +4781,23 @@
       "subject": "Ethnic wear"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/casual-wear": {
-      "photo": "clothes",
+      "photo": "air-conditioning",
       "subject": "Casual wear"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/formal-wear": {
-      "photo": "beauty-fashion-and-lifestyle",
+      "photo": "airplane",
       "subject": "Formal wear"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/footwear": {
-      "photo": "clothes",
+      "photo": "architecture",
       "subject": "Footwear"
     },
     "type/shopping-and-local-retail/fashion-and-clothing/bags-and-accessories": {
-      "photo": "beauty-fashion-and-lifestyle",
+      "photo": "automobiles",
       "subject": "Bags and accessories"
     },
     "subcategory/shopping-and-local-retail/home-and-furniture": {
-      "photo": "interior",
+      "photo": "home-purchase",
       "subject": "Home & Furniture"
     },
     "type/shopping-and-local-retail/home-and-furniture/furniture": {
@@ -4410,23 +4809,23 @@
       "subject": "Mattresses"
     },
     "type/shopping-and-local-retail/home-and-furniture/home-d-cor": {
-      "photo": "interior",
+      "photo": "accountant-consultation",
       "subject": "Home décor"
     },
     "type/shopping-and-local-retail/home-and-furniture/kitchenware": {
-      "photo": "property",
+      "photo": "accounting-calculation",
       "subject": "Kitchenware"
     },
     "type/shopping-and-local-retail/home-and-furniture/lighting": {
-      "photo": "interior",
+      "photo": "air-conditioning",
       "subject": "Lighting"
     },
     "type/shopping-and-local-retail/home-and-furniture/bedding": {
-      "photo": "property",
+      "photo": "airplane",
       "subject": "Bedding"
     },
     "type/shopping-and-local-retail/home-and-furniture/storage-products": {
-      "photo": "interior",
+      "photo": "architecture",
       "subject": "Storage products"
     },
     "subcategory/shopping-and-local-retail/health-and-personal-care-products": {
@@ -4434,7 +4833,7 @@
       "subject": "Health & Personal Care Products"
     },
     "type/shopping-and-local-retail/health-and-personal-care-products/skincare": {
-      "photo": "pharmacy",
+      "photo": "accountant-consultation",
       "subject": "Skincare"
     },
     "type/shopping-and-local-retail/health-and-personal-care-products/haircare": {
@@ -4442,7 +4841,7 @@
       "subject": "Haircare"
     },
     "type/shopping-and-local-retail/health-and-personal-care-products/personal-hygiene": {
-      "photo": "pharmacy",
+      "photo": "accounting-calculation",
       "subject": "Personal hygiene"
     },
     "type/shopping-and-local-retail/health-and-personal-care-products/beauty-products": {
@@ -4450,7 +4849,7 @@
       "subject": "Beauty products"
     },
     "type/shopping-and-local-retail/health-and-personal-care-products/general-wellness-products": {
-      "photo": "pharmacy",
+      "photo": "air-conditioning",
       "subject": "General wellness products"
     },
     "subcategory/shopping-and-local-retail/books-gifts-and-stationery": {
@@ -4466,15 +4865,15 @@
       "subject": "Educational supplies"
     },
     "type/shopping-and-local-retail/books-gifts-and-stationery/office-stationery": {
-      "photo": "books",
+      "photo": "accountant-consultation",
       "subject": "Office stationery"
     },
     "type/shopping-and-local-retail/books-gifts-and-stationery/gifts": {
-      "photo": "books",
+      "photo": "accounting-calculation",
       "subject": "Gifts"
     },
     "type/shopping-and-local-retail/books-gifts-and-stationery/personalized-gifts": {
-      "photo": "celebration",
+      "photo": "air-conditioning",
       "subject": "Personalized gifts"
     },
     "type/shopping-and-local-retail/books-gifts-and-stationery/art-and-craft-supplies": {
@@ -4482,11 +4881,11 @@
       "subject": "Art and craft supplies"
     },
     "subcategory/shopping-and-local-retail/specialty-stores": {
-      "photo": "shopping-and-local-retail",
+      "photo": "cafe",
       "subject": "Specialty Stores"
     },
     "type/shopping-and-local-retail/specialty-stores/sports-stores": {
-      "photo": "shopping-and-local-retail",
+      "photo": "accountant-consultation",
       "subject": "Sports stores"
     },
     "type/shopping-and-local-retail/specialty-stores/musical-instruments": {
@@ -4498,15 +4897,15 @@
       "subject": "Pet supplies"
     },
     "type/shopping-and-local-retail/specialty-stores/automobile-accessories": {
-      "photo": "shopping-and-local-retail",
+      "photo": "accounting-calculation",
       "subject": "Automobile accessories"
     },
     "type/shopping-and-local-retail/specialty-stores/hardware-stores": {
-      "photo": "clothes",
+      "photo": "air-conditioning",
       "subject": "Hardware stores"
     },
     "type/shopping-and-local-retail/specialty-stores/hobby-and-collectible-stores": {
-      "photo": "books",
+      "photo": "airplane",
       "subject": "Hobby and collectible stores"
     },
     "subcategory/shopping-and-local-retail/local-manufacturers-and-sellers": {
@@ -4514,7 +4913,7 @@
       "subject": "Local Manufacturers & Sellers"
     },
     "type/shopping-and-local-retail/local-manufacturers-and-sellers/handmade-products": {
-      "photo": "printing",
+      "photo": "accountant-consultation",
       "subject": "Handmade products"
     },
     "type/shopping-and-local-retail/local-manufacturers-and-sellers/local-brands": {
@@ -4526,19 +4925,19 @@
       "subject": "Artisans"
     },
     "type/shopping-and-local-retail/local-manufacturers-and-sellers/custom-made-products": {
-      "photo": "printing",
+      "photo": "accounting-calculation",
       "subject": "Custom-made products"
     },
     "type/shopping-and-local-retail/local-manufacturers-and-sellers/small-business-products": {
-      "photo": "vendor-logistics",
+      "photo": "air-conditioning",
       "subject": "Small-business products"
     },
     "subcategory/shopping-and-local-retail/shopping-deals": {
-      "photo": "shopping-and-local-retail",
+      "photo": "makeup",
       "subject": "Shopping Deals"
     },
     "type/shopping-and-local-retail/shopping-deals/discounts-and-offers": {
-      "photo": "shopping-and-local-retail",
+      "photo": "accountant-consultation",
       "subject": "Discounts and offers"
     },
     "type/shopping-and-local-retail/shopping-deals/seasonal-sales": {
@@ -4546,15 +4945,15 @@
       "subject": "Seasonal sales"
     },
     "type/shopping-and-local-retail/shopping-deals/new-arrivals": {
-      "photo": "shopping-and-local-retail",
+      "photo": "accounting-calculation",
       "subject": "New arrivals"
     },
     "type/shopping-and-local-retail/shopping-deals/clearance-sales": {
-      "photo": "clothes",
+      "photo": "air-conditioning",
       "subject": "Clearance sales"
     },
     "type/shopping-and-local-retail/shopping-deals/local-store-promotions": {
-      "photo": "shopping-and-local-retail",
+      "photo": "airplane",
       "subject": "Local store promotions"
     },
     "category/beauty-fashion-and-lifestyle": {
@@ -4566,19 +4965,19 @@
       "subject": "Salons & Haircare"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/men-s-salons": {
-      "photo": "barber",
+      "photo": "accountant-consultation",
       "subject": "Men's salons"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/women-s-salons": {
-      "photo": "beauty-fashion-and-lifestyle",
+      "photo": "accounting-calculation",
       "subject": "Women's salons"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/unisex-salons": {
-      "photo": "barber",
+      "photo": "air-conditioning",
       "subject": "Unisex salons"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/haircuts-and-styling": {
-      "photo": "barber",
+      "photo": "airplane",
       "subject": "Haircuts and styling"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/hair-colouring": {
@@ -4586,11 +4985,11 @@
       "subject": "Hair colouring"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/hair-treatments": {
-      "photo": "barber",
+      "photo": "architecture",
       "subject": "Hair treatments"
     },
     "type/beauty-fashion-and-lifestyle/salons-and-haircare/hair-spas": {
-      "photo": "barber",
+      "photo": "automobiles",
       "subject": "Hair spas"
     },
     "subcategory/beauty-fashion-and-lifestyle/beauty-and-skincare": {
@@ -4598,7 +4997,7 @@
       "subject": "Beauty & Skincare"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/facials": {
-      "photo": "makeup",
+      "photo": "accountant-consultation",
       "subject": "Facials"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/skin-treatments": {
@@ -4610,7 +5009,7 @@
       "subject": "Threading and waxing"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/manicure-and-pedicure": {
-      "photo": "makeup",
+      "photo": "accounting-calculation",
       "subject": "Manicure and pedicure"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/makeup-services": {
@@ -4618,7 +5017,7 @@
       "subject": "Makeup services"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/bridal-beauty-packages": {
-      "photo": "spa",
+      "photo": "air-conditioning",
       "subject": "Bridal beauty packages"
     },
     "subcategory/beauty-fashion-and-lifestyle/spa-and-relaxation": {
@@ -4634,11 +5033,11 @@
       "subject": "Body treatments"
     },
     "type/beauty-fashion-and-lifestyle/spa-and-relaxation/relaxation-massage": {
-      "photo": "spa",
+      "photo": "accountant-consultation",
       "subject": "Relaxation massage"
     },
     "type/beauty-fashion-and-lifestyle/spa-and-relaxation/wellness-spa-packages": {
-      "photo": "spa",
+      "photo": "accounting-calculation",
       "subject": "Wellness spa packages"
     },
     "subcategory/beauty-fashion-and-lifestyle/makeup-and-styling": {
@@ -4650,19 +5049,19 @@
       "subject": "Bridal makeup"
     },
     "type/beauty-fashion-and-lifestyle/makeup-and-styling/party-makeup": {
-      "photo": "makeup",
+      "photo": "accountant-consultation",
       "subject": "Party makeup"
     },
     "type/beauty-fashion-and-lifestyle/makeup-and-styling/professional-makeup": {
-      "photo": "makeup",
+      "photo": "accounting-calculation",
       "subject": "Professional makeup"
     },
     "type/beauty-fashion-and-lifestyle/makeup-and-styling/personal-styling": {
-      "photo": "makeup",
+      "photo": "air-conditioning",
       "subject": "Personal styling"
     },
     "type/beauty-fashion-and-lifestyle/makeup-and-styling/wardrobe-consultation": {
-      "photo": "makeup-artist",
+      "photo": "airplane",
       "subject": "Wardrobe consultation"
     },
     "subcategory/beauty-fashion-and-lifestyle/fashion-services": {
@@ -4670,19 +5069,19 @@
       "subject": "Fashion Services"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/tailoring": {
-      "photo": "clothes",
+      "photo": "accountant-consultation",
       "subject": "Tailoring"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/alterations": {
-      "photo": "beauty-fashion-and-lifestyle",
+      "photo": "accounting-calculation",
       "subject": "Alterations"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/custom-clothing": {
-      "photo": "clothes",
+      "photo": "air-conditioning",
       "subject": "Custom clothing"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/embroidery": {
-      "photo": "beauty-fashion-and-lifestyle",
+      "photo": "airplane",
       "subject": "Embroidery"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/boutique-services": {
@@ -4690,7 +5089,7 @@
       "subject": "Boutique services"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/clothing-repair": {
-      "photo": "clothes",
+      "photo": "architecture",
       "subject": "Clothing repair"
     },
     "subcategory/beauty-fashion-and-lifestyle/jewellery-and-accessories": {
@@ -4698,15 +5097,15 @@
       "subject": "Jewellery & Accessories"
     },
     "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/jewellery-stores": {
-      "photo": "jewellery",
+      "photo": "accountant-consultation",
       "subject": "Jewellery stores"
     },
     "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/custom-jewellery": {
-      "photo": "jewellery",
+      "photo": "accounting-calculation",
       "subject": "Custom jewellery"
     },
     "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/jewellery-repair": {
-      "photo": "jewellery",
+      "photo": "air-conditioning",
       "subject": "Jewellery repair"
     },
     "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/watch-repair": {
@@ -4714,7 +5113,7 @@
       "subject": "Watch repair"
     },
     "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/accessories-styling": {
-      "photo": "jewellery",
+      "photo": "airplane",
       "subject": "Accessories styling"
     },
     "subcategory/beauty-fashion-and-lifestyle/photography-and-personal-portfolios": {
@@ -4722,7 +5121,7 @@
       "subject": "Photography & Personal Portfolios"
     },
     "type/beauty-fashion-and-lifestyle/photography-and-personal-portfolios/portrait-photography": {
-      "photo": "media-production",
+      "photo": "accountant-consultation",
       "subject": "Portrait photography"
     },
     "type/beauty-fashion-and-lifestyle/photography-and-personal-portfolios/portfolio-shoots": {
@@ -4738,7 +5137,7 @@
       "subject": "Graduation photography"
     },
     "type/beauty-fashion-and-lifestyle/photography-and-personal-portfolios/professional-headshots": {
-      "photo": "media-production",
+      "photo": "accounting-calculation",
       "subject": "Professional headshots"
     },
     "subcategory/beauty-fashion-and-lifestyle/tattoos-and-body-art": {
@@ -4754,11 +5153,11 @@
       "subject": "Custom tattoo design"
     },
     "type/beauty-fashion-and-lifestyle/tattoos-and-body-art/body-art": {
-      "photo": "tattoo",
+      "photo": "accountant-consultation",
       "subject": "Body art"
     },
     "type/beauty-fashion-and-lifestyle/tattoos-and-body-art/piercing-services": {
-      "photo": "tattoo-care",
+      "photo": "accounting-calculation",
       "subject": "Piercing services"
     },
     "category/automobiles": {
@@ -4770,7 +5169,7 @@
       "subject": "New Vehicles"
     },
     "type/automobiles/new-vehicles/cars": {
-      "photo": "automobiles",
+      "photo": "accountant-consultation",
       "subject": "Cars"
     },
     "type/automobiles/new-vehicles/motorcycles": {
@@ -4778,7 +5177,7 @@
       "subject": "Motorcycles"
     },
     "type/automobiles/new-vehicles/scooters": {
-      "photo": "motorcycle",
+      "photo": "accounting-calculation",
       "subject": "Scooters"
     },
     "type/automobiles/new-vehicles/electric-cars": {
@@ -4786,7 +5185,7 @@
       "subject": "Electric cars"
     },
     "type/automobiles/new-vehicles/electric-two-wheelers": {
-      "photo": "electrical",
+      "photo": "air-conditioning",
       "subject": "Electric two-wheelers"
     },
     "type/automobiles/new-vehicles/commercial-vehicles": {
@@ -4798,7 +5197,7 @@
       "subject": "Used Vehicles"
     },
     "type/automobiles/used-vehicles/used-cars": {
-      "photo": "automobiles",
+      "photo": "accountant-consultation",
       "subject": "Used cars"
     },
     "type/automobiles/used-vehicles/used-motorcycles": {
@@ -4806,15 +5205,15 @@
       "subject": "Used motorcycles"
     },
     "type/automobiles/used-vehicles/used-scooters": {
-      "photo": "motorcycle",
+      "photo": "accounting-calculation",
       "subject": "Used scooters"
     },
     "type/automobiles/used-vehicles/used-commercial-vehicles": {
-      "photo": "motorcycle",
+      "photo": "air-conditioning",
       "subject": "Used commercial vehicles"
     },
     "type/automobiles/used-vehicles/certified-pre-owned-vehicles": {
-      "photo": "automobiles",
+      "photo": "airplane",
       "subject": "Certified pre-owned vehicles"
     },
     "subcategory/automobiles/vehicle-dealers-and-showrooms": {
@@ -4822,7 +5221,7 @@
       "subject": "Vehicle Dealers & Showrooms"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/car-dealerships": {
-      "photo": "automobiles",
+      "photo": "accountant-consultation",
       "subject": "Car dealerships"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/two-wheeler-dealerships": {
@@ -4834,7 +5233,7 @@
       "subject": "EV showrooms"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/commercial-vehicle-dealers": {
-      "photo": "automobiles",
+      "photo": "accounting-calculation",
       "subject": "Commercial vehicle dealers"
     },
     "subcategory/automobiles/vehicle-servicing-and-repairs": {
@@ -4842,23 +5241,23 @@
       "subject": "Vehicle Servicing & Repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/scheduled-servicing": {
-      "photo": "mechanic",
+      "photo": "accountant-consultation",
       "subject": "Scheduled servicing"
     },
     "type/automobiles/vehicle-servicing-and-repairs/engine-repairs": {
-      "photo": "mechanic",
+      "photo": "accounting-calculation",
       "subject": "Engine repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/brake-repairs": {
-      "photo": "mechanic",
+      "photo": "air-conditioning",
       "subject": "Brake repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/battery-services": {
-      "photo": "mechanic",
+      "photo": "airplane",
       "subject": "Battery services"
     },
     "type/automobiles/vehicle-servicing-and-repairs/tyre-replacement": {
-      "photo": "mechanic",
+      "photo": "architecture",
       "subject": "Tyre replacement"
     },
     "type/automobiles/vehicle-servicing-and-repairs/wheel-alignment": {
@@ -4886,7 +5285,7 @@
       "subject": "Interior cleaning"
     },
     "type/automobiles/car-care-and-detailing/exterior-detailing": {
-      "photo": "car-wash",
+      "photo": "accountant-consultation",
       "subject": "Exterior detailing"
     },
     "type/automobiles/car-care-and-detailing/ceramic-coating": {
@@ -4894,7 +5293,7 @@
       "subject": "Ceramic coating"
     },
     "type/automobiles/car-care-and-detailing/paint-protection": {
-      "photo": "car-wash",
+      "photo": "accounting-calculation",
       "subject": "Paint protection"
     },
     "type/automobiles/car-care-and-detailing/polishing": {
@@ -4902,7 +5301,7 @@
       "subject": "Polishing"
     },
     "subcategory/automobiles/spare-parts-and-accessories": {
-      "photo": "mechanic",
+      "photo": "motorcycle",
       "subject": "Spare Parts & Accessories"
     },
     "type/automobiles/spare-parts-and-accessories/tyres": {
@@ -4910,27 +5309,27 @@
       "subject": "Tyres"
     },
     "type/automobiles/spare-parts-and-accessories/batteries": {
-      "photo": "motorcycle",
+      "photo": "accountant-consultation",
       "subject": "Batteries"
     },
     "type/automobiles/spare-parts-and-accessories/engine-parts": {
-      "photo": "mechanic",
+      "photo": "accounting-calculation",
       "subject": "Engine parts"
     },
     "type/automobiles/spare-parts-and-accessories/helmets": {
-      "photo": "motorcycle",
+      "photo": "air-conditioning",
       "subject": "Helmets"
     },
     "type/automobiles/spare-parts-and-accessories/vehicle-accessories": {
-      "photo": "mechanic",
+      "photo": "airplane",
       "subject": "Vehicle accessories"
     },
     "type/automobiles/spare-parts-and-accessories/audio-systems": {
-      "photo": "motorcycle",
+      "photo": "architecture",
       "subject": "Audio systems"
     },
     "type/automobiles/spare-parts-and-accessories/seat-covers": {
-      "photo": "mechanic",
+      "photo": "barber",
       "subject": "Seat covers"
     },
     "subcategory/automobiles/vehicle-insurance-and-finance": {
@@ -4938,15 +5337,15 @@
       "subject": "Vehicle Insurance & Finance"
     },
     "type/automobiles/vehicle-insurance-and-finance/vehicle-insurance-providers": {
-      "photo": "finance",
+      "photo": "accountant-consultation",
       "subject": "Vehicle insurance providers"
     },
     "type/automobiles/vehicle-insurance-and-finance/vehicle-loans": {
-      "photo": "accounting-calculation",
+      "photo": "air-conditioning",
       "subject": "Vehicle loans"
     },
     "type/automobiles/vehicle-insurance-and-finance/insurance-renewal-assistance": {
-      "photo": "finance",
+      "photo": "airplane",
       "subject": "Insurance renewal assistance"
     },
     "type/automobiles/vehicle-insurance-and-finance/financing-enquiries": {
@@ -4962,7 +5361,7 @@
       "subject": "Driving schools"
     },
     "type/automobiles/driving-and-vehicle-documentation/driving-lessons": {
-      "photo": "automobiles",
+      "photo": "accountant-consultation",
       "subject": "Driving lessons"
     },
     "type/automobiles/driving-and-vehicle-documentation/licence-assistance": {
@@ -4970,19 +5369,19 @@
       "subject": "Licence assistance"
     },
     "type/automobiles/driving-and-vehicle-documentation/vehicle-registration-assistance": {
-      "photo": "automobiles",
+      "photo": "accounting-calculation",
       "subject": "Vehicle registration assistance"
     },
     "type/automobiles/driving-and-vehicle-documentation/vehicle-inspection": {
-      "photo": "registration-paperwork",
+      "photo": "air-conditioning",
       "subject": "Vehicle inspection"
     },
     "type/automobiles/driving-and-vehicle-documentation/pre-purchase-inspection": {
-      "photo": "automobiles",
+      "photo": "airplane",
       "subject": "Pre-purchase inspection"
     },
     "subcategory/automobiles/roadside-assistance": {
-      "photo": "mechanic",
+      "photo": "building-inspection",
       "subject": "Roadside Assistance"
     },
     "type/automobiles/roadside-assistance/towing": {
@@ -4994,11 +5393,11 @@
       "subject": "Breakdown assistance"
     },
     "type/automobiles/roadside-assistance/flat-tyre-assistance": {
-      "photo": "mechanic",
+      "photo": "accountant-consultation",
       "subject": "Flat tyre assistance"
     },
     "type/automobiles/roadside-assistance/battery-jump-start": {
-      "photo": "mechanic",
+      "photo": "accounting-calculation",
       "subject": "Battery jump-start"
     },
     "type/automobiles/roadside-assistance/emergency-fuel-delivery-where-legally-available": {
@@ -5018,11 +5417,11 @@
       "subject": "Commercial vehicle servicing"
     },
     "type/automobiles/commercial-and-fleet-services/fleet-management": {
-      "photo": "truck",
+      "photo": "accountant-consultation",
       "subject": "Fleet management"
     },
     "type/automobiles/commercial-and-fleet-services/vehicle-leasing-enquiries": {
-      "photo": "automobiles",
+      "photo": "accounting-calculation",
       "subject": "Vehicle leasing enquiries"
     },
     "category/rental-services": {
@@ -5042,23 +5441,23 @@
       "subject": "Apartments"
     },
     "type/rental-services/residential-property-rentals/independent-floors": {
-      "photo": "rental-keys",
+      "photo": "accountant-consultation",
       "subject": "Independent floors"
     },
     "type/rental-services/residential-property-rentals/rooms": {
-      "photo": "property",
+      "photo": "accounting-calculation",
       "subject": "Rooms"
     },
     "type/rental-services/residential-property-rentals/pg-accommodation": {
-      "photo": "rental-keys",
+      "photo": "air-conditioning",
       "subject": "PG accommodation"
     },
     "type/rental-services/residential-property-rentals/shared-accommodation": {
-      "photo": "property",
+      "photo": "airplane",
       "subject": "Shared accommodation"
     },
     "type/rental-services/residential-property-rentals/short-term-residential-stays": {
-      "photo": "rental-keys",
+      "photo": "architecture",
       "subject": "Short-term residential stays"
     },
     "subcategory/rental-services/commercial-property-rentals": {
@@ -5066,7 +5465,7 @@
       "subject": "Commercial Property Rentals"
     },
     "type/rental-services/commercial-property-rentals/shops": {
-      "photo": "commercial-building",
+      "photo": "accountant-consultation",
       "subject": "Shops"
     },
     "type/rental-services/commercial-property-rentals/offices": {
@@ -5078,19 +5477,19 @@
       "subject": "Coworking spaces"
     },
     "type/rental-services/commercial-property-rentals/warehouses": {
-      "photo": "property-documents",
+      "photo": "accounting-calculation",
       "subject": "Warehouses"
     },
     "type/rental-services/commercial-property-rentals/industrial-spaces": {
-      "photo": "spa",
+      "photo": "air-conditioning",
       "subject": "Industrial spaces"
     },
     "type/rental-services/commercial-property-rentals/commercial-kitchens": {
-      "photo": "property-documents",
+      "photo": "airplane",
       "subject": "Commercial kitchens"
     },
     "type/rental-services/commercial-property-rentals/meeting-rooms": {
-      "photo": "commercial-building",
+      "photo": "architecture",
       "subject": "Meeting rooms"
     },
     "subcategory/rental-services/vehicle-rentals": {
@@ -5102,11 +5501,11 @@
       "subject": "Cars"
     },
     "type/rental-services/vehicle-rentals/self-drive-cars": {
-      "photo": "automobiles",
+      "photo": "accountant-consultation",
       "subject": "Self-drive cars"
     },
     "type/rental-services/vehicle-rentals/chauffeur-driven-cars": {
-      "photo": "automobiles",
+      "photo": "accounting-calculation",
       "subject": "Chauffeur-driven cars"
     },
     "type/rental-services/vehicle-rentals/motorcycles": {
@@ -5114,7 +5513,7 @@
       "subject": "Motorcycles"
     },
     "type/rental-services/vehicle-rentals/scooters": {
-      "photo": "motorcycle",
+      "photo": "air-conditioning",
       "subject": "Scooters"
     },
     "type/rental-services/vehicle-rentals/bicycles": {
@@ -5122,11 +5521,11 @@
       "subject": "Bicycles"
     },
     "type/rental-services/vehicle-rentals/vans": {
-      "photo": "automobiles",
+      "photo": "airplane",
       "subject": "Vans"
     },
     "type/rental-services/vehicle-rentals/commercial-vehicles": {
-      "photo": "motorcycle",
+      "photo": "architecture",
       "subject": "Commercial vehicles"
     },
     "subcategory/rental-services/furniture-rentals": {
@@ -5142,7 +5541,7 @@
       "subject": "Mattresses"
     },
     "type/rental-services/furniture-rentals/sofas": {
-      "photo": "interior",
+      "photo": "accountant-consultation",
       "subject": "Sofas"
     },
     "type/rental-services/furniture-rentals/tables-and-chairs": {
@@ -5150,15 +5549,15 @@
       "subject": "Tables and chairs"
     },
     "type/rental-services/furniture-rentals/wardrobes": {
-      "photo": "interior",
+      "photo": "accounting-calculation",
       "subject": "Wardrobes"
     },
     "type/rental-services/furniture-rentals/office-furniture": {
-      "photo": "interior",
+      "photo": "air-conditioning",
       "subject": "Office furniture"
     },
     "subcategory/rental-services/electronics-and-gadget-rentals": {
-      "photo": "technology",
+      "photo": "development-operations",
       "subject": "Electronics & Gadget Rentals"
     },
     "type/rental-services/electronics-and-gadget-rentals/laptops": {
@@ -5166,11 +5565,11 @@
       "subject": "Laptops"
     },
     "type/rental-services/electronics-and-gadget-rentals/desktop-computers": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Desktop computers"
     },
     "type/rental-services/electronics-and-gadget-rentals/cameras": {
-      "photo": "technology",
+      "photo": "accounting-calculation",
       "subject": "Cameras"
     },
     "type/rental-services/electronics-and-gadget-rentals/projectors": {
@@ -5178,19 +5577,19 @@
       "subject": "Projectors"
     },
     "type/rental-services/electronics-and-gadget-rentals/gaming-consoles": {
-      "photo": "technology",
+      "photo": "air-conditioning",
       "subject": "Gaming consoles"
     },
     "type/rental-services/electronics-and-gadget-rentals/speakers": {
-      "photo": "computer-repair",
+      "photo": "airplane",
       "subject": "Speakers"
     },
     "type/rental-services/electronics-and-gadget-rentals/smartphones": {
-      "photo": "technology",
+      "photo": "architecture",
       "subject": "Smartphones"
     },
     "type/rental-services/electronics-and-gadget-rentals/event-display-equipment": {
-      "photo": "computer-repair",
+      "photo": "automobiles",
       "subject": "Event display equipment"
     },
     "subcategory/rental-services/home-appliance-rentals": {
@@ -5198,7 +5597,7 @@
       "subject": "Home Appliance Rentals"
     },
     "type/rental-services/home-appliance-rentals/refrigerators": {
-      "photo": "air-conditioning",
+      "photo": "accountant-consultation",
       "subject": "Refrigerators"
     },
     "type/rental-services/home-appliance-rentals/washing-machines": {
@@ -5210,15 +5609,15 @@
       "subject": "Air conditioners"
     },
     "type/rental-services/home-appliance-rentals/water-purifiers": {
-      "photo": "laundry",
+      "photo": "accounting-calculation",
       "subject": "Water purifiers"
     },
     "type/rental-services/home-appliance-rentals/televisions": {
-      "photo": "air-conditioning",
+      "photo": "airplane",
       "subject": "Televisions"
     },
     "type/rental-services/home-appliance-rentals/kitchen-appliances": {
-      "photo": "laundry",
+      "photo": "architecture",
       "subject": "Kitchen appliances"
     },
     "subcategory/rental-services/event-and-party-rentals": {
@@ -5238,19 +5637,19 @@
       "subject": "Decorations"
     },
     "type/rental-services/event-and-party-rentals/sound-systems": {
-      "photo": "celebration",
+      "photo": "accountant-consultation",
       "subject": "Sound systems"
     },
     "type/rental-services/event-and-party-rentals/lighting": {
-      "photo": "events",
+      "photo": "accounting-calculation",
       "subject": "Lighting"
     },
     "type/rental-services/event-and-party-rentals/projectors": {
-      "photo": "restaurant",
+      "photo": "air-conditioning",
       "subject": "Projectors"
     },
     "type/rental-services/event-and-party-rentals/stages": {
-      "photo": "celebration",
+      "photo": "airplane",
       "subject": "Stages"
     },
     "type/rental-services/event-and-party-rentals/catering-equipment": {
@@ -5258,7 +5657,7 @@
       "subject": "Catering equipment"
     },
     "subcategory/rental-services/tools-and-construction-equipment": {
-      "photo": "construction-equipment",
+      "photo": "site-contractors",
       "subject": "Tools & Construction Equipment"
     },
     "type/rental-services/tools-and-construction-equipment/power-tools": {
@@ -5270,19 +5669,19 @@
       "subject": "Drilling equipment"
     },
     "type/rental-services/tools-and-construction-equipment/generators": {
-      "photo": "construction-equipment",
+      "photo": "accountant-consultation",
       "subject": "Generators"
     },
     "type/rental-services/tools-and-construction-equipment/scaffolding": {
-      "photo": "construction",
+      "photo": "accounting-calculation",
       "subject": "Scaffolding"
     },
     "type/rental-services/tools-and-construction-equipment/construction-machinery": {
-      "photo": "construction-equipment",
+      "photo": "air-conditioning",
       "subject": "Construction machinery"
     },
     "type/rental-services/tools-and-construction-equipment/ladders": {
-      "photo": "construction",
+      "photo": "airplane",
       "subject": "Ladders"
     },
     "type/rental-services/tools-and-construction-equipment/gardening-equipment": {
@@ -5294,7 +5693,7 @@
       "subject": "Travel & Adventure Equipment"
     },
     "type/rental-services/travel-and-adventure-equipment/camping-tents": {
-      "photo": "cycling",
+      "photo": "accountant-consultation",
       "subject": "Camping tents"
     },
     "type/rental-services/travel-and-adventure-equipment/sleeping-bags": {
@@ -5302,15 +5701,15 @@
       "subject": "Sleeping bags"
     },
     "type/rental-services/travel-and-adventure-equipment/trekking-equipment": {
-      "photo": "outdoor",
+      "photo": "accounting-calculation",
       "subject": "Trekking equipment"
     },
     "type/rental-services/travel-and-adventure-equipment/hiking-gear": {
-      "photo": "cycling",
+      "photo": "air-conditioning",
       "subject": "Hiking gear"
     },
     "type/rental-services/travel-and-adventure-equipment/travel-accessories": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "airplane",
       "subject": "Travel accessories"
     },
     "type/rental-services/travel-and-adventure-equipment/outdoor-recreation-equipment": {
@@ -5318,11 +5717,11 @@
       "subject": "Outdoor recreation equipment"
     },
     "subcategory/rental-services/fashion-and-occasion-rentals": {
-      "photo": "clothes",
+      "photo": "wedding",
       "subject": "Fashion & Occasion Rentals"
     },
     "type/rental-services/fashion-and-occasion-rentals/wedding-outfits": {
-      "photo": "wedding",
+      "photo": "accountant-consultation",
       "subject": "Wedding outfits"
     },
     "type/rental-services/fashion-and-occasion-rentals/designer-clothing": {
@@ -5330,7 +5729,7 @@
       "subject": "Designer clothing"
     },
     "type/rental-services/fashion-and-occasion-rentals/traditional-attire": {
-      "photo": "clothes",
+      "photo": "accounting-calculation",
       "subject": "Traditional attire"
     },
     "type/rental-services/fashion-and-occasion-rentals/jewellery": {
@@ -5338,11 +5737,11 @@
       "subject": "Jewellery"
     },
     "type/rental-services/fashion-and-occasion-rentals/handbags": {
-      "photo": "clothes",
+      "photo": "air-conditioning",
       "subject": "Handbags"
     },
     "type/rental-services/fashion-and-occasion-rentals/costumes": {
-      "photo": "jewellery",
+      "photo": "airplane",
       "subject": "Costumes"
     },
     "subcategory/rental-services/sports-and-recreation-rentals": {
@@ -5354,7 +5753,7 @@
       "subject": "Bicycles"
     },
     "type/rental-services/sports-and-recreation-rentals/sports-equipment": {
-      "photo": "cycling",
+      "photo": "accountant-consultation",
       "subject": "Sports equipment"
     },
     "type/rental-services/sports-and-recreation-rentals/fitness-equipment": {
@@ -5362,11 +5761,11 @@
       "subject": "Fitness equipment"
     },
     "type/rental-services/sports-and-recreation-rentals/adventure-equipment": {
-      "photo": "football",
+      "photo": "accounting-calculation",
       "subject": "Adventure equipment"
     },
     "type/rental-services/sports-and-recreation-rentals/recreational-equipment": {
-      "photo": "cycling",
+      "photo": "air-conditioning",
       "subject": "Recreational equipment"
     },
     "subcategory/rental-services/business-and-industrial-rentals": {
@@ -5374,7 +5773,7 @@
       "subject": "Business & Industrial Rentals"
     },
     "type/rental-services/business-and-industrial-rentals/industrial-machinery": {
-      "photo": "vendor-logistics",
+      "photo": "accountant-consultation",
       "subject": "Industrial machinery"
     },
     "type/rental-services/business-and-industrial-rentals/office-equipment": {
@@ -5382,15 +5781,15 @@
       "subject": "Office equipment"
     },
     "type/rental-services/business-and-industrial-rentals/material-handling-equipment": {
-      "photo": "vendor-logistics",
+      "photo": "accounting-calculation",
       "subject": "Material-handling equipment"
     },
     "type/rental-services/business-and-industrial-rentals/generators": {
-      "photo": "construction-equipment",
+      "photo": "air-conditioning",
       "subject": "Generators"
     },
     "type/rental-services/business-and-industrial-rentals/commercial-equipment": {
-      "photo": "vendor-logistics",
+      "photo": "airplane",
       "subject": "Commercial equipment"
     },
     "subcategory/rental-services/other-rentals": {
@@ -5398,7 +5797,7 @@
       "subject": "Other Rentals"
     },
     "type/rental-services/other-rentals/specialty-equipment": {
-      "photo": "rental-keys",
+      "photo": "accountant-consultation",
       "subject": "Specialty equipment"
     },
     "type/rental-services/other-rentals/unique-rental-products": {
@@ -5422,19 +5821,19 @@
       "subject": "Hotels"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/resorts": {
-      "photo": "hotel",
+      "photo": "accountant-consultation",
       "subject": "Resorts"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/hostels": {
-      "photo": "hotel",
+      "photo": "accounting-calculation",
       "subject": "Hostels"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/homestays": {
-      "photo": "hotel",
+      "photo": "air-conditioning",
       "subject": "Homestays"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/guesthouses": {
-      "photo": "hotel",
+      "photo": "airplane",
       "subject": "Guesthouses"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/holiday-homes": {
@@ -5442,7 +5841,7 @@
       "subject": "Holiday homes"
     },
     "type/travel-stay-and-experiences/hotels-and-accommodation/serviced-apartments": {
-      "photo": "hotel",
+      "photo": "architecture",
       "subject": "Serviced apartments"
     },
     "subcategory/travel-stay-and-experiences/travel-planning": {
@@ -5450,7 +5849,7 @@
       "subject": "Travel Planning"
     },
     "type/travel-stay-and-experiences/travel-planning/travel-agencies": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "accountant-consultation",
       "subject": "Travel agencies"
     },
     "type/travel-stay-and-experiences/travel-planning/holiday-packages": {
@@ -5462,19 +5861,19 @@
       "subject": "Domestic tours"
     },
     "type/travel-stay-and-experiences/travel-planning/international-tours": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "accounting-calculation",
       "subject": "International tours"
     },
     "type/travel-stay-and-experiences/travel-planning/group-trips": {
-      "photo": "planning",
+      "photo": "air-conditioning",
       "subject": "Group trips"
     },
     "type/travel-stay-and-experiences/travel-planning/family-holidays": {
-      "photo": "airplane",
+      "photo": "architecture",
       "subject": "Family holidays"
     },
     "type/travel-stay-and-experiences/travel-planning/honeymoon-packages": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "automobiles",
       "subject": "Honeymoon packages"
     },
     "subcategory/travel-stay-and-experiences/transport-and-transfers": {
@@ -5494,23 +5893,23 @@
       "subject": "Local sightseeing transport"
     },
     "type/travel-stay-and-experiences/transport-and-transfers/private-drivers": {
-      "photo": "airplane",
+      "photo": "accountant-consultation",
       "subject": "Private drivers"
     },
     "type/travel-stay-and-experiences/transport-and-transfers/tourist-vehicles": {
-      "photo": "automobiles",
+      "photo": "accounting-calculation",
       "subject": "Tourist vehicles"
     },
     "type/travel-stay-and-experiences/transport-and-transfers/group-transportation": {
-      "photo": "truck",
+      "photo": "air-conditioning",
       "subject": "Group transportation"
     },
     "subcategory/travel-stay-and-experiences/tours-and-guided-experiences": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "glass-enclosure",
       "subject": "Tours & Guided Experiences"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/city-tours": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "accountant-consultation",
       "subject": "City tours"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/heritage-tours": {
@@ -5518,43 +5917,43 @@
       "subject": "Heritage tours"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/cultural-tours": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "accounting-calculation",
       "subject": "Cultural tours"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/nature-tours": {
-      "photo": "outdoor",
+      "photo": "air-conditioning",
       "subject": "Nature tours"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/guided-treks": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "airplane",
       "subject": "Guided treks"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/wildlife-experiences": {
-      "photo": "outdoor",
+      "photo": "architecture",
       "subject": "Wildlife experiences"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/local-food-tours": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "automobiles",
       "subject": "Local food tours"
     },
     "subcategory/travel-stay-and-experiences/adventure-activities": {
-      "photo": "cycling",
+      "photo": "outdoor",
       "subject": "Adventure Activities"
     },
     "type/travel-stay-and-experiences/adventure-activities/trekking": {
-      "photo": "cycling",
+      "photo": "accountant-consultation",
       "subject": "Trekking"
     },
     "type/travel-stay-and-experiences/adventure-activities/camping-experiences": {
-      "photo": "outdoor",
+      "photo": "accounting-calculation",
       "subject": "Camping experiences"
     },
     "type/travel-stay-and-experiences/adventure-activities/water-sports": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "air-conditioning",
       "subject": "Water sports"
     },
     "type/travel-stay-and-experiences/adventure-activities/adventure-sports": {
-      "photo": "cycling",
+      "photo": "airplane",
       "subject": "Adventure sports"
     },
     "type/travel-stay-and-experiences/adventure-activities/cycling-tours": {
@@ -5562,11 +5961,11 @@
       "subject": "Cycling tours"
     },
     "type/travel-stay-and-experiences/adventure-activities/outdoor-excursions": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "architecture",
       "subject": "Outdoor excursions"
     },
     "subcategory/travel-stay-and-experiences/attractions-and-entertainment": {
-      "photo": "events",
+      "photo": "digital-display",
       "subject": "Attractions & Entertainment"
     },
     "type/travel-stay-and-experiences/attractions-and-entertainment/tourist-attractions": {
@@ -5574,27 +5973,27 @@
       "subject": "Tourist attractions"
     },
     "type/travel-stay-and-experiences/attractions-and-entertainment/museums": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "accountant-consultation",
       "subject": "Museums"
     },
     "type/travel-stay-and-experiences/attractions-and-entertainment/theme-parks": {
-      "photo": "events",
+      "photo": "accounting-calculation",
       "subject": "Theme parks"
     },
     "type/travel-stay-and-experiences/attractions-and-entertainment/water-parks": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "air-conditioning",
       "subject": "Water parks"
     },
     "type/travel-stay-and-experiences/attractions-and-entertainment/recreational-attractions": {
-      "photo": "events",
+      "photo": "airplane",
       "subject": "Recreational attractions"
     },
     "type/travel-stay-and-experiences/attractions-and-entertainment/sightseeing-experiences": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "architecture",
       "subject": "Sightseeing experiences"
     },
     "subcategory/travel-stay-and-experiences/travel-assistance": {
-      "photo": "registration-paperwork",
+      "photo": "airplane",
       "subject": "Travel Assistance"
     },
     "type/travel-stay-and-experiences/travel-assistance/travel-insurance-providers": {
@@ -5602,19 +6001,19 @@
       "subject": "Travel insurance providers"
     },
     "type/travel-stay-and-experiences/travel-assistance/visa-consultation": {
-      "photo": "airplane",
+      "photo": "accountant-consultation",
       "subject": "Visa consultation"
     },
     "type/travel-stay-and-experiences/travel-assistance/travel-documentation-assistance": {
-      "photo": "registration-paperwork",
+      "photo": "accounting-calculation",
       "subject": "Travel documentation assistance"
     },
     "type/travel-stay-and-experiences/travel-assistance/itinerary-planning": {
-      "photo": "airplane",
+      "photo": "air-conditioning",
       "subject": "Itinerary planning"
     },
     "type/travel-stay-and-experiences/travel-assistance/travel-concierge-services": {
-      "photo": "registration-paperwork",
+      "photo": "architecture",
       "subject": "Travel concierge services"
     },
     "category/health-fitness-and-wellness": {
@@ -5630,19 +6029,19 @@
       "subject": "General clinics"
     },
     "type/health-fitness-and-wellness/hospitals-and-clinics/multispecialty-hospitals": {
-      "photo": "doctor",
+      "photo": "accountant-consultation",
       "subject": "Multispecialty hospitals"
     },
     "type/health-fitness-and-wellness/hospitals-and-clinics/specialty-clinics": {
-      "photo": "doctor",
+      "photo": "accounting-calculation",
       "subject": "Specialty clinics"
     },
     "type/health-fitness-and-wellness/hospitals-and-clinics/dental-clinics": {
-      "photo": "doctor",
+      "photo": "air-conditioning",
       "subject": "Dental clinics"
     },
     "type/health-fitness-and-wellness/hospitals-and-clinics/eye-clinics": {
-      "photo": "doctor",
+      "photo": "airplane",
       "subject": "Eye clinics"
     },
     "type/health-fitness-and-wellness/hospitals-and-clinics/physiotherapy-clinics": {
@@ -5666,15 +6065,15 @@
       "subject": "Dermatologists"
     },
     "type/health-fitness-and-wellness/doctors-and-specialists/orthopedic-specialists": {
-      "photo": "doctor",
+      "photo": "accountant-consultation",
       "subject": "Orthopedic specialists"
     },
     "type/health-fitness-and-wellness/doctors-and-specialists/cardiologists": {
-      "photo": "lab",
+      "photo": "accounting-calculation",
       "subject": "Cardiologists"
     },
     "type/health-fitness-and-wellness/doctors-and-specialists/other-medical-specialists": {
-      "photo": "doctor",
+      "photo": "air-conditioning",
       "subject": "Other medical specialists"
     },
     "subcategory/health-fitness-and-wellness/diagnostic-services": {
@@ -5686,11 +6085,11 @@
       "subject": "Pathology laboratories"
     },
     "type/health-fitness-and-wellness/diagnostic-services/blood-tests": {
-      "photo": "lab",
+      "photo": "accountant-consultation",
       "subject": "Blood tests"
     },
     "type/health-fitness-and-wellness/diagnostic-services/imaging-centres": {
-      "photo": "lab",
+      "photo": "accounting-calculation",
       "subject": "Imaging centres"
     },
     "type/health-fitness-and-wellness/diagnostic-services/health-checkup-packages": {
@@ -5698,15 +6097,15 @@
       "subject": "Health checkup packages"
     },
     "type/health-fitness-and-wellness/diagnostic-services/home-sample-collection": {
-      "photo": "lab",
+      "photo": "air-conditioning",
       "subject": "Home sample collection"
     },
     "subcategory/health-fitness-and-wellness/pharmacies-and-medical-supplies": {
-      "photo": "pharmacy",
+      "photo": "lab",
       "subject": "Pharmacies & Medical Supplies"
     },
     "type/health-fitness-and-wellness/pharmacies-and-medical-supplies/pharmacies": {
-      "photo": "pharmacy",
+      "photo": "accountant-consultation",
       "subject": "Pharmacies"
     },
     "type/health-fitness-and-wellness/pharmacies-and-medical-supplies/medical-equipment-providers": {
@@ -5714,7 +6113,7 @@
       "subject": "Medical equipment providers"
     },
     "type/health-fitness-and-wellness/pharmacies-and-medical-supplies/mobility-aids": {
-      "photo": "pharmacy",
+      "photo": "accounting-calculation",
       "subject": "Mobility aids"
     },
     "type/health-fitness-and-wellness/pharmacies-and-medical-supplies/medical-supply-stores": {
@@ -5726,15 +6125,15 @@
       "subject": "Fitness Centres"
     },
     "type/health-fitness-and-wellness/fitness-centres/gyms": {
-      "photo": "gym",
+      "photo": "accountant-consultation",
       "subject": "Gyms"
     },
     "type/health-fitness-and-wellness/fitness-centres/personal-trainers": {
-      "photo": "gym",
+      "photo": "accounting-calculation",
       "subject": "Personal trainers"
     },
     "type/health-fitness-and-wellness/fitness-centres/strength-training": {
-      "photo": "gym",
+      "photo": "air-conditioning",
       "subject": "Strength training"
     },
     "type/health-fitness-and-wellness/fitness-centres/weight-management-programmes": {
@@ -5746,31 +6145,31 @@
       "subject": "Fitness studios"
     },
     "subcategory/health-fitness-and-wellness/yoga-and-mind-body-fitness": {
-      "photo": "health-fitness-and-wellness",
+      "photo": "spa",
       "subject": "Yoga & Mind-Body Fitness"
     },
     "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/yoga-studios": {
-      "photo": "health-fitness-and-wellness",
+      "photo": "accountant-consultation",
       "subject": "Yoga studios"
     },
     "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/meditation-classes": {
-      "photo": "health-fitness-and-wellness",
+      "photo": "accounting-calculation",
       "subject": "Meditation classes"
     },
     "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/pilates": {
-      "photo": "health-fitness-and-wellness",
+      "photo": "air-conditioning",
       "subject": "Pilates"
     },
     "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/breathing-and-relaxation-classes": {
-      "photo": "spa",
+      "photo": "airplane",
       "subject": "Breathing and relaxation classes"
     },
     "subcategory/health-fitness-and-wellness/sports-coaching-and-facilities": {
-      "photo": "football",
+      "photo": "physio-care",
       "subject": "Sports Coaching & Facilities"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/swimming": {
-      "photo": "football",
+      "photo": "accountant-consultation",
       "subject": "Swimming"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/badminton": {
@@ -5782,11 +6181,11 @@
       "subject": "Football"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/cricket": {
-      "photo": "football",
+      "photo": "accounting-calculation",
       "subject": "Cricket"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/tennis": {
-      "photo": "cycling",
+      "photo": "air-conditioning",
       "subject": "Tennis"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/martial-arts": {
@@ -5794,11 +6193,11 @@
       "subject": "Martial arts"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/sports-coaching": {
-      "photo": "football",
+      "photo": "airplane",
       "subject": "Sports coaching"
     },
     "type/health-fitness-and-wellness/sports-coaching-and-facilities/sports-grounds-and-courts": {
-      "photo": "cycling",
+      "photo": "architecture",
       "subject": "Sports grounds and courts"
     },
     "subcategory/health-fitness-and-wellness/physiotherapy-and-rehabilitation": {
@@ -5806,15 +6205,15 @@
       "subject": "Physiotherapy & Rehabilitation"
     },
     "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/physiotherapy": {
-      "photo": "physio",
+      "photo": "accountant-consultation",
       "subject": "Physiotherapy"
     },
     "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/sports-rehabilitation": {
-      "photo": "physio-care",
+      "photo": "accounting-calculation",
       "subject": "Sports rehabilitation"
     },
     "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/mobility-training": {
-      "photo": "physio",
+      "photo": "air-conditioning",
       "subject": "Mobility training"
     },
     "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/post-injury-rehabilitation": {
@@ -5822,7 +6221,7 @@
       "subject": "Post-injury rehabilitation"
     },
     "subcategory/health-fitness-and-wellness/nutrition-and-diet": {
-      "photo": "food-and-dining",
+      "photo": "tea",
       "subject": "Nutrition & Diet"
     },
     "type/health-fitness-and-wellness/nutrition-and-diet/registered-dietitians": {
@@ -5834,11 +6233,11 @@
       "subject": "Nutrition consultation"
     },
     "type/health-fitness-and-wellness/nutrition-and-diet/meal-planning": {
-      "photo": "food-and-dining",
+      "photo": "accountant-consultation",
       "subject": "Meal planning"
     },
     "type/health-fitness-and-wellness/nutrition-and-diet/sports-nutrition-consultation": {
-      "photo": "grocery",
+      "photo": "accounting-calculation",
       "subject": "Sports nutrition consultation"
     },
     "subcategory/health-fitness-and-wellness/mental-wellbeing": {
@@ -5846,7 +6245,7 @@
       "subject": "Mental Wellbeing"
     },
     "type/health-fitness-and-wellness/mental-wellbeing/licensed-mental-health-professionals": {
-      "photo": "consultation",
+      "photo": "accountant-consultation",
       "subject": "Licensed mental health professionals"
     },
     "type/health-fitness-and-wellness/mental-wellbeing/counselling": {
@@ -5854,11 +6253,11 @@
       "subject": "Counselling"
     },
     "type/health-fitness-and-wellness/mental-wellbeing/psychology-services": {
-      "photo": "health-fitness-and-wellness",
+      "photo": "accounting-calculation",
       "subject": "Psychology services"
     },
     "type/health-fitness-and-wellness/mental-wellbeing/stress-management-programmes": {
-      "photo": "consultation",
+      "photo": "air-conditioning",
       "subject": "Stress management programmes"
     },
     "category/education-and-skills": {
@@ -5870,7 +6269,7 @@
       "subject": "Schools & Academic Education"
     },
     "type/education-and-skills/schools-and-academic-education/schools": {
-      "photo": "education-and-skills",
+      "photo": "accountant-consultation",
       "subject": "Schools"
     },
     "type/education-and-skills/schools-and-academic-education/preschools": {
@@ -5878,15 +6277,15 @@
       "subject": "Preschools"
     },
     "type/education-and-skills/schools-and-academic-education/daycare-and-early-learning": {
-      "photo": "education-and-skills",
+      "photo": "accounting-calculation",
       "subject": "Daycare and early learning"
     },
     "type/education-and-skills/schools-and-academic-education/after-school-programmes": {
-      "photo": "books",
+      "photo": "air-conditioning",
       "subject": "After-school programmes"
     },
     "type/education-and-skills/schools-and-academic-education/academic-enrichment": {
-      "photo": "education-and-skills",
+      "photo": "airplane",
       "subject": "Academic enrichment"
     },
     "subcategory/education-and-skills/tutors-and-coaching": {
@@ -5894,15 +6293,15 @@
       "subject": "Tutors & Coaching"
     },
     "type/education-and-skills/tutors-and-coaching/home-tutors": {
-      "photo": "education-and-skills",
+      "photo": "accountant-consultation",
       "subject": "Home tutors"
     },
     "type/education-and-skills/tutors-and-coaching/online-tutors": {
-      "photo": "education-and-skills",
+      "photo": "accounting-calculation",
       "subject": "Online tutors"
     },
     "type/education-and-skills/tutors-and-coaching/school-subject-tuition": {
-      "photo": "education-and-skills",
+      "photo": "air-conditioning",
       "subject": "School subject tuition"
     },
     "type/education-and-skills/tutors-and-coaching/competitive-exam-coaching": {
@@ -5910,11 +6309,11 @@
       "subject": "Competitive exam coaching"
     },
     "type/education-and-skills/tutors-and-coaching/entrance-exam-preparation": {
-      "photo": "books",
+      "photo": "airplane",
       "subject": "Entrance exam preparation"
     },
     "type/education-and-skills/tutors-and-coaching/language-tutoring": {
-      "photo": "books",
+      "photo": "architecture",
       "subject": "Language tutoring"
     },
     "subcategory/education-and-skills/professional-courses": {
@@ -5934,11 +6333,11 @@
       "subject": "Software development"
     },
     "type/education-and-skills/professional-courses/data-analytics": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Data analytics"
     },
     "type/education-and-skills/professional-courses/artificial-intelligence": {
-      "photo": "books",
+      "photo": "accounting-calculation",
       "subject": "Artificial intelligence"
     },
     "type/education-and-skills/professional-courses/cybersecurity": {
@@ -5946,15 +6345,15 @@
       "subject": "Cybersecurity"
     },
     "type/education-and-skills/professional-courses/digital-marketing": {
-      "photo": "technology",
+      "photo": "air-conditioning",
       "subject": "Digital marketing"
     },
     "type/education-and-skills/professional-courses/business-and-finance": {
-      "photo": "books",
+      "photo": "airplane",
       "subject": "Business and finance"
     },
     "subcategory/education-and-skills/vocational-training": {
-      "photo": "printing",
+      "photo": "carpentry",
       "subject": "Vocational Training"
     },
     "type/education-and-skills/vocational-training/electrical-training": {
@@ -5966,7 +6365,7 @@
       "subject": "Plumbing training"
     },
     "type/education-and-skills/vocational-training/automotive-training": {
-      "photo": "electrical",
+      "photo": "accountant-consultation",
       "subject": "Automotive training"
     },
     "type/education-and-skills/vocational-training/welding": {
@@ -5982,11 +6381,11 @@
       "subject": "Tailoring"
     },
     "type/education-and-skills/vocational-training/beauty-training": {
-      "photo": "printing",
+      "photo": "accounting-calculation",
       "subject": "Beauty training"
     },
     "subcategory/education-and-skills/language-learning": {
-      "photo": "books",
+      "photo": "collaboration",
       "subject": "Language Learning"
     },
     "type/education-and-skills/language-learning/english": {
@@ -5994,23 +6393,23 @@
       "subject": "English"
     },
     "type/education-and-skills/language-learning/indian-languages": {
-      "photo": "education-and-skills",
+      "photo": "accountant-consultation",
       "subject": "Indian languages"
     },
     "type/education-and-skills/language-learning/foreign-languages": {
-      "photo": "books",
+      "photo": "accounting-calculation",
       "subject": "Foreign languages"
     },
     "type/education-and-skills/language-learning/spoken-language-courses": {
-      "photo": "education-and-skills",
+      "photo": "air-conditioning",
       "subject": "Spoken language courses"
     },
     "type/education-and-skills/language-learning/business-communication": {
-      "photo": "books",
+      "photo": "airplane",
       "subject": "Business communication"
     },
     "subcategory/education-and-skills/creative-skills": {
-      "photo": "printing",
+      "photo": "wall-painting",
       "subject": "Creative Skills"
     },
     "type/education-and-skills/creative-skills/photography": {
@@ -6018,7 +6417,7 @@
       "subject": "Photography"
     },
     "type/education-and-skills/creative-skills/graphic-design": {
-      "photo": "media-production",
+      "photo": "accountant-consultation",
       "subject": "Graphic design"
     },
     "type/education-and-skills/creative-skills/video-editing": {
@@ -6030,15 +6429,15 @@
       "subject": "Music"
     },
     "type/education-and-skills/creative-skills/dance": {
-      "photo": "media-production",
+      "photo": "accounting-calculation",
       "subject": "Dance"
     },
     "type/education-and-skills/creative-skills/drawing-and-painting": {
-      "photo": "wall-painting",
+      "photo": "air-conditioning",
       "subject": "Drawing and painting"
     },
     "type/education-and-skills/creative-skills/writing": {
-      "photo": "printing",
+      "photo": "airplane",
       "subject": "Writing"
     },
     "subcategory/education-and-skills/career-development": {
@@ -6058,19 +6457,19 @@
       "subject": "Career counselling"
     },
     "type/education-and-skills/career-development/professional-mentoring": {
-      "photo": "resume",
+      "photo": "accountant-consultation",
       "subject": "Professional mentoring"
     },
     "type/education-and-skills/career-development/communication-skills": {
-      "photo": "interview",
+      "photo": "accounting-calculation",
       "subject": "Communication skills"
     },
     "type/education-and-skills/career-development/leadership-training": {
-      "photo": "career-workplace",
+      "photo": "air-conditioning",
       "subject": "Leadership training"
     },
     "subcategory/education-and-skills/certifications-and-exam-preparation": {
-      "photo": "books",
+      "photo": "application-desk",
       "subject": "Certifications & Exam Preparation"
     },
     "type/education-and-skills/certifications-and-exam-preparation/certification-training": {
@@ -6078,11 +6477,11 @@
       "subject": "Certification training"
     },
     "type/education-and-skills/certifications-and-exam-preparation/professional-examination-preparation": {
-      "photo": "books",
+      "photo": "accountant-consultation",
       "subject": "Professional examination preparation"
     },
     "type/education-and-skills/certifications-and-exam-preparation/practice-tests": {
-      "photo": "books",
+      "photo": "accounting-calculation",
       "subject": "Practice tests"
     },
     "type/education-and-skills/certifications-and-exam-preparation/study-materials": {
@@ -6090,11 +6489,11 @@
       "subject": "Study materials"
     },
     "type/education-and-skills/certifications-and-exam-preparation/exam-coaching": {
-      "photo": "books",
+      "photo": "air-conditioning",
       "subject": "Exam coaching"
     },
     "subcategory/education-and-skills/online-learning": {
-      "photo": "technology",
+      "photo": "software-review",
       "subject": "Online Learning"
     },
     "type/education-and-skills/online-learning/live-online-classes": {
@@ -6106,15 +6505,15 @@
       "subject": "Recorded courses"
     },
     "type/education-and-skills/online-learning/workshops": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Workshops"
     },
     "type/education-and-skills/online-learning/webinars": {
-      "photo": "collaboration",
+      "photo": "accounting-calculation",
       "subject": "Webinars"
     },
     "type/education-and-skills/online-learning/individual-mentoring": {
-      "photo": "technology",
+      "photo": "air-conditioning",
       "subject": "Individual mentoring"
     },
     "category/jobs-and-careers": {
@@ -6130,7 +6529,7 @@
       "subject": "IT and software"
     },
     "type/jobs-and-careers/jobs-by-industry/cloud-and-devops": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Cloud and DevOps"
     },
     "type/jobs-and-careers/jobs-by-industry/engineering": {
@@ -6138,7 +6537,7 @@
       "subject": "Engineering"
     },
     "type/jobs-and-careers/jobs-by-industry/banking-and-finance": {
-      "photo": "construction",
+      "photo": "accounting-calculation",
       "subject": "Banking and finance"
     },
     "type/jobs-and-careers/jobs-by-industry/sales-and-marketing": {
@@ -6146,7 +6545,7 @@
       "subject": "Sales and marketing"
     },
     "type/jobs-and-careers/jobs-by-industry/customer-support": {
-      "photo": "technology",
+      "photo": "air-conditioning",
       "subject": "Customer support"
     },
     "type/jobs-and-careers/jobs-by-industry/healthcare": {
@@ -6158,15 +6557,15 @@
       "subject": "Hospitality"
     },
     "type/jobs-and-careers/jobs-by-industry/retail": {
-      "photo": "career-workplace",
+      "photo": "airplane",
       "subject": "Retail"
     },
     "type/jobs-and-careers/jobs-by-industry/manufacturing": {
-      "photo": "technology",
+      "photo": "architecture",
       "subject": "Manufacturing"
     },
     "type/jobs-and-careers/jobs-by-industry/logistics-and-transportation": {
-      "photo": "chef",
+      "photo": "automobiles",
       "subject": "Logistics and transportation"
     },
     "type/jobs-and-careers/jobs-by-industry/construction": {
@@ -6174,11 +6573,11 @@
       "subject": "Construction"
     },
     "type/jobs-and-careers/jobs-by-industry/education": {
-      "photo": "career-workplace",
+      "photo": "barber",
       "subject": "Education"
     },
     "type/jobs-and-careers/jobs-by-industry/administration-and-hr": {
-      "photo": "technology",
+      "photo": "beauty-fashion-and-lifestyle",
       "subject": "Administration and HR"
     },
     "subcategory/jobs-and-careers/jobs-by-employment-type": {
@@ -6198,11 +6597,11 @@
       "subject": "Contract"
     },
     "type/jobs-and-careers/jobs-by-employment-type/temporary": {
-      "photo": "career-workplace",
+      "photo": "accountant-consultation",
       "subject": "Temporary"
     },
     "type/jobs-and-careers/jobs-by-employment-type/internship": {
-      "photo": "interview",
+      "photo": "accounting-calculation",
       "subject": "Internship"
     },
     "type/jobs-and-careers/jobs-by-employment-type/apprenticeship": {
@@ -6210,11 +6609,11 @@
       "subject": "Apprenticeship"
     },
     "type/jobs-and-careers/jobs-by-employment-type/freelance": {
-      "photo": "career-workplace",
+      "photo": "air-conditioning",
       "subject": "Freelance"
     },
     "type/jobs-and-careers/jobs-by-employment-type/remote-work": {
-      "photo": "interview",
+      "photo": "airplane",
       "subject": "Remote work"
     },
     "subcategory/jobs-and-careers/jobs-by-experience": {
@@ -6234,15 +6633,15 @@
       "subject": "Experienced professionals"
     },
     "type/jobs-and-careers/jobs-by-experience/team-leaders": {
-      "photo": "interview",
+      "photo": "accountant-consultation",
       "subject": "Team leaders"
     },
     "type/jobs-and-careers/jobs-by-experience/managers": {
-      "photo": "resume",
+      "photo": "accounting-calculation",
       "subject": "Managers"
     },
     "type/jobs-and-careers/jobs-by-experience/senior-professionals": {
-      "photo": "career-workplace",
+      "photo": "air-conditioning",
       "subject": "Senior professionals"
     },
     "subcategory/jobs-and-careers/government-and-public-sector": {
@@ -6250,7 +6649,7 @@
       "subject": "Government & Public Sector"
     },
     "type/jobs-and-careers/government-and-public-sector/government-vacancies": {
-      "photo": "job-search",
+      "photo": "accountant-consultation",
       "subject": "Government vacancies"
     },
     "type/jobs-and-careers/government-and-public-sector/public-sector-opportunities": {
@@ -6262,11 +6661,11 @@
       "subject": "Government examination notifications"
     },
     "type/jobs-and-careers/government-and-public-sector/public-sector-recruitment": {
-      "photo": "registration-paperwork",
+      "photo": "accounting-calculation",
       "subject": "Public sector recruitment"
     },
     "subcategory/jobs-and-careers/gig-and-freelance-work": {
-      "photo": "technology",
+      "photo": "business-launch",
       "subject": "Gig & Freelance Work"
     },
     "type/jobs-and-careers/gig-and-freelance-work/design-projects": {
@@ -6274,7 +6673,7 @@
       "subject": "Design projects"
     },
     "type/jobs-and-careers/gig-and-freelance-work/software-development-projects": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Software development projects"
     },
     "type/jobs-and-careers/gig-and-freelance-work/content-writing": {
@@ -6286,19 +6685,19 @@
       "subject": "Photography assignments"
     },
     "type/jobs-and-careers/gig-and-freelance-work/marketing-projects": {
-      "photo": "media-production",
+      "photo": "accounting-calculation",
       "subject": "Marketing projects"
     },
     "type/jobs-and-careers/gig-and-freelance-work/local-gig-work": {
-      "photo": "planning",
+      "photo": "air-conditioning",
       "subject": "Local gig work"
     },
     "type/jobs-and-careers/gig-and-freelance-work/skilled-trades-assignments": {
-      "photo": "technology",
+      "photo": "airplane",
       "subject": "Skilled trades assignments"
     },
     "subcategory/jobs-and-careers/employer-profiles": {
-      "photo": "career-workplace",
+      "photo": "office-process",
       "subject": "Employer Profiles"
     },
     "type/jobs-and-careers/employer-profiles/company-profiles": {
@@ -6310,19 +6709,19 @@
       "subject": "Employer information"
     },
     "type/jobs-and-careers/employer-profiles/work-environment": {
-      "photo": "career-workplace",
+      "photo": "accountant-consultation",
       "subject": "Work environment"
     },
     "type/jobs-and-careers/employer-profiles/open-positions": {
-      "photo": "collaboration",
+      "photo": "accounting-calculation",
       "subject": "Open positions"
     },
     "type/jobs-and-careers/employer-profiles/recruitment-events": {
-      "photo": "career-workplace",
+      "photo": "air-conditioning",
       "subject": "Recruitment events"
     },
     "subcategory/jobs-and-careers/career-support": {
-      "photo": "resume",
+      "photo": "professional-profile",
       "subject": "Career Support"
     },
     "type/jobs-and-careers/career-support/resume-writing": {
@@ -6338,11 +6737,11 @@
       "subject": "Career counselling"
     },
     "type/jobs-and-careers/career-support/portfolio-building": {
-      "photo": "resume",
+      "photo": "accountant-consultation",
       "subject": "Portfolio building"
     },
     "type/jobs-and-careers/career-support/job-search-assistance": {
-      "photo": "interview",
+      "photo": "accounting-calculation",
       "subject": "Job search assistance"
     },
     "subcategory/jobs-and-careers/recruitment-services": {
@@ -6350,7 +6749,7 @@
       "subject": "Recruitment Services"
     },
     "type/jobs-and-careers/recruitment-services/recruitment-agencies": {
-      "photo": "interview",
+      "photo": "accountant-consultation",
       "subject": "Recruitment agencies"
     },
     "type/jobs-and-careers/recruitment-services/staffing-companies": {
@@ -6366,7 +6765,7 @@
       "subject": "Contract staffing"
     },
     "type/jobs-and-careers/recruitment-services/employer-hiring-campaigns": {
-      "photo": "professional-advice",
+      "photo": "accounting-calculation",
       "subject": "Employer hiring campaigns"
     },
     "category/professional-services": {
@@ -6382,7 +6781,7 @@
       "subject": "Lawyers"
     },
     "type/professional-services/legal-services/legal-consultation": {
-      "photo": "construction-contract",
+      "photo": "accountant-consultation",
       "subject": "Legal consultation"
     },
     "type/professional-services/legal-services/documentation-assistance": {
@@ -6390,11 +6789,11 @@
       "subject": "Documentation assistance"
     },
     "type/professional-services/legal-services/business-legal-services": {
-      "photo": "construction-contract",
+      "photo": "accounting-calculation",
       "subject": "Business legal services"
     },
     "type/professional-services/legal-services/property-legal-assistance": {
-      "photo": "construction-contract",
+      "photo": "air-conditioning",
       "subject": "Property legal assistance"
     },
     "subcategory/professional-services/accounting-and-taxation": {
@@ -6402,7 +6801,7 @@
       "subject": "Accounting & Taxation"
     },
     "type/professional-services/accounting-and-taxation/chartered-accountants": {
-      "photo": "bookkeeping",
+      "photo": "accounting-calculation",
       "subject": "Chartered accountants"
     },
     "type/professional-services/accounting-and-taxation/bookkeeping": {
@@ -6414,15 +6813,15 @@
       "subject": "GST services"
     },
     "type/professional-services/accounting-and-taxation/tax-filing": {
-      "photo": "bookkeeping",
+      "photo": "air-conditioning",
       "subject": "Tax filing"
     },
     "type/professional-services/accounting-and-taxation/payroll-services": {
-      "photo": "bookkeeping",
+      "photo": "airplane",
       "subject": "Payroll services"
     },
     "type/professional-services/accounting-and-taxation/financial-statement-preparation": {
-      "photo": "finance",
+      "photo": "architecture",
       "subject": "Financial statement preparation"
     },
     "subcategory/professional-services/business-consulting": {
@@ -6434,15 +6833,15 @@
       "subject": "Business strategy"
     },
     "type/professional-services/business-consulting/business-registration-assistance": {
-      "photo": "market-analysis",
+      "photo": "accountant-consultation",
       "subject": "Business registration assistance"
     },
     "type/professional-services/business-consulting/operations-consulting": {
-      "photo": "business-registration",
+      "photo": "accounting-calculation",
       "subject": "Operations consulting"
     },
     "type/professional-services/business-consulting/process-improvement": {
-      "photo": "consultation",
+      "photo": "air-conditioning",
       "subject": "Process improvement"
     },
     "type/professional-services/business-consulting/business-planning": {
@@ -6458,11 +6857,11 @@
       "subject": "Marketing & Branding"
     },
     "type/professional-services/marketing-and-branding/branding-consultation": {
-      "photo": "marketing",
+      "photo": "accountant-consultation",
       "subject": "Branding consultation"
     },
     "type/professional-services/marketing-and-branding/market-research": {
-      "photo": "digital-display",
+      "photo": "accounting-calculation",
       "subject": "Market research"
     },
     "type/professional-services/marketing-and-branding/marketing-strategy": {
@@ -6478,7 +6877,7 @@
       "subject": "Content strategy"
     },
     "type/professional-services/marketing-and-branding/social-media-consulting": {
-      "photo": "printing",
+      "photo": "air-conditioning",
       "subject": "Social media consulting"
     },
     "subcategory/professional-services/it-and-technology-services": {
@@ -6486,7 +6885,7 @@
       "subject": "IT & Technology Services"
     },
     "type/professional-services/it-and-technology-services/website-development": {
-      "photo": "technology",
+      "photo": "accountant-consultation",
       "subject": "Website development"
     },
     "type/professional-services/it-and-technology-services/mobile-application-development": {
@@ -6494,15 +6893,15 @@
       "subject": "Mobile application development"
     },
     "type/professional-services/it-and-technology-services/software-development": {
-      "photo": "technology",
+      "photo": "accounting-calculation",
       "subject": "Software development"
     },
     "type/professional-services/it-and-technology-services/cloud-consulting": {
-      "photo": "technology",
+      "photo": "air-conditioning",
       "subject": "Cloud consulting"
     },
     "type/professional-services/it-and-technology-services/devops-consulting": {
-      "photo": "servers",
+      "photo": "airplane",
       "subject": "DevOps consulting"
     },
     "type/professional-services/it-and-technology-services/it-support": {
@@ -6510,11 +6909,11 @@
       "subject": "IT support"
     },
     "type/professional-services/it-and-technology-services/cybersecurity-consulting": {
-      "photo": "technology",
+      "photo": "architecture",
       "subject": "Cybersecurity consulting"
     },
     "subcategory/professional-services/design-and-creative-services": {
-      "photo": "architecture",
+      "photo": "catalogue-batch2-professional-services--design-and-creative-services",
       "subject": "Design & Creative Services"
     },
     "type/professional-services/design-and-creative-services/graphic-design": {
@@ -6530,15 +6929,15 @@
       "subject": "Website design"
     },
     "type/professional-services/design-and-creative-services/illustration": {
-      "photo": "architecture",
+      "photo": "accountant-consultation",
       "subject": "Illustration"
     },
     "type/professional-services/design-and-creative-services/video-editing": {
-      "photo": "media-production",
+      "photo": "accounting-calculation",
       "subject": "Video editing"
     },
     "type/professional-services/design-and-creative-services/animation": {
-      "photo": "printing",
+      "photo": "air-conditioning",
       "subject": "Animation"
     },
     "subcategory/professional-services/real-estate-professionals": {
@@ -6550,7 +6949,7 @@
       "subject": "Property consultants"
     },
     "type/professional-services/real-estate-professionals/property-valuation": {
-      "photo": "property-documents",
+      "photo": "accountant-consultation",
       "subject": "Property valuation"
     },
     "type/professional-services/real-estate-professionals/property-documentation": {
@@ -6558,15 +6957,15 @@
       "subject": "Property documentation"
     },
     "type/professional-services/real-estate-professionals/property-management": {
-      "photo": "property-appraisal",
+      "photo": "accounting-calculation",
       "subject": "Property management"
     },
     "type/professional-services/real-estate-professionals/commercial-real-estate-consulting": {
-      "photo": "property-documents",
+      "photo": "air-conditioning",
       "subject": "Commercial real estate consulting"
     },
     "subcategory/professional-services/financial-services": {
-      "photo": "finance",
+      "photo": "property-sale",
       "subject": "Financial Services"
     },
     "type/professional-services/financial-services/financial-planning": {
@@ -6578,11 +6977,11 @@
       "subject": "Insurance consultation"
     },
     "type/professional-services/financial-services/loan-consultation": {
-      "photo": "finance",
+      "photo": "accountant-consultation",
       "subject": "Loan consultation"
     },
     "type/professional-services/financial-services/business-finance-consultation": {
-      "photo": "accounting-calculation",
+      "photo": "air-conditioning",
       "subject": "Business finance consultation"
     },
     "subcategory/professional-services/documentation-and-administrative-services": {
@@ -6590,7 +6989,7 @@
       "subject": "Documentation & Administrative Services"
     },
     "type/professional-services/documentation-and-administrative-services/translation": {
-      "photo": "documents",
+      "photo": "accountant-consultation",
       "subject": "Translation"
     },
     "type/professional-services/documentation-and-administrative-services/transcription": {
@@ -6606,7 +7005,7 @@
       "subject": "Document preparation"
     },
     "type/professional-services/documentation-and-administrative-services/virtual-assistance": {
-      "photo": "registration-paperwork",
+      "photo": "accounting-calculation",
       "subject": "Virtual assistance"
     },
     "type/professional-services/documentation-and-administrative-services/data-entry": {
@@ -6622,7 +7021,7 @@
       "subject": "Civil engineering consultancy"
     },
     "type/professional-services/engineering-and-technical-consultancy/structural-consultancy": {
-      "photo": "construction-estimate",
+      "photo": "accountant-consultation",
       "subject": "Structural consultancy"
     },
     "type/professional-services/engineering-and-technical-consultancy/architectural-consultancy": {
@@ -6630,7 +7029,7 @@
       "subject": "Architectural consultancy"
     },
     "type/professional-services/engineering-and-technical-consultancy/surveying": {
-      "photo": "engineering-team",
+      "photo": "accounting-calculation",
       "subject": "Surveying"
     },
     "type/professional-services/engineering-and-technical-consultancy/project-management": {
@@ -6638,7 +7037,7 @@
       "subject": "Project management"
     },
     "type/professional-services/engineering-and-technical-consultancy/technical-inspections": {
-      "photo": "architecture",
+      "photo": "air-conditioning",
       "subject": "Technical inspections"
     },
     "category/events-and-celebrations": {
@@ -6654,7 +7053,7 @@
       "subject": "Banquet halls"
     },
     "type/events-and-celebrations/venues/party-halls": {
-      "photo": "hotel",
+      "photo": "accountant-consultation",
       "subject": "Party halls"
     },
     "type/events-and-celebrations/venues/wedding-venues": {
@@ -6662,7 +7061,7 @@
       "subject": "Wedding venues"
     },
     "type/events-and-celebrations/venues/conference-halls": {
-      "photo": "restaurant",
+      "photo": "accounting-calculation",
       "subject": "Conference halls"
     },
     "type/events-and-celebrations/venues/outdoor-venues": {
@@ -6682,7 +7081,7 @@
       "subject": "Wedding planners"
     },
     "type/events-and-celebrations/weddings/wedding-decorators": {
-      "photo": "wedding",
+      "photo": "accountant-consultation",
       "subject": "Wedding decorators"
     },
     "type/events-and-celebrations/weddings/bridal-makeup": {
@@ -6690,7 +7089,7 @@
       "subject": "Bridal makeup"
     },
     "type/events-and-celebrations/weddings/wedding-photographers": {
-      "photo": "wedding",
+      "photo": "accounting-calculation",
       "subject": "Wedding photographers"
     },
     "type/events-and-celebrations/weddings/wedding-catering": {
@@ -6698,15 +7097,15 @@
       "subject": "Wedding catering"
     },
     "type/events-and-celebrations/weddings/wedding-entertainment": {
-      "photo": "wedding",
+      "photo": "air-conditioning",
       "subject": "Wedding entertainment"
     },
     "type/events-and-celebrations/weddings/wedding-invitation-services": {
-      "photo": "wedding",
+      "photo": "airplane",
       "subject": "Wedding invitation services"
     },
     "subcategory/events-and-celebrations/birthday-and-private-parties": {
-      "photo": "celebration",
+      "photo": "catalogue-batch2-events-and-celebrations--birthday-and-private-parties",
       "subject": "Birthday & Private Parties"
     },
     "type/events-and-celebrations/birthday-and-private-parties/birthday-planners": {
@@ -6714,7 +7113,7 @@
       "subject": "Birthday planners"
     },
     "type/events-and-celebrations/birthday-and-private-parties/party-decorations": {
-      "photo": "cake",
+      "photo": "accountant-consultation",
       "subject": "Party decorations"
     },
     "type/events-and-celebrations/birthday-and-private-parties/cake-services": {
@@ -6722,7 +7121,7 @@
       "subject": "Cake services"
     },
     "type/events-and-celebrations/birthday-and-private-parties/party-entertainers": {
-      "photo": "celebration",
+      "photo": "accounting-calculation",
       "subject": "Party entertainers"
     },
     "type/events-and-celebrations/birthday-and-private-parties/private-chefs": {
@@ -6734,7 +7133,7 @@
       "subject": "Themed party arrangements"
     },
     "subcategory/events-and-celebrations/corporate-events": {
-      "photo": "events",
+      "photo": "tender-review",
       "subject": "Corporate Events"
     },
     "type/events-and-celebrations/corporate-events/corporate-event-planners": {
@@ -6746,15 +7145,15 @@
       "subject": "Conferences"
     },
     "type/events-and-celebrations/corporate-events/seminars": {
-      "photo": "events",
+      "photo": "accountant-consultation",
       "subject": "Seminars"
     },
     "type/events-and-celebrations/corporate-events/product-launches": {
-      "photo": "collaboration",
+      "photo": "accounting-calculation",
       "subject": "Product launches"
     },
     "type/events-and-celebrations/corporate-events/team-building-events": {
-      "photo": "events",
+      "photo": "air-conditioning",
       "subject": "Team-building events"
     },
     "type/events-and-celebrations/corporate-events/corporate-catering": {
@@ -6762,7 +7161,7 @@
       "subject": "Corporate catering"
     },
     "subcategory/events-and-celebrations/event-professionals": {
-      "photo": "media-production",
+      "photo": "digital-analytics",
       "subject": "Event Professionals"
     },
     "type/events-and-celebrations/event-professionals/photographers": {
@@ -6770,7 +7169,7 @@
       "subject": "Photographers"
     },
     "type/events-and-celebrations/event-professionals/videographers": {
-      "photo": "media-production",
+      "photo": "accountant-consultation",
       "subject": "Videographers"
     },
     "type/events-and-celebrations/event-professionals/djs": {
@@ -6778,7 +7177,7 @@
       "subject": "DJs"
     },
     "type/events-and-celebrations/event-professionals/singers": {
-      "photo": "media-production",
+      "photo": "accounting-calculation",
       "subject": "Singers"
     },
     "type/events-and-celebrations/event-professionals/bands": {
@@ -6786,19 +7185,19 @@
       "subject": "Bands"
     },
     "type/events-and-celebrations/event-professionals/hosts-and-emcees": {
-      "photo": "chef",
+      "photo": "air-conditioning",
       "subject": "Hosts and emcees"
     },
     "type/events-and-celebrations/event-professionals/performers": {
-      "photo": "media-production",
+      "photo": "airplane",
       "subject": "Performers"
     },
     "type/events-and-celebrations/event-professionals/event-coordinators": {
-      "photo": "events",
+      "photo": "architecture",
       "subject": "Event coordinators"
     },
     "subcategory/events-and-celebrations/decorations-and-equipment": {
-      "photo": "celebration",
+      "photo": "restaurant",
       "subject": "Decorations & Equipment"
     },
     "type/events-and-celebrations/decorations-and-equipment/balloon-decorations": {
@@ -6806,7 +7205,7 @@
       "subject": "Balloon decorations"
     },
     "type/events-and-celebrations/decorations-and-equipment/floral-decorations": {
-      "photo": "celebration",
+      "photo": "accountant-consultation",
       "subject": "Floral decorations"
     },
     "type/events-and-celebrations/decorations-and-equipment/lighting": {
@@ -6814,7 +7213,7 @@
       "subject": "Lighting"
     },
     "type/events-and-celebrations/decorations-and-equipment/sound-systems": {
-      "photo": "celebration",
+      "photo": "accounting-calculation",
       "subject": "Sound systems"
     },
     "type/events-and-celebrations/decorations-and-equipment/stages": {
@@ -6826,11 +7225,11 @@
       "subject": "Furniture"
     },
     "type/events-and-celebrations/decorations-and-equipment/event-backdrops": {
-      "photo": "celebration",
+      "photo": "air-conditioning",
       "subject": "Event backdrops"
     },
     "subcategory/events-and-celebrations/tickets-and-experiences": {
-      "photo": "events",
+      "photo": "billboard",
       "subject": "Tickets & Experiences"
     },
     "type/events-and-celebrations/tickets-and-experiences/concerts": {
@@ -6842,23 +7241,23 @@
       "subject": "Live performances"
     },
     "type/events-and-celebrations/tickets-and-experiences/festivals": {
-      "photo": "events",
+      "photo": "accountant-consultation",
       "subject": "Festivals"
     },
     "type/events-and-celebrations/tickets-and-experiences/exhibitions": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "accounting-calculation",
       "subject": "Exhibitions"
     },
     "type/events-and-celebrations/tickets-and-experiences/workshops": {
-      "photo": "events",
+      "photo": "air-conditioning",
       "subject": "Workshops"
     },
     "type/events-and-celebrations/tickets-and-experiences/community-events": {
-      "photo": "travel-stay-and-experiences",
+      "photo": "airplane",
       "subject": "Community events"
     },
     "type/events-and-celebrations/tickets-and-experiences/other-ticketed-events": {
-      "photo": "events",
+      "photo": "architecture",
       "subject": "Other ticketed events"
     },
     "subcategory/events-and-celebrations/event-planning-services": {
@@ -6866,7 +7265,7 @@
       "subject": "Event Planning Services"
     },
     "type/events-and-celebrations/event-planning-services/invitations": {
-      "photo": "planning",
+      "photo": "accountant-consultation",
       "subject": "Invitations"
     },
     "type/events-and-celebrations/event-planning-services/guest-management": {
@@ -6878,7 +7277,7 @@
       "subject": "Event photography"
     },
     "type/events-and-celebrations/event-planning-services/event-transportation": {
-      "photo": "planning",
+      "photo": "accounting-calculation",
       "subject": "Event transportation"
     },
     "type/events-and-celebrations/event-planning-services/event-catering": {
@@ -6886,7 +7285,7 @@
       "subject": "Event catering"
     },
     "type/events-and-celebrations/event-planning-services/event-staffing": {
-      "photo": "media-production",
+      "photo": "air-conditioning",
       "subject": "Event staffing"
     },
     "category/pet-care": {
@@ -6906,19 +7305,19 @@
       "subject": "Animal hospitals"
     },
     "type/pet-care/veterinary-services/vaccination-services": {
-      "photo": "vet-dog",
+      "photo": "accountant-consultation",
       "subject": "Vaccination services"
     },
     "type/pet-care/veterinary-services/veterinary-consultations": {
-      "photo": "vet-cat",
+      "photo": "accounting-calculation",
       "subject": "Veterinary consultations"
     },
     "type/pet-care/veterinary-services/emergency-veterinary-care": {
-      "photo": "vet-dog",
+      "photo": "air-conditioning",
       "subject": "Emergency veterinary care"
     },
     "subcategory/pet-care/grooming": {
-      "photo": "pet-grooming",
+      "photo": "catalogue-batch2-pet-care--grooming",
       "subject": "Grooming"
     },
     "type/pet-care/grooming/pet-bathing": {
@@ -6926,11 +7325,11 @@
       "subject": "Pet bathing"
     },
     "type/pet-care/grooming/hair-trimming": {
-      "photo": "pet-grooming",
+      "photo": "accountant-consultation",
       "subject": "Hair trimming"
     },
     "type/pet-care/grooming/nail-trimming": {
-      "photo": "pet-grooming",
+      "photo": "accounting-calculation",
       "subject": "Nail trimming"
     },
     "type/pet-care/grooming/grooming-salons": {
@@ -6938,7 +7337,7 @@
       "subject": "Grooming salons"
     },
     "type/pet-care/grooming/mobile-grooming": {
-      "photo": "pet-grooming",
+      "photo": "air-conditioning",
       "subject": "Mobile grooming"
     },
     "subcategory/pet-care/boarding-and-daycare": {
@@ -6946,19 +7345,19 @@
       "subject": "Boarding & Daycare"
     },
     "type/pet-care/boarding-and-daycare/pet-boarding": {
-      "photo": "cat",
+      "photo": "accountant-consultation",
       "subject": "Pet boarding"
     },
     "type/pet-care/boarding-and-daycare/pet-daycare": {
-      "photo": "pet-care",
+      "photo": "accounting-calculation",
       "subject": "Pet daycare"
     },
     "type/pet-care/boarding-and-daycare/overnight-pet-care": {
-      "photo": "cat",
+      "photo": "air-conditioning",
       "subject": "Overnight pet care"
     },
     "type/pet-care/boarding-and-daycare/in-home-pet-sitting": {
-      "photo": "pet-care",
+      "photo": "airplane",
       "subject": "In-home pet sitting"
     },
     "type/pet-care/boarding-and-daycare/holiday-pet-care": {
@@ -6970,11 +7369,11 @@
       "subject": "Training"
     },
     "type/pet-care/training/puppy-training": {
-      "photo": "dog-walking",
+      "photo": "accountant-consultation",
       "subject": "Puppy training"
     },
     "type/pet-care/training/obedience-training": {
-      "photo": "dog-walking",
+      "photo": "accounting-calculation",
       "subject": "Obedience training"
     },
     "type/pet-care/training/behaviour-consultation": {
@@ -6982,11 +7381,11 @@
       "subject": "Behaviour consultation"
     },
     "type/pet-care/training/specialised-training": {
-      "photo": "dog-walking",
+      "photo": "air-conditioning",
       "subject": "Specialised training"
     },
     "subcategory/pet-care/pet-walking-and-sitting": {
-      "photo": "dog-walking",
+      "photo": "pet-bath",
       "subject": "Pet Walking & Sitting"
     },
     "type/pet-care/pet-walking-and-sitting/dog-walking": {
@@ -6998,11 +7397,11 @@
       "subject": "Pet sitting"
     },
     "type/pet-care/pet-walking-and-sitting/home-visits": {
-      "photo": "dog-walking",
+      "photo": "accountant-consultation",
       "subject": "Home visits"
     },
     "type/pet-care/pet-walking-and-sitting/pet-companionship-services": {
-      "photo": "cat",
+      "photo": "accounting-calculation",
       "subject": "Pet companionship services"
     },
     "subcategory/pet-care/pet-supplies": {
@@ -7018,27 +7417,27 @@
       "subject": "Toys"
     },
     "type/pet-care/pet-supplies/bedding": {
-      "photo": "pet-care",
+      "photo": "accountant-consultation",
       "subject": "Bedding"
     },
     "type/pet-care/pet-supplies/collars-and-leashes": {
-      "photo": "pet-food",
+      "photo": "accounting-calculation",
       "subject": "Collars and leashes"
     },
     "type/pet-care/pet-supplies/grooming-products": {
-      "photo": "pet-grooming",
+      "photo": "air-conditioning",
       "subject": "Grooming products"
     },
     "type/pet-care/pet-supplies/pet-accessories": {
-      "photo": "pet-care",
+      "photo": "airplane",
       "subject": "Pet accessories"
     },
     "subcategory/pet-care/pet-adoption-and-welfare": {
-      "photo": "pet-care",
+      "photo": "vet-cat",
       "subject": "Pet Adoption & Welfare"
     },
     "type/pet-care/pet-adoption-and-welfare/adoption-organisations": {
-      "photo": "pet-care",
+      "photo": "accountant-consultation",
       "subject": "Adoption organisations"
     },
     "type/pet-care/pet-adoption-and-welfare/animal-shelters": {
@@ -7046,15 +7445,15 @@
       "subject": "Animal shelters"
     },
     "type/pet-care/pet-adoption-and-welfare/rescue-groups": {
-      "photo": "pet-care",
+      "photo": "accounting-calculation",
       "subject": "Rescue groups"
     },
     "type/pet-care/pet-adoption-and-welfare/lost-and-found-pets": {
-      "photo": "cat",
+      "photo": "air-conditioning",
       "subject": "Lost-and-found pets"
     },
     "type/pet-care/pet-adoption-and-welfare/animal-welfare-organisations": {
-      "photo": "pet-care",
+      "photo": "airplane",
       "subject": "Animal welfare organisations"
     },
     "category/agriculture-and-farming": {

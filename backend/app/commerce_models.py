@@ -46,5 +46,5 @@ class CommerceListing(Base):
         CheckConstraint("currency = 'INR'", name='ck_commerce_currency'),
         CheckConstraint('unit_price_paise > 0 AND unit_price_paise <= 1000000000', name='ck_commerce_price'),
         CheckConstraint('revision > 0', name='ck_commerce_revision'),
-        CheckConstraint("(kind = 'PRODUCT' AND service_id IS NULL) OR (kind = 'SERVICE_PACKAGE' AND service_id IS NOT NULL)", name='ck_commerce_service_kind'),
+        CheckConstraint("(kind = 'PRODUCT' AND service_id IS NULL) OR (kind = 'SERVICE_PACKAGE' AND (service_id IS NOT NULL OR (taxonomy_category_slug IS NOT NULL AND taxonomy_subcategory_slug IS NOT NULL AND taxonomy_listing_type_slug IS NOT NULL)))", name='ck_commerce_service_kind'),
     )

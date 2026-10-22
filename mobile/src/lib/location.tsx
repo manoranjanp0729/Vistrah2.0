@@ -4,7 +4,7 @@ import {api} from './api';
 export type Location={label:string;latitude:number;longitude:number;radius:2|5|10|25;postal_code?:string;address?:string;landmark?:string};
 const Context=createContext<{location:Location|null;setLocation:(value:Location|null)=>void}|null>(null);
 export function LocationProvider({children}:{children:ReactNode}){
- const {user}=useSession();const [location,setValue]=useState<Location|null>(null);const generation=useRef(0);const previous=useRef<number|null>(null);
+ const {user}=useSession(false);const [location,setValue]=useState<Location|null>(null);const generation=useRef(0);const previous=useRef<number|null>(null);
  const setLocation=useCallback((value:Location|null)=>{generation.current++;setValue(value);},[]);
  useEffect(()=>{let active=true;const id=user?.id??null;if(previous.current!==null&&previous.current!==id)setLocation(null);previous.current=id;const epoch=generation.current;
   if(user)api<{location:{locality:string;latitude:number;longitude:number;postal_code:string;address:string;landmark:string}|null}>('/me/location').then(result=>{if(active&&epoch===generation.current&&result.location){const point=result.location;setValue(value=>value??{...point,label:point.locality,radius:5});}}).catch(()=>{});

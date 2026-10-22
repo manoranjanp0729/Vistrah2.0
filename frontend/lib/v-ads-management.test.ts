@@ -10,6 +10,11 @@ describe('Phase 3 management contracts and admin preview boundary',()=>{
   expect(JSON.parse(calls[0].options!.body as string)).toEqual({name:'Updated name',description:'Updated copy',expected_revision:'a'.repeat(64)});
   await client.withdraw({id:'video',status:'APPROVED'} as SellerVideo,' Clear removal reason ');
   expect(JSON.parse(calls[1].options!.body as string)).toEqual({expected_status:'APPROVED',reason:'Clear removal reason'});
+  await client.editVideo('video',' New Reel ',' Updated caption ');
+  expect(calls[2].path).toBe('/v-ads/videos/video/edit');
+  expect(JSON.parse(calls[2].options!.body as string)).toEqual({title:'New Reel',description:'Updated caption'});
+  await client.deleteVideo('video');
+  expect(calls[3]).toEqual({path:'/v-ads/videos/video',options:{method:'DELETE'}});
   expect(()=>client.profile({id:'old-api'} as AdvertiserAccount,'Title','')).toThrow();
  });
  it('sends independent account-review revisions and restricts blank reasons',async()=>{

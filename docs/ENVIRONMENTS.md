@@ -139,3 +139,11 @@ profile pointed at the domain; it does not prove the backend is online or that
 the application is production-ready. Production signing/store channels are
 completed in Phase 8. Native modules, splash settings and launcher icon changes
 require a new native build.
+
+## Google sign-in configuration (source prepared; not activated)
+
+Google login requires registered OAuth clients; email-only test login is removed in every environment. Create a Google Cloud OAuth consent configuration and a Web client with the exact website/local browser origins. Set public NEXT_PUBLIC_GOOGLE_CLIENT_ID for the desktop build and EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID for the phone/native build. Set backend GOOGLE_CLIENT_ID to the comma-separated accepted audience IDs. These are public IDs, not client secrets. Missing backend configuration fails closed.
+
+Register Android with the existing app package and signing-certificate SHA fingerprints. Native uses the Web client ID for backend ID tokens. For iOS register the existing bundle ID, set EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID and GOOGLE_IOS_URL_SCHEME to its reversed client-ID URL scheme; the existing app config conditionally adds the native Google plugin. Install a new development/standalone build for native Google login; Expo Go retains email/password login. Keep consent testing users explicit until Google configuration is approved. Never substitute an email prompt for Google's account selector.
+
+Before separately authorized rollout, apply migration 022 (google_identities) through the controlled migration process, install the reviewed locked API/native dependencies, build public client IDs into clients and verify real account selection, cancellation, customer/seller separation and admin identity ownership. No migration or normal runtime restart is implied by preparing this source. Previously issued test-login sessions are not automatically revoked by this code change; sign out of affected sessions and plan explicit revocation if needed.

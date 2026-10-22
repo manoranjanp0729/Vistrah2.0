@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {authEndpoint} from '../src/lib/seller-auth.ts';
+import {authEndpoint,sellerReturnDestination} from '../src/lib/seller-auth.ts';
 import {matches,visibleAnswers,preparedAnswers,type RequirementField} from '../src/lib/provider-requirements.ts';
 import {evidenceMeta,evidenceLimit} from '../src/lib/evidence-validation.ts';
 import {resetToken} from '../src/lib/reset-token.ts';
@@ -13,6 +13,14 @@ test('seller and employer authentication uses the existing capability endpoints'
   assert.equal(authEndpoint(true,true),'/auth/seller/register');
   assert.equal(authEndpoint(false,false),'/auth/login');
   assert.equal(authEndpoint(true,false),'/auth/register');
+});
+
+test('seller entry returns to service selection only after seller authentication',()=>{
+  assert.equal(sellerReturnDestination(true,'/services'),'/services');
+  assert.equal(sellerReturnDestination(false,'/services'),null);
+  assert.equal(sellerReturnDestination(true,'/provider-applications/new'),'/provider-applications/new');
+  assert.equal(sellerReturnDestination(false,'/provider-applications/new'),null);
+  for(const next of [undefined,'/admin','https://example.test','//example.test','/provider-applications/new?business=1'])assert.equal(sellerReturnDestination(true,next),null);
 });
 test('hidden conditional answers cannot activate dependent required questions',()=>{
   const fields:RequirementField[]=[{id:'registered',label:'Registered',type:'boolean'},{id:'registration',label:'Registration',type:'text',visible_if:{field:'registered',operator:'equals',value:true}},{id:'proof',label:'Proof',type:'text',visible_if:{field:'registration',operator:'equals',value:'retained'}}];
@@ -50,4 +58,11 @@ test('only the guarded admin dashboard can open the independent admin website',(
   assert.match(callers[0].text,/if\(!allowed\)return/);
   const helper=source.find(item=>item.file.endsWith('/lib/web.ts'))!.text;
   assert.match(helper,/EXPO_PUBLIC_ADMIN_URL/);assert.doesNotMatch(helper,/Authorization|access_token/);
+});
+
+test('listing type selection survives seller sign-in without accepting unsafe return paths',()=>{
+ const next='/seller/add-service?category=home&subcategory=repairs&type=plumbing';
+ assert.equal(sellerReturnDestination(true,next),next);
+ assert.equal(sellerReturnDestination(false,next),null);
+ for(const path of [next+'&next=//example.test',next+'&type=other',next+'?evil=true',next+'#fragment','/seller/add-service?category=home&subcategory=repairs'])assert.equal(sellerReturnDestination(true,path),null);
 });

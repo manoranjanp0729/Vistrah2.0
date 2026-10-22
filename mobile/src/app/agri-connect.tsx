@@ -1,3 +1,4 @@
+import {UiText,UiElement} from "../components/localized-ui";
 import {useLanguage} from '../lib/language';
 import {useEffect,useRef,useState} from 'react';
 import {AccessibilityInfo,Image,Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
@@ -35,8 +36,8 @@ export default function AgriConnect(){
  return <SafeAreaView edges={['left','right','bottom']} style={s.screen}><ScrollView ref={scroll} contentInsetAdjustmentBehavior="never" contentContainerStyle={s.page}>
   <LinearGradient colors={['#24452f','#397337','#7eaa6b']} start={{x:0,y:0}} end={{x:1,y:1}} style={s.hero}>
    <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={s.leaves}>{[0,1,2].map(leaf=><Ionicons key={leaf} name="leaf" size={24+leaf*7} color="#d4e6a8" style={{opacity:.18,transform:[{rotate:`${leaf*18-20}deg`}]}}/>)}</View>
-   <View style={s.heroCopy}><View style={s.heroLabel}><Ionicons name="leaf" size={17} color="#d4e6a8"/><Text style={s.heroLabelText}>VISTRAH AgriConnect</Text></View><Text accessibilityRole="header" style={s.heroTitle}>{t('agri.headline')}</Text><Text style={s.heroDescription}>{t('agri.description')}</Text><View style={s.farmerOffer}><Text style={s.offerTitle}>{t('agri.membership')}</Text><Text style={s.offerNote}>{t('common.comingSoon')}</Text></View></View>
-   <View style={s.heroPhoto}>{failed.hero?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<Image source={require('../../assets/connect/agriconnect-tractor-paddy.png')} resizeMode="cover" accessibilityLabel={t('agri.photoAlt')} onError={()=>setFailed(value=>({...value,hero:true}))} style={s.fill}/>}</View>
+   <View style={s.heroCopy}><View style={s.heroLabel}><Ionicons name="leaf" size={17} color="#d4e6a8"/><Text style={s.heroLabelText}><UiText value={"VISTRAH AgriConnect"}/></Text></View><Text accessibilityRole="header" style={s.heroTitle}>{t('agri.headline')}</Text><Text style={s.heroDescription}>{t('agri.description')}</Text><View style={s.farmerOffer}><Text style={s.offerTitle}>{t('agri.membership')}</Text><Text style={s.offerNote}>{t('common.comingSoon')}</Text></View></View>
+   <View style={s.heroPhoto}>{failed.hero?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<UiElement as={Image} source={require('../../assets/connect/agriconnect-tractor-paddy.png')} resizeMode="cover" accessibilityLabel={t('agri.photoAlt')} onError={()=>setFailed(value=>({...value,hero:true}))} style={s.fill}/>}</View>
    <Pressable accessibilityRole="link" onPress={scrollToCategories} style={({pressed})=>[s.heroButton,{opacity:pressed?.85:1}]}><Text style={s.heroButtonText}>{t('agri.cta')}</Text><Feather name="arrow-right" size={16} color="#24452f"/></Pressable>
   </LinearGradient>
 
@@ -45,7 +46,7 @@ export default function AgriConnect(){
    <Text style={s.smallPrint}>{t('agri.upcoming')}</Text>
   </View>
   <View onLayout={event=>{categoriesY.current=event.nativeEvent.layout.y;}} style={s.headingGroup}><Text style={s.eyebrow}>{t('agri.available')}</Text><Text accessibilityRole="header" style={s.sectionTitle}>{t('agri.servicesTitle')}</Text><Text style={s.description}>{t('agri.servicesDescription')}</Text></View>
-  <PhotoCardRail vertical label={t('agri.subcategories')} cards={category.subcategories.map(subcategory=>{
+  <UiElement as={PhotoCardRail} vertical label={t('agri.subcategories')} cards={category.subcategories.map(subcategory=>{
    const id=marketplaceItemId(category.slug,subcategory.slug),photo=nativeMarketplacePhoto(id);
    return <Pressable key={subcategory.slug} accessibilityRole="link" accessibilityLabel={label(id,subcategory.title)} onPress={()=>explore(subcategory.slug)} style={({pressed})=>[s.discoveryCard,{opacity:pressed?.85:1}]}><View style={s.discoveryPhoto}>{photo&&!failed[id]?<Image source={photo} resizeMode="cover" accessibilityLabel={nativeMarketplaceAlt(id)??subcategory.title} onError={()=>setFailed(value=>({...value,[id]:true}))} style={s.fill}/>:<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>}</View><Text style={s.discoveryTitle}>{label(id,subcategory.title)}</Text></Pressable>;
   })}/>

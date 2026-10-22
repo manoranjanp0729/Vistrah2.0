@@ -1342,5 +1342,13 @@
   "footer.signup": "ಬಳಕೆದಾರರಾಗಿ ನೋಂದಾಯಿಸಿ",
   "footer.login": "ಬಳಕೆದಾರರಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ",
   "footer.sellerSignup": "ಮಾರಾಟಗಾರರಾಗಿ ನೋಂದಾಯಿಸಿ",
-  "footer.sellerLogin": "ಮಾರಾಟಗಾರರಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ"
+  "footer.sellerLogin": "ಮಾರಾಟಗಾರರಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ",
+  "settings.themeColor": "ಅಪ್ಲಿಕೇಶನ್ ಥೀಮ್",
+  "settings.themeColorHelp": "ಅಪ್ಲಿಕೇಶನ್ ಬಣ್ಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ. ನೋಟವನ್ನು ಬದಲಾಯಿಸಲು ಲೈಟ್ ಅಥವಾ ಡಾರ್ಕ್ ಆಯ್ಕೆಮಾಡಿ.",
+  "settings.theme.blue": "ಸಾಗರ ನೀಲಿ",
+  "settings.theme.indigo": "ರಾಯಲ್ ಇಂಡಿಗೋ",
+  "settings.theme.lavender": "ಕ್ಲಾಸಿಕ್ ಲ್ಯಾವೆಂಡರ್",
+  "settings.theme.orchid": "ಆರ್ಕಿಡ್ ನೇರಳೆ",
+  "settings.theme.pink": "ರೋಸ್ ಗುಲಾಬಿ",
+  "settings.close": "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮುಚ್ಚಿ"
 }

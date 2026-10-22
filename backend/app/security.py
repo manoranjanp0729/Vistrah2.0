@@ -47,7 +47,7 @@ def admin_user(user: User = Depends(current_user)):
     return user
 
 def seller_user(user: User = Depends(current_user)):
-    if not user.seller_enabled:
+    if not user.seller_enabled and user.role != 'ADMIN':
         raise HTTPException(403, 'Enable seller access using your existing account first')
     return user
 

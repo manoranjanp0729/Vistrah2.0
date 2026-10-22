@@ -467,7 +467,9 @@ def review(id:str,service_id:int,data:Decision,user:User=Depends(admin_user),db:
         if not provider:
             provider=Provider(owner_user_id=app.user_id,slug='provider-'+str(uuid.uuid4()),name=app.common['contact_name'],company=app.common['legal_name'],email=app.common['email'],phone=app.common['phone'],address=app.common['address'],location=app.common['location'],provenance='Authenticated provider application '+app.id,verification_status='VERIFIED',verification_evidence='Manual review recorded in provider application history',active=True)
             db.add(provider);db.flush()
-            db.get(User,app.user_id).seller_enabled=True
+            applicant=db.get(User,app.user_id);applicant.seller_enabled=True
+            from .v_ads_account_routes import ensure_seller_v_ads_account
+            ensure_seller_v_ads_account(db,applicant)
         elif provider.verification_status!='VERIFIED':raise HTTPException(409,'Provider-level verification must be completed first')
         app.provider_id=provider.id
         grant=db.get(ProviderService,(provider.id,service_id))

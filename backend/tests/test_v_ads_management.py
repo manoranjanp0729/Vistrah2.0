@@ -195,3 +195,24 @@ def test_rejection_is_available_with_storage_off_but_approval_stays_closed(manag
     assert client.post(path, headers=headers['admin'], json={
         'status': 'REJECTED', 'reason': decision()['reason']}).status_code == 200
     assert video.status == 'REJECTED'
+
+
+def test_seller_can_edit_and_delete_owned_video_ads_with_approval_gate(management, db):
+    client, headers, _, _, video, _ = management
+    edit_path = f'/v-ads/videos/{video.id}/edit'
+    assert client.post(edit_path, headers=headers['other'], json={'title': 'Unauthorized edit', 'description': ''}).status_code == 403
+    assert client.post(edit_path, headers=headers['admin'], json={'title': 'Unauthorized admin edit', 'description': ''}).status_code == 403
+    edited = client.post(edit_path, headers=headers['owner'], json={'title': 'Updated Reel Title', 'description': 'Updated caption'})
+    assert edited.status_code == 200, edited.text
+    assert edited.json()['status'] == 'PENDING'
+    assert edited.json()['title'] == 'Updated Reel Title'
+    assert client.get('/v-ads/reels/' + video.id).status_code == 404
+    assert client.post(f'/admin/v-ads/videos/{video.id}/review', headers=headers['admin'],
+        json={'status': 'APPROVED', 'reason': decision()['reason']}).status_code == 200
+    assert client.get('/v-ads/reels/' + video.id).status_code == 200
+    assert client.delete(f'/v-ads/videos/{video.id}', headers=headers['other']).status_code == 403
+    assert client.delete(f'/v-ads/videos/{video.id}', headers=headers['admin']).status_code == 403
+    deleted = client.delete(f'/v-ads/videos/{video.id}', headers=headers['owner'])
+    assert deleted.status_code == 200 and deleted.json()['status'] == 'REMOVED'
+    assert client.get('/v-ads/reels/' + video.id).status_code == 404
+    assert client.post(edit_path, headers=headers['owner'], json={'title': 'Cannot edit deleted', 'description': ''}).status_code == 409

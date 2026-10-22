@@ -144,6 +144,9 @@ th,.admin-table th,.table-actions button,.admin-search button{background:var(--i
 .replica-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .replica-actions>a{display:block;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;font-size:14px;text-align:center}
 .replica-actions>a:hover{background:var(--surface-hover)}
+.account-categories{display:flex;flex-direction:column;gap:20px}
+.account-category{display:flex;flex-direction:column;gap:8px}
+.account-sidebar nav .small-label{display:block;padding:12px 12px 4px;color:var(--text-secondary);font-size:11px;letter-spacing:.05em}
 .replica-search{display:flex;align-items:flex-end;flex-direction:row}.replica-search label{flex:1}
 .auth-page{display:block;max-width:640px;margin:28px auto;padding:20px;border:0}.auth-form-wrap{padding:0}.auth-form-wrap h2{font-size:24px;margin-bottom:12px}.auth-form-wrap p{font-size:13px;line-height:1.45}
 .reference-service-banner{height:112px;border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#182d3b,#223b47,#473126);position:relative;display:flex;align-items:center;justify-content:center}
@@ -180,3 +183,64 @@ dialog.replica-location-dialog{margin:auto;max-height:85vh;color:var(--text-prim
 @media(prefers-reduced-motion:reduce){.theme-switch span{transition:none}}
 
 .reference-section.homepage-categories>.section-heading{margin-bottom:8px;gap:8px;flex-direction:row;align-items:center}.homepage-categories>.section-heading>.text-link{white-space:nowrap;flex-shrink:0;margin-bottom:0}
+
+/* Consumer and seller pages share the homepage's lavender/purple identity. */
+.public-header{background:var(--brand-header-gradient);border-bottom:1px solid var(--border)}
+.button{color:var(--button-ink);box-shadow:0 4px 12px #47216b12;font-weight:600}
+.button:hover{background:var(--accent-orange);border-color:var(--accent-orange);filter:brightness(1.08)}
+.button.secondary:hover,.button.light:hover{filter:none}
+.vistrah-app{padding-bottom:24px}
+.vistrah-app :is(.page,.auth-page,.provider-onboarding){padding-top:24px}
+.vistrah-app :is(.page,.provider-onboarding) > h1,.vistrah-app .auth-form-wrap > h2{background:var(--brand-gradient);color:#fff;padding:24px;border-radius:22px;font-family:var(--font-body);font-size:clamp(24px,3vw,32px);font-weight:600;line-height:1.25;letter-spacing:-.025em;margin:0 0 22px;overflow-wrap:anywhere}
+.vistrah-app :is(.page,.provider-onboarding) > h1 a{color:inherit}
+.vistrah-app :is(.panel,.help-card,.request-card,.provider-card,.form-card,.account-hero,.checkout-card,.membership-card,.provider-profile,.empty){border:1px solid var(--border);border-radius:20px;background:var(--surface);box-shadow:0 5px 20px #47216b06;color:var(--text-primary);position:static;max-width:100%;min-width:0}
+.vistrah-app .help-card{margin-block:16px;padding:20px}
+.vistrah-app .help-card h3,.vistrah-app .help-card h4{font-size:18px;font-weight:600;margin:0 0 12px;color:var(--text-primary)}
+.vistrah-app .nested-section{margin-top:28px;padding-top:20px;border-top:1px solid var(--border)}
+.vistrah-app .form{gap:16px;margin-block:20px}
+.vistrah-app .form :is(input,select,textarea){background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:13px 14px;font-size:14px;min-height:48px;color:var(--text-primary)}
+.vistrah-app .form :is(input[type=checkbox],input[type=radio]){min-height:0;width:18px;height:18px;accent-color:var(--accent-orange)}
+.vistrah-app .form fieldset{min-width:0;border:1px solid var(--border);border-radius:20px;padding:20px;display:grid;gap:16px;background:var(--surface)}
+.vistrah-app .form legend{font-size:13px;font-weight:600;color:var(--accent-orange);padding-inline:8px}
+.vistrah-app :is(input,textarea,select,button,a):focus-visible{outline:3px solid var(--accent-orange);outline-offset:3px}
+.vistrah-app .account-category{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:20px;gap:12px}
+.vistrah-app .account-category h2{font-size:18px;color:var(--text-primary)}
+.replica-actions>a{background:var(--surface-soft);color:var(--text-primary);border-color:var(--border);text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px}
+.replica-actions>a.button:not(.secondary){background:var(--accent-orange);color:var(--button-ink)}
+.replica-actions>a:hover{background:var(--surface-hover)}
+.vistrah-app details{scroll-margin-top:100px}
+.vistrah-app summary{cursor:pointer;min-height:44px;align-content:center;color:var(--text-primary);font-weight:600}
+.vistrah-app .pagination button{border:1px solid var(--border);background:var(--surface);color:var(--text-primary);border-radius:14px;min-height:44px;padding:10px 16px}
+.footer,.replica-bottom-nav{background:var(--footer-background)}
+.service-tablist button[aria-selected=true]{color:var(--button-ink)}
+@media(max-width:600px){.vistrah-app :is(.page,.provider-onboarding)>h1,.vistrah-app .auth-form-wrap>h2{padding:20px;font-size:24px;border-radius:20px}.vistrah-app .account-category,.vistrah-app .help-card,.vistrah-app .form fieldset{padding:16px}.vistrah-app .form .button{max-width:100%;white-space:normal}.vistrah-app .nested-section{margin-top:22px}}
+
+.reference-slide-tone-0{background:linear-gradient(120deg,#283db6,#7741c4)}.reference-slide-tone-1{background:linear-gradient(120deg,#7741c4,#b63b8d)}
+
+.seller-journey{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:16px 0}.seller-journey li{padding:9px 12px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);font-size:13px;color:var(--text-secondary)}.seller-journey [aria-current=step]{background:var(--accent-orange);color:var(--button-ink)}.seller-listing-summary{display:flex;justify-content:space-between;gap:12px;padding-block:10px;border-bottom:1px solid var(--border);font-size:14px;flex-wrap:wrap}.seller-listing-summary span{color:var(--accent-orange);font-size:12px}.seller-tools{margin-block:20px}#seller-listing-editor{scroll-margin-top:100px}
+
+.button.seller-sign-in{display:flex;align-items:center;gap:12px;min-height:60px;padding:12px 16px;border-radius:20px;background:var(--brand-gradient);color:#fff;border:1px solid #ffffff30;box-shadow:0 5px 16px #503fbd2e;text-decoration:none;white-space:normal;transition:box-shadow .15s,transform .15s}
+.seller-sign-in>span:nth-child(2){flex:1;text-align:left}.seller-sign-in>svg{flex-shrink:0}.seller-sign-in-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:12px;background:#ffffff20;flex-shrink:0}
+.button.seller-sign-in:hover{background:var(--brand-gradient);color:#fff;box-shadow:0 7px 20px #503fbd40;transform:translateY(-1px)}.button.seller-sign-in:active{transform:translateY(0);box-shadow:0 2px 8px #503fbd26}.button.seller-sign-in:focus-visible{outline:3px solid var(--accent-orange);outline-offset:4px}
+@media(prefers-reduced-motion:reduce){.button.seller-sign-in{transition:none}.button.seller-sign-in:hover{transform:none}}
+
+/* Shared action treatment across signup, forms and selection controls. */
+html .button:not(.secondary):not(.light):not(.danger):not([aria-disabled=true]),html .service-tablist button[aria-selected=true],html button[aria-pressed=true]:not([role=switch]){background:var(--brand-gradient);color:#fff;border-color:#ffffff30;box-shadow:0 4px 14px #503fbd29}
+html .button{transition:box-shadow .15s,transform .15s}
+html .button:not(:disabled):not([aria-disabled=true]):hover{box-shadow:0 6px 18px #503fbd38;transform:translateY(-1px)}
+html .button:not(:disabled):active{transform:translateY(0);box-shadow:0 2px 7px #503fbd26}
+html .button:focus-visible{outline:3px solid var(--accent-orange);outline-offset:3px}
+html select{background-image:linear-gradient(120deg,var(--surface),var(--surface-soft));box-shadow:0 3px 10px #503fbd14;min-height:48px}
+@media(prefers-reduced-motion:reduce){html .button{transition:none}html .button:not(:disabled):hover{transform:none}}
+
+/* App Theme controls actions and selection accents on every public/account route. */
+.button:not(.secondary):not(.light){background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink)}
+.button:not(.secondary):not(.light):hover{background:var(--accent-orange);border-color:var(--accent-orange);filter:brightness(.96)}
+.theme-switch[aria-checked=true]{background:var(--accent-orange)}
+.admin-topbar{padding-right:76px}
+
+.standalone-settings{position:fixed;top:12px;right:16px;z-index:90}
+body:has(.public-header) .standalone-settings{display:none}
+
+/* Homepage calls to action retain the VISTRAH gradient in every App Theme. */
+.reference-home .button:not(.danger):not([aria-disabled=true]),.reference-home .button.secondary:hover{background:var(--brand-gradient);color:#fff;border-color:#ffffff30}

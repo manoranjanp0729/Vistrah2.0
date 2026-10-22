@@ -1,9 +1,10 @@
+import {UiText,UiElement} from "../components/localized-ui";
 import {useState} from 'react';
 import {Pressable,StyleSheet,Text,View} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
-import {Page} from '../components/ui';
+import {Page,SelectionFill} from '../components/ui';
 import {useLanguage} from '../lib/language';
 import {useTheme} from '../lib/theme';
 import {benefitText,membershipTextKeys,planDetailText,selectedMembership,publicMembershipCatalogue,type PlanKey,type BillingPeriod} from '../../../shared/business-membership';
@@ -31,8 +32,8 @@ export default function MembershipScreen(){
  ] as const;
  const explore=()=>router.push('/services');
  function toggle<T extends string>(label:string,values:readonly T[],value:T,select:(value:T)=>void){return <View accessibilityLabel={label} style={[s.segment,{backgroundColor:dark?'#211e2b':'#eeedf4',borderColor:colors.border}]}>{values.map(item=>{
-  const active=value===item,planAccent=item in identities?identities[item as PlanKey].accent:identity.accent;
-  return <Pressable key={item} accessibilityRole="button" accessibilityState={{selected:active}} accessibilityLabel={item==='MONTHLY'?t('business.monthly'):item==='ANNUAL'?t('business.yearly'):item[0]+item.slice(1).toLowerCase()} onPress={()=>select(item)} style={({pressed})=>[s.segmentItem,{backgroundColor:active?(dark?'#4b3a64':'#fff'):'transparent',opacity:pressed?.8:1}]}><Text style={{fontSize:13,lineHeight:18,fontWeight:active?'700':'500',color:active?(dark?'#f7edff':planAccent):muted}}>{item==='MONTHLY'?t('business.monthly'):item==='ANNUAL'?t('business.yearly'):item[0]+item.slice(1).toLowerCase()}</Text>{active&&<View style={{width:16,height:2,borderRadius:1,backgroundColor:dark?'#d7bbfa':planAccent}}/>}</Pressable>;
+  const active=value===item;
+  return <UiElement as={Pressable} key={item} accessibilityRole="button" accessibilityState={{selected:active}} accessibilityLabel={item==='MONTHLY'?t('business.monthly'):item==='ANNUAL'?t('business.yearly'):item[0]+item.slice(1).toLowerCase()} onPress={()=>select(item)} style={({pressed})=>[s.segmentItem,{backgroundColor:active?(dark?'#4b3a64':'#fff'):'transparent',opacity:pressed?.8:1}]}><SelectionFill selected={active}/><Text style={{fontSize:13,lineHeight:18,fontWeight:active?'700':'500',color:active?'#fff':muted}}><UiText value={item==='MONTHLY'?t('business.monthly'):item==='ANNUAL'?t('business.yearly'):item[0]+item.slice(1).toLowerCase()}/></Text>{active&&<View style={{width:16,height:2,borderRadius:1,backgroundColor:'#ffffffaa'}}/>}</UiElement>;
  })}</View>;}
  return <Page>
   <LinearGradient colors={dark?['#302741','#382a46','#382a39']:['#ece7fa','#e6e7f8','#f7e6ee']} start={{x:0,y:0}} end={{x:1,y:1}} style={s.hero}>
@@ -45,10 +46,10 @@ export default function MembershipScreen(){
   <View style={{gap:6}}>
    {toggle(t('business.billing'),['MONTHLY','ANNUAL'] as const,period,setPeriod)}
    {toggle(t('business.plan'),['BASIC','PLUS','PREMIUM'] as const,planKey,setPlanKey)}
-   <View accessibilityLabel={t('business.selected')} style={[s.plan,{backgroundColor:colors.surface,borderColor:dark?'#51405f':identity.soft}]}>
+   <UiElement as={View} accessibilityLabel={t('business.selected')} style={[s.plan,{backgroundColor:colors.surface,borderColor:dark?'#51405f':identity.soft}]}>
     <LinearGradient colors={dark?[identity.dark,'#25212e']:[identity.soft,'#fcfaff']} start={{x:0,y:0}} end={{x:1,y:1}} style={s.planHeader}>
      <View style={s.titleRow}><View style={[s.planIcon,{backgroundColor:dark?'#ffffff10':'#ffffffaa'}]}><Feather name={identity.icon} size={22} color={accent}/></View><View style={{flex:1,gap:3}}><Text style={[s.eyebrow,{color:accent}]}>{t('business.title')}</Text><Text accessibilityRole="header" style={[s.planName,{color:ink}]}>{plan?.name}</Text></View></View>
-     <Text style={[s.price,{color:ink}]}>{selection.billing?.amount!=null?money(selection.billing.amount):t('business.soon')}{selection.billing?.amount!=null&&<Text style={[s.body,{color:muted}]}> / {period==='MONTHLY'?t('business.month'):t('business.year')}</Text>}</Text>
+     <Text style={[s.price,{color:ink}]}><UiText value={selection.billing?.amount!=null?money(selection.billing.amount):t('business.soon')}/>{selection.billing?.amount!=null&&<Text style={[s.body,{color:muted}]}> / <UiText value={period==='MONTHLY'?t('business.month'):t('business.year')}/></Text>}</Text>
      {planKey==='BASIC'&&<View style={[s.offer,{backgroundColor:dark?'#283a32':'#edf3e9',borderColor:dark?'#456551':'#d8e6d1'}]}><View style={s.titleRow}><Feather name="gift" size={18} color={dark?'#bbdac4':'#42634b'}/><Text style={[s.eyebrow,{color:dark?'#bbdac4':'#42634b'}]}>{t('business.upcoming')}</Text></View><Text style={[s.offerTitle,{color:ink}]}>{t('business.offer')}</Text><Text style={[s.body,{color:muted}]}>{t('business.offerPrice',{free:money(0),price:money(publicMembershipCatalogue.plans.find(item=>item.key==='BASIC')!.periods.MONTHLY.amount!)})}</Text><Text style={[s.caption,{color:muted}]}>{t('business.offerTerms')}</Text></View>}
      {period==='ANNUAL'&&<><Text style={[s.caption,{color:muted}]}>{t('business.annual')}</Text><Text style={[s.caption,{color:muted}]}>{t('business.annualReference')}</Text></>}
      <Text style={[s.body,{color:muted}]}>{t(identity.copy)}</Text>
@@ -57,16 +58,16 @@ export default function MembershipScreen(){
      <Text style={[s.eyebrow,{color:accent}]}>{t('business.highlights')}</Text>
      {plan?.benefits.slice(0,5).map(benefit=><View key={benefit.kind} style={s.benefitRow}><Feather name="check-circle" size={16} color={accent}/><Text style={[s.body,{color:ink,flex:1}]}>{t('business.benefit.'+benefit.kind,benefit.kind==='SOCIAL_PAISE'?{amount:money(benefit.quantity)}:{quantity:benefit.quantity},benefitText(benefit))}</Text></View>)}
      <Text style={[s.caption,{color:muted}]}>{t('business.noGuarantee')}</Text>
-     <Pressable accessibilityRole="link" onPress={explore} style={({pressed})=>[s.button,{backgroundColor:dark?'#7450a0':identity.accent,opacity:pressed?.85:1}]}><Text style={s.buttonText}>{t('requests.explore')}</Text><Feather name="arrow-right" size={16} color="#fff"/></Pressable>
+     <Pressable accessibilityRole="link" onPress={explore} style={({pressed})=>[s.button,{backgroundColor:dark?accent:identity.accent,opacity:pressed?.85:1}]}><Text style={s.buttonText}>{t('requests.explore')}</Text><Feather name="arrow-right" size={16} color="#fff"/></Pressable>
     </View>
-   </View>
+   </UiElement>
   </View>
-  <View style={{gap:10}}><Text accessibilityRole="header" style={[s.sectionTitle,{color:ink}]}>{t('business.glance')}</Text><Text style={[s.caption,{color:muted}]}>{t('business.creditCycle')}</Text><View style={s.comparison}>{publicMembershipCatalogue.plans.map(item=><Pressable key={item.key} accessibilityRole="button" accessibilityLabel={`${item.name}: ${t('business.jobSummary',{quantity:item.allowances.JOB})}`} accessibilityState={{selected:item.key===planKey}} onPress={()=>setPlanKey(item.key)} style={({pressed})=>[s.compareCard,{backgroundColor:dark?identities[item.key].dark:identities[item.key].soft,borderColor:item.key===planKey?accent:'transparent',opacity:pressed?.85:1}]}><Text style={[s.compareLabel,{color:ink}]}>{item.name}</Text><Text style={[s.compareNumber,{color:ink}]}>{item.allowances.JOB}</Text><Text style={[s.caption,{color:muted}]}>{t('business.credits')}</Text></Pressable>)}</View><Text style={[s.caption,{color:muted}]}>{t('business.creditRule')}</Text></View>
+  <View style={{gap:10}}><Text accessibilityRole="header" style={[s.sectionTitle,{color:ink}]}>{t('business.glance')}</Text><Text style={[s.caption,{color:muted}]}>{t('business.creditCycle')}</Text><View style={s.comparison}>{publicMembershipCatalogue.plans.map(item=><UiElement as={Pressable} key={item.key} accessibilityRole="button" accessibilityLabel={`${item.name}: ${t('business.jobSummary',{quantity:item.allowances.JOB})}`} accessibilityState={{selected:item.key===planKey}} onPress={()=>setPlanKey(item.key)} style={({pressed})=>[s.compareCard,{backgroundColor:dark?identities[item.key].dark:identities[item.key].soft,borderColor:item.key===planKey?accent:'transparent',opacity:pressed?.85:1}]}><Text style={[s.compareLabel,{color:ink}]}><UiText value={item.name}/></Text><Text style={[s.compareNumber,{color:ink}]}>{item.allowances.JOB}</Text><Text style={[s.caption,{color:muted}]}>{t('business.credits')}</Text></UiElement>)}</View><Text style={[s.caption,{color:muted}]}>{t('business.creditRule')}</Text></View>
   <View style={{gap:10}}><Text accessibilityRole="header" style={[s.sectionTitle,{color:ink}]}>{t('business.explained')}</Text>
    {groups.map(group=>{
     const open=!!expanded[group.title],visibility=group.title==='Business Visibility';
     const summary=visibility?(planKey==='BASIC'?t('business.standard'):t('business.plannedVisibility')):group.title==='VISTRAH Ads & Marketing'?(planKey==='BASIC'?t('business.separate'):t('business.allowances')):group.title==='Hiring & Job Postings'?t('business.jobSummary',{quantity:plan?.allowances.JOB??0}):group.title==='Leads & Enquiries'?t('business.reporting'):t('business.conditions');
-    return <View key={group.title} style={[s.detailCard,{backgroundColor:colors.surface,borderColor:colors.border}]}><Pressable accessibilityRole="button" accessibilityState={{expanded:open}} onPress={()=>setExpanded(value=>({...value,[group.title]:!value[group.title]}))} style={({pressed})=>[s.detailToggle,{opacity:pressed?.8:1}]}><View style={[s.detailIcon,{backgroundColor:dark?'#30263f':'#f1ebf8'}]}><Feather name={group.icon} size={17} color={accent}/></View><View style={{flex:1,minWidth:0,gap:3}}><Text style={[s.detailTitle,{color:ink}]}>{group.title==='Business Visibility'?t('business.visibility'):group.title==='VISTRAH Ads & Marketing'?group.title:t(group.title==='Hiring & Job Postings'?'business.jobsGroup':group.title==='Leads & Enquiries'?'business.enquiriesGroup':'business.billingGroup')}</Text><Text style={[s.caption,{color:muted}]}>{summary}</Text></View><Feather name={open?'chevron-up':'chevron-down'} size={17} color={muted}/></Pressable>
+    return <View key={group.title} style={[s.detailCard,{backgroundColor:colors.surface,borderColor:colors.border}]}><Pressable accessibilityRole="button" accessibilityState={{expanded:open}} onPress={()=>setExpanded(value=>({...value,[group.title]:!value[group.title]}))} style={({pressed})=>[s.detailToggle,{opacity:pressed?.8:1}]}><View style={[s.detailIcon,{backgroundColor:dark?'#30263f':'#f1ebf8'}]}><Feather name={group.icon} size={17} color={accent}/></View><View style={{flex:1,minWidth:0,gap:3}}><Text style={[s.detailTitle,{color:ink}]}><UiText value={group.title==='Business Visibility'?t('business.visibility'):group.title==='VISTRAH Ads & Marketing'?group.title:t(group.title==='Hiring & Job Postings'?'business.jobsGroup':group.title==='Leads & Enquiries'?'business.enquiriesGroup':'business.billingGroup')}/></Text><Text style={[s.caption,{color:muted}]}>{summary}</Text></View><Feather name={open?'chevron-up':'chevron-down'} size={17} color={muted}/></Pressable>
      {open&&<View style={[s.details,{borderTopColor:colors.border}]}>{group.items.map((item,index)=>{
       const text=plan?planDetailText(plan,item):'',planned=text.startsWith('Planned:');
       const benefit=plan?.benefits.find(value=>value.kind===item.benefit);
@@ -76,7 +77,7 @@ export default function MembershipScreen(){
     </View>;
    })}
   </View>
-  <LinearGradient colors={dark?['#342a44','#3c2d3c']:['#ece4f8','#f7e6ed']} start={{x:0,y:0}} end={{x:1,y:1}} style={s.final}><Text accessibilityRole="header" style={[s.sectionTitle,{color:ink}]}>{t('business.final')}</Text><Text style={[s.body,{color:muted}]}>{t('business.finalCopy')}</Text><Pressable accessibilityRole="link" onPress={explore} style={({pressed})=>[s.button,{backgroundColor:'#7450a0',opacity:pressed?.85:1}]}><Text style={s.buttonText}>{t('requests.explore')}</Text><Feather name="arrow-right" size={16} color="#fff"/></Pressable></LinearGradient>
+  <LinearGradient colors={dark?['#342a44','#3c2d3c']:['#ece4f8','#f7e6ed']} start={{x:0,y:0}} end={{x:1,y:1}} style={s.final}><Text accessibilityRole="header" style={[s.sectionTitle,{color:ink}]}>{t('business.final')}</Text><Text style={[s.body,{color:muted}]}>{t('business.finalCopy')}</Text><Pressable accessibilityRole="link" onPress={explore} style={({pressed})=>[s.button,{backgroundColor:identity.accent,opacity:pressed?.85:1}]}><Text style={s.buttonText}>{t('requests.explore')}</Text><Feather name="arrow-right" size={16} color="#fff"/></Pressable></LinearGradient>
  </Page>;
 }
 const s=StyleSheet.create({

@@ -39,6 +39,10 @@ button,a,input,select,textarea,summary{outline-offset:3px}a:focus-visible,button
 .admin-tool input:not([type=checkbox]):not([type=radio]),.admin-tool select,.admin-tool textarea{width:100%;min-width:0;min-height:44px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--surface);color:var(--text-primary);font:inherit}
 .admin-tool textarea{min-height:96px;resize:vertical}
 .admin-tool button:not(.help-trigger){min-height:44px;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.admin-tool button:not(.help-trigger):not(.icon-button):not(.button){padding:10px 14px;border:1px solid var(--border);border-radius:8px;background:#f2f5f8;color:#245744;font:inherit;cursor:pointer}
+.admin-tool button:not(.help-trigger):disabled{cursor:default;opacity:.55}
+.admin-tool .admin-search button:not(.help-trigger){flex:none;min-width:76px;white-space:nowrap}
+.admin-tool .admin-search .help-trigger{flex:none;padding:0;width:26px;min-width:26px;min-height:26px;background:transparent}
 .admin-tool .button-row,.admin-record-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .admin-tool .admin-toolbar{display:flex;align-items:flex-end;flex-wrap:wrap;margin:0}
 .admin-tool .admin-toolbar label{flex:1;min-width:140px}
@@ -82,5 +86,19 @@ button,a,input,select,textarea,summary{outline-offset:3px}a:focus-visible,button
   .admin-record-body{padding:16px}
   .admin-record-hint{display:none}
   .admin-tool .admin-toolbar>*{max-width:100%}
+  .admin-tool .admin-toolbar{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch}
+  .admin-tool .admin-toolbar>select,.admin-tool .admin-toolbar>label,.admin-tool .admin-toolbar>.help-field,.admin-tool .admin-toolbar>.admin-search{width:100%;max-width:none}
+  .admin-tool .admin-search input{flex:1;width:0;min-width:0}
   .admin-record-actions .help-pair{max-width:100%}
 }
+
+/* Display preferences apply to every admin route, independent of authentication. */
+.admin-topbar{padding-right:76px}
+html[data-preferences] .admin-sidebar nav a.active,html[data-preferences] .admin-review-frame nav a.active{color:var(--accent-orange);background:var(--brand-highlight)}
+html[data-preferences] .button:not(.secondary):not(.light),html[data-preferences] .theme-switch[aria-checked=true]{background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink)}
+html[data-preferences] a:focus-visible,html[data-preferences] button:focus-visible,html[data-preferences] input:focus-visible,html[data-preferences] select:focus-visible{outline-color:var(--accent-orange)}
+html[data-preferences][data-theme=dark] .admin-sidebar,html[data-preferences][data-theme=dark] .admin-topbar,html[data-preferences][data-theme=dark] .admin-panel,html[data-preferences][data-theme=dark] .stat-card,html[data-preferences][data-theme=dark] .admin-table td,html[data-preferences][data-theme=dark] .admin-table,html[data-preferences][data-theme=dark] .dialog,html[data-preferences][data-theme=dark] .admin-task-links a{background:var(--surface);color:var(--text-primary);border-color:var(--border)}
+html[data-preferences][data-theme=dark] .admin-table th,html[data-preferences][data-theme=dark] .admin-table tbody tr:hover td{background:var(--surface-soft);color:var(--text-secondary)}
+html[data-preferences][data-theme=dark] .form input,html[data-preferences][data-theme=dark] .form select,html[data-preferences][data-theme=dark] .form textarea{background:var(--surface);color:var(--text-primary)}
+
+html[data-preferences][data-theme=dark]{color-scheme:dark}

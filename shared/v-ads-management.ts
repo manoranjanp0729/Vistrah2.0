@@ -3,7 +3,7 @@ export type Metrics={views:number;likes:number;comments:number};
 export type Performance={totals:Metrics & {videos:number};items:(Metrics & {id:string;title:string;status:string})[];page:number;has_more:boolean;view_policy:string};
 export type History={items:{id:number;actor_id:number|null;action:string;created_at:string;details:{reason?:string;previous_status?:string;status?:string}}[];page:number;has_more:boolean};
 export type AdminAccount=AdvertiserAccount & {owner_id:number|null};
-export type AdminVideo=Metrics & {id:string;title:string;description:string;status:SellerVideo['status'];advertiser:AdvertiserAccount;owner_id:number|null;preview_available:boolean};
+export type AdminVideo=Metrics & {id:string;title:string;description:string;status:SellerVideo['status'];advertiser:AdvertiserAccount;owner_id:number|null;preview_available:boolean;video_url?:string;media_upload_id?:string|null};
 export type Queue<T>={items:T[];page:number;has_more:boolean};
 export function advanceView(watched:number,delta:number,playing:boolean){
  return watched+(playing&&delta>0&&delta<=1.5?delta:0);
@@ -21,6 +21,8 @@ export function managementClient(api:Api){
    return post<AdvertiserAccount>('/v-ads/advertisers/'+id(account.id)+'/profile',{name:name.trim(),description:description.trim(),expected_revision:account.review_token});
   },
   withdraw:(video:SellerVideo,reason:string)=>post('/v-ads/videos/'+id(video.id)+'/withdraw',moderationInput(video.status,reason)),
+  editVideo:(videoId:string,title:string,description:string)=>post<{id:string;title:string;description:string;status:SellerVideo['status']}>('/v-ads/videos/'+id(videoId)+'/edit',{title:title.trim(),description:description.trim()}),
+  deleteVideo:(videoId:string)=>api<{id:string;status:'REMOVED'}>('/v-ads/videos/'+id(videoId),{method:'DELETE'}),
   release:(uploadId:string)=>api('/v-ads/uploads/'+id(uploadId),{method:'DELETE'}),
   history:(accountId:string,page=1)=>api<History>('/v-ads/advertisers/'+id(accountId)+'/history?page='+page),
   analytics:(page=1)=>api<Performance>('/v-ads/analytics?page='+page),

@@ -1,0 +1,27 @@
+{
+  "gradient": ["#283db6", "#7741c4", "#b63b8d"],
+  "headerLight": ["#dce3f2", "#e7deef", "#e1e6f2"],
+  "headerDark": ["#1f2639", "#2b2338", "#21293a"],
+  "defaultAccent": "indigo",
+  "accentPresets": [
+    { "id": "blue", "label": "Ocean Blue", "light": "#283db6", "dark": "#9ca3f7" },
+    { "id": "indigo", "label": "Royal Indigo", "light": "#503fbd", "dark": "#b0a9e1" },
+    { "id": "lavender", "label": "Classic Lavender", "light": "#7741c4", "dark": "#caa5f5" },
+    { "id": "orchid", "label": "Orchid Purple", "light": "#9d3da3", "dark": "#e594de" },
+    { "id": "pink", "label": "Rose Pink", "light": "#b63b8d", "dark": "#f298cb" }
+  ],
+  "palettes": {
+    "light": {
+      "background": "#f6f3fc", "surface": "#ffffff", "border": "#e2dbef",
+      "text": "#20344f", "muted": "#626d82", "accent": "#503fbd", "ink": "#ffffff",
+      "error": "#a42e25", "tile": "#eee9f7", "tileBorder": "#ded4ed",
+      "soft": "#f1ecf8", "hover": "#e9e2f4", "highlight": "#eee6f7", "footer": "#ebe5f5"
+    },
+    "dark": {
+      "background": "#161321", "surface": "#211e2c", "border": "#393246",
+      "text": "#f4edff", "muted": "#c1b6d0", "accent": "#b0a9e1", "ink": "#29183c",
+      "error": "#ffb4ad", "tile": "#29243d", "tileBorder": "#453951",
+      "soft": "#1b1726", "hover": "#30283e", "highlight": "#39304f", "footer": "#181421"
+    }
+  }
+}

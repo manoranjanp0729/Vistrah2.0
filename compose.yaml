@@ -26,6 +26,7 @@ services:
       ADZUNA_APP_ID: ${ADZUNA_APP_ID:-}
       ADZUNA_APP_KEY: ${ADZUNA_APP_KEY:-}
       ADZUNA_ACCESS_CONFIRMED: ${ADZUNA_ACCESS_CONFIRMED:-false}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       APP_ENV: ${APP_ENV:-development}
       PUBLIC_APP_URL: ${PUBLIC_APP_URL:-http://localhost:${WEB_PORT:-3000}}
       SMTP_HOST: ${SMTP_HOST:-}
@@ -77,6 +78,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
       args:
+        NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID:-}
         NEXT_PUBLIC_MAPTILER_API_KEY: ${NEXT_PUBLIC_MAPTILER_API_KEY:-}
     environment:
       API_URL: http://api:8000

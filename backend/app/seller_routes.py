@@ -36,6 +36,29 @@ def owned_application(db, provider_id, application_id, user):
 def businesses(user: User = Depends(seller_user), db: Session = Depends(get_db)):
     return [serialize(p) for p in db.scalars(select(Provider).where(Provider.owner_user_id == user.id).order_by(Provider.id))]
 
+class NewBusiness(SafeModel):
+    name: str = Field(min_length=2,max_length=150)
+    company: str = Field(min_length=2,max_length=150)
+    phone: str = Field(min_length=7,max_length=20,pattern=r'^\+?[\d\s()-]+$')
+    address: str = Field(min_length=5,max_length=1000)
+    location: str = Field(min_length=2,max_length=150)
+
+    @model_validator(mode='after')
+    def valid_phone(self):
+        if not 7<=len(re.sub(r'\D','',self.phone))<=15:
+            raise ValueError('Enter a valid business phone number')
+        return self
+
+@router.post('/seller/businesses',status_code=201)
+def create_business(data:NewBusiness,user:User=Depends(seller_user),db:Session=Depends(get_db)):
+    provider=Provider(**data.model_dump(),email=user.email,owner_user_id=user.id,
+        slug='seller-'+str(uuid.uuid4()),verification_status='PENDING',active=False,
+        provenance='Seller submitted for independent business verification')
+    db.add(provider);db.flush()
+    db.add(Audit(actor_id=user.id,action='SELLER_BUSINESS_CREATED',entity='provider',entity_id=str(provider.id),details={}))
+    db.commit();db.refresh(provider)
+    return serialize(provider)
+
 @router.get('/seller/businesses/{provider_id}')
 def business(provider_id: int, user: User = Depends(seller_user), db: Session = Depends(get_db)):
     return serialize(owned_business(db, provider_id, user))

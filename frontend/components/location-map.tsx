@@ -1,4 +1,5 @@
 'use client';
+import {UiText,UiDiv} from "./localized-ui";
 import {useEffect,useRef,useState} from 'react';
 import type * as Leaflet from 'leaflet';
 import {locationProviders,wrapPoint,type Point,type NearbyProvider,type LocationProviders} from '@/lib/location';
@@ -30,6 +31,6 @@ export function LocationMap({point,items=[],selectedId=null,onPin,onView,onSelec
     const selected=items.find(item=>item.id===selectedId);if(selected)map.current.panTo([selected.latitude,selected.longitude],{animate:false});
     return()=>{group.remove();};
   },[items,selectedId,ready]);
-  return <div>{failed&&<p role="alert">The map could not load. Use the coordinate controls and provider list.</p>}<div ref={element} className="location-map" aria-label={providers.tiles?'Location map powered by MapTiler':'Manual location map'}/>{tileFailed&&<p role="alert">Map tiles could not load. Check your connection or map configuration; coordinate controls still work.</p>}{!providers.tiles&&<p className="small-label">Manual coordinate map · live basemap unavailable · click or drag the + pin</p>}</div>;
+  return <div>{failed&&<p role="alert"><UiText value={"The map could not load. Use the coordinate controls and provider list."}/></p>}<UiDiv  ref={element} className="location-map" aria-label={providers.tiles?'Location map powered by MapTiler':'Manual location map'}/>{tileFailed&&<p role="alert"><UiText value={"Map tiles could not load. Check your connection or map configuration; coordinate controls still work."}/></p>}{!providers.tiles&&<p className="small-label"><UiText value={"Manual coordinate map · live basemap unavailable · click or drag the + pin"}/></p>}</div>;
 }
 

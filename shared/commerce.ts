@@ -1,7 +1,7 @@
 export type ListingInput={taxonomy_category_slug:string|null;taxonomy_subcategory_slug:string|null;taxonomy_listing_type_slug:string|null;kind:'PRODUCT'|'SERVICE_PACKAGE';service_id:number|null;title:string;description:string;unit_price_paise:number;currency:'INR';available:boolean};
 import type {OrderTerms} from './commerce-orders';
-export type CommerceListing=ListingInput&{id:string;business:string;revision:number;fulfilment_operator?:'SELLER'|'VISTRAH';order_terms?:OrderTerms};
-export type SellerListing=CommerceListing&{status:'DRAFT'|'SUBMITTED'|'APPROVED'|'REJECTED'|'ARCHIVED';review_note:string};
+export type CommerceListing=ListingInput&{id:string;business:string;revision:number;taxonomy_selection?:{category:{title:string};subcategory:{title:string};listing_type:{title:string}}|null;fulfilment_operator?:'SELLER'|'VISTRAH';order_terms?:OrderTerms};
+export type SellerListing=CommerceListing&{status:'DRAFT'|'SUBMITTED'|'APPROVED'|'REJECTED'|'ARCHIVED';review_note:string;business_active?:boolean;business_verification_status?:string};
 export type ListingPage<T>={items:T[];total:number;page:number;page_size:number};
 export type ListingForm={taxonomy_category_slug:string;taxonomy_subcategory_slug:string;taxonomy_listing_type_slug:string;kind:ListingInput['kind'];service_id:string;title:string;description:string;price:string;available:boolean};
 export function emptyListing():ListingForm{return {taxonomy_category_slug:'',taxonomy_subcategory_slug:'',taxonomy_listing_type_slug:'',kind:'PRODUCT',service_id:'',title:'',description:'',price:'',available:true};}
@@ -17,12 +17,13 @@ export function listingInput(form:ListingForm):ListingInput {
   if(title.length<2||title.length>150)throw new Error('Title must contain 2–150 characters.');
   if(description.length<20||description.length>6000)throw new Error('Description must contain 20–6,000 characters.');
   let service_id:number|null=null;
-  if(form.kind==='SERVICE_PACKAGE'){
+  if(form.kind==='SERVICE_PACKAGE'&&form.service_id){
     if(!/^[1-9]\d*$/.test(form.service_id)||!Number.isSafeInteger(Number(form.service_id)))throw new Error('Choose an approved catalogue service.');
     service_id=Number(form.service_id);
   }
   const selected=[form.taxonomy_category_slug,form.taxonomy_subcategory_slug,form.taxonomy_listing_type_slug];
   if(selected.some(Boolean)&&!selected.every(Boolean))throw new Error('Choose all three classification levels.');
+  if(form.kind==='SERVICE_PACKAGE'&&service_id===null&&!selected.every(Boolean))throw new Error('Choose an approved catalogue service or a complete listing type.');
   return {taxonomy_category_slug:form.taxonomy_category_slug||null,taxonomy_subcategory_slug:form.taxonomy_subcategory_slug||null,taxonomy_listing_type_slug:form.taxonomy_listing_type_slug||null,kind:form.kind,service_id,title,description,unit_price_paise:priceInPaise(form.price),currency:'INR',available:form.available};
 }
 export function listingForm(row:SellerListing):ListingForm {

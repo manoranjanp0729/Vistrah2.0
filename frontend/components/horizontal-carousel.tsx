@@ -1,4 +1,5 @@
 'use client';
+import {UiButton} from "./localized-ui";
 import {useEffect,useId,useRef,useState,type ReactNode} from 'react';
 import {ChevronLeft,ChevronRight} from 'lucide-react';
 
@@ -15,5 +16,5 @@ export function HorizontalCarousel({label,children}:{label:string;children:React
     return()=>{element.removeEventListener('scroll',measure);observer.disconnect();};
   },[children]);
   function move(direction:number){const element=track.current;if(element)element.scrollBy({left:direction*element.clientWidth*.85,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
-  return <div className="horizontal-carousel"><div className="carousel-controls"><button type="button" className="icon-button" aria-label={`Previous ${label}`} aria-controls={id} disabled={!edges.previous} onClick={()=>move(-1)}><ChevronLeft/></button><button type="button" className="icon-button" aria-label={`Next ${label}`} aria-controls={id} disabled={!edges.next} onClick={()=>move(1)}><ChevronRight/></button></div><div ref={track} id={id} className="carousel-track" role="region" aria-label={label} tabIndex={0}>{children}</div></div>;
+  return <div className="horizontal-carousel"><div className="carousel-controls"><UiButton  type="button" className="icon-button" aria-label={`Previous ${label}`} aria-controls={id} disabled={!edges.previous} onClick={()=>move(-1)}><ChevronLeft/></UiButton><UiButton  type="button" className="icon-button" aria-label={`Next ${label}`} aria-controls={id} disabled={!edges.next} onClick={()=>move(1)}><ChevronRight/></UiButton></div><div ref={track} id={id} className="carousel-track" role="region" aria-label={label} tabIndex={0}>{children}</div></div>;
 }

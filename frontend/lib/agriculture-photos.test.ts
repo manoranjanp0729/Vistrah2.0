@@ -22,7 +22,7 @@ describe('Reviewed agricultural photographs',()=>{
  it('preserves every previously approved image asset and mapping',()=>{
   // Reconstruct reviewed replacements only; keep the original metadata checksum.
   // Batch-2's current mappings, full metadata and bytes are independently locked below.
-  const previousPhotos=new Map([...releases.items,...batch2.items].map(release=>[release.id,release.previousPhoto]));
+  const previousPhotos=new Map([...releases.items,...batch2.items,...((releases as {subcategoryUniquenessItems?:typeof releases.items}).subcategoryUniquenessItems??[])].map(release=>[release.id,release.previousPhoto]));
   const prior=Object.fromEntries(Object.entries(imagery.items).filter(([id])=>!id.includes('/agriculture-and-farming')).map(([id,item])=>[id,{...item,photo:assets[previousPhotos.get(id)??item.photo!]}]));
   expect(createHash('sha256').update(JSON.stringify(prior)).digest('hex')).toBe('89b62405ca05b382c82c235592a4ce778d927e33c8cb15204ef04084cff751e1');
  });

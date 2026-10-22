@@ -37,6 +37,11 @@ class AccountAction(Reason):
     status: Literal["SUSPENDED", "PENDING"]
 
 
+class VideoEdit(Strict):
+    title: str = Field(min_length=3, max_length=160)
+    description: str = Field(default="", max_length=2000)
+
+
 def reason_text(data):
     value = data.reason.strip()
     if len(value) < 10:
@@ -139,6 +144,51 @@ def withdraw_video(video_id: str, data: Reason, user: User = Depends(seller_user
     return change_video(db, user, video_id, data, False)
 
 
+@router.post("/v-ads/videos/{video_id}/edit")
+def edit_video(video_id: str, data: VideoEdit, user: User = Depends(seller_user),
+               db: Session = Depends(get_db)):
+    video = db.scalar(select(VAdsVideo).where(VAdsVideo.id == video_id).with_for_update())
+    if video is None:
+        raise HTTPException(404, "Video not found")
+    account = locked_account(db, video.advertiser_id)
+    if account.owner_id != user.id:
+        raise HTTPException(403, "Video ownership required")
+    if video.status == "REMOVED":
+        raise HTTPException(409, "Removed videos cannot be edited")
+    title, description = data.title.strip(), data.description.strip()
+    if len(title) < 3:
+        raise HTTPException(422, "Enter a video title of at least three characters")
+    before = {"title": video.title, "description": video.description, "status": video.status}
+    video.title = title
+    video.description = description
+    video.status = "PENDING"
+    video.published_at = None
+    audit(db, user, "V_ADS_VIDEO_EDIT", "v_ads_video", video.id,
+          {"before": before, "status": "PENDING", "reason": "Seller edited ad; awaiting administrator approval"})
+    db.commit()
+    return {"id": video.id, "title": video.title, "description": video.description, "status": video.status}
+
+
+@router.delete("/v-ads/videos/{video_id}")
+def delete_video(video_id: str, user: User = Depends(seller_user),
+                 db: Session = Depends(get_db)):
+    video = db.scalar(select(VAdsVideo).where(VAdsVideo.id == video_id).with_for_update())
+    if video is None:
+        raise HTTPException(404, "Video not found")
+    account = locked_account(db, video.advertiser_id)
+    if account.owner_id != user.id:
+        raise HTTPException(403, "Video ownership required")
+    if video.status == "REMOVED":
+        return {"id": video.id, "status": "REMOVED"}
+    previous = video.status
+    video.status = "REMOVED"
+    video.published_at = None
+    audit(db, user, "V_ADS_VIDEO_WITHDRAW", "v_ads_video", video.id,
+          {"previous_status": previous, "status": "REMOVED", "reason": "Deleted by seller from V Ads studio"})
+    db.commit()
+    return {"id": video.id, "status": "REMOVED"}
+
+
 @router.post("/admin/v-ads/videos/{video_id}/remove")
 def remove_video(video_id: str, data: Reason, user: User = Depends(admin_user),
                  db: Session = Depends(get_db)):
@@ -193,7 +243,10 @@ def video_queue(status: Literal["PENDING", "APPROVED", "REJECTED", "REMOVED"] = 
     metrics = counts(db, [video.id for video, _ in rows[:30]])
     return {"items": [{"id": video.id, "title": video.title, "description": video.description,
         "status": video.status, "advertiser": output(account), "owner_id": account.owner_id,
-        "preview_available": bool(video.media_upload_id), **metrics[video.id]}
+        "preview_available": bool(video.media_upload_id),
+        "video_url": video.video_url or (f"/v-ads/media/{video.media_upload_id}" if video.media_upload_id else ""),
+        "media_upload_id": video.media_upload_id,
+        **metrics[video.id]}
         for video, account in rows[:30]], "page": page, "has_more": len(rows) > 30}
 
 

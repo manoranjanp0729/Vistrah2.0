@@ -1,4 +1,4 @@
-﻿"""Administrator review of V Ads advertiser requests."""
+"""Administrator review of V Ads advertiser requests."""
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -10,7 +10,7 @@ from .database import get_db
 from .models import User, Audit
 from .security import admin_user
 from .workflow_schemas import Strict
-from .v_ads_models import VAdsAdvertiser
+from .v_ads_models import VAdsAdvertiser, VAdsVideo
 from .v_ads_account_routes import profile_token
 
 
@@ -84,5 +84,59 @@ def review_advertiser(
         "handle": account.handle,
         "status": account.status,
         "review_reason": reason,
+        "reviewer_id": user.id,
+    }
+
+
+class VideoDecision(Strict):
+    status: Literal["APPROVED", "REJECTED"]
+    reason: str = Field(default="", max_length=2000)
+
+
+@router.post("/admin/v-ads/videos/{video_id}/review")
+def review_video(
+    video_id: str,
+    data: VideoDecision,
+    user: User = Depends(admin_user),
+    db: Session = Depends(get_db),
+):
+    from datetime import datetime, timezone
+    from .v_ads_media_routes import media_storage
+    video = db.scalar(
+        select(VAdsVideo).where(VAdsVideo.id == video_id).with_for_update()
+    )
+    if video is None:
+        raise HTTPException(404, "Video not found")
+
+    account = db.get(VAdsAdvertiser, video.advertiser_id)
+    if account and account.owner_id == user.id:
+        raise HTTPException(403, "Another administrator must review this video")
+
+    if video.status != "PENDING":
+        raise HTTPException(409, "Video request has already been reviewed")
+
+    if data.status == "APPROVED":
+        media_storage()
+        if not video.published_at:
+            video.published_at = datetime.now(timezone.utc)
+    else:
+        video.published_at = None
+
+    video.status = data.status
+
+    db.add(Audit(
+        actor_id=user.id,
+        action="V_ADS_VIDEO_REVIEW",
+        entity="v_ads_video",
+        entity_id=video.id,
+        details={"status": data.status, "reason": data.reason},
+    ))
+    db.commit()
+
+    return {
+        "id": video.id,
+        "title": video.title,
+        "status": video.status,
+        "published_at": video.published_at,
         "reviewer_id": user.id,
     }

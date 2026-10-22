@@ -1,3 +1,4 @@
+import {UiElement} from "./localized-ui";
 import type {ComponentProps} from 'react';
 import {View} from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
@@ -19,7 +20,7 @@ const categories:Record<string,Icon>={'jobs-careers':'briefcase','real-estate':'
 export function ServiceBanner({context}:{context:ServiceContext}){
   const subject=subjects[context.service.slug]??categories[context.category.slug]??'grid';
   const category=categories[context.category.slug]??'grid';
-  return <View accessible accessibilityRole="image" accessibilityLabel={context.service.title+' illustration'} style={{height:112,borderRadius:18,overflow:'hidden'}}>
+  return <UiElement as={View} accessible accessibilityRole="image" accessibilityLabel={context.service.title+' illustration'} style={{height:112,borderRadius:18,overflow:'hidden'}}>
     <LinearGradient colors={['#182d3b','#223b47','#473126']} start={{x:0,y:0}} end={{x:1,y:1}} style={{flex:1,alignItems:'center',justifyContent:'center'}}>
       <View style={{position:'absolute',width:180,height:180,borderRadius:90,borderWidth:1,borderColor:'#5d8191',opacity:.3}}/>
       <View style={{position:'absolute',width:240,height:240,borderRadius:120,borderWidth:1,borderColor:'#5d8191',opacity:.2}}/>
@@ -29,5 +30,5 @@ export function ServiceBanner({context}:{context:ServiceContext}){
       <View style={{position:'absolute',right:'12%',top:22,width:6,height:6,borderRadius:3,backgroundColor:'#86c9de'}}/>
       <View style={{position:'absolute',left:'11%',bottom:19,width:9,height:9,borderRadius:5,backgroundColor:'#f9aa45'}}/>
     </LinearGradient>
-  </View>;
+  </UiElement>;
 }

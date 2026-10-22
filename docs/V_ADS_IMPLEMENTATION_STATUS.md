@@ -1,5 +1,19 @@
 # V Ads implementation status
 
+## GHCR safety gate - 20 October 2026
+
+Owner billing review is complete: GitHub Free included capacity, $0 paid budgets
+and blocked overage; no upgrade/purchase authorized or required by the workflow.
+Pinned `4cc5e2f` workflow static safety check passes (standard runners, manual
+exact-SHA gate, existing audits, job-local package write, no visibility changes).
+Configured OAuth login lacks `read:packages`; anonymous denial alone was not
+accepted as privacy proof. Owner has now confirmed all three packages absent.
+New private packages/repository Actions linkage follow GitHub's documented
+GITHUB_TOKEN publication behavior. Test-candidate preflight is READY; one exact
+`4cc5e2f` dispatch still needs explicit authorization. Actual login/push/private
+visibility, FFmpeg checks and digests await that run. No builds, publication,
+CI changes or application/runtime modifications. See [RELEASES.md](RELEASES.md).
+
 ## Registration / runtime checkpoint - 20 October 2026
 
 Approved registration-only main commit `902c88e` is applied and byte-verified;

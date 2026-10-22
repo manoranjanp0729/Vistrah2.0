@@ -1,15 +1,19 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {UiText,UiElement} from "../../components/localized-ui";
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useFocusEffect,router,useLocalSearchParams} from 'expo-router';
 import {
   AppState, FlatList, Pressable, Share, StyleSheet, Text,
-  TextInput, View, type LayoutChangeEvent,
+  TextInput, View, ScrollView, type LayoutChangeEvent,
 } from 'react-native';
+import {LinearGradient} from 'expo-linear-gradient';
 import {Feather} from '@expo/vector-icons';
 import {useVideoPlayer, VideoView} from 'expo-video';
+import {mobileVideoCoordinator} from '../../lib/video-coordinator';
 import {useTheme} from '../../lib/theme';
 import {useSession} from '../../lib/session';
 import {vAds,playableReel,publicVideoLink,type PlayableReel as Reel} from '../../lib/v-ads';
-import {mergeReels,sharePath,type Comment} from '../../../../shared/v-ads';
+import {mergeReels,sharePath,parseAdDescription,type Comment} from '../../../../shared/v-ads';
+import brandTheme from '../../../../shared/brand-theme.json';
 import {Loading,ErrorPanel,Action} from '../../components/ui';
 import {api} from '../../lib/api';
 import {managementClient,advanceView} from '../../../../shared/v-ads-management';
@@ -20,8 +24,9 @@ function ReelCard({reel, active, height}: {
   active: boolean;
   height: number;
 }) {
-  const {colors} = useTheme();
+  const {colors, mode, accentGradient} = useTheme();
   const {user}=useSession();
+  const brandGradient=accentGradient;
   const [screenFocused, setScreenFocused] = useState(false);
 
   useFocusEffect(
@@ -50,11 +55,19 @@ function ReelCard({reel, active, height}: {
   const [moreComments,setMoreComments]=useState(true);
   const [commentCount,setCommentCount]=useState(reel.comments_count);
   const [commentsOpen, setCommentsOpen] = useState(false);
+  const [productDetailsOpen, setProductDetailsOpen] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [draft, setDraft] = useState('');
   const [muted, setMuted] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [showPlayIcon, setShowPlayIcon] = useState(false);
   const iconTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const { description: cleanDescription, meta: adMeta } = useMemo(
+    () => parseAdDescription(reel.description),
+    [reel.description]
+  );
+  const productMeta = adMeta.ad_type === 'PRODUCT' ? adMeta : undefined;
 
   useEffect(() => {
     return () => {
@@ -69,7 +82,7 @@ function ReelCard({reel, active, height}: {
     iconTimer.current = setTimeout(() => {
       setShowPlayIcon(false);
       iconTimer.current = null;
-    }, 1500);
+    }, 1000);
   }
   const [paused, setPaused] = useState(false);
 
@@ -77,6 +90,38 @@ function ReelCard({reel, active, height}: {
     instance.loop = true;
     instance.muted = false;
   });
+
+  useEffect(()=>{
+    const sub=player.addListener('timeUpdate',event=>{
+      if(player.duration>0){
+        setProgress(Math.min(100,Math.max(0,(event.currentTime/player.duration)*100)));
+      }
+    });
+    return()=>{try{sub.remove();}catch{}};
+  },[player]);
+
+  useEffect(()=>{
+    mobileVideoCoordinator.register({
+      id: reel.id,
+      visibleArea: active && screenFocused && appActive ? 1000000 : 0,
+      play: () => {
+        if (!paused && !commentsOpen && active && screenFocused && appActive) {
+          try { player.play(); } catch {}
+        }
+      },
+      pause: () => {
+        try { player.pause(); } catch {}
+      },
+      isManuallyPaused: () => paused || commentsOpen
+    });
+    return () => {
+      mobileVideoCoordinator.unregister(reel.id);
+    };
+  }, [reel.id, active, screenFocused, appActive, paused, commentsOpen, player]);
+
+  useEffect(()=>{
+    mobileVideoCoordinator.updateVisibleArea(reel.id, active && screenFocused && appActive ? 1000000 : 0);
+  }, [reel.id, active, screenFocused, appActive]);
   const playbackAllowed=useRef(false);
   const viewSent=useRef(false);
   useEffect(()=>{
@@ -152,7 +197,7 @@ function ReelCard({reel, active, height}: {
         fullscreenOptions={{enable: true}}
       />
 
-      <Pressable
+      <UiElement as={Pressable}
         style={s.videoTapArea}
         onPress={togglePlayback}
         accessibilityRole="button"
@@ -165,62 +210,140 @@ function ReelCard({reel, active, height}: {
             color="#FFFFFF"
           />
         </View>}
-      </Pressable>
+      </UiElement>
 
-      <View style={s.topBar}>
-        <Text style={s.heading}>V Ads</Text>
-        <View style={s.sponsored}>
-          <Text style={s.sponsoredText}>VISTRAH</Text>
-        </View>
-      </View>
+      {/* Cinematic bottom gradient scrim for contrast and legibility */}
+      <LinearGradient
+        colors={['transparent', 'rgba(8,11,17,0.30)', 'rgba(8,11,17,0.88)']}
+        pointerEvents="none"
+        style={s.bottomScrim}
+      />
 
+      {/* Right-side engagement actions */}
       <View style={s.rightActions}>
-        <Pressable style={s.action} disabled={busy} onPress={()=>void toggleLike()} accessibilityLabel={liked?'Unlike video':'Like video'}>
-          <Feather name="heart" size={28} color={liked ? '#FF685B' : '#FFFFFF'} />
+        <UiElement as={Pressable} style={s.action} disabled={busy} onPress={()=>void toggleLike()} accessibilityLabel={liked?'Unlike video':'Like video'}>
+          <View style={[s.actionCircle, liked && s.actionCircleLiked]}>
+            <Feather name="heart" size={21} color={liked ? '#e11d48' : '#FFFFFF'} />
+          </View>
           <Text style={s.actionText}>{likesCount || (liked ? 'Liked' : 'Like')}</Text>
-        </Pressable>
+        </UiElement>
         <Pressable style={s.action} onPress={() => {if(!commentsOpen)setCommentsLoading(true);setCommentsOpen(!commentsOpen);}}>
-          <Feather name="message-circle" size={28} color="#FFFFFF" />
+          <View style={s.actionCircle}>
+            <Feather name="message-circle" size={21} color="#FFFFFF" />
+          </View>
           <Text style={s.actionText}>{commentCount || 'Comment'}</Text>
         </Pressable>
         <Pressable style={s.action} onPress={()=>void share()}>
-          <Feather name="share-2" size={27} color="#FFFFFF" />
-          <Text style={s.actionText}>Share</Text>
+          <View style={s.actionCircle}>
+            <Feather name="share-2" size={20} color="#FFFFFF" />
+          </View>
+          <Text style={s.actionText}><UiText value={"Share"}/></Text>
         </Pressable>
         <Pressable style={s.action} onPress={toggleSound}>
-          <Feather name={muted ? 'volume-x' : 'volume-2'} size={27} color="#FFFFFF" />
-          <Text style={s.actionText}>Sound</Text>
+          <View style={s.actionCircle}>
+            <Feather name={muted ? 'volume-x' : 'volume-2'} size={20} color="#FFFFFF" />
+          </View>
+          <Text style={s.actionText}><UiText value={muted ? "Muted" : "Sound"}/></Text>
         </Pressable>
       </View>
 
+      {/* Bottom video details themed to Spotlight cards */}
       <View style={s.details}>
-        <Pressable
+        {/* Spotlight brand gradient pill */}
+        <LinearGradient
+          colors={brandGradient}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={s.spotlightBadge}
+        >
+          <Feather name="play" size={10} color="#FFFFFF" />
+          <Text numberOfLines={1} style={s.spotlightBadgeText}>
+            {reel.account || 'VISTRAH SPOTLIGHT'}
+          </Text>
+        </LinearGradient>
+
+        {/* Clean channel identity */}
+        <UiElement as={Pressable}
           style={s.accountRow}
           onPress={() => router.push({pathname:'/advertiser-profile',params:{id:reel.advertiser.id}})}
           accessibilityRole="button"
           accessibilityLabel={'Open '+reel.account+' advertiser profile'}
         >
           <View style={s.avatar}>
-            <Text style={s.avatarText}>V</Text>
+            <Feather name="video" size={17} color="#FFFFFF" />
           </View>
-          <View>
-            <Text style={s.account}>{reel.account}</Text>
-            <Text style={s.adLabel}>Advertiser video</Text>
+          <View style={{flex: 1, minWidth: 0, gap: 1}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
+              <Text numberOfLines={1} style={s.account}>{reel.account}</Text>
+              <Feather name="check-circle" size={13} color="#16a34a" />
+            </View>
+            <Text style={s.adLabel}><UiText value={"Verified Channel"}/></Text>
           </View>
-        </Pressable>
+        </UiElement>
+
         <Text style={s.title}>{reel.title}</Text>
-        <Text style={s.description}>{reel.description}</Text>
-        {Boolean(playbackError)&&<Pressable onPress={()=>{setPlaybackError('');void player.replaceAsync(reel.url).then(()=>{if(playbackAllowed.current)player.play();}).catch(()=>setPlaybackError('Video could not load. Please retry.'));}}><Text style={s.description}>{playbackError} Tap to retry.</Text></Pressable>}
-        {Boolean(error)&&!commentsOpen&&<Pressable onPress={()=>user?setError(''):router.push('/auth')}><Text style={s.description}>{error}{!user?' Sign in':''}</Text></Pressable>}
-        {user?.seller_enabled&&<Pressable onPress={()=>router.push('/seller/v-ads')}><Text style={s.description}>Your V Ads</Text></Pressable>}
+        {Boolean(cleanDescription)&&<Text style={s.description} numberOfLines={3}>{cleanDescription}</Text>}
+
+        {Boolean(playbackError)&&<Pressable onPress={()=>{setPlaybackError('');void player.replaceAsync(reel.url).then(()=>{if(playbackAllowed.current)player.play();}).catch(()=>setPlaybackError('Video could not load. Please retry.'));}}><Text style={s.description}>{playbackError} <UiText value={"Tap to retry."}/></Text></Pressable>}
+        {Boolean(error)&&!commentsOpen&&<Pressable onPress={()=>user?setError(''):router.push('/auth')}><Text style={s.description}><UiText value={error}/><UiText value={!user?' Sign in':''}/></Text></Pressable>}
+
+        {/* Explore Product / Explore Brand Action Row */}
+        <View style={{flexDirection:'row',alignItems:'center',gap:8,flexWrap:'wrap',marginTop:2}}>
+          {adMeta.ad_type === 'PRODUCT' ? (
+            <UiElement as={Pressable}
+              onPress={()=>{setCommentsOpen(false);setProductDetailsOpen(true);}}
+              style={({pressed})=>[s.exploreProductBtn, {opacity: pressed ? 0.85 : 1}]}
+              accessibilityRole="button"
+              accessibilityLabel="Explore Product"
+            >
+              <Feather name="shopping-bag" size={13} color="#FFFFFF"/>
+              <Text style={s.exploreProductText} numberOfLines={1}>
+                <UiText value="Explore Product"/>
+                {adMeta.product_price ? ` · ${adMeta.product_price}` : ''}
+              </Text>
+              <Feather name="chevron-right" size={13} color="#FFFFFF"/>
+            </UiElement>
+          ) : (
+            <UiElement as={Pressable}
+              onPress={()=>router.push({pathname:'/advertiser-profile',params:{id:reel.advertiser.id}})}
+              style={({pressed})=>[s.exploreBrandBtn, {opacity: pressed ? 0.85 : 1}]}
+              accessibilityRole="button"
+              accessibilityLabel="Explore Brand"
+            >
+              <Feather name="briefcase" size={13} color="#FFFFFF"/>
+              <Text style={s.exploreBrandText} numberOfLines={1}>
+                <UiText value="Explore Brand"/>
+              </Text>
+              <Feather name="arrow-right" size={12} color="#FFFFFF"/>
+            </UiElement>
+          )}
+
+          <UiElement as={Pressable}
+            onPress={()=>router.push({pathname:'/seller/v-ads',params:{from:'v-ads'}})}
+            style={({pressed})=>[s.sellerBadge, {opacity: pressed ? 0.8 : 1}]}
+            accessibilityRole="button"
+            accessibilityLabel="Open V Ads Studio"
+          >
+            <Feather name="video" size={13} color="#FFFFFF"/>
+            <Text style={s.sellerBadgeText}><UiText value={"V Ads Studio"}/></Text>
+            <Feather name="arrow-right" size={12} color="#FFFFFF"/>
+          </UiElement>
+        </View>
       </View>
 
+      {/* Video Progress Bar */}
+      <View style={{position:'absolute',bottom:0,left:0,right:0,height:3,backgroundColor:'rgba(255,255,255,0.25)',zIndex:4}}>
+        <View style={{height:'100%',width:`${progress}%`,backgroundColor:brandTheme.defaultAccent}}/>
+      </View>
+
+      {/* Comments Panel */}
       {commentsOpen && (
-        <View style={[s.commentPanel, {borderColor: colors.border}]}>
+        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728', borderColor: colors.border}]}>
+          <View style={s.commentGrabHandle} />
           <View style={s.commentHeader}>
-            <Text style={s.commentTitle}>Comments</Text>
-            <Pressable onPress={() => setCommentsOpen(false)}>
-              <Feather name="x" color="#FFFFFF" size={23} />
+            <Text style={[s.commentTitle, {color: colors.text}]}><UiText value={"Comments"}/></Text>
+            <Pressable onPress={() => setCommentsOpen(false)} hitSlop={8}>
+              <Feather name="x" color={colors.text} size={22} />
             </Pressable>
           </View>
           <FlatList
@@ -228,27 +351,126 @@ function ReelCard({reel, active, height}: {
             keyExtractor={item => item.id}
             style={s.commentList}
             ListEmptyComponent={
-              <Text style={s.commentHint}>Be the first to comment.</Text>
+              <Text style={[s.commentHint, {color: colors.muted}]}><UiText value={"Be the first to comment."}/></Text>
             }
-            renderItem={({item}) => <Text style={s.comment}>{item.body}</Text>}
+            renderItem={({item}) => <Text style={[s.comment, {color: colors.text}]}>{item.body}</Text>}
             onEndReached={()=>void loadMoreComments()}
           />
           <View style={s.commentInputRow}>
-            <TextInput
-              style={s.commentInput}
+            <UiElement as={TextInput}
+              style={[s.commentInput, {backgroundColor: colors.surface, color: colors.text, borderColor: colors.border, borderWidth: 1}]}
               placeholder="Add a comment..."
-              placeholderTextColor="#B8B8B8"
+              placeholderTextColor={colors.muted}
               value={draft}
               onChangeText={setDraft}
               maxLength={300}
             />
-            <Pressable disabled={busy||commentsLoading} onPress={()=>void addComment()} accessibilityLabel="Post comment">
-              <Feather name="send" size={22} color="#F9AA45" />
+            <UiElement as={Pressable} disabled={busy||commentsLoading} onPress={()=>void addComment()} accessibilityLabel="Post comment">
+              <Feather name="send" size={22} color={colors.accent} />
+            </UiElement>
+          </View>
+          {commentsLoading&&<Text style={[s.demoNote, {color: colors.muted}]}><UiText value={"Loading comments…"}/></Text>}
+          {Boolean(error)&&<Text style={[s.demoNote, {color: colors.error}]}><UiText value={error}/></Text>}
+          {!user&&<Pressable onPress={()=>router.push('/auth')}><Text style={[s.demoNote, {color: colors.accent}]}><UiText value={"Sign in to like or comment."}/></Text></Pressable>}
+        </View>
+      )}
+
+      {/* Product Details Sheet for Product Ads */}
+      {productDetailsOpen && productMeta && (
+        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728', borderColor: colors.border, height: '70%', maxHeight: 520}]}>
+          <View style={s.commentGrabHandle} />
+          <View style={s.commentHeader}>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1}}>
+              <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a1520', alignItems: 'center', justifyContent: 'center'}}>
+                <Feather name="shopping-bag" size={16} color="#e11d48"/>
+              </View>
+              <Text numberOfLines={1} style={[s.commentTitle, {color: colors.text, flex: 1}]}>
+                <UiText value="Product Details" />
+              </Text>
+            </View>
+            <Pressable onPress={() => setProductDetailsOpen(false)} hitSlop={8}>
+              <Feather name="x" color={colors.text} size={22} />
             </Pressable>
           </View>
-          {commentsLoading&&<Text style={s.demoNote}>Loading comments…</Text>}
-          {Boolean(error)&&<Text style={s.demoNote}>{error}</Text>}
-          {!user&&<Pressable onPress={()=>router.push('/auth')}><Text style={s.demoNote}>Sign in to like or comment.</Text></Pressable>}
+
+          <ScrollView style={{flex: 1}} contentContainerStyle={{gap: 14, paddingBottom: 24}}>
+            <View style={{gap: 4}}>
+              <Text style={{fontSize: 18, fontWeight: '800', color: colors.text}}>
+                {productMeta.product_name || reel.title}
+              </Text>
+              <Pressable
+                style={{flexDirection: 'row', alignItems: 'center', gap: 6}}
+                onPress={() => {
+                  setProductDetailsOpen(false);
+                  router.push({pathname:'/advertiser-profile',params:{id:reel.advertiser.id}});
+                }}
+              >
+                <Text style={{fontSize: 13, color: colors.accent, fontWeight: '600'}}>
+                  {reel.account || reel.advertiser.name}
+                </Text>
+                <Feather name="check-circle" size={13} color="#16a34a" />
+                <Text style={{fontSize: 12, color: colors.muted}}>
+                  <UiText value="· View Brand Profile" />
+                </Text>
+              </Pressable>
+            </View>
+
+            {/* Price Details */}
+            <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
+              <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
+                <UiText value="Price Details" />
+              </Text>
+              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3'}}>
+                {productMeta.product_price || 'Available on request / order'}
+              </Text>
+            </View>
+
+            {/* Delivery Options */}
+            <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f0fdf4' : '#142a1b', borderWidth: 1, borderColor: '#86efac', gap: 4}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
+                <Feather name="truck" size={14} color="#16a34a"/>
+                <Text style={{fontSize: 11, fontWeight: '700', color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5}}>
+                  <UiText value="Delivery Options" />
+                </Text>
+              </View>
+              <Text style={{fontSize: 13.5, fontWeight: '600', color: mode === 'light' ? '#14532d' : '#bbf7d0'}}>
+                {productMeta.delivery_info || 'Direct delivery & local pickup available from seller'}
+              </Text>
+            </View>
+
+            {/* Where Product is Used / Video Context */}
+            <View style={{padding: 12, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: 6}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
+                <Feather name="play-circle" size={14} color={colors.accent}/>
+                <Text style={{fontSize: 11.5, fontWeight: '700', color: colors.text, textTransform: 'uppercase', letterSpacing: 0.5}}>
+                  <UiText value="Where Product is Used in this Ad" />
+                </Text>
+              </View>
+              <Text style={{fontSize: 13, lineHeight: 19, color: colors.text}}>
+                {cleanDescription || reel.title}
+              </Text>
+            </View>
+
+            {/* Links */}
+            {Boolean(productMeta.product_id) && (
+              <UiElement as={Action}
+                label="View Full Product Page & Order"
+                onPress={() => {
+                  setProductDetailsOpen(false);
+                  router.push({pathname: '/commerce/[id]', params: {id: productMeta.product_id!}});
+                }}
+              />
+            )}
+
+            <UiElement as={Action}
+              secondary
+              label="Explore Brand Channel & Available Products"
+              onPress={() => {
+                setProductDetailsOpen(false);
+                router.push({pathname: '/advertiser-profile', params: {id: reel.advertiser.id}});
+              }}
+            />
+          </ScrollView>
         </View>
       )}
     </View>
@@ -290,7 +512,7 @@ function VAdsFeed({video}:{video:string}) {
 
   return (
     <View key={user?.id??'guest'} style={styles.page} onLayout={onLayout}>
-      {loading?<Loading/>:!reels.length?<View style={styles.content}>{Boolean(error)?<ErrorPanel error={new Error(error)} retry={()=>setVersion(v=>v+1)}/>:<Text style={styles.muted}>No approved videos yet.</Text>}<Action label="Refresh V Ads" onPress={()=>setVersion(v=>v+1)}/>{user?.seller_enabled&&<Action label="Your V Ads" secondary onPress={()=>router.push('/seller/v-ads')}/>}</View>:height > 0 && (
+      {loading?<Loading/>:!reels.length?<View style={styles.content}>{Boolean(error)?<ErrorPanel error={new Error(error)} retry={()=>setVersion(v=>v+1)}/>:<Text style={styles.muted}><UiText value={"No approved videos yet."}/></Text>}<UiElement as={Action} label="Refresh V Ads" onPress={()=>setVersion(v=>v+1)}/>{user?.seller_enabled&&<UiElement as={Action} label="Your V Ads" secondary onPress={()=>router.push({pathname:'/seller/v-ads',params:{from:'v-ads'}})}/>}</View>:height > 0 && (
         <FlatList
           data={reels}
           keyExtractor={item => item.id}
@@ -336,56 +558,205 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   playButton: {
-    width: 58,
-    height: 58,
-    borderRadius: 29,
-    backgroundColor: 'rgba(0,0,0,0.40)',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(0,0,0,0.45)',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.20)',
   },
-  topBar: {
-    position: 'absolute', top: 15, left: 17, right: 17,
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+  bottomScrim: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 360,
   },
-  heading: {color: '#FFFFFF', fontSize: 20, fontWeight: '700'},
-  sponsored: {backgroundColor: '#F9AA45', borderRadius: 12, paddingHorizontal: 10, paddingVertical: 5},
-  sponsoredText: {color: '#20170C', fontSize: 11, fontWeight: '800'},
-  rightActions: {position: 'absolute', right: 12, bottom: 125, gap: 22},
-  action: {alignItems: 'center', gap: 5, width: 57},
-  actionText: {color: '#FFFFFF', fontSize: 10, fontWeight: '600'},
-  details: {position: 'absolute', left: 16, right: 77, bottom: 24, gap: 9},
+  rightActions: {
+    position: 'absolute',
+    right: 14,
+    bottom: 110,
+    gap: 16,
+    alignItems: 'center',
+  },
+  action: {alignItems: 'center', gap: 4, width: 52},
+  actionCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(0,0,0,0.42)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.20)',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  actionCircleLiked: {
+    backgroundColor: 'rgba(225,29,72,0.25)',
+    borderColor: 'rgba(225,29,72,0.60)',
+  },
+  actionText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '600',
+    textShadowColor: 'rgba(0,0,0,0.7)',
+    textShadowOffset: {width: 0, height: 1},
+    textShadowRadius: 2,
+  },
+  details: {
+    position: 'absolute',
+    left: 16,
+    right: 76,
+    bottom: 24,
+    gap: 8,
+  },
+  spotlightBadge: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 16,
+    maxWidth: '85%',
+  },
+  spotlightBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.8,
+    color: '#FFFFFF',
+    textTransform: 'uppercase',
+  },
+  exploreProductBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 14,
+    backgroundColor: '#e11d48',
+    marginTop: 2,
+  },
+  exploreProductText: {
+    color: '#FFFFFF',
+    fontSize: 12.5,
+    fontWeight: '700',
+  },
+  exploreBrandBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 14,
+    backgroundColor: '#503fbd',
+    marginTop: 2,
+  },
+  exploreBrandText: {
+    color: '#FFFFFF',
+    fontSize: 12.5,
+    fontWeight: '700',
+  },
+  sellerBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.20)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.30)',
+    marginTop: 2,
+  },
+  sellerBadgeText: {color: '#FFFFFF', fontSize: 12, fontWeight: '700'},
   accountRow: {flexDirection: 'row', alignItems: 'center', gap: 10},
   avatar: {
-    width: 40, height: 40, borderRadius: 20,
-    backgroundColor: '#F9AA45', alignItems: 'center', justifyContent: 'center',
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'rgba(255,255,255,0.20)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.28)',
   },
-  avatarText: {color: '#11243F', fontSize: 24, fontWeight: '800'},
-  account: {color: '#FFFFFF', fontSize: 14, fontWeight: '700'},
-  adLabel: {color: '#E5E5E5', fontSize: 11},
-  title: {color: '#FFFFFF', fontSize: 16, fontWeight: '700'},
-  description: {color: '#FFFFFF', fontSize: 13, lineHeight: 19},
+  account: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+    textShadowColor: 'rgba(0,0,0,0.7)',
+    textShadowOffset: {width: 0, height: 1},
+    textShadowRadius: 2,
+  },
+  adLabel: {
+    color: 'rgba(255,255,255,0.70)',
+    fontSize: 11,
+    fontWeight: '500',
+  },
+  title: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 21,
+    textShadowColor: 'rgba(0,0,0,0.8)',
+    textShadowOffset: {width: 0, height: 1},
+    textShadowRadius: 3,
+  },
+  description: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    lineHeight: 18,
+    textShadowColor: 'rgba(0,0,0,0.7)',
+    textShadowOffset: {width: 0, height: 1},
+    textShadowRadius: 2,
+  },
   commentPanel: {
-    position: 'absolute', bottom: 0, left: 0, right: 0,
-    height: '55%', backgroundColor: '#171B25',
-    borderTopWidth: 1, borderTopLeftRadius: 22,
-    borderTopRightRadius: 22, padding: 16, gap: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '55%',
+    borderTopWidth: 1,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    padding: 16,
+    gap: 10,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: -3},
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 8,
+  },
+  commentGrabHandle: {
+    width: 36,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: 'rgba(128,128,128,0.4)',
+    alignSelf: 'center',
+    marginBottom: 4,
   },
   commentHeader: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
-  commentTitle: {color: '#FFFFFF', fontWeight: '700', fontSize: 16},
+  commentTitle: {fontWeight: '700', fontSize: 16},
   commentList: {flex: 1},
-  commentHint: {color: '#B8B8B8', marginTop: 18},
-  comment: {color: '#FFFFFF', marginVertical: 7},
+  commentHint: {marginTop: 18, fontSize: 13},
+  comment: {marginVertical: 7, fontSize: 13.5, lineHeight: 18},
   commentInputRow: {flexDirection: 'row', alignItems: 'center', gap: 12},
   commentInput: {
-    flex: 1, backgroundColor: '#303643', borderRadius: 22,
-    color: '#FFFFFF', paddingHorizontal: 15, paddingVertical: 10,
+    flex: 1,
+    borderRadius: 22,
+    paddingHorizontal: 15,
+    paddingVertical: 9,
+    fontSize: 13.5,
   },
-  demoNote: {color: '#B8B8B8', fontSize: 10},
+  demoNote: {fontSize: 11},
 });
-
-
-
-
-
-
-

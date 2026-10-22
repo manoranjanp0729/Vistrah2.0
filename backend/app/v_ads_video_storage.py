@@ -1,4 +1,4 @@
-﻿"""Private immutable storage for validated V Ads MP4 files.
+"""Private immutable storage for validated V Ads MP4 files.
 
 The caller must validate the video before storing it.
 This module does not provide an HTTP upload or public-serving API.
@@ -6,6 +6,7 @@ This module does not provide an HTTP upload or public-serving API.
 import hashlib
 import os
 import re
+import shutil
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -54,6 +55,13 @@ class VideoStorage:
 
         return path
 
+    def _mirror_to_dev_drive(self, source: Path, key: str) -> None:
+        mirror = os.getenv("V_ADS_DEV_MIRROR_ROOT", "").strip()
+        if os.getenv("APP_ENV") == "development" and mirror:
+            target_dir = Path(mirror)
+            target_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target_dir / key)
+
     def store_validated(self, content: bytes) -> StoredVideo:
         if not 1 <= len(content) <= MAX_VIDEO_BYTES:
             raise ValueError("Invalid video size")
@@ -95,6 +103,7 @@ class VideoStorage:
                     raise OSError("Concurrent video integrity mismatch")
 
             self._sync_object_directories(destination)
+            self._mirror_to_dev_drive(destination, key)
 
         finally:
             temporary.unlink(missing_ok=True)
@@ -166,6 +175,7 @@ class VideoStorage:
                     raise OSError("Existing immutable video failed integrity check")
 
             self._sync_object_directories(destination)
+            self._mirror_to_dev_drive(destination, key)
 
             return StoredVideo(key, checksum, size)
 

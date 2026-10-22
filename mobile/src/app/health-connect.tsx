@@ -1,3 +1,4 @@
+import {UiText,UiElement} from "../components/localized-ui";
 import {useLanguage} from '../lib/language';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {AccessibilityInfo,Animated,Easing,Image,Pressable,ScrollView,StyleSheet,Text,View} from 'react-native';
@@ -48,9 +49,9 @@ export default function HealthConnect(){
    <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={s.medicalMotif}><Feather name="plus" size={62} color="#fff"/><View style={s.motifCircle}/></View>
    <View style={s.heroCopy}><View style={s.heroLabel}>
     <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={s.heart}><Ionicons name="heart" size={52} color="#298bca"/><View style={s.ecgClip}><Animated.View style={{height:18,width:ecg.interpolate({inputRange:[0,1],outputRange:[0,32]}),overflow:'hidden'}}>{heartbeat.slice(1).map(([x,y],index)=>{const [previousX,previousY]=heartbeat[index];return <View key={index} style={{position:'absolute',left:previousX,top:previousY,width:Math.hypot(x-previousX,y-previousY),height:2,borderRadius:1,backgroundColor:'#fff',transformOrigin:'left center',transform:[{rotate:`${Math.atan2(y-previousY,x-previousX)*180/Math.PI}deg`}]}}/>;})}</Animated.View></View></View>
-    <Text style={s.heroLabelText}>VISTRAH HealthConnect</Text>
+    <Text style={s.heroLabelText}><UiText value={"VISTRAH HealthConnect"}/></Text>
    </View><Text accessibilityRole="header" style={s.heroTitle}>{t('health.headline')}</Text><Text style={s.heroDescription}>{t('health.description')}</Text><View style={s.heroHighlight}><Text style={s.heroHighlightTitle}>{t('health.highlight')}</Text><Text style={s.heroHighlightCopy}>{t('health.highlightDescription')}</Text></View></View>
-   <View style={s.heroPhoto}>{failed.hero?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<Image source={require('../../assets/connect/healthconnect-doctor-patient.png')} resizeMode="cover" accessibilityLabel={t('health.photoAlt')} onError={()=>setFailed(value=>({...value,hero:true}))} style={s.fill}/>}</View>
+   <View style={s.heroPhoto}>{failed.hero?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<UiElement as={Image} source={require('../../assets/connect/healthconnect-doctor-patient.png')} resizeMode="cover" accessibilityLabel={t('health.photoAlt')} onError={()=>setFailed(value=>({...value,hero:true}))} style={s.fill}/>}</View>
    <Pressable accessibilityRole="link" onPress={scrollToCategories} style={({pressed})=>[s.heroButton,{opacity:pressed?.85:1}]}><Text style={s.heroButtonText}>{t('health.cta')}</Text><Feather name="arrow-right" size={16} color="#173c58"/></Pressable>
   </LinearGradient>
 
@@ -58,7 +59,7 @@ export default function HealthConnect(){
    {highlights.map(item=><Pressable key={item.slug} accessibilityRole="link" accessibilityLabel={label(marketplaceItemId(category.slug,item.slug),item.category.title)} onPress={()=>explore(item.slug)} style={({pressed})=>[s.benefit,{opacity:pressed?.85:1}]}><View style={s.stepIcon}><Feather name={item.icon} size={18} color="#23649d"/></View><View style={{flex:1,minWidth:0,gap:3}}><Text style={s.benefitTitle}>{t(item.title)}</Text><Text style={s.description}>{t(item.copy)}</Text></View></Pressable>)}
   </View>
   <View onLayout={event=>{categoriesY.current=event.nativeEvent.layout.y;}} style={s.headingGroup}><Text style={s.eyebrow}>{t('health.explore')}</Text><Text accessibilityRole="header" style={s.sectionTitle}>{t('health.servicesTitle')}</Text><Text style={s.description}>{t('health.servicesDescription')}</Text></View>
-  <PhotoCardRail vertical label={t('health.subcategories')} cards={category.subcategories.map(subcategory=>{
+  <UiElement as={PhotoCardRail} vertical label={t('health.subcategories')} cards={category.subcategories.map(subcategory=>{
    const id=marketplaceItemId(category.slug,subcategory.slug),photo=nativeMarketplacePhoto(id);
    return <Pressable key={subcategory.slug} accessibilityRole="link" accessibilityLabel={label(id,subcategory.title)} onPress={()=>explore(subcategory.slug)} style={({pressed})=>[s.discoveryCard,{opacity:pressed?.85:1}]}><View style={s.discoveryPhoto}>{photo&&!failed[id]?<Image source={photo} resizeMode="cover" accessibilityLabel={nativeMarketplaceAlt(id)??subcategory.title} onError={()=>setFailed(value=>({...value,[id]:true}))} style={s.fill}/>:<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>}</View><Text numberOfLines={locale==='en'?2:undefined} style={[s.discoveryTitle,locale!=='en'&&{height:undefined,lineHeight:21}]}>{label(id,subcategory.title)}</Text></Pressable>;
   })}/>

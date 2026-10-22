@@ -1,3 +1,4 @@
+import {UiElement} from "./localized-ui";
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {AppState,Image,Platform,Pressable,ScrollView,View} from 'react-native';
 import {router,useFocusEffect,type Href} from 'expo-router';
@@ -48,6 +49,6 @@ export function ServiceCarousel(){
    </Pressable>)}
   </ScrollView>
  </View>
- <View pointerEvents="none" accessibilityLabel={'Journey slide '+(index+1)+' of 5'} style={{flexDirection:'row',justifyContent:'center',gap:6}}>{slides.map((slide,position)=><View key={slide.key} style={{width:position===index?18:6,height:6,borderRadius:3,backgroundColor:position===index?colors.accent:colors.muted,opacity:position===index?1:.4}}/>)}</View>
+ <UiElement as={View} pointerEvents="none" accessibilityLabel={'Journey slide '+(index+1)+' of 5'} style={{flexDirection:'row',justifyContent:'center',gap:6}}>{slides.map((slide,position)=><View key={slide.key} style={{width:position===index?18:6,height:6,borderRadius:3,backgroundColor:position===index?colors.accent:colors.muted,opacity:position===index?1:.4}}/>)}</UiElement>
  </View>;
 }

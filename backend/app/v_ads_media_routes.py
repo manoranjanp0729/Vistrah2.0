@@ -32,6 +32,8 @@ def media_storage():
     if os.getenv("V_ADS_MEDIA_ENABLED") != "1" or not root:
         raise HTTPException(503, "Private video storage is not enabled")
     try:
+        if os.getenv("APP_ENV") == "development" and Path(root).is_absolute() and not Path(root).exists():
+            Path(root).mkdir(parents=True, mode=0o700, exist_ok=True)
         storage = VideoStorage(private_root(root))
         if not storage.root.is_dir():
             raise ValueError("Provision private persistent storage first")
@@ -43,6 +45,12 @@ def media_storage():
 def verified_path(storage, upload):
     try:
         path = storage._path(upload.storage_key)
+        if not path.is_file() and os.getenv("APP_ENV") == "development":
+            mirror = os.getenv("V_ADS_DEV_MIRROR_ROOT", "").strip()
+            mirror_file = Path(mirror) / upload.storage_key if mirror else None
+            if mirror_file and mirror_file.is_file() and not mirror_file.is_symlink():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(mirror_file.read_bytes())
         if path.is_symlink() or not path.is_file() or path.stat().st_size != upload.size_bytes:
             raise ValueError("Missing or changed media")
         digest = hashlib.sha256()

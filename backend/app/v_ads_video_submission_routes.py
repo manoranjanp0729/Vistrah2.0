@@ -20,7 +20,7 @@ router = APIRouter(tags=["V Ads video submissions"])
 class VideoSubmission(Strict):
     advertiser_id: str
     title: str = Field(min_length=3, max_length=160)
-    description: str = Field(default="", max_length=2000)
+    description: str = Field(default="", max_length=4000)
     upload_id: str = Field(min_length=1, max_length=36)
 
 
@@ -35,10 +35,16 @@ def submit_video(data: VideoSubmission, user: User = Depends(current_user),
         VAdsAdvertiser.id == data.advertiser_id).with_for_update())
     upload = authorized_media(db, user.id, data.advertiser_id, data.upload_id)
     verified_path(storage, upload)
+    import os
+    from datetime import datetime, timezone
+    auto_approve = user.role == "ADMIN" or os.getenv("V_ADS_AUTO_APPROVE", "").lower() in ("1", "true")
+    status = "APPROVED" if auto_approve else "PENDING"
+    published_at = datetime.now(timezone.utc) if auto_approve else None
     video = VAdsVideo(id=str(uuid4()), advertiser_id=data.advertiser_id,
                      media_upload_id=upload.id, title=data.title,
                      description=data.description,
-                     video_url=f"/v-ads/media/{upload.id}", status="PENDING")
+                     video_url=f"/v-ads/media/{upload.id}", status=status,
+                     published_at=published_at)
     db.add(video)
     db.add(Audit(actor_id=user.id, action="V_ADS_VIDEO_SUBMIT",
                  entity="v_ads_video", entity_id=video.id,

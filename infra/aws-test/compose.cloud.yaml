@@ -23,6 +23,7 @@ services:
       DATABASE_URL: postgresql+psycopg://vistrah:${POSTGRES_PASSWORD:?Missing database password}@db:5432/vistrah
       JWT_SECRET: ${JWT_SECRET:?Missing cloud signing secret}
       SEED_CATALOGUE: 'false'
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       APP_ENV: development
       PUBLIC_APP_URL: https://vistrah.in
       SOURCE_NETWORK_ENABLED: 'false'

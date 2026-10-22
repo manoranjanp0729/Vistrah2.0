@@ -1,5 +1,17 @@
 # V Ads controlled-release runbook
 
+## GHCR preflight ready; explicit dispatch approval pending - 20 October 2026
+
+Reuse the owner's completed Free-quota/$0-budget/blocked-overage review; do not
+request an upgrade or purchase. Exact candidate `4cc5e2f` uses standard runners
+and preserved checks, with no package-visibility change. Metadata inspection was
+blocked by missing `read:packages`, then owner confirmed all three packages
+absent. New packages default private and link to the publishing repository via
+GITHUB_TOKEN. Request explicit first-publication authorization for exact source
+`4cc5e2f`; do not dispatch now. Actual registry access/private status, FFmpeg
+checks and all three immutable digests must pass during the approved run. The detailed
+evidence in [RELEASES.md](RELEASES.md) supersedes the older unverified billing gate.
+
 ## Current execution boundary - 20 October 2026
 
 The approved registration-only stub is now the sole addition in main commit

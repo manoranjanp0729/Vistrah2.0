@@ -1342,5 +1342,13 @@
   "footer.signup": "उपयोगकर्ता के रूप में पंजीकरण करें",
   "footer.login": "उपयोगकर्ता के रूप में लॉग इन करें",
   "footer.sellerSignup": "विक्रेता के रूप में पंजीकरण करें",
-  "footer.sellerLogin": "विक्रेता के रूप में लॉग इन करें"
+  "footer.sellerLogin": "विक्रेता के रूप में लॉग इन करें",
+  "settings.themeColor": "ऐप थीम",
+  "settings.themeColorHelp": "ऐप का रंग चुनें। रूप बदलने के लिए लाइट या डार्क चुनें।",
+  "settings.theme.blue": "ओशन ब्लू",
+  "settings.theme.indigo": "रॉयल इंडिगो",
+  "settings.theme.lavender": "क्लासिक लैवेंडर",
+  "settings.theme.orchid": "ऑर्किड पर्पल",
+  "settings.theme.pink": "रोज़ पिंक",
+  "settings.close": "सेटिंग्स बंद करें"
 }

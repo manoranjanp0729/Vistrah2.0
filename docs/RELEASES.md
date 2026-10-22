@@ -2,6 +2,63 @@
 
 Phase 2 source preparation, 13 October 2026. No production deployment is wired.
 
+## GHCR-only safety preflight - 20 October 2026
+
+The owner has reviewed GitHub Free billing: 2,000 included Actions minutes,
+approximately $3.55 displayed usage against approximately $12 included, and
+$0 paid budgets with overage blocked. Accept this as owner-provided billing
+evidence; no upgrade, purchase, spending-limit change or new billing-API audit
+is needed. Actual candidate publication still requires explicit authorization.
+
+Static verification of exact source `4cc5e2ff54c9d33504a671657d43d15adb947588`
+passes: manual dispatch/confirmation and full-SHA ancestry checks; only three
+API/web/admin candidates; standard `ubuntu-24.04` runners; no paid reviewer
+environment; `GITHUB_TOKEN` with job-local `packages: write`; upstream CI and
+audit gates preserved; no visibility-changing API/command. Combined timeout
+ceiling remains 205 runner-minutes. This workflow does not enable paid capacity;
+the owner's blocked-overage setting must remain in force. Included capacity
+does not guarantee a build will complete if quota or another limit is reached.
+
+The exact package-read blocker is now proven, not an inferred generic 403:
+GitHub says **You need at least read:packages scope to list packages.** The
+configured OAuth login grants only `gist, repo, workflow`; no credentials or
+scopes were changed. Anonymous GHCR pull-token requests return 403 for each of
+`manoranjan247p-source/vistrah2.0/candidate-api`, `candidate-web`, `candidate-admin`.
+That proves those anonymous requests were denied, not that package metadata is
+absent/private or that existing-package Actions write access is granted.
+
+[GitHub documents private visibility for first publication and automatic
+repository linkage with GITHUB_TOKEN](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+Publishing an existing package retains its visibility: the private source
+repository alone is not a package-privacy guarantee. An owner can separately
+change package visibility; this reviewed workflow contains no such change.
+[Package metadata access requires read:packages](https://docs.github.com/en/rest/packages/packages?apiVersion=2022-11-28).
+Current repository Actions settings and job token configuration support new
+associated packages; existing packages additionally need verified repository
+Actions access. No actual write/push has been tested or performed.
+
+The owner subsequently confirmed **all three packages are absent**. This is
+owner-provided package evidence, not a successful metadata-API read. There is
+therefore no pre-existing package permission/visibility to inherit. Combined
+with verified repository Actions settings, job-local `GITHUB_TOKEN` package
+write and GitHub's documented private-first-publication/repository-link behavior,
+the controls are **READY FOR EXPLICIT TEST-CANDIDATE AUTHORIZATION**. Existing
+main/production checks and the unresolved mobile security release gate remain
+unchanged. This is not production/Android release readiness or proof of an
+actual registry push: login, first push, private package status, FFmpeg smoke and
+all immutable digests must be verified during the authorized run. A failed or
+partial matrix is not an accepted candidate set.
+
+The next approval is one manual `publish-images.yml` dispatch, selecting
+`chore/protect-local-source-20261020` and exact source
+`4cc5e2ff54c9d33504a671657d43d15adb947588`, confirmation
+`PUBLISH TEST CANDIDATE`, producing ONLY the three test candidate images. Use
+included capacity with blocked paid overage; never change billing/visibility
+settings to repair a failed build. No dispatch, build, publication, AWS action,
+DB change or application/UI change occurred here. Never paste credentials.
+Sanitized local evidence: `artifacts/milestone-release/ghcr-safety-preflight.json`
+and `ghcr-workflow-safety.json`; these are ignored operational artifacts.
+
 ## Registration completed; candidate publishing ON HOLD - 20 October 2026
 
 The user approved only the documented default-branch registration change, then

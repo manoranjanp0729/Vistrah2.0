@@ -27,7 +27,8 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
     const body=mutation?await request.text():undefined;
     const providerPath=path[0].startsWith('provider-')||(path[0]==='admin'&&path[1]?.startsWith('provider-'));
     const claimEvidence=path[0]==='seller'&&path[1]==='ownership-claims'&&path.at(-1)==='evidence';
-    const limit=providerPath&&(path.at(-1)==='documents'||path.at(-1)==='evidence')||claimEvidence?3000000:providerPath||path[0]==='finds'?128000:20000;
+    const isEditVistrah=path[0]==='admin'&&path[1]==='edit-vistrah';
+    const limit=providerPath&&(path.at(-1)==='documents'||path.at(-1)==='evidence')||claimEvidence?3000000:isEditVistrah?1000000:providerPath||path[0]==='finds'?128000:20000;
     if(body&&new TextEncoder().encode(body).length>limit) return NextResponse.json({detail:'Request too large'},{status:413});
     const response=await fetch(`${API_URL}/${path.map(encodeURIComponent).join('/')}${request.nextUrl.search}`,{method:request.method,headers,body,cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
     const isAuth=path[0]==='auth'&&((path.length===2&&['register','login'].includes(path[1]))||(path.length===3&&path[1]==='seller'&&['register','login'].includes(path[2])));

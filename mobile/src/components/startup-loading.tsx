@@ -1,3 +1,4 @@
+import {UiText,UiElement} from "./localized-ui";
 import {useEffect,useState} from 'react';
 import {ActivityIndicator,Image,Platform,StyleSheet,Text,View} from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
@@ -26,8 +27,8 @@ export function StartupLoading(){
   },[theme.ready,session.ready,visibleLongEnough,timedOut]);
   if(finished)return null;
   const logoLoaded=()=>{setLogoReady(true);if(Platform.OS!=='web')void SplashScreen.hideAsync().catch(()=>{});};
-  return <View accessibilityRole="progressbar" accessibilityLabel="Opening VISTRAH" style={[StyleSheet.absoluteFill,{zIndex:100,elevation:100,backgroundColor:theme.colors.background,alignItems:'center',justifyContent:'center',gap:24,padding:32}]}>
+  return <UiElement as={View} accessibilityRole="progressbar" accessibilityLabel="Opening VISTRAH" style={[StyleSheet.absoluteFill,{zIndex:100,elevation:100,backgroundColor:theme.colors.background,alignItems:'center',justifyContent:'center',gap:24,padding:32}]}>
     <Image source={theme.mode==='light'?require('../../assets/brand/lockup-light.png'):require('../../assets/brand/lockup-dark.png')} accessibilityLabel="VISTRAH" resizeMode="contain" onLoadEnd={logoLoaded} style={{width:'100%',maxWidth:280,height:70}}/>
-    <ActivityIndicator color={theme.colors.accent}/><Text style={theme.styles.muted}>Opening your next possibilities…</Text>
-  </View>;
+    <ActivityIndicator color={theme.colors.accent}/><Text style={theme.styles.muted}><UiText value={"Opening your next possibilities…"}/></Text>
+  </UiElement>;
 }

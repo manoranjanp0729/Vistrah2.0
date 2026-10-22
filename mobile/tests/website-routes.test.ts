@@ -7,7 +7,16 @@ test('website bookmarks reach native account and seller screens',()=>{
   assert.equal(websiteRoute('/app/account/profile','',categories),'/profile');
   assert.equal(websiteRoute('/seller/register','',categories),'/auth?mode=seller&register=1');
   assert.equal(websiteRoute('/provide-service','?business=7',categories),'/provider-applications/new?business=7');
+  assert.equal(websiteRoute('/provide-service','?category=1&service=3',categories),'/provider-applications/new?category=1&service=3');
   assert.equal(websiteRoute('/provide-service','?business=https://other.invalid',categories),'/provider-applications/new');
+});
+
+test('seller login and signup retain the service-selector destination on phone web',()=>{
+  assert.equal(websiteRoute('/seller/register','?next=%2Fservices',categories),'/auth?mode=seller&register=1&next=%2Fservices');
+  assert.equal(websiteRoute('/seller/login','?next=%2Fservices',categories),'/auth?mode=seller&next=%2Fservices');
+  assert.equal(websiteRoute('/seller/login','?next=%2Fprovide-service',categories),'/auth?mode=seller&next=%2Fprovider-applications%2Fnew');
+  assert.equal(websiteRoute('/seller/register','?next=%2Fprovide-service',categories),'/auth?mode=seller&register=1&next=%2Fprovider-applications%2Fnew');
+  assert.equal(websiteRoute('/seller/login','?next=https://other.invalid',categories),'/auth?mode=seller');
 });
 test('legacy category, service, enquiry and Find Jobs routes retain their destinations',()=>{
   assert.equal(websiteRoute('/service/jobs-careers','',categories),'/category/jobs-careers');

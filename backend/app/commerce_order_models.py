@@ -51,6 +51,6 @@ class CommerceOrder(Base):
         CheckConstraint("mode = 'TEST'",name='ck_commerce_order_mode'),
         CheckConstraint('quantity >= 1 AND quantity <= 999 AND revision > 0 AND listing_revision > 0',name='ck_commerce_order_quantity'),
         CheckConstraint('unit_price_paise > 0 AND unit_price_paise <= 1000000000 AND delivery_fee_paise >= 0 AND delivery_fee_paise <= 1000000000 AND quoted_total_paise = unit_price_paise * CAST(quantity AS BIGINT) + delivery_fee_paise',name='ck_commerce_order_price'),
-        CheckConstraint("(kind = 'PRODUCT' AND fulfilment_operator = 'SELLER' AND service_id IS NULL AND fulfilment_method IN ('PICKUP','DELIVERY') AND cancellation_rule IN ('BEFORE_DISPATCH','BEFORE_BUILD')) OR (kind = 'SERVICE_PACKAGE' AND service_id IS NOT NULL AND fulfilment_operator IN ('SELLER','VISTRAH') AND fulfilment_method = 'SERVICE' AND cancellation_rule = 'BEFORE_SERVICE_START')",name='ck_commerce_order_kind'),
+        CheckConstraint("(kind = 'PRODUCT' AND fulfilment_operator = 'SELLER' AND service_id IS NULL AND fulfilment_method IN ('PICKUP','DELIVERY') AND cancellation_rule IN ('BEFORE_DISPATCH','BEFORE_BUILD')) OR (kind = 'SERVICE_PACKAGE' AND fulfilment_operator IN ('SELLER','VISTRAH') AND fulfilment_method = 'SERVICE' AND cancellation_rule = 'BEFORE_SERVICE_START')",name='ck_commerce_order_kind'),
         CheckConstraint("(fulfilment_method = 'DELIVERY' AND delivery_address IS NOT NULL) OR (fulfilment_method != 'DELIVERY' AND delivery_address IS NULL AND delivery_fee_paise = 0)",name='ck_commerce_order_delivery'),
     )

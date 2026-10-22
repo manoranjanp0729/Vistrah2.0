@@ -1,3 +1,4 @@
+import {sellerReturnDestination} from './seller-auth.ts';
 import {discoverableServices,mobileServiceId,type Category} from './catalogue.ts';
 
 // Local Expo serves /membership; the hosted phone website adds /app itself.
@@ -11,10 +12,14 @@ export function membershipRoute(pathname:string):'/membership'|null {
 export function websiteRoute(pathname:string,search:string,categories:Category[]):string|null {
   const path=pathname.replace(/^\/app(?=\/|$)/,'')||'/';
   const query=new URLSearchParams(search);
+  const sellerNext=sellerReturnDestination(true,query.get('next'));
+  if((path==='/seller/login'||path==='/seller/register')&&sellerNext?.startsWith('/seller/add-service?'))return '/auth?mode=seller'+(path==='/seller/register'?'&register=1':'')+'&next='+encodeURIComponent(sellerNext);
+  if((path==='/seller/login'||path==='/seller/register')&&query.get('next')==='/services')return '/auth?mode=seller'+(path==='/seller/register'?'&register=1':'')+'&next=%2Fservices';
+  if((path==='/seller/login'||path==='/seller/register')&&query.get('next')==='/provide-service')return '/auth?mode=seller'+(path==='/seller/register'?'&register=1':'')+'&next=%2Fprovider-applications%2Fnew';
   const aliases:Record<string,string>={
     '/login':'/auth','/register':'/auth?register=1',
     '/seller/login':'/auth?mode=seller','/seller/register':'/auth?mode=seller&register=1',
-    '/account/profile':'/profile','/account/requests':'/requests','/account/payments':'/payments',
+    '/account/profile':'/profile','/account/requests':'/my-requests','/account/payments':'/payments',
     '/account/orders':'/payments','/account/membership':'/membership','/account/settings':'/settings',
     '/account/provider-applications':'/provider-applications','/account/finds':'/finds',
     '/sandbox-checkout':'/checkout',
@@ -24,8 +29,9 @@ export function websiteRoute(pathname:string,search:string,categories:Category[]
   if(path==='/provide-service'){
     const id=query.get('application');
     if(id&&/^[0-9a-f-]{36}$/.test(id))return '/provider-applications/'+id;
-    const business=query.get('business');
-    return '/provider-applications/new'+(business&&/^\d+$/.test(business)?'?business='+business:'');
+    const selection=new URLSearchParams();
+    for(const key of ['business','category','service']){const value=query.get(key);if(value&&/^[1-9]\d*$/.test(value))selection.set(key,value);}
+    return '/provider-applications/new'+(selection.size?'?'+selection.toString():'');
   }
   if(!path.startsWith('/service/')||/^\/service\/(\d+|find-jobs)$/.test(path))return null;
   const parts=path.split('/').filter(Boolean);

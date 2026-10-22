@@ -1,5 +1,5 @@
 import {describe,it,expect} from 'vitest';
-import {vAdsClient,validateVideoFile,maxVideoBytes,mediaUrl,mergeReels,sharePath,type Api,type Reel} from '../../shared/v-ads';
+import {vAdsClient,validateVideoFile,maxVideoBytes,mediaUrl,mergeReels,sharePath,encodeAdDescription,parseAdDescription,type Api,type Reel,type AdProductMeta,type AdBrandMeta} from '../../shared/v-ads';
 describe('shared web/mobile V Ads contract',()=>{
  it('submits only an owned upload reference and trimmed copy',async()=>{
   const calls:{path:string;options?:RequestInit}[]=[];
@@ -23,5 +23,34 @@ describe('shared web/mobile V Ads contract',()=>{
  it('deduplicates pagination without moving the active first video',()=>{
   const a={id:'a'} as Reel,b={id:'b'} as Reel;
   expect(mergeReels([a],[a,b,b])).toEqual([a,b]);
+ });
+ it('encodes and parses Product Ad metadata transparently', () => {
+  const meta: AdProductMeta = {
+   ad_type: 'PRODUCT',
+   product_name: 'Bridal Silk Saree',
+   product_price: '₹2,499',
+   delivery_info: 'Free 2-Day Delivery',
+   product_id: 'prod-123',
+  };
+  const raw = encodeAdDescription('Demonstration of wedding drape', meta);
+  expect(raw).toContain('Demonstration of wedding drape');
+  expect(raw).toContain('<!--V_AD_META:');
+  const parsed = parseAdDescription(raw);
+  expect(parsed.description).toBe('Demonstration of wedding drape');
+  expect(parsed.meta).toEqual(meta);
+ });
+ it('encodes and parses Brand Ad metadata and falls back safely', () => {
+  const meta: AdBrandMeta = {
+   ad_type: 'BRAND',
+   products_available: 'Sarees, Lehengas & Accessories',
+  };
+  const raw = encodeAdDescription('Our boutique heritage tour', meta);
+  const parsed = parseAdDescription(raw);
+  expect(parsed.description).toBe('Our boutique heritage tour');
+  expect(parsed.meta).toEqual(meta);
+
+  const fallback = parseAdDescription('Plain description without metadata');
+  expect(fallback.description).toBe('Plain description without metadata');
+  expect(fallback.meta.ad_type).toBe('BRAND');
  });
 });

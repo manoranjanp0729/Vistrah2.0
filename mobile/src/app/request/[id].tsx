@@ -1,8 +1,9 @@
+import {UiText} from "../../components/localized-ui";
 import {useLanguage} from '../../lib/language';
 import {useState} from 'react';
 import {Switch,Text,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
-import {Action,ErrorPanel,Field,Heading,Loading,MemberGate,Page} from '../../components/ui';
+import {PageTitle,Action,ErrorPanel,Field,Heading,Loading,MemberGate,Page} from '../../components/ui';
 import {allServices,enquiryPrefix,pathways,type Category,type Intent} from '../../lib/catalogue';
 import {useResource} from '../../lib/resource';
 import {api} from '../../lib/api';
@@ -22,9 +23,9 @@ function Form(){const {copy,t}=useLanguage();const {styles}=useTheme();
     setBusy(true);try{await api('/requests',{method:'POST',body:JSON.stringify({service_id:context.service.id,requirements:enquiryPrefix(intent)+requirements.trim(),location:city.trim(),phone:phone.trim(),postal_code:pin.trim()||null,service_address:share?address.trim()||null:null})});setSaved(true);}catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   if(catalogue.loading)return <Loading/>;if(catalogue.error)return <ErrorPanel error={catalogue.error} retry={catalogue.retry}/>;
-  if(!context)return <Text style={styles.muted}>{copy.service.unavailable}</Text>;
-  if(saved)return <><Heading title={copy.requests.saved}/><Text style={styles.muted}>{copy.requests.savedDescription}</Text><Action label={copy.requests.view} onPress={()=>router.replace('/requests')}/></>;
-  return <><Heading title={context.service.title}/><Text style={styles.muted}>{intent==='recommendations'?t('requests.recommendationIntro'):intent==='in-house'?t('requests.deliveryIntro'):t('requests.enquiryIntro')}{' '}{t('requests.noBooking')}</Text>
-    {Boolean(error)&&<ErrorPanel error={error}/>}<Field label={copy.requests.requirements} multiline value={requirements} onChangeText={setRequirements} maxLength={4900}/><Field label={copy.requests.city} value={city} onChangeText={setCity} maxLength={200}/><Field label={copy.requests.pin} value={pin} onChangeText={setPin} keyboardType="number-pad" maxLength={6}/><View style={styles.row}><Switch value={share} onValueChange={setShare} accessibilityLabel={copy.requests.share}/><Text style={[styles.muted,{flex:1}]}>{copy.requests.share}</Text></View><Field label={copy.requests.address} multiline value={address} onChangeText={setAddress} maxLength={1000}/><Field label={copy.profile.phone} keyboardType="phone-pad" value={phone} onChangeText={setPhone} maxLength={20}/><Text style={styles.muted}>{copy.requests.privacy}</Text><Action label={busy?copy.profile.saving:copy.requests.save} disabled={busy} onPress={()=>void submit()}/>
+  if(!context)return <Text style={styles.muted}><UiText value={copy.service.unavailable}/></Text>;
+  if(saved)return <><PageTitle title={copy.requests.saved}/><Text style={styles.muted}><UiText value={copy.requests.savedDescription}/></Text><Action label={copy.requests.view} onPress={()=>router.replace('/my-requests')}/></>;
+  return <><Heading title={context.service.title}/><Text style={styles.muted}><UiText value={intent==='recommendations'?t('requests.recommendationIntro'):intent==='in-house'?t('requests.deliveryIntro'):t('requests.enquiryIntro')}/>{' '}{t('requests.noBooking')}</Text>
+    {Boolean(error)&&<ErrorPanel error={error}/>}<Field label={copy.requests.requirements} multiline value={requirements} onChangeText={setRequirements} maxLength={4900}/><Field label={copy.requests.city} value={city} onChangeText={setCity} maxLength={200}/><Field label={copy.requests.pin} value={pin} onChangeText={setPin} keyboardType="number-pad" maxLength={6}/><View style={styles.row}><Switch value={share} onValueChange={setShare} accessibilityLabel={copy.requests.share}/><Text style={[styles.muted,{flex:1}]}><UiText value={copy.requests.share}/></Text></View><Field label={copy.requests.address} multiline value={address} onChangeText={setAddress} maxLength={1000}/><Field label={copy.profile.phone} keyboardType="phone-pad" value={phone} onChangeText={setPhone} maxLength={20}/><Text style={styles.muted}><UiText value={copy.requests.privacy}/></Text><Action label={busy?copy.profile.saving:copy.requests.save} disabled={busy} onPress={()=>void submit()}/>
   </>;
 }

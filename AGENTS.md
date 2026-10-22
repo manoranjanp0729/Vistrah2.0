@@ -9,15 +9,16 @@ Scope: this repository at `E:\Vistrah 2.0`. Do not access or edit `E:\Vistra V.1
 - Exclude dependency trees, `.venv`, `.tools` caches, `.next`, artifacts and generated files from exploration. Read an exact dependency guide only when applicable frontend instructions require it.
 - Use [production phases](docs/PRODUCTION_PLAN.md) and [environment boundaries](docs/ENVIRONMENTS.md) for production implementation; respect phase completion gates and distinguish templates from deployable runtime.
 - Existing [architecture](docs/ARCHITECTURE.md) and planning documents are authoritative references; read additional documents only when relevant or explicitly requested. Do not create duplicate documentation.
-- Prefer minimal diffs. Preserve working behavior and existing user edits. Never perform unrelated refactoring or automatically implement optional improvements.
+- Prefer minimal diffs and keep changes strictly specific. Preserve working behavior and existing user edits. Never perform unrelated refactoring or automatically implement optional improvements.
 - Avoid dependency installations and full Docker rebuilds unless necessary for the authorized task.
-- Run the smallest relevant verification first. Broaden only for a concrete unresolved concern. Documentation-only changes need path/content checks, not application tests or builds.
+- Keep tests, verification, and iterations minimal to save time: run only the smallest relevant check directly tied to the change. Never run multiple test suites repeatedly for localized edits; avoid redundant verification loops.
 - After two unsuccessful repair attempts on the same issue, stop debugging. Report the blocker and attempts, and await user direction; do not enter repeated debugging loops.
 - Keep final reports under 100 words: result, relevant verification, blockers and requested next action.
 
 ## Preserve project boundaries
 
 - Follow `frontend/AGENTS.md` for frontend work; consult only its relevant Next.js guide.
+- Always consider security aspects: ensure strict access control, fail-closed authorization, safe credential and input handling, and secure data boundaries are respected with every specific change.
 - Preserve I1 membership enforcement, I2 three service tabs, positioning, seller ownership, listing approvals and the shared business/listing models.
 - Customer location is temporary unless explicitly saved. GPS requires **Use my location**; retain manual fallback and location privacy. Use the existing approved MapTiler configuration; new map/geocoder providers or billing changes require separate authorization.
 - Test database writes only with verified disposable data. Never migrate/seed the normal database or alter/delete normal volumes as part of routine verification.

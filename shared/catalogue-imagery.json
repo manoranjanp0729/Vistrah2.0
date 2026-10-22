@@ -115,7 +115,7 @@
       "subject": "Dessert cafés"
     },
     "subcategory/food-and-dining/food-delivery-and-takeaway": {
-      "photo": null,
+      "photo": "catalogue-batch2-food-and-dining--food-delivery-and-takeaway",
       "subject": "Food Delivery & Takeaway"
     },
     "type/food-and-dining/food-delivery-and-takeaway/online-food-ordering": {
@@ -355,7 +355,7 @@
       "subject": "Home appliance installation"
     },
     "subcategory/home-and-everyday-services/home-installation": {
-      "photo": null,
+      "photo": "catalogue-batch2-home-and-everyday-services--home-installation",
       "subject": "Home Installation"
     },
     "type/home-and-everyday-services/home-installation/furniture-assembly": {
@@ -655,7 +655,7 @@
       "subject": "Bags and accessories"
     },
     "subcategory/shopping-and-local-retail/home-and-furniture": {
-      "photo": null,
+      "photo": "home-purchase",
       "subject": "Home & Furniture"
     },
     "type/shopping-and-local-retail/home-and-furniture/furniture": {
@@ -1239,7 +1239,7 @@
       "subject": "Pre-purchase inspection"
     },
     "subcategory/automobiles/roadside-assistance": {
-      "photo": null,
+      "photo": "building-inspection",
       "subject": "Roadside Assistance"
     },
     "type/automobiles/roadside-assistance/towing": {
@@ -1415,7 +1415,7 @@
       "subject": "Office furniture"
     },
     "subcategory/rental-services/electronics-and-gadget-rentals": {
-      "photo": null,
+      "photo": "development-operations",
       "subject": "Electronics & Gadget Rentals"
     },
     "type/rental-services/electronics-and-gadget-rentals/laptops": {
@@ -1515,7 +1515,7 @@
       "subject": "Catering equipment"
     },
     "subcategory/rental-services/tools-and-construction-equipment": {
-      "photo": null,
+      "photo": "site-contractors",
       "subject": "Tools & Construction Equipment"
     },
     "type/rental-services/tools-and-construction-equipment/power-tools": {
@@ -1763,7 +1763,7 @@
       "subject": "Group transportation"
     },
     "subcategory/travel-stay-and-experiences/tours-and-guided-experiences": {
-      "photo": null,
+      "photo": "glass-enclosure",
       "subject": "Tours & Guided Experiences"
     },
     "type/travel-stay-and-experiences/tours-and-guided-experiences/city-tours": {
@@ -2327,7 +2327,7 @@
       "subject": "Leadership training"
     },
     "subcategory/education-and-skills/certifications-and-exam-preparation": {
-      "photo": null,
+      "photo": "application-desk",
       "subject": "Certifications & Exam Preparation"
     },
     "type/education-and-skills/certifications-and-exam-preparation/certification-training": {
@@ -2351,7 +2351,7 @@
       "subject": "Exam coaching"
     },
     "subcategory/education-and-skills/online-learning": {
-      "photo": null,
+      "photo": "software-review",
       "subject": "Online Learning"
     },
     "type/education-and-skills/online-learning/live-online-classes": {
@@ -2523,7 +2523,7 @@
       "subject": "Public sector recruitment"
     },
     "subcategory/jobs-and-careers/gig-and-freelance-work": {
-      "photo": null,
+      "photo": "business-launch",
       "subject": "Gig & Freelance Work"
     },
     "type/jobs-and-careers/gig-and-freelance-work/design-projects": {
@@ -2555,7 +2555,7 @@
       "subject": "Skilled trades assignments"
     },
     "subcategory/jobs-and-careers/employer-profiles": {
-      "photo": null,
+      "photo": "office-process",
       "subject": "Employer Profiles"
     },
     "type/jobs-and-careers/employer-profiles/company-profiles": {
@@ -2771,7 +2771,7 @@
       "subject": "Cybersecurity consulting"
     },
     "subcategory/professional-services/design-and-creative-services": {
-      "photo": null,
+      "photo": "catalogue-batch2-professional-services--design-and-creative-services",
       "subject": "Design & Creative Services"
     },
     "type/professional-services/design-and-creative-services/graphic-design": {
@@ -2823,7 +2823,7 @@
       "subject": "Commercial real estate consulting"
     },
     "subcategory/professional-services/financial-services": {
-      "photo": null,
+      "photo": "property-sale",
       "subject": "Financial Services"
     },
     "type/professional-services/financial-services/financial-planning": {
@@ -2963,7 +2963,7 @@
       "subject": "Wedding invitation services"
     },
     "subcategory/events-and-celebrations/birthday-and-private-parties": {
-      "photo": null,
+      "photo": "catalogue-batch2-events-and-celebrations--birthday-and-private-parties",
       "subject": "Birthday & Private Parties"
     },
     "type/events-and-celebrations/birthday-and-private-parties/birthday-planners": {
@@ -2991,7 +2991,7 @@
       "subject": "Themed party arrangements"
     },
     "subcategory/events-and-celebrations/corporate-events": {
-      "photo": null,
+      "photo": "tender-review",
       "subject": "Corporate Events"
     },
     "type/events-and-celebrations/corporate-events/corporate-event-planners": {
@@ -3019,7 +3019,7 @@
       "subject": "Corporate catering"
     },
     "subcategory/events-and-celebrations/event-professionals": {
-      "photo": null,
+      "photo": "digital-analytics",
       "subject": "Event Professionals"
     },
     "type/events-and-celebrations/event-professionals/photographers": {
@@ -3087,7 +3087,7 @@
       "subject": "Event backdrops"
     },
     "subcategory/events-and-celebrations/tickets-and-experiences": {
-      "photo": null,
+      "photo": "billboard",
       "subject": "Tickets & Experiences"
     },
     "type/events-and-celebrations/tickets-and-experiences/concerts": {
@@ -3175,7 +3175,7 @@
       "subject": "Emergency veterinary care"
     },
     "subcategory/pet-care/grooming": {
-      "photo": null,
+      "photo": "catalogue-batch2-pet-care--grooming",
       "subject": "Grooming"
     },
     "type/pet-care/grooming/pet-bathing": {
@@ -3717,15 +3717,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/food-and-dining/food-delivery-and-takeaway",
-      "level": "subcategory",
-      "category": "food-and-dining",
-      "subcategory": "food-delivery-and-takeaway",
-      "subject": "Food Delivery & Takeaway",
-      "referenceAsset": "chef",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/food-and-dining/food-delivery-and-takeaway/online-food-ordering",
       "level": "type",
       "category": "food-and-dining",
@@ -4173,15 +4164,6 @@
       "subcategory": "appliance-services",
       "subject": "Home appliance installation",
       "referenceAsset": "air-conditioning",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/home-and-everyday-services/home-installation",
-      "level": "subcategory",
-      "category": "home-and-everyday-services",
-      "subcategory": "home-installation",
-      "subject": "Home Installation",
-      "referenceAsset": "electrical",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4731,15 +4713,6 @@
       "subcategory": "fashion-and-clothing",
       "subject": "Bags and accessories",
       "referenceAsset": "beauty-fashion-and-lifestyle",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/shopping-and-local-retail/home-and-furniture",
-      "level": "subcategory",
-      "category": "shopping-and-local-retail",
-      "subcategory": "home-and-furniture",
-      "subject": "Home & Furniture",
-      "referenceAsset": "interior",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5805,15 +5778,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/automobiles/roadside-assistance",
-      "level": "subcategory",
-      "category": "automobiles",
-      "subcategory": "roadside-assistance",
-      "subject": "Roadside Assistance",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/automobiles/roadside-assistance/towing",
       "level": "type",
       "category": "automobiles",
@@ -6138,15 +6102,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/rental-services/electronics-and-gadget-rentals",
-      "level": "subcategory",
-      "category": "rental-services",
-      "subcategory": "electronics-and-gadget-rentals",
-      "subject": "Electronics & Gadget Rentals",
-      "referenceAsset": "technology",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/rental-services/electronics-and-gadget-rentals/laptops",
       "level": "type",
       "category": "rental-services",
@@ -6351,15 +6306,6 @@
       "subcategory": "event-and-party-rentals",
       "subject": "Catering equipment",
       "referenceAsset": "chef",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/rental-services/tools-and-construction-equipment",
-      "level": "subcategory",
-      "category": "rental-services",
-      "subcategory": "tools-and-construction-equipment",
-      "subject": "Tools & Construction Equipment",
-      "referenceAsset": "construction-equipment",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6837,15 +6783,6 @@
       "subcategory": "transport-and-transfers",
       "subject": "Group transportation",
       "referenceAsset": "truck",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/travel-stay-and-experiences/tours-and-guided-experiences",
-      "level": "subcategory",
-      "category": "travel-stay-and-experiences",
-      "subcategory": "tours-and-guided-experiences",
-      "subject": "Tours & Guided Experiences",
-      "referenceAsset": "travel-stay-and-experiences",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7911,15 +7848,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/education-and-skills/certifications-and-exam-preparation",
-      "level": "subcategory",
-      "category": "education-and-skills",
-      "subcategory": "certifications-and-exam-preparation",
-      "subject": "Certifications & Exam Preparation",
-      "referenceAsset": "books",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/education-and-skills/certifications-and-exam-preparation/certification-training",
       "level": "type",
       "category": "education-and-skills",
@@ -7962,15 +7890,6 @@
       "subcategory": "certifications-and-exam-preparation",
       "subject": "Exam coaching",
       "referenceAsset": "books",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/education-and-skills/online-learning",
-      "level": "subcategory",
-      "category": "education-and-skills",
-      "subcategory": "online-learning",
-      "subject": "Online Learning",
-      "referenceAsset": "technology",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8289,15 +8208,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/jobs-and-careers/gig-and-freelance-work",
-      "level": "subcategory",
-      "category": "jobs-and-careers",
-      "subcategory": "gig-and-freelance-work",
-      "subject": "Gig & Freelance Work",
-      "referenceAsset": "technology",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/jobs-and-careers/gig-and-freelance-work/design-projects",
       "level": "type",
       "category": "jobs-and-careers",
@@ -8358,15 +8268,6 @@
       "subcategory": "gig-and-freelance-work",
       "subject": "Skilled trades assignments",
       "referenceAsset": "technology",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/jobs-and-careers/employer-profiles",
-      "level": "subcategory",
-      "category": "jobs-and-careers",
-      "subcategory": "employer-profiles",
-      "subject": "Employer Profiles",
-      "referenceAsset": "career-workplace",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8739,15 +8640,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/professional-services/design-and-creative-services",
-      "level": "subcategory",
-      "category": "professional-services",
-      "subcategory": "design-and-creative-services",
-      "subject": "Design & Creative Services",
-      "referenceAsset": "architecture",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/professional-services/design-and-creative-services/graphic-design",
       "level": "type",
       "category": "professional-services",
@@ -8835,15 +8727,6 @@
       "subcategory": "real-estate-professionals",
       "subject": "Commercial real estate consulting",
       "referenceAsset": "property-documents",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/professional-services/financial-services",
-      "level": "subcategory",
-      "category": "professional-services",
-      "subcategory": "financial-services",
-      "subject": "Financial Services",
-      "referenceAsset": "finance",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9072,15 +8955,6 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "subcategory/events-and-celebrations/birthday-and-private-parties",
-      "level": "subcategory",
-      "category": "events-and-celebrations",
-      "subcategory": "birthday-and-private-parties",
-      "subject": "Birthday & Private Parties",
-      "referenceAsset": "celebration",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/events-and-celebrations/birthday-and-private-parties/party-decorations",
       "level": "type",
       "category": "events-and-celebrations",
@@ -9105,15 +8979,6 @@
       "subcategory": "birthday-and-private-parties",
       "subject": "Private chefs",
       "referenceAsset": "chef",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/events-and-celebrations/corporate-events",
-      "level": "subcategory",
-      "category": "events-and-celebrations",
-      "subcategory": "corporate-events",
-      "subject": "Corporate Events",
-      "referenceAsset": "events",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9168,15 +9033,6 @@
       "subcategory": "corporate-events",
       "subject": "Corporate catering",
       "referenceAsset": "chef",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/events-and-celebrations/event-professionals",
-      "level": "subcategory",
-      "category": "events-and-celebrations",
-      "subcategory": "event-professionals",
-      "subject": "Event Professionals",
-      "referenceAsset": "media-production",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9321,15 +9177,6 @@
       "subcategory": "decorations-and-equipment",
       "subject": "Event backdrops",
       "referenceAsset": "celebration",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/events-and-celebrations/tickets-and-experiences",
-      "level": "subcategory",
-      "category": "events-and-celebrations",
-      "subcategory": "tickets-and-experiences",
-      "subject": "Tickets & Experiences",
-      "referenceAsset": "events",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9483,15 +9330,6 @@
       "subcategory": "veterinary-services",
       "subject": "Emergency veterinary care",
       "referenceAsset": "vet-dog",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "subcategory/pet-care/grooming",
-      "level": "subcategory",
-      "category": "pet-care",
-      "subcategory": "grooming",
-      "subject": "Grooming",
-      "referenceAsset": "pet-grooming",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {

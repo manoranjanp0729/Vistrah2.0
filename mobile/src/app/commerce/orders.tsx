@@ -1,3 +1,4 @@
-import {Page,Heading} from '../../components/ui';
+import {UiElement} from "../../components/localized-ui";
+import {Page} from '../../components/ui';
 import {PurchaseOrders} from '../../components/commerce-orders';
-export default function Orders(){return <Page><Heading title="Purchase orders"/><PurchaseOrders/></Page>;}
+export default function Orders(){return <UiElement as={Page} title="Purchase orders"><PurchaseOrders/></UiElement>;}

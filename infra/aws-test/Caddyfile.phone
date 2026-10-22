@@ -1,11 +1,12 @@
 :8080 {
 	root * /srv
 	encode gzip
+	header Cross-Origin-Opener-Policy same-origin-allow-popups
 	header X-Content-Type-Options nosniff
 	header Referrer-Policy strict-origin-when-cross-origin
 	header Cache-Control no-cache
 	header Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
-	header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.maptiler.com; font-src 'self' data:; connect-src 'self' https://api.maptiler.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+	header Content-Security-Policy "default-src 'self'; script-src 'self' https://accounts.google.com/gsi/client; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; img-src 'self' data: blob: https://api.maptiler.com; font-src 'self' data:; connect-src 'self' https://api.maptiler.com https://accounts.google.com/gsi/; frame-src https://accounts.google.com/gsi/; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
 	try_files {path} /index.html
 	file_server
 }

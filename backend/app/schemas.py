@@ -15,6 +15,10 @@ class Login(Schema):
     email: EmailStr
     password: str = Field(min_length=1, max_length=128)
 
+class GoogleAuth(Schema):
+    credential: str | None = Field(default=None, max_length=4096)
+    id_token: str | None = Field(default=None, max_length=4096)
+
 class Profile(Schema):
     name: str = Field(min_length=2, max_length=100)
     phone: str = Field(default='', max_length=20, pattern=r'^[+\d\s-]*$')

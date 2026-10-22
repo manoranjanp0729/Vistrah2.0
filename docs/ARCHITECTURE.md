@@ -28,11 +28,14 @@ is required. Environment boundaries and commands are in ENVIRONMENTS.md.
 
 - Native requests go to the shared API with a bearer JWT. SecureStore persists
   the native session; the API verifies issuer/audience/expiry and a revocable
-  database session. Customer and seller use one identity; seller access is a
-  capability with ownership checks. Administrator role checks remain independent.
+  database session. Customer and seller may use one identity, but sign in and
+  sign out independently using separate tokens/SecureStore keys. Seller access
+  remains a capability with ownership checks. Administrator role checks remain independent.
 - Desktop browser requests use frontend/app/api/[...path]/route.ts. The proxy
-  holds the session in an HttpOnly cookie, validates mutation origins and body
-  limits, strips token fields and preserves backend errors.
+  holds customer and seller sessions in separate HttpOnly cookies, selects the
+  appropriate session by API route (explicit scope for identity/logout), validates
+  mutation origins and body limits, strips token fields and preserves backend errors.
+  Neither session falls back to the other; logout/401 clears only its own cookie.
 - The production phone website uses the same cookie proxy under /api, while
   rendering the native screen source under /app. Legacy website bookmarks are
   translated to native routes. Local Expo browser preview uses the loopback

@@ -114,3 +114,15 @@ def test_unreadable_root_fails_closed_as_unavailable(management, monkeypatch):
         raise PermissionError('Synthetic filesystem denial')
     monkeypatch.setattr('app.v_ads_media_routes.private_root', denied)
     assert client.get('/v-ads/media/'+upload.id).status_code == 503
+
+
+def test_development_mirror_writes_uploaded_videos_to_host_drive(tmp_path, monkeypatch):
+    root = tmp_path / 'private'
+    root.mkdir(mode=0o700)
+    mirror = tmp_path / 'drive_e_uploads'
+    monkeypatch.setenv('APP_ENV', 'development')
+    monkeypatch.setenv('V_ADS_DEV_MIRROR_ROOT', str(mirror))
+    storage = VideoStorage(root)
+    ref = storage.store_validated(b'dev-drive-e-video')
+    mirrored = mirror / ref.key
+    assert mirrored.is_file() and mirrored.read_bytes() == b'dev-drive-e-video'

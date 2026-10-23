@@ -90,6 +90,40 @@ installed APKs are unchanged and need separately authorized builds for new confi
 The current phone-web Dockerfile remains AWS-test-specific; a production phone
 website artifact is not prepared or approved by Task 006.
 
+## Native OTA updates (source configured, new binary required)
+
+`mobile/app.config.js` derives the EAS Update URL from the existing linked project
+ID, uses the `fingerprint` runtime policy, and checks for updates on launch without
+waiting for a download. Compatible updates apply on a later launch, preserving
+the bundled/cached app for offline startup. Native SDK/module/permission changes
+still require a new APK/AAB. Existing APKs built without `expo-updates` do not gain
+OTA support automatically, and Expo Go is not a release-OTA verification target.
+
+`mobile/eas.json` uses separate `development`, `preview`, `aws-test` and
+`production` channels. The installed AWS test APK should use the `aws-test`
+profile/channel and the EAS `preview` environment; production keeps its own
+channel/environment and existing fail-closed live-origin checks.
+
+First install an explicitly authorized new `aws-test` APK, then verify the EAS
+`preview` environment contains the same public testing/API/website/admin values
+as `build.aws-test.env`. EAS Update does not automatically inherit build-profile
+`env`; use `--environment preview` when publishing. Set
+`EAS_BUILD_PROFILE=aws-test` for configuration validation during update export,
+and retain the existing native-only transport and AWS-origin checks. Do not
+publish to production or change remote variables/billing as part of local setup.
+A manually authorized publish, from `mobile`, uses:
+
+```powershell
+$env:EAS_BUILD_PROFILE = 'aws-test'
+npx.cmd eas-cli update --channel aws-test --environment preview --platform android --message 'Describe the reviewed change'
+```
+
+Confirm the target channel/runtime/environment before publishing. Close and
+reopen the installed test app to download, then reopen again to apply; test
+without internet as well. No update was published and no cloud binary was built
+during this source setup; remote channel bindings/account quota and on-device
+update/rollback delivery remain unverified.
+
 ## Resume the existing local application after a Windows restart
 
 Open Docker Desktop and wait for its Linux engine to run. Preflight first:

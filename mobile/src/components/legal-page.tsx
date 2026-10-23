@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
-import {Text,View} from 'react-native';
+import {View} from 'react-native';
 import {router} from 'expo-router';
 import {legalDocuments,legalDraftNotice,type LegalDocumentKey} from '../../../shared/legal';
 import {Page,Action} from './ui';

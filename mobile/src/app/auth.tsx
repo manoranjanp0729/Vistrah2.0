@@ -1,8 +1,9 @@
+import {Text} from '../components/typography';
 import {UiText,UiElement} from "../components/localized-ui";
 import {signupLegalCopy} from '../../../shared/legal';
 import {useLanguage} from '../lib/language';
 import {useState} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import {Redirect,router,useLocalSearchParams} from 'expo-router';
 import {Action,ErrorPanel,Field,Page,Loading} from '../components/ui';
 import {useSession} from '../lib/session';
@@ -38,14 +39,14 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
       <View style={{flexDirection:'row',alignItems:'flex-start',gap:6}}><UiElement as={Pressable} accessibilityRole="checkbox" accessibilityLabel={signupLegalCopy.whatsapp} accessibilityHint="Optional. WhatsApp promotions are not enabled." accessibilityState={{checked:whatsappPromotions,disabled:busy}} disabled={busy} onPress={()=>setWhatsappPromotions(value=>!value)} style={{width:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><View style={{width:22,height:22,borderWidth:1,borderColor:colors.accent,borderRadius:4,alignItems:'center',justifyContent:'center'}}><Text style={{color:colors.text}}>{whatsappPromotions?'\u2713':''}</Text></View></UiElement><Text style={[styles.text,{flex:1,minWidth:0,paddingTop:10}]}>{signupLegalCopy.whatsapp}</Text></View>
       <Text style={styles.muted}>{signupLegalCopy.notice}</Text>
     </View>}
-    <Action label={busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn} disabled={busy} onPress={()=>void submit()}/>
+    <Action auth label={busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn} disabled={busy} onPress={()=>void submit()}/>
     <View style={{flexDirection:'row',alignItems:'center',gap:10,marginVertical:8}}>
       <View style={{flex:1,height:1,backgroundColor:colors.border}}/>
       <Text style={{color:colors.muted,fontSize:12}}><UiText value={"or"}/></Text>
       <View style={{flex:1,height:1,backgroundColor:colors.border}}/>
     </View>
     <GoogleSignIn disabled={busy||(register&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)} onError={setError}/>
-    <Action label={register?copy.auth.existing:copy.auth.new} disabled={busy} secondary onPress={()=>{setRegister(!register);setError('');setPassword('');}}/>
+    <Action auth label={register?copy.auth.existing:copy.auth.new} disabled={busy} secondary onPress={()=>{setRegister(!register);setError('');setPassword('');}}/>
     {!register&&<Action label={copy.auth.forgot} secondary onPress={()=>{router.push('/forgot-password');}}/>}
   </UiElement>;
 }

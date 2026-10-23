@@ -1,6 +1,7 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
 import {useEffect,useState} from 'react';
-import {ActivityIndicator,Image,Platform,StyleSheet,Text,View} from 'react-native';
+import {ActivityIndicator,Image,Platform,StyleSheet,View} from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import {useTheme} from '../lib/theme';
 import {useSession} from '../lib/session';

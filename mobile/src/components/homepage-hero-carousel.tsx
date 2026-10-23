@@ -1,6 +1,7 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
 import {useEffect,useRef,useState} from 'react';
-import {Pressable,ScrollView,Text,View,useWindowDimensions} from 'react-native';
+import {Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 

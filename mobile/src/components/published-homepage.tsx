@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
-import {Platform,Image,Pressable,ScrollView,Text,View} from 'react-native';
+import {Platform,Image,Pressable,ScrollView,View} from 'react-native';
 import {router} from 'expo-router';
 import {allServices,type Category,type ServiceContext} from '../lib/catalogue';
 import {servicePhotos} from '../lib/service-photos';

@@ -1,18 +1,21 @@
+import {BannerGeometry} from './banner-geometry';
+import {Text} from './typography';
+import {Action} from './ui';
 import {UiText} from "./localized-ui";
-import {Platform, Pressable, Text, View} from 'react-native';
+import {Platform,View} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import {useLanguage} from '../lib/language';
-import {useTheme} from '../lib/theme';
+import {useBannerTheme} from '../lib/banner-theme';
 
 export function HomepagePartnerBanner() {
-  const {accentGradient} = useTheme();
+  const banner = useBannerTheme();
   const {copy, t} = useLanguage();
 
   return (
     <LinearGradient
-      colors={accentGradient}
+      colors={banner.gradient}
       start={{x: 0, y: 0}}
       end={{x: 1, y: 1}}
       style={{
@@ -23,13 +26,14 @@ export function HomepagePartnerBanner() {
         overflow: 'hidden',
         marginTop: 6,
         marginBottom: 8,
-        shadowColor: '#283db6',
+        shadowColor: banner.shadow,
         shadowOffset: {width: 0, height: 8},
         shadowOpacity: 0.25,
         shadowRadius: 16,
         elevation: 6,
       }}
     >
+      <BannerGeometry/>
       {/* Decorative ambient glow */}
       <View
         pointerEvents="none"
@@ -40,7 +44,7 @@ export function HomepagePartnerBanner() {
           width: 140,
           height: 140,
           borderRadius: 70,
-          backgroundColor: '#7741c4',
+          backgroundColor: banner.glow,
           opacity: 0.25,
         }}
       />
@@ -48,7 +52,7 @@ export function HomepagePartnerBanner() {
       {/* Top Header Badge */}
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
         <LinearGradient
-          colors={accentGradient}
+          colors={banner.gradient}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
           style={{paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10}}
@@ -59,7 +63,7 @@ export function HomepagePartnerBanner() {
         </LinearGradient>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
           <View style={{width: 6, height: 6, borderRadius: 3, backgroundColor: '#34d399'}} />
-          <Text style={{color: '#c2b2df', fontSize: 11, fontWeight: '600'}}><UiText value={"Verified Network"}/></Text>
+          <Text style={{color: banner.muted, fontSize: 11, fontWeight: '600'}}><UiText value={"Verified Network"}/></Text>
         </View>
       </View>
 
@@ -77,7 +81,7 @@ export function HomepagePartnerBanner() {
         >
           <UiText value={copy.home.business} />
         </Text>
-        <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}>
+        <Text style={{color: banner.muted, fontSize: 13, lineHeight: 19}}>
           <UiText value={copy.home.businessDescription} />
         </Text>
       </View>
@@ -90,71 +94,22 @@ export function HomepagePartnerBanner() {
           {icon: 'video', text: 'Showcase Your Work on V Ads Reels'},
         ].map((prop, idx) => (
           <View key={idx} style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
-            <Feather name={prop.icon as any} size={15} color="#c084fc" />
-            <Text style={{color: '#e9d5ff', fontSize: 12, fontWeight: '600'}}>
+            <Feather name={prop.icon as React.ComponentProps<typeof Feather>['name']} size={15} color={banner.text} />
+            <Text style={{color: banner.muted, fontSize: 12, fontWeight: '600'}}>
               {prop.text}
             </Text>
           </View>
         ))}
       </View>
 
-      {/* Actions */}
-      <View style={{gap: 8, marginTop: 4}}>
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push('/provider')}
-          style={({pressed}) => [{borderRadius: 16, overflow: 'hidden', opacity: pressed ? 0.9 : 1}]}
-        >
-          <LinearGradient
-            colors={accentGradient}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            style={{
-              paddingVertical: 14,
-              paddingHorizontal: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 16,
-              flexDirection: 'row',
-              gap: 8,
-              shadowColor: '#7741c4',
-              shadowOffset: {width: 0, height: 4},
-              shadowOpacity: 0.35,
-              shadowRadius: 10,
-              elevation: 4,
-            }}
-          >
-            <Text style={{color: '#ffffff', fontWeight: '800', fontSize: 14}}>
-              <UiText value={copy.home.provider} /> →
-            </Text>
-          </LinearGradient>
-        </Pressable>
-
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push('/membership')}
-          style={({pressed}) => [
-            {
-              paddingVertical: 11,
-              paddingHorizontal: 16,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 16,
-              borderWidth: 1,
-              borderColor: '#4a336e',
-              backgroundColor: '#20163660',
-              opacity: pressed ? 0.8 : 1,
-            },
-          ]}
-        >
-          <LinearGradient pointerEvents="none" colors={accentGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={{position:"absolute",top:0,left:0,right:0,bottom:0,borderRadius:15}}/>
-          <Text style={{color: '#ffffff', fontWeight: '700', fontSize: 13}}>
-            <UiText value={"Explore Partner Membership Plans "}/></Text>
-        </Pressable>
+      {/* White actions remain distinct from the colourful banner. */}
+      <View style={{gap:8,marginTop:4}}>
+        <Action onColor label={copy.home.provider} onPress={()=>router.push('/provider')}/>
+        <Action onColor label="Explore Partner Membership Plans" onPress={()=>router.push('/membership')}/>
       </View>
 
       {/* Review Reassurance */}
-      <Text style={{color: '#a795c6', fontSize: 11, textAlign: 'center', lineHeight: 15, marginTop: 2}}>
+      <Text style={{color: banner.muted, fontSize: 11, textAlign: 'center', lineHeight: 15, marginTop: 2}}>
         <UiText value={copy.home.review} />
       </Text>
     </LinearGradient>

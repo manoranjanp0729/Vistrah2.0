@@ -243,4 +243,10 @@ html select{background-image:linear-gradient(120deg,var(--surface),var(--surface
 body:has(.public-header) .standalone-settings{display:none}
 
 /* Homepage calls to action retain the VISTRAH gradient in every App Theme. */
-.reference-home .button:not(.danger):not([aria-disabled=true]),.reference-home .button.secondary:hover{background:var(--brand-gradient);color:#fff;border-color:#ffffff30}
+.reference-home .button:not(.light):not(.danger):not([aria-disabled=true]),.reference-home .button.secondary:hover{background:var(--brand-gradient);color:#fff;border-color:#ffffff30}
+
+/* Actions follow App Theme; white surfaces are reserved for colourful sections. */
+html .button:not(.secondary):not(.light):not(.danger):not([aria-disabled=true]),html .service-tablist button[aria-selected=true],html button[aria-pressed=true]:not([role=switch]){background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink)}
+html .button.secondary{background:var(--surface-soft);border-color:var(--accent-orange);color:var(--accent-orange)}
+.reference-home .button:not(.light):not(.danger):not([aria-disabled=true]){background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink)}
+html .button.light,.reference-home .button.light,.reference-home .button.light:hover{background:#fff;border-color:#fff;color:var(--accent-on-white,var(--accent-orange))}

@@ -1,7 +1,8 @@
+import {Text} from '../components/typography';
 import {UiText} from "../components/localized-ui";
 import {useLanguage} from '../lib/language';
 import {useState} from 'react';
-import {Text} from 'react-native';
+
 import {router} from 'expo-router';
 import {Action,ErrorPanel,Field,Loading,Page} from '../components/ui';
 import {useSession} from '../lib/session';
@@ -11,7 +12,7 @@ import {useTheme} from '../lib/theme';
 export default function Profile(){
   const {copy}=useLanguage();
   const session=useSession();
-  return <Page title={copy.profile.title}>{!session.ready?<Loading/>:!session.user?<><Action label={copy.auth.signIn} onPress={()=>router.push('/auth')}/></>:<ProfileForm key={session.user.id} user={session.user}/>}</Page>;
+  return <Page title={copy.profile.title}>{!session.ready?<Loading/>:!session.user?<><Action auth label={copy.auth.signIn} onPress={()=>router.push('/auth')}/></>:<ProfileForm key={session.user.id} user={session.user}/>}</Page>;
 }
 function ProfileForm({user}:{user:User}){const {copy,t}=useLanguage();const {styles}=useTheme();
   const session=useSession();const [name,setName]=useState(user.name);const [phone,setPhone]=useState(user.phone);const [error,setError]=useState('');const [saved,setSaved]=useState(false);const [busy,setBusy]=useState(false);

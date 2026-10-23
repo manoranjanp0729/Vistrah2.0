@@ -1,5 +1,6 @@
+import {Text} from '../../components/typography';
 import {UiText,UiElement} from "../../components/localized-ui";
-import {Text,View} from 'react-native';
+import {View} from 'react-native';
 import {Page,Heading,Loading,ErrorPanel} from '../../components/ui';
 import {SellerGate} from '../../components/seller-gate';
 import {useSession} from '../../lib/session';

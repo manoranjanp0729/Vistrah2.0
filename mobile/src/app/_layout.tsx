@@ -1,3 +1,5 @@
+import {useAppFont} from '../components/typography';
+import {BundledFonts} from '../lib/bundled-fonts';
 import {LanguageProvider,useLanguage} from '../lib/language';
 import {BackButton} from '../components/back-button';
 import * as SplashScreen from 'expo-splash-screen';
@@ -13,9 +15,9 @@ import {LocationProvider} from '../lib/location';
 import {ThemeProvider,useTheme} from '../lib/theme';
 import {WebsiteRouteBridge} from '../components/website-route-bridge';
 if(Platform.OS!=='web')void SplashScreen.preventAutoHideAsync().catch(()=>{});
-export default function RootLayout(){return <ThemeProvider><LanguageProvider><ThemedRoot/></LanguageProvider></ThemeProvider>;}
-function ThemedRoot(){const {colors,mode,headerGradient}=useTheme();const {t}=useLanguage();
-  return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerBackground:()=> <LinearGradient colors={headerGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={{position:'absolute',top:0,right:0,bottom:0,left:0}}/>,headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerShadowVisible:false,headerBackVisible:false,headerLeft:()=> <BackButton/>,headerRight:()=> <SettingsButton/>}}>
+export default function RootLayout(){return <ThemeProvider><LanguageProvider><BundledFonts><ThemedRoot/></BundledFonts></LanguageProvider></ThemeProvider>;}
+function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode,headerGradient}=useTheme();const {t}=useLanguage();
+  return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerStyle:{backgroundColor:colors.background},headerBackground:()=> <LinearGradient colors={headerGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={{position:'absolute',top:0,right:0,bottom:0,left:0}}/>,headerTintColor:colors.text,contentStyle:{backgroundColor:colors.background},headerTitleStyle:{fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerShadowVisible:false,headerBackVisible:false,headerLeft:()=> <BackButton/>,headerRight:()=> <SettingsButton/>}}>
     <Stack.Screen name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen name="admin-dashboard" options={{title:'Admin dashboard'}}/>
     <Stack.Screen name="service/[id]" options={{title:'Service details'}}/>
@@ -44,9 +46,9 @@ function ThemedRoot(){const {colors,mode,headerGradient}=useTheme();const {t}=us
     <Stack.Screen name="request/[id]" options={{title:'Service enquiry'}}/>
     <Stack.Screen name="reset-password" options={{title:'Reset password'}}/>
     <Stack.Screen name="auth" options={{title:'Your VISTRAH account'}}/>
-    <Stack.Screen name="health-connect" options={{title:'VISTRAH HealthConnect',headerTitleStyle:{fontSize:16},headerBackButtonDisplayMode:'minimal'}}/>
-    <Stack.Screen name="agri-connect" options={{title:'VISTRAH AgriConnect',headerTitleStyle:{fontSize:16},headerBackButtonDisplayMode:'minimal'}}/>
-    <Stack.Screen name="marketing-solutions" options={{title:t('marketing.title'),headerTitleStyle:{fontSize:16},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen name="health-connect" options={{title:'VISTRAH HealthConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen name="agri-connect" options={{title:'VISTRAH AgriConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen name="marketing-solutions" options={{title:t('marketing.title'),headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen name="membership" options={{title:t('account.membership')}}/>
     <Stack.Screen name="location" options={{title:t('nav.location')}}/>
     <Stack.Screen name="provider" options={{title:'Offer your services'}}/>

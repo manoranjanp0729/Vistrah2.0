@@ -6,6 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 import {api,ApiError,onUnauthorized,setToken,usesBrowserCookies} from './api';
 import type {User} from './catalogue';
 import {authEndpoint} from './seller-auth';
+import {fetchBootstrap} from './bootstrap';
 const storageKey=(scope:SessionScope)=>scope==='seller'?'vistrah.seller.session':'vistrah.session';
 const readToken=(scope:SessionScope)=>Platform.OS==='web'?Promise.resolve(null):SecureStore.getItemAsync(storageKey(scope));
 const storeToken=(token:string,scope:SessionScope)=>Platform.OS==='web'?Promise.resolve():SecureStore.setItemAsync(storageKey(scope),token);
@@ -27,7 +28,17 @@ function useStoredSession(scope:SessionScope):Session {
     onUnauthorized(expire,scope);
     const restore=async()=>{
       try{const saved=await readToken(scope);if(!active||generation.current!==serial)return;setToken(saved,scope);
-        if(saved||usesBrowserCookies){const current=await api<User>('/me',{}, {scope});if(active&&generation.current===serial){setUser(current);setError('');}}
+        if(saved||usesBrowserCookies){
+          if(scope==='customer'){
+            const bootstrap=await fetchBootstrap('customer');
+            if(active&&generation.current===serial&&bootstrap?.user){setUser(bootstrap.user);setError('');}
+            else if(active&&generation.current===serial){const current=await api<User>('/me',{}, {scope});setUser(current);setError('');}
+          }else{
+            const current=await api<User>('/me',{}, {scope});if(active&&generation.current===serial){setUser(current);setError('');}
+          }
+        }else if(scope==='customer'){
+          void fetchBootstrap('customer');
+        }
       }catch(e){if(active&&generation.current===serial){setUser(null);setToken(null,scope);if(!(e instanceof ApiError&&e.status===401))setError((e as Error).message);}}
       finally{if(active)setReady(true);}
     };

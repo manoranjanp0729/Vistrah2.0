@@ -1,15 +1,8 @@
+import {pickEditorImage} from '../lib/editor-image-picker';
+import {validateEditorPageSize} from '../../../shared/editor-image';
+import {Text,TextInput} from './typography';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import {
-  Pressable,
-  Text,
-  View,
-  ScrollView,
-  TextInput,
-  Modal,
-  Alert,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import {Pressable,View,ScrollView,Modal,Alert,Image,ActivityIndicator,} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { UiText } from './localized-ui';
 import { Loading } from './ui';
@@ -85,6 +78,9 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
     isNew: false,
   });
   const [photoUrl, setPhotoUrl] = useState('');
+  const [photoError,setPhotoError]=useState('');
+  const [photoReading,setPhotoReading]=useState(false);
+  const photoRequest=useRef(0);
   const [photoTitle, setPhotoTitle] = useState('');
   const [photoAlt, setPhotoAlt] = useState('');
   const [photoRes, setPhotoRes] = useState('');
@@ -264,12 +260,21 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
     );
   }
 
+  function closePhotoDialog(){photoRequest.current++;setPhotoReading(false);setPhotoModalOpen(false);}
+  async function chooseDevicePhoto(){
+    const request=++photoRequest.current;setPhotoError('');
+    try{const photo=await pickEditorImage(()=>{if(request===photoRequest.current)setPhotoReading(true);});if(request!==photoRequest.current||!photo)return;setPhotoUrl(photo.url);setPhotoTitle(photo.title);setPhotoAlt(value=>value||photo.title);setPhotoRes(`${photo.width} x ${photo.height} px`);setPhotoRatio(calculateAspectRatio(photo.width,photo.height));}
+    catch(error){if(request===photoRequest.current)setPhotoError((error as Error).message);}
+    finally{if(request===photoRequest.current)setPhotoReading(false);}
+  }
+
   function openPhotoDialog(sectionId: string, imageIndex: number, isNew: boolean) {
     if (!currentPage) return;
     const sec = currentPage.sections.find((s) => s.id === sectionId);
     if (!sec) return;
     const libMatch = library.find((l) => l.type === sec.type);
     const recRes = libMatch?.recommended_resolution || '1920 × 600 px';
+    photoRequest.current++;setPhotoError('');setPhotoReading(false);
     setPhotoRecRes(recRes);
 
     if (isNew) {
@@ -291,8 +296,9 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
   }
 
   function applyPhotoDialog() {
+    if(photoReading)return;
     if (!currentPage || !photoUrl.trim()) {
-      Alert.alert('Required', 'Please provide an image URL or asset path.');
+      Alert.alert('Required', 'Choose a photo from your device or provide an image link.');
       return;
     }
     const { sectionId, imageIndex, isNew } = photoTarget;
@@ -315,8 +321,10 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
       nextImages[imageIndex] = newPhotoDetails;
     }
 
+    try{validateEditorPageSize({...currentPage,sections:currentPage.sections.map(section=>section.id===sectionId?{...section,images:nextImages}:section)});}catch(error){setPhotoError((error as Error).message);return;}
     updateSection(sectionId, { images: nextImages });
     setPhotoModalOpen(false);
+    photoRequest.current++;
     setNotice('Photo updated with resolution.');
   }
 
@@ -714,9 +722,9 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
       )}
 
       {/* ================= MODAL: CHANGE PHOTO ================= */}
-      <Modal visible={photoModalOpen} transparent animationType="slide">
+      <Modal visible={photoModalOpen} transparent animationType="slide" onRequestClose={closePhotoDialog}>
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.7)', justifyContent: 'center', padding: 20 }}>
-          <View style={{ backgroundColor: mode === 'dark' ? '#1e2433' : '#fff', borderRadius: 16, padding: 20, gap: 14 }}>
+          <ScrollView keyboardShouldPersistTaps="handled" style={{maxHeight:'90%',backgroundColor:mode==='dark'?'#1e2433':'#fff',borderRadius:16}} contentContainerStyle={{padding:20,gap:14}}>
             <Text style={{ fontSize: 17, fontWeight: '700', color: mode === 'dark' ? '#fff' : '#000' }}>
               {photoTarget.isNew ? 'Add Running Photo' : 'Change Section Photo'}
             </Text>
@@ -724,11 +732,15 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
               Recommended: {photoRecRes}
             </Text>
 
+            <Pressable accessibilityRole="button" accessibilityLabel="Choose photo from device" disabled={photoReading} onPress={()=>void chooseDevicePhoto()} style={{padding:12,borderRadius:10,backgroundColor:colors.accent,alignItems:'center'}}><Text style={{color:colors.ink,fontWeight:'700'}}>Choose photo from device</Text></Pressable>
+            <Text style={styles.muted}>JPG, PNG, WebP or GIF, up to 400 KB. Apply the photo, then save your draft. Publish when ready.</Text>
+            {!!photoError&&<Text accessibilityRole="alert" style={{color:colors.error}}>{photoError}</Text>}
+            {!!photoUrl&&<Image source={{uri:photoUrl}} accessibilityLabel={photoAlt||photoTitle||'Selected photo preview'} resizeMode="contain" style={{width:'100%',height:100,borderRadius:10,backgroundColor:colors.soft}}/>}
             <View style={{ gap: 6 }}>
               <Text style={{ fontSize: 12, fontWeight: '600', color: mode === 'dark' ? '#ccc' : '#333' }}>Image URL / Asset Path</Text>
               <TextInput
-                value={photoUrl}
-                onChangeText={setPhotoUrl}
+                value={photoUrl.startsWith('data:')?'':photoUrl}
+                onChangeText={value=>{photoRequest.current++;setPhotoError('');setPhotoUrl(value);}}
                 placeholder="e.g. /brand/hero-banner.jpg or https://..."
                 placeholderTextColor="#94a3b8"
                 style={{
@@ -779,17 +791,18 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
             </View>
 
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', gap: 10, marginTop: 10 }}>
-              <Pressable onPress={() => setPhotoModalOpen(false)} style={{ padding: 10 }}>
+              <Pressable onPress={closePhotoDialog} style={{ padding: 10 }}>
                 <Text style={{ color: '#94a3b8', fontWeight: '600' }}>Cancel</Text>
               </Pressable>
               <Pressable
+                disabled={photoReading}
                 onPress={applyPhotoDialog}
                 style={{ backgroundColor: '#e5a93c', paddingHorizontal: 16, paddingVertical: 10, borderRadius: 8 }}
               >
                 <Text style={{ color: '#000', fontWeight: '700' }}>Apply Photo</Text>
               </Pressable>
             </View>
-          </View>
+          </ScrollView>
         </View>
       </Modal>
 

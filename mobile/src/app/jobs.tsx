@@ -1,6 +1,7 @@
+import {Text} from '../components/typography';
 import {UiText} from "../components/localized-ui";
 import {useLanguage} from '../lib/language';
-import {Text} from 'react-native';
+
 import {Page} from '../components/ui';
 import {ExternalJobsList} from '../components/external-jobs-list';
 import {useTheme} from '../lib/theme';

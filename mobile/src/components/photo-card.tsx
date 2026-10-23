@@ -1,7 +1,8 @@
+import {Text} from './typography';
 import {UiText} from "./localized-ui";
 import {useLanguage} from '../lib/language';
 import {useState} from 'react';
-import {Platform,Image,Pressable,Text,View,type ImageSourcePropType} from 'react-native';
+import {Platform,Image,Pressable,View,type ImageSourcePropType} from 'react-native';
 import {photoCardDesign as design} from '../../../shared/photo-card-design';
 import {useTheme} from '../lib/theme';
 export function PhotoCard({title,meta,source,onPress,testID,imageAlt,discovery=false,description,ink,compactWidth,list=false,uniformHomepage=false,compactServiceGrid=false,reserveAction=false}:{title:string;meta:string;source:ImageSourcePropType|undefined;onPress:()=>void;testID?:string;imageAlt?:string;discovery?:boolean;description?:string;ink?:string;compactWidth?:number;list?:boolean;uniformHomepage?:boolean;compactServiceGrid?:boolean;reserveAction?:boolean}) {

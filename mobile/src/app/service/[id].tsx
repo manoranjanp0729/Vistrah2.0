@@ -1,8 +1,9 @@
+import {Text} from '../../components/typography';
 import {UiText,UiElement} from "../../components/localized-ui";
 import {useLanguage} from '../../lib/language';
 import {useState} from 'react';
 import {ServiceBanner} from '../../components/service-banner';
-import {Pressable,Text,View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {SelectionFill,PageTitle,Page,Action,ErrorPanel,Heading,Loading,MemberGate} from '../../components/ui';
 import {allServices,pathways,type Category,type ServiceContext,type Intent,type Provider} from '../../lib/catalogue';

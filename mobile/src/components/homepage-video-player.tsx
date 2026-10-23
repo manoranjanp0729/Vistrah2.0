@@ -1,7 +1,8 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
 import Feather from '@expo/vector-icons/Feather';
 import {useCallback,useEffect,useRef,useState} from 'react';
-import {AccessibilityInfo,AppState,Dimensions,Pressable,Text,View} from 'react-native';
+import {AccessibilityInfo,AppState,Dimensions,Pressable,View} from 'react-native';
 import {useFocusEffect} from 'expo-router';
 import {useVideoPlayer,VideoView,type VideoSource} from 'expo-video';
 import {nextHomepageVideo} from '../../../shared/homepage-video';

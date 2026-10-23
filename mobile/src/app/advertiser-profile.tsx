@@ -1,6 +1,7 @@
+import {Text} from '../components/typography';
 import {UiText} from "../components/localized-ui";
 ﻿import React from 'react';
-import {ScrollView, View, Text, Pressable, StyleSheet} from 'react-native';
+import {ScrollView,View,Pressable,StyleSheet} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import {useTheme} from '../lib/theme';

@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiText} from "./localized-ui";
-import {Pressable,Text,View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import {useTheme} from '../lib/theme';
 
 export function CatalogueChoice({label,selected,onPress,disabled=false,multiple=false}:{label:string;selected:boolean;onPress:()=>void;disabled?:boolean;multiple?:boolean}){

@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
-import {Pressable,Text,View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import {Action,Field,Heading} from './ui';
 import {useTheme} from '../lib/theme';
 import {matches,visibleAnswers,type Requirements,type RequirementField,type Answers,type Answer,type FieldError} from '../lib/provider-requirements';

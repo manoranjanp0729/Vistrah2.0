@@ -1,6 +1,7 @@
+import {Text} from '../components/typography';
 import {UiText,UiElement} from "../components/localized-ui";
 import {useState,useRef,useEffect} from 'react';
-import {Text,View} from 'react-native';
+import {View} from 'react-native';
 import * as GPS from 'expo-location';
 import {LocationPreview,mapHeaders,maptilerKey} from '../components/location-preview';
 import {reversePlace} from '../lib/maptiler';

@@ -1,11 +1,9 @@
+import {Text,TextInput} from '../../components/typography';
 import {EditVistrahContent} from '../../components/edit-vistrah-content';
 import {UiText,UiElement} from "../../components/localized-ui";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useFocusEffect,router,useLocalSearchParams} from 'expo-router';
-import {
-  AppState, FlatList, Pressable, Share, StyleSheet, Text,
-  TextInput, View, ScrollView, type LayoutChangeEvent,
-} from 'react-native';
+import {AppState,FlatList,Pressable,Share,StyleSheet,View,ScrollView,type LayoutChangeEvent,} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Feather} from '@expo/vector-icons';
 import {useVideoPlayer, VideoView} from 'expo-video';

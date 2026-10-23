@@ -1,7 +1,9 @@
+import {Text} from './typography';
+import {useTheme} from '../lib/theme';
 import {UiText,UiElement} from "./localized-ui";
 import {useState} from 'react';
 import {useLanguage} from '../lib/language';
-import {Platform,Image,Pressable,StyleSheet,Text,View} from 'react-native';
+import {Platform,Image,Pressable,StyleSheet,View} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
@@ -15,11 +17,12 @@ const highlights=marketingServicePages;
 
 export function AdsMarketing(){
  const {t,locale}=useLanguage();
+ const {accent}=useTheme();const buttonAccent=brandTheme.accentPresets.find(p=>p.id===accent)?.light??'#503fbd';
  const [headingWidth,setHeadingWidth]=useState(0);
  const android=Platform.OS==='android';
  const brandGradient = [brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]] as const;
 
- const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={[s.startText,{color:"#6340b8"}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color="#6340b8"/></UiElement>;
+ const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={[s.startText,{color:buttonAccent}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color={buttonAccent}/></UiElement>;
 
  return <LinearGradient testID="ads-marketing" colors={brandGradient} locations={[0,.52,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.section}>
   <View pointerEvents="none" accessible={false} style={s.blueGlow}/><View pointerEvents="none" accessible={false} style={s.pinkGlow}/>

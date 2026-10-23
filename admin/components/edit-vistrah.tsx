@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import {validateEditorImage,validateEditorPageSize} from '../../shared/editor-image';
 import {
   Plus,
   Trash2,
@@ -461,6 +462,8 @@ function EditVistrahDashboard({ actorId }: { actorId: number }) {
   function handleLocalImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    e.target.value='';
+    try{validateEditorImage(file.type,file.size);}catch(error){alert((error as Error).message);return;}
 
     const reader = new FileReader();
     reader.onload = () => {
@@ -480,8 +483,10 @@ function EditVistrahDashboard({ actorId }: { actorId: number }) {
           title: prev.title || file.name.replace(/\.[^/.]+$/, ''),
         }));
       };
+      img.onerror=()=>alert('This photo could not be opened. Choose another image.');
       img.src = dataUrl;
     };
+    reader.onerror=()=>alert('Could not read this photo. Please choose it again.');
     reader.readAsDataURL(file);
   }
 
@@ -523,6 +528,7 @@ function EditVistrahDashboard({ actorId }: { actorId: number }) {
       updatedImages[imageIndex] = photoForm;
     }
 
+    try{validateEditorPageSize({...currentPage,sections:currentPage.sections.map(item=>item.id===sectionId?{...item,images:updatedImages}:item)});}catch(error){alert((error as Error).message);return;}
     updateSection(sectionId, { images: updatedImages });
     setPhotoModal({ open: false, sectionId: '', imageIndex: -1, isNew: false });
     setNotice('Photo updated with detected resolution.');
@@ -1689,11 +1695,11 @@ function EditVistrahDashboard({ actorId }: { actorId: number }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div>
                 <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 4 }}>
-                  Option A: Choose Image File from Computer
+                  Option A: Choose Photo from Device (up to 400 KB)
                 </label>
                 <input
                   type="file"
-                  accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
                   onChange={handleLocalImageUpload}
                   style={{ width: '100%', fontSize: 12 }}
                 />
@@ -1706,7 +1712,7 @@ function EditVistrahDashboard({ actorId }: { actorId: number }) {
                 <div style={{ display: 'flex', gap: 8 }}>
                   <input
                     placeholder="e.g. /brand/hero-banner.jpg or https://..."
-                    value={photoForm.url}
+                    value={photoForm.url.startsWith('data:')?'':photoForm.url}
                     onChange={(e) => setPhotoForm({ ...photoForm, url: e.target.value })}
                     style={{ flex: 1, fontSize: 12 }}
                   />

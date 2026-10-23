@@ -1,6 +1,7 @@
+import {Text} from './typography';
 import {UiText} from "./localized-ui";
 import {useEffect,useRef,useState} from 'react';
-import {Text} from 'react-native';
+
 import {loadGoogleIdentity} from '../../../shared/google-web';
 import {useTheme} from '../lib/theme';
 

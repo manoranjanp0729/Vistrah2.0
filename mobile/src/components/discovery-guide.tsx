@@ -1,6 +1,7 @@
+import {Text} from './typography';
 import {UiText} from "./localized-ui";
 import {useState} from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import {router} from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import {LinearGradient} from 'expo-linear-gradient';

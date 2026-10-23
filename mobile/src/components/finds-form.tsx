@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
-import {Text,View} from 'react-native';
+import {View} from 'react-native';
 import {Field,Heading,Action} from './ui';
 import {ToggleChoice} from './requirement-form';
 import {newListing,type JobInputs,type DiscoveryInputs,type Listing} from '../lib/finds';

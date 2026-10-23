@@ -1,6 +1,7 @@
+import {Text,TextInput} from './typography';
 import {HomepageVideoPlayer} from './homepage-video-player';
 import type {ReactNode} from 'react';
-import {Image,Linking,Platform,Pressable,ScrollView,Text,TextInput,View} from 'react-native';
+import {Image,Linking,Platform,Pressable,ScrollView,View} from 'react-native';
 import {router,usePathname,type Href} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useState} from 'react';

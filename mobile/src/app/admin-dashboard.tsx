@@ -1,6 +1,7 @@
+import {Text} from '../components/typography';
 import {UiText} from "../components/localized-ui";
 import {useState, useEffect, useCallback, useMemo} from 'react';
-import {Pressable, Text, View, ScrollView, ActivityIndicator} from 'react-native';
+import {Pressable,View,ScrollView,ActivityIndicator} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import {useVideoPlayer, VideoView} from 'expo-video';

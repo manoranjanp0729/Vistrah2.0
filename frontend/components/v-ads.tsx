@@ -23,8 +23,29 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
       if(alive){setItems(mergeReels(selected?[selected]:[],feed.items));setPage(1);setMore(feed.has_more);root.current?.scrollTo(0,0);}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
   },[initialVideo,version]);
+  useEffect(()=>{
+    const feed=root.current;if(!feed)return;
+    const viewport=window.visualViewport;
+    const fit=()=>{
+      const height=feed.clientHeight;
+      const index=height?Math.round(feed.scrollTop/height):0;
+      const bottom=viewport?viewport.height+viewport.offsetTop:window.innerHeight;
+      const available=Math.max(1,bottom-feed.getBoundingClientRect().top-12);
+      const value=available+'px';
+      if(feed.style.getPropertyValue('--feed-max-height')===value)return;
+      feed.style.setProperty('--feed-max-height',value);
+      // Keep the same reel aligned when browser chrome or orientation changes.
+      feed.scrollTop=index*feed.clientHeight;
+    };
+    fit();
+    const observer=new ResizeObserver(fit);
+    if(feed.parentElement)observer.observe(feed.parentElement);
+    window.addEventListener('resize',fit);
+    viewport?.addEventListener('resize',fit);
+    return()=>{observer.disconnect();window.removeEventListener('resize',fit);viewport?.removeEventListener('resize',fit);};
+  },[loading,items.length]);
   async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const next=await client.feed(page+1);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
-  return <div className={s.page}><div className={s.bar}><h1><UiText value={"V Ads"}/></h1><Link href="/seller/v-ads?from=v-ads"><UiText value={"V Ads Studio"}/></Link></div>
+  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><Link href="/seller/v-ads?from=v-ads"><UiText value={"V Ads Studio"}/></Link></div>
     {loading?<p className={s.status} role="status"><UiText value={"Loading videos…"}/></p>:!items.length?<div className={s.status}><p role="status">{error||'No approved videos yet.'}</p><button onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry / refresh"}/></button></div>:<>
       <UiDiv  className={s.feed} ref={root} aria-label="V Ads videos" tabIndex={0} onScroll={event=>{const node=event.currentTarget;if(!error&&node.scrollHeight-node.scrollTop-node.clientHeight<node.clientHeight*.5)void loadMore();}}>
         {items.map(item=><ReelCard key={item.id+':'+(user?.id??'guest')} reel={item} root={root} authenticated={Boolean(user)}/>)}</UiDiv>

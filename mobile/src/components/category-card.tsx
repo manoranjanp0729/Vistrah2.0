@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiElement} from "./localized-ui";
-import {Image,Pressable,Text} from 'react-native';
+import {Image,Pressable} from 'react-native';
 import {useTheme} from '../lib/theme';
 import {router} from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';

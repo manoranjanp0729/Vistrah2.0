@@ -1,8 +1,9 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
 import {useLanguage} from '../lib/language';
 import {date} from '../lib/format';
 import {useState} from 'react';
-import {Linking,Text,View} from 'react-native';
+import {Linking,View} from 'react-native';
 import type {Vacancy} from '../lib/types';
 import {Field,Action,Loading,ErrorPanel} from '../components/ui';
 import {useResource} from '../lib/resource';

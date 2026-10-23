@@ -1,5 +1,6 @@
+import {Text} from './typography';
 import {UiText} from "./localized-ui";
-import {Pressable,Text,View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import {router} from 'expo-router';
 import {HomepageVideoPlayer} from './homepage-video-player';
 import {LinearGradient} from 'expo-linear-gradient';

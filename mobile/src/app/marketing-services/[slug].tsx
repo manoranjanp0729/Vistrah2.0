@@ -1,11 +1,13 @@
+import {Text,useAppFont} from '../../components/typography';
+import {MarketingPricingEntry} from '../../components/marketing-pricing-entry';
 import {EditVistrahContent} from '../../components/edit-vistrah-content';
 import {useRef,useState} from 'react';
-import {Image,Linking,Pressable,ScrollView,StyleSheet,Text,View,useWindowDimensions} from 'react-native';
+import {Image,Linking,Platform,Pressable,ScrollView,StyleSheet,View,useWindowDimensions} from 'react-native';
 import {Stack,router,useLocalSearchParams} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import {useLanguage} from '../../lib/language';
-import {useTheme} from '../../lib/theme';
+import {useTheme,accentPresets} from '../../lib/theme';
 import {themedMarketingVisuals} from '../../../../shared/marketing-visuals';
 import {getMarketingService,marketingServicePages,marketingPageLabels as labels,marketingEnquiryHref} from '../../../../shared/marketing-services';
 
@@ -18,19 +20,20 @@ const photos={
 const icons=['compass','edit-3','play-circle','send'] as const;
 
 export default function MarketingServiceLanding(){
+ const headerFont=useAppFont(600);
  const {slug}=useLocalSearchParams<{slug?:string|string[]}>();
  const page=getMarketingService(typeof slug==='string'?slug:'');
- const {locale}=useLanguage();const {colors,mode}=useTheme();const {width}=useWindowDimensions();
+ const {locale}=useLanguage();const {colors,mode,accent}=useTheme();const buttonInk=accentPresets.find(p=>p.id===accent)?.light??colors.accent;const {width}=useWindowDimensions();
  const wide=width>=760;const scroll=useRef<ScrollView>(null),capabilitiesY=useRef(0);const [error,setError]=useState('');
  if(!page)return <View style={[s.content,{backgroundColor:colors.background}]}><Text style={{color:colors.text}}>{labels.back[locale]}</Text><Pressable accessibilityRole="link" onPress={()=>router.replace('/marketing-solutions')} style={s.button}><Feather name="arrow-left" color={colors.accent} size={20}/><Text style={{color:colors.text}}>{labels.back[locale]}</Text></Pressable></View>;
  const index=marketingServicePages.indexOf(page);const visual=themedMarketingVisuals(page.key,colors.accent);const heroInk=mode==='dark'?'#edf3f8':visual.ink;
  async function enquire(){setError('');try{await Linking.openURL(marketingEnquiryHref(page!,locale));}catch{setError(labels.emailError[locale]);}}
- const enquiryButton=<Pressable accessibilityRole="link" onPress={()=>void enquire()} style={({pressed})=>[s.button,{backgroundColor:colors.accent,opacity:pressed?.8:1}]}><Text style={[s.buttonText,{color:colors.ink}]}>{labels.discuss[locale]}</Text><Feather name="arrow-up-right" color={colors.ink} size={18}/></Pressable>;
- return <><Stack.Screen options={{title:'VISTRAH Ads & Marketing',headerTitleStyle:{fontSize:15},headerStyle:{backgroundColor:mode==='dark'?colors.background:visual.paper},headerBackground:()=> <View style={{flex:1,backgroundColor:mode==='dark'?colors.background:visual.paper}}/>}}/><ScrollView ref={scroll} style={{flex:1,backgroundColor:colors.background}} contentContainerStyle={s.content}><EditVistrahContent slug={page.slug} replace>
+ const enquiryButton=<Pressable accessibilityRole="link" onPress={()=>void enquire()} style={({pressed})=>[s.button,{backgroundColor:'#fff',opacity:pressed?.8:1}]}><Text style={[s.buttonText,{color:buttonInk}]}>{labels.discuss[locale]}</Text><Feather name="arrow-up-right" color={buttonInk} size={18}/></Pressable>;
+ return <><Stack.Screen options={{title:'VISTRAH Ads & Marketing',headerTitleStyle:{fontSize:15,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerStyle:{backgroundColor:mode==='dark'?colors.background:visual.paper},headerBackground:()=> <View style={{flex:1,backgroundColor:mode==='dark'?colors.background:visual.paper}}/>}}/><ScrollView ref={scroll} style={{flex:1,backgroundColor:colors.background}} contentContainerStyle={s.content}><MarketingPricingEntry/><EditVistrahContent slug={page.slug} replace>
   <View style={{gap:10}}>
   <View style={{flexDirection:'row',alignItems:'center',gap:6,paddingHorizontal:10,paddingVertical:3,borderRadius:12,borderWidth:1,borderColor:mode==='dark'?colors.border:visual.wash,backgroundColor:mode==='dark'?colors.surface:visual.paper}}><Pressable accessibilityRole="link" onPress={()=>router.navigate('/marketing-solutions')} style={{minHeight:36,flexDirection:'row',alignItems:'center',gap:6,flexShrink:1}}><Feather name="arrow-left" size={15} color={heroInk}/><Text numberOfLines={1} style={{color:heroInk,fontSize:12,flexShrink:1,lineHeight:18}}>{labels.back[locale]}</Text></Pressable><Feather name="chevron-right" size={13} color={heroInk}/><Text numberOfLines={1} style={{color:heroInk,fontSize:12,flex:1,lineHeight:18,fontWeight:'600'}}>{page.title[locale]}</Text></View>
   <LinearGradient colors={mode==='dark'?[visual.dark,visual.dark]:[visual.paper,visual.paper]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.hero}>
-   <View style={[s.heroCopy,{padding:wide?32:24}]}><View style={s.eyebrowRow}><Text style={[s.eyebrow,{color:heroInk}]}>VISTRAH ADS & MARKETING</Text><Text style={[s.eyebrow,{color:colors.accent}]}>0{index+1} / 04</Text></View><Text style={[s.serviceName,{color:colors.accent}]}>{page.title[locale]}</Text><Text accessibilityRole="header" style={[s.headline,{color:heroInk,fontFamily:'serif',fontWeight:'400',fontSize:wide?52:38,lineHeight:locale==='en'?(wide?60:48):(wide?72:56)}]}>{page.headline[locale]}</Text><Text style={[s.intro,{color:heroInk}]}>{page.intro[locale]}</Text><View style={{gap:10,alignItems:'stretch'}}>{enquiryButton}<Pressable accessibilityRole="button" onPress={()=>scroll.current?.scrollTo({y:capabilitiesY.current,animated:true})} style={[s.button,{borderWidth:1,borderColor:mode==='dark'?'#ffffff35':visual.wash}]}><Text style={{color:heroInk,fontSize:14,fontWeight:'600'}}>{labels.explore[locale]}</Text><Feather name="arrow-right" size={17} color={heroInk}/></Pressable></View></View>
+   <View style={[s.heroCopy,{padding:wide?32:24}]}><View style={s.eyebrowRow}><Text style={[s.eyebrow,{color:heroInk}]}>VISTRAH ADS & MARKETING</Text><Text style={[s.eyebrow,{color:colors.accent}]}>0{index+1} / 04</Text></View><Text style={[s.serviceName,{color:colors.accent}]}>{page.title[locale]}</Text><Text accessibilityRole="header" style={[s.headline,{color:heroInk,fontFamily:'serif',fontWeight:'400',fontSize:wide?52:38,lineHeight:locale==='en'?(wide?60:48):(wide?72:56)}]}>{page.headline[locale]}</Text><Text style={[s.intro,{color:heroInk}]}>{page.intro[locale]}</Text><View style={{gap:10,alignItems:'stretch'}}>{enquiryButton}<Pressable accessibilityRole="button" onPress={()=>scroll.current?.scrollTo({y:capabilitiesY.current,animated:true})} style={[s.button,{borderWidth:1,borderColor:'#fff',backgroundColor:'#fff'}]}><Text style={{color:buttonInk,fontSize:14,fontWeight:'600'}}>{labels.explore[locale]}</Text><Feather name="arrow-right" size={17} color={buttonInk}/></Pressable></View></View>
    <View style={{height:wide?460:370,marginHorizontal:20,position:'relative'}}>
     <View style={{position:'absolute',top:18,left:12,right:24,bottom:76,borderTopLeftRadius:70,borderTopRightRadius:16,borderBottomRightRadius:70,borderBottomLeftRadius:16,overflow:'hidden',transform:[{rotate:'-3deg'}]}}><Image source={photos[page.key]} accessibilityLabel={page.title[locale]} resizeMode="cover" style={StyleSheet.absoluteFill}/></View>
     <View accessible={false} style={{position:'absolute',top:0,left:0,padding:16,borderRadius:16,backgroundColor:visual.wash,transform:[{rotate:'7deg'}]}}><Text style={{fontFamily:'serif',fontSize:32,color:colors.accent}}>{visual.mark}</Text></View>

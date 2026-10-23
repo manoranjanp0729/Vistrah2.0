@@ -31,12 +31,13 @@
   --breakpoint-tablet:768px;
   --breakpoint-laptop:1024px;
   --breakpoint-desktop:1440px;
-  /* Families supplied by next/font/local; the existing wordmark is preserved. */
-  --font-body:var(--font-inter),Arial,sans-serif;
-  --font-body-italic:var(--font-inter-italic),Arial,sans-serif;
-  --font-display:var(--font-dm-serif),Georgia,serif;
-  --font-display-italic:var(--font-dm-serif-italic),Georgia,serif;
-  --font-wordmark:Arial,sans-serif;
+  /* Native system font stack matching the mobile app */
+  --font-system:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  --font-body:var(--font-system);
+  --font-body-italic:var(--font-system);
+  --font-display:var(--font-system);
+  --font-display-italic:var(--font-system);
+  --font-wordmark:var(--font-system);
   --weight-regular:400;
   --weight-medium:500;
   --weight-semibold:600;

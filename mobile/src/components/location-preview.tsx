@@ -1,6 +1,7 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
 import {useState} from 'react';
-import {Image,Linking,Platform,Text,View} from 'react-native';
+import {Image,Linking,Platform,View} from 'react-native';
 import {Action} from './ui';
 import {useTheme} from '../lib/theme';
 import {previewTiles,type GeoPoint} from '../lib/maptiler';

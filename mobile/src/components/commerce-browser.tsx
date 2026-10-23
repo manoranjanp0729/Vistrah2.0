@@ -1,7 +1,8 @@
+import {Text} from './typography';
 import {UiText,UiElement} from "./localized-ui";
 import {useState} from 'react';
 import {AddToCart} from './commerce-orders';
-import {Text,View} from 'react-native';
+import {View} from 'react-native';
 import {router} from 'expo-router';
 import {Action,Heading,Loading,ErrorPanel,MemberGate} from './ui';
 import {useResource} from '../lib/resource';
@@ -15,7 +16,7 @@ function PublishedList({packages}:{packages:boolean}){const {styles}=useTheme();
 }
 export function CommerceDetail({id}:{id:string}){const {styles}=useTheme();const {user}=useSession();const result=useResource<CommerceListing>('/commerce/listings/'+encodeURIComponent(id),user?.id??null);
  if(result.loading)return <Loading/>;
- if(result.error)return <><ErrorPanel error={result.error} retry={result.retry}/>{result.error instanceof ApiError&&[401,403].includes(result.error.status)&&<UiElement as={Action} label={user?'View membership':'Sign in'} onPress={()=>router.push(user?'/membership':'/auth')}/>}</>;
+ if(result.error)return <><ErrorPanel error={result.error} retry={result.retry}/>{result.error instanceof ApiError&&[401,403].includes(result.error.status)&&<UiElement as={Action} auth={!user} label={user?'View membership':'Sign in'} onPress={()=>router.push(user?'/membership':'/auth')}/>}</>;
  const row=result.data;if(!row)return null;
  return <View style={styles.card}><Heading title={row.title}/><Text style={styles.muted}>{row.business} · <UiText value={row.kind==='PRODUCT'?'Product':'Service package'}/></Text><Text style={styles.heading}>{listingPrice(row.unit_price_paise)} / unit</Text><Text style={styles.text}>{row.description}</Text><AddToCart row={row}/>{row.service_id!==null&&<UiElement as={Action} label="Explore this service" secondary onPress={()=>router.push({pathname:'/service/[id]',params:{id:row.service_id!}})}/>}</View>;
 }

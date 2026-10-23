@@ -1,18 +1,11 @@
+import {BannerGeometry} from '../../components/banner-geometry';
+import {useBannerTheme} from '../../lib/banner-theme';
+import {Text} from '../../components/typography';
 import {UiText, UiElement} from '../../components/localized-ui';
 import {useLanguage} from '../../lib/language';
 import {useTheme} from '../../lib/theme';
 import {useEffect, useState} from 'react';
-import {
-  AccessibilityInfo,
-  Animated,
-  Easing,
-  Image,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {AccessibilityInfo,Animated,Easing,Image,Platform,Pressable,StyleSheet,View,} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -86,6 +79,7 @@ const popularServices = [
 ] as const;
 
 export default function VistrahEssentials() {
+  const banner=useBannerTheme();
   const {mode, colors} = useTheme();
   const {t} = useLanguage();
   const isDark = mode === 'dark';
@@ -160,15 +154,16 @@ export default function VistrahEssentials() {
     <Page>
       {/* 1. SIGNATURE VISTRAH ESSENTIALS HERO */}
       <LinearGradient
-        colors={isDark ? ['#130a24', '#21113b', '#35144f'] : ['#180e2d', '#281347', '#421764']}
+        colors={banner.gradient}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
         style={s.hero}
       >
-        <View pointerEvents="none" style={s.heroGlowOrb} />
+        <BannerGeometry/>
+        <View pointerEvents="none" style={[s.heroGlowOrb,{backgroundColor:banner.glow}]} />
         <View style={s.heroTopRow}>
           <LinearGradient
-            colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
+            colors={banner.gradient}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             style={s.heroTag}
@@ -178,7 +173,7 @@ export default function VistrahEssentials() {
           </LinearGradient>
           <View style={s.heroVerifiedTag}>
             <Feather name="check-circle" size={12} color="#34d399" />
-            <Text style={s.heroVerifiedText}>
+            <Text style={[s.heroVerifiedText,{color:banner.muted}]}>
               <UiText value="Community Lifelines" />
             </Text>
           </View>
@@ -187,26 +182,26 @@ export default function VistrahEssentials() {
         <Text accessibilityRole="header" style={s.heroTitle}>
           <UiText value="Essential Agriculture & Healthcare" />
         </Text>
-        <Text style={s.heroSubtitle}>
+        <Text style={[s.heroSubtitle,{color:banner.muted}]}>
           <UiText value="Dedicated community ecosystems connecting farmers, healthcare seekers, and verified neighborhood experts across India." />
         </Text>
 
         <View style={s.heroPillsRow}>
           <View style={s.heroPill}>
             <Ionicons name="leaf" size={12} color="#95d5b2" />
-            <Text style={s.heroPillText}>
+            <Text style={[s.heroPillText,{color:banner.muted}]}>
               <UiText value="Direct Farm Access" />
             </Text>
           </View>
           <View style={s.heroPill}>
             <Ionicons name="heart" size={12} color="#90e0ef" />
-            <Text style={s.heroPillText}>
+            <Text style={[s.heroPillText,{color:banner.muted}]}>
               <UiText value="Verified Health" />
             </Text>
           </View>
           <View style={s.heroPill}>
             <Feather name="shield" size={12} color="#f0b27a" />
-            <Text style={s.heroPillText}>
+            <Text style={[s.heroPillText,{color:banner.muted}]}>
               <UiText value="Zero Middlemen" />
             </Text>
           </View>

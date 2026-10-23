@@ -1,12 +1,6 @@
+import {Text} from './typography';
 import { useState, useMemo, useRef, useEffect } from 'react';
-import {
-  Text,
-  View,
-  Pressable,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import {View,Pressable,ScrollView,Image,ActivityIndicator,} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import { useVideoPlayer, VideoView } from 'expo-video';

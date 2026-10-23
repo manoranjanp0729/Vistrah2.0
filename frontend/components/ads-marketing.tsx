@@ -29,7 +29,7 @@ export function AdsMarketing() {
           );
         })}
       </div>
-      <Link className={`button ${styles.cta}`} href="/marketing-solutions">{t('marketing.allSolutions')} <span aria-hidden="true">→</span></Link>
+      <Link className={`button light ${styles.cta}`} href="/marketing-solutions">{t('marketing.allSolutions')} <span aria-hidden="true">→</span></Link>
     </section>
   );
 }

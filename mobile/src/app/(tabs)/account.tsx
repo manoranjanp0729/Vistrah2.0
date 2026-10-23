@@ -1,7 +1,10 @@
+import {BannerGeometry} from '../../components/banner-geometry';
+import {useBannerTheme} from '../../lib/banner-theme';
+import {Text} from '../../components/typography';
 import {UiText,UiElement} from "../../components/localized-ui";
 import {useLanguage} from '../../lib/language';
 import {useState,type ReactNode,type ComponentProps} from 'react';
-import {Pressable,Text,View} from 'react-native';
+import {Pressable,View} from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import {router} from 'expo-router';
 import {Page,Action,Loading,ErrorPanel} from '../../components/ui';
@@ -26,6 +29,7 @@ function FeatureBannerButton({
   onPress: () => void;
   accessibilityLabel: string;
 }) {
+  const banner=useBannerTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -38,7 +42,7 @@ function FeatureBannerButton({
         transform: [{scale: pressed ? 0.99 : 1}],
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.22)',
-        shadowColor: '#503fbd',
+        shadowColor: banner.shadow,
         shadowOffset: {width: 0, height: 3},
         shadowOpacity: 0.16,
         shadowRadius: 8,
@@ -57,6 +61,7 @@ function FeatureBannerButton({
           gap: 14,
         }}
       >
+        <BannerGeometry compact/>
         <View
           style={{
             width: 44,
@@ -70,13 +75,13 @@ function FeatureBannerButton({
           <Feather name={icon} size={22} color="#FFFFFF" />
         </View>
         <View style={{flex: 1, gap: 2}}>
-          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: '#f0e6ff', textTransform: 'uppercase'}}>
+          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: banner.muted, textTransform: 'uppercase'}}>
             <UiText value={badgeText}/>
           </Text>
           <Text style={{fontSize: 16, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2}}>
             <UiText value={title}/>
           </Text>
-          <Text numberOfLines={1} style={{fontSize: 12, color: '#eadaff', fontWeight: '500'}}>
+          <Text numberOfLines={1} style={{fontSize: 12, color: banner.muted, fontWeight: '500'}}>
             <UiText value={subtitle}/>
           </Text>
         </View>
@@ -101,7 +106,7 @@ function Row({label,icon,onPress,external=false}:{label:string;icon:ComponentPro
 function Group({children}:{children:ReactNode}){const {colors}=useTheme();return <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,gap:1,backgroundColor:colors.border}}>{children}</View>;}
 function Section({title,subtitle,children}:{title:string;subtitle:string;children:ReactNode}){const {styles}=useTheme();return <View style={{gap:8}}><View style={{gap:2}}><Text accessibilityRole="header" style={styles.heading}><UiText value={title}/></Text><Text style={[styles.muted,{fontSize:12}]}><UiText value={subtitle}/></Text></View><Group>{children}</Group></View>;}
 
-export default function Account(){const {colors,styles,accentGradient}=useTheme();const {copy,t}=useLanguage();
+export default function Account(){const {colors,styles}=useTheme();const banner=useBannerTheme();const {copy,t}=useLanguage();
  const session=useSession(false);const sellerSession=useSession(true);const [error,setError]=useState(''),[busy,setBusy]=useState(false);
  async function logout(){setBusy(true);setError('');try{await session.signOut();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
  const roleLabel=session.user?.role==='ADMIN'?'Administrator':'Customer';
@@ -112,7 +117,7 @@ export default function Account(){const {colors,styles,accentGradient}=useTheme(
       subtitle="Explore plans & exclusive member benefits"
       badgeText="VISTRAH PREMIUM"
       icon="award"
-      gradientColors={accentGradient}
+      gradientColors={banner.gradient}
       onPress={()=>router.push('/membership')}
       accessibilityLabel="Membership Plan, explore plans and exclusive member benefits"
     />
@@ -121,12 +126,12 @@ export default function Account(){const {colors,styles,accentGradient}=useTheme(
       subtitle="Create, promote & track your video ads"
       badgeText="CREATOR STUDIO"
       icon="video"
-      gradientColors={accentGradient}
+      gradientColors={banner.gradient}
       onPress={()=>router.push('/seller/v-ads')}
       accessibilityLabel="V Ads Studio, create, promote and track your video ads"
     />
   </View>
-  {!session.ready?<Loading/>:session.user?<View style={[styles.card,{flexDirection:'row',alignItems:'center',gap:12}]}><Feather name="user" size={24} color={colors.text}/><View style={{flex:1,gap:4}}><Text style={styles.heading}>{session.user.name}</Text><Text style={[styles.muted,{fontSize:12}]}>{session.user.email} · <UiText value={roleLabel}/></Text></View></View>:<><Text style={styles.muted}><UiText value={copy.account.intro}/></Text><Action label={copy.account.signIn} onPress={()=>router.push('/auth')}/></>}
+  {!session.ready?<Loading/>:session.user?<View style={[styles.card,{flexDirection:'row',alignItems:'center',gap:12}]}><Feather name="user" size={24} color={colors.text}/><View style={{flex:1,gap:4}}><Text style={styles.heading}>{session.user.name}</Text><Text style={[styles.muted,{fontSize:12}]}>{session.user.email} · <UiText value={roleLabel}/></Text></View></View>:<><Text style={styles.muted}><UiText value={copy.account.intro}/></Text><Action auth label={copy.account.signIn} onPress={()=>router.push('/auth')}/></>}
   {Boolean(error||session.error)&&<ErrorPanel error={error||session.error} retry={session.error?session.retry:undefined}/>}{Boolean(session.error)&&<UiElement as={Action} label={t('account.clearSignIn')} secondary disabled={busy} onPress={()=>void logout()}/>}
   <UiElement as={Section} title="My Account & Activity" subtitle="Profile, requests, orders, and preferences">
    {session.user&&<><Row label={copy.account.profile} icon="user" onPress={()=>router.push('/profile')}/><Row label={copy.nav.requests} icon="file-text" onPress={()=>router.push('/my-requests')}/></>}

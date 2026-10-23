@@ -1,7 +1,8 @@
+import {Text} from './typography';
 import {UiElement} from "./localized-ui";
 import {useLanguage} from '../lib/language';
 import {useRef,useState,type ReactElement} from 'react';
-import {Pressable,ScrollView,Text,View,useWindowDimensions} from 'react-native';
+import {Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 import {photoCardDesign,twoRowColumns} from '../../../shared/photo-card-design';
 import {useTheme} from '../lib/theme';

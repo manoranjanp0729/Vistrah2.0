@@ -1,3 +1,4 @@
+import {Text,TextInput} from '../../components/typography';
 import {EditVistrahContent} from '../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../components/localized-ui';
 import {HomepageVideo} from '../../components/homepage-video';
@@ -12,16 +13,7 @@ import {HomepagePartnerBanner} from '../../components/homepage-partner-banner';
 import {PublishedHomepage, type Homepage} from '../../components/published-homepage';
 import {useLanguage} from '../../lib/language';
 import {servicePhotos} from '../../lib/service-photos';
-import {
-  Platform,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {Platform,Image,Pressable,ScrollView,View,StyleSheet,} from 'react-native';
 import {router} from 'expo-router';
 import {AdsMarketing} from '../../components/ads-marketing';
 import {Page, Heading} from '../../components/ui';

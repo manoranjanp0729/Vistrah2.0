@@ -22,6 +22,7 @@ export function themeProperties(mode:'light'|'dark',accentId?:string){
   '--page-background':p.background,'--surface':p.surface,'--border':p.border,
   '--text-primary':p.text,'--text-secondary':p.muted,'--text-error':p.error,
   '--accent-orange':p.accent,'--button-ink':p.ink,
+  '--accent-on-white':(theme.accentPresets.find(item=>item.id===(accentId??theme.defaultAccent))??theme.accentPresets[1]).light,
   '--brand-green-950':p.accent,'--brand-green-800':p.accent,'--brand-green-700':p.accent,
   '--ivory':p.soft,'--surface-soft':p.soft,'--surface-hover':p.hover,
   '--header-background':p.background,'--footer-background':p.footer,'--tile-background':p.tile,'--tile-border':p.tileBorder,

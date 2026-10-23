@@ -1,7 +1,9 @@
+import {Text} from '../components/typography';
+import {MarketingPricingEntry} from '../components/marketing-pricing-entry';
 import {EditVistrahContent} from '../components/edit-vistrah-content';
 import {UiText,UiElement} from "../components/localized-ui";
 import {useCallback,useEffect,useRef,useState,type ReactNode} from 'react';
-import {AccessibilityInfo,Animated,Easing,Image,Linking,Platform,Pressable,ScrollView,StyleSheet,Text,View,useWindowDimensions} from 'react-native';
+import {AccessibilityInfo,Animated,Easing,Image,Linking,Platform,Pressable,ScrollView,StyleSheet,View,useWindowDimensions} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {router,useFocusEffect,useLocalSearchParams} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -77,7 +79,7 @@ export default function MarketingSolutions(){
  const revealProps={scrollY,reducedMotion,windowHeight:height};
  const activeTheme=marketingCards.find(card=>card.key===selected);
  return <SafeAreaView edges={['left','right','bottom']} style={{flex:1,backgroundColor:mode==='dark'?'#15111f':'#faf8fd'}}>
-  <Animated.ScrollView ref={scroll} keyboardShouldPersistTaps="handled" scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent:{contentOffset:{y:scrollY}}}],{useNativeDriver:Platform.OS!=='web'})} contentContainerStyle={s.page}><EditVistrahContent slug="marketing-solutions" replace>
+  <Animated.ScrollView ref={scroll} keyboardShouldPersistTaps="handled" scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent:{contentOffset:{y:scrollY}}}],{useNativeDriver:Platform.OS!=='web'})} contentContainerStyle={s.page}><MarketingPricingEntry/><EditVistrahContent slug="marketing-solutions" replace>
    <LinearGradient colors={accentGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={[s.hero,wide&&s.heroWide]}>
     <View pointerEvents="none" accessible={false} style={s.heroLight}/>
     <Animated.View style={[s.heroCopy,wide&&{flex:1},{transform:[{translateY:entrance.interpolate({inputRange:[0,1],outputRange:[10,0]})}]}]}>

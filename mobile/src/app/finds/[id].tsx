@@ -1,6 +1,7 @@
+import {Text} from '../../components/typography';
 import {UiText,UiElement} from "../../components/localized-ui";
 import {useRef,useState} from 'react';
-import {Text,View} from 'react-native';
+import {View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {Page,Heading,Action,Loading,ErrorPanel,Field} from '../../components/ui';
 import {FindsForm} from '../../components/finds-form';
@@ -10,7 +11,7 @@ import {useResource} from '../../lib/resource';
 import {useTheme} from '../../lib/theme';
 import {api} from '../../lib/api';
 import {discoveredJobs,normalizedJobs,preparedInputs,type Run,type JobInputs,type DiscoveryInputs} from '../../lib/finds';
-export default function Plan(){const {id}=useLocalSearchParams<{id:string}>();const {user,ready}=useSession();return <UiElement as={Page} title="VISTRAH Finds plan">{!ready?<Loading/>:!user?<UiElement as={Action} label="Sign in" onPress={()=>router.push('/auth')}/>:<PlanLoader key={user.id} id={id} userId={user.id}/>}</UiElement>;}
+export default function Plan(){const {id}=useLocalSearchParams<{id:string}>();const {user,ready}=useSession();return <UiElement as={Page} title="VISTRAH Finds plan">{!ready?<Loading/>:!user?<UiElement as={Action} auth label="Sign in" onPress={()=>router.push('/auth')}/>:<PlanLoader key={user.id} id={id} userId={user.id}/>}</UiElement>;}
 function PlanLoader({id,userId}:{id:string;userId:number}){const result=useResource<Run>('/finds/workflows/'+id,userId);return result.loading?<Loading/>:result.error?<ErrorPanel error={result.error} retry={result.retry}/>:result.data?<PlanEditor key={result.data.id+':'+result.data.updated_at} initial={result.data} reload={result.retry}/>:null;}
 function PlanEditor({initial,reload}:{initial:Run;reload:()=>void}){const {styles}=useTheme();const [record,setRecord]=useState(initial),[inputs,setInputs]=useState<JobInputs|DiscoveryInputs>(initial.inputs),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[statuses,setStatuses]=useState<Record<string,string>>({}),[selected,setSelected]=useState<string[]>([]);const prepareKey=useRef('');const path='/finds/workflows/'+record.id;const editable=['DRAFT','READY'].includes(record.status);
   async function operation(suffix:string,payload?:unknown,method='POST'){setBusy(true);setError('');setNotice('');try{const next=await api<Run>(path+suffix,{method,...(payload?{body:JSON.stringify(payload)}:{})});setRecord(next);setInputs(next.inputs);setNotice('Plan updated.');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}

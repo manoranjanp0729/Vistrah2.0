@@ -1,7 +1,8 @@
+import {Text} from '../../components/typography';
 import {UiText} from "../../components/localized-ui";
 import {useLanguage} from '../../lib/language';
 import {useState} from 'react';
-import {Switch,Text,View} from 'react-native';
+import {Switch,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {PageTitle,Action,ErrorPanel,Field,Heading,Loading,MemberGate,Page} from '../../components/ui';
 import {allServices,enquiryPrefix,pathways,type Category,type Intent} from '../../lib/catalogue';

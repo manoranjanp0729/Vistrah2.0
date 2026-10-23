@@ -26,3 +26,27 @@ test('website export keeps the local EAS linkage and native build configuration 
     assert.equal(config.web.favicon,'./assets/favicon.png');
   }finally{if(previous===undefined)delete process.env.EXPO_PUBLIC_WEB_SESSION_MODE;else process.env.EXPO_PUBLIC_WEB_SESSION_MODE=previous;}
 });
+
+test('OTA uses existing project, native fingerprint compatibility and background launch checks',()=>{
+ const config={extra:{eas:{projectId:'fixture-project'}},plugins:['expo-router'],android:{package:'in.vistrah.app'}};
+ const result=configure({config});
+ assert.equal(result.updates.url,'https://u.expo.dev/fixture-project');
+ assert.equal(result.updates.checkAutomatically,'ON_LOAD');
+ assert.equal(result.updates.fallbackToCacheTimeout,0);
+ assert.deepEqual(result.runtimeVersion,{policy:'fingerprint'});
+ assert.deepEqual(result.extra,config.extra);
+ assert.equal(result.android.package,'in.vistrah.app');
+ assert.equal('updates' in config,false);
+ assert.throws(()=>configure({config:{plugins:[]}}),/existing EAS project linkage/);
+});
+
+test('OTA channels separate AWS test and store builds without changing endpoints',()=>{
+ const eas=createRequire(import.meta.url)('../eas.json');
+ assert.equal(eas.build['aws-test'].channel,'aws-test');
+ assert.equal(eas.build.preview.channel,'preview');
+ assert.equal(eas.build.production.channel,'production');
+ assert.equal(eas.build['aws-test'].environment,'preview');
+ assert.equal(eas.build.production.environment,'production');
+ assert.equal(eas.build['aws-test'].env.EXPO_PUBLIC_API_URL,'https://api.vistrah.in');
+ assert.equal(eas.build.production.env.EXPO_PUBLIC_API_URL,undefined);
+});

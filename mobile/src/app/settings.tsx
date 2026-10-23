@@ -1,8 +1,9 @@
+import {Text} from '../components/typography';
 import {UiText, UiElement} from '../components/localized-ui';
 import {useState} from 'react';
 import {languages} from '../../../shared/i18n';
 import {useLanguage} from '../lib/language';
-import {Pressable, ScrollView, Text, View, StyleSheet} from 'react-native';
+import {Pressable,ScrollView,View,StyleSheet} from 'react-native';
 import {router} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';

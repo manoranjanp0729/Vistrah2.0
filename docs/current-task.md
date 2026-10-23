@@ -1,3 +1,233 @@
+# Local API Environment Health & Endpoint Verification - 24 October 2026
+
+- Verified local container health: vistrah20-api-1 (:8100), vistrah20-web-1 (:3100), vistrah20-admin-1 (:3200), and vistrah20-db-1 (:5432) are all up and healthy.
+- Updated vistrah20-api-1 with latest composite_routes.py and main.py; verified http://127.0.0.1:8100/health (200), /bootstrap (200), and /seller/hub (401 protected).
+- Ready for local testing.
+
+# Composite Endpoints Phase 2: Seller Studio Hub Implementation - 24 October 2026
+
+- Scope: Implemented Phase 2 of the approved composite endpoints plan (Seller Studio Hub GET /seller/hub).
+- Backend implementation: Added GET /seller/hub to backend/app/composite_routes.py. Aggregates seller owned businesses, paginated commerce listings (page 1), V Ads performance summary (accounts count, total ads, approved/pending counts, views), and active membership status in an atomic response under seller_user authentication.
+- Client integration: Updated mobile/src/app/seller/index.tsx with SellerHub typing and synchronous cache priming. When hub data is received, /seller/businesses and child /seller/businesses/{id}/commerce-listings?page=1 are primed into resourceCache, eliminating sequential loading spinners and UI flicker.
+- Verification: backend/tests/test_composite_routes.py passed 5/5 (including unauthorized protection and aggregated seller payload); mobile/tests/seller-hub.test.ts passed 100%; mobile TypeScript check passed with 0 errors. Deployed composite_routes.py to AWS vistrah-cloud-api-1 and verified live (HTTP 401 unauthenticated, HTTP 200 with complete payload for seller token).
+- Next step: proceed to Phase 3 (V Ads Feed Bundle GET /v-ads/feed-bundle) or user direction.
+
+# Services steps 2/3 and 3/3 two-column cards - 24 October 2026
+
+- User requested two cards per row for subcategories and listing types, matching step1. Updated only mobile/src/app/(tabs)/services/index.tsx: measured container width split into two equal cards with10px gutter, vertical photo-above-text card composition, photo16:9 and chevron overlay. Odd last card retains half width; search results and offer/detail screens retain their existing layouts. Seller TypeAction wrapper uses the same column width and reserves56px below content for its existing bottom-right plus; seller-only visibility, routes and ownership behavior unchanged. Metadata can wrap in narrow columns.
+- Verification: scoped Services ESLint passes; git diff --check passes. Mobile TypeScript passes. No database/build/runtime/deployment/publication/commit/push. Next: review step2/step3, translated labels and seller plus controls in Expo; unified website needs separate deployment approval.
+
+# Subtle banner geometry - 24 October 2026
+
+- User requested subtle geometric background shapes on small banners. Added shared mobile/src/components/banner-geometry.tsx: faint outlined rings and a translucent rotated rounded square, right-aligned/clipped, compact variant for Account banners and login/signup actions. Applied to homepage partner banner, Account Membership/V Ads banners, Services/Essentials heroes, SellerSignInAction and opt-in primary auth Action. Existing accent colours, text/layout/handlers remain unchanged; no animation/dependency added. Decoration has pointerEvents none and is hidden from accessibility.
+- Verification: git diff --check and mobile TypeScript pass; scoped ESLint exits0 with only the existing unused UiElement warning in requests.tsx. No runtime/database changes, deployment, binary build, publication, commit or push. Next: reload Expo for visual review of faint shapes and tap targets; website remains pending separately approved deployment.
+
+# Login/signup theme colours - 24 October 2026
+
+- User requested the same theme-matching colours for login/signup buttons. SellerSignInAction now uses the opt-in banner palette instead of fixed brand gradient/purple shadow. Added explicit auth styling flag to shared Action: primary auth buttons use selected-accent gradient/white text; secondary auth options retain their existing theme-aware outlined treatment. Applied to24 customer/seller auth entry/submit/toggle actions across screens/gates; conditional membership-versus-login action enables it only while signed out. Other actions and Google-supplied web sign-in button styling retained. Labels, routes, sessions and handlers unchanged.
+- Main paths: mobile/src/components/{ui.tsx,seller-sign-in-action.tsx,seller-gate.tsx}, mobile/src/app/auth.tsx plus existing login entry call sites (account/profile/checkout/orders/pricing/service gates/password-return links). Uses existing mobile/src/lib/banner-theme.ts; no global brand gradient change.
+- Verification: scoped ESLint passes with no warnings/errors; git diff --check passes. Mobile TypeScript passes. No build, deployment, normal service restart, database changes, commit or push. Next: reload Expo and review login/signup in each accent/light/dark mode; website requires separate deployment approval.
+
+# Selected-banner theme colours - 24 October 2026
+
+- User requested colour changes ONLY for homepage Grow your business, Account Membership Plan/V Ads Studio, and Services/Essentials header banners. Added opt-in mobile/src/lib/banner-theme.ts deriving saturated gradients from selected accent, deepening in dark mode. Existing global brand gradient is unchanged. Updated just those four component/screen files to use this palette, including their badges/glows/shadows/supporting text; no layout, copy, routes, buttons or other cards changed.
+- Paths: mobile/src/components/homepage-partner-banner.tsx; mobile/src/app/(tabs)/{account.tsx,services/index.tsx,requests.tsx}; mobile/src/lib/banner-theme.ts. Shared Expo source covers native and unified website after separately authorized deployment.
+- Verification: scoped ESLint exits0 with the existing requests.tsx unused UiElement warning only; git diff --check passes. Selected accent colours give white-text contrast5.25:1 or higher, with darker gradient stops. Mobile TypeScript passes; native/web visual theme switching remains unverified. No build, deployment, normal service restart, database write, commit or push. Next: reload Expo to review accent/light/dark colours.
+
+# Montserrat replaces Roboto - 24 October 2026
+
+- User clarified they dislike Roboto and approved Montserrat after identifying Motorola Rookery as the likely previous device font. Designer's primary account confirms Rookery New derives from Montserrat; the exact G84 file and Motorola redistribution licence remain unverified. Montserrat uses documented SIL OFL; no Motorola font was copied. Sources: https://www.ryanwkimball.com/motorola-hello-ui and https://github.com/google/fonts/blob/main/ofl/montserrat/OFL.txt .
+- Replaced English native family/aliases with four static Montserrat weights400/500/600/700, and web normal/italic variable faces with self-hosted Montserrat. Kannada/Devanagari families, shared text/input wrappers, navigation, accessibility scaling and icons retained. Updated font-policy tests and browser check. Removed obsolete Roboto font assets from both native/public folders; included Montserrat licences. Paths: mobile/assets/fonts/native, mobile/public/fonts, mobile/src/lib/{font-policy.ts,bundled-fonts.native.tsx,fonts.css,web-fonts.ts,web-fonts.web.ts}, mobile/tests/font-policy.test.ts, frontend/scripts/app-font-browser-check.mjs.
+- Verification: all3 native font-policy tests pass; actual-font Chromium checks pass for root and /app/, weights/italic, Kannada/Hindi, nested text/input and icon/monospace preservation. All12 native asset references resolve, licences checked, no obsolete Roboto assets remain. Mobile TypeScript and scoped mobile/frontend-script ESLint pass; git diff --check passes. Earlier Android/web exports were Roboto-era evidence and are not Montserrat release artifacts; no new APK build/export/publication or deployment performed for this substitution.
+- Next step: finish current checks, reload Expo for visual review and compare the selected font with the user's preferred screenshots. AWS remains unchanged. Deployment, APK build or OTA publication requires separate explicit authorization; preserve unrelated pending changes.
+
+# Standardized bundled native typography - 24 October 2026
+
+- User authorized bundling Roboto plus Noto Sans Kannada/Devanagari, weights400/500/600/700. Added twelve static TTF faces (about2.1MB total) and SIL OFL licenses in mobile/assets/fonts/native. Downloaded from Expo/google-fonts; verified TTF signatures and absence of variable-font fvar tables. SDK57 native needs static faces; existing web variable fonts remain separate.
+- Source: mobile/src/lib/bundled-fonts.native.tsx uses existing expo-font to load local assets before mounting the main app, supplies language-family context and a localized retry screen on loading failure. Web provider is a pass-through. New typography.tsx wrappers choose explicit static family/weight aliases, inherit nested weight, normalize generic System/serif/sans-serif to the standard family on native and preserve explicit icon/monospace fonts. Default text scaling remains enabled. Updated74 screen/component Text/TextInput imports; header/tab fonts select language/weight explicitly. App language selects Roboto(en), Noto Sans Kannada(kn), Noto Sans Devanagari(hi). This standardizes native marketing serif text too; web retains its existing explicit custom-font styles. No new dependencies or changes to authentication/data flows.
+- Verification: three font-policy tests pass (all12 static assets/aliases, nested weight/custom-family rules, shared-import enforcement). Font cmap spot-check confirms required script and Latin A in each family's regular file. Final mobile TypeScript and scoped typography/provider/navigation ESLint pass; git diff --check passes. Broader app/components lint reports12 existing hook/purity errors and24 warnings in unrelated admin/video/etc logic; those were not repaired. Isolated Android JavaScript/Hermes export to .tools/native-font-export passes; all12 fonts verified byte-for-byte in output assets. No APK/native binary built.
+- Boundary: no AWS/container/database changes, web deployment, EAS build/update publication, commit or push. Existing concurrent source edits preserved. Next step: reload the Expo development preview and visually verify English/Kannada/Hindi, headings/inputs/navigation, large accessibility text and icons on device. Existing installed apps need an explicitly approved compatible OTA or new binary before receiving this source; do not publish/build/deploy automatically.
+
+# Self-hosted Android-style web fonts - 23 October 2026
+
+- User authorized bundling native-style fonts across vistrah.in/app/ and vistrah.in. Both current public entry points use the unified Expo web app per existing routing evidence. Added self-hosted variable Roboto normal/italic plus Noto Sans Kannada/Devanagari and their SIL OFL licenses in mobile/public/fonts. No runtime Google Fonts request or added dependency. Existing native platform typography is retained; this makes ordinary browser text use Android-style Roboto rather than the browser OS font.
+- Source: mobile/src/lib/fonts.css overrides only React Native Web default Text/TextInput families, preserving explicit icon/monospace/custom faces and existing weights/sizes. Web-only module import keeps CSS off native; headers/tab labels explicitly share the web family. CSS uses /app/fonts with /fonts fallback for standalone web. Explicit serif marketing design remains unchanged. Added CSS module declaration and frontend/scripts/app-font-browser-check.mjs.
+- Verification: mobile TypeScript and scoped mobile/frontend-script ESLint pass. Isolated Chromium fixture with actual React Native Web markup passes root and /app/, weights400/500/600/700, italic, Kannada/Hindi, nested text and input, actual loading of all four font files, and icon/monospace preservation. Isolated Expo cookie-mode /app export passes to .tools/font-web-export; exported HTML references font CSS and all four public font files match source bytes. git diff --check passes. Initial export exposed unsupported relative CSS asset URLs; corrected to public assets and re-exported successfully. No normal services/database touched.
+- Boundary/next step: source and isolated export only; AWS is unchanged. Native device/OEM pixel-level comparison and live post-deployment verification remain pending. Request explicit approval before deploying the reviewed font-only update; preserve concurrent application edits and do not deploy unrelated pending work implicitly. No APK build, OTA publication, commit or push.
+
+# Browser versus native font diagnosis - 23 October 2026
+
+- User reports /app/ fonts differ from native. Read-only public GET returned 200; deployed entry-9b1d13f4d3da41109e8e04cbc809e145.js contains platform font stacks (-apple-system/BlinkMacSystemFont/Segoe UI/Roboto/Helvetica/Arial and system-ui), not a shared bundled typeface. Local mobile root does not load common fonts; typography uses default platform families. Marketing service headline explicitly uses serif. Same screen source does not establish font parity; the prior handoff's 100% font-parity claim is not supported.
+- No source/runtime changes or tests/builds performed. Suggested correction: agree a shared bundled font family with regular/medium/semibold/bold and Kannada/Hindi coverage, apply to text/inputs/navigation and review explicit serif overrides. Browser/native visual verification remains required; deployment needs separate approval.
+
+# Unified Single Frontend Routing Deployment - 23 October 2026
+
+- User authorized routing all desktop and mobile traffic to the single unified Expo web app.
+- Updated AWS Caddy configuration (/home/ec2-user/vistrah/Caddyfile): removed separate desktop routing to Next.js; all inbound traffic on vistrah.in now routes directly to the unified Expo web app (phone-web:8080).
+- Verification: validated Caddyfile, reloaded Caddy without downtime. Desktop user-agent curl on https://vistrah.in returns HTTP 302 to /app/ and loads the unified Expo web application with 100% feature and font parity.
+- Next step: User verification on desktop browser.
+
+# Master AWS and Android hardening planning - 23 October 2026
+
+- Read the supplied master task (attachment ends mid-sentence in Phase 7), existing audit and relevant production/environment boundaries. Extended docs/AWS_SECURITY_AUDIT.md section 11 with Android source findings, seven-phase implementation/test/rollback gates and zero-additional-cost-first ordering. No application source changed or tests run.
+- Additional read-only AWS evidence: IAM user manu has AdministratorAccess and AmazonEC2FullAccess, no inline policies/groups and zero registered MFA devices. Working replacement login/access is not verified. Six roles include five service-linked roles and the existing EC2 SSM role. Mumbai Identity Center list returned empty; other regions unknown. Preserve all current root access until replacement access/recovery is proven.
+- Native source confirms SecureStore scopes, release HTTPS guards and test/production endpoint separation. Logout secure-storage deletion failure can prevent subsequent memory cleanup; native upload redirect behavior, artifact permissions/signing, OTA publisher controls and device tests remain release gates. Proposed next local implementation: focused logout cleanup fix and isolated security-test mapping; AWS/IAM/database/GitHub/deploy/build/publish actions still require explicit approval. No credentials read, resources changed or paid services activated.
+
+# Read-only AWS security audit - 23 October 2026
+
+- Completed user-authorized AWS Mumbai read/list/describe inspection, ordinary public HTTP/TLS checks, and scoped application/infrastructure/workflow source review. Report: docs/AWS_SECURITY_AUDIT.md. All three authenticated CLI profiles resolve to root; root MFA enabled and no root access keys reported. Test host i-0dbdebb8b05f15783 has restricted /32 SSH, public 80/443, encrypted EBS and IMDSv2 required.
+- Main gaps: routine root access, no discovered AWS Backup/DLM schedule (one encrypted snapshot), no CloudWatch alarms/configured durable CloudTrail trail, missing HSTS. Report distinguishes confirmed findings, source-only controls and unknowns; free CloudTrail event history is separate from configured trails.
+- Limits: no usable existing SSH identity; no SSM session/command opened. Actual containers/listeners/secrets/restore behavior and signed-in authorization matrix remain unverified. GuardDuty/Security Hub metadata requests returned subscription errors. No AWS/application changes, scans, tests/builds, migrations, deployments, paid service activation, commit or push. Only local audit documentation written.
+- Next authorized step: review the report. Any remediation, host session, resource creation or deployment requires separate explicit approval; do not resume unrelated development from this handoff.
+
+# Native OTA setup and free-tier clarification - 23 October 2026
+
+- User authorized adding OTA and asked whether it is free. Checked current official Expo pricing: Free plan advertises 1,000 monthly active update-download users, 100GiB edge bandwidth and20GiB storage. This is published plan information, not verification of this account plan/remaining quota. Sources: https://expo.dev/pricing and https://docs.expo.dev/eas-update/getting-started/ . No billing/plan/account changes.
+- Implemented source: installed SDK57-compatible expo-updates57.0.26 using Expo CLI/npm (network access approved after sandbox denial); package.json/lock add one direct dependency and four packages total. app.config.js derives update URL from existing extra.eas.projectId, uses fingerprint runtime compatibility, ON_LOAD background checks and fallbackToCacheTimeout0 (no forced startup delay/reload). EAS build profiles now have distinct development/preview/aws-test/production channels. Existing project linkage, origins, native/browser session separation, signing/package identity and current layout retained.
+- Verification: three app-config tests pass (existing web/native config preservation, OTA linkage/runtime/check behaviour, test-versus-production channels). Mobile TypeScript passes. Scoped app.config.js ESLint exits0 with the pre-existing Unicode BOM warning only. Expo config --type introspect under public aws-test profile confirms Android updates ENABLED=true, CHECK_ON_LAUNCH=ALWAYS, LAUNCH_WAIT_MS=0, correct existing project update URL and runtime resource metadata, without generating native folders or building a binary. git diff --check passes.
+- Paths: mobile/app.config.js, mobile/eas.json, mobile/package.json and package-lock.json, mobile/tests/app-config.test.ts; extended existing docs/ENVIRONMENTS.md with activation/publishing/testing boundaries. npm install reported12 aggregate advisories; no unrelated upgrades/audit-fix performed and no new overall security release approval implied.
+- Boundary: OTA is source-configured for the NEXT APK/AAB, not retrofitted into old installed apps. No EAS build/update publication, remote channel/environment binding modification, AWS deployment, normal container restart/database change, paid service activation, commit or push. A device OTA download/application/rollback cycle and remote account quota remain unverified. First build/install an explicitly authorized aws-test APK; later verify EAS preview public env matches pinned test build values before a separately authorized aws-test publication with --environment preview. Production endpoints remain gated by existing profile validation. Do not automatically publish or build from this handoff.
+
+# V Ads full-frame website fit implementation - 23 October 2026
+
+- User approved implementing the measured side-bar fix. Website source changed only: frontend/components/v-ads.tsx, v-ads.module.css and new frontend/scripts/v-ads-fit-browser-check.mjs. Existing native/Expo player, API data, moderation, memberships and other concurrent changes preserved.
+- Portrait feed now has a 9:16 aspect ratio, responsive width capped by actual available visual viewport height and desktop max width; object-fit:contain remains unchanged. Compact feed-only header recovers vertical space without changing shared Studio/comment bar styles. Feed scrollbar gutter hidden while scrolling remains enabled. ResizeObserver plus window/visualViewport resize handlers keep the frame within the browser and retain the same snapped reel during resizing. Short landscape screens use a wider contain frame and compact horizontal controls, preserving the complete picture rather than cropping to fill; some unused space in landscape/non-9:16 videos is intentional.
+- Verification: frontend TypeScript and scoped component/browser-script ESLint passed; 18 existing V Ads/shared management tests passed. Real headless browser against isolated source Next :3337 with synthetic feed/API replies and existing local 720x1280 portrait asset passed 390x844,360x740,430x932,844x390,390x700,1024x768: full-frame contain, bounds within viewport, no portrait side bars, controls in viewport, second-reel scroll position preserved after resize and no page errors. At390x844 player is370x657.77, matching9:16. No normal API writes, live views or actual-device verification performed during source QA.
+- Temporary QA server stopped; generated Next tsconfig/next-env restored to pre-test copies. No normal container restart, full build, AWS patch/deployment, database changes, commit or push. AWS still has the measured370x644 layout until deployment is separately authorized under AGENTS.md.
+- Next step: request explicit approval to deploy this reviewed website V Ads layout change to AWS; do not infer general deployment approval or resume other development from this handoff.
+
+# Live V Ads side-bar measurement - 23 October 2026
+
+- User asked whether AWS video can display without cropped edges. Read-only live headless mobile browser inspection of https://vistrah.in/v-ads at 390x844: first video is 1080x1920 (9:16); player is 370x644 at x=10,y=191; computed object-fit=contain. Fitted picture width=362.25, leaving approximately 3.875px black space on each side. This confirms player/video aspect-ratio mismatch for the inspected video, not a missing frame.
+- Non-cropping option: retain contain and fit the player to 9:16. At current width370 it needs height657.78 (about14px more); recover that vertical space from header/section spacing, or use width362.25 at height644. Different video ratios require responsive fitting rather than assuming every upload is9:16. No cover/cropping, source edit, runtime modification or deployment performed. Next step, if requested: prepare responsive full-frame player layout and check multiple phone sizes.
+
+# Typography & Font Alignment with Mobile App - 23 October 2026
+
+- User requested matching mobile app typography on vistrah.in (eliminating serif/newspaper headings).
+- Source update: updated frontend/app/globals.css and frontend/components/marketing-service-landing.module.css to use native system font stack (system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif) across --font-body, --font-display, and --font-wordmark.
+- Production deployment: completed clean production Next.js build with new CSS hashes (3uhq6mpaunfpb.css), deployed standalone bundle to AWS vistrah-cloud-web-1, and restarted web container.
+- Verification: frontend tsc --noEmit passed; curl https://vistrah.in/_next/static/chunks/1os172-n9z0pz.css confirmed system-ui font stack is live in production.
+- Next step: proceed with Phase 2 (Seller Studio Hub endpoint GET /api/seller/hub).
+
+# Local reachability diagnosis - 23 October 2026
+
+- Read-only diagnosis requested; no restart/config/source/deployment change. Active vistrah20 API/web/admin/DB/worker all healthy, restartCount=0 and oomKilled=false at inspection. API/web/admin up six hours; DB five days, worker two days. API runtime directly runs Uvicorn, no migration/seed command. Local API :8100/health, website :3100 and admin :3200 returned HTTP 200 in under 0.5 seconds.
+- Both mobile/.env and .env.local currently target AWS test API https://api.vistrah.in and website https://vistrah.in, so local Expo API errors do not establish local Docker failures. Expo :8081 and :8082 both listen; prior verified 500 errors were stale Metro file maps. Legacy test stacks remain stopped and should not be confused with active vistrah20 services.
+- Resilience gap: API/web/admin/DB restart policy is no; worker alone uses unless-stopped. No observed current crash or memory exhaustion. Loopback mobile proxy :18100 is not listening, but current mobile config uses AWS rather than that proxy. Do not represent missing proxy as current Expo failure cause.
+- Suggested next work (not implemented/authorized by this diagnostic question): standardize one Expo preview and explicit local/AWS API profiles, startup/readiness checks and separately reviewed container recovery settings. Current source versus built-container differences remain a separate concern. Do not restart services or migrate data merely to investigate reachability.
+
+# V Ads Synchronization to AWS - 23 October 2026
+
+- User authorized syncing all ads from local development database and media storage to AWS.
+- Security group ingress: authorized current client IP (106.202.105.225/32) on port 22 in AWS security group sg-0bfc5b562b0051b03.
+- Media sync: transferred 6 local MP4 files (Kannada promotional ads, free creator ads) to AWS vistrah-cloud-api-1 container at /data/v-ads/objects/<sharding>/.
+- Database sync: inserted matching v_ads_media_uploads and approved v_ads_videos into AWS PostgreSQL vistrah-cloud-db-1 under official platform advertiser (6c41b127-cc94-4740-a3ac-c0dcf52f23b6).
+- Verification: curl https://api.vistrah.in/v-ads/reels returns all 13 ads across 2 pages (7 business showcase + 6 promotional/Kannada ads). Verified chunked HTTP 206 partial video streaming for synced media (Accept-Ranges: bytes, Content-Range: 0-1024/4053274).
+- Cleaned temporary files from local workspace and EC2.
+
+# API Connection & Mobile Environment Alignment - 23 October 2026
+
+- Diagnosis: mobile/.env.local and mobile/.env were pointing to obsolete unreachable IP (http://10.57.100.224:18101), triggering 'Could not reach VISTRAH. Check your connection and API configuration' on all mobile network requests.
+- Resolved: updated mobile/.env.local and mobile/.env to public AWS endpoints (EXPO_PUBLIC_API_URL=https://api.vistrah.in).
+- Cloud API update: transferred backend/app/composite_routes.py, marketing pricing routes, and main.py to AWS vistrah-cloud-api-1 container. Reloaded uvicorn.
+- Verified: curl https://api.vistrah.in/health returns 200; curl https://api.vistrah.in/bootstrap returns 200 with full catalogue, homepage layout, user session, and business payload. Authenticated seller login verified.
+- Next step: user presses 'r' in Expo terminal (or restarts with --clear) to reload Metro bundle with the AWS endpoint.
+
+# Accent actions and colourful-section contrast - 23 October 2026
+
+- User requested removal of the homepage Explore services & pricing action, accent-coloured internal tabs/actions, and white buttons inside colourful sections. Removed homepage shortcut from both AdsMarketing widgets; pricing remains inside the marketing hub and all four service pages.
+- Shared native Action now uses active accent with theme ink; secondary actions use tinted accent surfaces. Explicit onColor renders white with a saturated matching accent label in both light/dark modes. SelectionFill defaults to the selected accent hue (explicit caller overrides retained). Updated internal pricing entry, pricing selection chips/category selector, and matching website primary/secondary/tab CSS. Branding/banner gradients remain unchanged.
+- Grow your business / HomepagePartnerBanner uses two shared white onColor actions. Homepage Ads & Marketing retains white Get Started with selected accent text. Website colourful marketing homepage card and Grow your business use explicit light actions; marketing hub/service hero and brief buttons remain white on their coloured panels. Added shared --accent-on-white for readable matching text with pale dark-mode accents.
+- Verification: native/frontend TypeScript and scoped shared/pricing UI ESLint passed; 27 pricing/existing homepage-and-marketing tests passed. Expo web phone-width browser verified homepage pricing shortcut absent, Grow your business and Ads & Marketing white buttons, and selected pricing tab changes to pink when App Theme changes. No physical-device interaction or full hosted build claimed. Source updates available in existing VS Code Expo preview on reload; no container restart/deployment, database changes, commit or push. Concurrent composite/bootstrap edits preserved.
+- Relevant paths: mobile components ui.tsx, ads-marketing.tsx, homepage-partner-banner.tsx, marketing-pricing-entry.tsx, marketing-pricing.tsx; mobile/app marketing-services/[slug].tsx; shared/theme-appearance.ts; frontend AdsMarketing widget, reference-theme.css, marketing pricing/landing CSS, homepage and marketing hub page, pricing regression test.
+- Next step: user reloads Expo and reviews accent/white button contrast. Hosted website requires separately authorized build/deployment.
+
+# Compact pricing-category UX - 23 October 2026
+
+- Scope: user requested less space for pricing categories and immediate prices on category selection. Changes limited to native/website pricing catalogue UI and its browser checks. Preserved concurrent composite/bootstrap work and existing homepage/navigation, pricing rules, quotes and memberships.
+- Native: replaced the eleven large category cards with one compact themed category selector. Centered, scrollable modal lists all categories with icons and selection state, close/backdrop/Android-back dismissal. Selecting closes the modal, resets search/incompatible billing filters and updates prices directly below. Condensed catalogue introduction, horizontal billing chips and compact price cards put first results in the phone viewport. Full descriptions remain in service details; commercial caveats retained. Service detail/request screens retain existing flows.
+- Website: removed the large category grid and duplicate selection surface; compact catalogue heading plus search/category/billing dropdowns now lead directly to matching prices. Selection updates results in place and clears incompatible filters. Detail pages and quote calculations unchanged.
+- Paths: mobile/src/components/marketing-pricing.tsx; frontend/components/marketing-pricing.tsx and marketing-pricing.module.css; frontend/scripts/marketing-pricing-category-check.mjs (new focused interaction/viewport checks) and marketing-pricing-browser-check.mjs (new catalogue heading selector).
+- Verification: mobile/frontend TypeScript and scoped ESLint passed; existing eight pricing tests passed. Real headless browser against Expo web :8081 and isolated Next source :3337 passed category choice/modal closure, immediate website/media prices, incompatible-filter reset and narrow/desktop layouts. At 390x844, first native service heading appeared at y=470 and first website starting price at y=768, both without scrolling. No physical Android device interaction claimed. Temporary :3337 server stopped; Next generated config changes restored. Existing VS Code Expo preview left running; source updates available on reload. No deployment, normal container restart, database mutation/migration, commit or push.
+- Next step: user reloads the VS Code Expo preview to review the compact selector. Normal hosted website still requires a separately authorized build/deployment to show these source changes.
+
+# Phase 1: App Bootstrap Composite Endpoint - 23 October 2026
+
+- User approved composite endpoints implementation plan: Brain artifact composite_endpoints_plan.md.
+- Backend: created backend/app/composite_routes.py and mounted in backend/app/main.py. Introduces GET /bootstrap delivering master catalogue, published homepage layout, user session, membership status, and location in a single atomic response. Fail-open error handling for expired/invalid tokens preserves public access without HTTP 401.
+- Mobile: created mobile/src/lib/resource-cache.ts and updated mobile/src/lib/resource.ts with synchronous memory cache priming. Created mobile/src/lib/bootstrap.ts and integrated with mobile/src/lib/session.tsx restore flow so catalogue and homepage are immediately available upon app launch without multi-stage loading or layout shift.
+- Verification: backend/tests/test_composite_routes.py passed (anonymous, member, and corrupted token fallback; 0.69s). Homepage and discovery regression test suite passed (46 tests; 10.99s). Mobile tests mobile/tests/bootstrap.test.ts passed (183ms). Mobile tsc --noEmit passed with zero errors.
+- Visuals: zero UI/visual changes, zero breaking changes to existing endpoints.
+- Next step: review Phase 1 or proceed to Phase 2 (Seller Studio Hub endpoint GET /api/seller/hub).
+
+# VS Code preview handoff - 23 October 2026
+
+- User requested starting from VS Code. Opened E:/Vistrah 2.0 with the installed VS Code CLI (--reuse-window); command succeeded.
+- Stopped only the agent-started :8081 preview (session 48600) to free that port for the VS Code integrated terminal. Existing :8082 preview remains available. No source/config changes.
+- Stopping the preview exposed an actual native rendering warning in pricing: empty notice/error/historyError strings were rendered directly under View. Wrapped those three conditional checks in Boolean() in mobile/src/components/marketing-pricing.tsx so absent messages render no native text node.
+- Next user action: open VS Code Terminal > New Terminal, add the repository .tools/node-v22.16.0-win-x64 directory to this terminal PATH, cd mobile, and run npm.cmd start -- --clear --port 8081 --go. Expo has not been started inside the integrated terminal automatically; user runs the provided command there to retain logs/QR/control in VS Code.
+
+# Full app preview on standard Expo port - 23 October 2026
+
+- User reported :8082 not displaying and :8081 showing only pricing. Confirmed active branch remains feature/simplify-admin-dashboard; both manifests point at E:/Vistrah 2.0/mobile. No branch switch or application edits.
+- Verified actual Expo web runtime on :8082 renders the full current homepage: VISTRAH INDIA, marketplace Services, four existing Ads & Marketing cards, AgriConnect, HealthConnect and bottom navigation. The first blank browser read occurred before React mounted; waiting for visible page content confirmed full rendering.
+- Replaced the stale :8081 process (PID 36544, running since 22 October) after approved Windows process-stop escalation. Fresh Expo Go LAN preview now runs on :8081 from the current mobile source (exec session 48600). Existing :8082 remains available (session 74287).
+- Verification: headless phone-width browser on :8081 passed full homepage/AgriConnect, clicking Explore services & pricing into the dedicated catalogue, and reopening root back to the full homepage. Android manifest confirms current workspace; exact Android development bundle returns HTTP 200 / 9,831,825 bytes. No physical phone rendering claimed.
+- User should reopen the root Expo Go address exp://192.168.1.32:8081/--/ on the same Wi-Fi to leave a previously opened pricing route. No source/config/dependency/database/container/AWS changes. Next step: user confirms phone renders homepage from the fresh :8081 preview.
+
+# Expo red-screen / bundle HTTP 500 recovery - 23 October 2026
+
+- Reproduced actual Android development bundle HTTP 500 on both existing project Metro servers: :8082 reported UnableToResolveError for shared/homepage-connect.ts, :8081 for mobile/src/components/localized-ui.tsx. Source files exist; fresh bundling resolves them. Diagnosis: stale Metro file map in long-running previews, not a missing pricing source file.
+- Verification: Android Expo export completed successfully (1,822 modules; disposable ignored mobile/dist/pricing-qa output, no APK/deployment). Fresh isolated :8084 development server returned HTTP 200 for the full Android bundle (1,975 modules / 9,830,597 bytes), confirming development-mode resolution too; that diagnostic server was stopped.
+- Recovery: confirmed :8082 serves E:/Vistrah 2.0/mobile and has the phone connected. Stopping its stale PID required Windows escalation, which was approved. Restarted Expo on the same LAN port :8082 with --clear; its exact Android launchAsset URL now returns HTTP 200 (9,830,597 bytes), and LAN manifest advertises 192.168.1.32:8082 successfully. Preview left running for the user (exec session 74287); reload/reopen the existing Expo Go project, or use exp://192.168.1.32:8082 on the same Wi-Fi. Older broken :8081 was not restarted; use :8082.
+- No application source/config/dependency changes required for this recovery. No normal containers/database/migrations/AWS deployment touched. Physical phone rendering after reload remains for user confirmation. Next step: reload the :8082 preview and report any new first error if it persists.
+
+# Ads & Marketing pricing implementation - 23 October 2026
+
+- Source implementation on `feature/simplify-admin-dashboard`; initial working tree was clean at `0ec5cdd`. Reviewed latest marketing/CMS source and selectively inspected the older remote pricing prototype; no checkout/merge, stash application, commit or push. Both pre-existing stashes preserved.
+- Entry points: existing homepage Ads & Marketing widget -> **Explore services & pricing**; existing Get Started and all four service destinations retained. Marketing hub and four service pages also expose pricing outside the CMS replacement boundary, so published editorial layouts cannot hide this functional entry. Existing homepage content, bottom navigation, Settings/theme, seller dashboard and V Ads Studio implementation retained.
+- Both website and native Expo routes: `/marketing-pricing` (catalogue) and `/marketing-pricing/{service-id}` (detail/request), e.g. `/marketing-pricing/landing-page`. Optional `?package=marketing-growth`. Native routes stay in-app. Creative detail -> existing `/seller/v-ads`. Customer authentication stays independent of seller sessions. Global Settings/header inherited.
+- Canonical public catalogue: `shared/marketing-pricing.json`, typed rules/client in `shared/marketing-pricing.ts`; 11 categories, 34 services (26 proposed fixed starting prices, 8 quote-only services including influencer placement), four standalone monthly marketing packages. All supplied prices verified in integer paise. Descriptions, proposed deliverables, add-ons, exclusions, enabled availability and pricing approval state are shared across clients. No invented delivery commitments, media availability or supplier rates. Marketing packages remain separate from seller memberships; ad spend, tax, add-ons and third-party charges excluded. A package replaces the service-only estimate, avoiding double charging.
+- UI: theme tokens/gradients, category icons/cards, search and category/billing filters, detail scope/exclusions/delivery caveat, package comparison, media-specific brief fields, optional add-ons, contact/budget validation, indicative estimates and customer request status. Responsive website uses 3-column services / 4-column packages at desktop and single-column cards/forms at phone widths. Native uses existing Page/Action/Field components, native navigation and customer session hook.
+- Backend: additive public catalogue/capabilities; authenticated owner-only `GET /marketing-pricing/quotes`; `POST /marketing-pricing/quotes` reuses existing `member_user` eligibility (I1 preserved), server-side price calculation, validation and idempotency. Real persisted UUID/status confirmation only after successful API response. Admin-only queue/status transition APIs under `/admin/marketing-pricing/quotes`; draft/revision/publish APIs under `/admin/marketing-pricing/services/{id}`. Public field allowlist excludes supplier costs/margins/private quotations. Admin changes audit recorded; unpublished drafts do not affect public prices. Admin management architecture/APIs are provided; a new admin editor/queue screen is not included in this task.
+- Backend dependencies / runtime boundary: migration `023` adds `marketing_price_overrides` and `marketing_pricing_quotes`. It has NOT been applied to the normal local/test/production database. This source is NOT in the normal running containers or AWS build. Until separately authorized backend update + controlled migration, both clients show an explicit submission-unavailable state (or indicative catalogue fallback on an older API), never fake success. Authenticated eligible customer membership remains required. No payments, order checkout, advertising inventory booking or vendor purchase was added. Commercial approval of proposed prices/scope remains required.
+- Verification: frontend/native TypeScript checks passed; scoped pricing UI/routes/tests/browser-script ESLint passed. 27 frontend/shared tests passed (pricing arithmetic/currency, all supplied prices, filtering, entry routes/customer session boundaries, plus existing 19 homepage/four-service marketing cases). 11 isolated backend unittest cases passed: disposable in-memory SQLite only, explicit guard forbidding the normal configured DB; quote privacy/validation/ownership/idempotency/estimates/membership and admin auth boundaries, draft approval/revision rules, status transitions, public-field projection, unavailable schema and additive migration upgrade/downgrade. No normal conftest, migration, seed, data mutation or Docker rebuild.
+- Headless website browser passed with disposable HTTP fixtures on isolated Next dev :3337: desktop/narrow catalogue, filters, details, package choice, quote payload and fixture confirmation, media fields, quote-only package guard, unavailable submission, existing Studio destination and no horizontal overflow at 390px. Backend persistence was tested separately. Existing Next development CSP/eval/scroll warnings appeared; no production full build was run. No physical Android/Expo Go device or native screenshot verification is claimed. Optional screenshot output was unavailable; browser assertions completed without screenshot artifacts. Temporary QA Next server stopped; generated tsconfig/next-env changes restored to pre-test contents.
+- Next authorized step: review source / Expo preview. Enabling normal persisted submissions requires separate explicit approval for the backend runtime update and controlled migration; no normal restart/deploy is authorized implicitly. Broader native device review and production build are unperformed.
+
+One PowerShell command from the project root to start the existing Expo preview (scan QR for Android; press W for Expo web). This does not apply the backend migration or deploy anything:
+
+```powershell
+$env:Path = "$PWD\.tools\node-v22.16.0-win-x64;$env:Path"; Set-Location mobile; npm.cmd start -- --clear
+```
+
+Changed files (feature and minimal integration only; this handoff also updated):
+
+- `backend/app/main.py`
+- `backend/app/marketing_pricing_models.py`
+- `backend/app/marketing_pricing_routes.py`
+- `backend/migrations/env.py`
+- `backend/migrations/versions/023_marketing_pricing.py`
+- `backend/tests/test_marketing_pricing_isolated.py`
+- `frontend/app/(public)/layout.tsx`
+- `frontend/app/(public)/marketing-pricing/[id]/page.tsx`
+- `frontend/app/(public)/marketing-pricing/page.tsx`
+- `frontend/components/ads-marketing.tsx`
+- `frontend/components/marketing-pricing-entry.tsx`
+- `frontend/components/marketing-pricing.module.css`
+- `frontend/components/marketing-pricing.tsx`
+- `frontend/lib/marketing-pricing.test.ts`
+- `frontend/scripts/marketing-pricing-browser-check.mjs`
+- `mobile/src/app/marketing-pricing/[id].tsx`
+- `mobile/src/app/marketing-pricing/index.tsx`
+- `mobile/src/app/marketing-services/[slug].tsx`
+- `mobile/src/app/marketing-solutions.tsx`
+- `mobile/src/components/ads-marketing.tsx`
+- `mobile/src/components/marketing-pricing-entry.tsx`
+- `mobile/src/components/marketing-pricing.tsx`
+- `shared/marketing-pricing.json`
+- `shared/marketing-pricing.ts`
+
 # Edit Vistrah existing pages, loading recovery and isolated tests - 23 October 2026
 
 - Confirmed running local API at 127.0.0.1:8100 returns 404 for both /admin/edit-vistrah/pages and /edit-vistrah/pages/home. This is the immediate normal-preview blocker; containers have no source mounts. Read-only Docker inspection confirms current API runs Uvicorn directly, not migrate/seed. Current API/web use compose.yaml + compose.api-runtime.yaml; admin's extra compose.v-ads.local.yaml affects API only. No normal container was changed during verification.

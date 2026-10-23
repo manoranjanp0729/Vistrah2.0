@@ -1,18 +1,12 @@
+import {BannerGeometry} from '../../../components/banner-geometry';
+import {useBannerTheme} from '../../../lib/banner-theme';
+import {Text} from '../../../components/typography';
 import {EditVistrahContent} from '../../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../../components/localized-ui';
 import {SellerSignInAction} from '../../../components/seller-sign-in-action';
 import {useLanguage} from '../../../lib/language';
 import {useRef, useState, type ReactNode} from 'react';
-import {
-  Linking,
-  ScrollView,
-  Text,
-  View,
-  Pressable,
-  StyleSheet,
-  Platform,
-  Image,
-} from 'react-native';
+import {Linking,ScrollView,View,Pressable,StyleSheet,Platform,Image,} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -35,6 +29,7 @@ import {officialContact} from '../../../../../shared/public-contact';
 import {serviceSelection} from '../../../../../shared/service-listing';
 
 export default function Services() {
+  const banner=useBannerTheme();
   const {styles, colors, mode, accentGradient} = useTheme();
   const {t, label} = useLanguage();
   const session = useSession(true);
@@ -43,6 +38,8 @@ export default function Services() {
   const optionsOffset = useRef(0);
   const isDark = mode === 'dark';
 
+  const [cardsWidth,setCardsWidth]=useState(0);
+  const cardWidth=cardsWidth>10?(cardsWidth-10)/2:undefined;
   const seller = Boolean(session.user?.seller_enabled);
   const sellerLabel = !session.ready
     ? 'Checking seller session...'
@@ -253,18 +250,19 @@ export default function Services() {
 
         {/* PROGRESSIVE CONTEXTUAL HERO BANNER */}
         <LinearGradient
-          colors={isDark ? ['#150e26', '#22133e', '#361552'] : ['#180e2d', '#281347', '#421764']}
+          colors={banner.gradient}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
           style={s.hero}
         >
-          <View pointerEvents="none" style={s.heroGlow} />
+          <BannerGeometry/>
+          <View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow}]} />
 
           {isRootLevel ? (
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={accentGradient}
+                  colors={banner.gradient}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -274,13 +272,13 @@ export default function Services() {
                 </LinearGradient>
                 <View style={s.heroPill}>
                   <Feather name="shield" size={11} color="#34d399" />
-                  <Text style={s.heroPillText}>Verified Providers</Text>
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>Verified Providers</Text>
                 </View>
               </View>
               <Text accessibilityRole="header" style={s.heroTitle}>
                 {t('discovery.title')}
               </Text>
-              <Text style={s.heroSubtitle}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Browse and connect with verified local professionals, equipment rentals, and specialized services across India." />
               </Text>
             </>
@@ -288,7 +286,7 @@ export default function Services() {
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={accentGradient}
+                  colors={banner.gradient}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -296,7 +294,7 @@ export default function Services() {
                   <Text style={s.heroBadgeText}>SECTOR CATEGORY</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
-                  <Text style={s.heroPillText}>
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>
                     {category!.subcategories.length} <UiText value="Subcategories" />
                   </Text>
                 </View>
@@ -304,7 +302,7 @@ export default function Services() {
               <Text accessibilityRole="header" style={s.heroTitle}>
                 {categoryName}
               </Text>
-              <Text style={s.heroSubtitle}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Select a specialized subcategory below to view dedicated providers and services." />
               </Text>
             </>
@@ -312,7 +310,7 @@ export default function Services() {
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={accentGradient}
+                  colors={banner.gradient}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -320,7 +318,7 @@ export default function Services() {
                   <Text style={s.heroBadgeText}>{categoryName.toUpperCase()}</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
-                  <Text style={s.heroPillText}>
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>
                     {subcategory!.listing_types.length} <UiText value="Service Types" />
                   </Text>
                 </View>
@@ -328,7 +326,7 @@ export default function Services() {
               <Text accessibilityRole="header" style={s.heroTitle}>
                 {subcategoryName}
               </Text>
-              <Text style={s.heroSubtitle}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Choose an exact service listing type to browse offers, get quotations, and contact verified specialists." />
               </Text>
             </>
@@ -336,7 +334,7 @@ export default function Services() {
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={accentGradient}
+                  colors={banner.gradient}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -345,13 +343,13 @@ export default function Services() {
                 </LinearGradient>
                 <View style={s.heroPill}>
                   <Feather name="check-circle" size={11} color="#34d399" />
-                  <Text style={s.heroPillText}>Direct Listings</Text>
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>Direct Listings</Text>
                 </View>
               </View>
               <Text accessibilityRole="header" style={s.heroTitle}>
                 {listingTypeName}
               </Text>
-              <Text style={s.heroSubtitle}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Review available packages, verify provider details, and submit direct enquiries." />
               </Text>
             </>
@@ -584,13 +582,14 @@ export default function Services() {
               </Text>
             </View>
 
-            <View style={{gap: 10}}>
+            <View onLayout={event=>setCardsWidth(event.nativeEvent.layout.width)} style={s.flowGrid}>
               {subcategory!.listing_types.map((type) => {
                 const itemId = marketplaceItemId(category!.slug, subcategory!.slug, type.slug);
                 return (
                   <TypeAction
                     key={type.slug}
                     seller={seller}
+                    cardWidth={cardWidth}
                     selection={{
                       category: category!.slug,
                       subcategory: subcategory!.slug,
@@ -610,14 +609,16 @@ export default function Services() {
                       }
                       style={({pressed}) => [
                         s.flowCard,
+                        s.flowGridCard,
                         {
+                          paddingBottom:seller?56:10,
                           backgroundColor: isDark ? '#1d172b' : '#ffffff',
                           borderColor: isDark ? '#33264c' : '#e5dbee',
                           opacity: pressed ? 0.88 : 1,
                         },
                       ]}
                     >
-                      <View style={s.flowPhoto}>
+                      <View style={[s.flowPhoto,s.flowGridPhoto]}>
                         <Image
                           source={nativeMarketplacePhoto(itemId)}
                           resizeMode="cover"
@@ -629,7 +630,7 @@ export default function Services() {
                         <Text numberOfLines={2} style={[s.flowCardTitle, {color: colors.text}]}>
                           {label(itemId, type.title)}
                         </Text>
-                        <View style={s.verifiedRow}>
+                        <View style={[s.verifiedRow,{flexWrap:'wrap'}]}>
                           <Feather name="check" size={12} color="#34d399" />
                           <Text style={{fontSize: 11, color: colors.muted}}>
                             <UiText value="Direct local listings" />
@@ -639,6 +640,7 @@ export default function Services() {
                       <View
                         style={[
                           s.actionPill,
+                          s.flowGridAction,
                           {backgroundColor: isDark ? '#2b1e42' : '#f5effa'},
                         ]}
                       >
@@ -672,7 +674,7 @@ export default function Services() {
               </Text>
             </View>
 
-            <View style={{gap: 10}}>
+            <View onLayout={event=>setCardsWidth(event.nativeEvent.layout.width)} style={s.flowGrid}>
               {category!.subcategories.map((sub) => {
                 const itemId = marketplaceItemId(category!.slug, sub.slug);
                 return (
@@ -683,6 +685,8 @@ export default function Services() {
                     onPress={() => open({category: category!.slug, subcategory: sub.slug})}
                     style={({pressed}) => [
                       s.flowCard,
+                      s.flowGridCard,
+                      {width:cardWidth??'48%',flexGrow:0,flexShrink:0},
                       {
                         backgroundColor: isDark ? '#1d172b' : '#ffffff',
                         borderColor: isDark ? '#33264c' : '#e5dbee',
@@ -690,7 +694,7 @@ export default function Services() {
                       },
                     ]}
                   >
-                    <View style={s.flowPhoto}>
+                    <View style={[s.flowPhoto,s.flowGridPhoto]}>
                       <Image
                         source={nativeMarketplacePhoto(itemId)}
                         resizeMode="cover"
@@ -709,6 +713,7 @@ export default function Services() {
                     <View
                       style={[
                         s.actionPill,
+                          s.flowGridAction,
                         {backgroundColor: isDark ? '#2b1e42' : '#f5effa'},
                       ]}
                     >
@@ -758,11 +763,13 @@ export default function Services() {
 }
 
 function TypeAction({
+  cardWidth,
   seller,
   selection,
   title,
   children,
 }: {
+  cardWidth?:number;
   seller: boolean;
   selection: MarketplaceSelection;
   title: string;
@@ -771,7 +778,7 @@ function TypeAction({
   const {colors} = useTheme();
   const selected = serviceSelection(selection);
   return (
-    <View style={{position: 'relative'}}>
+    <View style={{position: 'relative',width:cardWidth??'48%'}}>
       {children}
       {seller && selected && (
         <UiElement
@@ -972,6 +979,10 @@ const s = StyleSheet.create({
     letterSpacing: -0.2,
   },
 
+  flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:10,alignItems:'stretch'},
+  flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,flexGrow:1},
+  flowGridPhoto:{width:'100%',height:undefined,aspectRatio:16/9},
+  flowGridAction:{position:'absolute',right:8,top:8},
   // Flow Cards (Subcategories & Listing Types)
   flowCard: {
     flexDirection: 'row',

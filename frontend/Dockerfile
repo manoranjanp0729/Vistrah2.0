@@ -8,6 +8,7 @@ WORKDIR /build/frontend
 COPY --from=deps /app/node_modules ./node_modules
 COPY frontend/ .
 COPY shared/ /build/shared/
+COPY scripts/interface-phrases.json /build/scripts/interface-phrases.json
 COPY admin/lib/v-ads-preview.ts /build/admin/lib/v-ads-preview.ts
 ARG NEXT_PUBLIC_MAPTILER_API_KEY
 ENV NEXT_PUBLIC_MAPTILER_API_KEY=$NEXT_PUBLIC_MAPTILER_API_KEY

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Pressable,
   Text,
@@ -17,6 +17,8 @@ import { api } from '../lib/api';
 import { useTheme } from '../lib/theme';
 import {
   editVistrahClient,
+  loadVistrahEditor,
+  editorPageStatus,
   calculateAspectRatio,
   SECTION_LIBRARY,
   type VistrahPage,
@@ -89,34 +91,21 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
   const [photoRatio, setPhotoRatio] = useState('');
   const [photoRecRes, setPhotoRecRes] = useState('');
 
+  const selectedSlug=useRef(activeSlug);
+  useEffect(()=>{selectedSlug.current=activeSlug;},[activeSlug]);
   const loadPages = useCallback(async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const [pagesList, libList] = await Promise.all([evClient.listPages(), evClient.getLibrary()]);
-      setPages(pagesList);
-      if (libList && libList.length) setLibrary(libList);
-      const target = pagesList.find((p) => p.slug === activeSlug) || pagesList[0];
-      if (target) {
-        setActiveSlug(target.slug);
-        try {
-          const full = await evClient.getPage(target.slug);
-          setCurrentPage(JSON.parse(JSON.stringify(full)));
-        } catch {
-          setCurrentPage(JSON.parse(JSON.stringify(target)));
-        }
-      }
-      setDirty(false);
-    } catch (e: any) {
-      setError(e.message || 'Failed to load Vistrah pages');
-    } finally {
-      setLoading(false);
-    }
-  }, [activeSlug]);
-
-  useEffect(() => {
-    void loadPages();
-  }, [loadPages]);
+    setLoading(true);setError('');
+    try{
+      const result=await loadVistrahEditor(evClient,selectedSlug.current);
+      setPages(result.pages);
+      if(result.library.length)setLibrary(result.library);
+      setCurrentPage(result.page?JSON.parse(JSON.stringify(result.page)):null);
+      if(result.page)setActiveSlug(result.page.slug);
+      setError(result.warning);setDirty(false);
+    }catch(e:any){setError(e.message||'Failed to load Vistrah pages');}
+    finally{setLoading(false);}
+  },[]);
+  useEffect(()=>{void loadPages();},[loadPages]);
 
   async function switchPage(slug: string) {
     if (dirty) {
@@ -218,6 +207,7 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
     setNotice('');
     try {
       const updated = await evClient.updatePage(currentPage.slug, {
+        revision: currentPage.revision,
         name: currentPage.name,
         path: currentPage.path,
         description: currentPage.description,
@@ -250,7 +240,8 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
             try {
               if (dirty) {
                 await evClient.updatePage(currentPage.slug, {
-                  name: currentPage.name,
+                  revision: currentPage.revision,
+        name: currentPage.name,
                   path: currentPage.path,
                   description: currentPage.description,
                   target_platform: currentPage.target_platform,
@@ -387,7 +378,7 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
       {/* Notices */}
       {Boolean(error) && (
         <View style={{ backgroundColor: '#be123c20', borderColor: '#be123c', borderWidth: 1, padding: 10, borderRadius: 10 }}>
-          <Text style={{ color: '#f43f5e', fontSize: 12 }}>{error}</Text>
+          <Text style={{ color: '#f43f5e', fontSize: 12 }}>{error}</Text><Pressable accessibilityRole="button" onPress={()=>{if(dirty){Alert.alert('Unsaved changes','Discard unsaved changes and reload?',[{text:'Cancel',style:'cancel'},{text:'Reload',onPress:()=>void loadPages()}]);}else void loadPages();}} style={{paddingVertical:12}}><Text style={{color:adminTheme.accentLight,fontWeight:'700'}}>Retry loading existing pages</Text></Pressable>
         </View>
       )}
       {Boolean(notice) && (
@@ -400,7 +391,7 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
       <View style={{ gap: 8 }}>
         <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
           <Text style={[styles.muted, { fontSize: 12, fontWeight: '700', textTransform: 'uppercase' }]}>Pages</Text>
-          <Pressable onPress={() => setAddPageOpen(true)} style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, backgroundColor: adminTheme.accent + '25' }}>
+          <Pressable disabled={!pages.length} onPress={() => setAddPageOpen(true)} style={{ paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, backgroundColor: adminTheme.accent + '25' }}>
             <Text style={{ color: adminTheme.accentLight, fontWeight: '700', fontSize: 12 }}>+ Add Page</Text>
           </Pressable>
         </View>
@@ -408,7 +399,7 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingVertical: 4 }}>
           {pages.map((p) => {
             const isSelected = p.slug === activeSlug;
-            const isLive = p.status === 'LIVE';
+            const isLive = Boolean(p.published_version);
             return (
               <Pressable
                 key={p.slug}
@@ -430,7 +421,7 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
                 </Text>
                 <View style={{ backgroundColor: isLive ? '#15803d' : '#854d0e', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 6 }}>
                   <Text style={{ color: '#fff', fontSize: 10, fontWeight: '800' }}>
-                    {isLive ? `Live v${p.published_version || 1}` : 'Draft'}
+                    {editorPageStatus(p)}
                   </Text>
                 </View>
               </Pressable>
@@ -485,6 +476,7 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
             </View>
           </View>
 
+          {currentPage.content_source==='APP'&&<Text style={[styles.muted,{lineHeight:20}]}>Showing the existing app page baseline. No CMS override is published. Saving a draft keeps the app page unchanged; publishing enables the edited layout.</Text>}
           {/* Quick Add Section Bar */}
           <View style={{ gap: 6 }}>
             <Text style={[styles.muted, { fontSize: 12, fontWeight: '700', textTransform: 'uppercase' }]}>
@@ -584,6 +576,11 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
                     </View>
                   </View>
 
+                  <View style={{gap:10,paddingVertical:12}}><Text style={{color:mode==='dark'?adminTheme.textDark:adminTheme.textLight,fontWeight:'700'}}>Customer-facing content</Text>
+                  {(['en','kn','hi'] as const).map(language=><View key={language} style={{gap:7}}><Text style={{color:mode==='dark'?adminTheme.textDark:adminTheme.textLight}}>{{en:'English (fallback)',kn:'Kannada',hi:'Hindi'}[language]}</Text>{(['title','description','action'] as const).map(field=><TextInput key={field} accessibilityLabel={language+' '+field} placeholder={field==='action'?'Button label':field} placeholderTextColor="#718096" multiline={field==='description'} maxLength={5000} value={sec.content?.[language]?.[field]??''} onChangeText={text=>updateSection(sec.id,{content:{...sec.content,[language]:{...sec.content?.[language],[field]:text}}})} style={{padding:12,borderWidth:1,borderColor:'#718096',borderRadius:10,color:mode==='dark'?adminTheme.textDark:adminTheme.textLight}}/>)}</View>)}
+                  <TextInput accessibilityLabel="Video playlist, one URL per line" placeholder="Video URLs, one per line" placeholderTextColor="#718096" multiline value={(sec.video_urls??[]).join('\n')} onChangeText={text=>updateSection(sec.id,{video_urls:text.split('\n')})} autoCapitalize="none" style={{padding:12,borderWidth:1,borderColor:'#718096',borderRadius:10,color:mode==='dark'?adminTheme.textDark:adminTheme.textLight}}/>
+                  <TextInput accessibilityLabel="Button destination" placeholder="/services" placeholderTextColor="#718096" value={sec.action_href??''} onChangeText={text=>updateSection(sec.id,{action_href:text})} autoCapitalize="none" style={{padding:12,borderWidth:1,borderColor:'#718096',borderRadius:10,color:mode==='dark'?adminTheme.textDark:adminTheme.textLight}}/>
+                  </View>
                   {/* 1. Variations Selector */}
                   <View style={{ gap: 6 }}>
                     <Text style={{ fontSize: 12, fontWeight: '700', color: '#e5a93c' }}>
@@ -614,13 +611,13 @@ export function AdminEditVistrahTab({ adminTheme }: { adminTheme: AdminTheme }) 
                     </ScrollView>
                   </View>
 
-                  {/* 2. Feature Inclusions */}
+                  {/* 2. Feature Inclusions */}<Text style={{color:mode==='dark'?adminTheme.textDark:adminTheme.textLight,lineHeight:20}}>Location, verification, pricing and account tools follow existing app workflows. These page settings control editorial content.</Text>
                   <View style={{ gap: 6 }}>
                     <Text style={{ fontSize: 12, fontWeight: '700', color: '#e5a93c' }}>
                       Feature Inclusions
                     </Text>
                     <View style={{ gap: 6 }}>
-                      {sec.features.map((feat) => (
+                      {sec.features.filter(feat=>feat.key==='show_direct_cta').map((feat) => (
                         <Pressable
                           key={feat.key}
                           onPress={() => {

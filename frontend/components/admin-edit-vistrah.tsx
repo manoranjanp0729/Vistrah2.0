@@ -20,6 +20,8 @@ import {
 import { api } from '@/lib/api';
 import {
   editVistrahClient,
+  loadVistrahEditor,
+  editorPageStatus,
   calculateAspectRatio,
   SECTION_LIBRARY,
   type VistrahPage,
@@ -91,26 +93,19 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
   const [addingFeatureSectionId, setAddingFeatureSectionId] = useState<string | null>(null);
   const [customFeatForm, setCustomFeatForm] = useState({ key: '', label: '', description: '' });
 
+  const [loadVersion,retryLoad]=useState(0);
   // Initial Load
   useEffect(() => {
     let active = true;
     setLoading(true);
-    Promise.all([client.listPages(), client.getLibrary()])
-      .then(async ([pagesList, libList]) => {
-        if (!active) return;
+    loadVistrahEditor(client,activeSlug)
+      .then(({pages:pagesList,page,library:libList,warning})=>{
+        if(!active)return;
         setPages(pagesList);
-        if (libList && libList.length) setLibrary(libList);
-        const target = pagesList.find((p) => p.slug === activeSlug) || pagesList[0];
-        if (target) {
-          setActiveSlug(target.slug);
-          try {
-            const full = await client.getPage(target.slug);
-            if (active) setCurrentPage(JSON.parse(JSON.stringify(full)));
-          } catch {
-            if (active) setCurrentPage(JSON.parse(JSON.stringify(target)));
-          }
-        }
-        setDirty(false);
+        if(libList.length)setLibrary(libList);
+        setCurrentPage(page?JSON.parse(JSON.stringify(page)):null);
+        if(page)setActiveSlug(page.slug);
+        setError(warning);setDirty(false);
       })
       .catch((e) => {
         if (active) setError(e.message || 'Failed to load pages');
@@ -121,7 +116,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [loadVersion]);
 
   // Switch Page
   async function switchPage(slug: string) {
@@ -249,6 +244,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
     setNotice('');
     try {
       const updated = await client.updatePage(currentPage.slug, {
+        revision: currentPage.revision,
         name: currentPage.name,
         path: currentPage.path,
         description: currentPage.description,
@@ -285,7 +281,8 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
     try {
       if (dirty) {
         await client.updatePage(currentPage.slug, {
-          name: currentPage.name,
+          revision: currentPage.revision,
+        name: currentPage.name,
           path: currentPage.path,
           description: currentPage.description,
           target_platform: currentPage.target_platform,
@@ -582,7 +579,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
   return (
     <div className="edit-vistrah-container" style={{ maxWidth: 1240, margin: '0 auto', paddingBottom: 60 }}>
       {/* Top Banner Notice */}
-      {error && <p className="notice error" role="alert" style={{ marginBottom: 14 }}>{error}</p>}
+      {error && <div role="alert"><p className="notice error" style={{marginBottom:14}}>{error}</p><button className="button secondary" onClick={()=>{if(!dirty||window.confirm('Discard unsaved changes and reload?')){setError('');retryLoad(value=>value+1);}}}>Retry loading existing pages</button></div>}
       {notice && <p className="notice" role="status" style={{ marginBottom: 14 }}>{notice}</p>}
 
       {/* Pages Selector Bar */}
@@ -608,7 +605,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
 
           <button
             className="button"
-            onClick={() => setShowAddPageModal(true)}
+            disabled={!pages.length} onClick={() => setShowAddPageModal(true)}
             style={{ display: 'flex', alignItems: 'center', gap: 6 }}
           >
             <Plus size={16} /> Add Page
@@ -619,7 +616,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
         <div style={{ display: 'flex', gap: 8, marginTop: 16, overflowX: 'auto', paddingBottom: 4 }}>
           {pages.map((p) => {
             const isActive = p.slug === activeSlug;
-            const isLive = p.status === 'LIVE';
+            const isLive = Boolean(p.published_version);
             return (
               <button
                 key={p.slug}
@@ -649,7 +646,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                     fontWeight: 700,
                   }}
                 >
-                  {isLive ? `Live v${p.published_version || 1}` : 'Draft'}
+                  {editorPageStatus(p)}
                 </span>
                 <span style={{ fontSize: 11, opacity: 0.65 }}>({p.sections?.length || 0} sections)</span>
               </button>
@@ -786,6 +783,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
               </div>
             </div>
 
+            {currentPage.content_source==='APP'&&<p className="notice">Existing app page baseline: no CMS override is published. Saving a draft keeps the app page unchanged; publishing enables the edited layout.</p>}
             {/* Quick Page Meta Editor */}
             <details style={{ marginTop: 14 }}>
               <summary style={{ cursor: 'pointer', fontSize: 13, color: '#e5a93c' }}>
@@ -910,6 +908,9 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                       </span>
                     </div>
 
+                    {sec.content?.en?.title&&<h2>{sec.content.en.title}</h2>}
+                    {sec.content?.en?.description&&<p style={{whiteSpace:'pre-wrap'}}>{sec.content.en.description}</p>}
+                    {sec.content?.en?.action&&sec.action_href&&<span className="button">{sec.content.en.action} <small>({sec.action_href})</small></span>}
                     {/* Section Mock Visuals */}
                     {sec.images && sec.images.length > 0 && (
                       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 6 }}>
@@ -1152,6 +1153,12 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
 
                     {/* Section Body */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20, marginTop: 16 }}>
+                      <fieldset style={{display:'grid',gap:12,minWidth:0}}><legend>Customer-facing content</legend><p>Global navigation and account tools remain managed by the app. Use these fields for published headings, descriptions and calls to action.</p>
+                        <p>English is the fallback when a Kannada or Hindi field is empty. Buttons use local app paths, for example /services or /pages/your-page.</p>
+                        {(['en','kn','hi'] as const).map(language=><details key={language} open={language==='en'}><summary>{{en:'English',kn:'Kannada',hi:'Hindi'}[language]}</summary><div style={{display:'grid',gap:8,paddingBlock:10}}>{(['title','description','action'] as const).map(field=><label key={field}>{field==='action'?'Button label':field==='title'?'Heading':'Description'}<textarea rows={field==='description'?3:1} maxLength={5000} value={section.content?.[language]?.[field]??''} onChange={event=>updateSection(section.id,{content:{...section.content,[language]:{...section.content?.[language],[field]:event.target.value}}})} style={{display:'block',width:'100%',boxSizing:'border-box'}}/></label>)}</div></details>)}
+                        <label>Video playlist (one hosted HTTPS or local video URL per line)<textarea rows={3} value={(section.video_urls??[]).join('\n')} onChange={event=>updateSection(section.id,{video_urls:event.target.value.split('\n')})} placeholder="/videos/homepage/vistrah-introduction.mp4" style={{display:'block',width:'100%'}}/></label>
+                        <label>Button destination<input value={section.action_href??''} onChange={event=>updateSection(section.id,{action_href:event.target.value})} placeholder="/services" style={{display:'block',width:'100%'}}/></label>
+                      </fieldset>
                       {/* 1. Variations Selector */}
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -1160,7 +1167,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                           </label>
                           <button
                             className="button secondary"
-                            onClick={() => setAddingVariationSectionId(section.id)}
+                            disabled title="Use an existing layout. New layout definitions require a matching renderer." onClick={() => setAddingVariationSectionId(section.id)}
                             style={{ padding: '2px 8px', fontSize: 11 }}
                           >
                             + Custom Variation
@@ -1236,7 +1243,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                         </div>
                       </div>
 
-                      {/* 2. Feature Inclusions */}
+                      {/* 2. Feature Inclusions */}<p>Page content can control its call to action. Location, verification, pricing, accounts and payments retain their existing app workflows; design feature definitions do not enable those capabilities.</p>
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                           <label style={{ fontSize: 13, fontWeight: 700, color: '#e5a93c' }}>
@@ -1244,7 +1251,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                           </label>
                           <button
                             className="button secondary"
-                            onClick={() => setAddingFeatureSectionId(section.id)}
+                            disabled title="App capabilities require an implemented component; adding a definition does not enable functionality." onClick={() => setAddingFeatureSectionId(section.id)}
                             style={{ padding: '2px 8px', fontSize: 11 }}
                           >
                             + Custom Feature

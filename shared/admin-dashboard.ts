@@ -16,7 +16,7 @@ export const adminTaskGroups:AdminGroup[] = [
     {slug:'commerce-listings',label:'Products & packages',description:'Review listings before publication.'},
     {slug:'provider-services',label:'Provider services',description:'Review provider service associations.'},
   ]},
-  {title:'Manage',collapsed:true,items:[
+  {title:'Manage',collapsed:false,items:[
     {slug:'providers',label:'Businesses & providers',description:'Manage business details and availability.'},
     {slug:'catalogue',label:'Service catalogue',description:'Manage categories and discoverable services.'},
     {slug:'homepage',label:'Homepage',description:'Edit and publish homepage content.'},

@@ -1,3 +1,4 @@
+import {EditVistrahContent} from '../../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../../components/localized-ui';
 import {SellerSignInAction} from '../../../components/seller-sign-in-action';
 import {useLanguage} from '../../../lib/language';
@@ -124,6 +125,7 @@ export default function Services() {
         contentContainerStyle={[styles.content, {paddingBottom: 36}]}
         keyboardShouldPersistTaps="handled"
       >
+        {isRootLevel&&<EditVistrahContent slug="services"/>}
         {/* Top Seller Bar */}
         <View style={s.topBarRow}>
           {seller ? (

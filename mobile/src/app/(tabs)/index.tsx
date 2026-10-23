@@ -1,3 +1,4 @@
+import {EditVistrahContent} from '../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../components/localized-ui';
 import {HomepageVideo} from '../../components/homepage-video';
 import {useState} from 'react';
@@ -301,7 +302,7 @@ export default function Discover() {
 
   if (homepage.data?.version && homepage.data.layout.schema_version === 1 && homepage.data.layout.sections.length && catalogue.data) {
     return (
-      <Page>
+      <Page><EditVistrahContent slug="home" replace>
         {searchSection}
         <ServiceCarousel />
         <PublishedHomepage homepage={homepage.data} categories={catalogue.data} />
@@ -316,12 +317,12 @@ export default function Discover() {
         {shortcutsSection}
         <DiscoveryGuide />
         <HomepagePartnerBanner />
-      </Page>
+      </EditVistrahContent></Page>
     );
   }
 
   return (
-    <Page>
+    <Page><EditVistrahContent slug="home" replace>
       {searchSection}
       <ServiceCarousel />
       <View style={styles.divider} />
@@ -336,7 +337,7 @@ export default function Discover() {
       {shortcutsSection}
       <DiscoveryGuide />
       <HomepagePartnerBanner />
-    </Page>
+    </EditVistrahContent></Page>
   );
 }
 

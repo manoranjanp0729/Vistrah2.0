@@ -2,10 +2,15 @@
 import json
 import os
 import copy
+import tempfile
+from threading import RLock
+from urllib.parse import urlsplit
 from datetime import datetime
 from typing import Any
+from pathlib import Path
 
-DATA_FILE = os.path.join(os.path.dirname(__file__), 'edit_vistrah_data.json')
+LEGACY_DATA_FILE = os.path.join(os.path.dirname(__file__), 'edit_vistrah_data.json')
+DATA_FILE = os.environ.get('EDIT_VISTRAH_DATA_FILE', '/data/edit_vistrah_data.json' if os.path.isdir('/data') else LEGACY_DATA_FILE)
 
 DEFAULT_LIBRARY = [
     {
@@ -420,124 +425,222 @@ DEFAULT_PAGES = [
 ]
 
 
+APP_DEFAULTS_FILE = Path(__file__).resolve().parents[2] / 'shared' / 'edit-vistrah-page-defaults.json'
+
 class EditVistrahStore:
-    def __init__(self):
-        self._pages: dict[str, dict[str, Any]] = {}
+    def __init__(self, data_file=None):
+        self.data_file = data_file or DATA_FILE
+        self._lock = RLock()
+        self._pages = {}
+        self._published = {}
         self._load()
 
     def _load(self):
-        if os.path.exists(DATA_FILE):
-            try:
-                with open(DATA_FILE, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    if isinstance(data, list):
-                        self._pages = {p['slug']: p for p in data if 'slug' in p}
-                        return
-            except Exception:
-                pass
-        # Fallback to default pages
-        self._pages = {p['slug']: copy.deepcopy(p) for p in DEFAULT_PAGES}
-        self._save()
+        source = self.data_file
+        if not os.path.exists(source) and self.data_file == DATA_FILE and os.path.exists(LEGACY_DATA_FILE):
+            source = LEGACY_DATA_FILE
+        if not os.path.exists(source):
+            self._pages = {}
+            return
+        with open(source, 'r', encoding='utf-8') as stream:
+            data = json.load(stream)
+        if isinstance(data, list):
+            if source != self.data_file:
+                # Bundled sample layouts are not evidence of a runtime publication.
+                templates = {p['slug']: p for p in DEFAULT_PAGES}
+                custom = []
+                for page in data:
+                    template = templates.get(page['slug'])
+                    if template and page.get('sections') == template.get('sections') and page.get('name') == template.get('name'):
+                        continue
+                    custom.append(dict(page, status='DRAFT', content_source='DRAFT', published_version=None, published_at=None))
+                self._pages = {p['slug']: p for p in custom}
+                self._published = {}
+            else:
+                self._pages = {p['slug']: p for p in data}
+                self._published = {slug: copy.deepcopy(p) for slug, p in self._pages.items() if p.get('status') == 'LIVE'}
+        elif isinstance(data, dict) and data.get('schema_version') == 1:
+            self._pages = {p['slug']: p for p in data['pages']}
+            self._published = data['published']
+        else:
+            raise ValueError('Invalid Edit Vistrah content file; existing data has not been overwritten')
 
-    def _save(self):
+    def _commit(self, pages, published):
+        pages = {slug: page for slug, page in pages.items() if not (page.get('content_source') == 'APP' and page.get('revision') == 1 and not page.get('published_version'))}
+        directory = os.path.dirname(os.path.abspath(self.data_file))
+        os.makedirs(directory, exist_ok=True)
+        fd, temporary = tempfile.mkstemp(prefix='.edit-vistrah-', suffix='.json', dir=directory)
         try:
-            with open(DATA_FILE, 'w', encoding='utf-8') as f:
-                json.dump(list(self._pages.values()), f, indent=2, ensure_ascii=False)
-        except Exception:
-            pass
+            with os.fdopen(fd, 'w', encoding='utf-8') as stream:
+                json.dump({'schema_version': 1, 'pages': list(pages.values()), 'published': published}, stream, ensure_ascii=False, indent=2)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, self.data_file)
+        finally:
+            if os.path.exists(temporary):
+                os.unlink(temporary)
+        self._pages, self._published = pages, published
 
-    def list_pages(self) -> list[dict[str, Any]]:
-        return [
-            {
-                'id': p['id'],
-                'slug': p['slug'],
-                'name': p['name'],
-                'path': p['path'],
-                'description': p['description'],
-                'target_platform': p['target_platform'],
-                'status': p.get('status', 'DRAFT'),
-                'revision': p.get('revision', 1),
-                'published_version': p.get('published_version'),
-                'published_at': p.get('published_at'),
-                'section_count': len(p.get('sections', [])),
-                'sections': copy.deepcopy(p.get('sections', [])),
-            }
-            for p in self._pages.values()
-        ]
+    def _editor_pages(self):
+        with APP_DEFAULTS_FILE.open(encoding='utf-8') as stream:
+            defaults = {p['slug']: p for p in json.load(stream)}
+        pages = {slug: dict(page, content_source='APP') for slug, page in defaults.items()}
+        for slug, stored in self._pages.items():
+            # Upgrade former empty placeholder entries, but never replace a saved draft.
+            if slug in defaults and (not stored.get('sections') or stored.get('content_source') == 'APP') and stored.get('revision', 1) == 1 and not stored.get('published_version'):
+                continue
+            pages[slug] = dict(copy.deepcopy(stored), content_source='CMS' if slug in self._published else 'DRAFT')
+        return pages
 
-    def get_page(self, slug: str) -> dict[str, Any] | None:
-        p = self._pages.get(slug)
-        if not p:
-            return None
-        return copy.deepcopy(p)
+    def list_pages(self):
+        with self._lock:
+            return [dict(copy.deepcopy(p), section_count=len(p.get('sections', []))) for p in self._editor_pages().values()]
 
-    def create_page(self, slug: str, name: str, path: str, description: str, target_platform: str = 'all') -> dict[str, Any]:
-        slug = slug.strip().lower()
-        if not slug or not slug.replace('-', '').isalnum():
-            raise ValueError('Invalid slug: must be alphanumeric or hyphenated')
-        if slug in self._pages:
-            raise ValueError(f'Page with slug "{slug}" already exists')
+    def get_page(self, slug):
+        with self._lock:
+            return copy.deepcopy(self._editor_pages().get(slug))
 
-        new_page = {
-            'id': f'page-{slug}',
-            'slug': slug,
-            'name': name.strip() or slug.capitalize(),
-            'path': path.strip() or f'/{slug}',
-            'description': description.strip(),
-            'target_platform': target_platform if target_platform in ['all', 'web', 'mobile'] else 'all',
-            'status': 'DRAFT',
-            'revision': 1,
-            'published_version': None,
-            'published_at': None,
-            'sections': [],
-        }
-        self._pages[slug] = new_page
-        self._save()
-        return copy.deepcopy(new_page)
+    def get_live_page(self, slug):
+        with self._lock:
+            page = copy.deepcopy(self._published.get(slug))
+            if page:
+                page['sections'] = sorted([s for s in page.get('sections', []) if s.get('enabled', True)], key=lambda s: s.get('order', 0))
+            return page
 
-    def update_page(self, slug: str, patch: dict[str, Any]) -> dict[str, Any]:
-        page = self._pages.get(slug)
-        if not page:
-            raise KeyError(f'Page "{slug}" not found')
+    def _validate(self, page):
+        if page.get('target_platform') not in ('all', 'web', 'mobile'):
+            raise ValueError('Choose all, web or mobile')
+        path = page.get('path', '')
+        if not path.startswith('/') or path.startswith('//') or any(c in path for c in ('\\', '?', '#')) or '..' in path:
+            raise ValueError('Page path must be a local path without query parameters')
+        if path.startswith(('/admin', '/api', '/seller', '/account', '/login', '/register')):
+            raise ValueError('Account and administrative routes cannot be replaced with content pages')
+        if path.startswith('/marketing-services/') and page['slug'] not in ('digital-marketing', 'branding-creative-production', 'outdoor-advertising-signage', 'mobility-billboard-advertising'):
+            raise ValueError('Use /pages/' + page['slug'] + ' for a custom page')
+        if path not in ('/', '/services', '/v-ads', '/v-essentials', '/marketing-solutions') and path not in ('/pages/' + page['slug'], '/marketing-services/' + page['slug']):
+            raise ValueError('Use /pages/' + page['slug'] + ' for a custom page, or its existing marketing service path')
+        if any(p['slug'] != page['slug'] and p['path'] == path for p in self._editor_pages().values()):
+            raise ValueError('Another page already uses this path')
+        canonical = {'home': '/', 'services': '/services', 'v-ads': '/v-ads', 'v-essentials': '/v-essentials', 'marketing-solutions': '/marketing-solutions'}
+        if page['slug'] in canonical and path != canonical[page['slug']]:
+            raise ValueError('This page must keep its existing app path: ' + canonical[page['slug']])
+        sections = page.get('sections', [])
+        if len(sections) > 30 or len(json.dumps(page)) > 900000:
+            raise ValueError('Page exceeds the content limit; use hosted media URLs for larger images')
+        ids = set()
+        for section in sections:
+            if not isinstance(section, dict) or not isinstance(section.get('id'), str) or section['id'] in ids:
+                raise ValueError('Sections require unique IDs')
+            ids.add(section['id'])
+            if section.get('type') not in ('header', 'search_bar', 'hero_banner', 'services_for_you', 'editable_banner', 'big_widget', 'custom'):
+                raise ValueError('Unsupported section type')
+            if not isinstance(section.get('order'), int) or not isinstance(section.get('enabled'), bool):
+                raise ValueError('Section order and visibility are required')
+            if not isinstance(section.get('images', []), list) or len(section.get('images', [])) > 20:
+                raise ValueError('A section can contain up to 20 images')
+            if not isinstance(section.get('name'), str) or not section['name'].strip():
+                raise ValueError('Each section requires a name')
+            if not isinstance(section.get('variation'), str):
+                raise ValueError('Each section requires a layout')
+            for field in ('features', 'available_variations'):
+                if not isinstance(section.get(field, []), list):
+                    raise ValueError('Invalid section ' + field)
+            if any(not isinstance(f, dict) or not isinstance(f.get('key'), str) or not isinstance(f.get('enabled'), bool) for f in section.get('features', [])):
+                raise ValueError('Invalid feature definition')
+            content = section.get('content', {})
+            if not isinstance(content, dict):
+                raise ValueError('Invalid section content')
+            for locale, values in content.items():
+                if locale not in ('en', 'kn', 'hi') or not isinstance(values, dict):
+                    raise ValueError('Content must use English, Kannada or Hindi fields')
+                if any(not isinstance(v, str) or len(v) > 5000 for v in values.values()):
+                    raise ValueError('Section text must be shorter than 5000 characters')
+            href = section.get('action_href', '')
+            if not isinstance(href, str):
+                raise ValueError('Invalid button destination')
+            if href and not href.startswith('mailto:info@vistrah.in') and (not href.startswith('/') or href.startswith('//') or any(c in href for c in ('\\', '\n', '\r')) or '..' in href):
+                raise ValueError('Button destinations must be local app paths')
+            videos = section.get('video_urls', [])
+            if not isinstance(videos, list) or len(videos) > 12:
+                raise ValueError('A section can contain up to 12 videos')
+            for video in videos:
+                if not isinstance(video, str) or not ((video.startswith('/') and not video.startswith('//') and '..' not in video and '\\' not in video) or (urlsplit(video).scheme == 'https' and urlsplit(video).hostname and not urlsplit(video).username)):
+                    raise ValueError('Use a local or HTTPS video URL')
+            if any(c in href for c in ('\\', '\r', '\n')):
+                raise ValueError('Invalid button destination')
+            if href.startswith('mailto:') and (urlsplit(href).path != 'info@vistrah.in' or urlsplit(href).fragment):
+                raise ValueError('Use the official VISTRAH contact email')
+            for image in section.get('images', []):
+                if not isinstance(image, dict) or not isinstance(image.get('url'), str):
+                    raise ValueError('Each image requires a URL')
+                url = image['url']
+                local = url.startswith('/') and not url.startswith('//') and '..' not in url and '\\' not in url
+                remote = urlsplit(url).scheme == 'https' and bool(urlsplit(url).hostname) and not urlsplit(url).username
+                embedded = url.startswith(('data:image/png;base64,', 'data:image/jpeg;base64,', 'data:image/webp;base64,', 'data:image/gif;base64,'))
+                if not (local or remote or embedded):
+                    raise ValueError('Use a local image, HTTPS image URL, or PNG/JPEG/WebP/GIF upload')
 
-        if 'name' in patch and patch['name']:
-            page['name'] = str(patch['name']).strip()
-        if 'description' in patch:
-            page['description'] = str(patch['description']).strip()
-        if 'path' in patch and patch['path']:
-            page['path'] = str(patch['path']).strip()
-        if 'target_platform' in patch and patch['target_platform'] in ['all', 'web', 'mobile']:
-            page['target_platform'] = patch['target_platform']
-        if 'sections' in patch and isinstance(patch['sections'], list):
-            page['sections'] = patch['sections']
+    def create_page(self, slug, name, path='', description='', target_platform='all'):
+        with self._lock:
+            slug = slug.strip().lower()
+            if not slug or not slug.replace('-', '').isalnum() or slug in self._editor_pages():
+                raise ValueError('Use a unique alphanumeric or hyphenated slug')
+            page = {'id': 'page-' + slug, 'slug': slug, 'name': name.strip() or slug, 'path': ('/pages/' + slug if not path.strip() or path.strip() == '/' + slug else path.strip()),
+                    'description': description, 'target_platform': target_platform, 'status': 'DRAFT', 'revision': 1,
+                    'published_version': None, 'published_at': None, 'sections': []}
+            self._validate(page)
+            pages = copy.deepcopy(self._pages)
+            pages[slug] = page
+            self._commit(pages, copy.deepcopy(self._published))
+            return copy.deepcopy(page)
 
-        page['revision'] = page.get('revision', 0) + 1
-        page['status'] = 'DRAFT'
-        self._save()
-        return copy.deepcopy(page)
+    def update_page(self, slug, patch):
+        with self._lock:
+            if slug not in self._editor_pages():
+                raise KeyError(slug)
+            pages = self._editor_pages()
+            page = pages[slug]
+            if patch.get('revision') is not None and patch['revision'] != page['revision']:
+                raise ValueError('This page changed in another editor. Reload before saving')
+            for field in ('name', 'description', 'path', 'target_platform', 'sections'):
+                if field in patch and patch[field] is not None:
+                    page[field] = copy.deepcopy(patch[field])
+            self._validate(page)
+            page['revision'] += 1
+            page['status'] = 'DRAFT'
+            page['content_source'] = 'CMS' if slug in self._published else 'DRAFT'
+            self._commit(pages, copy.deepcopy(self._published))
+            return copy.deepcopy(page)
 
-    def publish_page(self, slug: str) -> dict[str, Any]:
-        page = self._pages.get(slug)
-        if not page:
-            raise KeyError(f'Page "{slug}" not found')
+    def publish_page(self, slug, revision=None):
+        with self._lock:
+            if slug not in self._editor_pages():
+                raise KeyError(slug)
+            pages, published = self._editor_pages(), copy.deepcopy(self._published)
+            page = pages[slug]
+            if revision is not None and revision != page['revision']:
+                raise ValueError('This page changed in another editor. Reload before publishing')
+            self._validate(page)
+            if not any(section.get('enabled') and section.get('type') != 'header' for section in page['sections']):
+                raise ValueError('Add an enabled content section before publishing')
+            page.update(status='LIVE', content_source='CMS', published_version=(page.get('published_version') or 0) + 1, published_at=datetime.now().isoformat())
+            published[slug] = copy.deepcopy(page)
+            self._commit(pages, published)
+            return copy.deepcopy(page)
 
-        page['status'] = 'LIVE'
-        next_ver = (page.get('published_version') or 0) + 1
-        page['published_version'] = next_ver
-        page['published_at'] = datetime.now().isoformat()
-        self._save()
-        return copy.deepcopy(page)
-
-    def delete_page(self, slug: str) -> bool:
-        if slug in ['home', 'services']:
-            raise ValueError('Core pages cannot be deleted')
-        if slug in self._pages:
-            del self._pages[slug]
-            self._save()
+    def delete_page(self, slug):
+        with self._lock:
+            if slug in ('home', 'services', 'v-ads', 'v-essentials', 'marketing-solutions', 'digital-marketing', 'branding-creative-production', 'outdoor-advertising-signage', 'mobility-billboard-advertising'):
+                raise ValueError('Core pages cannot be deleted')
+            if slug not in self._pages:
+                return False
+            pages, published = copy.deepcopy(self._pages), copy.deepcopy(self._published)
+            del pages[slug]
+            published.pop(slug, None)
+            self._commit(pages, published)
             return True
-        return False
 
-    def get_library(self) -> list[dict[str, Any]]:
+    def get_library(self):
         return copy.deepcopy(DEFAULT_LIBRARY)
 
 

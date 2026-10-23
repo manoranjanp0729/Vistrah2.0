@@ -23,7 +23,13 @@ export type SectionFeatureInclusion = {
   enabled: boolean;
 };
 
+export type SectionCopy = {title?:string;description?:string;action?:string};
+export type LiveVistrahPage = Pick<VistrahPage,'slug'|'name'|'path'|'description'|'target_platform'|'published_version'|'published_at'|'sections'>;
+
 export type PageSection = {
+  content?: Partial<Record<'en'|'kn'|'hi',SectionCopy>>;
+  action_href?: string;
+  video_urls?: string[];
   id: string;
   type: string; // 'header' | 'search_bar' | 'hero_banner' | 'services_for_you' | 'editable_banner' | 'big_widget' | 'custom'
   name: string; // Unique section name (e.g. "Festive Gold Banner")
@@ -37,6 +43,7 @@ export type PageSection = {
 };
 
 export type VistrahPage = {
+  content_source?: 'APP'|'CMS'|'DRAFT';
   id: string;
   slug: string; // e.g. 'home', 'services', 'v-ads', 'festive-deals'
   name: string; // e.g. "Home Page", "V Essentials"
@@ -486,28 +493,58 @@ export function calculateAspectRatio(w: number, h: number): string {
 }
 
 export function editVistrahClient(fetcher: <T>(path: string, options?: RequestInit) => Promise<T>) {
+  const revisions=new Map<string,number>();
+  const remember=(page:VistrahPage)=>{revisions.set(page.slug,page.revision);return page;};
   return {
     listPages: () => fetcher<VistrahPage[]>('/admin/edit-vistrah/pages'),
-    getPage: (slug: string) => fetcher<VistrahPage>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}`),
+    getPage: (slug: string) => fetcher<VistrahPage>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}`).then(remember),
     createPage: (payload: { slug: string; name: string; path?: string; description?: string; target_platform?: string }) =>
       fetcher<VistrahPage>('/admin/edit-vistrah/pages', {
         method: 'POST',
         body: JSON.stringify(payload),
-      }),
+      }).then(remember),
     updatePage: (slug: string, payload: Partial<VistrahPage>) =>
       fetcher<VistrahPage>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}`, {
         method: 'PUT',
-        body: JSON.stringify(payload),
-      }),
+        body: JSON.stringify({...payload,sections:payload.sections?.map(section=>({...section,video_urls:section.video_urls?.map(url=>url.trim()).filter(Boolean)})),revision:payload.revision??revisions.get(slug)}),
+      }).then(remember),
     publishPage: (slug: string) =>
       fetcher<VistrahPage>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}/publish`, {
         method: 'POST',
-      }),
+        body: JSON.stringify({revision:revisions.get(slug)}),
+      }).then(remember),
     deletePage: (slug: string) =>
       fetcher<{ deleted: boolean; slug: string }>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}`, {
         method: 'DELETE',
       }),
     getLibrary: () => fetcher<SectionLibraryItem[]>('/admin/edit-vistrah/library'),
-    getLivePage: (slug: string) => fetcher<any>(`/edit-vistrah/pages/${encodeURIComponent(slug)}`),
+    getLivePage: (slug: string) => fetcher<LiveVistrahPage>(`/edit-vistrah/pages/${encodeURIComponent(slug)}`),
   };
+}
+
+
+export async function loadVistrahEditor(client:ReturnType<typeof editVistrahClient>,preferredSlug='home'){
+ let pages:VistrahPage[];
+ try{pages=await client.listPages();}catch(error){
+  if((error as {status?:number})?.status===404)throw new Error('Edit Vistrah is unavailable in the running API (404). Existing pages cannot load until the local API is updated.');
+  throw error;
+ }
+ if(!Array.isArray(pages))throw new Error('The page list response is invalid. Retry loading existing pages.');
+ const target=pages.find(page=>page.slug===preferredSlug)??pages[0];
+ const [details,library]=await Promise.allSettled([target?client.getPage(target.slug):Promise.resolve(null),client.getLibrary()]);
+ const page=details.status==='fulfilled'?details.value:target??null;
+ const warnings:string[]=[];
+ if(details.status==='rejected'){
+  if(!target||!Array.isArray(target.sections))throw new Error('Page details could not load. Retry before editing.');
+  warnings.push('Showing saved details from the page list. Reload to confirm the latest revision.');
+ }
+ if(page&&!Array.isArray(page.sections))throw new Error('Page sections are missing from the API response. Retry loading existing pages.');
+ if(library.status==='rejected')warnings.push('The section library could not load. Existing page details are available; retry to refresh the library.');
+ return {pages,page,library:library.status==='fulfilled'?library.value:[],warning:warnings.join(' ')};
+}
+
+export function editorPageStatus(page:VistrahPage){
+ if(page.content_source==='APP')return 'App content';
+ if(page.published_version)return 'Live v'+page.published_version+(page.status==='DRAFT'?' + draft':'');
+ return 'Draft';
 }

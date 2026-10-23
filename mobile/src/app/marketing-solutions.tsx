@@ -1,3 +1,4 @@
+import {EditVistrahContent} from '../components/edit-vistrah-content';
 import {UiText,UiElement} from "../components/localized-ui";
 import {useCallback,useEffect,useRef,useState,type ReactNode} from 'react';
 import {AccessibilityInfo,Animated,Easing,Image,Linking,Platform,Pressable,ScrollView,StyleSheet,Text,View,useWindowDimensions} from 'react-native';
@@ -76,7 +77,7 @@ export default function MarketingSolutions(){
  const revealProps={scrollY,reducedMotion,windowHeight:height};
  const activeTheme=marketingCards.find(card=>card.key===selected);
  return <SafeAreaView edges={['left','right','bottom']} style={{flex:1,backgroundColor:mode==='dark'?'#15111f':'#faf8fd'}}>
-  <Animated.ScrollView ref={scroll} keyboardShouldPersistTaps="handled" scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent:{contentOffset:{y:scrollY}}}],{useNativeDriver:Platform.OS!=='web'})} contentContainerStyle={s.page}>
+  <Animated.ScrollView ref={scroll} keyboardShouldPersistTaps="handled" scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent:{contentOffset:{y:scrollY}}}],{useNativeDriver:Platform.OS!=='web'})} contentContainerStyle={s.page}><EditVistrahContent slug="marketing-solutions" replace>
    <LinearGradient colors={accentGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={[s.hero,wide&&s.heroWide]}>
     <View pointerEvents="none" accessible={false} style={s.heroLight}/>
     <Animated.View style={[s.heroCopy,wide&&{flex:1},{transform:[{translateY:entrance.interpolate({inputRange:[0,1],outputRange:[10,0]})}]}]}>
@@ -136,7 +137,7 @@ export default function MarketingSolutions(){
    {catalogue.loading?<Loading/>:catalogue.error?<ErrorPanel error={catalogue.error} retry={catalogue.retry}/>:services.length?<View style={s.publishedList}>{services.map(item=><Pressable key={item.service.id} accessibilityRole="link" onPress={()=>router.push({pathname:'/service/[id]',params:{id:item.service.id}})} onHoverIn={()=>setHovered('published-'+item.service.id)} onHoverOut={()=>setHovered(undefined)} style={({pressed})=>[s.publishedRow,{backgroundColor:mode==='dark'?'#241c34':'#fff',opacity:pressed?.8:1},hovered==='published-'+item.service.id&&{borderColor:'#a183c7'}]}><Text style={[s.publishedTitle,{color:ink}]}>{item.service.title}</Text><Feather name="arrow-right" size={18} color={mode==='dark'?'#d5b9ff':'#7645b2'}/></Pressable>)}</View>:<Text style={[s.sectionCopy,{color:muted}]}>{t('marketing.preparing')}</Text>}
 
    <Reveal {...revealProps}><LinearGradient colors={['#efdff9','#f8e5dc']} start={{x:0,y:0}} end={{x:1,y:1}} style={s.final}><Text style={s.eyebrow}>{t('marketing.finalLabel')}</Text><Text accessibilityRole="header" style={s.finalTitle}>{t('marketing.finalTitle')}</Text><Text style={s.finalCopy}>{t('marketing.finalCopy')}</Text><View style={[s.actions,{flexDirection:wide?'row':'column'}]}><Pressable accessibilityRole="link" onPress={()=>router.push('/membership')} style={({pressed})=>[s.finalButton,{opacity:pressed?.85:1}]}><Text style={s.finalButtonText}>{t('marketing.membership')}</Text><Feather name="arrow-right" size={18} color="#fff"/></Pressable><Pressable accessibilityRole="link" onPress={()=>Linking.openURL('mailto:info@vistrah.in?subject=VISTRAH%20Ads%20%26%20Marketing%20Enquiry')} style={({pressed})=>[s.finalButton,{backgroundColor:'#faf7ff',borderWidth:1,borderColor:'#d4c4e6',opacity:pressed?.85:1}]}><Text style={[s.finalButtonText,{color:'#503fbd'}]}>{t('marketing.contact')}</Text><Feather name="mail" size={18} color="#503fbd"/></Pressable></View><UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.email')} onPress={()=>Linking.openURL('mailto:info@vistrah.in?subject=VISTRAH%20Ads%20%26%20Marketing%20Enquiry')} style={{minHeight:44,justifyContent:'center',alignSelf:'flex-start'}}><Text style={[s.finalCopy,{color:'#503fbd',textDecorationLine:'underline'}]}>info@vistrah.in</Text></UiElement></LinearGradient></Reveal>
-  </Animated.ScrollView>
+  </EditVistrahContent></Animated.ScrollView>
  </SafeAreaView>;
 }
 

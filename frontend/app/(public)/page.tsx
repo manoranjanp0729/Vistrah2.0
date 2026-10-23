@@ -1,3 +1,5 @@
+import {ContentSections} from '@/components/edit-vistrah-content';
+import type {LiveVistrahPage} from '../../../shared/edit-vistrah';
 import {HomepageVideo} from '@/components/homepage-video';
 import {HomepageConnect} from '@/components/homepage-connect';
 import {connectCategorySlugs} from '../../../shared/homepage-connect';
@@ -17,6 +19,8 @@ import type {Category} from '@/lib/types';
 import {SectionHeading,ButtonLink,ServiceCard} from '@/components/ui';
 export const dynamic='force-dynamic';
 export default async function Home() {
+  const managed=await serverApi<LiveVistrahPage>('/edit-vistrah/pages/home').catch(()=>null);
+  if(managed&&managed.target_platform!=='mobile')return <div className="container"><ContentSections sections={managed.sections}/></div>;
   const [categories,homepage]=await Promise.all([serverApi<Category[]>('/catalogue'),serverApi<Homepage>('/homepage').catch(()=>null)]);
   const services=allServices(categories);
   const topServices=[...services].filter(item=>item.service.active&&item.category.slug!=='marketing').sort((a,b)=>Number(b.service.popular)-Number(a.service.popular));

@@ -1,3 +1,4 @@
+import {EditVistrahContent} from '../../components/edit-vistrah-content';
 import {UiText,UiElement} from "../../components/localized-ui";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useFocusEffect,router,useLocalSearchParams} from 'expo-router';
@@ -511,7 +512,7 @@ function VAdsFeed({video}:{video:string}) {
   }
 
   return (
-    <View key={user?.id??'guest'} style={styles.page} onLayout={onLayout}>
+    <View style={styles.page}><ScrollView style={{maxHeight:190,flexGrow:0}}><EditVistrahContent slug="v-ads"/></ScrollView><View key={user?.id??'guest'} style={styles.page} onLayout={onLayout}>
       {loading?<Loading/>:!reels.length?<View style={styles.content}>{Boolean(error)?<ErrorPanel error={new Error(error)} retry={()=>setVersion(v=>v+1)}/>:<Text style={styles.muted}><UiText value={"No approved videos yet."}/></Text>}<UiElement as={Action} label="Refresh V Ads" onPress={()=>setVersion(v=>v+1)}/>{user?.seller_enabled&&<UiElement as={Action} label="Your V Ads" secondary onPress={()=>router.push({pathname:'/seller/v-ads',params:{from:'v-ads'}})}/>}</View>:height > 0 && (
         <FlatList
           data={reels}
@@ -542,7 +543,7 @@ function VAdsFeed({video}:{video:string}) {
           )}
         />
       )}
-    </View>
+    </View></View>
   );
 }
 

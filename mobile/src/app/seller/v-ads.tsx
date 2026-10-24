@@ -502,7 +502,7 @@ function WorkspaceScreen(){
             </View>
           </View>
           <View style={{flexDirection: 'row', gap: 10, paddingTop: 2}}>
-            <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel="Watch V Ads tab" onPress={()=>router.push('/(tabs)/v-ads')} style={({pressed})=>({flex: 1, minHeight: 40, paddingHorizontal: 14, borderRadius: 12, backgroundColor: colors.surface, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, borderWidth: 1, borderColor: colors.border, opacity: pressed ? 0.75 : 1})}>
+            <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel="Watch V Ads tab" onPress={()=>router.dismissTo('/(tabs)/v-ads')} style={({pressed})=>({flex: 1, minHeight: 40, paddingHorizontal: 14, borderRadius: 12, backgroundColor: colors.surface, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, borderWidth: 1, borderColor: colors.border, opacity: pressed ? 0.75 : 1})}>
               <Feather name="play" size={13} color={colors.accent}/>
               <Text style={{fontSize: 13, fontWeight: '700', color: colors.accent}}><UiText value={"Watch Reels"}/></Text>
               <Feather name="arrow-right" size={13} color={colors.accent}/>
@@ -727,7 +727,7 @@ function WorkspaceScreen(){
             {isLive&&<UiElement as={Pressable}
               accessibilityRole="link"
               accessibilityLabel={`Watch ${video.title} full screen in V Ads`}
-              onPress={()=>router.push({pathname:'/(tabs)/v-ads',params:{video:video.id}})}
+              onPress={()=>router.dismissTo({pathname:'/(tabs)/v-ads',params:{video:video.id}})}
               style={({pressed})=>({minHeight:36,flexDirection:'row',alignItems:'center',gap:6,opacity:pressed?.7:1})}
             >
               <Text style={{color:colors.accent,fontSize:13.5,fontWeight:'600'}}><UiText value={"Watch Full Reel"}/></Text>

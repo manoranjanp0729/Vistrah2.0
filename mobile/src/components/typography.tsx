@@ -12,13 +12,15 @@ export const Text=forwardRef<NativeText,TextProps>(function Text({style,...props
  const locale=useContext(FontLocaleContext),inherited=useContext(TextWeightContext);
  const flattened=StyleSheet.flatten(style);
  const weight=standardWeight(flattened?.fontWeight,inherited);
- const standard=Platform.OS!=='web'&&isStandardFamily(flattened?.fontFamily);
- return <TextWeightContext.Provider value={weight}><NativeText {...props} ref={ref} style={standard?[style,{fontFamily:fontFace(locale,weight),fontWeight:'normal'}]:style}/></TextWeightContext.Provider>;
+ const standard=isStandardFamily(flattened?.fontFamily);
+ const fontStyle=Platform.OS==='web'?{fontFamily:webFontFamily}:{fontFamily:fontFace(locale,weight),fontWeight:'normal' as const};
+ return <TextWeightContext.Provider value={weight}><NativeText {...props} ref={ref} style={standard?[style,fontStyle]:style}/></TextWeightContext.Provider>;
 });
 export const TextInput=forwardRef<NativeTextInput,TextInputProps>(function TextInput({style,...props},ref){
  const locale=useContext(FontLocaleContext);
  const flattened=StyleSheet.flatten(style);
  const weight=standardWeight(flattened?.fontWeight);
- const standard=Platform.OS!=='web'&&isStandardFamily(flattened?.fontFamily);
- return <NativeTextInput {...props} ref={ref} style={standard?[style,{fontFamily:fontFace(locale,weight),fontWeight:'normal'}]:style}/>;
+ const standard=isStandardFamily(flattened?.fontFamily);
+ const fontStyle=Platform.OS==='web'?{fontFamily:webFontFamily}:{fontFamily:fontFace(locale,weight),fontWeight:'normal' as const};
+ return <NativeTextInput {...props} ref={ref} style={standard?[style,fontStyle]:style}/>;
 });

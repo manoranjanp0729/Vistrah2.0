@@ -16,16 +16,16 @@ import {servicePhotos} from '../../lib/service-photos';
 import {Platform,Image,Pressable,ScrollView,View,StyleSheet,} from 'react-native';
 import {router} from 'expo-router';
 import {AdsMarketing} from '../../components/ads-marketing';
-import {Page, Heading} from '../../components/ui';
+import {Page, Heading, Action} from '../../components/ui';
 import {MarketplaceCategories} from '../../components/marketplace-categories';
 import {ServiceCarousel} from '../../components/service-carousel';
 import {useResource} from '../../lib/resource';
 import {allServices, type Category} from '../../lib/catalogue';
 import brandTheme from '../../../../shared/brand-theme.json';
-import {useTheme} from '../../lib/theme';
+import {useTheme,spacing,typography} from '../../lib/theme';
 
 export default function Discover() {
-  const {styles, colors, mode, accentGradient} = useTheme();
+  const {colors, mode, accentGradient} = useTheme();
   const {copy, t} = useLanguage();
   const catalogue = useResource<Category[]>('/catalogue');
   const homepage = useResource<Homepage>('/homepage');
@@ -51,11 +51,6 @@ export default function Discover() {
           <UiText value={copy.home.tagline} />
         </Text>
       </View>
-
-      {/* Warm Welcome Headline */}
-      <Text accessibilityRole="header" style={[s.welcomeHeadline, {color: colors.text}]}>
-        <UiText value="Find your everyday. Discover more." />
-      </Text>
 
       {/* Search Input Box */}
       <View
@@ -216,7 +211,7 @@ export default function Discover() {
           onPress={() => router.push('/requests')}
           style={({pressed}) => [{opacity: pressed ? 0.7 : 1}]}
         >
-          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '700'}}>
+          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '600'}}>
             <UiText value="Explore Hub" /> →
           </Text>
         </Pressable>
@@ -240,7 +235,7 @@ export default function Discover() {
           onPress={() => router.push('/services')}
           style={({pressed}) => [{opacity: pressed ? 0.7 : 1}]}
         >
-          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '700'}}>
+          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '600'}}>
             <UiText value="View all" /> →
           </Text>
         </Pressable>
@@ -294,16 +289,17 @@ export default function Discover() {
 
   if (homepage.data?.version && homepage.data.layout.schema_version === 1 && homepage.data.layout.sections.length && catalogue.data) {
     return (
-      <Page><EditVistrahContent slug="home" replace>
+      <Page sectioned><EditVistrahContent slug="home" replace>
         {searchSection}
         <ServiceCarousel />
         <PublishedHomepage homepage={homepage.data} categories={catalogue.data} />
-        <View testID="homepage-categories" style={{gap: 4}}>
+        <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
           <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
           <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />
         </View>
         {providerBanner}
         {marketingSection}
+        <Action label="VISTRAH Ads & Marketing pricing →" onPress={() => router.push('/marketing-pricing')} />
         <HomepageVideo />
         {essentialsSection}
         {shortcutsSection}
@@ -314,16 +310,16 @@ export default function Discover() {
   }
 
   return (
-    <Page><EditVistrahContent slug="home" replace>
+    <Page sectioned><EditVistrahContent slug="home" replace>
       {searchSection}
       <ServiceCarousel />
-      <View style={styles.divider} />
-      <View testID="homepage-categories" style={{gap: 4}}>
+      <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
         <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
         <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />
       </View>
       {providerBanner}
       {marketingSection}
+      <Action label="VISTRAH Ads & Marketing pricing →" onPress={() => router.push('/marketing-pricing')} />
       <HomepageVideo />
       {essentialsSection}
       {shortcutsSection}
@@ -336,13 +332,13 @@ export default function Discover() {
 const s = StyleSheet.create({
   // Area 1: Top Greeting & Search
   topGreetingWrap: {
-    gap: 8,
+    gap: spacing.elementGap,
     paddingVertical: 2,
   },
   topBadgeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.elementGap,
   },
   topBadgePill: {
     flexDirection: 'row',
@@ -355,18 +351,13 @@ const s = StyleSheet.create({
   topBadgeText: {
     color: '#ffffff',
     fontSize: 9.5,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   topTagline: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: 0.8,
-  },
-  welcomeHeadline: {
-    fontSize: Platform.OS === 'android' ? 20 : 18,
-    fontWeight: '800',
-    letterSpacing: -0.3,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -413,7 +404,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
-    padding: 14,
+    padding: spacing.pagePadding,
     borderRadius: 20,
     borderWidth: 1,
   },
@@ -426,7 +417,7 @@ const s = StyleSheet.create({
   },
   providerEyebrow: {
     fontSize: 9.5,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   providerVerifiedDot: {
@@ -437,7 +428,7 @@ const s = StyleSheet.create({
   },
   providerTitle: {
     fontSize: Platform.OS === 'android' ? 16 : 15,
-    fontWeight: '800',
+    fontWeight: '600',
   },
   providerCopy: {
     fontSize: 12,
@@ -453,7 +444,7 @@ const s = StyleSheet.create({
   },
   providerOfferText: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   providerCtaPill: {
     flexDirection: 'row',
@@ -462,7 +453,7 @@ const s = StyleSheet.create({
   },
   providerCtaText: {
     fontSize: 12,
-    fontWeight: '800',
+    fontWeight: '600',
   },
 
   // Area 2: Section Header
@@ -470,29 +461,28 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    gap: spacing.elementGap,
   },
   sectionEyebrow: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   sectionTitle: {
-    fontSize: Platform.OS === 'android' ? 18 : 16,
-    fontWeight: '800',
+    ...typography.sectionHeading,
     letterSpacing: -0.2,
   },
 
   // Area 2: Essentials Section
   essentialsSectionWrap: {
-    gap: 8,
-    marginTop: 2,
+    gap: spacing.elementGap,
+    marginTop: 0,
   },
 
   // Area 2: Popular Shortcuts
   shortcutsSectionWrap: {
-    gap: 8,
-    marginTop: 4,
+    gap: spacing.elementGap,
+    marginTop: 0,
   },
   shortcutsScrollContent: {
     gap: 10,
@@ -527,9 +517,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   shortcutTitle: {
-    fontSize: 12.5,
-    fontWeight: '700',
-    lineHeight: 16,
+    ...typography.cardTitle,
     minHeight: 32,
   },
   shortcutMeta: {

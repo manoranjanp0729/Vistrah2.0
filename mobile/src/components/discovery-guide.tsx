@@ -7,7 +7,7 @@ import Feather from '@expo/vector-icons/Feather';
 import {LinearGradient} from 'expo-linear-gradient';
 import brandTheme from '../../../shared/brand-theme.json';
 import copy from '../lib/interface-copy';
-import {useTheme} from '../lib/theme';
+import {useTheme,spacing} from '../lib/theme';
 
 const shortcuts = {
   jobs: {route: '/service/find-jobs', icon: 'briefcase', gradient: ['#2563eb', '#3b82f6']},
@@ -25,7 +25,7 @@ export function DiscoveryGuide() {
   const selected = content[journey];
 
   return (
-    <View style={{gap: 24, marginVertical: 10}}>
+    <View style={{gap: spacing.sectionGap}}>
       {/* 1. INTERACTIVE PATHWAY SECTION */}
       <View style={{gap: 12}}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>

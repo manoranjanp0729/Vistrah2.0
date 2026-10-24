@@ -21,12 +21,13 @@ import {
   type MarketplaceSelection,
 } from '../../../lib/marketplace';
 import {nativeMarketplacePhoto, nativeMarketplaceAlt} from '../../../lib/marketplace-photo';
-import {useTheme} from '../../../lib/theme';
+import {useTheme,spacing,typography} from '../../../lib/theme';
 import {useSession} from '../../../lib/session';
 import {ClassifiedServices} from '../../../components/commerce-browser';
 import {customerListingCopy, listingEnquiryHref} from '../../../../../shared/customer-listing';
 import {officialContact} from '../../../../../shared/public-contact';
 import {serviceSelection} from '../../../../../shared/service-listing';
+import {servicesNavigationAction} from '../../../lib/marketplace-navigation';
 
 export default function Services() {
   const banner=useBannerTheme();
@@ -81,7 +82,11 @@ export default function Services() {
 
   const open = (selection: MarketplaceSelection) => {
     setDraft(null);
-    router.push({pathname: '/services', params: selection});
+    const action=servicesNavigationAction(params,selection);
+    if(action==='none')return;
+    const destination={pathname:'/services' as const,params:selection};
+    if(action==='dismissTo')router.dismissTo(destination);
+    else router.push(destination);
   };
 
   if (!selected) {
@@ -119,7 +124,7 @@ export default function Services() {
     <SafeAreaView edges={['left', 'right']} style={styles.page}>
       <ScrollView
         ref={scroll}
-        contentContainerStyle={[styles.content, {paddingBottom: 36}]}
+        contentContainerStyle={[styles.content, {gap: spacing.sectionGap}]}
         keyboardShouldPersistTaps="handled"
       >
         {isRootLevel&&<EditVistrahContent slug="services"/>}
@@ -392,7 +397,7 @@ export default function Services() {
                   style={({pressed}) => [
                     s.flowCard,
                     {
-                      backgroundColor: isDark ? '#1d172b' : '#ffffff',
+                      backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
                       borderColor: isDark ? '#33264c' : '#e5dbee',
                       opacity: pressed ? 0.88 : 1,
                     },
@@ -612,7 +617,7 @@ export default function Services() {
                         s.flowGridCard,
                         {
                           paddingBottom:seller?56:10,
-                          backgroundColor: isDark ? '#1d172b' : '#ffffff',
+                          backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
                           borderColor: isDark ? '#33264c' : '#e5dbee',
                           opacity: pressed ? 0.88 : 1,
                         },
@@ -630,21 +635,6 @@ export default function Services() {
                         <Text numberOfLines={2} style={[s.flowCardTitle, {color: colors.text}]}>
                           {label(itemId, type.title)}
                         </Text>
-                        <View style={[s.verifiedRow,{flexWrap:'wrap'}]}>
-                          <Feather name="check" size={12} color="#34d399" />
-                          <Text style={{fontSize: 11, color: colors.muted}}>
-                            <UiText value="Direct local listings" />
-                          </Text>
-                        </View>
-                      </View>
-                      <View
-                        style={[
-                          s.actionPill,
-                          s.flowGridAction,
-                          {backgroundColor: isDark ? '#2b1e42' : '#f5effa'},
-                        ]}
-                      >
-                        <Feather name="chevron-right" size={16} color={colors.accent} />
                       </View>
                     </Pressable>
                   </TypeAction>
@@ -688,7 +678,7 @@ export default function Services() {
                       s.flowGridCard,
                       {width:cardWidth??'48%',flexGrow:0,flexShrink:0},
                       {
-                        backgroundColor: isDark ? '#1d172b' : '#ffffff',
+                        backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
                         borderColor: isDark ? '#33264c' : '#e5dbee',
                         opacity: pressed ? 0.88 : 1,
                       },
@@ -706,18 +696,6 @@ export default function Services() {
                       <Text numberOfLines={2} style={[s.flowCardTitle, {color: colors.text}]}>
                         {label(itemId, sub.title)}
                       </Text>
-                      <Text style={{fontSize: 11, color: colors.muted}}>
-                        {sub.listing_types.length} <UiText value="specialized service types" />
-                      </Text>
-                    </View>
-                    <View
-                      style={[
-                        s.actionPill,
-                          s.flowGridAction,
-                        {backgroundColor: isDark ? '#2b1e42' : '#f5effa'},
-                      ]}
-                    >
-                      <Feather name="chevron-right" size={16} color={colors.accent} />
                     </View>
                   </Pressable>
                 );
@@ -846,7 +824,7 @@ const s = StyleSheet.create({
   },
   sellerWelcomeText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 
   // Interactive Breadcrumb Flow Bar
@@ -889,7 +867,7 @@ const s = StyleSheet.create({
     fontWeight: '600',
   },
   crumbActiveText: {
-    fontWeight: '800',
+    fontWeight: '600',
   },
 
   // Hero
@@ -927,7 +905,7 @@ const s = StyleSheet.create({
   },
   heroBadgeText: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1.1,
     color: '#fff',
   },
@@ -948,7 +926,7 @@ const s = StyleSheet.create({
   heroTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
     lineHeight: Platform.OS === 'android' ? 27 : 24,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: -0.3,
     color: '#ffffff',
   },
@@ -970,19 +948,18 @@ const s = StyleSheet.create({
   },
   sectionEyebrow: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1.1,
   },
   sectionTitle: {
     fontSize: Platform.OS === 'android' ? 18 : 16,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: -0.2,
   },
 
   flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:10,alignItems:'stretch'},
   flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,flexGrow:1},
   flowGridPhoto:{width:'100%',height:undefined,aspectRatio:16/9},
-  flowGridAction:{position:'absolute',right:8,top:8},
   // Flow Cards (Subcategories & Listing Types)
   flowCard: {
     flexDirection: 'row',
@@ -1002,27 +979,12 @@ const s = StyleSheet.create({
     height: 68,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#eee',
+    backgroundColor: '#eeeeeed9',
     flexShrink: 0,
   },
   flowCardTitle: {
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 18,
+    ...typography.cardTitle,
   },
-  verifiedRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  actionPill: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   // Level 4 Journey Card
   journeyCard: {
     padding: 14,
@@ -1032,12 +994,12 @@ const s = StyleSheet.create({
   },
   journeyEyebrow: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   journeyTitle: {
     fontSize: 15,
-    fontWeight: '800',
+    fontWeight: '600',
   },
   stepsRow: {
     flexDirection: 'row',
@@ -1057,7 +1019,7 @@ const s = StyleSheet.create({
     backgroundColor: '#7741c4',
     color: '#fff',
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: '600',
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -1077,7 +1039,7 @@ const s = StyleSheet.create({
   },
   sellerOfferTitle: {
     fontSize: 13,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   addServiceBtn: {
     borderRadius: 12,
@@ -1092,14 +1054,14 @@ const s = StyleSheet.create({
   },
   addServiceText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#fff',
   },
 
   // Sister Listing Chips
   sectionSubtitleLabel: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: 0.5,
   },
   sisterChipsRow: {

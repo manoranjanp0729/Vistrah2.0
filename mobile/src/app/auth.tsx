@@ -19,13 +19,13 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
   if(consentMode.register!==register||consentMode.seller!==seller){setConsentMode({register,seller});setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(){
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?t('validation.authRegister'):t('validation.authSignIn'));return;}
-    setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined,seller);setPassword('');const next=sellerReturnDestination(seller,params.next);if(next)router.replace(next);else if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}
+    setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined,seller);setPassword('');const next=sellerReturnDestination(seller,params.next);if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   async function submitGoogle(credential:string){
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}
     setBusy(true);try{
       await signInWithGoogle({credential},seller);
-      setPassword('');const next=sellerReturnDestination(seller,params.next);if(next)router.replace(next);else if(router.canGoBack())router.back();else router.replace('/account');
+      setPassword('');const next=sellerReturnDestination(seller,params.next);if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');
     }catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   if(seller&&!ready)return <Page><Loading/></Page>;

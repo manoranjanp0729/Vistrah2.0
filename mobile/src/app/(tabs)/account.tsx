@@ -9,7 +9,7 @@ import Feather from '@expo/vector-icons/Feather';
 import {router} from 'expo-router';
 import {Page,Action,Loading,ErrorPanel} from '../../components/ui';
 import {useSession} from '../../lib/session';
-import {useTheme} from '../../lib/theme';
+import {useTheme,spacing} from '../../lib/theme';
 import {LinearGradient} from 'expo-linear-gradient';
 
 function FeatureBannerButton({
@@ -104,13 +104,13 @@ function FeatureBannerButton({
 
 function Row({label,icon,onPress,external=false}:{label:string;icon:ComponentProps<typeof Feather>['name'];onPress:()=>void;external?:boolean}){const {colors,styles}=useTheme();return <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel={label+(external?', opens website':'')} onPress={onPress} style={({pressed})=>({minHeight:54,padding:14,flexDirection:'row',alignItems:'center',gap:12,backgroundColor:pressed?colors.background:colors.surface})}><Feather name={icon} size={18} color={colors.text}/><Text style={[styles.text,{flex:1,fontSize:13,lineHeight:18}]}><UiText value={label}/></Text><Feather name={external?'external-link':'chevron-right'} size={16} color={colors.muted}/></UiElement>;}
 function Group({children}:{children:ReactNode}){const {colors}=useTheme();return <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,gap:1,backgroundColor:colors.border}}>{children}</View>;}
-function Section({title,subtitle,children}:{title:string;subtitle:string;children:ReactNode}){const {styles}=useTheme();return <View style={{gap:8}}><View style={{gap:2}}><Text accessibilityRole="header" style={styles.heading}><UiText value={title}/></Text><Text style={[styles.muted,{fontSize:12}]}><UiText value={subtitle}/></Text></View><Group>{children}</Group></View>;}
+function Section({title,subtitle,children}:{title:string;subtitle:string;children:ReactNode}){const {styles}=useTheme();return <View style={{gap:spacing.elementGap}}><View style={{gap:spacing.small}}><Text accessibilityRole="header" style={styles.heading}><UiText value={title}/></Text><Text style={[styles.muted,{fontSize:12}]}><UiText value={subtitle}/></Text></View><Group>{children}</Group></View>;}
 
 export default function Account(){const {colors,styles}=useTheme();const banner=useBannerTheme();const {copy,t}=useLanguage();
  const session=useSession(false);const sellerSession=useSession(true);const [error,setError]=useState(''),[busy,setBusy]=useState(false);
  async function logout(){setBusy(true);setError('');try{await session.signOut();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
  const roleLabel=session.user?.role==='ADMIN'?'Administrator':'Customer';
- return <Page>
+ return <Page sectioned>
   <View style={{gap:10}}>
     <UiElement as={FeatureBannerButton}
       title="Membership Plan"

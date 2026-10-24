@@ -13,25 +13,28 @@ type Palette = typeof palettes.dark;
 
 export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',text:'#6d4524'},{background:'#e8e4f5',text:'#493a69'},{background:'#dfece3',text:'#294934'}];
 
-// Existing visual values only; component headings retain their Android-specific sizing.
+// Shared text hierarchy across the phone website and native screens.
 export const typography={
  title:{fontSize:24,lineHeight:29,fontWeight:'600'},
  heading:{fontSize:18,lineHeight:23,fontWeight:'600'},
- sectionHeading:{fontSize:Platform.OS==='android'?22:18,lineHeight:Platform.OS==='android'?28:23,fontWeight:'600'},
- body:{fontSize:14,lineHeight:20},
- supporting:{fontSize:12,lineHeight:18},
+ sectionHeading:{fontSize:18,lineHeight:23,fontWeight:'600'},
+ cardTitle:{fontSize:13,lineHeight:18,fontWeight:'600'},
+ body:{fontSize:14,lineHeight:20,fontWeight:'400'},
+ supporting:{fontSize:12,lineHeight:18,fontWeight:'400'},
  label:{fontSize:10,lineHeight:14,letterSpacing:.7},
- action:{fontSize:Platform.OS==='android'?14:13,fontWeight:'600'},
+ action:{fontSize:13,lineHeight:18,fontWeight:'600'},
  input:{fontSize:14},
 } as const;
-export const spacing={small:4,fieldGap:8,cardGap:10,regular:12,controlPadding:14,pagePadding:16,pageBottom:28} as const;
+// Dense rhythm: related elements 6, page/section flow 8, panel padding 12.
+// Keep control sizing and measured grid geometry independent.
+export const spacing={small:4,fieldGap:8,cardGap:6,elementGap:6,regular:12,controlPadding:14,pagePadding:16,pageGap:8,sectionGap:8,sectionPadding:12,pageBottom:16} as const;
 export const radii={input:14,action:17,surface:20} as const;
 export const controlHeights={compact:44,standard:50,multiline:120} as const;
 export const layout={pageMaxWidth:900,borderWidth:1} as const;
 
 const makeStyles=(colors:Palette)=>StyleSheet.create({
   page:{flex:1,backgroundColor:colors.background},
-  content:{padding:spacing.pagePadding,paddingBottom:spacing.pageBottom,gap:spacing.regular,width:'100%',maxWidth:layout.pageMaxWidth,alignSelf:'center'},
+  content:{padding:spacing.pagePadding,paddingBottom:spacing.pageBottom,gap:spacing.pageGap,width:'100%',maxWidth:layout.pageMaxWidth,alignSelf:'center'},
   title:{...typography.title,color:colors.text},
   heading:{...typography.heading,color:colors.text},
   text:{...typography.body,color:colors.text},

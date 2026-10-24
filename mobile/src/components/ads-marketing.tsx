@@ -1,5 +1,5 @@
 import {Text} from './typography';
-import {useTheme} from '../lib/theme';
+import {useTheme,spacing,typography} from '../lib/theme';
 import {UiText,UiElement} from "./localized-ui";
 import {useState} from 'react';
 import {useLanguage} from '../lib/language';
@@ -57,7 +57,7 @@ export function AdsMarketing(){
  </LinearGradient>;
 }
 const s=StyleSheet.create({
- section:{backgroundColor:'#7741c4',borderRadius:20,padding:12,paddingTop:Platform.OS==='android'?18:12,paddingBottom:10,gap:Platform.OS==='android'?8:12,overflow:'hidden'},
+ section:{backgroundColor:'#7741c4',borderRadius:20,padding:spacing.pagePadding,gap:spacing.elementGap,overflow:'hidden'},
  blueGlow:{position:'absolute',right:-65,top:-75,width:210,height:210,borderRadius:105,backgroundColor:'#bca5ff',opacity:.22},
  pinkGlow:{position:'absolute',left:-70,top:135,width:180,height:180,borderRadius:90,backgroundColor:'#ffc5e3',opacity:.18},
  hero:{flexDirection:'row',alignItems:Platform.OS==='android'?'flex-start':'center',gap:8,padding:Platform.OS==='android'?0:2,marginBottom:Platform.OS==='android'?10:0},
@@ -87,6 +87,6 @@ const s=StyleSheet.create({
  image:{aspectRatio:16/9,marginTop:5,marginHorizontal:5,borderRadius:design.imageRadius,overflow:'hidden'},
  cardImage:{position:'absolute',top:0,left:0,width:'100%',height:'100%'},
  cardContent:{paddingTop:8,paddingHorizontal:9,paddingBottom:10,gap:6},
- cardTitle:{fontSize:design.titleSize+(Platform.OS==='android'?3:0),lineHeight:Platform.OS==='android'?22:design.titleLineHeight,fontWeight:'600',color:'#382448'},
+ cardTitle:{...typography.cardTitle,color:'#382448'},
  cardDescription:{fontSize:Platform.OS==='android'?13:11,lineHeight:Platform.OS==='android'?20:16,color:'#665a73'},
 });

@@ -20,7 +20,7 @@ export default function AdvertiserProfile() {
       style={{flex: 1, backgroundColor: colors.background}}
       contentContainerStyle={s.container}
     >
-      <Pressable style={s.back} onPress={() => router.back()}>
+      <Pressable style={s.back} onPress={() => router.dismissTo('/v-ads')}>
         <Feather name="arrow-left" size={22} color={colors.text}/>
         <Text style={{color: colors.text}}><UiText value={"Back to V Ads"}/></Text>
       </Pressable>
@@ -95,7 +95,7 @@ export default function AdvertiserProfile() {
         <Pressable
           key={video.id}
           style={[s.videoCard, {backgroundColor: colors.surface, borderColor: colors.border}]}
-          onPress={() => router.navigate({pathname:'/v-ads',params:{video:video.id}})}
+          onPress={() => router.dismissTo({pathname:'/v-ads',params:{video:video.id}})}
         >
           <Feather name="play-circle" size={27} color={colors.accent}/>
           <Text style={{color: colors.text, flex: 1}}>{video.title}</Text>

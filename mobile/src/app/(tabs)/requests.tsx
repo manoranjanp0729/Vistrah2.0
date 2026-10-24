@@ -151,7 +151,7 @@ export default function VistrahEssentials() {
   }, [reducedMotion, paddySway, ecg]);
 
   return (
-    <Page>
+    <Page sectioned>
       {/* 1. SIGNATURE VISTRAH ESSENTIALS HERO */}
       <LinearGradient
         colors={banner.gradient}

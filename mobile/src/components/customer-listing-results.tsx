@@ -26,7 +26,7 @@ export function ClassifiedServices({selection}:{selection:ServiceSelection}){
 function ClassifiedList({selection}:{selection:ServiceSelection}){
   const {styles}=useTheme(),{user}=useSession();const [page,setPage]=useState(1);
   const result=useResource<ListingPage<CommerceListing>>('/commerce/classified-services?'+new URLSearchParams({...selection,page:String(page)}),user?.id??null);
-  const related=()=>router.push({pathname:'/services',params:{category:selection.category,subcategory:selection.subcategory}});
+  const related=()=>router.dismissTo({pathname:'/services',params:{category:selection.category,subcategory:selection.subcategory}});
   const status=result.error instanceof ApiError?result.error.status:null;
   return <View style={{gap:14}}><Heading title={copy.heading}/><Text style={styles.muted}><UiText value={copy.guidance}/></Text><UiElement as={Action} label="Refresh options" secondary disabled={result.loading} onPress={result.retry}/>
     {result.loading?<Loading/>:result.error?<><ErrorPanel error="We could not load the options. Please try again." retry={result.retry}/>{status===401&&<UiElement as={Action} auth label="Sign in and continue" onPress={()=>router.push('/auth')}/>}{status===403&&<UiElement as={Action} label="View membership" onPress={()=>router.push('/membership')}/>}<UiElement as={Action} label="Explore related options" secondary onPress={related}/></>:result.data?<>

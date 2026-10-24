@@ -6,6 +6,10 @@ node_modules/
 .tools/
 __pycache__/
 .pytest_cache/
+/.pytest_cache
+/.pytest_cache/**
+/.tmp_pytest_cache
+/.tmp_pytest_cache/**
 *.pyc
 *.tsbuildinfo
 *.db

@@ -1,5 +1,6 @@
 import {useAppFont} from '../components/typography';
 import {BundledFonts} from '../lib/bundled-fonts';
+import {FontPreferenceProvider} from '../lib/font-preference';
 import {LanguageProvider,useLanguage} from '../lib/language';
 import {AppHeader} from '../components/app-header';
 import * as SplashScreen from 'expo-splash-screen';
@@ -14,7 +15,7 @@ import {LocationProvider} from '../lib/location';
 import {ThemeProvider,useTheme} from '../lib/theme';
 import {WebsiteRouteBridge} from '../components/website-route-bridge';
 if(Platform.OS!=='web')void SplashScreen.preventAutoHideAsync().catch(()=>{});
-export default function RootLayout(){return <ThemeProvider><LanguageProvider><BundledFonts><ThemedRoot/></BundledFonts></LanguageProvider></ThemeProvider>;}
+export default function RootLayout(){return <ThemeProvider><LanguageProvider><BundledFonts><FontPreferenceProvider><ThemedRoot/></FontPreferenceProvider></BundledFonts></LanguageProvider></ThemeProvider>;}
 function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTheme();const {t}=useLanguage();
   return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{header:()=> <AppHeader showBack/>,contentStyle:{backgroundColor:colors.background}}}>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="(tabs)" options={{headerShown:false}}/>

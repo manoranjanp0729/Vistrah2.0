@@ -406,7 +406,7 @@ export default function Services() {
                   <View style={s.flowPhoto}>
                     <Image
                       source={nativeMarketplacePhoto(result.id)}
-                      resizeMode="cover"
+                      resizeMode="contain"
                       accessibilityLabel={nativeMarketplaceAlt(result.id) ?? result.title}
                       style={StyleSheet.absoluteFill}
                     />
@@ -626,7 +626,7 @@ export default function Services() {
                       <View style={[s.flowPhoto,s.flowGridPhoto]}>
                         <Image
                           source={nativeMarketplacePhoto(itemId)}
-                          resizeMode="cover"
+                          resizeMode="contain"
                           accessibilityLabel={nativeMarketplaceAlt(itemId) ?? type.title}
                           style={StyleSheet.absoluteFill}
                         />
@@ -687,7 +687,7 @@ export default function Services() {
                     <View style={[s.flowPhoto,s.flowGridPhoto]}>
                       <Image
                         source={nativeMarketplacePhoto(itemId)}
-                        resizeMode="cover"
+                        resizeMode="contain"
                         accessibilityLabel={nativeMarketplaceAlt(itemId) ?? sub.title}
                         style={StyleSheet.absoluteFill}
                       />

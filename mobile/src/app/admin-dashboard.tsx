@@ -823,7 +823,7 @@ export default function AdminDashboard() {
                   </LinearGradient>
                   <View style={{flex: 1}}>
                     <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Edit Vistrah"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Define sections, variations, features and running photos."}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Choose a page, tap a section, and edit its content."}/></Text>
                   </View>
                   <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
                 </Pressable>
@@ -1686,7 +1686,7 @@ export default function AdminDashboard() {
       )}
       {/* 10. EDIT VISTRAH TAB */}
       {activeTab === 'edit-vistrah' && (
-        <AdminEditVistrahTab adminTheme={adminTheme} />
+        <AdminEditVistrahTab />
       )}
 
       {/* 11. HOMEPAGE TAB */}

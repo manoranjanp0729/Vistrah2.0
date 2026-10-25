@@ -518,6 +518,8 @@ export function editVistrahClient(fetcher: <T>(path: string, options?: RequestIn
         method: 'DELETE',
       }),
     getLibrary: () => fetcher<SectionLibraryItem[]>('/admin/edit-vistrah/library'),
+    getPublishedPage: (slug:string) => fetcher<LiveVistrahPage>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}/published`),
+    unpublishPage: (slug:string,revision:number) => fetcher<VistrahPage>(`/admin/edit-vistrah/pages/${encodeURIComponent(slug)}/unpublish`,{method:'POST',body:JSON.stringify({revision})}).then(remember),
     getLivePage: (slug: string) => fetcher<LiveVistrahPage>(`/edit-vistrah/pages/${encodeURIComponent(slug)}`),
   };
 }
@@ -545,6 +547,7 @@ export async function loadVistrahEditor(client:ReturnType<typeof editVistrahClie
 
 export function editorPageStatus(page:VistrahPage){
  if(page.content_source==='APP')return 'App content';
+ if(page.content_source==='DRAFT')return page.published_version?'Unpublished (previous v'+page.published_version+')':'Draft';
  if(page.published_version)return 'Live v'+page.published_version+(page.status==='DRAFT'?' + draft':'');
  return 'Draft';
 }

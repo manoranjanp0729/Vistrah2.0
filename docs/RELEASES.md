@@ -2,6 +2,342 @@
 
 Phase 2 source preparation, 13 October 2026. No production deployment is wired.
 
+## Read-only readiness audit - Phase 2, 25 October 2026
+
+**Verdict: BLOCKED. No deployment or publication is authorized.** This audit
+used local source/profile/container metadata and connected GitHub read APIs only.
+No AWS API request, authentication/login, SSH connection, Instance Connect key
+authorization, container start/stop, build, migration, volume operation, workflow
+dispatch or billing/security change occurred. V Ads publishing remains ON HOLD.
+Only this audit record and the handoff were updated; application/release code and
+all pending user changes were retained.
+
+### Access and live-inventory boundary
+
+- Current AWS configuration identifies `default` and `vistrah-login` as **root
+  login sessions**. `vistrah-terraform` delegates its credential process to
+  `vistrah-login`; it does not establish a separate restricted role. No role/SSO
+  profile or environment-backed non-root identity was evidenced. Credentials were
+  not refreshed or used: even STS identity verification would use the prohibited
+  root sessions. Validity/expiry was therefore not probed with AWS APIs.
+- Existing records identify instance **i-0dbdebb8b05f15783**, region
+  **ap-south-1**, previously recorded type **t3.small**. **Current running state
+  and type are NOT VERIFIED.** Historical observations are not a live inventory.
+  No public addresses, account identifiers or private environment values are
+  included in this audit record.
+- There is no local SSH config/project alias, and the existing SSH agent reports
+  no available identities. Known-host records exist, but prove neither permission
+  nor current authentication. The earlier successful preflight used temporary
+  EC2 Instance Connect authorization; permanent SSH access was not established
+  by that event. The old script's `-UseInstanceConnect` would perform a cloud
+  write and was **not invoked**. No private key was opened, copied or repaired.
+- Consequently **remote host inspection stopped**. Actual EC2 health/capacity,
+  Docker state/images, live mounts, free storage and database revision remain
+  unknown. Do not infer that AWS is healthy, stopped or broken from this boundary.
+
+### Verified local runtime versus AWS source
+
+The following five **local** `vistrah20` containers are running and healthy.
+These observations are not AWS checks and do not prove the pending source is
+already running. IDs below are shortened Docker image IDs, **not GHCR manifest
+digests** or accepted rollback artifacts.
+
+| Local service | Configured image reference | Running image ID | Verified local state mounts |
+|---|---|---|---|
+| API | `vistrah20-api` | `0f977e75dc5d` | `vistrah20_api_data` at `/data`; development bind at `/data/v-ads-e` |
+| Worker | `vistrah20-worker` | `a9e4fd17c97b` | Same `vistrah20_api_data` at `/data` |
+| Website | `vistrah20-web` | `f574fc18a81c` | None |
+| Admin | `vistrah20-admin` | `e605ba3d2563` | None |
+| PostgreSQL | `postgres:16.6-alpine` | `1d04b9ba1d49` | `vistrah20_postgres_data` at `/var/lib/postgresql/data` |
+
+Local API uses direct Uvicorn, local worker uses its workflow-worker command,
+and neither has a custom entrypoint. Container image metadata/retained-image and
+registry digest evidence were not successfully established; running-container
+health does not prove that an old image can be recreated for rollback.
+
+| Arrangement | Source/observed difference |
+|---|---|
+| Local `compose.yaml` | Builds API/worker separately from the same backend Dockerfile and builds website/admin; API/worker share persistent `/data`. Phone development is separate from those five containers. Actual local refs/IDs are above. |
+| AWS `compose.cloud.yaml` source | No app builds; five local `vistrah20-*:latest` refs with `pull_policy: never`; direct Uvicorn; worker opt-in; PostgreSQL/Caddy volumes, but **no API `/data` mount**. Actual remote files/overrides/images are unverified. |
+| Prepared `compose.release.yaml` | Four digest-pinned GHCR artifact refs; worker shares the normal API artifact; still explicit-pull/never-implicit-pull. Image refs only: no data, command, environment, profile or mount changes. Not applied. |
+
+Do not copy the local development mirror bind to AWS or attach local/test volumes
+to a different environment. Do not replace the live Compose file with the source
+template without preserving inspected existing mounts and overrides.
+
+### Data, backups and source review
+
+- Source head is **023**, not a verified live database revision. No database was
+  queried. The old 006/011 helpers, restore-at-012 script and 020 runbook examples
+  are not current migration instructions. Default backend image CMD still
+  migrates/seeds; inspect actual entrypoints/commands and retain direct-Uvicorn
+  activation. Never use migration/seed execution as an inventory check.
+- `backend/app/edit_vistrah_store.py` stores CMS drafts/publications in
+  `/data/edit_vistrah_data.json` when `/data` exists, unless explicitly configured
+  otherwise. That is **outside PostgreSQL**. V Ads media is also file-backed.
+  If the AWS API uses an unmounted container layer, replacement can lose this
+  information. Actual files/existence/sizes/mounts were not inspected remotely,
+  so this is a concrete source-based risk, not proof that AWS data is already
+  lost. A PostgreSQL-only backup would not preserve those files.
+- No relevant failed-copy backup log was found in the checked known project,
+  release-artifact or adjacent backup locations. No archive or application data
+  was opened. The two reported failed copies cannot be diagnosed or counted as
+  successful recovery evidence without their actual log and verified artifacts.
+  Hash listing and an existing snapshot alone are not a restore rehearsal.
+- The branch is unchanged at `feature/simplify-admin-dashboard`, HEAD
+  `2300942e523a87d4da3401692b21acaac2cb5458`, with **65 pending paths**. Counts:
+  admin7, backend3, frontend4, mobile37, shared6, scripts2, docs3, workflows1,
+  infra1 and root deploy1. They require four image builds and five service
+  reviews, not automatic replacement of every service.
+- Filename review and high-confidence AWS/GitHub-token/private-key-envelope
+  checks in candidate text files under1MB found no matching secrets. This is a
+  limited heuristic, **not** a no-secret guarantee or approval to commit all.
+  Private envs, keys, DB dumps, signing files, dependency trees and generated
+  artifact/build directories are ignored in the tested paths. No generated
+  cache directory was present in the 65-path plan.
+- `mobile/src/components/Untitled-1.txt` is an unclassified scratch file: review
+  it privately and exclude it from any proposed commit until purpose/content
+  is approved; do not delete it automatically. A hypothetical root `image.tar`
+  is **not Git-ignored**, although Docker context exclusions cover tar files.
+  Keep exported images out of Git through a separately reviewed ignore/output
+  decision. There is no such archive in the current candidate list.
+- The font TTFs, OFL notices, provenance JSON and bundled license JSON are
+  intentional source assets for the approved Settings feature, not disposable
+  build caches. Preserve them with the reviewed feature; do not strip notices
+  or blindly exclude them merely because a helper generated their metadata.
+
+### GitHub publishing readiness
+
+The connected GitHub read API works; installing GitHub CLI is not a prerequisite
+to reading metadata. A fresh read of `main/.github/workflows/publish-images.yml`
+shows the **registration-only stub**, blob
+`8f0a45535c6bbf42c5fefa599f4d90fe8fef7a65`, whose only job instructs branch
+selection and exits1. It is not the locally prepared full release publisher.
+[Verified remote file](https://github.com/manoranjan247p-source/Vistrah2.0/blob/main/.github/workflows/publish-images.yml).
+
+The connector found no PR-triggered workflow runs for local HEAD; its endpoint
+does not enumerate every event type, so this is not a claim that all historical
+CI is absent. No green full-CI evidence for the pending working tree or complete
+approved four-image digest record was established. Registry visibility/access,
+current quota, image retention, scans/runtime smoke and rollback evidence remain
+unverified. The held candidate path only produces three server images and may
+not be substituted for the four-image production/phone path.
+
+### Ordered blockers and exact safe fixes (not executed)
+
+1. **Permitted identity/access first.** Use an already approved, verified
+   **non-root read-only operator session** for the next inventory. Do not log in
+   as root, run the delegated root credential process, create access keys/roles,
+   request AdministratorAccess or change security rules in this audit. If no
+   such existing session is available, stop until an authorized access owner
+   resolves that prerequisite outside this run.
+2. **Verify the actual instance, then permitted SSH.** An authorized non-root
+   operator can run the following narrowly projected read (not executed here):
+
+   ```powershell
+   aws ec2 describe-instances --profile EXISTING_APPROVED_NONROOT_PROFILE --region ap-south-1 --instance-ids i-0dbdebb8b05f15783 --query 'Reservations[].Instances[].{InstanceId:InstanceId,State:State.Name,Type:InstanceType}' --output json --no-cli-pager
+   ```
+
+   Do not add addresses/envs to the projection. Establish that an existing SSH
+   session/key is already authorized before host inspection; do not send an
+   Instance Connect key, weaken host-key checks or change an allowlist as a
+   shortcut. Record actual project labels, container images/entrypoints/commands,
+   volume identities and free disk/RAM through that permitted session only.
+3. **Prove persistence and recovery before replacement.** Collect metadata-only
+   evidence of `/data`/CMS/media existence, sizes and backing mounts without
+   printing file contents or private envs. Obtain the two failed-copy logs from
+   their actual location and resolve the evidenced error, not a guessed cause.
+   Before migration/deployment, separately approve consistent protected backups,
+   checksum verification and restore rehearsal on a disposable target. Never
+   overwrite an existing database/volume or create a shadow empty mount.
+4. **Review source hygiene and immutable source identity.** Resolve/exclude the
+   scratch file and generated image-archive handling with user approval; review
+   the complete diff and only explicitly approved files. Committing, pushing and
+   merging require separate authorization. Do not stash/reset/switch branches or
+   install GitHub CLI merely to bypass the missing source-approval step.
+5. **Repair the approved publishing path, not the hold.** After explicit source
+   approval, review/merge the prepared publisher to the intended branch and pass
+   full CI/audits. Only a later explicit instruction may resume publishing;
+   retain the V Ads hold until then. Require main's exact SHA/confirmation and a
+   complete successful four-image digest/run record, private registry access,
+   runtime/scan evidence and retained previous artifacts. Do not dispatch the
+   registration stub or use a partial/held candidate as a deployable release.
+6. **Approve schema-compatible activation last.** Determine the actual database
+   revision and every pending migration up to the approved source; rehearse the
+   full range and previous-image compatibility. Separately approve writer
+   fencing, migration and precise service/digest rollout. Preserve PostgreSQL,
+   API state and media mounts; worker remains opt-in. Stop on failed checks;
+   rollback application refs/config only when compatible, never an automatic
+   downgrade, normal-volume deletion or database restore.
+
+Recommended immediate next action: obtain the sanitized instance inventory and
+established-access evidence from an **existing non-root read-only operator**.
+Until that prerequisite is met, more deployment attempts cannot establish live
+readiness. No new AWS resources, services, paid capacity or workflow jobs were
+started by this audit. **AWS deployment readiness remains BLOCKED.**
+
+## One-command AWS preparation - Phase 1, 25 October 2026
+
+**Local preparation only. V Ads publishing remains ON HOLD; production is
+BLOCKED.** No build, image publication, GitHub dispatch, AWS/SSH access, database
+operation or deployment is authorized by this section. Earlier approval/hold
+records below remain in force. No existing local changes were committed/stashed
+or moved to another branch. This deployment-preparation phase is separate from
+the numbered production implementation phases.
+
+From Windows PowerShell at `E:\Vistrah 2.0`:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\deploy.ps1 -Preflight
+```
+
+It requires only Git and Windows PowerShell 5.1 or newer. It reads local source,
+Git paths and tool availability; it does not load private env files or invoke
+Docker, AWS, SSH, GitHub, HTTP, builds or other deployment helpers. Git optional
+index refresh/fsmonitor/external diff/textconv are disabled. The index and all
+working files are retained. Exit **2** means a blocked preparation report (the
+expected result), not a failed rollout. Missing `-Preflight` refuses execution;
+no publish/deploy/force/bypass mode is implemented.
+
+For a complete source comparison, supply the **full last verified deployed
+commit** from the release record; do not guess it from HEAD. Optional image-record
+validation remains offline and cannot prove registry or CI success:
+
+```powershell
+# Replace with reviewed evidence; no credentials belong in the JSON record.
+.\deploy.ps1 -Preflight -BaseCommit <40-character-deployed-sha> -ReleaseFile .\approved-release.json -Format Json
+```
+
+Without `-BaseCommit`, the report covers pending tracked/untracked edits relative
+to HEAD only; committed changes since the last deployment are unknown. Renames
+are conservatively treated as deletion plus addition. The manifest must contain
+`schemaVersion: 1`, `environment: "aws-test"`, `sourceCommit` matching inspected
+HEAD, this repository's `workflowRun` URL and an `images` object with **all four**
+`api`, `web`, `admin`, `phone-web` values of the form
+`ghcr.io/manoranjan247p-source/vistrah2.0/<component>@sha256:<64-lowercase-hex>`.
+Tags, `latest`, candidate packages, foreign namespaces, a separate worker image,
+wrong source and production records are rejected. A valid format is **not**
+verified-image promotion; the report always keeps deployment disabled.
+
+### Build impact and reuse
+
+The mapping follows the inspected Dockerfile COPY boundaries, including shared
+inputs; it is conservative, not a replacement for full CI or API compatibility QA.
+
+| Changed input | Proposed services | Published artifact |
+|---|---|---|
+| `backend/app`, migrations, requirements, Alembic config, backend Dockerfiles | API and worker review | Normal `api` image; worker stays opt-in |
+| `frontend/` except `Dockerfile.phone` | Website | `web` |
+| `admin/` | Admin | `admin` |
+| `admin/lib/v-ads-preview.ts` | Website and admin | `web`, `admin` |
+| `mobile/`, `frontend/Dockerfile.phone`, `infra/aws-test/Caddyfile.phone` | Phone website | `phone-web` (not an APK or OTA update) |
+| `shared/`, `.dockerignore` | All five service reviews | All four images |
+| `scripts/interface-phrases.json` | Website | `web` |
+| Compose, proxy configuration, workflows, operational scripts | Explicit operational review | No inferred service recreation |
+| Backend tests/docs only | CI/review | No app image inferred |
+
+Only `publish-images.yml` builds/publishes approved release images; `ci.yml` stays
+the reusable validation pipeline. Main release dispatch now additionally requires
+`release_confirmation` exactly **PUBLISH VERIFIED RELEASE** and `release_sha`
+equal to the approved full main workflow commit, checked before full CI and the
+unchanged four-image matrix. Candidate SHA/confirmation/ancestry,
+three-image scope and isolated server-only CI exception remain unchanged. This
+confirmation is operator intent, not an independent approval or a waiver of the
+V Ads hold. MapTiler's existing public variable is now passed to the main website's
+actual `NEXT_PUBLIC_MAPTILER_API_KEY` argument, as already done for candidates.
+No keys, provider, private credential or paid configuration was added.
+
+### How approved local changes will reach AWS (future, separately authorized)
+
+1. Review the local diff/untracked files; separately authorize the exact commit,
+   push and PR/merge. Current `feature/simplify-admin-dashboard` is not a publishing
+   target. Dirty local bytes cannot be included by a GitHub build. Do not auto-pull,
+   switch/stash/reset or commit to make a dirty checkout look release-ready.
+2. Resume publication only on explicit approval after resolving the hold and
+   existing blockers. Reuse the main workflow with full CI/mobile audit gates;
+   hosted registration/current workflow bytes remain unverified by local checks.
+   The held protected candidate path produces only API/web/admin test candidates,
+   not a complete phone-web release, and is not an alternate production path.
+3. Record the successful **complete** publish run, source SHA, four GHCR manifest
+   digests, `linux/amd64` architecture, public build settings and smoke/scan results.
+   Verify private package/read access without printing credentials. The existing
+   candidate FFmpeg/FFprobe/MP4-validator smoke is reusable evidence logic; main
+   publication alone does not prove that smoke ran. Do not accept a partial matrix
+   or translate a Docker image ID into a registry manifest digest by assumption.
+4. Rehearse promotion and image/config rollback using synthetic data in an
+   explicitly disposable environment. Then inventory the real EC2 project,
+   commands/entrypoints, architecture, free disk/RAM, existing mounts and current
+   schema. Verify protected backups and media/API-state preservation. These are
+   future gates, not observations from Phase 1.
+5. After **separate deployment confirmation** for exact digests/services/target,
+   an operator explicitly pulls only approved GHCR digest refs, retaining the
+   previous images/configuration. Use new opt-in
+   `infra/aws-test/compose.release.yaml` after the existing `compose.cloud.yaml`
+   with `VISTRAH_RELEASE_API_IMAGE`, `VISTRAH_RELEASE_WEB_IMAGE`,
+   `VISTRAH_RELEASE_ADMIN_IMAGE`, `VISTRAH_RELEASE_PHONE_WEB_IMAGE` set from that
+   record. Retain the previous verified refs for any services not selected for
+   replacement; do not leave unapproved future refs in their effective config.
+   Worker uses the **normal API** image with its inherited worker command;
+   never substitute the Uvicorn-only V Ads runtime artifact.
+6. Only after all gates, recreate the specifically approved app services using
+   `up -d --no-deps --no-build --pull never --wait` with both Compose files and the
+   **existing exact** project/private env. No unqualified `compose up`, `down -v`,
+   prune, migration-on-start or `--profile worker` activation. The overlay changes
+   only image refs, keeps explicit-pull `pull_policy: never`, and does not add or
+   alter PostgreSQL, volumes, media, API state, proxy, ports, commands or profiles.
+   Pulls happen explicitly before activation, never as an implicit side effect.
+
+Legacy `build-phone-website.ps1`, `deploy-phone-website.ps1` and
+`activate-phone.sh` remain unchanged for their separately approved tar/local-tag
+path; the new command does **not** call them or silently bypass GHCR/CI. In
+particular, the legacy `-PreflightOnly -UseInstanceConnect` sends a temporary
+SSH public key and creates key copies, so it is not this offline read-only mode.
+The historical 006/011 migration helpers and `restore-cloud.sh` are not generic
+AWS updaters and must not be called against today's normal database.
+
+### State, migration, health and application rollback gates
+
+- **Source head is currently 023; live revision is unknown.** Old 020 runbook
+  commands are dated evidence, not the current approved migration range. Source
+  preflight reads revision declarations without importing/running the backend.
+  Determine the actual full pending range privately before rollout. Explicitly
+  authorize all-writer fencing, protected file-based PostgreSQL backup/hash and
+  restore rehearsal on a disposable clone. Never seed or run `upgrade head` or
+  automatic downgrade/restore. A release with no changed migration file still
+  needs schema/API compatibility checks against the actual target.
+- **API file-state blocker:** base AWS Compose has no `/data` mount. Existing
+  CMS content/evidence/state may reside in a container layer or an uninspected
+  override. Verify and preserve the real state before API replacement. Do not
+  invent/create a new volume, shadow populated data with an empty mount, copy a
+  private env into images, or attach test/production media interchangeably.
+  Existing media overlays/volumes must be inventoried and retained unchanged.
+- Inspect actual image entrypoint **and** command before activation/rollback.
+  Default `backend/Dockerfile` CMD migrates/seeds; the cloud source overrides it
+  with direct Uvicorn. Never start that default CMD for routine verification.
+- Post-change health: API `/health`; website/admin `/api/health`; phone `/app/`
+  and referenced JS/font assets with correct types/content; container health and
+  image digest/ID mapping. Check login/session separation, read-only page journeys
+  and mobile/desktop routing; 200 from an HTML fallback alone is not asset proof.
+  Check worker heartbeat only if it was already active and its change/resumption
+  is separately approved. Health does not establish V Ads, real paid membership,
+  physical Android acceptance or a verified restore drill.
+- On failure, stop the rollout; do not update remaining services/resume fenced
+  writers. With explicit rollback approval and proven schema compatibility,
+  restore previous **app image refs and configuration only** using the same
+  targeted `--no-deps --no-build --pull never` path; repeat health checks. Retain
+  PostgreSQL/media volumes and audit history. Do not run legacy whole-config
+  restoration if it would drop current media mounts. If old code cannot use the
+  upgraded schema, remain fenced and seek an approved forward fix/recovery plan;
+  never implicitly restore/delete normal data.
+
+No Terraform/ECR/ECS/ALB/RDS/S3/resource/DNS/billing change is introduced. Local
+preparation has no AWS deployment cost. Future Actions/GHCR usage and EC2 image
+disk/network needs must fit the existing approved limits; keep paid overage
+blocked. No quota, storage visibility or current AWS capacity is verified here.
+Main's new confirmation job uses the existing standard runner (two-minute
+timeout); it is not dispatched by preflight. Production launch gates, membership
+sandbox separation, V Ads media/capacity controls and publication hold remain.
+
 ## GHCR-only safety preflight - 20 October 2026
 
 The owner has reviewed GitHub Free billing: 2,000 included Actions minutes,

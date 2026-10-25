@@ -135,6 +135,24 @@ def publish_page(slug: str, payload: dict[str, Any] = Body(default={}), _admin: 
         raise HTTPException(status_code=400, detail=str(e))
 
 
+@router.get('/admin/edit-vistrah/pages/{slug}/published')
+def get_published_page(slug: str, _admin: Any = Depends(admin_user)):
+    page = edit_vistrah_store.get_published_page(slug)
+    if not page:
+        raise HTTPException(status_code=404, detail='This page has no active publication')
+    return page
+
+
+@router.post('/admin/edit-vistrah/pages/{slug}/unpublish')
+def unpublish_page(slug: str, payload: dict[str, Any] = Body(default={}), _admin: Any = Depends(admin_user)):
+    try:
+        return edit_vistrah_store.unpublish_page(slug, payload.get('revision'))
+    except KeyError:
+        raise HTTPException(status_code=404, detail='Page not found')
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
 @router.delete('/admin/edit-vistrah/pages/{slug}')
 def delete_page(slug: str, _admin: Any = Depends(admin_user)):
     """Delete a custom page."""

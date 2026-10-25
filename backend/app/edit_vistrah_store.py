@@ -500,6 +500,10 @@ class EditVistrahStore:
         with self._lock:
             return copy.deepcopy(self._editor_pages().get(slug))
 
+    def get_published_page(self, slug):
+        with self._lock:
+            return copy.deepcopy(self._published.get(slug))
+
     def get_live_page(self, slug):
         with self._lock:
             page = copy.deepcopy(self._published.get(slug))
@@ -625,6 +629,19 @@ class EditVistrahStore:
                 raise ValueError('Add an enabled content section before publishing')
             page.update(status='LIVE', content_source='CMS', published_version=(page.get('published_version') or 0) + 1, published_at=datetime.now().isoformat())
             published[slug] = copy.deepcopy(page)
+            self._commit(pages, published)
+            return copy.deepcopy(page)
+
+    def unpublish_page(self, slug, revision):
+        with self._lock:
+            pages, published = self._editor_pages(), copy.deepcopy(self._published)
+            if slug not in pages:
+                raise KeyError(slug)
+            page = pages[slug]
+            if type(revision) is not int or revision != page['revision']:
+                raise ValueError('This page changed in another editor. Reload before unpublishing')
+            published.pop(slug, None)
+            page.update(status='DRAFT', content_source='DRAFT', revision=page['revision'] + 1)
             self._commit(pages, published)
             return copy.deepcopy(page)
 

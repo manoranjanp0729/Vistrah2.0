@@ -72,6 +72,40 @@ class CmsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'another editor'):
             self.store.publish_page('home', 1)
 
+    def test_unpublish_requires_revision_retains_draft_and_persists(self):
+        page = self.store.get_page('home')
+        page['sections'][0]['enabled'] = False
+        saved = self.store.update_page('home', {'revision': page['revision'], 'sections': page['sections']})
+        live = self.store.publish_page('home', saved['revision'])
+        self.assertFalse(self.store.get_published_page('home')['sections'][0]['enabled'])
+        self.assertTrue(all(s['enabled'] for s in self.store.get_live_page('home')['sections']))
+        for revision in (None, True, str(live['revision']), live['revision'] - 1):
+            with self.assertRaisesRegex(ValueError, 'another editor'):
+                self.store.unpublish_page('home', revision)
+        draft = self.store.unpublish_page('home', live['revision'])
+        self.assertEqual(draft['sections'], live['sections'])
+        self.assertEqual(draft['revision'], live['revision'] + 1)
+        reloaded = store_module.EditVistrahStore(str(self.file))
+        self.assertIsNone(reloaded.get_live_page('home'))
+        self.assertEqual(reloaded.get_page('home')['content_source'], 'DRAFT')
+        republished = reloaded.publish_page('home', draft['revision'])
+        self.assertGreater(republished['published_version'], live['published_version'])
+
+    def test_http_recovery_and_unpublish_are_admin_only(self):
+        with self.api_client() as client:
+            page = self.store.get_page('home')
+            self.store.publish_page('home', page['revision'])
+            self.assertEqual(client.get('/admin/edit-vistrah/pages/home/published').status_code, 200)
+            self.assertEqual(client.post('/admin/edit-vistrah/pages/home/unpublish', json={}).status_code, 400)
+            self.assertEqual(client.post('/admin/edit-vistrah/pages/home/unpublish', json={'revision': page['revision']}).status_code, 200)
+            self.assertEqual(client.get('/edit-vistrah/pages/home').status_code, 404)
+            self.assertEqual(client.get('/admin/edit-vistrah/pages/home/published').status_code, 404)
+        application = FastAPI()
+        application.include_router(routes.router)
+        with TestClient(application) as client:
+            self.assertEqual(client.get('/admin/edit-vistrah/pages/home/published').status_code, 401)
+            self.assertEqual(client.post('/admin/edit-vistrah/pages/home/unpublish', json={'revision': 1}).status_code, 401)
+
     def test_write_failure_does_not_mutate_memory(self):
         before = self.store.get_page('home')
         with patch.object(store_module.os, 'replace', side_effect=OSError('disposable denied')):

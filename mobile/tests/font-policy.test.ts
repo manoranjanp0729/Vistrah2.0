@@ -2,8 +2,29 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
 import ts from 'typescript';
-import {fontFace,standardWeight,isStandardFamily,type FontLocale} from '../src/lib/font-policy.ts';
+import {fontFace,standardWeight,isStandardFamily,fontChoices,isFontChoice,type FontLocale} from '../src/lib/font-policy.ts';
+
+test('five selectable fonts have all static weights and keep Indian-script families',()=>{
+ assert.deepEqual(fontChoices.map(font=>font.label),['Montserrat','Inter','Poppins','Nunito','DM Sans']);
+ for(const font of fontChoices)for(const weight of [400,500,600,700] as const){
+  const alias=fontFace('en',weight,font.id),data=readFileSync(new URL(`../assets/fonts/native/${alias}.ttf`,import.meta.url));
+  assert.equal(data.readUInt32BE(0),0x00010000);
+  const tables=Array.from({length:data.readUInt16BE(4)},(_,i)=>data.toString('ascii',12+16*i,16+16*i));
+  assert(!tables.includes('fvar'));assert(tables.includes('cmap'));
+  for(const locale of ['kn','hi'] as const)assert.equal(fontFace(locale,weight,font.id),fontFace(locale,weight));
+ }
+ for(const invalid of [null,undefined,'Arial','INTER','../../font','<script>'])assert.equal(isFontChoice(invalid),false);
+});
+test('downloaded assets match provenance hashes and bundled license notices',()=>{
+ const manifest=JSON.parse(readFileSync(new URL('../assets/fonts/native/settings-fonts-sources.json',import.meta.url),'utf8')) as {file:string;sha256:string;bytes:number}[];
+ assert.equal(manifest.length,20);
+ for(const entry of manifest){const data=readFileSync(new URL('../assets/fonts/native/'+entry.file,import.meta.url));assert.equal(data.length,entry.bytes);assert.equal(createHash('sha256').update(data).digest('hex'),entry.sha256);}
+ const notices=JSON.parse(readFileSync(new URL('../assets/fonts/font-licenses.json',import.meta.url),'utf8')) as {name:string;license:string}[];
+ assert.deepEqual(notices.map(notice=>notice.name),fontChoices.map(font=>font.label));
+ for(const notice of notices)assert.match(notice.license,/SIL OPEN FONT LICENSE/);
+});
 
 test('language families and supported weights use bundled static TTF faces',()=>{
  for(const locale of ['en','kn','hi'] as FontLocale[])for(const weight of [400,500,600,700] as const){

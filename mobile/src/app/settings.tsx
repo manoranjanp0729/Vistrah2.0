@@ -3,11 +3,15 @@ import {UiText, UiElement} from '../components/localized-ui';
 import {useState} from 'react';
 import {languages} from '../../../shared/i18n';
 import {useLanguage} from '../lib/language';
-import {Pressable,ScrollView,View,StyleSheet} from 'react-native';
+import {Platform,Pressable,ScrollView,View,StyleSheet} from 'react-native';
 import {router} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import {useTheme, accentPresets} from '../lib/theme';
+import {useFontPreference} from '../lib/font-preference';
+import {fontChoices,fontFace,type FontChoice} from '../lib/font-policy';
+import {webFontFamily} from '../lib/web-fonts';
+import fontLicenses from '../../assets/fonts/font-licenses.json';
 
 export default function Settings() {
   const language = useLanguage();
@@ -19,6 +23,9 @@ export default function Settings() {
   };
   const {mode, setMode, accent, setAccent, colors, ready, error} = useTheme();
   const isDark = mode === 'dark';
+  const fonts=useFontPreference();
+  const [showLicenses,setShowLicenses]=useState(false);
+  const previewFont=(choice:FontChoice)=>Platform.OS==='web'&&choice==='montserrat'?webFontFamily:fontFace('en',500,choice);
 
   return (
     <View
@@ -113,6 +120,18 @@ export default function Settings() {
                 {t(language.error)}
               </Text>
             )}
+          </View>
+
+          <View style={[s.sectionCard,{backgroundColor:isDark?'#211f2c':'#f9fafb',borderColor:isDark?'#2e2b3c':'#eaedf0'}]}>
+            <Text accessibilityRole="header" style={[s.sectionHeading,{color:colors.text}]}>{t('settings.font')}</Text>
+            <Text style={[s.sectionHelp,{color:colors.muted}]}>{t('settings.fontHelp')}</Text>
+            <SettingsDropdown label={t('settings.font')} value={fonts.font} disabled={!fonts.ready} options={fontChoices.map(font=>({value:font.id,label:font.label,fontFamily:previewFont(font.id)}))} onSelect={fonts.setFont}/>
+            <Text style={[s.sectionHelp,{color:colors.text,fontSize:18,lineHeight:27}]}>{t('settings.fontPreview')}</Text>
+            {language.locale!=='en'&&<Text style={[s.sectionHelp,{color:colors.muted}]}>{t('settings.fontLanguageHelp')}</Text>}
+            {!!fonts.error&&<Text accessibilityRole="alert" style={{color:colors.error,fontSize:12}}>{t(fonts.error)}</Text>}
+            {fonts.loadError&&<Pressable accessibilityRole="button" onPress={fonts.retry} style={{minHeight:44,justifyContent:'center'}}><Text style={{color:colors.accent}}>{t('common.retry')}</Text></Pressable>}
+            <Pressable accessibilityRole="button" accessibilityLabel={t('settings.fontLicenses')} accessibilityState={{expanded:showLicenses}} onPress={()=>setShowLicenses(value=>!value)} style={{minHeight:44,justifyContent:'center'}}><Text style={{color:colors.muted,fontSize:12}}>{t('settings.fontLicenses')}</Text></Pressable>
+            {showLicenses&&fontLicenses.map(notice=><View key={notice.name} style={{gap:8}}><Text style={{color:colors.text,fontWeight:'700'}}>{notice.name}</Text><Text selectable style={{color:colors.muted,fontSize:11,lineHeight:16}}>{notice.license}</Text></View>)}
           </View>
 
           {/* App Theme & Light/Dark Mode Section */}
@@ -222,7 +241,7 @@ function SettingsDropdown({
 }: {
   label: string;
   value: string;
-  options: {value: string; label: string; color?: string}[];
+  options: {value: string; label: string; color?: string; fontFamily?:string}[];
   onSelect: (value: string) => void;
   disabled: boolean;
 }) {
@@ -251,7 +270,7 @@ function SettingsDropdown({
         {selected?.color && (
           <View style={[s.colorDot, {backgroundColor: selected.color}]} />
         )}
-        <Text style={[s.dropdownText, {color: colors.text}]}>{selected?.label}</Text>
+        <Text style={[s.dropdownText, {color: colors.text,...(selected?.fontFamily?{fontFamily:selected.fontFamily,fontWeight:'normal' as const}:{})}]}>{selected?.label}</Text>
         <Feather
           name={open ? 'chevron-up' : 'chevron-down'}
           size={18}
@@ -277,6 +296,7 @@ function SettingsDropdown({
               <Pressable
                 key={option.value}
                 accessibilityRole="radio"
+                accessibilityLabel={option.label}
                 accessibilityState={{checked: isSelected}}
                 onPress={() => {
                   onSelect(option.value);
@@ -306,6 +326,7 @@ function SettingsDropdown({
                     {
                       color: isSelected ? colors.accent : colors.text,
                       fontWeight: isSelected ? '700' : '500',
+                      ...(option.fontFamily?{fontFamily:option.fontFamily,fontWeight:'normal' as const}:{}),
                     },
                   ]}
                 >

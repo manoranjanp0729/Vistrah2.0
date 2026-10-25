@@ -1,4 +1,12 @@
 {
+  "settings.font": "App Font",
+  "settings.fontHelp": "Choose your font. Your preference is saved on this device.",
+  "settings.fontPreview": "Find your everyday. Discover more.",
+  "settings.fontLanguageHelp": "Kannada and Hindi keep their existing fonts for readability.",
+  "settings.fontRestoreError": "Could not restore your font preference. Choose a font to save it again.",
+  "settings.fontSaveError": "Font changed, but could not be saved on this device.",
+  "settings.fontLoadError": "Font choices could not load. Try again.",
+  "settings.fontLicenses": "Font licenses",
   "settings.title": "Settings",
   "settings.language": "App Language",
   "settings.languageHelp": "Choose your language. Your preference is saved on this device.",

@@ -1,5 +1,19 @@
 # V Ads controlled-release runbook
 
+## Offline deployment preparation - 25 October 2026
+
+The root `deploy.ps1 -Preflight` and opt-in AWS image overlay are documented in
+[RELEASES.md](RELEASES.md#one-command-aws-preparation---phase-1-25-october-2026).
+They do not authorize publishing, remote checks, deployment or any data operation.
+The candidate publication hold below remains in force; production is BLOCKED.
+Current source reaches migration **023**, so historical 020 activation commands
+below must not be reused without a fresh actual-revision/range/compatibility
+review. API `/data` persistence in the actual AWS runtime also remains unverified;
+the base cloud Compose does not mount it. Preserve existing media/data mounts,
+all-writer/backup/restore gates and image entrypoint checks. Worker remains opt-in
+and must never use the Uvicorn-only V Ads runtime image. No runbook command was
+executed during Phase 1 preparation.
+
 ## GHCR preflight ready; explicit dispatch approval pending - 20 October 2026
 
 Reuse the owner's completed Free-quota/$0-budget/blocked-overage review; do not

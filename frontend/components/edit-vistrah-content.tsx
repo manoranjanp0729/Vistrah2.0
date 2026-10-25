@@ -9,7 +9,7 @@ import {MarketplaceCategories} from './marketplace-categories';
 import {AdsMarketing} from './ads-marketing';
 import {translate} from '../../shared/i18n';
 import type {LiveVistrahPage,PageSection} from '../../shared/edit-vistrah';
-import {contentPageSlug,contentHref,contentImage,sectionCopy,featureEnabled} from '../../shared/edit-vistrah-content';
+import {contentPageSlug,contentHref,contentImage,sectionCopy,featureEnabled,sectionLayout} from '../../shared/edit-vistrah-content';
 import styles from './edit-vistrah-content.module.css';
 
 export function ContentSections({sections,editorialOnly=false}:{sections:PageSection[];editorialOnly?:boolean}){
@@ -18,9 +18,9 @@ export function ContentSections({sections,editorialOnly=false}:{sections:PageSec
   const copy=sectionCopy(section,locale),href=contentHref(section.action_href);
   const images=section.images.filter(image=>contentImage(image.url));
   if(section.type==='search_bar'&&!editorialOnly)return <form className={styles.search} action="/services" key={section.id}><label>{copy.title}<input name="q" type="search" placeholder={copy.description}/></label><button className="button" type="submit">{copy.action||translate(locale,'common.search')}</button></form>;
-  return <section className={`${styles.section} ${['hero_banner','editable_banner'].includes(section.type)?styles.banner:''}`} data-variation={section.variation} key={section.id}>
+  return <section className={`${styles.section} ${['hero_banner','editable_banner'].includes(section.type)?styles.banner:''}`} data-layout={sectionLayout(section)} data-variation={section.variation} key={section.id}>
    <div><h2>{copy.title}</h2>{copy.description&&<p>{copy.description}</p>}</div>
-   {!!images.length&&<div className={section.variation.includes('carousel')||section.variation.includes('horizontal')?styles.rail:styles.images}>{images.map((image,index)=><figure key={index}>{/* Admin URLs support uploaded data images and approved HTTPS media. */}<img src={image.url} alt={image.alt_text||image.title||''} loading="lazy"/>{image.title&&<figcaption>{image.title}</figcaption>}</figure>)}</div>}
+   {!!images.length&&<div className={sectionLayout(section)==='rail'?styles.rail:styles.images}>{images.map((image,index)=><figure key={index}>{/* Admin URLs support uploaded data images and approved HTTPS media. */}<img src={image.url} alt={image.alt_text||image.title||''} loading="lazy"/>{image.title&&<figcaption>{image.title}</figcaption>}</figure>)}</div>}
    {!!section.video_urls?.length&&<HomepageVideoPlayer key={section.video_urls.join('|')} videos={section.video_urls.filter(url=>contentImage(url)).map((src,index)=>({id:section.id+'-'+index,src}))}/>}
   {section.type==='services_for_you'&&!editorialOnly&&<MarketplaceCategories compact/>}
   {section.type==='big_widget'&&!editorialOnly&&<AdsMarketing/>}

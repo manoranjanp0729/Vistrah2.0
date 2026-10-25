@@ -1,0 +1,122 @@
+[
+  {
+    "file": "Inter-OFL.txt",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/inter/LICENSE_FONT",
+    "sha256": "5b9321a4298cfeb6b34354164a1c3afc3db114569984c502b9b35d988fd58c57",
+    "bytes": 4377
+  },
+  {
+    "file": "Inter_400Regular.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/inter/400Regular/Inter_400Regular.ttf",
+    "sha256": "a414b48aa577ef2c62ebb135341ddeef33ee26a4f5dc9f787f93c1aab08ebb50",
+    "bytes": 342408
+  },
+  {
+    "file": "Inter_500Medium.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/inter/500Medium/Inter_500Medium.ttf",
+    "sha256": "f1738576525e86db1d5cf63a6c1b56e0a7e2a2898b499ac93db95f2e7a9f9cd5",
+    "bytes": 342892
+  },
+  {
+    "file": "Inter_600SemiBold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/inter/600SemiBold/Inter_600SemiBold.ttf",
+    "sha256": "f30e9d2574c3bec5144347ff965f9841c8f06857f0b7383000f8c9489a161841",
+    "bytes": 343632
+  },
+  {
+    "file": "Inter_700Bold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/inter/700Bold/Inter_700Bold.ttf",
+    "sha256": "fbe825cbfc749317f57a1433d3905aa9d3f388732fd29b8e8a36f34845e3bc3e",
+    "bytes": 344072
+  },
+  {
+    "file": "Poppins-OFL.txt",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/poppins/LICENSE_FONT",
+    "sha256": "6be04893d770899a015649c7aa3b582f871b272f8747a92b78b17c3e5c8b2573",
+    "bytes": 4385
+  },
+  {
+    "file": "Poppins_400Regular.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/poppins/400Regular/Poppins_400Regular.ttf",
+    "sha256": "707fdc5c8bab57a90061c6a8ed7b70d5ffb82fc810e994e79f90bace890c255a",
+    "bytes": 158240
+  },
+  {
+    "file": "Poppins_500Medium.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/poppins/500Medium/Poppins_500Medium.ttf",
+    "sha256": "8d909883de81344e0fbcfef30e931872e92d9aeecdf85b6dcf6e0b28c078e98e",
+    "bytes": 156520
+  },
+  {
+    "file": "Poppins_600SemiBold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/poppins/600SemiBold/Poppins_600SemiBold.ttf",
+    "sha256": "248c0244b350ec68880996aa6be6d7796274b49992d5fcbbefe251906aa4ea36",
+    "bytes": 155232
+  },
+  {
+    "file": "Poppins_700Bold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/poppins/700Bold/Poppins_700Bold.ttf",
+    "sha256": "7219547ee25334cbac0fe4b3acf0bf631e48ebb622c71af038edaaa652c60875",
+    "bytes": 153944
+  },
+  {
+    "file": "Nunito-OFL.txt",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/nunito/LICENSE_FONT",
+    "sha256": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65",
+    "bytes": 4385
+  },
+  {
+    "file": "Nunito_400Regular.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/nunito/400Regular/Nunito_400Regular.ttf",
+    "sha256": "b0885056b60511b29aa9f69198055fe3bad13e76ec8a9b9e37cd61da7b4ee1e5",
+    "bytes": 132200
+  },
+  {
+    "file": "Nunito_500Medium.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/nunito/500Medium/Nunito_500Medium.ttf",
+    "sha256": "2590799f71eef8d473a63bf86f8f37729395faa3ac8552b7b93b2c03ccab110c",
+    "bytes": 132300
+  },
+  {
+    "file": "Nunito_600SemiBold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/nunito/600SemiBold/Nunito_600SemiBold.ttf",
+    "sha256": "c7fd194467c320db02afd5ebf09262ff900ab6065c61fc2eaa300f0236a48a74",
+    "bytes": 132152
+  },
+  {
+    "file": "Nunito_700Bold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/nunito/700Bold/Nunito_700Bold.ttf",
+    "sha256": "ad443e47990c5fc4b263693b3018b7807868263b8c42ccb1115e030158931960",
+    "bytes": 132148
+  },
+  {
+    "file": "DMSans-OFL.txt",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/dm-sans/LICENSE_FONT",
+    "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1",
+    "bytes": 4482
+  },
+  {
+    "file": "DMSans_400Regular.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/dm-sans/400Regular/DMSans_400Regular.ttf",
+    "sha256": "20ccb90498d8ca511bb0be31a74eccd5f29fbe1161852ef72781b703929e98ec",
+    "bytes": 56344
+  },
+  {
+    "file": "DMSans_500Medium.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/dm-sans/500Medium/DMSans_500Medium.ttf",
+    "sha256": "568dafd2db3728534b42c064e63ed1ff45ec97739bc21e407123dfddcb2ad255",
+    "bytes": 56376
+  },
+  {
+    "file": "DMSans_600SemiBold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/dm-sans/600SemiBold/DMSans_600SemiBold.ttf",
+    "sha256": "b3ee9c6f271318066adae56c3033e6e4192f88f5d127cb507686d89a0a269168",
+    "bytes": 56336
+  },
+  {
+    "file": "DMSans_700Bold.ttf",
+    "source": "https://raw.githubusercontent.com/expo/google-fonts/master/font-packages/dm-sans/700Bold/DMSans_700Bold.ttf",
+    "sha256": "3764a2ce62fa95596c3315c1a0ca379e7cf827ed397c97fc036925b9b20b74dc",
+    "bytes": 56268
+  }
+]

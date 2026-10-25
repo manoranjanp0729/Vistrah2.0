@@ -5,6 +5,7 @@ import {Pressable,View} from 'react-native';
 import {router} from 'expo-router';
 import {Page,Heading,Action,Loading,ErrorPanel} from '../../components/ui';
 import {SellerGate} from '../../components/seller-gate';
+import {SellerOverview,SellerBusinessFilters} from '../../components/seller-overview';
 import {useResource,primeResource} from '../../lib/resource';
 import {useSession} from '../../lib/session';
 import {useTheme} from '../../lib/theme';
@@ -35,10 +36,19 @@ function Workspace(){
   },[hub.data,user?.id]);
 
   const activeBusinesses=hub.data?.businesses??businesses.data;
-  const loading=hub.loading&&!activeBusinesses;
-  const error=hub.error&&!activeBusinesses?hub.error:undefined;
+  const loading=(hub.loading||businesses.loading)&&!activeBusinesses;
+  const error=!activeBusinesses?(hub.error??businesses.error):undefined;
 
-  return <><Text style={styles.muted}><UiText value={"Manage your businesses, applications, service listings and job postings. Each business and service needs independent review."}/></Text><UiElement as={Action} label="+ Add service" onPress={()=>router.dismissTo('/services')}/><Text style={styles.muted}><UiText value={"Choose a Listing Type, save your draft, then submit it for review."}/></Text><UiElement as={Action} label={tools?'Hide business tools':'Business tools & account'} secondary onPress={()=>setTools(value=>!value)}/>{tools&&<><UiElement as={Action} label="Your V Ads" secondary onPress={()=>router.push("/seller/v-ads")}/><UiElement as={Action} label="Business membership & benefits" secondary onPress={()=>router.push('/membership')}/><UiElement as={Action} label="Business & service applications" secondary onPress={()=>router.push('/provider-applications')}/><UiElement as={Action} label="Employer job postings" secondary onPress={()=>router.push('/employer-jobs')}/><UiElement as={Action} label="Legacy business ownership" secondary onPress={()=>router.push('/seller/ownership')}/><UiElement as={Action} label="Assigned enquiries" secondary onPress={()=>router.push('/seller/leads')}/></>}<UiElement as={Heading} title="Your services & businesses"/>{loading?<Loading/>:error?<ErrorPanel error={error} retry={hub.retry}/>:activeBusinesses?.length?activeBusinesses.map(business=><BusinessCard key={business.id} business={business}/>):<Text style={styles.muted}><UiText value={"No owned business yet. Start a business application or request ownership of a legacy business."}/></Text>}</>;
+  return <>
+    <SellerOverview hub={hub.data} businesses={activeBusinesses} refreshing={hub.loading||businesses.loading} refresh={()=>{hub.retry();businesses.retry();}}/>
+    {hub.error&&activeBusinesses&&<ErrorPanel error="The full dashboard summary is unavailable. Business data is shown below." retry={hub.retry}/>}
+    <UiElement as={Heading} title="Your services & businesses"/>
+    {loading?<Loading/>:error?<ErrorPanel error={error} retry={()=>{hub.retry();businesses.retry();}}/>:activeBusinesses?.length
+      ?<SellerBusinessFilters businesses={activeBusinesses}>{business=><BusinessCard key={business.id} business={business}/>}</SellerBusinessFilters>
+      :<View style={styles.card}><Heading title="Start with your first service"/><Text style={styles.muted}><UiText value="Choose a Listing Type, add your business details and save a private draft. Business verification and listing approval happen separately."/></Text><Action label="Choose a Listing Type" onPress={()=>router.dismissTo('/services')}/><Action label="Claim an existing business" secondary onPress={()=>router.push('/seller/ownership')}/></View>}
+    <Action label={tools?'Hide account options':'Account & business benefits'} secondary onPress={()=>setTools(value=>!value)}/>
+    {tools&&<View style={styles.card}><Action label="Business membership & benefits" secondary onPress={()=>router.push('/membership')}/><Action label="Business ownership requests" secondary onPress={()=>router.push('/seller/ownership')}/><Text style={styles.muted}><UiText value="Each business and listing needs independent review. Account membership does not replace business verification or listing approval."/></Text></View>}
+  </>;
 }
 
 function BusinessCard({business}:{business:Business}){
@@ -48,5 +58,6 @@ function BusinessCard({business}:{business:Business}){
     primeResource('/seller/businesses/'+business.id+'/commerce-listings?page=1',business.recent_listings,user.id);
   }
   const result=useResource<ListingPage<SellerListing>>('/seller/businesses/'+business.id+'/commerce-listings?page=1',user?.id??null);
-  return <View style={styles.card}><Heading title={business.company||business.name}/><Text style={styles.muted}><UiText value={businessProgress(business)}/></Text>{result.loading?<Loading/>:result.error?<ErrorPanel error={result.error} retry={result.retry}/>:result.data?.items.length?<><Text style={styles.label}><UiText value={"Recent listings"}/></Text>{result.data.items.slice(0,3).map(row=><Pressable key={row.id} accessibilityRole="link" accessibilityLabel={row.title+', '+listingProgress(row).label} onPress={()=>router.push({pathname:'/seller/commerce/[id]',params:{id:business.id,focus:row.id}})} style={{gap:4,minHeight:48,justifyContent:'center'}}><Text style={styles.text}>{row.title}</Text><Text style={styles.muted}><UiText value={listingProgress(row).label}/></Text></Pressable>)}</>:<Text style={styles.muted}><UiText value={"No listings yet. Choose a Listing Type using Add service."}/></Text>}<UiElement as={Action} label="Manage services & products" secondary onPress={()=>router.push({pathname:'/seller/commerce/[id]',params:{id:business.id}})}/><UiElement as={Action} label="Business details" secondary onPress={()=>router.push({pathname:'/seller/business/[id]',params:{id:business.id}})}/></View>;
+  const listings=business.recent_listings??result.data;
+  return <View style={styles.card}><Heading title={business.company||business.name}/><Text style={styles.muted}><UiText value={businessProgress(business)}/></Text>{!listings&&result.loading?<Loading/>:!listings&&result.error?<ErrorPanel error={result.error} retry={result.retry}/>:listings?.items.length?<><Text style={styles.label}><UiText value={"Recent listings"}/></Text>{listings.items.slice(0,3).map(row=><Pressable key={row.id} accessibilityRole="link" accessibilityLabel={row.title+', '+listingProgress(row).label} onPress={()=>router.push({pathname:'/seller/commerce/[id]',params:{id:business.id,focus:row.id}})} style={{gap:4,minHeight:48,justifyContent:'center'}}><Text style={styles.text}>{row.title}</Text><Text style={styles.muted}><UiText value={listingProgress(row).label}/></Text></Pressable>)}</>:<Text style={styles.muted}><UiText value={"No listings yet. Choose a Listing Type using Add service."}/></Text>}<UiElement as={Action} label="Manage services & products" secondary onPress={()=>router.push({pathname:'/seller/commerce/[id]',params:{id:business.id}})}/><UiElement as={Action} label="Business details" secondary onPress={()=>router.push({pathname:'/seller/business/[id]',params:{id:business.id}})}/><Action label="Orders" secondary onPress={()=>router.push({pathname:'/seller/orders/[id]',params:{id:business.id}})}/></View>;
 }

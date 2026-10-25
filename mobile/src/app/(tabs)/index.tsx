@@ -264,7 +264,7 @@ export default function Discover() {
           >
             <View style={s.shortcutPhoto}>
               {item.photo ? (
-                <Image source={item.photo} resizeMode="cover" style={StyleSheet.absoluteFill} />
+                <Image source={item.photo} resizeMode="contain" style={s.shortcutImage} />
               ) : (
                 <View style={[StyleSheet.absoluteFill, {backgroundColor: '#eee'}]} />
               )}
@@ -272,7 +272,7 @@ export default function Discover() {
                 <Feather name={item.icon} size={12} color="#fff" />
               </View>
             </View>
-            <View style={{gap: 3, padding: 8}}>
+            <View style={s.shortcutCopy}>
               <Text numberOfLines={2} style={[s.shortcutTitle, {color: colors.text}]}>
                 {item.title}
               </Text>
@@ -490,6 +490,7 @@ const s = StyleSheet.create({
   },
   shortcutCard: {
     width: 140,
+    flexDirection: 'column',
     borderRadius: 16,
     borderWidth: 1,
     overflow: 'hidden',
@@ -500,10 +501,23 @@ const s = StyleSheet.create({
     shadowRadius: 5,
   },
   shortcutPhoto: {
-    width: '100%',
+    margin: 7,
     height: 90,
+    flexShrink: 0,
+    borderRadius: 14,
+    overflow: 'hidden',
     backgroundColor: '#ede9f5',
     position: 'relative',
+  },
+  shortcutImage: {
+    width: '100%',
+    height: '100%',
+  },
+  shortcutCopy: {
+    gap: 3,
+    paddingHorizontal: 8,
+    paddingBottom: 8,
+    flexShrink: 0,
   },
   shortcutIconBadge: {
     position: 'absolute',

@@ -2,6 +2,16 @@ name: Publish release images
 on:
   workflow_dispatch:
     inputs:
+      release_sha:
+        description: 'Main releases only: approved full 40-character source SHA; must equal the selected main workflow commit.'
+        required: false
+        type: string
+        default: ''
+      release_confirmation:
+        description: 'Main releases only: type PUBLISH VERIFIED RELEASE after separate source/publication approval. Does not deploy or clear the V Ads hold.'
+        required: false
+        type: string
+        default: ''
       candidate_sha:
         description: 'Test candidate: full 40-character commit SHA on chore/protect-local-source-20261020. Leave blank for the existing main release.'
         required: false
@@ -18,7 +28,22 @@ concurrency:
   group: publish-images-${{ github.ref }}
   cancel-in-progress: false
 jobs:
+  authorize_release:
+    if: github.ref == 'refs/heads/main' && inputs.candidate_sha == ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Require explicit main release confirmation
+        shell: bash
+        env:
+          RELEASE_CONFIRMATION: ${{ inputs.release_confirmation }}
+          RELEASE_SHA: ${{ inputs.release_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_CONFIRMATION" == 'PUBLISH VERIFIED RELEASE' ]] || { echo 'Explicit publication confirmation is required; nothing will be built or published.' >&2; exit 1; }
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ && "$RELEASE_SHA" == "$GITHUB_SHA" ]] || { echo 'Approved full release SHA must match this workflow commit.' >&2; exit 1; }
   checks:
+    needs: authorize_release
     if: github.ref == 'refs/heads/main' && inputs.candidate_sha == ''
     uses: ./.github/workflows/ci.yml
   publish:
@@ -67,6 +92,7 @@ jobs:
           tags: ${{ steps.identity.outputs.name }}:sha-${{ github.sha }}
           build-args: |
             EXPO_PUBLIC_MAPTILER_WEB_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
+            NEXT_PUBLIC_MAPTILER_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}

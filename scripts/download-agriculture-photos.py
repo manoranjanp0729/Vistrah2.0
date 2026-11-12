@@ -1,5 +1,6 @@
 """Download only independently verified public photo URLs; never edits taxonomy or runtime data."""
 import json
+import argparse
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
@@ -31,8 +32,16 @@ def download(record):
         return {'id': record['id'], 'error': str(error)}
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--manifest', default='artifacts/agriculture-photos/verified-downloads.json')
+    parser.add_argument('--output', default='artifacts/agriculture-photos')
+    args = parser.parse_args()
+    manifest = (ROOT / args.manifest).resolve()
+    OUTPUT = (ROOT / args.output).resolve()
+    manifest.relative_to(ROOT)
+    OUTPUT.relative_to(ROOT)
     (OUTPUT / 'originals').mkdir(parents=True, exist_ok=True)
-    records = json.loads((OUTPUT / 'verified-downloads.json').read_text(encoding='utf-8'))
+    records = json.loads(manifest.read_text(encoding='utf-8'))
     with ThreadPoolExecutor(max_workers=6) as pool:
         results = list(pool.map(download, records))
     (OUTPUT / 'download-result.json').write_text(json.dumps(results, indent=2) + '\n', encoding='utf-8')

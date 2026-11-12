@@ -63,7 +63,7 @@ export function HomepageConnect(){
     <Text accessibilityRole="header" style={[s.heading,{color:section.ink}]}>{section.heading}</Text>
    </View>
    <UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={label('category/'+category.slug,category.title)} onPress={()=>router.push(agri?'/agri-connect':'/health-connect')} style={({pressed})=>[s.card,{opacity:pressed?.85:1}]}>
-    <View style={s.photo}>{failedPhotos[section.key]?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<UiElement as={Image} source={photos[section.key]} resizeMode="cover" accessibilityLabel={t(agri?'agri.photoAlt':'health.photoAlt')} onError={()=>setFailedPhotos(value=>({...value,[section.key]:true}))} style={s.photoImage}/>}</View>
+    <View style={s.photo}>{failedPhotos[section.key]?<Text style={s.fallback}>{t('common.photoUnavailable')}</Text>:<UiElement as={Image} source={photos[section.key]} resizeMode="contain" accessibilityLabel={t(agri?'agri.photoAlt':'health.photoAlt')} onError={()=>setFailedPhotos(value=>({...value,[section.key]:true}))} style={s.photoImage}/>}</View>
     <View style={s.cardBody}>
      <View style={s.copy}><Text style={[s.title,{color:section.ink}]}>{label('category/'+category.slug,category.title)}</Text><Text style={s.description}>{t(section.key==='agri'?'connect.agriCopy':'connect.healthCopy')}</Text></View>
      <View style={[s.ctaPill,{backgroundColor:accent}]}>
@@ -82,7 +82,7 @@ const s=StyleSheet.create({
  heading:{flex:1,fontSize:Platform.OS==='android'?19:15,lineHeight:Platform.OS==='android'?25:20,fontWeight:'700'},
  card:{padding:8,borderRadius:16,backgroundColor:'#fff',zIndex:1,borderWidth:1,borderColor:'#ffffffb3',gap:9},
  photo:{width:'100%',aspectRatio:2.0,borderRadius:11,overflow:'hidden',backgroundColor:'#edf1ed',alignItems:'center',justifyContent:'center'},
- photoImage:{width:'100%',height:'100%'},
+ photoImage:{position:'absolute',top:0,left:0,width:'100%',height:'100%'},
  fallback:{fontSize:10,lineHeight:14,color:'#52636e',textAlign:'center',padding:4},
  cardBody:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10,paddingHorizontal:2,paddingBottom:2},
  copy:{flex:1,minWidth:0,gap:4},

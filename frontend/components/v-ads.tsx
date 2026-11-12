@@ -4,8 +4,10 @@ import Link from 'next/link';
 import {useEffect,useRef,useState,type RefObject} from 'react';
 import {Heart,Maximize,MessageCircle,Share2,Volume2,VolumeX,X,ShoppingBag,Briefcase,Truck,CheckCircle2} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
+import {validPoint} from '@/lib/location';
 import {useUser} from './customer';
-import {mediaUrl,mergeReels,sharePath,vAdsClient,parseAdDescription,type Reel,type Comment,type AdvertiserProfile} from '../../shared/v-ads';
+import {useOptionalCustomerLocation} from './customer-location';
+import {mediaUrl,mergeReels,sharePath,vAdsClient,parseAdDescription,type Reel,type Comment,type AdvertiserProfile,type FeedFilter} from '../../shared/v-ads';
 import {listingPrice} from '../../shared/commerce';
 import s from './v-ads.module.css';
 import {managementClient,advanceView} from '../../shared/v-ads-management';
@@ -14,15 +16,18 @@ const client=vAdsClient(api);
 const management=managementClient(api);
 
 export function VAdsReels({initialVideo}:{initialVideo?:string}) {
-  const {user}=useUser();const root=useRef<HTMLDivElement>(null);
+  const {user}=useUser();const locationState=useOptionalCustomerLocation();const root=useRef<HTMLDivElement>(null);
+  const activePoint=locationState?.active&&validPoint(locationState.active)?locationState.active:null;
+  const activeLat=activePoint?.latitude,activeLon=activePoint?.longitude,activeRadius=locationState?.radius;
   const [items,setItems]=useState<Reel[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState('');
   const [version,setVersion]=useState(0),[page,setPage]=useState(1),[more,setMore]=useState(false),[paging,setPaging]=useState(false);
   const lock=useRef(false);
   useEffect(()=>{let alive=true;
-    Promise.all([client.feed(),initialVideo?client.reel(initialVideo):Promise.resolve(null)]).then(([feed,selected])=>{
+    const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;
+    Promise.all([filter?client.feed(1,filter):client.feed(),initialVideo?client.reel(initialVideo):Promise.resolve(null)]).then(([feed,selected])=>{
       if(alive){setItems(mergeReels(selected?[selected]:[],feed.items));setPage(1);setMore(feed.has_more);root.current?.scrollTo(0,0);}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[initialVideo,version]);
+  },[initialVideo,version,activeLat,activeLon,activeRadius]);
   useEffect(()=>{
     const feed=root.current;if(!feed)return;
     const viewport=window.visualViewport;
@@ -44,7 +49,7 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
     viewport?.addEventListener('resize',fit);
     return()=>{observer.disconnect();window.removeEventListener('resize',fit);viewport?.removeEventListener('resize',fit);};
   },[loading,items.length]);
-  async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const next=await client.feed(page+1);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
+  async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;const next=await client.feed(page+1,filter);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
   return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><Link href="/seller/v-ads?from=v-ads"><UiText value={"V Ads Studio"}/></Link></div>
     {loading?<p className={s.status} role="status"><UiText value={"Loading videos…"}/></p>:!items.length?<div className={s.status}><p role="status">{error||'No approved videos yet.'}</p><button onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry / refresh"}/></button></div>:<>
       <UiDiv  className={s.feed} ref={root} aria-label="V Ads videos" tabIndex={0} onScroll={event=>{const node=event.currentTarget;if(!error&&node.scrollHeight-node.scrollTop-node.clientHeight<node.clientHeight*.5)void loadMore();}}>

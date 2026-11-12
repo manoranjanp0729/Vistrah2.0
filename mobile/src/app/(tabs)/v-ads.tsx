@@ -10,8 +10,9 @@ import {useVideoPlayer, VideoView} from 'expo-video';
 import {mobileVideoCoordinator} from '../../lib/video-coordinator';
 import {useTheme} from '../../lib/theme';
 import {useSession} from '../../lib/session';
+import {useOptionalLocation} from '../../lib/location';
 import {vAds,playableReel,publicVideoLink,type PlayableReel as Reel} from '../../lib/v-ads';
-import {mergeReels,sharePath,parseAdDescription,type Comment} from '../../../../shared/v-ads';
+import {mergeReels,sharePath,parseAdDescription,type Comment,type FeedFilter} from '../../../../shared/v-ads';
 import brandTheme from '../../../../shared/brand-theme.json';
 import {Loading,ErrorPanel,Action} from '../../components/ui';
 import {api} from '../../lib/api';
@@ -484,6 +485,11 @@ export default function VAds() {
 function VAdsFeed({video}:{video:string}) {
   const {styles} = useTheme();
   const {user}=useSession();
+  const locationCtx=useOptionalLocation();
+  const activeLoc=locationCtx?.location;
+  const activeLat=activeLoc&&Number.isFinite(activeLoc.latitude)&&Number.isFinite(activeLoc.longitude)&&Math.abs(activeLoc.latitude)<=90&&Math.abs(activeLoc.longitude)<=180?activeLoc.latitude:undefined;
+  const activeLon=activeLat!==undefined?activeLoc?.longitude:undefined;
+  const activeRadius=activeLoc?.radius;
   const [reels,setReels]=useState<Reel[]>([]);
   const [loading,setLoading]=useState(true),[error,setError]=useState(''),[version,setVersion]=useState(0);
   const [page,setPage]=useState(1),[hasMore,setHasMore]=useState(false);
@@ -491,11 +497,12 @@ function VAdsFeed({video}:{video:string}) {
   const [height, setHeight] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(()=>{let alive=true;
-    Promise.all([vAds.feed(),video?vAds.reel(video):Promise.resolve(null)]).then(([feed,selected])=>{
+    const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;
+    Promise.all([filter?vAds.feed(1,filter):vAds.feed(),video?vAds.reel(video):Promise.resolve(null)]).then(([feed,selected])=>{
       if(alive){setReels(mergeReels(selected?[selected]:[],feed.items).map(playableReel));setPage(1);setHasMore(feed.has_more);setActiveIndex(0);setError('');}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[video,version]);
-  async function loadMore(){if(paging.current||loading||!hasMore)return;paging.current=true;try{const feed=await vAds.feed(page+1);setReels(previous=>mergeReels(previous,feed.items).map(playableReel));setPage(feed.page);setHasMore(feed.has_more);setError('');}catch(e){setError((e as Error).message);}finally{paging.current=false;}}
+  },[video,version,activeLat,activeLon,activeRadius]);
+  async function loadMore(){if(paging.current||loading||!hasMore)return;paging.current=true;try{const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;const feed=await vAds.feed(page+1,filter);setReels(previous=>mergeReels(previous,feed.items).map(playableReel));setPage(feed.page);setHasMore(feed.has_more);setError('');}catch(e){setError((e as Error).message);}finally{paging.current=false;}}
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: {index: number | null}[]}) => {
       const next = viewableItems.find(item => item.index !== null);

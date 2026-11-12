@@ -49,6 +49,12 @@ for(const category of taxonomy.categories){
   if(new Set(ids.map(id=>items[id].photo)).size===1)ids.forEach((id,typeIndex)=>{items[id].photo=pool[typeIndex%pool.length];});
  });
 }
+// Explicit reviewed automotive subjects take precedence over generic keyword/pool rules.
+const automobileAssignments=read('shared/automobile-photo-assignments.json').items;
+for(const [id,item]of Object.entries(automobileAssignments)){
+ if(!items[id]||!assets[item.photo]||!/^((category|subcategory|type)\/automobiles)(\/|$)/.test(id))throw new Error('Invalid automotive photo assignment: '+id);
+ items[id]={...items[id],photo:item.photo};
+}
 const releases=fs.existsSync(path.join(root,'shared/catalogue-image-releases.json'))?read('shared/catalogue-image-releases.json'):{items:[]};
 const used=new Set([...Object.values(items).map(item=>item.photo),...releases.items.map(item=>item.photo)]);const selectedAssets=Object.fromEntries([...used].sort().map(key=>[key,assets[key]]));
 const canonical=canonicalizePhotos({assets:selectedAssets,items});

@@ -263,7 +263,7 @@
       "subject": "Cleaning Services"
     },
     "type/home-and-everyday-services/cleaning-services/home-cleaning": {
-      "photo": null,
+      "photo": "cleaning",
       "subject": "Home cleaning"
     },
     "type/home-and-everyday-services/cleaning-services/deep-cleaning": {
@@ -459,7 +459,7 @@
       "subject": "Bathroom renovation"
     },
     "type/home-and-everyday-services/home-improvement/flooring": {
-      "photo": "architecture",
+      "photo": null,
       "subject": "Flooring"
     },
     "type/home-and-everyday-services/home-improvement/false-ceilings": {
@@ -471,7 +471,7 @@
       "subject": "Waterproofing"
     },
     "type/home-and-everyday-services/home-improvement/painting-and-polishing": {
-      "photo": null,
+      "photo": "wall-painting",
       "subject": "Painting and polishing"
     },
     "subcategory/home-and-everyday-services/gardening-and-outdoor-care": {
@@ -867,7 +867,7 @@
       "subject": "Threading and waxing"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/manicure-and-pedicure": {
-      "photo": null,
+      "photo": "accounting-calculation",
       "subject": "Manicure and pedicure"
     },
     "type/beauty-fashion-and-lifestyle/beauty-and-skincare/makeup-services": {
@@ -939,7 +939,7 @@
       "subject": "Custom clothing"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/embroidery": {
-      "photo": null,
+      "photo": "airplane",
       "subject": "Embroidery"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/boutique-services": {
@@ -947,7 +947,7 @@
       "subject": "Boutique services"
     },
     "type/beauty-fashion-and-lifestyle/fashion-services/clothing-repair": {
-      "photo": null,
+      "photo": "architecture",
       "subject": "Clothing repair"
     },
     "subcategory/beauty-fashion-and-lifestyle/jewellery-and-accessories": {
@@ -1035,19 +1035,19 @@
       "subject": "Motorcycles"
     },
     "type/automobiles/new-vehicles/scooters": {
-      "photo": null,
+      "photo": "automobile-scooter",
       "subject": "Scooters"
     },
     "type/automobiles/new-vehicles/electric-cars": {
-      "photo": null,
+      "photo": "automobile-electric-car",
       "subject": "Electric cars"
     },
     "type/automobiles/new-vehicles/electric-two-wheelers": {
-      "photo": null,
+      "photo": "automobile-electric-two-wheeler",
       "subject": "Electric two-wheelers"
     },
     "type/automobiles/new-vehicles/commercial-vehicles": {
-      "photo": null,
+      "photo": "truck",
       "subject": "Commercial vehicles"
     },
     "subcategory/automobiles/used-vehicles": {
@@ -1103,15 +1103,15 @@
       "subject": "Scheduled servicing"
     },
     "type/automobiles/vehicle-servicing-and-repairs/engine-repairs": {
-      "photo": null,
+      "photo": "mechanic",
       "subject": "Engine repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/brake-repairs": {
-      "photo": null,
+      "photo": "automobile-brakes",
       "subject": "Brake repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/battery-services": {
-      "photo": null,
+      "photo": "automobile-battery",
       "subject": "Battery services"
     },
     "type/automobiles/vehicle-servicing-and-repairs/tyre-replacement": {
@@ -1119,15 +1119,15 @@
       "subject": "Tyre replacement"
     },
     "type/automobiles/vehicle-servicing-and-repairs/wheel-alignment": {
-      "photo": null,
+      "photo": "automobile-alignment",
       "subject": "Wheel alignment"
     },
     "type/automobiles/vehicle-servicing-and-repairs/denting-and-painting": {
-      "photo": "wall-painting",
+      "photo": "automobile-body-paint",
       "subject": "Denting and painting"
     },
     "type/automobiles/vehicle-servicing-and-repairs/vehicle-diagnostics": {
-      "photo": "lab",
+      "photo": "automobile-diagnostics",
       "subject": "Vehicle diagnostics"
     },
     "subcategory/automobiles/car-care-and-detailing": {
@@ -1139,7 +1139,7 @@
       "subject": "Car washing"
     },
     "type/automobiles/car-care-and-detailing/interior-cleaning": {
-      "photo": "cleaning",
+      "photo": "automobile-interior-cleaning",
       "subject": "Interior cleaning"
     },
     "type/automobiles/car-care-and-detailing/exterior-detailing": {
@@ -1147,15 +1147,15 @@
       "subject": "Exterior detailing"
     },
     "type/automobiles/car-care-and-detailing/ceramic-coating": {
-      "photo": "mechanic",
+      "photo": "automobile-ceramic-coating",
       "subject": "Ceramic coating"
     },
     "type/automobiles/car-care-and-detailing/paint-protection": {
-      "photo": null,
+      "photo": "automobile-paint-protection",
       "subject": "Paint protection"
     },
     "type/automobiles/car-care-and-detailing/polishing": {
-      "photo": null,
+      "photo": "automobile-polishing",
       "subject": "Polishing"
     },
     "subcategory/automobiles/spare-parts-and-accessories": {
@@ -1171,11 +1171,11 @@
       "subject": "Batteries"
     },
     "type/automobiles/spare-parts-and-accessories/engine-parts": {
-      "photo": null,
+      "photo": "automobile-engine-parts",
       "subject": "Engine parts"
     },
     "type/automobiles/spare-parts-and-accessories/helmets": {
-      "photo": null,
+      "photo": "automobile-helmet",
       "subject": "Helmets"
     },
     "type/automobiles/spare-parts-and-accessories/vehicle-accessories": {
@@ -1183,15 +1183,15 @@
       "subject": "Vehicle accessories"
     },
     "type/automobiles/spare-parts-and-accessories/audio-systems": {
-      "photo": null,
+      "photo": "automobile-audio",
       "subject": "Audio systems"
     },
     "type/automobiles/spare-parts-and-accessories/seat-covers": {
-      "photo": null,
+      "photo": "automobile-seats",
       "subject": "Seat covers"
     },
     "subcategory/automobiles/vehicle-insurance-and-finance": {
-      "photo": "finance",
+      "photo": null,
       "subject": "Vehicle Insurance & Finance"
     },
     "type/automobiles/vehicle-insurance-and-finance/vehicle-insurance-providers": {
@@ -1203,11 +1203,11 @@
       "subject": "Vehicle loans"
     },
     "type/automobiles/vehicle-insurance-and-finance/insurance-renewal-assistance": {
-      "photo": null,
+      "photo": "automobile-insurance",
       "subject": "Insurance renewal assistance"
     },
     "type/automobiles/vehicle-insurance-and-finance/financing-enquiries": {
-      "photo": "accounting-calculation",
+      "photo": "finance",
       "subject": "Financing enquiries"
     },
     "subcategory/automobiles/driving-and-vehicle-documentation": {
@@ -1219,15 +1219,15 @@
       "subject": "Driving schools"
     },
     "type/automobiles/driving-and-vehicle-documentation/driving-lessons": {
-      "photo": null,
+      "photo": "automobile-driving",
       "subject": "Driving lessons"
     },
     "type/automobiles/driving-and-vehicle-documentation/licence-assistance": {
-      "photo": "registration-paperwork",
+      "photo": null,
       "subject": "Licence assistance"
     },
     "type/automobiles/driving-and-vehicle-documentation/vehicle-registration-assistance": {
-      "photo": null,
+      "photo": "registration-paperwork",
       "subject": "Vehicle registration assistance"
     },
     "type/automobiles/driving-and-vehicle-documentation/vehicle-inspection": {
@@ -1239,11 +1239,11 @@
       "subject": "Pre-purchase inspection"
     },
     "subcategory/automobiles/roadside-assistance": {
-      "photo": "building-inspection",
+      "photo": null,
       "subject": "Roadside Assistance"
     },
     "type/automobiles/roadside-assistance/towing": {
-      "photo": null,
+      "photo": "automobile-towing",
       "subject": "Towing"
     },
     "type/automobiles/roadside-assistance/breakdown-assistance": {
@@ -1251,15 +1251,15 @@
       "subject": "Breakdown assistance"
     },
     "type/automobiles/roadside-assistance/flat-tyre-assistance": {
-      "photo": null,
+      "photo": "automobile-tyre",
       "subject": "Flat tyre assistance"
     },
     "type/automobiles/roadside-assistance/battery-jump-start": {
-      "photo": null,
+      "photo": "automobile-jump-start",
       "subject": "Battery jump-start"
     },
     "type/automobiles/roadside-assistance/emergency-fuel-delivery-where-legally-available": {
-      "photo": null,
+      "photo": "automobile-fuel",
       "subject": "Emergency fuel delivery, where legally available"
     },
     "subcategory/automobiles/commercial-and-fleet-services": {
@@ -1267,7 +1267,7 @@
       "subject": "Commercial & Fleet Services"
     },
     "type/automobiles/commercial-and-fleet-services/fleet-maintenance": {
-      "photo": "truck",
+      "photo": "automobile-fleet",
       "subject": "Fleet maintenance"
     },
     "type/automobiles/commercial-and-fleet-services/commercial-vehicle-servicing": {
@@ -1739,7 +1739,7 @@
       "subject": "Transport & Transfers"
     },
     "type/travel-stay-and-experiences/transport-and-transfers/airport-transfers": {
-      "photo": "airplane",
+      "photo": null,
       "subject": "Airport transfers"
     },
     "type/travel-stay-and-experiences/transport-and-transfers/intercity-transfers": {
@@ -1939,7 +1939,7 @@
       "subject": "Diagnostic Services"
     },
     "type/health-fitness-and-wellness/diagnostic-services/pathology-laboratories": {
-      "photo": null,
+      "photo": "lab",
       "subject": "Pathology laboratories"
     },
     "type/health-fitness-and-wellness/diagnostic-services/blood-tests": {
@@ -2655,7 +2655,7 @@
       "subject": "Property legal assistance"
     },
     "subcategory/professional-services/accounting-and-taxation": {
-      "photo": "accountant-consultation",
+      "photo": null,
       "subject": "Accounting & Taxation"
     },
     "type/professional-services/accounting-and-taxation/chartered-accountants": {
@@ -2835,7 +2835,7 @@
       "subject": "Insurance consultation"
     },
     "type/professional-services/financial-services/loan-consultation": {
-      "photo": null,
+      "photo": "accountant-consultation",
       "subject": "Loan consultation"
     },
     "type/professional-services/financial-services/business-finance-consultation": {
@@ -3596,7 +3596,7 @@
       "category": "food-and-dining",
       "subcategory": "restaurants-and-dining",
       "subject": "Fine dining",
-      "referenceAsset": "restaurant",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3605,7 +3605,7 @@
       "category": "food-and-dining",
       "subcategory": "restaurants-and-dining",
       "subject": "Casual dining",
-      "referenceAsset": "chef",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3614,7 +3614,7 @@
       "category": "food-and-dining",
       "subcategory": "restaurants-and-dining",
       "subject": "Buffet restaurants",
-      "referenceAsset": "restaurant",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3623,7 +3623,7 @@
       "category": "food-and-dining",
       "subcategory": "restaurants-and-dining",
       "subject": "Specialty cuisine restaurants",
-      "referenceAsset": "chef",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3632,7 +3632,7 @@
       "category": "food-and-dining",
       "subcategory": "restaurants-and-dining",
       "subject": "Cloud kitchens",
-      "referenceAsset": "restaurant",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3641,7 +3641,7 @@
       "category": "food-and-dining",
       "subcategory": "quick-bites-and-street-food",
       "subject": "Fast food",
-      "referenceAsset": "burger",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3650,7 +3650,7 @@
       "category": "food-and-dining",
       "subcategory": "quick-bites-and-street-food",
       "subject": "Street food",
-      "referenceAsset": "pizza",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3659,7 +3659,7 @@
       "category": "food-and-dining",
       "subcategory": "quick-bites-and-street-food",
       "subject": "Rolls and wraps",
-      "referenceAsset": "pizza",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3677,7 +3677,7 @@
       "category": "food-and-dining",
       "subcategory": "quick-bites-and-street-food",
       "subject": "Snacks and chaats",
-      "referenceAsset": "burger",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3686,7 +3686,7 @@
       "category": "food-and-dining",
       "subcategory": "caf-s-and-beverages",
       "subject": "Juice shops",
-      "referenceAsset": "cafe",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3695,7 +3695,7 @@
       "category": "food-and-dining",
       "subcategory": "caf-s-and-beverages",
       "subject": "Milkshakes and smoothies",
-      "referenceAsset": "coffee",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3704,7 +3704,7 @@
       "category": "food-and-dining",
       "subcategory": "caf-s-and-beverages",
       "subject": "Mocktails",
-      "referenceAsset": "tea",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3713,7 +3713,7 @@
       "category": "food-and-dining",
       "subcategory": "caf-s-and-beverages",
       "subject": "Dessert cafés",
-      "referenceAsset": "cafe",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3731,7 +3731,7 @@
       "category": "food-and-dining",
       "subcategory": "food-delivery-and-takeaway",
       "subject": "Pickup and takeaway",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3740,7 +3740,7 @@
       "category": "food-and-dining",
       "subcategory": "food-delivery-and-takeaway",
       "subject": "Late-night food",
-      "referenceAsset": "chef",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3749,7 +3749,7 @@
       "category": "food-and-dining",
       "subcategory": "food-delivery-and-takeaway",
       "subject": "Breakfast delivery",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3758,7 +3758,7 @@
       "category": "food-and-dining",
       "subcategory": "food-delivery-and-takeaway",
       "subject": "Lunch and dinner meals",
-      "referenceAsset": "chef",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3767,7 +3767,7 @@
       "category": "food-and-dining",
       "subcategory": "food-delivery-and-takeaway",
       "subject": "Daily meal providers",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3785,7 +3785,7 @@
       "category": "food-and-dining",
       "subcategory": "sweets-and-desserts",
       "subject": "Bakeries",
-      "referenceAsset": "cake",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3794,7 +3794,7 @@
       "category": "food-and-dining",
       "subcategory": "sweets-and-desserts",
       "subject": "Cakes and pastries",
-      "referenceAsset": "cake",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3803,7 +3803,7 @@
       "category": "food-and-dining",
       "subcategory": "sweets-and-desserts",
       "subject": "Sweets",
-      "referenceAsset": "cake",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3812,7 +3812,7 @@
       "category": "food-and-dining",
       "subcategory": "sweets-and-desserts",
       "subject": "Chocolates",
-      "referenceAsset": "cake",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3821,7 +3821,7 @@
       "category": "food-and-dining",
       "subcategory": "sweets-and-desserts",
       "subject": "Custom cakes",
-      "referenceAsset": "cake",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3830,7 +3830,7 @@
       "category": "food-and-dining",
       "subcategory": "sweets-and-desserts",
       "subject": "Desserts",
-      "referenceAsset": "cake",
+      "referenceAsset": "automobiles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3848,7 +3848,7 @@
       "category": "food-and-dining",
       "subcategory": "catering-and-bulk-orders",
       "subject": "Home catering",
-      "referenceAsset": "chef",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3857,7 +3857,7 @@
       "category": "food-and-dining",
       "subcategory": "catering-and-bulk-orders",
       "subject": "Corporate catering",
-      "referenceAsset": "chef",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3866,7 +3866,7 @@
       "category": "food-and-dining",
       "subcategory": "catering-and-bulk-orders",
       "subject": "Wedding catering",
-      "referenceAsset": "chef",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3875,7 +3875,7 @@
       "category": "food-and-dining",
       "subcategory": "catering-and-bulk-orders",
       "subject": "Party catering",
-      "referenceAsset": "chef",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3884,7 +3884,7 @@
       "category": "food-and-dining",
       "subcategory": "catering-and-bulk-orders",
       "subject": "Bulk food orders",
-      "referenceAsset": "chef",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3902,7 +3902,7 @@
       "category": "food-and-dining",
       "subcategory": "home-cooked-food",
       "subject": "Home-Cooked Food",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "pizza",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3911,7 +3911,7 @@
       "category": "food-and-dining",
       "subcategory": "home-cooked-food",
       "subject": "Homemade meals",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3929,7 +3929,7 @@
       "category": "food-and-dining",
       "subcategory": "home-cooked-food",
       "subject": "Homemade snacks",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3947,7 +3947,7 @@
       "category": "food-and-dining",
       "subcategory": "home-cooked-food",
       "subject": "Specialty homemade food",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3965,7 +3965,7 @@
       "category": "food-and-dining",
       "subcategory": "grocery-and-food-essentials",
       "subject": "Fruits and vegetables",
-      "referenceAsset": "grocery",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3974,7 +3974,7 @@
       "category": "food-and-dining",
       "subcategory": "grocery-and-food-essentials",
       "subject": "Meat and seafood",
-      "referenceAsset": "grocery",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3983,7 +3983,7 @@
       "category": "food-and-dining",
       "subcategory": "grocery-and-food-essentials",
       "subject": "Dairy products",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -3992,7 +3992,7 @@
       "category": "food-and-dining",
       "subcategory": "grocery-and-food-essentials",
       "subject": "Organic food",
-      "referenceAsset": "grocery",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4001,16 +4001,7 @@
       "category": "food-and-dining",
       "subcategory": "grocery-and-food-essentials",
       "subject": "Specialty ingredients",
-      "referenceAsset": "food-and-dining",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/home-and-everyday-services/cleaning-services/home-cleaning",
-      "level": "type",
-      "category": "home-and-everyday-services",
-      "subcategory": "cleaning-services",
-      "subject": "Home cleaning",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4019,7 +4010,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "cleaning-services",
       "subject": "Bathroom cleaning",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4028,7 +4019,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "cleaning-services",
       "subject": "Kitchen cleaning",
-      "referenceAsset": "cleaning-care",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4037,7 +4028,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "cleaning-services",
       "subject": "Sofa and carpet cleaning",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4046,7 +4037,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "cleaning-services",
       "subject": "Water tank cleaning",
-      "referenceAsset": "cleaning-care",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4055,7 +4046,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "cleaning-services",
       "subject": "Move-in and move-out cleaning",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4064,7 +4055,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "repairs-and-maintenance",
       "subject": "Plumbing",
-      "referenceAsset": "home-and-everyday-services",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4091,7 +4082,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "repairs-and-maintenance",
       "subject": "Masonry",
-      "referenceAsset": "electrical",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4100,7 +4091,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "repairs-and-maintenance",
       "subject": "Door and lock repairs",
-      "referenceAsset": "carpentry",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4109,7 +4100,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "repairs-and-maintenance",
       "subject": "General handyman services",
-      "referenceAsset": "home-and-everyday-services",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4136,7 +4127,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "appliance-services",
       "subject": "Microwave repair",
-      "referenceAsset": "air-conditioning",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4145,7 +4136,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "appliance-services",
       "subject": "Television repair",
-      "referenceAsset": "computer-repair",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4154,7 +4145,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "appliance-services",
       "subject": "Water purifier servicing",
-      "referenceAsset": "electrical",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4163,7 +4154,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "appliance-services",
       "subject": "Home appliance installation",
-      "referenceAsset": "air-conditioning",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4181,7 +4172,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-installation",
       "subject": "Curtain installation",
-      "referenceAsset": "interior",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4190,7 +4181,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-installation",
       "subject": "TV mounting",
-      "referenceAsset": "home-and-everyday-services",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4208,7 +4199,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-installation",
       "subject": "CCTV installation",
-      "referenceAsset": "interior",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4217,7 +4208,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-installation",
       "subject": "Wi-Fi setup",
-      "referenceAsset": "home-and-everyday-services",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4226,7 +4217,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-installation",
       "subject": "Smart home installation",
-      "referenceAsset": "electrical",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4244,7 +4235,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "laundry-and-care",
       "subject": "Dry cleaning",
-      "referenceAsset": "laundry",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4253,7 +4244,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "laundry-and-care",
       "subject": "Ironing",
-      "referenceAsset": "laundry",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4271,7 +4262,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "laundry-and-care",
       "subject": "Bag cleaning",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4280,7 +4271,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "laundry-and-care",
       "subject": "Carpet cleaning",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4298,7 +4289,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "pest-control",
       "subject": "Cockroach control",
-      "referenceAsset": "pest",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4307,7 +4298,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "pest-control",
       "subject": "Termite treatment",
-      "referenceAsset": "pest-care",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4316,7 +4307,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "pest-control",
       "subject": "Mosquito control",
-      "referenceAsset": "pest",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4334,7 +4325,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-improvement",
       "subject": "Home renovation",
-      "referenceAsset": "architecture",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4352,7 +4343,16 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-improvement",
       "subject": "Bathroom renovation",
-      "referenceAsset": "interior",
+      "referenceAsset": "accounting-calculation",
+      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
+    },
+    {
+      "id": "type/home-and-everyday-services/home-improvement/flooring",
+      "level": "type",
+      "category": "home-and-everyday-services",
+      "subcategory": "home-improvement",
+      "subject": "Flooring",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4361,7 +4361,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-improvement",
       "subject": "False ceilings",
-      "referenceAsset": "construction",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4370,16 +4370,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "home-improvement",
       "subject": "Waterproofing",
-      "referenceAsset": "interior",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/home-and-everyday-services/home-improvement/painting-and-polishing",
-      "level": "type",
-      "category": "home-and-everyday-services",
-      "subcategory": "home-improvement",
-      "subject": "Painting and polishing",
-      "referenceAsset": "wall-painting",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4406,7 +4397,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "gardening-and-outdoor-care",
       "subject": "Plant care",
-      "referenceAsset": "garden",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4415,7 +4406,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "gardening-and-outdoor-care",
       "subject": "Landscaping",
-      "referenceAsset": "outdoor",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4424,7 +4415,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "gardening-and-outdoor-care",
       "subject": "Tree trimming",
-      "referenceAsset": "garden",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4433,7 +4424,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "gardening-and-outdoor-care",
       "subject": "Balcony garden setup",
-      "referenceAsset": "outdoor",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4442,7 +4433,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "moving-and-relocation",
       "subject": "Packers and movers",
-      "referenceAsset": "moving",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4451,7 +4442,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "moving-and-relocation",
       "subject": "Local shifting",
-      "referenceAsset": "moving",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4460,7 +4451,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "moving-and-relocation",
       "subject": "Intercity relocation",
-      "referenceAsset": "moving",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4478,7 +4469,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "moving-and-relocation",
       "subject": "Office relocation",
-      "referenceAsset": "moving",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4496,7 +4487,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "domestic-help",
       "subject": "Housekeeping",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4514,7 +4505,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "domestic-help",
       "subject": "Elderly assistance",
-      "referenceAsset": "cleaning",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4523,7 +4514,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "domestic-help",
       "subject": "Caretaker services",
-      "referenceAsset": "chef",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4532,7 +4523,7 @@
       "category": "home-and-everyday-services",
       "subcategory": "domestic-help",
       "subject": "Part-time domestic help",
-      "referenceAsset": "home-maintenance",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4550,7 +4541,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "grocery-and-daily-needs",
       "subject": "Convenience stores",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4559,7 +4550,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "grocery-and-daily-needs",
       "subject": "Grocery delivery",
-      "referenceAsset": "grocery",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4568,7 +4559,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "grocery-and-daily-needs",
       "subject": "Fruits and vegetables",
-      "referenceAsset": "grocery",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4577,7 +4568,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "grocery-and-daily-needs",
       "subject": "Household essentials",
-      "referenceAsset": "grocery",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4595,7 +4586,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "electronics",
       "subject": "Computers and laptops",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4613,7 +4604,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "electronics",
       "subject": "Audio equipment",
-      "referenceAsset": "technology",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4631,7 +4622,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "electronics",
       "subject": "Gaming devices",
-      "referenceAsset": "servers",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4640,7 +4631,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "electronics",
       "subject": "Electronic accessories",
-      "referenceAsset": "technology",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4658,7 +4649,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "fashion-and-clothing",
       "subject": "Women's clothing",
-      "referenceAsset": "clothes",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4667,7 +4658,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "fashion-and-clothing",
       "subject": "Children's clothing",
-      "referenceAsset": "clothes",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4685,7 +4676,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "fashion-and-clothing",
       "subject": "Casual wear",
-      "referenceAsset": "clothes",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4694,7 +4685,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "fashion-and-clothing",
       "subject": "Formal wear",
-      "referenceAsset": "beauty-fashion-and-lifestyle",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4703,7 +4694,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "fashion-and-clothing",
       "subject": "Footwear",
-      "referenceAsset": "clothes",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4712,7 +4703,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "fashion-and-clothing",
       "subject": "Bags and accessories",
-      "referenceAsset": "beauty-fashion-and-lifestyle",
+      "referenceAsset": "automobiles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4739,7 +4730,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "home-and-furniture",
       "subject": "Home décor",
-      "referenceAsset": "interior",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4748,7 +4739,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "home-and-furniture",
       "subject": "Kitchenware",
-      "referenceAsset": "property",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4757,7 +4748,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "home-and-furniture",
       "subject": "Lighting",
-      "referenceAsset": "interior",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4766,7 +4757,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "home-and-furniture",
       "subject": "Bedding",
-      "referenceAsset": "property",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4775,7 +4766,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "home-and-furniture",
       "subject": "Storage products",
-      "referenceAsset": "interior",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4793,7 +4784,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "health-and-personal-care-products",
       "subject": "Skincare",
-      "referenceAsset": "pharmacy",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4811,7 +4802,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "health-and-personal-care-products",
       "subject": "Personal hygiene",
-      "referenceAsset": "pharmacy",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4829,7 +4820,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "health-and-personal-care-products",
       "subject": "General wellness products",
-      "referenceAsset": "pharmacy",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4856,7 +4847,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "books-gifts-and-stationery",
       "subject": "Office stationery",
-      "referenceAsset": "books",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4865,7 +4856,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "books-gifts-and-stationery",
       "subject": "Gifts",
-      "referenceAsset": "books",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4874,7 +4865,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "books-gifts-and-stationery",
       "subject": "Personalized gifts",
-      "referenceAsset": "celebration",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4892,7 +4883,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "specialty-stores",
       "subject": "Specialty Stores",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "cafe",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4901,7 +4892,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "specialty-stores",
       "subject": "Sports stores",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4928,7 +4919,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "specialty-stores",
       "subject": "Automobile accessories",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4937,7 +4928,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "specialty-stores",
       "subject": "Hardware stores",
-      "referenceAsset": "clothes",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4946,7 +4937,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "specialty-stores",
       "subject": "Hobby and collectible stores",
-      "referenceAsset": "books",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4964,7 +4955,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "local-manufacturers-and-sellers",
       "subject": "Handmade products",
-      "referenceAsset": "printing",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -4991,7 +4982,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "local-manufacturers-and-sellers",
       "subject": "Custom-made products",
-      "referenceAsset": "printing",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5000,7 +4991,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "local-manufacturers-and-sellers",
       "subject": "Small-business products",
-      "referenceAsset": "vendor-logistics",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5009,7 +5000,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "shopping-deals",
       "subject": "Shopping Deals",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "makeup",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5018,7 +5009,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "shopping-deals",
       "subject": "Discounts and offers",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5036,7 +5027,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "shopping-deals",
       "subject": "New arrivals",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5045,7 +5036,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "shopping-deals",
       "subject": "Clearance sales",
-      "referenceAsset": "clothes",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5054,7 +5045,7 @@
       "category": "shopping-and-local-retail",
       "subcategory": "shopping-deals",
       "subject": "Local store promotions",
-      "referenceAsset": "shopping-and-local-retail",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5063,7 +5054,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "salons-and-haircare",
       "subject": "Men's salons",
-      "referenceAsset": "barber",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5072,7 +5063,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "salons-and-haircare",
       "subject": "Women's salons",
-      "referenceAsset": "beauty-fashion-and-lifestyle",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5081,7 +5072,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "salons-and-haircare",
       "subject": "Unisex salons",
-      "referenceAsset": "barber",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5090,7 +5081,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "salons-and-haircare",
       "subject": "Haircuts and styling",
-      "referenceAsset": "barber",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5099,7 +5090,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "salons-and-haircare",
       "subject": "Hair treatments",
-      "referenceAsset": "barber",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5108,7 +5099,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "salons-and-haircare",
       "subject": "Hair spas",
-      "referenceAsset": "barber",
+      "referenceAsset": "automobiles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5117,7 +5108,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "beauty-and-skincare",
       "subject": "Facials",
-      "referenceAsset": "makeup",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5139,21 +5130,12 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "type/beauty-fashion-and-lifestyle/beauty-and-skincare/manicure-and-pedicure",
-      "level": "type",
-      "category": "beauty-fashion-and-lifestyle",
-      "subcategory": "beauty-and-skincare",
-      "subject": "Manicure and pedicure",
-      "referenceAsset": "makeup",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/beauty-fashion-and-lifestyle/beauty-and-skincare/bridal-beauty-packages",
       "level": "type",
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "beauty-and-skincare",
       "subject": "Bridal beauty packages",
-      "referenceAsset": "spa",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5171,7 +5153,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "spa-and-relaxation",
       "subject": "Relaxation massage",
-      "referenceAsset": "spa",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5180,7 +5162,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "spa-and-relaxation",
       "subject": "Wellness spa packages",
-      "referenceAsset": "spa",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5198,7 +5180,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "makeup-and-styling",
       "subject": "Party makeup",
-      "referenceAsset": "makeup",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5207,7 +5189,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "makeup-and-styling",
       "subject": "Professional makeup",
-      "referenceAsset": "makeup",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5216,7 +5198,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "makeup-and-styling",
       "subject": "Personal styling",
-      "referenceAsset": "makeup",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5225,7 +5207,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "makeup-and-styling",
       "subject": "Wardrobe consultation",
-      "referenceAsset": "makeup-artist",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5243,7 +5225,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "fashion-services",
       "subject": "Tailoring",
-      "referenceAsset": "clothes",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5252,7 +5234,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "fashion-services",
       "subject": "Alterations",
-      "referenceAsset": "beauty-fashion-and-lifestyle",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5261,25 +5243,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "fashion-services",
       "subject": "Custom clothing",
-      "referenceAsset": "clothes",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/beauty-fashion-and-lifestyle/fashion-services/embroidery",
-      "level": "type",
-      "category": "beauty-fashion-and-lifestyle",
-      "subcategory": "fashion-services",
-      "subject": "Embroidery",
-      "referenceAsset": "beauty-fashion-and-lifestyle",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/beauty-fashion-and-lifestyle/fashion-services/clothing-repair",
-      "level": "type",
-      "category": "beauty-fashion-and-lifestyle",
-      "subcategory": "fashion-services",
-      "subject": "Clothing repair",
-      "referenceAsset": "clothes",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5297,7 +5261,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "jewellery-and-accessories",
       "subject": "Jewellery stores",
-      "referenceAsset": "jewellery",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5306,7 +5270,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "jewellery-and-accessories",
       "subject": "Custom jewellery",
-      "referenceAsset": "jewellery",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5315,7 +5279,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "jewellery-and-accessories",
       "subject": "Jewellery repair",
-      "referenceAsset": "jewellery",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5333,7 +5297,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "jewellery-and-accessories",
       "subject": "Accessories styling",
-      "referenceAsset": "jewellery",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5351,7 +5315,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "photography-and-personal-portfolios",
       "subject": "Portrait photography",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5369,7 +5333,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "photography-and-personal-portfolios",
       "subject": "Professional headshots",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5387,7 +5351,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "tattoos-and-body-art",
       "subject": "Body art",
-      "referenceAsset": "tattoo",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5396,7 +5360,7 @@
       "category": "beauty-fashion-and-lifestyle",
       "subcategory": "tattoos-and-body-art",
       "subject": "Piercing services",
-      "referenceAsset": "tattoo-care",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5406,42 +5370,6 @@
       "subcategory": "new-vehicles",
       "subject": "Cars",
       "referenceAsset": "automobiles",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/new-vehicles/scooters",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "new-vehicles",
-      "subject": "Scooters",
-      "referenceAsset": "motorcycle",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/new-vehicles/electric-cars",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "new-vehicles",
-      "subject": "Electric cars",
-      "referenceAsset": "electrical",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/new-vehicles/electric-two-wheelers",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "new-vehicles",
-      "subject": "Electric two-wheelers",
-      "referenceAsset": "electrical",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/new-vehicles/commercial-vehicles",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "new-vehicles",
-      "subject": "Commercial vehicles",
-      "referenceAsset": "truck",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5468,7 +5396,7 @@
       "category": "automobiles",
       "subcategory": "used-vehicles",
       "subject": "Used scooters",
-      "referenceAsset": "motorcycle",
+      "referenceAsset": "automobile-scooter",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5477,7 +5405,7 @@
       "category": "automobiles",
       "subcategory": "used-vehicles",
       "subject": "Used commercial vehicles",
-      "referenceAsset": "motorcycle",
+      "referenceAsset": "automobile-fleet",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5486,7 +5414,7 @@
       "category": "automobiles",
       "subcategory": "used-vehicles",
       "subject": "Certified pre-owned vehicles",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "catalogue-first25-automobiles--used-vehicles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5495,7 +5423,7 @@
       "category": "automobiles",
       "subcategory": "vehicle-dealers-and-showrooms",
       "subject": "Car dealerships",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5513,7 +5441,7 @@
       "category": "automobiles",
       "subcategory": "vehicle-dealers-and-showrooms",
       "subject": "EV showrooms",
-      "referenceAsset": "truck",
+      "referenceAsset": "automobile-electric-car",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5522,7 +5450,7 @@
       "category": "automobiles",
       "subcategory": "vehicle-dealers-and-showrooms",
       "subject": "Commercial vehicle dealers",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "automobile-fleet",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5544,48 +5472,12 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "type/automobiles/vehicle-servicing-and-repairs/engine-repairs",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "vehicle-servicing-and-repairs",
-      "subject": "Engine repairs",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/vehicle-servicing-and-repairs/brake-repairs",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "vehicle-servicing-and-repairs",
-      "subject": "Brake repairs",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/vehicle-servicing-and-repairs/battery-services",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "vehicle-servicing-and-repairs",
-      "subject": "Battery services",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/automobiles/vehicle-servicing-and-repairs/tyre-replacement",
       "level": "type",
       "category": "automobiles",
       "subcategory": "vehicle-servicing-and-repairs",
       "subject": "Tyre replacement",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/vehicle-servicing-and-repairs/wheel-alignment",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "vehicle-servicing-and-repairs",
-      "subject": "Wheel alignment",
-      "referenceAsset": "electrical",
+      "referenceAsset": "automobile-tyre",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5603,25 +5495,7 @@
       "category": "automobiles",
       "subcategory": "car-care-and-detailing",
       "subject": "Exterior detailing",
-      "referenceAsset": "car-wash",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/car-care-and-detailing/paint-protection",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "car-care-and-detailing",
-      "subject": "Paint protection",
-      "referenceAsset": "car-wash",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/car-care-and-detailing/polishing",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "car-care-and-detailing",
-      "subject": "Polishing",
-      "referenceAsset": "wall-painting",
+      "referenceAsset": "automobile-polishing",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5630,7 +5504,7 @@
       "category": "automobiles",
       "subcategory": "spare-parts-and-accessories",
       "subject": "Spare Parts & Accessories",
-      "referenceAsset": "mechanic",
+      "referenceAsset": "automobile-engine-parts",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5639,7 +5513,7 @@
       "category": "automobiles",
       "subcategory": "spare-parts-and-accessories",
       "subject": "Tyres",
-      "referenceAsset": "mechanic",
+      "referenceAsset": "automobile-tyre",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5648,25 +5522,7 @@
       "category": "automobiles",
       "subcategory": "spare-parts-and-accessories",
       "subject": "Batteries",
-      "referenceAsset": "motorcycle",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/spare-parts-and-accessories/engine-parts",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "spare-parts-and-accessories",
-      "subject": "Engine parts",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/spare-parts-and-accessories/helmets",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "spare-parts-and-accessories",
-      "subject": "Helmets",
-      "referenceAsset": "motorcycle",
+      "referenceAsset": "automobile-battery",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5675,25 +5531,16 @@
       "category": "automobiles",
       "subcategory": "spare-parts-and-accessories",
       "subject": "Vehicle accessories",
-      "referenceAsset": "mechanic",
+      "referenceAsset": "automobile-helmet",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "type/automobiles/spare-parts-and-accessories/audio-systems",
-      "level": "type",
+      "id": "subcategory/automobiles/vehicle-insurance-and-finance",
+      "level": "subcategory",
       "category": "automobiles",
-      "subcategory": "spare-parts-and-accessories",
-      "subject": "Audio systems",
-      "referenceAsset": "motorcycle",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/spare-parts-and-accessories/seat-covers",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "spare-parts-and-accessories",
-      "subject": "Seat covers",
-      "referenceAsset": "mechanic",
+      "subcategory": "vehicle-insurance-and-finance",
+      "subject": "Vehicle Insurance & Finance",
+      "referenceAsset": "automobile-insurance",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5702,7 +5549,7 @@
       "category": "automobiles",
       "subcategory": "vehicle-insurance-and-finance",
       "subject": "Vehicle insurance providers",
-      "referenceAsset": "finance",
+      "referenceAsset": "automobile-insurance",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5711,15 +5558,6 @@
       "category": "automobiles",
       "subcategory": "vehicle-insurance-and-finance",
       "subject": "Vehicle loans",
-      "referenceAsset": "accounting-calculation",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/vehicle-insurance-and-finance/insurance-renewal-assistance",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "vehicle-insurance-and-finance",
-      "subject": "Insurance renewal assistance",
       "referenceAsset": "finance",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
@@ -5729,7 +5567,7 @@
       "category": "automobiles",
       "subcategory": "driving-and-vehicle-documentation",
       "subject": "Driving & Vehicle Documentation",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "automobile-driving",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5738,25 +5576,16 @@
       "category": "automobiles",
       "subcategory": "driving-and-vehicle-documentation",
       "subject": "Driving schools",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "automobile-driving",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "type/automobiles/driving-and-vehicle-documentation/driving-lessons",
+      "id": "type/automobiles/driving-and-vehicle-documentation/licence-assistance",
       "level": "type",
       "category": "automobiles",
       "subcategory": "driving-and-vehicle-documentation",
-      "subject": "Driving lessons",
-      "referenceAsset": "automobiles",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/driving-and-vehicle-documentation/vehicle-registration-assistance",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "driving-and-vehicle-documentation",
-      "subject": "Vehicle registration assistance",
-      "referenceAsset": "automobiles",
+      "subject": "Licence assistance",
+      "referenceAsset": "registration-paperwork",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5765,7 +5594,7 @@
       "category": "automobiles",
       "subcategory": "driving-and-vehicle-documentation",
       "subject": "Vehicle inspection",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "automobile-diagnostics",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5774,16 +5603,16 @@
       "category": "automobiles",
       "subcategory": "driving-and-vehicle-documentation",
       "subject": "Pre-purchase inspection",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "catalogue-first25-automobiles--used-vehicles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "type/automobiles/roadside-assistance/towing",
-      "level": "type",
+      "id": "subcategory/automobiles/roadside-assistance",
+      "level": "subcategory",
       "category": "automobiles",
       "subcategory": "roadside-assistance",
-      "subject": "Towing",
-      "referenceAsset": "mechanic",
+      "subject": "Roadside Assistance",
+      "referenceAsset": "automobile-towing",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5792,34 +5621,7 @@
       "category": "automobiles",
       "subcategory": "roadside-assistance",
       "subject": "Breakdown assistance",
-      "referenceAsset": "truck",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/roadside-assistance/flat-tyre-assistance",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "roadside-assistance",
-      "subject": "Flat tyre assistance",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/roadside-assistance/battery-jump-start",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "roadside-assistance",
-      "subject": "Battery jump-start",
-      "referenceAsset": "mechanic",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/automobiles/roadside-assistance/emergency-fuel-delivery-where-legally-available",
-      "level": "type",
-      "category": "automobiles",
-      "subcategory": "roadside-assistance",
-      "subject": "Emergency fuel delivery, where legally available",
-      "referenceAsset": "construction-contract",
+      "referenceAsset": "automobile-towing",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5828,7 +5630,7 @@
       "category": "automobiles",
       "subcategory": "commercial-and-fleet-services",
       "subject": "Commercial & Fleet Services",
-      "referenceAsset": "truck",
+      "referenceAsset": "automobile-fleet",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5837,7 +5639,7 @@
       "category": "automobiles",
       "subcategory": "commercial-and-fleet-services",
       "subject": "Commercial vehicle servicing",
-      "referenceAsset": "mechanic",
+      "referenceAsset": "automobile-fleet",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5846,7 +5648,7 @@
       "category": "automobiles",
       "subcategory": "commercial-and-fleet-services",
       "subject": "Fleet management",
-      "referenceAsset": "truck",
+      "referenceAsset": "automobile-fleet",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5855,7 +5657,7 @@
       "category": "automobiles",
       "subcategory": "commercial-and-fleet-services",
       "subject": "Vehicle leasing enquiries",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5882,7 +5684,7 @@
       "category": "rental-services",
       "subcategory": "residential-property-rentals",
       "subject": "Independent floors",
-      "referenceAsset": "rental-keys",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5891,7 +5693,7 @@
       "category": "rental-services",
       "subcategory": "residential-property-rentals",
       "subject": "Rooms",
-      "referenceAsset": "property",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5900,7 +5702,7 @@
       "category": "rental-services",
       "subcategory": "residential-property-rentals",
       "subject": "PG accommodation",
-      "referenceAsset": "rental-keys",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5909,7 +5711,7 @@
       "category": "rental-services",
       "subcategory": "residential-property-rentals",
       "subject": "Shared accommodation",
-      "referenceAsset": "property",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5918,7 +5720,7 @@
       "category": "rental-services",
       "subcategory": "residential-property-rentals",
       "subject": "Short-term residential stays",
-      "referenceAsset": "rental-keys",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5927,7 +5729,7 @@
       "category": "rental-services",
       "subcategory": "commercial-property-rentals",
       "subject": "Shops",
-      "referenceAsset": "commercial-building",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5954,7 +5756,7 @@
       "category": "rental-services",
       "subcategory": "commercial-property-rentals",
       "subject": "Warehouses",
-      "referenceAsset": "property-documents",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5963,7 +5765,7 @@
       "category": "rental-services",
       "subcategory": "commercial-property-rentals",
       "subject": "Industrial spaces",
-      "referenceAsset": "spa",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5972,7 +5774,7 @@
       "category": "rental-services",
       "subcategory": "commercial-property-rentals",
       "subject": "Commercial kitchens",
-      "referenceAsset": "property-documents",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5981,7 +5783,7 @@
       "category": "rental-services",
       "subcategory": "commercial-property-rentals",
       "subject": "Meeting rooms",
-      "referenceAsset": "commercial-building",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -5999,7 +5801,7 @@
       "category": "rental-services",
       "subcategory": "vehicle-rentals",
       "subject": "Self-drive cars",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6008,7 +5810,7 @@
       "category": "rental-services",
       "subcategory": "vehicle-rentals",
       "subject": "Chauffeur-driven cars",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6026,7 +5828,7 @@
       "category": "rental-services",
       "subcategory": "vehicle-rentals",
       "subject": "Scooters",
-      "referenceAsset": "motorcycle",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6044,7 +5846,7 @@
       "category": "rental-services",
       "subcategory": "vehicle-rentals",
       "subject": "Vans",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6053,7 +5855,7 @@
       "category": "rental-services",
       "subcategory": "vehicle-rentals",
       "subject": "Commercial vehicles",
-      "referenceAsset": "motorcycle",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6071,7 +5873,7 @@
       "category": "rental-services",
       "subcategory": "furniture-rentals",
       "subject": "Sofas",
-      "referenceAsset": "interior",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6089,7 +5891,7 @@
       "category": "rental-services",
       "subcategory": "furniture-rentals",
       "subject": "Wardrobes",
-      "referenceAsset": "interior",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6098,7 +5900,7 @@
       "category": "rental-services",
       "subcategory": "furniture-rentals",
       "subject": "Office furniture",
-      "referenceAsset": "interior",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6116,7 +5918,7 @@
       "category": "rental-services",
       "subcategory": "electronics-and-gadget-rentals",
       "subject": "Desktop computers",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6125,7 +5927,7 @@
       "category": "rental-services",
       "subcategory": "electronics-and-gadget-rentals",
       "subject": "Cameras",
-      "referenceAsset": "technology",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6143,7 +5945,7 @@
       "category": "rental-services",
       "subcategory": "electronics-and-gadget-rentals",
       "subject": "Gaming consoles",
-      "referenceAsset": "technology",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6152,7 +5954,7 @@
       "category": "rental-services",
       "subcategory": "electronics-and-gadget-rentals",
       "subject": "Speakers",
-      "referenceAsset": "computer-repair",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6161,7 +5963,7 @@
       "category": "rental-services",
       "subcategory": "electronics-and-gadget-rentals",
       "subject": "Smartphones",
-      "referenceAsset": "technology",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6170,7 +5972,7 @@
       "category": "rental-services",
       "subcategory": "electronics-and-gadget-rentals",
       "subject": "Event display equipment",
-      "referenceAsset": "computer-repair",
+      "referenceAsset": "automobiles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6188,7 +5990,7 @@
       "category": "rental-services",
       "subcategory": "home-appliance-rentals",
       "subject": "Refrigerators",
-      "referenceAsset": "air-conditioning",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6206,7 +6008,7 @@
       "category": "rental-services",
       "subcategory": "home-appliance-rentals",
       "subject": "Water purifiers",
-      "referenceAsset": "laundry",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6215,7 +6017,7 @@
       "category": "rental-services",
       "subcategory": "home-appliance-rentals",
       "subject": "Televisions",
-      "referenceAsset": "air-conditioning",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6224,7 +6026,7 @@
       "category": "rental-services",
       "subcategory": "home-appliance-rentals",
       "subject": "Kitchen appliances",
-      "referenceAsset": "laundry",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6269,7 +6071,7 @@
       "category": "rental-services",
       "subcategory": "event-and-party-rentals",
       "subject": "Sound systems",
-      "referenceAsset": "celebration",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6278,7 +6080,7 @@
       "category": "rental-services",
       "subcategory": "event-and-party-rentals",
       "subject": "Lighting",
-      "referenceAsset": "events",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6287,7 +6089,7 @@
       "category": "rental-services",
       "subcategory": "event-and-party-rentals",
       "subject": "Projectors",
-      "referenceAsset": "restaurant",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6296,7 +6098,7 @@
       "category": "rental-services",
       "subcategory": "event-and-party-rentals",
       "subject": "Stages",
-      "referenceAsset": "celebration",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6332,7 +6134,7 @@
       "category": "rental-services",
       "subcategory": "tools-and-construction-equipment",
       "subject": "Generators",
-      "referenceAsset": "construction-equipment",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6341,7 +6143,7 @@
       "category": "rental-services",
       "subcategory": "tools-and-construction-equipment",
       "subject": "Scaffolding",
-      "referenceAsset": "construction",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6350,7 +6152,7 @@
       "category": "rental-services",
       "subcategory": "tools-and-construction-equipment",
       "subject": "Construction machinery",
-      "referenceAsset": "construction-equipment",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6359,7 +6161,7 @@
       "category": "rental-services",
       "subcategory": "tools-and-construction-equipment",
       "subject": "Ladders",
-      "referenceAsset": "construction",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6386,7 +6188,7 @@
       "category": "rental-services",
       "subcategory": "travel-and-adventure-equipment",
       "subject": "Camping tents",
-      "referenceAsset": "cycling",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6404,7 +6206,7 @@
       "category": "rental-services",
       "subcategory": "travel-and-adventure-equipment",
       "subject": "Trekking equipment",
-      "referenceAsset": "outdoor",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6413,7 +6215,7 @@
       "category": "rental-services",
       "subcategory": "travel-and-adventure-equipment",
       "subject": "Hiking gear",
-      "referenceAsset": "cycling",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6422,7 +6224,7 @@
       "category": "rental-services",
       "subcategory": "travel-and-adventure-equipment",
       "subject": "Travel accessories",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6431,7 +6233,7 @@
       "category": "rental-services",
       "subcategory": "fashion-and-occasion-rentals",
       "subject": "Fashion & Occasion Rentals",
-      "referenceAsset": "clothes",
+      "referenceAsset": "wedding",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6440,7 +6242,7 @@
       "category": "rental-services",
       "subcategory": "fashion-and-occasion-rentals",
       "subject": "Wedding outfits",
-      "referenceAsset": "wedding",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6458,7 +6260,7 @@
       "category": "rental-services",
       "subcategory": "fashion-and-occasion-rentals",
       "subject": "Traditional attire",
-      "referenceAsset": "clothes",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6467,7 +6269,7 @@
       "category": "rental-services",
       "subcategory": "fashion-and-occasion-rentals",
       "subject": "Handbags",
-      "referenceAsset": "clothes",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6476,7 +6278,7 @@
       "category": "rental-services",
       "subcategory": "fashion-and-occasion-rentals",
       "subject": "Costumes",
-      "referenceAsset": "jewellery",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6503,7 +6305,7 @@
       "category": "rental-services",
       "subcategory": "sports-and-recreation-rentals",
       "subject": "Sports equipment",
-      "referenceAsset": "cycling",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6521,7 +6323,7 @@
       "category": "rental-services",
       "subcategory": "sports-and-recreation-rentals",
       "subject": "Adventure equipment",
-      "referenceAsset": "football",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6530,7 +6332,7 @@
       "category": "rental-services",
       "subcategory": "sports-and-recreation-rentals",
       "subject": "Recreational equipment",
-      "referenceAsset": "cycling",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6548,7 +6350,7 @@
       "category": "rental-services",
       "subcategory": "business-and-industrial-rentals",
       "subject": "Industrial machinery",
-      "referenceAsset": "vendor-logistics",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6566,7 +6368,7 @@
       "category": "rental-services",
       "subcategory": "business-and-industrial-rentals",
       "subject": "Material-handling equipment",
-      "referenceAsset": "vendor-logistics",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6575,7 +6377,7 @@
       "category": "rental-services",
       "subcategory": "business-and-industrial-rentals",
       "subject": "Generators",
-      "referenceAsset": "construction-equipment",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6584,7 +6386,7 @@
       "category": "rental-services",
       "subcategory": "business-and-industrial-rentals",
       "subject": "Commercial equipment",
-      "referenceAsset": "vendor-logistics",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6602,7 +6404,7 @@
       "category": "rental-services",
       "subcategory": "other-rentals",
       "subject": "Specialty equipment",
-      "referenceAsset": "rental-keys",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6629,7 +6431,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "hotels-and-accommodation",
       "subject": "Resorts",
-      "referenceAsset": "hotel",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6638,7 +6440,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "hotels-and-accommodation",
       "subject": "Hostels",
-      "referenceAsset": "hotel",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6647,7 +6449,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "hotels-and-accommodation",
       "subject": "Homestays",
-      "referenceAsset": "hotel",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6656,7 +6458,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "hotels-and-accommodation",
       "subject": "Guesthouses",
-      "referenceAsset": "hotel",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6674,7 +6476,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "hotels-and-accommodation",
       "subject": "Serviced apartments",
-      "referenceAsset": "hotel",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6683,7 +6485,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-planning",
       "subject": "Travel agencies",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6710,7 +6512,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-planning",
       "subject": "International tours",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6719,7 +6521,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-planning",
       "subject": "Group trips",
-      "referenceAsset": "planning",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6728,7 +6530,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-planning",
       "subject": "Family holidays",
-      "referenceAsset": "airplane",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6737,7 +6539,16 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-planning",
       "subject": "Honeymoon packages",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "automobiles",
+      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
+    },
+    {
+      "id": "type/travel-stay-and-experiences/transport-and-transfers/airport-transfers",
+      "level": "type",
+      "category": "travel-stay-and-experiences",
+      "subcategory": "transport-and-transfers",
+      "subject": "Airport transfers",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6764,7 +6575,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "transport-and-transfers",
       "subject": "Private drivers",
-      "referenceAsset": "airplane",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6773,7 +6584,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "transport-and-transfers",
       "subject": "Tourist vehicles",
-      "referenceAsset": "automobiles",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6782,7 +6593,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "transport-and-transfers",
       "subject": "Group transportation",
-      "referenceAsset": "truck",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6791,7 +6602,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "tours-and-guided-experiences",
       "subject": "City tours",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6809,7 +6620,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "tours-and-guided-experiences",
       "subject": "Cultural tours",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6818,7 +6629,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "tours-and-guided-experiences",
       "subject": "Nature tours",
-      "referenceAsset": "outdoor",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6827,7 +6638,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "tours-and-guided-experiences",
       "subject": "Guided treks",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6836,7 +6647,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "tours-and-guided-experiences",
       "subject": "Wildlife experiences",
-      "referenceAsset": "outdoor",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6845,7 +6656,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "tours-and-guided-experiences",
       "subject": "Local food tours",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "automobiles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6854,7 +6665,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "adventure-activities",
       "subject": "Adventure Activities",
-      "referenceAsset": "cycling",
+      "referenceAsset": "outdoor",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6863,7 +6674,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "adventure-activities",
       "subject": "Trekking",
-      "referenceAsset": "cycling",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6872,7 +6683,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "adventure-activities",
       "subject": "Camping experiences",
-      "referenceAsset": "outdoor",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6881,7 +6692,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "adventure-activities",
       "subject": "Water sports",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6890,7 +6701,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "adventure-activities",
       "subject": "Adventure sports",
-      "referenceAsset": "cycling",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6899,7 +6710,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "adventure-activities",
       "subject": "Outdoor excursions",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6908,7 +6719,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "attractions-and-entertainment",
       "subject": "Attractions & Entertainment",
-      "referenceAsset": "events",
+      "referenceAsset": "digital-display",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6926,7 +6737,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "attractions-and-entertainment",
       "subject": "Museums",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6935,7 +6746,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "attractions-and-entertainment",
       "subject": "Theme parks",
-      "referenceAsset": "events",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6944,7 +6755,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "attractions-and-entertainment",
       "subject": "Water parks",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6953,7 +6764,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "attractions-and-entertainment",
       "subject": "Recreational attractions",
-      "referenceAsset": "events",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6962,7 +6773,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "attractions-and-entertainment",
       "subject": "Sightseeing experiences",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6971,7 +6782,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-assistance",
       "subject": "Travel Assistance",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6989,7 +6800,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-assistance",
       "subject": "Visa consultation",
-      "referenceAsset": "airplane",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -6998,7 +6809,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-assistance",
       "subject": "Travel documentation assistance",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7007,7 +6818,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-assistance",
       "subject": "Itinerary planning",
-      "referenceAsset": "airplane",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7016,7 +6827,7 @@
       "category": "travel-stay-and-experiences",
       "subcategory": "travel-assistance",
       "subject": "Travel concierge services",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7034,7 +6845,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "hospitals-and-clinics",
       "subject": "Multispecialty hospitals",
-      "referenceAsset": "doctor",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7043,7 +6854,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "hospitals-and-clinics",
       "subject": "Specialty clinics",
-      "referenceAsset": "doctor",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7052,7 +6863,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "hospitals-and-clinics",
       "subject": "Dental clinics",
-      "referenceAsset": "doctor",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7061,7 +6872,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "hospitals-and-clinics",
       "subject": "Eye clinics",
-      "referenceAsset": "doctor",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7097,7 +6908,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "doctors-and-specialists",
       "subject": "Orthopedic specialists",
-      "referenceAsset": "doctor",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7106,7 +6917,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "doctors-and-specialists",
       "subject": "Cardiologists",
-      "referenceAsset": "lab",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7115,16 +6926,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "doctors-and-specialists",
       "subject": "Other medical specialists",
-      "referenceAsset": "doctor",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
-      "id": "type/health-fitness-and-wellness/diagnostic-services/pathology-laboratories",
-      "level": "type",
-      "category": "health-fitness-and-wellness",
-      "subcategory": "diagnostic-services",
-      "subject": "Pathology laboratories",
-      "referenceAsset": "lab",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7133,7 +6935,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "diagnostic-services",
       "subject": "Blood tests",
-      "referenceAsset": "lab",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7142,7 +6944,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "diagnostic-services",
       "subject": "Imaging centres",
-      "referenceAsset": "lab",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7151,7 +6953,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "diagnostic-services",
       "subject": "Home sample collection",
-      "referenceAsset": "lab",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7160,7 +6962,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "pharmacies-and-medical-supplies",
       "subject": "Pharmacies & Medical Supplies",
-      "referenceAsset": "pharmacy",
+      "referenceAsset": "lab",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7169,7 +6971,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "pharmacies-and-medical-supplies",
       "subject": "Pharmacies",
-      "referenceAsset": "pharmacy",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7187,7 +6989,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "pharmacies-and-medical-supplies",
       "subject": "Mobility aids",
-      "referenceAsset": "pharmacy",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7205,7 +7007,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "fitness-centres",
       "subject": "Gyms",
-      "referenceAsset": "gym",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7214,7 +7016,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "fitness-centres",
       "subject": "Personal trainers",
-      "referenceAsset": "gym",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7223,7 +7025,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "fitness-centres",
       "subject": "Strength training",
-      "referenceAsset": "gym",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7241,7 +7043,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "yoga-and-mind-body-fitness",
       "subject": "Yoga & Mind-Body Fitness",
-      "referenceAsset": "health-fitness-and-wellness",
+      "referenceAsset": "spa",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7250,7 +7052,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "yoga-and-mind-body-fitness",
       "subject": "Yoga studios",
-      "referenceAsset": "health-fitness-and-wellness",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7259,7 +7061,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "yoga-and-mind-body-fitness",
       "subject": "Meditation classes",
-      "referenceAsset": "health-fitness-and-wellness",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7268,7 +7070,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "yoga-and-mind-body-fitness",
       "subject": "Pilates",
-      "referenceAsset": "health-fitness-and-wellness",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7277,7 +7079,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "yoga-and-mind-body-fitness",
       "subject": "Breathing and relaxation classes",
-      "referenceAsset": "spa",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7286,7 +7088,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "sports-coaching-and-facilities",
       "subject": "Sports Coaching & Facilities",
-      "referenceAsset": "football",
+      "referenceAsset": "physio-care",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7295,7 +7097,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "sports-coaching-and-facilities",
       "subject": "Swimming",
-      "referenceAsset": "football",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7313,7 +7115,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "sports-coaching-and-facilities",
       "subject": "Cricket",
-      "referenceAsset": "football",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7322,7 +7124,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "sports-coaching-and-facilities",
       "subject": "Tennis",
-      "referenceAsset": "cycling",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7340,7 +7142,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "sports-coaching-and-facilities",
       "subject": "Sports coaching",
-      "referenceAsset": "football",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7349,7 +7151,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "sports-coaching-and-facilities",
       "subject": "Sports grounds and courts",
-      "referenceAsset": "cycling",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7367,7 +7169,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "physiotherapy-and-rehabilitation",
       "subject": "Physiotherapy",
-      "referenceAsset": "physio",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7376,7 +7178,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "physiotherapy-and-rehabilitation",
       "subject": "Sports rehabilitation",
-      "referenceAsset": "physio-care",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7385,7 +7187,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "physiotherapy-and-rehabilitation",
       "subject": "Mobility training",
-      "referenceAsset": "physio",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7394,7 +7196,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "nutrition-and-diet",
       "subject": "Nutrition & Diet",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "tea",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7421,7 +7223,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "nutrition-and-diet",
       "subject": "Meal planning",
-      "referenceAsset": "food-and-dining",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7430,7 +7232,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "nutrition-and-diet",
       "subject": "Sports nutrition consultation",
-      "referenceAsset": "grocery",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7448,7 +7250,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "mental-wellbeing",
       "subject": "Licensed mental health professionals",
-      "referenceAsset": "consultation",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7466,7 +7268,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "mental-wellbeing",
       "subject": "Psychology services",
-      "referenceAsset": "health-fitness-and-wellness",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7475,7 +7277,7 @@
       "category": "health-fitness-and-wellness",
       "subcategory": "mental-wellbeing",
       "subject": "Stress management programmes",
-      "referenceAsset": "consultation",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7484,7 +7286,7 @@
       "category": "education-and-skills",
       "subcategory": "schools-and-academic-education",
       "subject": "Schools",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7502,7 +7304,7 @@
       "category": "education-and-skills",
       "subcategory": "schools-and-academic-education",
       "subject": "Daycare and early learning",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7511,7 +7313,7 @@
       "category": "education-and-skills",
       "subcategory": "schools-and-academic-education",
       "subject": "After-school programmes",
-      "referenceAsset": "books",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7520,7 +7322,7 @@
       "category": "education-and-skills",
       "subcategory": "schools-and-academic-education",
       "subject": "Academic enrichment",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7529,7 +7331,7 @@
       "category": "education-and-skills",
       "subcategory": "tutors-and-coaching",
       "subject": "Home tutors",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7538,7 +7340,7 @@
       "category": "education-and-skills",
       "subcategory": "tutors-and-coaching",
       "subject": "Online tutors",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7547,7 +7349,7 @@
       "category": "education-and-skills",
       "subcategory": "tutors-and-coaching",
       "subject": "School subject tuition",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7565,7 +7367,7 @@
       "category": "education-and-skills",
       "subcategory": "tutors-and-coaching",
       "subject": "Entrance exam preparation",
-      "referenceAsset": "books",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7574,7 +7376,7 @@
       "category": "education-and-skills",
       "subcategory": "tutors-and-coaching",
       "subject": "Language tutoring",
-      "referenceAsset": "books",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7601,7 +7403,7 @@
       "category": "education-and-skills",
       "subcategory": "professional-courses",
       "subject": "Data analytics",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7610,7 +7412,7 @@
       "category": "education-and-skills",
       "subcategory": "professional-courses",
       "subject": "Artificial intelligence",
-      "referenceAsset": "books",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7619,7 +7421,7 @@
       "category": "education-and-skills",
       "subcategory": "professional-courses",
       "subject": "Digital marketing",
-      "referenceAsset": "technology",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7628,7 +7430,7 @@
       "category": "education-and-skills",
       "subcategory": "professional-courses",
       "subject": "Business and finance",
-      "referenceAsset": "books",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7637,7 +7439,7 @@
       "category": "education-and-skills",
       "subcategory": "vocational-training",
       "subject": "Vocational Training",
-      "referenceAsset": "printing",
+      "referenceAsset": "carpentry",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7655,7 +7457,7 @@
       "category": "education-and-skills",
       "subcategory": "vocational-training",
       "subject": "Automotive training",
-      "referenceAsset": "electrical",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7682,7 +7484,7 @@
       "category": "education-and-skills",
       "subcategory": "vocational-training",
       "subject": "Beauty training",
-      "referenceAsset": "printing",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7691,7 +7493,7 @@
       "category": "education-and-skills",
       "subcategory": "language-learning",
       "subject": "Language Learning",
-      "referenceAsset": "books",
+      "referenceAsset": "collaboration",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7709,7 +7511,7 @@
       "category": "education-and-skills",
       "subcategory": "language-learning",
       "subject": "Indian languages",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7718,7 +7520,7 @@
       "category": "education-and-skills",
       "subcategory": "language-learning",
       "subject": "Foreign languages",
-      "referenceAsset": "books",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7727,7 +7529,7 @@
       "category": "education-and-skills",
       "subcategory": "language-learning",
       "subject": "Spoken language courses",
-      "referenceAsset": "education-and-skills",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7736,7 +7538,7 @@
       "category": "education-and-skills",
       "subcategory": "language-learning",
       "subject": "Business communication",
-      "referenceAsset": "books",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7745,7 +7547,7 @@
       "category": "education-and-skills",
       "subcategory": "creative-skills",
       "subject": "Creative Skills",
-      "referenceAsset": "printing",
+      "referenceAsset": "wall-painting",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7763,7 +7565,7 @@
       "category": "education-and-skills",
       "subcategory": "creative-skills",
       "subject": "Graphic design",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7781,7 +7583,7 @@
       "category": "education-and-skills",
       "subcategory": "creative-skills",
       "subject": "Dance",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7790,7 +7592,7 @@
       "category": "education-and-skills",
       "subcategory": "creative-skills",
       "subject": "Drawing and painting",
-      "referenceAsset": "wall-painting",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7799,7 +7601,7 @@
       "category": "education-and-skills",
       "subcategory": "creative-skills",
       "subject": "Writing",
-      "referenceAsset": "printing",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7826,7 +7628,7 @@
       "category": "education-and-skills",
       "subcategory": "career-development",
       "subject": "Professional mentoring",
-      "referenceAsset": "resume",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7835,7 +7637,7 @@
       "category": "education-and-skills",
       "subcategory": "career-development",
       "subject": "Communication skills",
-      "referenceAsset": "interview",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7844,7 +7646,7 @@
       "category": "education-and-skills",
       "subcategory": "career-development",
       "subject": "Leadership training",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7862,7 +7664,7 @@
       "category": "education-and-skills",
       "subcategory": "certifications-and-exam-preparation",
       "subject": "Professional examination preparation",
-      "referenceAsset": "books",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7871,7 +7673,7 @@
       "category": "education-and-skills",
       "subcategory": "certifications-and-exam-preparation",
       "subject": "Practice tests",
-      "referenceAsset": "books",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7889,7 +7691,7 @@
       "category": "education-and-skills",
       "subcategory": "certifications-and-exam-preparation",
       "subject": "Exam coaching",
-      "referenceAsset": "books",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7907,7 +7709,7 @@
       "category": "education-and-skills",
       "subcategory": "online-learning",
       "subject": "Workshops",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7916,7 +7718,7 @@
       "category": "education-and-skills",
       "subcategory": "online-learning",
       "subject": "Webinars",
-      "referenceAsset": "collaboration",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7925,7 +7727,7 @@
       "category": "education-and-skills",
       "subcategory": "online-learning",
       "subject": "Individual mentoring",
-      "referenceAsset": "technology",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7943,7 +7745,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Cloud and DevOps",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7961,7 +7763,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Banking and finance",
-      "referenceAsset": "construction",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -7979,7 +7781,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Customer support",
-      "referenceAsset": "technology",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8006,7 +7808,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Retail",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8015,7 +7817,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Manufacturing",
-      "referenceAsset": "technology",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8024,7 +7826,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Logistics and transportation",
-      "referenceAsset": "chef",
+      "referenceAsset": "automobiles",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8033,7 +7835,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Education",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "barber",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8042,7 +7844,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-industry",
       "subject": "Administration and HR",
-      "referenceAsset": "technology",
+      "referenceAsset": "beauty-fashion-and-lifestyle",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8069,7 +7871,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-employment-type",
       "subject": "Temporary",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8078,7 +7880,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-employment-type",
       "subject": "Internship",
-      "referenceAsset": "interview",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8096,7 +7898,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-employment-type",
       "subject": "Freelance",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8105,7 +7907,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-employment-type",
       "subject": "Remote work",
-      "referenceAsset": "interview",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8141,7 +7943,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-experience",
       "subject": "Team leaders",
-      "referenceAsset": "interview",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8150,7 +7952,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-experience",
       "subject": "Managers",
-      "referenceAsset": "resume",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8159,7 +7961,7 @@
       "category": "jobs-and-careers",
       "subcategory": "jobs-by-experience",
       "subject": "Senior professionals",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8177,7 +7979,7 @@
       "category": "jobs-and-careers",
       "subcategory": "government-and-public-sector",
       "subject": "Government vacancies",
-      "referenceAsset": "job-search",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8204,7 +8006,7 @@
       "category": "jobs-and-careers",
       "subcategory": "government-and-public-sector",
       "subject": "Public sector recruitment",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8222,7 +8024,7 @@
       "category": "jobs-and-careers",
       "subcategory": "gig-and-freelance-work",
       "subject": "Software development projects",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8249,7 +8051,7 @@
       "category": "jobs-and-careers",
       "subcategory": "gig-and-freelance-work",
       "subject": "Marketing projects",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8258,7 +8060,7 @@
       "category": "jobs-and-careers",
       "subcategory": "gig-and-freelance-work",
       "subject": "Local gig work",
-      "referenceAsset": "planning",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8267,7 +8069,7 @@
       "category": "jobs-and-careers",
       "subcategory": "gig-and-freelance-work",
       "subject": "Skilled trades assignments",
-      "referenceAsset": "technology",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8294,7 +8096,7 @@
       "category": "jobs-and-careers",
       "subcategory": "employer-profiles",
       "subject": "Work environment",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8303,7 +8105,7 @@
       "category": "jobs-and-careers",
       "subcategory": "employer-profiles",
       "subject": "Open positions",
-      "referenceAsset": "collaboration",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8312,7 +8114,7 @@
       "category": "jobs-and-careers",
       "subcategory": "employer-profiles",
       "subject": "Recruitment events",
-      "referenceAsset": "career-workplace",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8321,7 +8123,7 @@
       "category": "jobs-and-careers",
       "subcategory": "career-support",
       "subject": "Career Support",
-      "referenceAsset": "resume",
+      "referenceAsset": "professional-profile",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8348,7 +8150,7 @@
       "category": "jobs-and-careers",
       "subcategory": "career-support",
       "subject": "Portfolio building",
-      "referenceAsset": "resume",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8357,7 +8159,7 @@
       "category": "jobs-and-careers",
       "subcategory": "career-support",
       "subject": "Job search assistance",
-      "referenceAsset": "interview",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8375,7 +8177,7 @@
       "category": "jobs-and-careers",
       "subcategory": "recruitment-services",
       "subject": "Recruitment agencies",
-      "referenceAsset": "interview",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8411,7 +8213,7 @@
       "category": "jobs-and-careers",
       "subcategory": "recruitment-services",
       "subject": "Employer hiring campaigns",
-      "referenceAsset": "professional-advice",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8429,7 +8231,7 @@
       "category": "professional-services",
       "subcategory": "legal-services",
       "subject": "Legal consultation",
-      "referenceAsset": "construction-contract",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8447,7 +8249,7 @@
       "category": "professional-services",
       "subcategory": "legal-services",
       "subject": "Business legal services",
-      "referenceAsset": "construction-contract",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8456,7 +8258,16 @@
       "category": "professional-services",
       "subcategory": "legal-services",
       "subject": "Property legal assistance",
-      "referenceAsset": "construction-contract",
+      "referenceAsset": "air-conditioning",
+      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
+    },
+    {
+      "id": "subcategory/professional-services/accounting-and-taxation",
+      "level": "subcategory",
+      "category": "professional-services",
+      "subcategory": "accounting-and-taxation",
+      "subject": "Accounting & Taxation",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8465,7 +8276,7 @@
       "category": "professional-services",
       "subcategory": "accounting-and-taxation",
       "subject": "Chartered accountants",
-      "referenceAsset": "bookkeeping",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8483,7 +8294,7 @@
       "category": "professional-services",
       "subcategory": "accounting-and-taxation",
       "subject": "Tax filing",
-      "referenceAsset": "bookkeeping",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8492,7 +8303,7 @@
       "category": "professional-services",
       "subcategory": "accounting-and-taxation",
       "subject": "Payroll services",
-      "referenceAsset": "bookkeeping",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8501,7 +8312,7 @@
       "category": "professional-services",
       "subcategory": "accounting-and-taxation",
       "subject": "Financial statement preparation",
-      "referenceAsset": "finance",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8519,7 +8330,7 @@
       "category": "professional-services",
       "subcategory": "business-consulting",
       "subject": "Business registration assistance",
-      "referenceAsset": "market-analysis",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8528,7 +8339,7 @@
       "category": "professional-services",
       "subcategory": "business-consulting",
       "subject": "Operations consulting",
-      "referenceAsset": "business-registration",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8537,7 +8348,7 @@
       "category": "professional-services",
       "subcategory": "business-consulting",
       "subject": "Process improvement",
-      "referenceAsset": "consultation",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8546,7 +8357,7 @@
       "category": "professional-services",
       "subcategory": "marketing-and-branding",
       "subject": "Branding consultation",
-      "referenceAsset": "marketing",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8555,7 +8366,7 @@
       "category": "professional-services",
       "subcategory": "marketing-and-branding",
       "subject": "Market research",
-      "referenceAsset": "digital-display",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8582,7 +8393,7 @@
       "category": "professional-services",
       "subcategory": "marketing-and-branding",
       "subject": "Social media consulting",
-      "referenceAsset": "printing",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8591,7 +8402,7 @@
       "category": "professional-services",
       "subcategory": "it-and-technology-services",
       "subject": "Website development",
-      "referenceAsset": "technology",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8609,7 +8420,7 @@
       "category": "professional-services",
       "subcategory": "it-and-technology-services",
       "subject": "Software development",
-      "referenceAsset": "technology",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8618,7 +8429,7 @@
       "category": "professional-services",
       "subcategory": "it-and-technology-services",
       "subject": "Cloud consulting",
-      "referenceAsset": "technology",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8627,7 +8438,7 @@
       "category": "professional-services",
       "subcategory": "it-and-technology-services",
       "subject": "DevOps consulting",
-      "referenceAsset": "servers",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8636,7 +8447,7 @@
       "category": "professional-services",
       "subcategory": "it-and-technology-services",
       "subject": "Cybersecurity consulting",
-      "referenceAsset": "technology",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8672,7 +8483,7 @@
       "category": "professional-services",
       "subcategory": "design-and-creative-services",
       "subject": "Illustration",
-      "referenceAsset": "architecture",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8681,7 +8492,7 @@
       "category": "professional-services",
       "subcategory": "design-and-creative-services",
       "subject": "Video editing",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8690,7 +8501,7 @@
       "category": "professional-services",
       "subcategory": "design-and-creative-services",
       "subject": "Animation",
-      "referenceAsset": "printing",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8708,7 +8519,7 @@
       "category": "professional-services",
       "subcategory": "real-estate-professionals",
       "subject": "Property valuation",
-      "referenceAsset": "property-documents",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8717,7 +8528,7 @@
       "category": "professional-services",
       "subcategory": "real-estate-professionals",
       "subject": "Property management",
-      "referenceAsset": "property-appraisal",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8726,7 +8537,7 @@
       "category": "professional-services",
       "subcategory": "real-estate-professionals",
       "subject": "Commercial real estate consulting",
-      "referenceAsset": "property-documents",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8748,21 +8559,12 @@
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
-      "id": "type/professional-services/financial-services/loan-consultation",
-      "level": "type",
-      "category": "professional-services",
-      "subcategory": "financial-services",
-      "subject": "Loan consultation",
-      "referenceAsset": "finance",
-      "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
-    },
-    {
       "id": "type/professional-services/financial-services/business-finance-consultation",
       "level": "type",
       "category": "professional-services",
       "subcategory": "financial-services",
       "subject": "Business finance consultation",
-      "referenceAsset": "accounting-calculation",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8780,7 +8582,7 @@
       "category": "professional-services",
       "subcategory": "documentation-and-administrative-services",
       "subject": "Translation",
-      "referenceAsset": "documents",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8807,7 +8609,7 @@
       "category": "professional-services",
       "subcategory": "documentation-and-administrative-services",
       "subject": "Virtual assistance",
-      "referenceAsset": "registration-paperwork",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8825,7 +8627,7 @@
       "category": "professional-services",
       "subcategory": "engineering-and-technical-consultancy",
       "subject": "Structural consultancy",
-      "referenceAsset": "construction-estimate",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8843,7 +8645,7 @@
       "category": "professional-services",
       "subcategory": "engineering-and-technical-consultancy",
       "subject": "Surveying",
-      "referenceAsset": "engineering-team",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8852,7 +8654,7 @@
       "category": "professional-services",
       "subcategory": "engineering-and-technical-consultancy",
       "subject": "Technical inspections",
-      "referenceAsset": "architecture",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8870,7 +8672,7 @@
       "category": "events-and-celebrations",
       "subcategory": "venues",
       "subject": "Party halls",
-      "referenceAsset": "hotel",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8879,7 +8681,7 @@
       "category": "events-and-celebrations",
       "subcategory": "venues",
       "subject": "Conference halls",
-      "referenceAsset": "restaurant",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8906,7 +8708,7 @@
       "category": "events-and-celebrations",
       "subcategory": "weddings",
       "subject": "Wedding decorators",
-      "referenceAsset": "wedding",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8924,7 +8726,7 @@
       "category": "events-and-celebrations",
       "subcategory": "weddings",
       "subject": "Wedding photographers",
-      "referenceAsset": "wedding",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8942,7 +8744,7 @@
       "category": "events-and-celebrations",
       "subcategory": "weddings",
       "subject": "Wedding entertainment",
-      "referenceAsset": "wedding",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8951,7 +8753,7 @@
       "category": "events-and-celebrations",
       "subcategory": "weddings",
       "subject": "Wedding invitation services",
-      "referenceAsset": "wedding",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8960,7 +8762,7 @@
       "category": "events-and-celebrations",
       "subcategory": "birthday-and-private-parties",
       "subject": "Party decorations",
-      "referenceAsset": "cake",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -8969,7 +8771,7 @@
       "category": "events-and-celebrations",
       "subcategory": "birthday-and-private-parties",
       "subject": "Party entertainers",
-      "referenceAsset": "celebration",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9005,7 +8807,7 @@
       "category": "events-and-celebrations",
       "subcategory": "corporate-events",
       "subject": "Seminars",
-      "referenceAsset": "events",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9014,7 +8816,7 @@
       "category": "events-and-celebrations",
       "subcategory": "corporate-events",
       "subject": "Product launches",
-      "referenceAsset": "collaboration",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9023,7 +8825,7 @@
       "category": "events-and-celebrations",
       "subcategory": "corporate-events",
       "subject": "Team-building events",
-      "referenceAsset": "events",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9050,7 +8852,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-professionals",
       "subject": "Videographers",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9068,7 +8870,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-professionals",
       "subject": "Singers",
-      "referenceAsset": "media-production",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9086,7 +8888,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-professionals",
       "subject": "Hosts and emcees",
-      "referenceAsset": "chef",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9095,7 +8897,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-professionals",
       "subject": "Performers",
-      "referenceAsset": "media-production",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9104,7 +8906,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-professionals",
       "subject": "Event coordinators",
-      "referenceAsset": "events",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9113,7 +8915,7 @@
       "category": "events-and-celebrations",
       "subcategory": "decorations-and-equipment",
       "subject": "Decorations & Equipment",
-      "referenceAsset": "celebration",
+      "referenceAsset": "restaurant",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9131,7 +8933,7 @@
       "category": "events-and-celebrations",
       "subcategory": "decorations-and-equipment",
       "subject": "Floral decorations",
-      "referenceAsset": "celebration",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9149,7 +8951,7 @@
       "category": "events-and-celebrations",
       "subcategory": "decorations-and-equipment",
       "subject": "Sound systems",
-      "referenceAsset": "celebration",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9176,7 +8978,7 @@
       "category": "events-and-celebrations",
       "subcategory": "decorations-and-equipment",
       "subject": "Event backdrops",
-      "referenceAsset": "celebration",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9203,7 +9005,7 @@
       "category": "events-and-celebrations",
       "subcategory": "tickets-and-experiences",
       "subject": "Festivals",
-      "referenceAsset": "events",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9212,7 +9014,7 @@
       "category": "events-and-celebrations",
       "subcategory": "tickets-and-experiences",
       "subject": "Exhibitions",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9221,7 +9023,7 @@
       "category": "events-and-celebrations",
       "subcategory": "tickets-and-experiences",
       "subject": "Workshops",
-      "referenceAsset": "events",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9230,7 +9032,7 @@
       "category": "events-and-celebrations",
       "subcategory": "tickets-and-experiences",
       "subject": "Community events",
-      "referenceAsset": "travel-stay-and-experiences",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9239,7 +9041,7 @@
       "category": "events-and-celebrations",
       "subcategory": "tickets-and-experiences",
       "subject": "Other ticketed events",
-      "referenceAsset": "events",
+      "referenceAsset": "architecture",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9248,7 +9050,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-planning-services",
       "subject": "Invitations",
-      "referenceAsset": "planning",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9275,7 +9077,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-planning-services",
       "subject": "Event transportation",
-      "referenceAsset": "planning",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9293,7 +9095,7 @@
       "category": "events-and-celebrations",
       "subcategory": "event-planning-services",
       "subject": "Event staffing",
-      "referenceAsset": "media-production",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9311,7 +9113,7 @@
       "category": "pet-care",
       "subcategory": "veterinary-services",
       "subject": "Vaccination services",
-      "referenceAsset": "vet-dog",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9320,7 +9122,7 @@
       "category": "pet-care",
       "subcategory": "veterinary-services",
       "subject": "Veterinary consultations",
-      "referenceAsset": "vet-cat",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9329,7 +9131,7 @@
       "category": "pet-care",
       "subcategory": "veterinary-services",
       "subject": "Emergency veterinary care",
-      "referenceAsset": "vet-dog",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9338,7 +9140,7 @@
       "category": "pet-care",
       "subcategory": "grooming",
       "subject": "Hair trimming",
-      "referenceAsset": "pet-grooming",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9347,7 +9149,7 @@
       "category": "pet-care",
       "subcategory": "grooming",
       "subject": "Nail trimming",
-      "referenceAsset": "pet-grooming",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9356,7 +9158,7 @@
       "category": "pet-care",
       "subcategory": "grooming",
       "subject": "Mobile grooming",
-      "referenceAsset": "pet-grooming",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9374,7 +9176,7 @@
       "category": "pet-care",
       "subcategory": "boarding-and-daycare",
       "subject": "Pet boarding",
-      "referenceAsset": "cat",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9383,7 +9185,7 @@
       "category": "pet-care",
       "subcategory": "boarding-and-daycare",
       "subject": "Pet daycare",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9392,7 +9194,7 @@
       "category": "pet-care",
       "subcategory": "boarding-and-daycare",
       "subject": "Overnight pet care",
-      "referenceAsset": "cat",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9401,7 +9203,7 @@
       "category": "pet-care",
       "subcategory": "boarding-and-daycare",
       "subject": "In-home pet sitting",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9419,7 +9221,7 @@
       "category": "pet-care",
       "subcategory": "training",
       "subject": "Puppy training",
-      "referenceAsset": "dog-walking",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9428,7 +9230,7 @@
       "category": "pet-care",
       "subcategory": "training",
       "subject": "Obedience training",
-      "referenceAsset": "dog-walking",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9437,7 +9239,7 @@
       "category": "pet-care",
       "subcategory": "training",
       "subject": "Specialised training",
-      "referenceAsset": "dog-walking",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9446,7 +9248,7 @@
       "category": "pet-care",
       "subcategory": "pet-walking-and-sitting",
       "subject": "Pet Walking & Sitting",
-      "referenceAsset": "dog-walking",
+      "referenceAsset": "pet-bath",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9464,7 +9266,7 @@
       "category": "pet-care",
       "subcategory": "pet-walking-and-sitting",
       "subject": "Home visits",
-      "referenceAsset": "dog-walking",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9473,7 +9275,7 @@
       "category": "pet-care",
       "subcategory": "pet-walking-and-sitting",
       "subject": "Pet companionship services",
-      "referenceAsset": "cat",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9500,7 +9302,7 @@
       "category": "pet-care",
       "subcategory": "pet-supplies",
       "subject": "Bedding",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9509,7 +9311,7 @@
       "category": "pet-care",
       "subcategory": "pet-supplies",
       "subject": "Collars and leashes",
-      "referenceAsset": "pet-food",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9518,7 +9320,7 @@
       "category": "pet-care",
       "subcategory": "pet-supplies",
       "subject": "Grooming products",
-      "referenceAsset": "pet-grooming",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9527,7 +9329,7 @@
       "category": "pet-care",
       "subcategory": "pet-supplies",
       "subject": "Pet accessories",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9536,7 +9338,7 @@
       "category": "pet-care",
       "subcategory": "pet-adoption-and-welfare",
       "subject": "Pet Adoption & Welfare",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "vet-cat",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9545,7 +9347,7 @@
       "category": "pet-care",
       "subcategory": "pet-adoption-and-welfare",
       "subject": "Adoption organisations",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "accountant-consultation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9563,7 +9365,7 @@
       "category": "pet-care",
       "subcategory": "pet-adoption-and-welfare",
       "subject": "Rescue groups",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "accounting-calculation",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9572,7 +9374,7 @@
       "category": "pet-care",
       "subcategory": "pet-adoption-and-welfare",
       "subject": "Lost-and-found pets",
-      "referenceAsset": "cat",
+      "referenceAsset": "air-conditioning",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     },
     {
@@ -9581,7 +9383,7 @@
       "category": "pet-care",
       "subcategory": "pet-adoption-and-welfare",
       "subject": "Animal welfare organisations",
-      "referenceAsset": "pet-care",
+      "referenceAsset": "airplane",
       "reason": "A distinct subject-specific original is required; the approved reference remains in the unchanged live mapping."
     }
   ]

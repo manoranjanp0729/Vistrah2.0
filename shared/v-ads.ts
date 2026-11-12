@@ -44,6 +44,16 @@ export type Reel = {
   product_price?: string | null;
   delivery_info?: string | null;
   products_available?: string | null;
+  distance_km?: number;
+  proximity?: 'local' | 'farther';
+  targeting_radius_km?: number;
+};
+
+export type FeedFilter = {
+  lat: number;
+  lon: number;
+  radius_km?: number;
+  local_only?: boolean;
 };
 
 export type Comment = {id:string;user_id:number;body:string;created_at:string};
@@ -145,7 +155,16 @@ export function mergeReels(existing:Reel[],incoming:Reel[]) {
 export function vAdsClient(api:Api) {
   const json=(body:unknown)=>JSON.stringify(body);
   return {
-    feed:(page=1)=>api<Feed>('/v-ads/reels?page='+page),
+    feed:(page=1,filter?:FeedFilter)=>{
+      const params=new URLSearchParams({page:String(page)});
+      if(filter&&Number.isFinite(filter.lat)&&Number.isFinite(filter.lon)&&Math.abs(filter.lat)<=90&&Math.abs(filter.lon)<=180){
+        params.set('lat',String(filter.lat));
+        params.set('lon',String(filter.lon));
+        if(filter.radius_km!=null&&Number.isFinite(filter.radius_km)&&filter.radius_km>0)params.set('radius_km',String(filter.radius_km));
+        if(filter.local_only)params.set('local_only','true');
+      }
+      return api<Feed>('/v-ads/reels?'+params.toString());
+    },
     reel:(videoId:string)=>api<Reel>('/v-ads/reels/'+id(videoId)),
     engagement:(videoId:string)=>api<Engagement>('/v-ads/reels/'+id(videoId)+'/engagement'),
     like:(videoId:string,liked:boolean)=>api<Engagement>('/v-ads/reels/'+id(videoId)+'/like',{method:liked?'POST':'DELETE'}),

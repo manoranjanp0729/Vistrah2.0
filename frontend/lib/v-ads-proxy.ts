@@ -13,7 +13,7 @@ export async function proxyVAds(request:Request,options:Options):Promise<Respons
   }
   const headers=new Headers({'accept-encoding':'identity'});
   if(token)headers.set('Authorization','Bearer '+token);
-  for(const name of ['range','if-range']){const value=request.headers.get(name);if(value)headers.set(name,value);}
+  for(const name of ['range','if-range','x-user-latitude','x-user-longitude','x-user-radius-km']){const value=request.headers.get(name);if(value)headers.set(name,value);}
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),upload?90000:15000);
   try {

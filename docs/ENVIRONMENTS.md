@@ -1,5 +1,46 @@
 # Environment boundaries and local startup
 
+## Google Maps customer picker (source prepared, inactive)
+
+Main desktop/Expo-web and Android location pickers support Google Maps. No keys,
+Google projects, APIs or billing were activated. With Google configuration absent,
+the existing MapTiler/manual picker remains. Public keys are visible by design;
+never reuse the server geocoding key in a client or commit private env files.
+
+- Desktop build: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, restricted by HTTP referrers
+  and Maps JavaScript API. Phone-web build: `EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY`
+  with its own approved referrers. Source Docker build arguments/CSP are prepared;
+  no running proxy/build was changed.
+- Android: SDK57-compatible `react-native-maps`1.27.2 installed. Build-time
+  `GOOGLE_MAPS_ANDROID_API_KEY` is passed to its config plugin; restrict to the
+  existing `in.vistrah.app` package, signing SHA-1 and Maps SDK for Android.
+  `EXPO_PUBLIC_GOOGLE_MAPS_ENABLED=1` selects the native Google picker, and the
+  build refuses that flag without a key. New binary/device acceptance required;
+  no APK/OTA was built or published. iOS remains outside this implementation.
+- API: `GOOGLE_MAPS_GEOCODING_ENABLED=1` plus private
+  `GOOGLE_MAPS_GEOCODING_API_KEY` enables `/locations/geocode` (POST body only).
+  Restrict that key to Geocoding API v4 and approved server egress IP. It is sent
+  upstream in a header, never a URL. Default disabled responses, validation,
+  timeouts, no redirects and no-store replies preserve manual fallback.
+- This anonymous discovery endpoint uses technical per-process caps:10 lookups
+  per peer/minute,100 total/hour,2 concurrent. Peer identity ignores supplied
+  forwarding headers; reverse-proxied callers may share a bucket. These caps
+  reset on restart and multiply across processes, so configure reviewed upstream
+  quotas/cost controls before activation. They are not a billing guarantee.
+- Search and pin lookup are explicit actions. GPS remains opt-in; results only
+  update the draft until Use this location (existing GPS uses temporary selection).
+  Google-derived picks cannot be saved to the account yet; Clear location allows
+  starting a fresh manual selection. Persistence needs a separately reviewed
+  provenance/retention implementation under Google content terms. No existing
+  saved records, default radius, V Ads targeting or membership behavior changed.
+
+Before activation: approve provider/billing/quotas, configure restricted keys
+privately, review Google content/retention terms and verify web/physical Android
+map rendering, search, GPS denial, manual fallback and account isolation. Source
+tests with mocked Google do not establish live provider access or device success.
+
+## Existing environment boundaries
+
 Environment templates are public examples. Existing private environment files,
 local EAS project linkage, signing keys and databases must be preserved.
 Do not replace a working `.env` just to pick up a new template.

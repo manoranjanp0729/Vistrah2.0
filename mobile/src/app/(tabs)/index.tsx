@@ -1,3 +1,4 @@
+import {croppedPhoto} from '../../lib/photo-crop';
 import {Text,TextInput} from '../../components/typography';
 import {EditVistrahContent} from '../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../components/localized-ui';
@@ -264,7 +265,7 @@ export default function Discover() {
           >
             <View style={s.shortcutPhoto}>
               {item.photo ? (
-                <Image source={item.photo} resizeMode="contain" style={s.shortcutImage} />
+                <Image source={croppedPhoto(item.photo,'landscape')} resizeMode="cover" style={s.shortcutImage} />
               ) : (
                 <View style={[StyleSheet.absoluteFill, {backgroundColor: '#eee'}]} />
               )}

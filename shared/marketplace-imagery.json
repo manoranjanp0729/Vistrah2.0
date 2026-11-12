@@ -4153,6 +4153,512 @@
       "bytes": 65042,
       "sha256": "7ca089c81bca2182d66ee1244196c8bb47e432b1a13617b75f2d47199e02bc8a",
       "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "automobile-scooter": {
+      "key": "automobile-scooter",
+      "source": "https://www.pexels.com/photo/blue-motor-scooter-parked-on-sidewalk-13794401/",
+      "alt": "A blue motor scooter parked on a street",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Zeynep Sude Emek",
+      "downloadUrl": "https://images.pexels.com/photos/13794401/pexels-photo-13794401.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/blue-motor-scooter-parked-on-sidewalk-13794401/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "f3f2afc20b3856a9f3203fd205bbbc0af53935fef1dbe836eb282ed7e3ea6b7c",
+      "src": "/images/photos/automobile-scooter.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 142420,
+      "sha256": "b8f49e9325918d8247eddf9c8c5c136faecca7fe437a8ff23be5f093ec6bcf96"
+    },
+    "automobile-electric-car": {
+      "key": "automobile-electric-car",
+      "source": "https://www.pexels.com/photo/a-blue-and-black-gas-pump-nozzle-in-a-vehicle-gas-tank-12737898/",
+      "alt": "An electric vehicle plugged into a charging connector",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Magda Ehlers",
+      "downloadUrl": "https://images.pexels.com/photos/12737898/pexels-photo-12737898.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/a-blue-and-black-gas-pump-nozzle-in-a-vehicle-gas-tank-12737898/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "bd0b96f0af71f28d4f1d11bba9183b81e9fbdbb2ac2ca598a1f20e8fedd0786d",
+      "src": "/images/photos/automobile-electric-car.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 63268,
+      "sha256": "4047c0dcc2f51b6ce15b5da1f042ddc721e6041850e61190eb9f522494b3abfc"
+    },
+    "automobile-electric-two-wheeler": {
+      "key": "automobile-electric-two-wheeler",
+      "source": "https://www.pexels.com/photo/blue-electric-scooter-parked-on-urban-street-34809473/",
+      "alt": "A blue electric motor scooter parked on an urban street",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Abderrahmane Habibi",
+      "downloadUrl": "https://images.pexels.com/photos/34809473/pexels-photo-34809473.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/blue-electric-scooter-parked-on-urban-street-34809473/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "54d6a038b41419b26dacd256fb8ea845326e41b94dfc4c4130acd3c0d943132d",
+      "src": "/images/photos/automobile-electric-two-wheeler.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 98436,
+      "sha256": "81583538f076d993d0d866b34f7e911efe8e40edd5ea6b832297a7ac91a50d62"
+    },
+    "automobile-battery": {
+      "key": "automobile-battery",
+      "source": "https://www.pexels.com/photo/close-up-photo-of-car-s-battery-4374843/",
+      "alt": "A car battery and its terminals inside an engine bay",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "JS Leng",
+      "downloadUrl": "https://images.pexels.com/photos/4374843/pexels-photo-4374843.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/close-up-photo-of-car-s-battery-4374843/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "b0d362e3e7e7f0d617efd010f1ac5b35698f2419339f18a488b2e1fd24bf191e",
+      "src": "/images/photos/automobile-battery.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 122288,
+      "sha256": "6b9b779e68bb19184aa02d4f81368153c321ff4e8f7ba5f0c4ac119e62d1e219"
+    },
+    "automobile-jump-start": {
+      "key": "automobile-jump-start",
+      "source": "https://www.pexels.com/photo/car-battery-with-jumper-cables-attached-32282232/",
+      "alt": "Jumper cables attached to a car battery",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Vladimir Srajber",
+      "downloadUrl": "https://images.pexels.com/photos/32282232/pexels-photo-32282232.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/car-battery-with-jumper-cables-attached-32282232/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "985cf6958a73aa8af0e869134654d11fe0913161749e85aeff9f2048729b12f3",
+      "src": "/images/photos/automobile-jump-start.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 91390,
+      "sha256": "23f6a423febe525ee051a0082ee5fc742a8fbfa6841f73c0287649d1f7064e33"
+    },
+    "automobile-tyre": {
+      "key": "automobile-tyre",
+      "source": "https://www.pexels.com/photo/mechanic-holding-a-car-tire-6870311/",
+      "alt": "A mechanic handling a car tyre in an automotive workshop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Gustavo Fring",
+      "downloadUrl": "https://images.pexels.com/photos/6870311/pexels-photo-6870311.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/mechanic-holding-a-car-tire-6870311/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "d5d5298a6dccc118e62f006087f51d7ed5887fe4652c3cb79c85702c51ee46a9",
+      "src": "/images/photos/automobile-tyre.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 71102,
+      "sha256": "ec1d7458f5abe0f241442dd29fbe88590d190e02840998b9333d44ad76741660"
+    },
+    "automobile-helmet": {
+      "key": "automobile-helmet",
+      "source": "https://www.pexels.com/photo/helmet-on-seat-16191975/",
+      "alt": "A motorcycle helmet resting on a scooter seat",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Elina Volkova",
+      "downloadUrl": "https://images.pexels.com/photos/16191975/pexels-photo-16191975.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/helmet-on-seat-16191975/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "4d77bf5db1092742cd3cd5b5ae4d04be0cb102fa27364eda77e5da2ed3c799cc",
+      "src": "/images/photos/automobile-helmet.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 158648,
+      "sha256": "236824a911994e75ed1a10cba583de60d38c6a7afff778b2ac3f096f660b19e6"
+    },
+    "automobile-towing": {
+      "key": "automobile-towing",
+      "source": "https://www.pexels.com/photo/a-tow-truck-with-car-10061763/",
+      "alt": "A recovery truck loading a car on a city street",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "DANIEL QUEIROZ",
+      "downloadUrl": "https://images.pexels.com/photos/10061763/pexels-photo-10061763.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/a-tow-truck-with-car-10061763/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "06773fed3726e8b3de512875541aec6dbf1479992db6eb87c287db0eb9d05fe1",
+      "src": "/images/photos/automobile-towing.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 296706,
+      "sha256": "00ffe2427d8241b95e83b62436fb005b6b9b77bda45d0a2858bdcdcafaac40f2"
+    },
+    "automobile-polishing": {
+      "key": "automobile-polishing",
+      "source": "https://www.pexels.com/photo/a-person-polishing-the-white-car-5233279/",
+      "alt": "A rotary polisher being used on a white car body",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Khunkorn Laowisit",
+      "downloadUrl": "https://images.pexels.com/photos/5233279/pexels-photo-5233279.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/a-person-polishing-the-white-car-5233279/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "5881826c60cb1c4b0b5c0b43b88b05cc931bc52ae72411d43493ca425f9a9947",
+      "src": "/images/photos/automobile-polishing.webp",
+      "width": 1000,
+      "height": 662,
+      "sourceWidth": 1000,
+      "sourceHeight": 662,
+      "bytes": 51648,
+      "sha256": "41b63af740229744e99fef54afae5158d6dcc5f75964b56c384327e3af6c3dea"
+    },
+    "automobile-body-paint": {
+      "key": "automobile-body-paint",
+      "source": "https://www.pexels.com/photo/man-repairing-broken-car-8470881/",
+      "alt": "A worker spray-painting a car in a workshop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Anastasia Shuraeva",
+      "downloadUrl": "https://images.pexels.com/photos/8470881/pexels-photo-8470881.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/man-repairing-broken-car-8470881/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "3331079a653f3a8efa18df2577cf7b71f29f0e170f9c38cf0b5066fd6b2ea96c",
+      "src": "/images/photos/automobile-body-paint.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 67142,
+      "sha256": "474d8510c208856a19ee4ee540ebe7461c63969797d43527387d547899140c67"
+    },
+    "automobile-diagnostics": {
+      "key": "automobile-diagnostics",
+      "source": "https://www.pexels.com/photo/person-holding-blue-diagnostic-tool-4116193/",
+      "alt": "A vehicle diagnostic scanner being used inside a car",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Jose Ricardo Barraza Morachis",
+      "downloadUrl": "https://images.pexels.com/photos/4116193/pexels-photo-4116193.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/person-holding-blue-diagnostic-tool-4116193/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "9ed46a02812370aa96341bab371cf1317c1b214fdfb8c6f0117a71e71cad730d",
+      "src": "/images/photos/automobile-diagnostics.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 70922,
+      "sha256": "0236a5fe5238dcb14cd504e9df6cdaf18eab48993d0790d298598f8e3f8122ed"
+    },
+    "automobile-brakes": {
+      "key": "automobile-brakes",
+      "source": "https://www.pexels.com/photo/a-close-up-shot-of-a-vehicle-disc-brake-6870299/",
+      "alt": "A mechanic inspecting a vehicle disc brake",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Gustavo Fring",
+      "downloadUrl": "https://images.pexels.com/photos/6870299/pexels-photo-6870299.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/a-close-up-shot-of-a-vehicle-disc-brake-6870299/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "6d50e5a306614c1ab2453410eedd647fce3f8099d6cc4e025393fcfbbf34edfd",
+      "src": "/images/photos/automobile-brakes.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 42590,
+      "sha256": "cc24f9884652c05e4c9089bebf234bf481c951542f2e8629af10cbe1019bb9bd"
+    },
+    "automobile-alignment": {
+      "key": "automobile-alignment",
+      "source": "https://www.pexels.com/photo/man-in-black-jacket-standing-beside-black-car-3806288/",
+      "alt": "A mechanic using wheel alignment equipment on a car",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Andrea Piacquadio",
+      "downloadUrl": "https://images.pexels.com/photos/3806288/pexels-photo-3806288.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/man-in-black-jacket-standing-beside-black-car-3806288/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "2e51e82cb4deea38c13d2fca26751e8fa7e2113d3e1465d3d2b24cd74aa303d7",
+      "src": "/images/photos/automobile-alignment.webp",
+      "width": 1000,
+      "height": 807,
+      "sourceWidth": 1000,
+      "sourceHeight": 807,
+      "bytes": 86010,
+      "sha256": "6ac2772a6dbed122ba6bcf67eb76c57e97e07a09dd5876bb13599ff51e093473"
+    },
+    "automobile-insurance": {
+      "key": "automobile-insurance",
+      "source": "https://www.pexels.com/photo/magnifying-glass-and-a-document-10341357/",
+      "alt": "An insurance document beside money, a magnifying glass and a model car",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Vlad Deep",
+      "downloadUrl": "https://images.pexels.com/photos/10341357/pexels-photo-10341357.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/magnifying-glass-and-a-document-10341357/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "b0c515fc411f5f25eef56e1e5f56750ed89522914a71619e293f1a66b75eec8b",
+      "src": "/images/photos/automobile-insurance.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 37726,
+      "sha256": "3c3b079ba34af3b17fc6d1119f14bf95d350592988af3b80138352a5b264a863"
+    },
+    "automobile-seats": {
+      "key": "automobile-seats",
+      "source": "https://www.pexels.com/photo/photo-of-black-car-seats-10054684/",
+      "alt": "Black leather upholstery and seating inside a car",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Auto Records",
+      "downloadUrl": "https://images.pexels.com/photos/10054684/pexels-photo-10054684.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/photo-of-black-car-seats-10054684/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "55dad6645fbe77dc101f289309c2603884522b25a462f89321470cb4f2021a42",
+      "src": "/images/photos/automobile-seats.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 32002,
+      "sha256": "0e2452888611fe8b046343685658cc06e20ebe5b765cd1f730478cfc145d7608"
+    },
+    "automobile-audio": {
+      "key": "automobile-audio",
+      "source": "https://www.pexels.com/photo/inside-car-dashboard-with-audio-system-display-28984412/",
+      "alt": "An audio system display in a car dashboard",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Erik Mclean",
+      "downloadUrl": "https://images.pexels.com/photos/28984412/pexels-photo-28984412.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/inside-car-dashboard-with-audio-system-display-28984412/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "e7960b9ead4a92780db5731e2caf0a559c13a1caa2b0aaacf1b416cf5552f388",
+      "src": "/images/photos/automobile-audio.webp",
+      "width": 1000,
+      "height": 668,
+      "sourceWidth": 1000,
+      "sourceHeight": 668,
+      "bytes": 27800,
+      "sha256": "6b95aa1e9540f137e6b4cd55ddea38a11e931741e29af7115cc14ce3749b163f"
+    },
+    "automobile-fuel": {
+      "key": "automobile-fuel",
+      "source": "https://www.pexels.com/photo/fuel-pumping-into-car-at-a-gas-station-29370541/",
+      "alt": "A vehicle being refuelled using a fuel nozzle",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Fahad Puthawala",
+      "downloadUrl": "https://images.pexels.com/photos/29370541/pexels-photo-29370541.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/fuel-pumping-into-car-at-a-gas-station-29370541/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "0e8bfc55448398ccc9e5a9ce8ccc6e2b463d392f708795b60daae1a54146b1e5",
+      "src": "/images/photos/automobile-fuel.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 27190,
+      "sha256": "52c2145bd936d93fb770c6e8ba0710613b39f8d87456c02a4fb73f682ea6545e"
+    },
+    "automobile-driving": {
+      "key": "automobile-driving",
+      "source": "https://www.pexels.com/photo/adult-man-looking-at-a-teenager-seated-on-driver-s-side-of-a-car-9518018/",
+      "alt": "A learner driver practising in a car with an adult instructor",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Ron Lach",
+      "downloadUrl": "https://images.pexels.com/photos/9518018/pexels-photo-9518018.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/adult-man-looking-at-a-teenager-seated-on-driver-s-side-of-a-car-9518018/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "14c425a735a5ddfb51f6e2d34723ffff771e3edc360d454712b14db51a3e94c7",
+      "src": "/images/photos/automobile-driving.webp",
+      "width": 960,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1500,
+      "bytes": 78568,
+      "sha256": "76d2b73b4e630a52e73d18f35ca0fbf413509c65178ae5df2fd972b423df75d9"
+    },
+    "automobile-interior-cleaning": {
+      "key": "automobile-interior-cleaning",
+      "source": "https://www.pexels.com/photo/a-person-holding-a-spray-bottle-8526797/",
+      "alt": "A gloved hand using a cleaning spray inside a car",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Towfiqu barbhuiya",
+      "downloadUrl": "https://images.pexels.com/photos/8526797/pexels-photo-8526797.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/a-person-holding-a-spray-bottle-8526797/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "e81513f1ddb58fdd277058f3a9b6f980c3862eafd6f2ec31ffb7f8a67d3fab52",
+      "src": "/images/photos/automobile-interior-cleaning.webp",
+      "width": 1000,
+      "height": 667,
+      "sourceWidth": 1000,
+      "sourceHeight": 667,
+      "bytes": 33154,
+      "sha256": "690534d36503d4d3afe0e2f8506d6e8c5187ad41b7eff90e55c4bc269d39c0ff"
+    },
+    "automobile-paint-protection": {
+      "key": "automobile-paint-protection",
+      "source": "https://www.pexels.com/photo/men-holding-and-spraying-foil-near-cars-20051463/",
+      "alt": "Technicians applying protective film to a car",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "WAVYVISUALS",
+      "downloadUrl": "https://images.pexels.com/photos/20051463/pexels-photo-20051463.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/men-holding-and-spraying-foil-near-cars-20051463/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "7876bc2c306cf313d8a15cbae8245dfca5ab9df61a0a0a86c6d35c8856a71ee1",
+      "src": "/images/photos/automobile-paint-protection.webp",
+      "width": 1000,
+      "height": 665,
+      "sourceWidth": 1000,
+      "sourceHeight": 665,
+      "bytes": 78034,
+      "sha256": "074961abcecde6c8568719775ff54438adfe52349ba51b4cac7a3c826796ffee"
+    },
+    "automobile-engine-parts": {
+      "key": "automobile-engine-parts",
+      "source": "https://www.pexels.com/photo/car-engine-taken-apart-26866236/",
+      "alt": "Dismantled vehicle engine components in a workshop",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Peyvand Pezeshki",
+      "downloadUrl": "https://images.pexels.com/photos/26866236/pexels-photo-26866236.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/car-engine-taken-apart-26866236/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "561d55a152b32e8b2c51bb6537404df5f42b133e0e7d8fbf417e4f92a3df2227",
+      "src": "/images/photos/automobile-engine-parts.webp",
+      "width": 1000,
+      "height": 1333,
+      "sourceWidth": 1000,
+      "sourceHeight": 1333,
+      "bytes": 167650,
+      "sha256": "ed42bffdb28bdc1c1b6d5fb0e67bb140c5ccec5fa3b26cded5ee7f717ccccbf2"
+    },
+    "automobile-fleet": {
+      "key": "automobile-fleet",
+      "source": "https://www.pexels.com/photo/cars-in-the-parking-lot-11725734/",
+      "alt": "A fleet of utility vehicles parked together",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Robert So",
+      "downloadUrl": "https://images.pexels.com/photos/11725734/pexels-photo-11725734.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/cars-in-the-parking-lot-11725734/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "03a5751206d2c43455ffb906ab9b61d91d99b38200e7cefa5d8a6c54fbc92fda",
+      "src": "/images/photos/automobile-fleet.webp",
+      "width": 1000,
+      "height": 504,
+      "sourceWidth": 1000,
+      "sourceHeight": 504,
+      "bytes": 126546,
+      "sha256": "c04ef105805cdca7ac3547f9135d9a65380d80e9267c55fc6f8fbc1b61ad961a"
+    },
+    "automobile-ceramic-coating": {
+      "key": "automobile-ceramic-coating",
+      "source": "https://www.pexels.com/photo/applying-car-cleaner-on-blue-sponge-20051453/",
+      "alt": "A ceramic car-coating liquid being dispensed onto an applicator cloth",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "WAVYVISUALS",
+      "downloadUrl": "https://images.pexels.com/photos/20051453/pexels-photo-20051453.jpeg?auto=compress&cs=tinysrgb&w=1440",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-26",
+      "verificationUrl": "https://www.pexels.com/photo/applying-car-cleaner-on-blue-sponge-20051453/",
+      "evidence": "Official Pexels photo page identifies the subject and offers free download under the Pexels License; original and crop visually reviewed. Illustrative stock photography, no endorsement implied.",
+      "originalSha256": "f314f86227c64768fe6f525f29a08a8036d1477260063da9f550574cdaee5686",
+      "src": "/images/photos/automobile-ceramic-coating.webp",
+      "width": 958,
+      "height": 1440,
+      "sourceWidth": 1000,
+      "sourceHeight": 1503,
+      "bytes": 58592,
+      "sha256": "083b98db674e1199c0dbff3b400b36f7777a385ad39b20552a6fc7d5a8a2b2cf"
     }
   },
   "items": {
@@ -5169,7 +5675,7 @@
       "subject": "New Vehicles"
     },
     "type/automobiles/new-vehicles/cars": {
-      "photo": "accountant-consultation",
+      "photo": "automobiles",
       "subject": "Cars"
     },
     "type/automobiles/new-vehicles/motorcycles": {
@@ -5177,15 +5683,15 @@
       "subject": "Motorcycles"
     },
     "type/automobiles/new-vehicles/scooters": {
-      "photo": "accounting-calculation",
+      "photo": "automobile-scooter",
       "subject": "Scooters"
     },
     "type/automobiles/new-vehicles/electric-cars": {
-      "photo": "electrical",
+      "photo": "automobile-electric-car",
       "subject": "Electric cars"
     },
     "type/automobiles/new-vehicles/electric-two-wheelers": {
-      "photo": "air-conditioning",
+      "photo": "automobile-electric-two-wheeler",
       "subject": "Electric two-wheelers"
     },
     "type/automobiles/new-vehicles/commercial-vehicles": {
@@ -5197,7 +5703,7 @@
       "subject": "Used Vehicles"
     },
     "type/automobiles/used-vehicles/used-cars": {
-      "photo": "accountant-consultation",
+      "photo": "automobiles",
       "subject": "Used cars"
     },
     "type/automobiles/used-vehicles/used-motorcycles": {
@@ -5205,15 +5711,15 @@
       "subject": "Used motorcycles"
     },
     "type/automobiles/used-vehicles/used-scooters": {
-      "photo": "accounting-calculation",
+      "photo": "automobile-scooter",
       "subject": "Used scooters"
     },
     "type/automobiles/used-vehicles/used-commercial-vehicles": {
-      "photo": "air-conditioning",
+      "photo": "automobile-fleet",
       "subject": "Used commercial vehicles"
     },
     "type/automobiles/used-vehicles/certified-pre-owned-vehicles": {
-      "photo": "airplane",
+      "photo": "catalogue-first25-automobiles--used-vehicles",
       "subject": "Certified pre-owned vehicles"
     },
     "subcategory/automobiles/vehicle-dealers-and-showrooms": {
@@ -5221,7 +5727,7 @@
       "subject": "Vehicle Dealers & Showrooms"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/car-dealerships": {
-      "photo": "accountant-consultation",
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
       "subject": "Car dealerships"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/two-wheeler-dealerships": {
@@ -5229,11 +5735,11 @@
       "subject": "Two-wheeler dealerships"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/ev-showrooms": {
-      "photo": "truck",
+      "photo": "automobile-electric-car",
       "subject": "EV showrooms"
     },
     "type/automobiles/vehicle-dealers-and-showrooms/commercial-vehicle-dealers": {
-      "photo": "accounting-calculation",
+      "photo": "automobile-fleet",
       "subject": "Commercial vehicle dealers"
     },
     "subcategory/automobiles/vehicle-servicing-and-repairs": {
@@ -5241,35 +5747,35 @@
       "subject": "Vehicle Servicing & Repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/scheduled-servicing": {
-      "photo": "accountant-consultation",
+      "photo": "mechanic",
       "subject": "Scheduled servicing"
     },
     "type/automobiles/vehicle-servicing-and-repairs/engine-repairs": {
-      "photo": "accounting-calculation",
+      "photo": "mechanic",
       "subject": "Engine repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/brake-repairs": {
-      "photo": "air-conditioning",
+      "photo": "automobile-brakes",
       "subject": "Brake repairs"
     },
     "type/automobiles/vehicle-servicing-and-repairs/battery-services": {
-      "photo": "airplane",
+      "photo": "automobile-battery",
       "subject": "Battery services"
     },
     "type/automobiles/vehicle-servicing-and-repairs/tyre-replacement": {
-      "photo": "architecture",
+      "photo": "automobile-tyre",
       "subject": "Tyre replacement"
     },
     "type/automobiles/vehicle-servicing-and-repairs/wheel-alignment": {
-      "photo": "electrical",
+      "photo": "automobile-alignment",
       "subject": "Wheel alignment"
     },
     "type/automobiles/vehicle-servicing-and-repairs/denting-and-painting": {
-      "photo": "wall-painting",
+      "photo": "automobile-body-paint",
       "subject": "Denting and painting"
     },
     "type/automobiles/vehicle-servicing-and-repairs/vehicle-diagnostics": {
-      "photo": "lab",
+      "photo": "automobile-diagnostics",
       "subject": "Vehicle diagnostics"
     },
     "subcategory/automobiles/car-care-and-detailing": {
@@ -5281,87 +5787,87 @@
       "subject": "Car washing"
     },
     "type/automobiles/car-care-and-detailing/interior-cleaning": {
-      "photo": "cleaning",
+      "photo": "automobile-interior-cleaning",
       "subject": "Interior cleaning"
     },
     "type/automobiles/car-care-and-detailing/exterior-detailing": {
-      "photo": "accountant-consultation",
+      "photo": "automobile-polishing",
       "subject": "Exterior detailing"
     },
     "type/automobiles/car-care-and-detailing/ceramic-coating": {
-      "photo": "mechanic",
+      "photo": "automobile-ceramic-coating",
       "subject": "Ceramic coating"
     },
     "type/automobiles/car-care-and-detailing/paint-protection": {
-      "photo": "accounting-calculation",
+      "photo": "automobile-paint-protection",
       "subject": "Paint protection"
     },
     "type/automobiles/car-care-and-detailing/polishing": {
-      "photo": "wall-painting",
+      "photo": "automobile-polishing",
       "subject": "Polishing"
     },
     "subcategory/automobiles/spare-parts-and-accessories": {
-      "photo": "motorcycle",
+      "photo": "automobile-engine-parts",
       "subject": "Spare Parts & Accessories"
     },
     "type/automobiles/spare-parts-and-accessories/tyres": {
-      "photo": "mechanic",
+      "photo": "automobile-tyre",
       "subject": "Tyres"
     },
     "type/automobiles/spare-parts-and-accessories/batteries": {
-      "photo": "accountant-consultation",
+      "photo": "automobile-battery",
       "subject": "Batteries"
     },
     "type/automobiles/spare-parts-and-accessories/engine-parts": {
-      "photo": "accounting-calculation",
+      "photo": "automobile-engine-parts",
       "subject": "Engine parts"
     },
     "type/automobiles/spare-parts-and-accessories/helmets": {
-      "photo": "air-conditioning",
+      "photo": "automobile-helmet",
       "subject": "Helmets"
     },
     "type/automobiles/spare-parts-and-accessories/vehicle-accessories": {
-      "photo": "airplane",
+      "photo": "automobile-helmet",
       "subject": "Vehicle accessories"
     },
     "type/automobiles/spare-parts-and-accessories/audio-systems": {
-      "photo": "architecture",
+      "photo": "automobile-audio",
       "subject": "Audio systems"
     },
     "type/automobiles/spare-parts-and-accessories/seat-covers": {
-      "photo": "barber",
+      "photo": "automobile-seats",
       "subject": "Seat covers"
     },
     "subcategory/automobiles/vehicle-insurance-and-finance": {
-      "photo": "finance",
+      "photo": "automobile-insurance",
       "subject": "Vehicle Insurance & Finance"
     },
     "type/automobiles/vehicle-insurance-and-finance/vehicle-insurance-providers": {
-      "photo": "accountant-consultation",
+      "photo": "automobile-insurance",
       "subject": "Vehicle insurance providers"
     },
     "type/automobiles/vehicle-insurance-and-finance/vehicle-loans": {
-      "photo": "air-conditioning",
+      "photo": "finance",
       "subject": "Vehicle loans"
     },
     "type/automobiles/vehicle-insurance-and-finance/insurance-renewal-assistance": {
-      "photo": "airplane",
+      "photo": "automobile-insurance",
       "subject": "Insurance renewal assistance"
     },
     "type/automobiles/vehicle-insurance-and-finance/financing-enquiries": {
-      "photo": "accounting-calculation",
+      "photo": "finance",
       "subject": "Financing enquiries"
     },
     "subcategory/automobiles/driving-and-vehicle-documentation": {
-      "photo": "registration-paperwork",
+      "photo": "automobile-driving",
       "subject": "Driving & Vehicle Documentation"
     },
     "type/automobiles/driving-and-vehicle-documentation/driving-schools": {
-      "photo": "education-and-skills",
+      "photo": "automobile-driving",
       "subject": "Driving schools"
     },
     "type/automobiles/driving-and-vehicle-documentation/driving-lessons": {
-      "photo": "accountant-consultation",
+      "photo": "automobile-driving",
       "subject": "Driving lessons"
     },
     "type/automobiles/driving-and-vehicle-documentation/licence-assistance": {
@@ -5369,59 +5875,59 @@
       "subject": "Licence assistance"
     },
     "type/automobiles/driving-and-vehicle-documentation/vehicle-registration-assistance": {
-      "photo": "accounting-calculation",
+      "photo": "registration-paperwork",
       "subject": "Vehicle registration assistance"
     },
     "type/automobiles/driving-and-vehicle-documentation/vehicle-inspection": {
-      "photo": "air-conditioning",
+      "photo": "automobile-diagnostics",
       "subject": "Vehicle inspection"
     },
     "type/automobiles/driving-and-vehicle-documentation/pre-purchase-inspection": {
-      "photo": "airplane",
+      "photo": "catalogue-first25-automobiles--used-vehicles",
       "subject": "Pre-purchase inspection"
     },
     "subcategory/automobiles/roadside-assistance": {
-      "photo": "building-inspection",
+      "photo": "automobile-towing",
       "subject": "Roadside Assistance"
     },
     "type/automobiles/roadside-assistance/towing": {
-      "photo": "mechanic",
+      "photo": "automobile-towing",
       "subject": "Towing"
     },
     "type/automobiles/roadside-assistance/breakdown-assistance": {
-      "photo": "truck",
+      "photo": "automobile-towing",
       "subject": "Breakdown assistance"
     },
     "type/automobiles/roadside-assistance/flat-tyre-assistance": {
-      "photo": "accountant-consultation",
+      "photo": "automobile-tyre",
       "subject": "Flat tyre assistance"
     },
     "type/automobiles/roadside-assistance/battery-jump-start": {
-      "photo": "accounting-calculation",
+      "photo": "automobile-jump-start",
       "subject": "Battery jump-start"
     },
     "type/automobiles/roadside-assistance/emergency-fuel-delivery-where-legally-available": {
-      "photo": "construction-contract",
+      "photo": "automobile-fuel",
       "subject": "Emergency fuel delivery, where legally available"
     },
     "subcategory/automobiles/commercial-and-fleet-services": {
-      "photo": "truck",
+      "photo": "automobile-fleet",
       "subject": "Commercial & Fleet Services"
     },
     "type/automobiles/commercial-and-fleet-services/fleet-maintenance": {
-      "photo": "truck",
+      "photo": "automobile-fleet",
       "subject": "Fleet maintenance"
     },
     "type/automobiles/commercial-and-fleet-services/commercial-vehicle-servicing": {
-      "photo": "mechanic",
+      "photo": "automobile-fleet",
       "subject": "Commercial vehicle servicing"
     },
     "type/automobiles/commercial-and-fleet-services/fleet-management": {
-      "photo": "accountant-consultation",
+      "photo": "automobile-fleet",
       "subject": "Fleet management"
     },
     "type/automobiles/commercial-and-fleet-services/vehicle-leasing-enquiries": {
-      "photo": "accounting-calculation",
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
       "subject": "Vehicle leasing enquiries"
     },
     "category/rental-services": {

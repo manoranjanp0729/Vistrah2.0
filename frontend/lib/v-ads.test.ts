@@ -10,6 +10,9 @@ describe('shared web/mobile V Ads contract',()=>{
   await client.like('video',false);expect(calls[1].options?.method).toBe('DELETE');
   await client.comments('video',2);expect(calls[2].path).toBe('/v-ads/reels/video/comments?page=2');
   await client.engagement('video');expect(calls[3].path).toBe('/v-ads/reels/video/engagement');
+  await client.feed();expect(calls[4].path).toBe('/v-ads/reels?page=1');
+  await client.feed(2,{lat:12.9716,lon:77.5946,radius_km:5,local_only:true});
+  expect(calls[5].path).toBe('/v-ads/reels?page=2&lat=12.9716&lon=77.5946&radius_km=5&local_only=true');
  });
  it.each([['video.mp4',1],['VIDEO.MP4',maxVideoBytes]])('accepts bounded MP4 %s',(name,size)=>expect(()=>validateVideoFile(name,size)).not.toThrow());
  it.each([['a.mov',12],['a.mp4',0],['a.mp4',maxVideoBytes+1],['a.mp4',NaN]])('rejects unsupported files %s %s',(name,size)=>expect(()=>validateVideoFile(name,size)).toThrow());

@@ -8,6 +8,9 @@ module.exports = ({config}) => {
   delete adaptiveIcon.backgroundImage;
   delete adaptiveIcon.monochromeImage;
   const plugins = (config.plugins ?? []).filter(plugin => (Array.isArray(plugin) ? plugin[0] : plugin) !== 'expo-splash-screen');
+  const mapsKey=process.env.GOOGLE_MAPS_ANDROID_API_KEY;
+  if(process.env.EXPO_PUBLIC_GOOGLE_MAPS_ENABLED==='1'&&!mapsKey)throw new Error('Android Google Maps requires GOOGLE_MAPS_ANDROID_API_KEY in the build environment.');
+  if(mapsKey)plugins.push(['react-native-maps',{androidGoogleMapsApiKey:mapsKey}]);
   plugins.push('expo-video');
   const googleIosScheme=process.env.GOOGLE_IOS_URL_SCHEME;
   if(googleIosScheme)plugins.push(['@react-native-google-signin/google-signin',{iosUrlScheme:googleIosScheme}]);

@@ -1,3 +1,4 @@
+import {croppedPhoto} from '../../../lib/photo-crop';
 import {BannerGeometry} from '../../../components/banner-geometry';
 import {useBannerTheme} from '../../../lib/banner-theme';
 import {Text} from '../../../components/typography';
@@ -405,10 +406,10 @@ export default function Services() {
                 >
                   <View style={s.flowPhoto}>
                     <Image
-                      source={nativeMarketplacePhoto(result.id)}
-                      resizeMode="contain"
+                      source={croppedPhoto(nativeMarketplacePhoto(result.id),'square')}
+                      resizeMode="cover"
                       accessibilityLabel={nativeMarketplaceAlt(result.id) ?? result.title}
-                      style={StyleSheet.absoluteFill}
+                      style={[StyleSheet.absoluteFill,s.flowImage]}
                     />
                   </View>
                   <View style={{flex: 1, minWidth: 0, gap: 3}}>
@@ -623,12 +624,12 @@ export default function Services() {
                         },
                       ]}
                     >
-                      <View style={[s.flowPhoto,s.flowGridPhoto]}>
+                      <View style={s.flowGridPhoto}>
                         <Image
-                          source={nativeMarketplacePhoto(itemId)}
-                          resizeMode="contain"
+                          source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
+                          resizeMode="cover"
                           accessibilityLabel={nativeMarketplaceAlt(itemId) ?? type.title}
-                          style={StyleSheet.absoluteFill}
+                          style={[StyleSheet.absoluteFill,s.flowImage]}
                         />
                       </View>
                       <View style={{flex: 1, minWidth: 0, gap: 4}}>
@@ -684,12 +685,12 @@ export default function Services() {
                       },
                     ]}
                   >
-                    <View style={[s.flowPhoto,s.flowGridPhoto]}>
+                    <View style={s.flowGridPhoto}>
                       <Image
-                        source={nativeMarketplacePhoto(itemId)}
-                        resizeMode="contain"
+                        source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
+                        resizeMode="cover"
                         accessibilityLabel={nativeMarketplaceAlt(itemId) ?? sub.title}
-                        style={StyleSheet.absoluteFill}
+                        style={[StyleSheet.absoluteFill,s.flowImage]}
                       />
                     </View>
                     <View style={{flex: 1, minWidth: 0, gap: 4}}>
@@ -959,7 +960,8 @@ const s = StyleSheet.create({
 
   flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:10,alignItems:'stretch'},
   flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,flexGrow:1},
-  flowGridPhoto:{width:'100%',height:undefined,aspectRatio:16/9},
+  flowGridPhoto:{width:'100%',aspectRatio:16/9,borderRadius:12,overflow:'hidden',backgroundColor:'#eeeeeed9',flexShrink:0},
+  flowImage:{width:'100%',height:'100%'},
   // Flow Cards (Subcategories & Listing Types)
   flowCard: {
     flexDirection: 'row',

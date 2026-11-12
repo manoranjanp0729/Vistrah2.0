@@ -1,3 +1,4 @@
+import {croppedPhoto} from '../lib/photo-crop';
 import {Text} from './typography';
 import {useTheme,spacing,typography} from '../lib/theme';
 import {UiText,UiElement} from "./localized-ui";
@@ -50,7 +51,7 @@ export function AdsMarketing(){
    const cardAccent = visual ? visual.accent : '#7741c4';
    const cardInk = visual ? visual.ink : '#382448';
    return <UiElement as={Pressable} key={card.key} accessibilityRole="link" accessibilityLabel={card.title[locale]} onPress={()=>router.push({pathname:'/marketing-services/[slug]',params:{slug:card.slug}})} style={({pressed})=>[s.card,{backgroundColor:cardBg,borderWidth:1,borderColor:cardAccent+'35',opacity:pressed?.85:1}]}>
-    <View style={s.image}><UiElement as={Image} source={images[index]} accessibilityLabel={t('marketing.'+(['photoDigital','photoCreative','photoOutdoor','photoMobility'][index]))} resizeMode="cover" style={s.cardImage}/></View>
+    <View style={s.image}><UiElement as={Image} source={croppedPhoto(images[index],'wide')} accessibilityLabel={t('marketing.'+(['photoDigital','photoCreative','photoOutdoor','photoMobility'][index]))} resizeMode="cover" style={s.cardImage}/></View>
     <View style={s.cardContent}><Text style={[s.cardTitle,{color:cardInk}]}>{card.title[locale]}</Text><Text style={s.cardDescription}>{t('marketing.'+(['digitalCopy','brandCopy','outdoorCopy','mobilityCopy'][index]))}</Text></View>
    </UiElement>;
   })}</View>

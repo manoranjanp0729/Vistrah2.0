@@ -10,6 +10,7 @@ from app import commerce_models
 from app import commerce_order_models
 from app import business_membership_models
 from app import v_ads_models
+from app import v_ads_targeting_models
 from app import marketing_pricing_models
 
 with engine.connect() as connection:

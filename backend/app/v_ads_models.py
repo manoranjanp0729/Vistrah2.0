@@ -1,7 +1,7 @@
 ﻿"""V Ads models: advertisers, reels and engagement."""
 from sqlalchemy import (
     String, Integer, Text, DateTime, ForeignKey,
-    UniqueConstraint, CheckConstraint
+    UniqueConstraint, CheckConstraint, Index
 )
 from sqlalchemy.orm import Mapped, mapped_column
 from .database import Base
@@ -53,6 +53,7 @@ class VAdsVideo(Base):
     )
 
     __table_args__ = (
+        Index('uq_v_ads_video_advertiser', 'id', 'advertiser_id', unique=True),
         CheckConstraint(
             "status IN ('PENDING','APPROVED','REJECTED','REMOVED')",
             name="ck_v_ads_video_status"

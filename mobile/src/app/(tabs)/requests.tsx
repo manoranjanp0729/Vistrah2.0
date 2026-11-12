@@ -259,9 +259,9 @@ export default function VistrahEssentials() {
         <View style={s.photoFrame}>
           <Image
             source={agriPhoto}
-            resizeMode="cover"
+            resizeMode="contain"
             accessibilityLabel={t('agri.photoAlt')}
-            style={StyleSheet.absoluteFill}
+            style={s.photoImage}
           />
         </View>
 
@@ -384,9 +384,9 @@ export default function VistrahEssentials() {
         <View style={s.photoFrame}>
           <Image
             source={healthPhoto}
-            resizeMode="cover"
+            resizeMode="contain"
             accessibilityLabel={t('health.photoAlt')}
-            style={StyleSheet.absoluteFill}
+            style={s.photoImage}
           />
         </View>
 
@@ -759,9 +759,10 @@ const s = StyleSheet.create({
     lineHeight: 19,
     color: '#ffffff',
   },
+  photoImage: {position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'},
   photoFrame: {
     width: '100%',
-    aspectRatio: 2.1,
+    aspectRatio: 2,
     borderRadius: 14,
     overflow: 'hidden',
     backgroundColor: '#00000020',

@@ -1,0 +1,15 @@
+{
+  "scope":"Bundled marketplace/service discovery photos and marketing photo cards. Originals retained; no user-uploaded files or runtime data altered.",
+  "review":"Original / wide / square contact sheets inspected for all 228 source photographs. Intermediate ratios follow the same focal settings; device review remains required.",
+  "needsReplacementOrDifferentFrame":[
+    {"photo":"cat","reason":"Existing source shows an empty room rather than a visible cat; a crop cannot recover missing subject content."},
+    {"photo":"vet-cat","reason":"Existing source does not show the animal in the available image; needs a better original."},
+    {"photo":"automobiles","profile":"square","reason":"The complete car is wider than a square crop; the full vehicle cannot be retained while filling this frame."},
+    {"photo":"airplane","profile":"square","reason":"Full wingspan cannot fit a square crop without losing edges."},
+    {"photo":"physio-care","profile":"square","reason":"Full extended body and both participants cannot all fit the square crop."},
+    {"photo":"catalogue-first25-automobiles--new-vehicles","profile":"square","reason":"Car and entire family span the full source width; square crop preserves the central interaction, not every participant."},
+    {"photo":"catalogue-first25-travel-stay-and-experiences--travel-planning","profile":"square","reason":"All participants span the source width and cannot all remain in a square crop."}
+  ],
+  "quality":"Some existing sources are only about 315x161 pixels. Derivatives never upscale them; inspect belowTarget flags in photo-crops.json before using larger frames.",
+  "excluded":"App icons, logos, text-bearing carousel artwork, arbitrary uploaded/published editor images, avatars and user listings are not destructively cropped by this offline preparation."
+}

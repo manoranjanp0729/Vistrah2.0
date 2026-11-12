@@ -31,6 +31,8 @@ from .publication_routes import router as publication_router
 app.include_router(publication_router)
 from .location_routes import router as location_router
 app.include_router(location_router)
+from .google_maps_routes import router as google_maps_router
+app.include_router(google_maps_router)
 from .employer_job_routes import router as employer_job_router
 app.include_router(employer_job_router)
 from .homepage_routes import router as homepage_router
@@ -49,8 +51,6 @@ from .v_ads_engagement_routes import router as v_ads_engagement_router
 app.include_router(v_ads_engagement_router)
 from .v_ads_account_routes import router as v_ads_account_router, ensure_seller_v_ads_account
 app.include_router(v_ads_account_router)
-from .v_ads_review_routes import router as v_ads_review_router
-app.include_router(v_ads_review_router)
 from .v_ads_media_routes import router as v_ads_media_router
 from .v_ads_video_submission_routes import router as v_ads_submission_router
 app.include_router(v_ads_media_router)
@@ -59,6 +59,10 @@ from .v_ads_management_routes import router as v_ads_management_router
 app.include_router(v_ads_management_router)
 from .v_ads_creator_routes import router as v_ads_creator_router
 app.include_router(v_ads_creator_router)
+from .v_ads_targeting_routes import router as v_ads_targeting_router
+app.include_router(v_ads_targeting_router)
+from .v_ads_review_routes import router as v_ads_review_router
+app.include_router(v_ads_review_router)
 from .edit_vistrah_routes import router as edit_vistrah_router
 app.include_router(edit_vistrah_router)
 from .marketing_pricing_routes import router as marketing_pricing_router

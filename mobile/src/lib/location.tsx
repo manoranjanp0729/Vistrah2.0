@@ -1,7 +1,7 @@
 import {createContext,useCallback,useContext,useEffect,useRef,useState,type ReactNode} from 'react';
 import {useSession} from './session';
 import {api} from './api';
-export type Location={label:string;latitude:number;longitude:number;radius:2|5|10|25;postal_code?:string;address?:string;landmark?:string};
+export type Location={label:string;latitude:number;longitude:number;radius:2|5|10|25;postal_code?:string;address?:string;landmark?:string;source?:'google'};
 const Context=createContext<{location:Location|null;setLocation:(value:Location|null)=>void}|null>(null);
 export function LocationProvider({children}:{children:ReactNode}){
  const {user}=useSession(false);const [location,setValue]=useState<Location|null>(null);const generation=useRef(0);const previous=useRef<number|null>(null);
@@ -13,4 +13,5 @@ export function LocationProvider({children}:{children:ReactNode}){
  return <Context.Provider value={{location,setLocation}}>{children}</Context.Provider>;
 }
 export function useLocation(){const value=useContext(Context);if(!value)throw new Error('Missing LocationProvider');return value;}
+export function useOptionalLocation(){return useContext(Context);}
 export function parsePoint(latitude:string,longitude:string){if(!latitude.trim()||!longitude.trim())throw new Error('Enter both latitude and longitude.');const lat=Number(latitude),lon=Number(longitude);if(!Number.isFinite(lat)||!Number.isFinite(lon)||lat < -90||lat > 90||lon < -180||lon > 180)throw new Error('Use latitude -90 to 90 and longitude -180 to 180.');return {latitude:lat,longitude:lon};}

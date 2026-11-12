@@ -1,6 +1,6 @@
 import {reversePlace} from './maptiler';
 export type Point={latitude:number;longitude:number};
-export type CustomerLocation=Point&{locality:string;postal_code:string;address:string;landmark:string};
+export type CustomerLocation=Point&{locality:string;postal_code:string;address:string;landmark:string;source?:'google'};
 export type NearbyProvider=Point&{id:number;slug:string;company:string;name:string;location:string;description:string;verification_status:string;distance_km:number};
 export type NearbyResult={nearby:NearbyProvider[];also_serves:NearbyProvider[];distance_kind:'straight-line';page:number;has_more_nearby:boolean;has_more_also_serves:boolean};
 export const radii=[2,5,10,25] as const;

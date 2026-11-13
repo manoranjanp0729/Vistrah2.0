@@ -1,0 +1,15 @@
+﻿# Isolated V Ads development image.
+# Does not replace the existing API image.
+FROM vistrah20-api
+
+USER root
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --no-cache-dir python-multipart==0.0.20
+
+USER app
+
+CMD ["python", "-c", "import shutil; assert shutil.which('ffmpeg'); assert shutil.which('ffprobe'); import multipart; print('V Ads video tools ready')"]

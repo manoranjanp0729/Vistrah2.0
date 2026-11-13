@@ -13,7 +13,7 @@ describe('Service pathways',()=>{
       expect(paths.map(path=>path.id)).toEqual(serviceTabs);
       expect(paths[1].href).toBe(enquiryUrl(context,'recommendations'));
       expect(paths[2].href).toBe(enquiryUrl(context,'in-house'));
-      expect(paths[2].description).toBe('No VISTRAH-managed offering available for this service.');
+      expect(paths[2].description).toBe('No VISTRAH-managed offering is currently listed for this service. Enquire about delivery options.');
       expect(paths.some(path=>path.href==='/call-vistrah')).toBe(false);
       const directory=resolveRoute(categories,paths[0].href.split('/').slice(2));
       expect(directory?.kind).toBe('companies');
@@ -39,3 +39,4 @@ describe('Service pathways',()=>{
     expect(enquiryModes.contact.message).toContain('Live chat is not available');
   });
 });
+

@@ -1,4 +1,5 @@
 'use client';
+import {UiText,UiButton} from "./localized-ui";
 import {useId,useRef,useState,useEffect,useLayoutEffect,useCallback} from 'react';
 import type {ReactNode,FocusEvent} from 'react';
 import {CircleHelp,X} from 'lucide-react';
@@ -48,15 +49,15 @@ export function ContextHelp({id}:{id:HelpId}) {
   },[open,close,uid]);
   useEffect(()=>()=>cancelTimer(),[cancelTimer]);
   return <span className="context-help" data-help-id={id}>
-    <button ref={trigger} type="button" className="help-trigger" aria-label={`Help: ${content.title}`} aria-expanded={open} aria-controls={uid} aria-describedby={open?uid+'-description':undefined} aria-haspopup="dialog"
+    <UiButton  ref={trigger} type="button" className="help-trigger" aria-label={`Help: ${content.title}`} aria-expanded={open} aria-controls={uid} aria-describedby={open?uid+'-description':undefined} aria-haspopup="dialog"
       onPointerEnter={event=>{if(event.pointerType!=='touch'){dismissed.current=false;reveal();}}}
       onPointerLeave={delayClose} onFocus={()=>{if(restoringFocus.current){restoringFocus.current=false;return;}dismissed.current=false;reveal();}} onBlur={blur}
-      onClick={()=>{cancelTimer();if(pinned.current&&open)close();else{dismissed.current=false;pinned.current=true;setOpen(true);}}}><CircleHelp size={17} aria-hidden="true"/></button>
+      onClick={()=>{cancelTimer();if(pinned.current&&open)close();else{dismissed.current=false;pinned.current=true;setOpen(true);}}}><CircleHelp size={17} aria-hidden="true"/></UiButton>
     <span ref={panel} id={uid} popover="manual" role="dialog" aria-modal="false" aria-labelledby={uid+'-title'} aria-describedby={uid+'-description'} className="help-popover"
       onPointerEnter={cancelTimer} onPointerLeave={delayClose} onFocus={cancelTimer} onBlur={blur}>
-      <span className="help-heading"><strong id={uid+'-title'}>{content.title}</strong><button type="button" className="help-close" aria-label="Close help" onClick={()=>{close();restoreFocus();}}><X size={17} aria-hidden="true"/></button></span>
+      <span className="help-heading"><strong id={uid+'-title'}>{content.title}</strong><UiButton  type="button" className="help-close" aria-label="Close help" onClick={()=>{close();restoreFocus();}}><X size={17} aria-hidden="true"/></UiButton></span>
       <span className="help-description" id={uid+'-description'}>{content.description}</span>
-      {content.example&&<span className="help-example"><strong>Example:</strong> {content.example}</span>}
+      {content.example&&<span className="help-example"><strong><UiText value={"Example:"}/></strong> {content.example}</span>}
       {content.link&&<a href={content.link.href}>{content.link.label}</a>}
     </span>
   </span>;

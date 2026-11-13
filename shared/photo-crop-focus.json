@@ -1,0 +1,17 @@
+{
+  "shopping-and-local-retail": {"wide":"50% 75%","banner":"50% 75%"},
+  "professional-profile": {"square":"100% 50%"},
+  "agriculture-crop-sowing-services": {"all":"100% 20%"},
+  "agriculture-combine-harvester-rental": {"square":"0% 50%","landscape":"10% 50%"},
+  "agriculture-agricultural-soil-testing": {"wide":"50% 100%","card":"50% 100%"},
+  "agriculture-greenhouse-farm-planning": {"wide":"50% 0%","card":"50% 0%"},
+  "catalogue-batch2-events-and-celebrations--birthday-and-private-parties": {"wide":"50% 100%"},
+  "tender-review": {"wide":"50% 0%","banner":"50% 0%"},
+  "building-inspection": {"square":"0% 50%","landscape":"0% 50%"},
+  "digital-analytics": {"square":"100% 50%"},
+  "office-process": {"square":"100% 50%"},
+  "automobile-scooter": {"all":"50% 65%"},
+  "automobile-towing": {"all":"50% 15%"},
+  "automobile-body-paint": {"all":"50% 25%"},
+  "automobile-ceramic-coating": {"all":"50% 35%"}
+}

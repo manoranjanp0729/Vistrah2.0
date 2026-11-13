@@ -118,3 +118,171 @@ Document upload supplies service_id, field_id, filename, media_type and content_
 Validation failures return a message and field errors; stale revisions return 409.
 See [provider onboarding](PROVIDER_ONBOARDING.md) for safe configuration examples,
 limits and lifecycle behavior.
+
+## Reviewed employer jobs
+
+- Public `GET /employer-jobs?page=1&q=` and `GET /employer-jobs/{id}` expose only approved jobs with an inclusive, unexpired deadline (India Standard Time calendar), an active verified employer business and unchanged ownership. Public output excludes review notes and account/reviewer IDs. This table/feed is separate from acquired `/jobs` vacancies.
+- Seller `GET/POST /seller/businesses/{provider_id}/jobs` list owned postings and save a draft. `PATCH .../jobs/{id}` edits only the author's DRAFT/REJECTED record and resets it to DRAFT. Payload: title, description, location, arrangement (ONSITE/HYBRID/REMOTE), employment_type (FULL_TIME/PART_TIME/CONTRACT/INTERNSHIP/TEMPORARY), optional salary_text/deadline and required public HTTPS application_url; PATCH adds revision.
+- Seller `POST .../jobs/{id}/submit` and `/close` take `{revision}`. Submission requires an active verified business, current ownership and unexpired deadline. Closing immediately removes a job from the public feed.
+- Admin `GET /admin/employer-jobs?page=1&status=SUBMITTED` serves a private review queue. `POST /admin/employer-jobs/{id}/review` takes `{revision,status,reason}` with APPROVED/REJECTED and a 10–2000 character reason. Author/current employer owner cannot self-review. Only the current submitted revision can be decided. Mutations are audited and compare revisions atomically.
+- Migration 012 creates employer_jobs; no changes to external vacancy ingestion or memberships. Applications use the employer link and are not stored by this API. Runtime rollout is separate from source verification.
+
+## Shared homepage configuration (source migration 013)
+
+Public `GET /homepage` returns only `{version,layout}`. Before publication, and
+for an empty published layout, clients use the existing homepage. The layout
+has `schema_version:1` and at most 12 ordered sections. Every section contains
+`id`, `template`, `title`, `subtitle`, `size` and ordered `service_ids`.
+Banner: exactly one card, wide/square. Service grid: 2–16 cards, compact.
+Service carousel: 2–12 cards, compact. Section IDs and per-section service IDs
+must be unique; IDs must reference active services/categories/subcategories.
+There are no arbitrary HTML, URL or media-upload fields.
+
+Admin-only endpoints, all private/no-store:
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /admin/homepage/templates` | Supported templates, sizes and card/section limits |
+| `GET /admin/homepage/draft` | Saved private draft, revision and published version; revision 0 when absent |
+| `PUT /admin/homepage/draft` | Save `{revision,layout}`; revision 0 creates the first draft |
+| `POST /admin/homepage/publish` | Publish saved draft using `{revision}`; revalidate availability; advances revision |
+| `GET /admin/homepage/versions?offset=0&limit=20` | Published history; maximum page size 50 |
+| `POST /admin/homepage/restore` | Copy `{revision,version}` into draft; publication is a separate action |
+
+Stale writes/publishes/restores return 409. Mutations are audited; published
+snapshots have database update/delete guards. Restore plus publish creates a
+new version and preserves history. Migration 013 creates only new tables and
+triggers, seeds no layout, and refuses downgrade with drafts/history. Runtime
+migration and backup/rollout authorization remain separate from source work.
+
+Admin editor: `/admin/homepage`. Draft preview is a private content preview,
+with phone/desktop widths; clients retain their respective final styles.
+Desktop reads the published API on page refresh; native/phone website reads it
+when Discover gains focus or is reloaded. Disabled/missing service cards are
+omitted, with no invented destinations. Existing service-detail membership
+rules remain authoritative.
+
+## Reviewed commerce listings — Phase 4 first slice
+
+Products and fixed-price service packages use seller-set INR unit prices (integer
+paise), independent admin approval and seller fulfilment. Quote-required services
+retain enquiries. This slice provides listings only; no stock reservation,
+booking, cart, order or live payment is implied by approval or availability.
+
+| Route | Contract |
+|---|---|
+| `GET /commerce/products?page=1` | Published eligible products; 20 per page |
+| `GET /commerce/service-packages?page=1` | Published eligible packages; existing membership required |
+| `GET /commerce/listings/{id}` | Published eligible detail; packages require membership |
+| `GET/POST /seller/businesses/{provider_id}/commerce-listings` | Current seller-owned business list/create draft |
+| `PATCH /seller/businesses/{provider_id}/commerce-listings/{id}` | Full listing plus current revision; every edit becomes draft |
+| `POST …/{id}/submit` / `POST …/{id}/archive` | Current revision; submit eligible draft or soft archive |
+| `GET /admin/commerce-listings?status=SUBMITTED&page=1` | Private review queue |
+| `POST /admin/commerce-listings/{id}/review` | Current revision, APPROVED/REJECTED status, reason |
+
+Input: kind PRODUCT or SERVICE_PACKAGE, service_id only for packages, title,
+description, unit_price_paise (1–1,000,000,000), currency INR and available boolean.
+Approval requires an active verified business, unchanged seller ownership and,
+for packages, an approved grant for an active catalogue service. These conditions
+are rechecked on public reads. Self-review is forbidden. Stale revisions return
+409. Editing an approved listing immediately hides it until independent review.
+Mutations are audited; private fields are excluded from public output. Production
+membership remains fail-closed for sandbox transactions. Migration 014 seeds no
+listings and refuses downgrade while seller data exists. Existing /me/orders
+(enquiry history) and membership payments are unchanged.
+
+Commerce screens: desktop `/commerce`, `/commerce/{id}` and seller dashboard;
+native/shared-phone `/commerce`, `/commerce/{id}` and
+`/seller/commerce/{businessId}`; independent admin `/admin/commerce-listings`.
+Package UI access never substitutes for API membership checks. Price formatting
+and input preparation are shared in `shared/commerce.ts`; approval/status fields
+are never accepted as seller input. Checkout remains a later contract.
+
+## Reviewed fulfilment terms, cart and unpaid test orders — Phase 4
+
+Migration 015 adds stock/fulfilment/cancellation proposals and private cart/order
+records. Existing 014 listings remain readable with no invented stock or delivery
+policy; they cannot enter cart/order flow until terms are configured and reviewed.
+Existing listing edits preserve terms unless kind/service binding changes, which
+clears terms and requires new review. Changing a stock-backed listing kind after
+allocation is refused; archive/create a new listing instead.
+
+| Route | Contract |
+|---|---|
+| `PATCH /seller/businesses/{provider}/commerce-listings/{id}/order-terms` | Current revision plus reviewed stock/method/fee/cutoff proposal; unpublishes |
+| `POST /admin/vistrah/businesses/{provider}/commerce-listings` | Admin-owned business; service package only; explicit VISTRAH operator |
+| `PATCH /admin/vistrah/businesses/{provider}/commerce-listings/{id}` | Admin-owned VISTRAH package listing edit |
+| `PATCH …/{id}/order-terms` and `POST …/{id}/submit` / `archive` | VISTRAH-admin term proposal and draft lifecycle |
+| `GET /commerce/cart` | Current customer's private cart; inaccessible package details withheld |
+| `PUT /commerce/cart/items/{listing}` | Strict quantity 1–999, revision 0 to add or current revision to update |
+| `DELETE /commerce/cart/items/{listing}?revision=N` | Current owned cart revision; unavailable items can still be removed |
+| `POST /commerce/orders` | Single owned cart listing, current cart/listing revisions, fulfilment method, phone, delivery address only for DELIVERY, idempotency key |
+| `GET /commerce/orders?page=1` / `GET /commerce/orders/{id}` | Customer-owned order history/detail; not /me/orders enquiries |
+| `POST /commerce/orders/{id}/cancel` | Current revision; customer only, before snapshotted cutoff |
+| `GET /seller/businesses/{provider}/commerce-orders?page=1` | Current owner, seller-managed historical orders only |
+| `POST …/commerce-orders/{id}/transition` | Current revision and permitted status; seller-owned fulfilment |
+| `GET /admin/commerce-orders?operator=VISTRAH&page=1` | Admin supervision, optional operator filter |
+| `POST /admin/commerce-orders/{id}/transition` | Admin fulfilment for VISTRAH orders only |
+
+Order terms: stock_quantity is approved total batch units (0–1,000,000), including
+already confirmed/sold units. Remaining stock is stock_quantity minus protected
+allocated_quantity; sellers cannot post allocated_quantity. Products select
+PICKUP and/or DELIVERY; DELIVERY requires a nonnegative INR delivery_fee_paise
+(flat per single-listing order), other methods require no delivery fee. Product
+cutoff is BEFORE_DISPATCH or BEFORE_BUILD. Packages require null stock, SERVICE
+method and BEFORE_SERVICE_START. These terms are independently reviewed; approval
+requires `order_terms_acknowledged:true` whenever terms are configured. Review
+revision binds acknowledgement to the submitted proposal; self-review is refused.
+
+Cart holds no stock, maximum 50 lines. Order requests hold no stock. Confirmation
+atomically allocates approved product units after ownership/eligibility/revision
+checks; two confirmations cannot consume the same remaining units. Cancellation
+returns allocated stock once before the copied cutoff. Completed sales keep their
+allocation; new quantity proposals cannot erase confirmed/sold units. Membership
+is enforced on package cart edits, requests and confirmation; ownership-protected
+historical orders remain private, with no public contact/address disclosure.
+
+Requests snapshot title/business/kind/operator, price, quantity, delivery charge
+and cancellation cutoff. Client totals are rejected; current price/revision must
+be reviewed after a listing changes. REQUESTED → CONFIRMED/REJECTED; confirmed
+products can dispatch (DELIVERY), begin building (BEFORE_BUILD) or complete pickup;
+delivery must dispatch before completion. Packages require CONFIRMED → IN_PROGRESS
+→ COMPLETED. BEFORE_BUILD closes on BUILDING; BEFORE_DISPATCH closes on dispatch
+(or pickup completion); BEFORE_SERVICE_START closes on IN_PROGRESS. Terminal and
+stale transitions fail with 409. A changed listing blocks pending confirmation;
+already confirmed orders retain their agreed snapshots.
+
+All order mutations fail closed outside explicit development. Records are mode
+TEST, payment_status NOT_STARTED, tax_status NOT_CONFIGURED. quoted_total_paise
+is unit price × quantity + approved delivery fee, stored as BIGINT; it is not a
+final tax invoice, paid transaction, guaranteed stock or reserved appointment.
+Live gateway/tax/refunds remain Phase 5; current membership checkout is unchanged.
+Per-customer idempotency repeats the same request without creating another order;
+changed payload with the same key returns 409. Private paths are no-store, bounded
+and validated without echoing submitted contact data. Migration 015 seeds nothing
+and refuses downgrade with cart/order/reviewed-term data.
+
+Commerce client availability: `GET /commerce/ordering-status` publicly returns
+`{test_orders_enabled,live_orders_enabled:false}` with no-store. Admin uses
+`GET /admin/commerce-ordering-status` with existing role/cookie checks. These
+flags do not grant permission; order mutation guards remain authoritative.
+`GET /admin/commerce-listings` additionally accepts `provider_id` (positive)
+and `operator=SELLER|VISTRAH` for the admin-owned service workspace.
+
+Desktop cart/orders: `/commerce/cart`, `/commerce/orders`; native/phone same
+logical routes, with `/app` prefix on the deployed phone website. Native seller
+orders: `/seller/orders/{businessId}`; desktop embeds them in seller businesses.
+VISTRAH management: `/admin/vistrah-services` and `/admin/commerce-orders`.
+Request confirmation displays the reviewed unit/subtotal/delivery fee/cutoff;
+client totals are never posted. Private contact/address fields are submitted only
+for the explicitly selected order method and remain scoped to authenticated
+customer/seller/admin order views. Browser request retry payload lives only in
+component memory; check purchase orders after reload/uncertain response.
+
+Cart responses include `customer_id` and each line's immutable `id`. New clients
+bind updates to `expected_customer_id` and `line_id`, and removals to `line_id`
+plus revision. Order requests include `expected_customer_id` and `cart_line_id`.
+These optional compatibility fields are checked against the authenticated account
+and owned cart row; they grant no access. Removing/re-adding a row cannot reuse a
+stale quote even if its revision restarts. Absent fields preserve legacy request
+fingerprints; supplied cart IDs participate in duplicate-request matching.

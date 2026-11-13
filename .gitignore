@@ -60,3 +60,31 @@ volumes/
 postgres-data/
 .DS_Store
 Thumbs.db
+
+# Safe public environment templates; actual environment files stay ignored.
+!.env.test.example
+!.env.production.example
+!mobile/.env.browser.example
+!mobile/.env.production.example
+!mobile/.env.aws-test.example
+!.env.aws-test.example
+
+# Alternate build directories and local recovery copies (retain on disk).
+.next-*/
+*.bak
+*.conflict-backup
+*.hero-backup
+*.backup-*
+hero-backup-*/
+*.dump
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+*.auto.tfvars
+compose.*.local.yaml

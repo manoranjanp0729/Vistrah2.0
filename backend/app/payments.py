@@ -74,10 +74,17 @@ class PaymentService:
         if event.status == 'SUCCEEDED':
             db.scalar(select(User).where(User.id == payment.user_id).with_for_update())
             db.add(Allocation(payment_id=payment.id, amount=payment.amount, kind='CREDIT'))
+            from .business_membership import payment_event
+            if payment_event(db, payment, event.status):
+                db.commit()
+                return payment
             plan = db.get(Plan, payment.plan_id)
             expiry = db.scalar(select(func.max(Membership.expires_at)).where(Membership.user_id == payment.user_id, Membership.revoked.is_(False)))
             start = max(now(), aware(expiry)) if expiry else now()
             db.add(Membership(user_id=payment.user_id, payment_id=payment.id, starts_at=start, expires_at=start + timedelta(days=plan.days)))
+        if event.status == 'FAILED':
+            from .business_membership import payment_event
+            payment_event(db, payment, event.status)
         db.commit()
         return payment
 
@@ -97,6 +104,8 @@ class PaymentService:
         membership = db.scalar(select(Membership).where(Membership.payment_id == payment.id))
         if membership:
             membership.revoked = True
+        from .business_membership import refund_cycle
+        refund_cycle(db, payment)
         db.flush()
         return refund
 

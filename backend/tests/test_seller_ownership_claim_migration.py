@@ -2,12 +2,11 @@
 import os
 import subprocess
 import sys
-import uuid
 from pathlib import Path
 
-def test_claim_evidence_migration_preserves_existing_claim_and_is_append_only():
+def test_claim_evidence_migration_preserves_existing_claim_and_is_append_only(tmp_path):
     root=Path(__file__).resolve().parents[2]
-    database=root/'.tools'/f'wp03-02-claim-migration-{uuid.uuid4()}.db'
+    database=tmp_path/'claim-migration.db'
     assert not database.exists(), 'Refusing to use an existing database file'
     env={**os.environ,'DATABASE_URL':'sqlite:///'+database.as_posix(),'JWT_SECRET':'isolated-claim-migration-fixture-not-production','APP_ENV':'development'}
     script="""

@@ -1,3 +1,4 @@
+import copy from './interface-copy.json';
 import type {ServiceContext} from './types';
 import {urls} from './urls';
 import {officialContact} from './contact';
@@ -28,8 +29,9 @@ export function enquiryUrl(context:ServiceContext,intent:EnquiryIntent='enquiry'
 }
 export function servicePathways(context:ServiceContext) {
   return [
-    {id:'providers',title:'Find Service Provider',description:'Browse active, verified registered providers associated with this service. Confirm scope and availability directly.',action:'Browse providers',href:urls.providers(context.category,context.subcategory,context.service)},
-    {id:'recommendations',title:'VISTRAH Recommended',description:'Submit a saved enquiry for human review and track it in your account. No automated matching, instant shortlist or guaranteed turnaround.',action:'Request human review',href:enquiryUrl(context,'recommendations')},
-    {id:'in-house',title:'VISTRAH Services',description:'No VISTRAH-managed offering available for this service.',action:'Enquire about delivery options',href:enquiryUrl(context,'in-house')}
+    {id:'providers',title:copy.service.providers,description:copy.service.providersCopy,action:'Browse providers',href:urls.providers(context.category,context.subcategory,context.service)},
+    {id:'recommendations',title:copy.service.recommended,description:copy.service.recommendedCopy,action:'Request human review',href:enquiryUrl(context,'recommendations')},
+    {id:'in-house',title:copy.service.inHouse,description:copy.service.inHouseCopy,action:'Enquire about delivery options',href:enquiryUrl(context,'in-house')}
   ] as const;
 }
+

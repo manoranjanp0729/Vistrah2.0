@@ -1,0 +1,20 @@
+# OPT-IN PREPARATION ONLY. Merge after compose.cloud.yaml in vistrah-cloud.
+# Set only reviewed image@sha256 refs from a complete successful release record.
+# Explicitly pull approved digests BEFORE activation; never pull implicitly on up.
+# No database, volume, media, environment, command, proxy or profile changes.
+services:
+  api:
+    image: ${VISTRAH_RELEASE_API_IMAGE:?Set the verified GHCR api digest}
+    pull_policy: never
+  worker:
+    image: ${VISTRAH_RELEASE_API_IMAGE:?Worker reuses the normal API digest}
+    pull_policy: never
+  web:
+    image: ${VISTRAH_RELEASE_WEB_IMAGE:?Set the verified GHCR web digest}
+    pull_policy: never
+  admin:
+    image: ${VISTRAH_RELEASE_ADMIN_IMAGE:?Set the verified GHCR admin digest}
+    pull_policy: never
+  phone-web:
+    image: ${VISTRAH_RELEASE_PHONE_WEB_IMAGE:?Set the verified GHCR phone-web digest}
+    pull_policy: never

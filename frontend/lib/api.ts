@@ -1,6 +1,7 @@
+import {apiSessionScope} from '../../shared/session-scope';
 export class ApiError extends Error { constructor(public status:number,message:string,public errors:{field:string;message:string}[]=[]) {super(message);} }
 export async function api<T>(path:string, options:RequestInit={}):Promise<T> {
-  const response=await fetch(`/api${path}`,{...options,headers:{'Content-Type':'application/json',...options.headers},cache:'no-store'});
+  const response=await fetch(`/api${path}`,{...options,headers:{'Content-Type':'application/json',...options.headers,...(apiSessionScope(path)==='seller'?{'X-Vistrah-Session':'seller'}:{})},cache:'no-store'});
   const data=await response.json().catch(()=>null);
   if(!response.ok) {
     const message=typeof data?.detail==='string'?data.detail:typeof data?.detail?.message==='string'?data.detail.message:Array.isArray(data?.detail)?data.detail.map((e:{msg:string})=>e.msg).join('. '):'Unable to complete this action. Please try again.';

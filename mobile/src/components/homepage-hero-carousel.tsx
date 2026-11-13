@@ -1,5 +1,7 @@
+import {Text} from './typography';
+import {UiText,UiElement} from "./localized-ui";
 import {useEffect,useRef,useState} from 'react';
-import {Pressable,ScrollView,Text,View,useWindowDimensions} from 'react-native';
+import {Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 
@@ -26,27 +28,27 @@ export function HomepageHeroCarousel(){
     },5000);
     return()=>clearInterval(timer);
   },[cardWidth]);
-  return <View accessibilityLabel="Featured services" style={{gap:10}}>
+  return <UiElement as={View} accessibilityLabel="Featured services" style={{gap:10}}>
     <ScrollView ref={scroll} horizontal pagingEnabled showsHorizontalScrollIndicator={false} nestedScrollEnabled
       onMomentumScrollEnd={event=>setActive(Math.min(slides.length-1,Math.max(0,Math.round(event.nativeEvent.contentOffset.x/cardWidth))))}
       style={{width:cardWidth}} accessibilityRole="adjustable">
-      {slides.map((slide,index)=><Pressable key={slide.title} accessibilityRole="button"
+      {slides.map((slide,index)=><UiElement as={Pressable} key={slide.title} accessibilityRole="button"
         accessibilityLabel={slide.title+'. '+slide.subtitle+'. Explore services'}
         onPress={()=>router.push({pathname:'/services',params:{q:slide.query}})}
         style={{width:cardWidth,height:205,borderRadius:22,overflow:'hidden'}}>
         <LinearGradient colors={slide.colors} start={{x:0,y:0}} end={{x:1,y:1}}
           style={{flex:1,padding:24,justifyContent:'flex-end',gap:8}}>
-          <Text style={{fontSize:11,fontWeight:'700',letterSpacing:1.8,color:'#fff'}}>TOP SERVICES · {index+1} / {slides.length}</Text>
+          <Text style={{fontSize:11,fontWeight:'700',letterSpacing:1.8,color:'#fff'}}><UiText value={"TOP SERVICES ┬╖ "}/>{index+1} / {slides.length}</Text>
           <Text style={{fontSize:27,fontWeight:'700',color:'#fff'}}>{slide.title}</Text>
           <Text style={{fontSize:14,color:'#fff'}}>{slide.subtitle}</Text>
-          <Text style={{fontSize:13,fontWeight:'700',color:'#fff',marginTop:5}}>Explore service →</Text>
+          <Text style={{fontSize:13,fontWeight:'700',color:'#fff',marginTop:5}}><UiText value={"Explore service ΓåÆ"}/></Text>
         </LinearGradient>
-      </Pressable>)}
+      </UiElement>)}
     </ScrollView>
     <View style={{flexDirection:'row',justifyContent:'center',gap:7}}>
-      {slides.map((slide,index)=><Pressable key={slide.title} accessibilityRole="button"
+      {slides.map((slide,index)=><UiElement as={Pressable} key={slide.title} accessibilityRole="button"
         accessibilityLabel={'Show '+slide.title} onPress={()=>{setActive(index);scroll.current?.scrollTo({x:index*cardWidth,animated:true});}}
         style={{width:index===active?22:7,height:7,borderRadius:5,backgroundColor:index===active?'#f9aa45':'#777'}}/>)}
     </View>
-  </View>;
+  </UiElement>;
 }

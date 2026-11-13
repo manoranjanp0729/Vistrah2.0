@@ -1,0 +1,224 @@
+# Environment boundaries and local startup
+
+## Google Maps customer picker (source prepared, inactive)
+
+Main desktop/Expo-web and Android location pickers support Google Maps. No keys,
+Google projects, APIs or billing were activated. With Google configuration absent,
+the existing MapTiler/manual picker remains. Public keys are visible by design;
+never reuse the server geocoding key in a client or commit private env files.
+
+- Desktop build: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, restricted by HTTP referrers
+  and Maps JavaScript API. Phone-web build: `EXPO_PUBLIC_GOOGLE_MAPS_WEB_API_KEY`
+  with its own approved referrers. Source Docker build arguments/CSP are prepared;
+  no running proxy/build was changed.
+- Android: SDK57-compatible `react-native-maps`1.27.2 installed. Build-time
+  `GOOGLE_MAPS_ANDROID_API_KEY` is passed to its config plugin; restrict to the
+  existing `in.vistrah.app` package, signing SHA-1 and Maps SDK for Android.
+  `EXPO_PUBLIC_GOOGLE_MAPS_ENABLED=1` selects the native Google picker, and the
+  build refuses that flag without a key. New binary/device acceptance required;
+  no APK/OTA was built or published. iOS remains outside this implementation.
+- API: `GOOGLE_MAPS_GEOCODING_ENABLED=1` plus private
+  `GOOGLE_MAPS_GEOCODING_API_KEY` enables `/locations/geocode` (POST body only).
+  Restrict that key to Geocoding API v4 and approved server egress IP. It is sent
+  upstream in a header, never a URL. Default disabled responses, validation,
+  timeouts, no redirects and no-store replies preserve manual fallback.
+- This anonymous discovery endpoint uses technical per-process caps:10 lookups
+  per peer/minute,100 total/hour,2 concurrent. Peer identity ignores supplied
+  forwarding headers; reverse-proxied callers may share a bucket. These caps
+  reset on restart and multiply across processes, so configure reviewed upstream
+  quotas/cost controls before activation. They are not a billing guarantee.
+- Search and pin lookup are explicit actions. GPS remains opt-in; results only
+  update the draft until Use this location (existing GPS uses temporary selection).
+  Google-derived picks cannot be saved to the account yet; Clear location allows
+  starting a fresh manual selection. Persistence needs a separately reviewed
+  provenance/retention implementation under Google content terms. No existing
+  saved records, default radius, V Ads targeting or membership behavior changed.
+
+Before activation: approve provider/billing/quotas, configure restricted keys
+privately, review Google content/retention terms and verify web/physical Android
+map rendering, search, GPS denial, manual fallback and account isolation. Source
+tests with mocked Google do not establish live provider access or device success.
+
+## Existing environment boundaries
+
+Environment templates are public examples. Existing private environment files,
+local EAS project linkage, signing keys and databases must be preserved.
+Do not replace a working `.env` just to pick up a new template.
+
+| Environment | Configuration | Boundary |
+|---|---|---|
+| Local Docker | Root `.env` based on `.env.example` | Existing `vistrah20` project; web 3100, API 8100, admin 3200; private PostgreSQL volume. |
+| Local mobile browser | Existing `mobile/.env` plus API URL override, or `.env.browser.example` | Expo localhost:8082; loopback proxy 18100 forwards to API 8100. Both windows must stay open. |
+| Native development | `mobile/.env.example` | Android emulator API 10.0.2.2:8100; a physical device needs a reachable development API. Loopback proxy is not a physical-phone endpoint. |
+| Disposable integration testing | Private `.env.test` from `.env.test.example` | Separate `vistrah-test` project/database/volumes; web 3111, API 8111, admin 3211. Never apply this to `vistrah20`. |
+| AWS testing | Existing private cloud `.env`; `.env.aws-test.example` documents required values | Existing `vistrah-cloud` stack, its own PostgreSQL and approved `vistrah-test-` media volume. Current `vistrah.in`, `api.vistrah.in`, `admin.vistrah.in` are TEST origins. `APP_ENV=development` deliberately preserves sandbox-only entitlements. |
+| Production preparation | Separate private `.env.production`, `compose.production.example.yaml`, EAS production environment | Separate `vistrah-production` project/host, `_production` database and distinct external `vistrah-production-` database/API/media volumes. Live origins remain blank until approved; test hosts are rejected. Preparation only, no provisioning or activation. |
+
+## Validate values without changing runtime
+
+Python 3 standard library is sufficient; no project dependencies are needed.
+Shell environment variables for recognized fields override values from the file,
+matching Compose's environment precedence. The parser accepts simple unquoted
+or quoted `KEY=value` lines, comments and optional `export`; it does not execute
+shell text or expand variable interpolation.
+
+```powershell
+cd "E:\Vistrah 2.0"
+python .\scripts\check-environment.py --env-file .env --mode development
+```
+
+For test preparation, copy only if the private file does not already exist:
+
+```powershell
+if (-not (Test-Path .env.test)) { Copy-Item .env.test.example .env.test }
+python .\scripts\check-environment.py --env-file .env.test --mode test --compose-project vistrah-test
+```
+
+Test-mode checks reject the normal project/database/ports. Commands that actually
+start test containers must still explicitly specify both the test env file and
+test project. Never point backend test fixtures at the normal database. Schema
+bootstrap and fixtures belong only to the disposable test environment.
+
+Production example validation is expected to fail until real credentials are
+supplied privately. Use a randomly generated URL-safe PostgreSQL password of at
+least 16 characters and a random JWT signing secret of at least 32 characters.
+The current Compose connection string interpolates the password into a URL;
+the validator therefore requires URL-safe password characters. Do not paste
+credentials into chat or commit them.
+
+```powershell
+python .\scripts\check-environment.py --env-file .env.production --mode production --compose-project vistrah-production
+```
+
+Passing this check validates values only. It does not verify DNS, certificate
+issuance, SMTP, data restoration, gateway capture or production entitlements.
+Current sandbox memberships deliberately do not grant access under
+`APP_ENV=production`; live payment/entitlement work is Phase 5. The existing
+AWS test Compose explicitly uses development mode and is not the production
+runtime. Phase 7 provides staging/runtime wiring after the application gates.
+
+## AWS testing and separate production preparation — Task 006
+
+Do not copy templates over working private files. AWS test values can be checked
+with `python scripts/check-environment.py --env-file <private-test-file> --mode aws-test --compose-project vistrah-cloud`.
+Blank credentials/media identity intentionally fail validation. Existing cloud
+Compose already overrides API startup with Uvicorn; no automatic migrations/seeds.
+`infra/aws-test/compose.media.example.yaml` is an optional preparation overlay for
+an approved API-owned external test media volume, with media disabled by default.
+Volume UID/mode, quota, backup and persistence gates in the V Ads runbook still apply.
+Do not enable media or apply an overlay during configuration checks.
+
+Production preparation reuses `compose.yaml` followed by
+`compose.production.example.yaml`, explicitly using the production env/project.
+The overlay removes app builds, requires immutable images and separate external
+state volumes, runs Uvicorn directly, sets production/sandbox separation and
+keeps worker opt-in. Public origins and credentials are deliberately unconfigured.
+Separate live host, HTTPS proxy/DNS, credentials, protected backups, migrations,
+private media capacity/permissions and image/device verification remain launch
+dependencies. No production proxy or AWS resources are created by this template.
+Never use the AWS test Caddyfile/domains for production or attach test data/media.
+
+Android `preview` and `aws-test` profiles pin API, website/share and admin origins
+to AWS TEST, use internal distribution, and reject laptop/emulator/private URLs.
+`development` retains laptop connectivity. `production` is store distribution,
+uses the EAS production environment and requires three explicitly supplied live
+HTTPS origins; the current AWS test origins and cookie transport are rejected.
+Set `EXPO_PUBLIC_API_URL`, `EXPO_PUBLIC_WEB_URL`, `EXPO_PUBLIC_ADMIN_URL` only after
+live origins are approved, using `mobile/.env.production.example` as reference.
+`mobile/app.config.js` invokes a configuration-only profile guard; it does not
+change layouts, application transport, signing or package identifiers. Existing
+installed APKs are unchanged and need separately authorized builds for new config.
+The current phone-web Dockerfile remains AWS-test-specific; a production phone
+website artifact is not prepared or approved by Task 006.
+
+## Native OTA updates (source configured, new binary required)
+
+`mobile/app.config.js` derives the EAS Update URL from the existing linked project
+ID, uses the `fingerprint` runtime policy, and checks for updates on launch without
+waiting for a download. Compatible updates apply on a later launch, preserving
+the bundled/cached app for offline startup. Native SDK/module/permission changes
+still require a new APK/AAB. Existing APKs built without `expo-updates` do not gain
+OTA support automatically, and Expo Go is not a release-OTA verification target.
+
+`mobile/eas.json` uses separate `development`, `preview`, `aws-test` and
+`production` channels. The installed AWS test APK should use the `aws-test`
+profile/channel and the EAS `preview` environment; production keeps its own
+channel/environment and existing fail-closed live-origin checks.
+
+First install an explicitly authorized new `aws-test` APK, then verify the EAS
+`preview` environment contains the same public testing/API/website/admin values
+as `build.aws-test.env`. EAS Update does not automatically inherit build-profile
+`env`; use `--environment preview` when publishing. Set
+`EAS_BUILD_PROFILE=aws-test` for configuration validation during update export,
+and retain the existing native-only transport and AWS-origin checks. Do not
+publish to production or change remote variables/billing as part of local setup.
+A manually authorized publish, from `mobile`, uses:
+
+```powershell
+$env:EAS_BUILD_PROFILE = 'aws-test'
+npx.cmd eas-cli update --channel aws-test --environment preview --platform android --message 'Describe the reviewed change'
+```
+
+Confirm the target channel/runtime/environment before publishing. Close and
+reopen the installed test app to download, then reopen again to apply; test
+without internet as well. No update was published and no cloud binary was built
+during this source setup; remote channel bindings/account quota and on-device
+update/rollback delivery remain unverified.
+
+## Resume the existing local application after a Windows restart
+
+Open Docker Desktop and wait for its Linux engine to run. Preflight first:
+
+```powershell
+cd "E:\Vistrah 2.0"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-local.ps1
+```
+
+To resume the existing containers, run the explicit action:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-local.ps1 -Start
+```
+
+The helper requires the existing db/api/admin/web containers, refuses a
+migration/seed API command, uses `--no-build --no-recreate`, waits for health and
+checks the API. It does not create a fresh database or replace containers. If a
+preflight fails, inspect the reported condition before taking another action.
+Worker launch/acquisition and frontend rebuilds are separate explicit actions.
+
+## Mobile browser preview: two windows
+
+Proxy window, kept open:
+
+```powershell
+cd "E:\Vistrah 2.0"
+node .\mobile\scripts\dev-api-proxy.cjs
+```
+
+Expo window, kept open:
+
+```powershell
+cd "E:\Vistrah 2.0\mobile"
+$env:EXPO_PUBLIC_API_URL = "http://127.0.0.1:18100"
+npx.cmd expo start --web --clear --port 8082
+```
+
+Use localhost:8082 and a full browser reload to re-run startup loading. The proxy
+is for the PC browser only. When installing dependencies, stop Expo first;
+Windows may keep native dependency files locked. Do not use forced dependency
+upgrades to bypass install/file-lock problems.
+
+Native APKs use their build-profile endpoint configuration. Public variables
+are bundled and must contain no secrets. `aws-test` remains an internal APK
+profile pointed at the domain; it does not prove the backend is online or that
+the application is production-ready. Production signing/store channels are
+completed in Phase 8. Native modules, splash settings and launcher icon changes
+require a new native build.
+
+## Google sign-in configuration (source prepared; not activated)
+
+Google login requires registered OAuth clients; email-only test login is removed in every environment. Create a Google Cloud OAuth consent configuration and a Web client with the exact website/local browser origins. Set public NEXT_PUBLIC_GOOGLE_CLIENT_ID for the desktop build and EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID for the phone/native build. Set backend GOOGLE_CLIENT_ID to the comma-separated accepted audience IDs. These are public IDs, not client secrets. Missing backend configuration fails closed.
+
+Register Android with the existing app package and signing-certificate SHA fingerprints. Native uses the Web client ID for backend ID tokens. For iOS register the existing bundle ID, set EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID and GOOGLE_IOS_URL_SCHEME to its reversed client-ID URL scheme; the existing app config conditionally adds the native Google plugin. Install a new development/standalone build for native Google login; Expo Go retains email/password login. Keep consent testing users explicit until Google configuration is approved. Never substitute an email prompt for Google's account selector.
+
+Before separately authorized rollout, apply migration 022 (google_identities) through the controlled migration process, install the reviewed locked API/native dependencies, build public client IDs into clients and verify real account selection, cancellation, customer/seller separation and admin identity ownership. No migration or normal runtime restart is implied by preparing this source. Previously issued test-login sessions are not automatically revoked by this code change; sign out of affected sessions and plan explicit revocation if needed.

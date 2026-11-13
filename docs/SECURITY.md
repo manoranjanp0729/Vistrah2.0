@@ -1,5 +1,25 @@
 # Security and deployment notes
 
+## Mobile audit follow-up — Task 017, 20 October 2026
+
+Reused Run #46's mobile audit, not a new audit: 18 high / 11 moderate
+affected dependency nodes trace to four advisories. No dependency/lockfile edits,
+forced fixes or CI audit bypasses were made. Tool-chain findings do not by
+themselves prove installed-APK exposure; this review did not establish reachability.
+
+| Locked dependency / risk | Compatible remediation assessment |
+|---|---|
+| `braces@3.0.3`, via micromatch/Metro: nested-pattern stack exhaustion | [Advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) lists no patch. Await a reviewed Metro/Expo-compatible upstream fix; keep build inputs trusted and development servers private. |
+| `node-forge@1.4.0`, via Expo CLI/certificate tooling: RSA verification flaw | [Advisory](https://github.com/advisories/GHSA-86w9-cpqp-85rv) lists no patch. Requires upstream remediation compatible with Expo 57; review untrusted certificate/signature inputs. No cryptography substitution proposed. |
+| `decode-uri-component@0.2.2`, via query-string/router: malformed-input CPU denial of service | [Patched in 0.5.0](https://github.com/advisories/GHSA-vcc3-ghjq-m6fr), but [0.5.0 is ESM](https://github.com/SamVerschueren/decode-uri-component/blob/v0.5.0/package.json) while installed query-string requires the CommonJS callable. Prefer a reviewed Expo-57-compatible parent patch/backport; do not apply a blind override. URL input limits are a possible separately tested mitigation, not implemented here. |
+| `uuid@7.0.3`, via xcode/config plugins: v3/v5 buffer bounds | [Patched in 11.1.1](https://github.com/advisories/GHSA-w5hq-g745-h8pq). Installed xcode uses `uuid.v4()` (not an affected method), but this is not whole-graph clearance. Prefer an upstream parent patch/backport. Any scoped 11.1.1 override crosses xcode's `^7.0.3` range and needs compatibility tests; it is not verified here. |
+
+The existing audit gate remains blocking. Its force-fix suggestions include
+Expo 44 and router 58, incompatible with this minimal Expo 57/RN 0.86 task.
+No safe blanket dependency update was established; framework-major changes need
+separate review. Keep the gate and report unresolved advisories rather than
+treating successful typechecks as security clearance.
+
 The application is configured for local use. Docker binds frontend/API ports to loopback. Database access remains inside the Compose network. Database credentials in Compose defaults are clearly local development defaults.
 
 Passwords use Argon2. Backend JWT validation fixes the algorithm, issuer, audience and required claims, and checks a persisted revocable session. Backend role checks and ownership queries protect every customer/admin resource. Registration rejects unexpected fields, including role. Login/registration attempts are rate-limited by normalized email and connection identity in persistent database storage.

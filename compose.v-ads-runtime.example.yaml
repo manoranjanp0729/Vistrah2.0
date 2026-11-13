@@ -1,0 +1,29 @@
+# PREPARATION TEMPLATE ONLY. Never apply automatically to the existing project.
+# Merge after compose.yaml and compose.api-runtime.yaml, with --no-build.
+# The image must be built from backend/Dockerfile.v-ads-runtime and digest-pinned.
+services:
+  api:
+    image: ${V_ADS_API_IMAGE:?Set an approved immutable API image reference}
+    pull_policy: never
+    command: [uvicorn, app.main:app, --host, 0.0.0.0, --port, '8000', --workers, '1']
+    environment:
+      SEED_CATALOGUE: 'false'
+      V_ADS_MEDIA_ENABLED: ${V_ADS_MEDIA_ENABLED:-0}
+      V_ADS_PRIVATE_ROOT: /data/v-ads
+      V_ADS_MIN_FREE_BYTES: ${V_ADS_MIN_FREE_BYTES:-1073741824}
+    volumes:
+      - v_ads_private:/data/v-ads
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: ${V_ADS_API_MEMORY_LIMIT:?Approve and set the API memory limit}
+    cpus: ${V_ADS_API_CPUS:?Approve and set the API CPU limit}
+    pids_limit: ${V_ADS_API_PIDS_LIMIT:?Approve and set the API PID limit}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=134217728,mode=1777
+# api_data:/data remains unchanged for existing state. Media is a separate,
+# explicitly provisioned external volume, mounted only by api, never worker/web.
+volumes:
+  v_ads_private:
+    external: true
+    name: ${V_ADS_PRIVATE_VOLUME:?Provision and approve an API-only private volume first}

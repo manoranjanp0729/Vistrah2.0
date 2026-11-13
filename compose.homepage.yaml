@@ -1,6 +1,5 @@
-# Opt-in homepage API startup override.
-# Apply only Alembic revision 013 separately before starting the upgraded API.
-# Do not allow Dockerfile's automatic 'alembic upgrade head' or seed step.
 services:
   api:
+    image: vistrah-homepage-api:candidate
+    build: !reset null
     command: ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

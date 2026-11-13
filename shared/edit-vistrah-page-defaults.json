@@ -1,0 +1,1291 @@
+[
+  {
+    "id": "page-home",
+    "slug": "home",
+    "name": "Home Page",
+    "path": "/",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "home-search",
+        "type": "search_bar",
+        "name": "Discover search",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Find your everyday. Discover more.",
+            "description": "What are you looking for?",
+            "action": "Search"
+          }
+        }
+      },
+      {
+        "id": "home-categories",
+        "type": "services_for_you",
+        "name": "Explore services",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 2,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Explore services",
+            "description": "",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "home-marketing",
+        "type": "big_widget",
+        "name": "VISTRAH Ads & Marketing",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 3,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "VISTRAH Ads & Marketing",
+            "description": "",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "home-spotlight",
+        "type": "custom",
+        "name": "VISTRAH Spotlight",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 4,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Discover more with VISTRAH",
+            "description": "Explore services for your business, home and everyday life.",
+            "action": "Explore services"
+          }
+        },
+        "video_urls": [
+          "/videos/homepage/vistrah-introduction.mp4"
+        ],
+        "action_href": "/services"
+      },
+      {
+        "id": "home-agri",
+        "type": "editable_banner",
+        "name": "VISTRAH AgriConnect",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/marketplace/agriculture-category.webp",
+            "alt_text": "Aerial shot of green and brown agricultural fields showcasing rural farmland and crop diversity."
+          }
+        ],
+        "order": 5,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "VISTRAH AgriConnect",
+            "description": "Find farming services, equipment, and practical support for your farm.",
+            "action": "Explore farming services"
+          }
+        },
+        "action_href": "/services?category=agriculture-and-farming"
+      },
+      {
+        "id": "home-health",
+        "type": "editable_banner",
+        "name": "VISTRAH HealthConnect",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/marketplace/health-fitness-and-wellness.webp",
+            "alt_text": "A woman practising yoga in a sunlit indoor space"
+          }
+        ],
+        "order": 6,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "VISTRAH HealthConnect",
+            "description": "Explore healthcare, fitness, and wellbeing options in one place.",
+            "action": "Explore healthcare"
+          }
+        },
+        "action_href": "/services?category=health-fitness-and-wellness"
+      },
+      {
+        "id": "home-partner",
+        "type": "editable_banner",
+        "name": "Partner with VISTRAH",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 7,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Grow your business with VISTRAH",
+            "description": "Showcase your services and connect with customers.",
+            "action": "Become a partner"
+          }
+        },
+        "action_href": "/provider"
+      }
+    ]
+  },
+  {
+    "id": "page-services",
+    "slug": "services",
+    "name": "Services & Categories",
+    "path": "/services",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "services-intro",
+        "type": "custom",
+        "name": "Services introduction",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Explore services",
+            "description": "Choose a category, subcategory and listing type to find the service you need.",
+            "action": ""
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "page-v-ads",
+    "slug": "v-ads",
+    "name": "V Ads",
+    "path": "/v-ads",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "v-ads-intro",
+        "type": "custom",
+        "name": "V Ads introduction",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "V Ads",
+            "description": "Discover approved videos from creators and businesses.",
+            "action": ""
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "page-v-essentials",
+    "slug": "v-essentials",
+    "name": "V Essentials",
+    "path": "/v-essentials",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "essentials-intro",
+        "type": "custom",
+        "name": "Vistrah Essentials",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Vistrah Essentials",
+            "description": "Explore VISTRAH AgriConnect and VISTRAH HealthConnect essential services.",
+            "action": ""
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "page-marketing-solutions",
+    "slug": "marketing-solutions",
+    "name": "Vistrah Ads & Marketing",
+    "path": "/marketing-solutions",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "marketing-hub",
+        "type": "big_widget",
+        "name": "VISTRAH Ads & Marketing",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "VISTRAH Ads & Marketing",
+            "description": "",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "marketing-digital-marketing",
+        "type": "editable_banner",
+        "name": "Digital Marketing",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/performance-marketing.webp",
+            "alt_text": "Digital Marketing"
+          }
+        ],
+        "order": 2,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Digital Marketing",
+            "description": "Connect search, social, content and paid campaigns around one clear business goal. Build a digital presence that gives people a reason to discover, trust and contact you.",
+            "action": "Explore the possibilities"
+          },
+          "kn": {
+            "title": "ಡಿಜಿಟಲ್ ಮಾರ್ಕೆಟಿಂಗ್",
+            "description": "ಒಂದು ಸ್ಪಷ್ಟ ವ್ಯವಹಾರದ ಗುರಿಗಾಗಿ ಹುಡುಕಾಟ, ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮ, ವಿಷಯ ಮತ್ತು ಪಾವತಿಸಿದ ಅಭಿಯಾನಗಳನ್ನು ಜೋಡಿಸಿ. ಜನರು ನಿಮ್ಮನ್ನು ಕಂಡುಕೊಳ್ಳಲು, ನಂಬಲು ಮತ್ತು ಸಂಪರ್ಕಿಸಲು ಕಾರಣ ನೀಡುವ ಡಿಜಿಟಲ್ ಉಪಸ್ಥಿತಿ ಬೆಳೆಸಿ.",
+            "action": "ಸಾಧ್ಯತೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ"
+          },
+          "hi": {
+            "title": "डिजिटल मार्केटिंग",
+            "description": "खोज, सोशल मीडिया, कंटेंट और पेड अभियानों को एक स्पष्ट व्यावसायिक लक्ष्य से जोड़ें। ऐसी डिजिटल उपस्थिति बनाएँ जिससे लोग आपको खोजें, भरोसा करें और संपर्क करें।",
+            "action": "संभावनाएँ देखें"
+          }
+        },
+        "action_href": "/marketing-services/digital-marketing"
+      },
+      {
+        "id": "marketing-branding-creative-production",
+        "type": "editable_banner",
+        "name": "Branding & Creative Production",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/branding-creative.webp",
+            "alt_text": "Branding & Creative Production"
+          }
+        ],
+        "order": 3,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Branding & Creative Production",
+            "description": "Bring your identity, visuals and message into one expressive world. From your first logo to your next campaign film, give every customer touchpoint a consistent personality.",
+            "action": "Explore the possibilities"
+          },
+          "kn": {
+            "title": "ಬ್ರ್ಯಾಂಡಿಂಗ್ ಮತ್ತು ಸೃಜನಾತ್ಮಕ ನಿರ್ಮಾಣ",
+            "description": "ನಿಮ್ಮ ಗುರುತು, ದೃಶ್ಯಗಳು ಮತ್ತು ಸಂದೇಶವನ್ನು ಒಂದೇ ಅಭಿವ್ಯಕ್ತಿಯ ಜಗತ್ತಿಗೆ ತನ್ನಿ. ಮೊದಲ ಲೋಗೋದಿಂದ ಮುಂದಿನ ಅಭಿಯಾನದ ಚಿತ್ರವರೆಗೆ ಗ್ರಾಹಕರ ಪ್ರತಿ ಸಂಪರ್ಕಕ್ಕೂ ಒಂದೇ ವ್ಯಕ್ತಿತ್ವ ನೀಡಿ.",
+            "action": "ಸಾಧ್ಯತೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ"
+          },
+          "hi": {
+            "title": "ब्रांडिंग और क्रिएटिव प्रोडक्शन",
+            "description": "अपनी पहचान, दृश्यों और संदेश को एक अभिव्यक्तिपूर्ण दुनिया में लाएँ। पहले लोगो से अगले अभियान वीडियो तक हर ग्राहक अनुभव में एक जैसा व्यक्तित्व रखें।",
+            "action": "संभावनाएँ देखें"
+          }
+        },
+        "action_href": "/marketing-services/branding-creative-production"
+      },
+      {
+        "id": "marketing-outdoor-advertising-signage",
+        "type": "editable_banner",
+        "name": "Outdoor Advertising & Signage",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/outdoor-signage.jpg",
+            "alt_text": "Outdoor Advertising & Signage"
+          }
+        ],
+        "order": 4,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Outdoor Advertising & Signage",
+            "description": "Take your message beyond the screen. Plan location-aware outdoor campaigns and storefront signage with clear design, readable messaging and production suited to the setting.",
+            "action": "Explore the possibilities"
+          },
+          "kn": {
+            "title": "ಹೊರಾಂಗಣ ಜಾಹೀರಾತು ಮತ್ತು ಫಲಕಗಳು",
+            "description": "ನಿಮ್ಮ ಸಂದೇಶವನ್ನು ಪರದೆಯಾಚೆಗೆ ಕೊಂಡೊಯ್ಯಿರಿ. ಸ್ಪಷ್ಟ ವಿನ್ಯಾಸ, ಓದಲು ಸುಲಭ ಸಂದೇಶ ಮತ್ತು ಸ್ಥಳಕ್ಕೆ ತಕ್ಕ ನಿರ್ಮಾಣದೊಂದಿಗೆ ಹೊರಾಂಗಣ ಅಭಿಯಾನಗಳು ಹಾಗೂ ಅಂಗಡಿ ಫಲಕಗಳನ್ನು ಯೋಜಿಸಿ.",
+            "action": "ಸಾಧ್ಯತೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ"
+          },
+          "hi": {
+            "title": "आउटडोर विज्ञापन और साइनेज",
+            "description": "अपने संदेश को स्क्रीन से बाहर ले जाएँ। स्पष्ट डिज़ाइन, आसानी से पढ़े जाने वाले संदेश और स्थान के अनुरूप निर्माण के साथ आउटडोर अभियान व दुकान के साइनबोर्ड की योजना बनाएँ।",
+            "action": "संभावनाएँ देखें"
+          }
+        },
+        "action_href": "/marketing-services/outdoor-advertising-signage"
+      },
+      {
+        "id": "marketing-mobility-billboard-advertising",
+        "type": "editable_banner",
+        "name": "Mobility Billboard Advertising",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/mobility-billboard.jpg",
+            "alt_text": "Mobility Billboard Advertising"
+          }
+        ],
+        "order": 5,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Mobility Billboard Advertising",
+            "description": "Bring your campaign closer to the places your audience spends time. Explore vehicle-led displays, branded mobility and route-based promotions with a plan for every stop.",
+            "action": "Explore the possibilities"
+          },
+          "kn": {
+            "title": "ಚಲಿಸುವ ಬಿಲ್‌ಬೋರ್ಡ್ ಜಾಹೀರಾತು",
+            "description": "ನಿಮ್ಮ ಪ್ರೇಕ್ಷಕರು ಸಮಯ ಕಳೆಯುವ ಸ್ಥಳಗಳಿಗೆ ಅಭಿಯಾನವನ್ನು ಹತ್ತಿರ ತಂದುಕೊಳ್ಳಿ. ಪ್ರತಿ ನಿಲುಗಡೆಗೂ ಯೋಜನೆಯೊಂದಿಗೆ ವಾಹನ ಪ್ರದರ್ಶನಗಳು, ಬ್ರ್ಯಾಂಡ್ ವಾಹನಗಳು ಮತ್ತು ಮಾರ್ಗಾಧಾರಿತ ಪ್ರಚಾರಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.",
+            "action": "ಸಾಧ್ಯತೆಗಳನ್ನು ಅನ್ವೇಷಿಸಿ"
+          },
+          "hi": {
+            "title": "मोबिलिटी बिलबोर्ड विज्ञापन",
+            "description": "अपना अभियान उन जगहों के करीब लाएँ जहाँ आपके दर्शक समय बिताते हैं। हर पड़ाव की योजना के साथ वाहन डिस्प्ले, ब्रांडेड वाहन और मार्ग आधारित प्रचार देखें।",
+            "action": "संभावनाएँ देखें"
+          }
+        },
+        "action_href": "/marketing-services/mobility-billboard-advertising"
+      }
+    ]
+  },
+  {
+    "id": "page-digital-marketing",
+    "slug": "digital-marketing",
+    "name": "Digital Marketing",
+    "path": "/marketing-services/digital-marketing",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "digital-marketing-hero",
+        "type": "hero_banner",
+        "name": "Digital Marketing",
+        "variation": "split_hero",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/performance-marketing.webp",
+            "alt_text": "Digital Marketing"
+          }
+        ],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Turn attention into your next opportunity.",
+            "description": "Connect search, social, content and paid campaigns around one clear business goal. Build a digital presence that gives people a reason to discover, trust and contact you.",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ಗಮನವನ್ನು ನಿಮ್ಮ ಮುಂದಿನ ಅವಕಾಶವಾಗಿಸಿ.",
+            "description": "ಒಂದು ಸ್ಪಷ್ಟ ವ್ಯವಹಾರದ ಗುರಿಗಾಗಿ ಹುಡುಕಾಟ, ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮ, ವಿಷಯ ಮತ್ತು ಪಾವತಿಸಿದ ಅಭಿಯಾನಗಳನ್ನು ಜೋಡಿಸಿ. ಜನರು ನಿಮ್ಮನ್ನು ಕಂಡುಕೊಳ್ಳಲು, ನಂಬಲು ಮತ್ತು ಸಂಪರ್ಕಿಸಲು ಕಾರಣ ನೀಡುವ ಡಿಜಿಟಲ್ ಉಪಸ್ಥಿತಿ ಬೆಳೆಸಿ.",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "लोगों के ध्यान को नए अवसर में बदलें।",
+            "description": "खोज, सोशल मीडिया, कंटेंट और पेड अभियानों को एक स्पष्ट व्यावसायिक लक्ष्य से जोड़ें। ऐसी डिजिटल उपस्थिति बनाएँ जिससे लोग आपको खोजें, भरोसा करें और संपर्क करें।",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      },
+      {
+        "id": "digital-marketing-capability-0",
+        "type": "custom",
+        "name": "Search & local discovery",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 2,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Search & local discovery",
+            "description": "SEO, website audits, useful content and local business presence so the right people can find you.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಹುಡುಕಾಟ ಮತ್ತು ಸ್ಥಳೀಯ ಅನ್ವೇಷಣೆ",
+            "description": "ಸರಿಯಾದ ಜನರು ನಿಮ್ಮನ್ನು ಕಂಡುಕೊಳ್ಳಲು SEO, ವೆಬ್‌ಸೈಟ್ ಪರಿಶೀಲನೆ, ಉಪಯುಕ್ತ ವಿಷಯ ಮತ್ತು ಸ್ಥಳೀಯ ವ್ಯವಹಾರದ ಉಪಸ್ಥಿತಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "खोज और स्थानीय पहचान",
+            "description": "सही लोगों तक पहुँचने के लिए SEO, वेबसाइट समीक्षा, उपयोगी कंटेंट और स्थानीय व्यवसाय की पहचान।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "digital-marketing-capability-1",
+        "type": "custom",
+        "name": "Paid campaigns",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 3,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Paid campaigns",
+            "description": "Search and social ad planning, audience selection, creative variants and budget allocation.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಪಾವತಿಸಿದ ಅಭಿಯಾನಗಳು",
+            "description": "ಹುಡುಕಾಟ ಮತ್ತು ಸಾಮಾಜಿಕ ಜಾಹೀರಾತು ಯೋಜನೆ, ಪ್ರೇಕ್ಷಕರ ಆಯ್ಕೆ, ಸೃಜನಾತ್ಮಕ ರೂಪಾಂತರಗಳು ಮತ್ತು ಬಜೆಟ್ ಹಂಚಿಕೆ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "पेड अभियान",
+            "description": "सर्च और सोशल विज्ञापन योजना, दर्शक चयन, क्रिएटिव विकल्प और बजट आवंटन।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "digital-marketing-capability-2",
+        "type": "custom",
+        "name": "Social & content",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 4,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Social & content",
+            "description": "Content calendars, posts, reels, campaign copy and a consistent voice across your channels.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮ ಮತ್ತು ವಿಷಯ",
+            "description": "ವಿಷಯ ಕ್ಯಾಲೆಂಡರ್‌ಗಳು, ಪೋಸ್ಟ್‌ಗಳು, ರೀಲ್ಸ್, ಅಭಿಯಾನದ ಬರಹ ಮತ್ತು ಎಲ್ಲ ಚಾನೆಲ್‌ಗಳಲ್ಲಿ ಒಂದೇ ಬ್ರ್ಯಾಂಡ್ ಧ್ವನಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "सोशल मीडिया और कंटेंट",
+            "description": "कंटेंट कैलेंडर, पोस्ट, रील, अभियान की कॉपी और सभी चैनलों पर एक जैसी ब्रांड आवाज़।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "digital-marketing-capability-3",
+        "type": "custom",
+        "name": "Landing pages & measurement",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 5,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Landing pages & measurement",
+            "description": "Clear calls to action, enquiry journeys and agreed measurement of reach, clicks and leads.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಲ್ಯಾಂಡಿಂಗ್ ಪುಟಗಳು ಮತ್ತು ಮೌಲ್ಯಮಾಪನ",
+            "description": "ಸ್ಪಷ್ಟ ಕ್ರಿಯಾ ಸೂಚನೆಗಳು, ವಿಚಾರಣೆಯ ಹಾದಿಗಳು ಮತ್ತು ತಲುಪುವಿಕೆ, ಕ್ಲಿಕ್‌ಗಳು ಹಾಗೂ ವಿಚಾರಣೆಗಳ ಒಪ್ಪಿದ ಮೌಲ್ಯಮಾಪನ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "लैंडिंग पेज और मापन",
+            "description": "स्पष्ट कार्रवाई बटन, पूछताछ का रास्ता और पहुँच, क्लिक व लीड का तय मापन।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "digital-marketing-outputs",
+        "type": "custom",
+        "name": "What we can shape together",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 6,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "What we can shape together",
+            "description": "Audience and channel plan\nCampaign creatives and content calendar\nAgreed reporting and optimisation plan",
+            "action": ""
+          },
+          "kn": {
+            "title": "ನಾವು ಒಟ್ಟಿಗೆ ರೂಪಿಸಬಹುದಾದದ್ದು",
+            "description": "ಪ್ರೇಕ್ಷಕರು ಮತ್ತು ಚಾನೆಲ್ ಯೋಜನೆ\nಅಭಿಯಾನದ ವಿನ್ಯಾಸಗಳು ಮತ್ತು ವಿಷಯ ಕ್ಯಾಲೆಂಡರ್\nಒಪ್ಪಿದ ವರದಿ ಮತ್ತು ಸುಧಾರಣಾ ಯೋಜನೆ",
+            "action": ""
+          },
+          "hi": {
+            "title": "हम साथ क्या तैयार कर सकते हैं",
+            "description": "दर्शक और चैनल योजना\nअभियान क्रिएटिव और कंटेंट कैलेंडर\nतय रिपोर्टिंग और सुधार योजना",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "digital-marketing-brief",
+        "type": "editable_banner",
+        "name": "Bring your ambition. Start with a brief.",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 7,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Bring your ambition. Start with a brief.",
+            "description": "Your business, offer and target audience\nWebsite, social channels and current challenges\nCampaign goal, timeline and media budget",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ನಿಮ್ಮ ಗುರಿಯೊಂದಿಗೆ ಬನ್ನಿ. ವಿವರಗಳಿಂದ ಪ್ರಾರಂಭಿಸಿ.",
+            "description": "ನಿಮ್ಮ ವ್ಯವಹಾರ, ಕೊಡುಗೆ ಮತ್ತು ಗುರಿ ಪ್ರೇಕ್ಷಕರು\nವೆಬ್‌ಸೈಟ್, ಸಾಮಾಜಿಕ ಚಾನೆಲ್‌ಗಳು ಮತ್ತು ಪ್ರಸ್ತುತ ಸವಾಲುಗಳು\nಅಭಿಯಾನದ ಗುರಿ, ಸಮಯ ಮತ್ತು ಮಾಧ್ಯಮ ಬಜೆಟ್",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "अपना लक्ष्य लाएँ। विवरण से शुरू करें।",
+            "description": "आपका व्यवसाय, ऑफ़र और लक्षित दर्शक\nवेबसाइट, सोशल चैनल और मौजूदा चुनौतियाँ\nअभियान का लक्ष्य, समय और मीडिया बजट",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      }
+    ]
+  },
+  {
+    "id": "page-branding-creative-production",
+    "slug": "branding-creative-production",
+    "name": "Branding & Creative Production",
+    "path": "/marketing-services/branding-creative-production",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "branding-creative-production-hero",
+        "type": "hero_banner",
+        "name": "Branding & Creative Production",
+        "variation": "split_hero",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/branding-creative.webp",
+            "alt_text": "Branding & Creative Production"
+          }
+        ],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "A brand people recognise. A story they remember.",
+            "description": "Bring your identity, visuals and message into one expressive world. From your first logo to your next campaign film, give every customer touchpoint a consistent personality.",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ಜನರು ಗುರುತಿಸುವ ಬ್ರ್ಯಾಂಡ್. ನೆನಪಿನಲ್ಲಿಡುವ ಕಥೆ.",
+            "description": "ನಿಮ್ಮ ಗುರುತು, ದೃಶ್ಯಗಳು ಮತ್ತು ಸಂದೇಶವನ್ನು ಒಂದೇ ಅಭಿವ್ಯಕ್ತಿಯ ಜಗತ್ತಿಗೆ ತನ್ನಿ. ಮೊದಲ ಲೋಗೋದಿಂದ ಮುಂದಿನ ಅಭಿಯಾನದ ಚಿತ್ರವರೆಗೆ ಗ್ರಾಹಕರ ಪ್ರತಿ ಸಂಪರ್ಕಕ್ಕೂ ಒಂದೇ ವ್ಯಕ್ತಿತ್ವ ನೀಡಿ.",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "ऐसा ब्रांड जिसे लोग पहचानें। ऐसी कहानी जो याद रहे।",
+            "description": "अपनी पहचान, दृश्यों और संदेश को एक अभिव्यक्तिपूर्ण दुनिया में लाएँ। पहले लोगो से अगले अभियान वीडियो तक हर ग्राहक अनुभव में एक जैसा व्यक्तित्व रखें।",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      },
+      {
+        "id": "branding-creative-production-capability-0",
+        "type": "custom",
+        "name": "Brand identity",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 2,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Brand identity",
+            "description": "Logo direction, colour palettes, typography and a visual language that fits your business.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಬ್ರ್ಯಾಂಡ್ ಗುರುತು",
+            "description": "ನಿಮ್ಮ ವ್ಯವಹಾರಕ್ಕೆ ಹೊಂದುವ ಲೋಗೋ ದಿಕ್ಕು, ಬಣ್ಣಗಳು, ಅಕ್ಷರ ವಿನ್ಯಾಸ ಮತ್ತು ದೃಶ್ಯ ಭಾಷೆ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "ब्रांड पहचान",
+            "description": "आपके व्यवसाय के अनुरूप लोगो की दिशा, रंग, टाइपोग्राफ़ी और दृश्य भाषा।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "branding-creative-production-capability-1",
+        "type": "custom",
+        "name": "Campaign design",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 3,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Campaign design",
+            "description": "Key visuals, social creatives, launch concepts and promotional artwork across formats.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಅಭಿಯಾನದ ವಿನ್ಯಾಸ",
+            "description": "ಮುಖ್ಯ ದೃಶ್ಯಗಳು, ಸಾಮಾಜಿಕ ವಿನ್ಯಾಸಗಳು, ಬಿಡುಗಡೆ ಪರಿಕಲ್ಪನೆಗಳು ಮತ್ತು ವಿವಿಧ ರೂಪದ ಪ್ರಚಾರ ಕಲೆ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "अभियान डिज़ाइन",
+            "description": "मुख्य दृश्य, सोशल क्रिएटिव, लॉन्च विचार और अलग-अलग प्रारूपों में प्रचार डिज़ाइन।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "branding-creative-production-capability-2",
+        "type": "custom",
+        "name": "Photo & video production",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 4,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Photo & video production",
+            "description": "Concepts, scripts, product imagery, filming, editing and short-form content for your story.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಚಿತ್ರ ಮತ್ತು ವೀಡಿಯೊ ನಿರ್ಮಾಣ",
+            "description": "ನಿಮ್ಮ ಕಥೆಗಾಗಿ ಪರಿಕಲ್ಪನೆಗಳು, ಚಿತ್ರಕಥೆ, ಉತ್ಪನ್ನ ಚಿತ್ರಗಳು, ಚಿತ್ರೀಕರಣ, ಸಂಕಲನ ಮತ್ತು ಕಿರು ವಿಷಯ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "फ़ोटो और वीडियो प्रोडक्शन",
+            "description": "आपकी कहानी के लिए विचार, स्क्रिप्ट, उत्पाद फ़ोटो, शूटिंग, संपादन और छोटे वीडियो।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "branding-creative-production-capability-3",
+        "type": "custom",
+        "name": "Everyday brand essentials",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 5,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Everyday brand essentials",
+            "description": "Packaging, brochures, business stationery and brand guidelines for consistent use.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ದೈನಂದಿನ ಬ್ರ್ಯಾಂಡ್ ಅಗತ್ಯಗಳು",
+            "description": "ಸ್ಥಿರ ಬಳಕೆಗಾಗಿ ಪ್ಯಾಕೇಜಿಂಗ್, ಕರಪತ್ರಗಳು, ವ್ಯವಹಾರದ ಮುದ್ರಿತ ಸಾಮಗ್ರಿ ಮತ್ತು ಬ್ರ್ಯಾಂಡ್ ಮಾರ್ಗಸೂಚಿಗಳು.",
+            "action": ""
+          },
+          "hi": {
+            "title": "ब्रांड की रोज़मर्रा की ज़रूरतें",
+            "description": "एक जैसी पहचान के लिए पैकेजिंग, ब्रोशर, व्यवसाय स्टेशनरी और ब्रांड दिशानिर्देश।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "branding-creative-production-outputs",
+        "type": "custom",
+        "name": "What we can shape together",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 6,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "What we can shape together",
+            "description": "Creative direction and approved concepts\nAgreed artwork, edits and export formats\nUsage guidelines and asset handover",
+            "action": ""
+          },
+          "kn": {
+            "title": "ನಾವು ಒಟ್ಟಿಗೆ ರೂಪಿಸಬಹುದಾದದ್ದು",
+            "description": "ಸೃಜನಾತ್ಮಕ ದಿಕ್ಕು ಮತ್ತು ಅನುಮೋದಿತ ಪರಿಕಲ್ಪನೆಗಳು\nಒಪ್ಪಿದ ಕಲೆ, ಸಂಕಲನ ಮತ್ತು ರಫ್ತು ರೂಪಗಳು\nಬಳಕೆಯ ಮಾರ್ಗಸೂಚಿಗಳು ಮತ್ತು ಕಡತಗಳ ಹಸ್ತಾಂತರ",
+            "action": ""
+          },
+          "hi": {
+            "title": "हम साथ क्या तैयार कर सकते हैं",
+            "description": "क्रिएटिव दिशा और स्वीकृत विचार\nतय डिज़ाइन, संपादन और निर्यात प्रारूप\nउपयोग दिशानिर्देश और फ़ाइल हस्तांतरण",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "branding-creative-production-brief",
+        "type": "editable_banner",
+        "name": "Bring your ambition. Start with a brief.",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 7,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Bring your ambition. Start with a brief.",
+            "description": "Your brand story and audience\nExisting logo, references and required formats\nLaunch date, deliverables and production budget",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ನಿಮ್ಮ ಗುರಿಯೊಂದಿಗೆ ಬನ್ನಿ. ವಿವರಗಳಿಂದ ಪ್ರಾರಂಭಿಸಿ.",
+            "description": "ನಿಮ್ಮ ಬ್ರ್ಯಾಂಡ್ ಕಥೆ ಮತ್ತು ಪ್ರೇಕ್ಷಕರು\nಈಗಿನ ಲೋಗೋ, ಉಲ್ಲೇಖಗಳು ಮತ್ತು ಅಗತ್ಯ ರೂಪಗಳು\nಬಿಡುಗಡೆ ದಿನಾಂಕ, ಅಗತ್ಯ ಕೆಲಸ ಮತ್ತು ನಿರ್ಮಾಣ ಬಜೆಟ್",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "अपना लक्ष्य लाएँ। विवरण से शुरू करें।",
+            "description": "आपके ब्रांड की कहानी और दर्शक\nमौजूदा लोगो, संदर्भ और ज़रूरी प्रारूप\nलॉन्च की तारीख, ज़रूरी काम और प्रोडक्शन बजट",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      }
+    ]
+  },
+  {
+    "id": "page-outdoor-advertising-signage",
+    "slug": "outdoor-advertising-signage",
+    "name": "Outdoor Advertising & Signage",
+    "path": "/marketing-services/outdoor-advertising-signage",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "outdoor-advertising-signage-hero",
+        "type": "hero_banner",
+        "name": "Outdoor Advertising & Signage",
+        "variation": "split_hero",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/outdoor-signage.jpg",
+            "alt_text": "Outdoor Advertising & Signage"
+          }
+        ],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Make your presence part of the city.",
+            "description": "Take your message beyond the screen. Plan location-aware outdoor campaigns and storefront signage with clear design, readable messaging and production suited to the setting.",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ನಿಮ್ಮ ಉಪಸ್ಥಿತಿಯನ್ನು ನಗರದ ಭಾಗವಾಗಿಸಿ.",
+            "description": "ನಿಮ್ಮ ಸಂದೇಶವನ್ನು ಪರದೆಯಾಚೆಗೆ ಕೊಂಡೊಯ್ಯಿರಿ. ಸ್ಪಷ್ಟ ವಿನ್ಯಾಸ, ಓದಲು ಸುಲಭ ಸಂದೇಶ ಮತ್ತು ಸ್ಥಳಕ್ಕೆ ತಕ್ಕ ನಿರ್ಮಾಣದೊಂದಿಗೆ ಹೊರಾಂಗಣ ಅಭಿಯಾನಗಳು ಹಾಗೂ ಅಂಗಡಿ ಫಲಕಗಳನ್ನು ಯೋಜಿಸಿ.",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "अपनी मौजूदगी को शहर का हिस्सा बनाएँ।",
+            "description": "अपने संदेश को स्क्रीन से बाहर ले जाएँ। स्पष्ट डिज़ाइन, आसानी से पढ़े जाने वाले संदेश और स्थान के अनुरूप निर्माण के साथ आउटडोर अभियान व दुकान के साइनबोर्ड की योजना बनाएँ।",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      },
+      {
+        "id": "outdoor-advertising-signage-capability-0",
+        "type": "custom",
+        "name": "Billboards & hoardings",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 2,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Billboards & hoardings",
+            "description": "Location shortlisting, format selection, artwork and campaign scheduling, subject to site availability.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಬಿಲ್‌ಬೋರ್ಡ್‌ಗಳು ಮತ್ತು ಹೋರ್ಡಿಂಗ್‌ಗಳು",
+            "description": "ಸ್ಥಳದ ಲಭ್ಯತೆಗೆ ಒಳಪಟ್ಟು ಸ್ಥಳದ ಆಯ್ಕೆ, ರೂಪದ ಆಯ್ಕೆ, ವಿನ್ಯಾಸ ಮತ್ತು ಅಭಿಯಾನದ ವೇಳಾಪಟ್ಟಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "बिलबोर्ड और होर्डिंग",
+            "description": "स्थल की उपलब्धता के अनुसार जगह, प्रारूप, डिज़ाइन और अभियान समय का चयन।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "outdoor-advertising-signage-capability-1",
+        "type": "custom",
+        "name": "Storefront signage",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 3,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Storefront signage",
+            "description": "Shop boards, illuminated lettering, fascia design and a recognisable street-facing identity.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಅಂಗಡಿ ಫಲಕಗಳು",
+            "description": "ಅಂಗಡಿ ಫಲಕಗಳು, ಬೆಳಕಿನ ಅಕ್ಷರಗಳು, ಮುಂಭಾಗದ ವಿನ್ಯಾಸ ಮತ್ತು ರಸ್ತೆಯಿಂದ ಗುರುತಿಸಬಹುದಾದ ಗುರುತು.",
+            "action": ""
+          },
+          "hi": {
+            "title": "दुकान के साइनबोर्ड",
+            "description": "दुकान के बोर्ड, रोशन अक्षर, सामने का डिज़ाइन और सड़क से पहचानी जाने वाली पहचान।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "outdoor-advertising-signage-capability-2",
+        "type": "custom",
+        "name": "Print & display",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 4,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Print & display",
+            "description": "Banners, standees, directional signs and event displays designed for their viewing distance.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಮುದ್ರಣ ಮತ್ತು ಪ್ರದರ್ಶನ",
+            "description": "ನೋಡುವ ದೂರಕ್ಕೆ ತಕ್ಕ ಬ್ಯಾನರ್‌ಗಳು, ಸ್ಟ್ಯಾಂಡಿಗಳು, ದಿಕ್ಕು ಸೂಚನೆಗಳು ಮತ್ತು ಕಾರ್ಯಕ್ರಮ ಪ್ರದರ್ಶನಗಳು.",
+            "action": ""
+          },
+          "hi": {
+            "title": "प्रिंट और डिस्प्ले",
+            "description": "देखने की दूरी के अनुसार बैनर, स्टैंडी, दिशा संकेत और कार्यक्रम डिस्प्ले।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "outdoor-advertising-signage-capability-3",
+        "type": "custom",
+        "name": "Production & installation planning",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 5,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Production & installation planning",
+            "description": "Discuss dimensions, materials, lighting, installation access and the permissions needed before execution.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ನಿರ್ಮಾಣ ಮತ್ತು ಅಳವಡಿಕೆ ಯೋಜನೆ",
+            "description": "ಕಾರ್ಯಗತಗೊಳಿಸುವ ಮೊದಲು ಅಳತೆ, ಸಾಮಗ್ರಿ, ಬೆಳಕು, ಅಳವಡಿಕೆಯ ಪ್ರವೇಶ ಮತ್ತು ಅಗತ್ಯ ಅನುಮತಿಗಳನ್ನು ಚರ್ಚಿಸಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "निर्माण और स्थापना योजना",
+            "description": "काम शुरू करने से पहले आकार, सामग्री, रोशनी, स्थापना की पहुँच और ज़रूरी अनुमतियों पर चर्चा करें।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "outdoor-advertising-signage-outputs",
+        "type": "custom",
+        "name": "What we can shape together",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 6,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "What we can shape together",
+            "description": "Site and format recommendations\nProduction-ready artwork and specifications\nAgreed installation and display schedule",
+            "action": ""
+          },
+          "kn": {
+            "title": "ನಾವು ಒಟ್ಟಿಗೆ ರೂಪಿಸಬಹುದಾದದ್ದು",
+            "description": "ಸ್ಥಳ ಮತ್ತು ರೂಪದ ಶಿಫಾರಸುಗಳು\nನಿರ್ಮಾಣಕ್ಕೆ ಸಿದ್ಧ ವಿನ್ಯಾಸ ಮತ್ತು ವಿವರಗಳು\nಒಪ್ಪಿದ ಅಳವಡಿಕೆ ಮತ್ತು ಪ್ರದರ್ಶನ ವೇಳಾಪಟ್ಟಿ",
+            "action": ""
+          },
+          "hi": {
+            "title": "हम साथ क्या तैयार कर सकते हैं",
+            "description": "स्थल और प्रारूप सुझाव\nनिर्माण के लिए तैयार डिज़ाइन और विवरण\nतय स्थापना और प्रदर्शन समय",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "outdoor-advertising-signage-brief",
+        "type": "editable_banner",
+        "name": "Bring your ambition. Start with a brief.",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 7,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Bring your ambition. Start with a brief.",
+            "description": "City, preferred locations and campaign dates\nApproximate dimensions, message and brand assets\nBudget, site access and permission requirements",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ನಿಮ್ಮ ಗುರಿಯೊಂದಿಗೆ ಬನ್ನಿ. ವಿವರಗಳಿಂದ ಪ್ರಾರಂಭಿಸಿ.",
+            "description": "ನಗರ, ಆದ್ಯತೆಯ ಸ್ಥಳಗಳು ಮತ್ತು ಅಭಿಯಾನದ ದಿನಾಂಕಗಳು\nಅಂದಾಜು ಅಳತೆ, ಸಂದೇಶ ಮತ್ತು ಬ್ರ್ಯಾಂಡ್ ಕಡತಗಳು\nಬಜೆಟ್, ಸ್ಥಳದ ಪ್ರವೇಶ ಮತ್ತು ಅನುಮತಿಯ ಅಗತ್ಯಗಳು",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "अपना लक्ष्य लाएँ। विवरण से शुरू करें।",
+            "description": "शहर, पसंदीदा स्थान और अभियान की तारीखें\nअनुमानित आकार, संदेश और ब्रांड फ़ाइलें\nबजट, स्थल की पहुँच और अनुमति आवश्यकताएँ",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      }
+    ]
+  },
+  {
+    "id": "page-mobility-billboard-advertising",
+    "slug": "mobility-billboard-advertising",
+    "name": "Mobility Billboard Advertising",
+    "path": "/marketing-services/mobility-billboard-advertising",
+    "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
+    "target_platform": "all",
+    "status": "DRAFT",
+    "revision": 1,
+    "published_version": null,
+    "published_at": null,
+    "sections": [
+      {
+        "id": "mobility-billboard-advertising-hero",
+        "type": "hero_banner",
+        "name": "Mobility Billboard Advertising",
+        "variation": "split_hero",
+        "available_variations": [],
+        "features": [],
+        "images": [
+          {
+            "url": "/images/ads-marketing/mobility-billboard.jpg",
+            "alt_text": "Mobility Billboard Advertising"
+          }
+        ],
+        "order": 1,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Your message. A city in motion.",
+            "description": "Bring your campaign closer to the places your audience spends time. Explore vehicle-led displays, branded mobility and route-based promotions with a plan for every stop.",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ನಿಮ್ಮ ಸಂದೇಶ. ಚಲನೆಯಲ್ಲಿರುವ ನಗರ.",
+            "description": "ನಿಮ್ಮ ಪ್ರೇಕ್ಷಕರು ಸಮಯ ಕಳೆಯುವ ಸ್ಥಳಗಳಿಗೆ ಅಭಿಯಾನವನ್ನು ಹತ್ತಿರ ತಂದುಕೊಳ್ಳಿ. ಪ್ರತಿ ನಿಲುಗಡೆಗೂ ಯೋಜನೆಯೊಂದಿಗೆ ವಾಹನ ಪ್ರದರ್ಶನಗಳು, ಬ್ರ್ಯಾಂಡ್ ವಾಹನಗಳು ಮತ್ತು ಮಾರ್ಗಾಧಾರಿತ ಪ್ರಚಾರಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "आपका संदेश। चलता हुआ शहर।",
+            "description": "अपना अभियान उन जगहों के करीब लाएँ जहाँ आपके दर्शक समय बिताते हैं। हर पड़ाव की योजना के साथ वाहन डिस्प्ले, ब्रांडेड वाहन और मार्ग आधारित प्रचार देखें।",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      },
+      {
+        "id": "mobility-billboard-advertising-capability-0",
+        "type": "custom",
+        "name": "Mobile display campaigns",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 2,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Mobile display campaigns",
+            "description": "Explore LED or static vehicle displays based on availability, format suitability and approved operating conditions.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಚಲಿಸುವ ಪ್ರದರ್ಶನ ಅಭಿಯಾನಗಳು",
+            "description": "ಲಭ್ಯತೆ, ಸೂಕ್ತ ರೂಪ ಮತ್ತು ಅನುಮೋದಿತ ಕಾರ್ಯಾಚರಣೆ ಷರತ್ತುಗಳಿಗೆ ಅನುಗುಣವಾಗಿ LED ಅಥವಾ ಸ್ಥಿರ ವಾಹನ ಪ್ರದರ್ಶನಗಳನ್ನು ಅನ್ವೇಷಿಸಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "मोबाइल डिस्प्ले अभियान",
+            "description": "उपलब्धता, उपयुक्त प्रारूप और स्वीकृत संचालन शर्तों के अनुसार LED या स्थिर वाहन डिस्प्ले देखें।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "mobility-billboard-advertising-capability-1",
+        "type": "custom",
+        "name": "Routes & audience moments",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 3,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Routes & audience moments",
+            "description": "Discuss neighbourhoods, catchment areas, time windows and a route aligned with your campaign objective.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಮಾರ್ಗಗಳು ಮತ್ತು ಪ್ರೇಕ್ಷಕರ ಸಮಯ",
+            "description": "ನಿಮ್ಮ ಅಭಿಯಾನದ ಉದ್ದೇಶಕ್ಕೆ ಹೊಂದುವ ಬಡಾವಣೆಗಳು, ವ್ಯಾಪ್ತಿಯ ಪ್ರದೇಶಗಳು, ಸಮಯ ಮತ್ತು ಮಾರ್ಗವನ್ನು ಚರ್ಚಿಸಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "मार्ग और दर्शकों का समय",
+            "description": "अभियान के उद्देश्य के अनुसार मोहल्लों, आसपास के क्षेत्रों, समय और मार्ग पर चर्चा करें।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "mobility-billboard-advertising-capability-2",
+        "type": "custom",
+        "name": "Creative built for movement",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 4,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Creative built for movement",
+            "description": "Bold layouts, concise messages and display-ready artwork or video that works at a glance.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಚಲನೆಗೆ ತಕ್ಕ ಸೃಜನಾತ್ಮಕ ವಿನ್ಯಾಸ",
+            "description": "ಒಂದು ನೋಟದಲ್ಲೇ ಅರ್ಥವಾಗುವ ಸ್ಪಷ್ಟ ವಿನ್ಯಾಸ, ಸಂಕ್ಷಿಪ್ತ ಸಂದೇಶ ಮತ್ತು ಪ್ರದರ್ಶನಕ್ಕೆ ಸಿದ್ಧ ಕಲೆ ಅಥವಾ ವೀಡಿಯೊ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "चलते प्रदर्शन के लिए क्रिएटिव",
+            "description": "एक नज़र में समझ आने वाले स्पष्ट लेआउट, छोटे संदेश और डिस्प्ले के लिए तैयार डिज़ाइन या वीडियो।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "mobility-billboard-advertising-capability-3",
+        "type": "custom",
+        "name": "Activation & coordination",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 5,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Activation & coordination",
+            "description": "Plan vehicle access, stops, timing, permissions and agreed execution updates before the campaign starts.",
+            "action": ""
+          },
+          "kn": {
+            "title": "ಕಾರ್ಯಗತಗೊಳಿಸುವಿಕೆ ಮತ್ತು ಸಂಯೋಜನೆ",
+            "description": "ಅಭಿಯಾನ ಆರಂಭಕ್ಕೂ ಮೊದಲು ವಾಹನ ಪ್ರವೇಶ, ನಿಲುಗಡೆಗಳು, ಸಮಯ, ಅನುಮತಿಗಳು ಮತ್ತು ಒಪ್ಪಿದ ಕಾರ್ಯಾಚರಣೆಯ ಮಾಹಿತಿ ಯೋಜಿಸಿ.",
+            "action": ""
+          },
+          "hi": {
+            "title": "सक्रियकरण और समन्वय",
+            "description": "अभियान से पहले वाहन पहुँच, पड़ाव, समय, अनुमतियाँ और तय संचालन अपडेट की योजना बनाएँ।",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "mobility-billboard-advertising-outputs",
+        "type": "custom",
+        "name": "What we can shape together",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 6,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "What we can shape together",
+            "description": "Route and timing proposal\nVehicle/display creative specifications\nAgreed execution updates and campaign wrap-up",
+            "action": ""
+          },
+          "kn": {
+            "title": "ನಾವು ಒಟ್ಟಿಗೆ ರೂಪಿಸಬಹುದಾದದ್ದು",
+            "description": "ಮಾರ್ಗ ಮತ್ತು ಸಮಯದ ಪ್ರಸ್ತಾವನೆ\nವಾಹನ ಮತ್ತು ಪ್ರದರ್ಶನ ವಿನ್ಯಾಸದ ವಿವರಗಳು\nಒಪ್ಪಿದ ಕಾರ್ಯಾಚರಣೆಯ ಮಾಹಿತಿ ಮತ್ತು ಅಭಿಯಾನದ ಸಾರಾಂಶ",
+            "action": ""
+          },
+          "hi": {
+            "title": "हम साथ क्या तैयार कर सकते हैं",
+            "description": "मार्ग और समय का प्रस्ताव\nवाहन और डिस्प्ले क्रिएटिव का विवरण\nतय संचालन अपडेट और अभियान सारांश",
+            "action": ""
+          }
+        }
+      },
+      {
+        "id": "mobility-billboard-advertising-brief",
+        "type": "editable_banner",
+        "name": "Bring your ambition. Start with a brief.",
+        "variation": "adaptive_grid",
+        "available_variations": [],
+        "features": [],
+        "images": [],
+        "order": 7,
+        "enabled": true,
+        "content": {
+          "en": {
+            "title": "Bring your ambition. Start with a brief.",
+            "description": "Target city, neighbourhoods and audience\nCampaign dates, routes and display preference\nCreative assets, budget and on-ground needs",
+            "action": "Discuss my project"
+          },
+          "kn": {
+            "title": "ನಿಮ್ಮ ಗುರಿಯೊಂದಿಗೆ ಬನ್ನಿ. ವಿವರಗಳಿಂದ ಪ್ರಾರಂಭಿಸಿ.",
+            "description": "ಗುರಿ ನಗರ, ಬಡಾವಣೆಗಳು ಮತ್ತು ಪ್ರೇಕ್ಷಕರು\nಅಭಿಯಾನದ ದಿನಾಂಕಗಳು, ಮಾರ್ಗಗಳು ಮತ್ತು ಪ್ರದರ್ಶನದ ಆದ್ಯತೆ\nವಿನ್ಯಾಸ ಕಡತಗಳು, ಬಜೆಟ್ ಮತ್ತು ಸ್ಥಳೀಯ ಅಗತ್ಯಗಳು",
+            "action": "ನನ್ನ ಯೋಜನೆಯ ಬಗ್ಗೆ ಚರ್ಚಿಸಿ"
+          },
+          "hi": {
+            "title": "अपना लक्ष्य लाएँ। विवरण से शुरू करें।",
+            "description": "लक्षित शहर, मोहल्ले और दर्शक\nअभियान की तारीखें, मार्ग और डिस्प्ले पसंद\nक्रिएटिव फ़ाइलें, बजट और ज़मीनी ज़रूरतें",
+            "action": "मेरी परियोजना पर चर्चा करें"
+          }
+        },
+        "action_href": "mailto:info@vistrah.in"
+      }
+    ]
+  }
+]

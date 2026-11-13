@@ -1,8 +1,8 @@
 # VISTRAH mobile application
 
 The new `mobile/` project is an Expo SDK 57 / React Native application for
-Android and iOS, with a web preview for development. It uses the existing
-FastAPI API directly. It is not a WebView wrapper. The Next.js website remains
+Android and iOS, with a browser build using the same mobile screens. It uses the existing
+FastAPI API directly. It is not a WebView wrapper. The Next.js desktop website remains
 in `frontend/`; the two projects keep independent dependency lockfiles. Mobile
 owns its API type declarations and has no build-time imports from frontend.
 Both clients use the same backend accounts and data, while releases are independent.
@@ -10,9 +10,8 @@ Both clients use the same backend accounts and data, while releases are independ
 Deploy the website from `frontend/` using the existing web build/hosting setup.
 Build Android/iOS from `mobile/` using its EAS profiles and approved HTTPS API
 configuration. A mobile release does not rebuild the website, and a website
-release does not rebuild mobile. The Expo web output is a development preview;
-`frontend/` remains the production website. Website handoff features require
-`EXPO_PUBLIC_WEB_URL` to point to the deployed website.
+release does not rebuild mobile. The phone website is now exported from the same mobile source and served at `/app/` behind the existing website proxy. Phone/tablet visitors are directed there; the Next.js desktop layout remains available. A separate Docker image packages the shared browser screens. Only the independent admin dashboard opens outside the app. Set
+`EXPO_PUBLIC_ADMIN_URL` to its reachable HTTPS address for release builds.
 
 Both interfaces follow the October 11 reference: black canvas, charcoal
 surfaces, orange primary actions, white headings, rounded cards, pastel service
@@ -33,16 +32,13 @@ The hero artwork is a local procedural visual interpretation of the reference.
 - Member provider directory, service preparation guides, intent-preserving
   enquiries and the customer's request history.
 - Manual temporary coordinates and explicit foreground GPS action; 2/5/10/25 km
-  radius selection and an explicitly triggered nearby search. No geocoder,
-  external map, background tracking or automatic location saving.
-- Membership plan and current eligibility. No real-payment activation.
+  radius selection and an explicitly triggered nearby search. Configurable MapTiler
+  reverse lookup turns GPS into area/city labels, with a tiled map preview and zoom
+  controls. No background tracking or automatic location saving. Explicit save/clear is available.
+- Membership plan, current eligibility and active offers; native sandbox checkout and payment history. No real-payment activation.
+- Native password recovery and reset. Paste the emailed code or complete link into the app; it is parsed locally rather than opened.
 
-Provider evidence forms, ownership claims, business/listing drafts, admin
-management, password recovery and sandbox checkout open the existing website.
-They are not native implementations in this first mobile release. Browser
-authentication is separate; tokens are never placed in URLs or sent to the
-website. Seller membership exemption and independent reviews remain enforced
-by the existing server flows.
+Seller/employer sign-in, account capability, business/service applications, declarative requirements, declarations, PDF/JPEG/PNG evidence uploads, application history, reviewed business/listing/pin/coverage proposals, ownership claims and email-code verification are native. Employer job forms and VISTRAH Finds plans also run in the app. Seller access remains independent of customer membership; ownership and approval are enforced by the existing API. The admin dashboard opens the independent admin app with its own browser sign-in. No native token is placed in that URL. Third-party vacancy and employer application links remain external by user choice.
 
 ## Configure and run
 
@@ -52,12 +48,12 @@ From the repository root:
 cd mobile
 npm ci
 Copy-Item .env.example .env
-# Edit .env with reachable API and website addresses.
+# Edit .env with reachable API and independent admin addresses.
 npm start
 ```
 
 For an Android emulator, the example uses `http://10.0.2.2:8100` for the API
-and `http://10.0.2.2:3100` for the website. Use the actual ports selected in
+and `http://10.0.2.2:3200` for the independent admin app. Use the actual ports selected in
 your root development configuration. The app does not change Compose ports,
 bind addresses, containers or backend startup.
 
@@ -90,12 +86,13 @@ Native JWTs are stored in Expo SecureStore and validated with `/me` on startup.
 API requests send bearer credentials to the configured API only, with a timeout
 and redirects rejected. A rejected session clears the device token. Sign-out
 clears native storage and attempts server revocation; an unreachable server is
-reported after local sign-out. The web preview keeps its token in memory only.
+reported after local sign-out. The local web preview keeps its token in memory only. The deployed phone website instead uses the existing same-origin HttpOnly `vistrah_session` cookie, restores `/me` after reload, and never stores a bearer token in browser storage.
 No passwords or session data are logged or checked into source.
 
-Location lives in memory. Selecting coordinates does not write `/me/location`.
-Coordinates are sent only when the user explicitly starts nearby discovery;
-the backend applies radius and provider coverage. Coordinates are not included
+Location stays temporary unless the user explicitly selects Save this location. Selecting coordinates does not write `/me/location`; save/clear actions use that endpoint and report unavailability on an older API. Saved preferences can be restored on sign-in; account changes clear the previous location.
+MapTiler receives coordinates after Use my location for place lookup, and receives
+tile requests when a map is displayed. The backend receives coordinates only for
+explicit nearby discovery or Save this location and applies radius/provider coverage. Coordinates are not included
 in enquiries. A missing nearby endpoint reports that the API version does not
 support the feature and leaves the member directory available.
 
@@ -148,8 +145,8 @@ npx expo export --platform all
 
 ## Assets and references
 
-The native featured image reuses the existing consultation photograph by
-Amy Hirschi, [source](https://unsplash.com/photos/JaoVGh5aJ3E), under the
+The native featured image reuses the existing collaboration photograph by
+Dylan Gillis, [source](https://unsplash.com/photos/KdeqA3aTnBY), under the
 [Unsplash License](https://unsplash.com/license). Its authoritative provenance
 is in `frontend/lib/photo-assets.json`. Mobile's V mark is a code-generated
 placeholder based on the current VISTRAH wordmark, not a newly approved logo.
@@ -159,3 +156,181 @@ Implementation references:
 [Router](https://docs.expo.dev/router/installation/),
 [SecureStore](https://docs.expo.dev/versions/v57.0.0/sdk/securestore/),
 [Location](https://docs.expo.dev/versions/v57.0.0/sdk/location/).
+
+Category tile photographs reuse the existing website assets (resume, property, construction, marketing, finance, technology, collaboration and home-maintenance). Their photographer/source/license records are in `mobile/assets/photo-provenance.json`; all retain the recorded Unsplash license.
+
+## Matched website and mobile interface
+
+`shared/interface-copy.json` is the source for common labels and descriptions.
+Run `python scripts/sync-interface-copy.py` after editing it, then
+`python scripts/check-interface-parity.py`. Each client bundles its own generated
+copy snapshot, so builds keep independent dependencies and release settings.
+
+Matched primary navigation: Discover, Services, Requests, Account. Both offer a
+header location selector, the same homepage section order, Digital Marketing
+first in Quick Access, five-service hero, photo categories, and business feature.
+Website Quick Access retains 6.5/4.5/3.5 cards at desktop/tablet/phone sizes;
+native Quick Access shows 3.5. Category/service/search, service-tab descriptions,
+member gates, enquiries including PIN and consent-based exact address, requests,
+profile, membership/active offers, payment history and provider entry share their
+main copy/options. Website rendering retains wider desktop grids.
+
+Mobile now includes native sandbox checkout, recovery/reset, seller/employer authentication, business and service forms, evidence, ownership/publication management, history, career plans and additional discovery. Native entry labels intentionally omit website handoff wording, so those platform-specific disclosures differ from the canonical website copy. Only the admin dashboard opens the independent browser app. The original third-party job sources and employer application destinations remain external.
+
+Authentication uses secure native tokens versus website HTTP-only cookies.
+
+The live API may not support newer source-level location or publication features.
+No API rollout, migrations, seeding, normal-container changes or production
+payment setup is authorized by this interface work.
+
+
+## Live MapTiler location setup
+
+The customer website uses an interactive Leaflet basemap; mobile uses a centred
+raster-tile preview with zoom controls, not the paid static-image endpoint.
+Use my location requests GPS once, reverse-geocodes the area/city, and immediately
+sets a temporary header label. The actual GPS coordinates remain the search point;
+a geocoder city centroid never replaces them. Exact street addresses are not
+copied from geocoding into enquiry/address fields. No typed-address autocomplete
+or automatic reverse lookup on map drags is enabled. Lookup failures leave valid
+coordinates for manual locality entry; missing keys keep manual controls available.
+
+1. Create an account at https://cloud.maptiler.com/ and open **API keys**. Choose a
+   plan appropriate for your intended commercial use and quotas. No subscription
+   or provider account is created by this repository.
+2. Create a browser key. For local development, Allowed HTTP origins should list
+   `localhost` and `127.0.0.1` (without protocol/port, per provider guidance). Use a
+   separate production key restricted to your deployed domain. Keep website and
+   native keys separate; origin and User-Agent restrictions combine with AND logic.
+3. Add the browser key locally, without committing it:
+   - Docker website: root `.env`: `NEXT_PUBLIC_MAPTILER_API_KEY=your_browser_key`
+   - Local website dev: `frontend/.env.local`: same variable.
+   - Expo browser preview: `mobile/.env`: `EXPO_PUBLIC_MAPTILER_WEB_API_KEY=your_browser_key`
+4. For Android/iOS, create a separate key with Allowed User-Agent header set to
+   `Vistrah-Mobile-2.0`, then add `EXPO_PUBLIC_MAPTILER_API_KEY=your_native_key` to
+   `mobile/.env`. Native geocoding and tile images send that User-Agent.
+5. Pull the source and rebuild only the Docker website with:
+
+   ```powershell
+   Set-Location 'E:\Vistrah 2.0'
+   git pull --ff-only origin reference-theme-mobile
+   if ($LASTEXITCODE -eq 0) {
+       docker compose -p vistrah20 -f compose.yaml up -d --no-deps --build web
+   }
+   ```
+
+   Stop the mobile dev server with Ctrl+C, then restart in another terminal:
+
+   ```powershell
+   Set-Location 'E:\Vistrah 2.0\mobile'
+   npm.cmd start -- --clear
+   ```
+
+Public map keys are bundled into clients intentionally; protect them with the
+provider's restrictions. Backend passwords/tokens must never be put in these
+variables. Native/production restrictions and device headers need a live device
+check before release. HTTPS is needed for browser GPS outside localhost.
+
+References: [API keys](https://docs.maptiler.com/guides/credentials/api-key/),
+[reverse geocoding](https://docs.maptiler.com/cloud/api/geocoding/),
+[Leaflet raster tiles](https://docs.maptiler.com/leaflet/examples/raster-tiles-in-leaflet-js/).
+
+
+## Restart the local Expo browser preview
+
+Keep Docker Desktop open. Closing PowerShell stops Expo and the local CORS helper,
+but normally leaves Docker containers running. Check API health before changing
+backend services; this helper never starts, rebuilds or restarts them.
+
+Window 1 (keep open):
+
+```powershell
+Set-Location 'E:\Vistrah 2.0'
+git pull --ff-only origin reference-theme-mobile
+if ($LASTEXITCODE -eq 0) { node.exe mobile/scripts/dev-api-proxy.cjs }
+```
+
+In `mobile/.env`, the browser API address must be
+`EXPO_PUBLIC_API_URL=http://127.0.0.1:18100`. Keep map keys and other settings.
+
+Window 2 (keep open):
+
+```powershell
+Set-Location 'E:\Vistrah 2.0\mobile'
+npm.cmd start -- --clear
+```
+
+Open the URL Expo displays. The helper allows only localhost/127.0.0.1 origins
+on ports 8081 and 8082; it binds only to 127.0.0.1 and is not a production server.
+If it reports the backend is unreachable, run the read-only check
+`Invoke-RestMethod 'http://127.0.0.1:8100/health'` and share the result.
+
+
+## Controlled update of the existing local backend
+
+For the existing `vistrah20` deployment confirmed at database revision `006`,
+run the prepared script only after pulling `reference-theme-mobile`:
+
+```powershell
+Set-Location 'E:\Vistrah 2.0'
+git pull --ff-only origin reference-theme-mobile
+if ($LASTEXITCODE -eq 0) {
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File '.\scripts\update-location-backend.ps1'
+}
+```
+
+Keep Docker Desktop open. The API and worker briefly pause; Expo and its helper
+can remain open. The script protects a backup under `E:\Vistrah-backups`, verifies
+its hash and archive, restores it into a disposable database, rehearses migrations
+007–011 and checks existing table row counts before the real migration. It checks
+API health and `/me/location` before restarting the worker. It does not seed,
+replace the normal database, rebuild the website or automatically restore/downgrade.
+PowerShell/Docker execution must be verified on the Windows machine; source review
+alone does not establish a successful live update.
+
+If it prints `STOPPED` during maintenance, leave API/worker paused and share the
+output for review. Preserve the protected backup folder; do not upload its contents.
+After success reload Expo, sign in, select a location and save it; confirm persistence
+by reloading again. Real saving has not been verified until this check passes.
+
+Future API/worker Compose startup commands must include the persistent override:
+
+```powershell
+docker compose -p vistrah20 -f compose.yaml -f compose.api-runtime.yaml up -d --no-deps api worker
+```
+
+This override runs Uvicorn directly with catalogue seeding disabled. Using only the
+base compose file for the API would invoke its automatic migration/seed startup.
+
+## Employer job postings
+
+Mobile Account → Employer job postings uses the existing account and seller access; customer membership is not required. Employers choose a business they own, save/edit job drafts, submit for admin review and close postings. A business must be active and verified before submission. Rejected postings must be edited and resubmitted; approved/submitted postings cannot be edited in place.
+
+Find Jobs → VISTRAH Jobs lists only approved, unexpired postings from active verified employers with retained ownership. Applications open the employer’s public HTTPS application page; no application or resume is submitted by VISTRAH. External Jobs remains the independent external vacancy feed. Admin → Employer job approvals supports independent approval/rejection with a required reason and current revision.
+
+Source requires backend migration 012 and deployment of the backend/admin changes before live use. No normal database or running containers were changed during implementation. Until runtime update, new endpoints can be unavailable. Native/device and browser interaction verification remains pending.
+
+
+## Install the native seller/employer update
+
+Pull the review branch and run `npm.cmd ci` in `mobile/`, then `npx.cmd expo start --clear`. This client update uses the existing deployed API; no further backend migration or container replacement is required.
+
+Document uploads add Expo SDK 57-compatible `expo-document-picker` and `expo-file-system`. They support Expo Go where this SDK is supported; an existing custom development build must be rebuilt to include the new native modules. Use a development build if Expo Go does not support your installed SDK. Device/browser picker interaction remains to be checked; no signed app-store build was produced.
+
+Only Admin opens `EXPO_PUBLIC_ADMIN_URL`. In local development only, the app can derive the same host with port 3200 from the old `EXPO_PUBLIC_WEB_URL`; release builds require an explicit admin URL. All other VISTRAH account and seller/employer navigation is native. Password-reset email delivery remains configured on the server; the mobile reset screen accepts the existing emailed token/link without browser navigation. External job sources/employer application pages remain external as selected by the user.
+
+Validation: mobile TypeScript/lint, 18 tests (including capability endpoints, conditional questions, evidence size/types, submitted-answer normalization, local reset-token parsing and admin-only VISTRAH handoff), and raw JSX text scan passed. Actual native file picking, physical devices, production exports and end-to-end authenticated UI flows are not verified in this environment.
+
+
+## Website using the native mobile screens
+
+The production phone website reuses `mobile/src/app`, components, styles, assets and API contracts. It includes current account groups, unique service photos, Find Jobs source tabs, employer drafts, conditional business/service/evidence forms, ownership and publication tools, enquiry/estimate forms, membership, settings, recovery and Finds. No second phone UI is maintained in Next.js. Native files remain native; the browser uses React Native Web with browser file/GPS permissions. Browser address bars, keyboards and permission dialogs are platform UI and cannot be made identical to Android/iOS system UI.
+
+`mobile/app.config.js` extends the existing app.json (including local EAS project linkage); only the cookie browser build selects SPA output and `/app` base URL. Native APK and ordinary Expo preview configuration remain unchanged. Website release mode is enabled by the Docker builder, not by changing the user's mobile `.env`. Same-origin `/api` remains the Next.js secure-cookie/Origin proxy; larger seller/enquiry forms use its 128 KB cap while evidence remains capped at 3 MB. Native authentication retains SecureStore/bearer tokens. Legacy website account/seller/service URLs map to corresponding shared screen routes.
+
+Build/export on the user PC with `powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\scripts\\build-phone-website.ps1`. It exports `E:\\Vistrah-deploy\\phone-website.tar` and `website-proxy.tar`, preserving only configured public MapTiler browser/desktop keys and the user's local mobile logo assets. No running containers change during build. Upload both images to the test host and load them. Upload updated Compose and outer Caddy configuration as `compose.cloud.yaml.pending` and `Caddyfile.pending`, plus `activate-phone.sh`. After CRLF normalization, `bash activate-phone.sh` checks images/configuration, retains old configuration/image tags, updates only website/phone/proxy services and restores previous configuration on activation failure. API, database, admin and worker are not replaced; startup migration and seed remain disabled.
+
+Check `https://vistrah.in` on an actual Android/iPhone browser, `https://vistrah.in/app/` on desktop, and the original desktop root. Verify sign-in/reload/logout, settings/theme, category/service photos, both job tabs, estimates, seller applications/drafts/evidence, business/ownership and career screens. Existing cloud SMTP and worker limitations are independent of the UI.
+
+Verification: mobile TypeScript/lint and 22 tests; Next.js production build/TypeScript/scoped lint and 38 proxy/auth/access tests; production shared web export; real Caddy config validation and isolated HTTP phone/desktop routing, API forwarding, JS/photo assets and eight deep-route fallbacks. Reproducible HTTP check: `PHONE_EXPORT_DIR=<export> CADDY_EXECUTABLE=<caddy> node frontend/scripts/phone-website-http-check.cjs`. Browser screenshot/interaction QA is pending because two local browser launches failed on environment socket permissions. Physical-device visual comparison and cloud rollout remain pending; do not claim pixel verification or live deployment from source checks.
+

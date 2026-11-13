@@ -1,47 +1,164 @@
 # Architecture
 
-## Quick reference for Lean Mode
+Current source baseline: 13 October 2026. Runtime health and deployment are
+separate evidence; see current-task.md and PRODUCTION_PLAN.md. The existing
+application is a service/job marketplace with sandbox membership payments,
+not a finished product-commerce platform.
 
-- Frontend: Next.js App Router, React and TypeScript in `frontend/`; public discovery/account/seller routes and a separate admin interface. Browser `/api/[...path]` proxies to FastAPI; server catalogue requests use the API directly.
-- Backend: FastAPI and SQLAlchemy in `backend/app/`; Alembic migrations in `backend/migrations/`. Shared initial catalogue: `shared/catalogue.json`.
-- Database/runtime: Compose services `web`, `api`, `worker`, `db`; PostgreSQL 16.6 with `postgres_data`, plus shared API/worker `api_data`. SQLite is supported for isolated tests/local configuration. API image startup migrates and seeds; worker runs `app.workflow_worker` separately. Frontend uses a compiled standalone image, not a source bind mount.
-- Local URLs documented in README: frontend `localhost:3100`, API `localhost:8100`; Compose defaults are 3000/8000, configurable through environment variables.
-- Start with [module map](module-map.md) and [current task](current-task.md). Detailed descriptions below are existing reference material; source changes and running-image status may differ.
+## Components and dependencies
 
-The database-backed [workflow engine](WORKFLOWS.md) extends owned requests through customer Finds and admin operations. Compose adds a leased worker; migration 003 persists definitions, runs, dependencies, approvals, attempts, evidence and histories. Customer profiles/documents/results are excluded from admin workflow responses. The original preparation template and contracts remain unchanged. Migration 004 adds source budgets/leases, normalized public vacancies/provenance and per-action acquisition/page progress. `jobs.discover@2` is the narrowly allowed external read action in the same scheduler; provider code lives in reusable API adapters. Shared public listings at `/jobs` satisfy Remotive access requirements while owned profiles/results stay private. Submission remains disabled. See [job sources](JOB_SOURCES.md).
+| Component | Implementation | Configuration / dependency authority |
+|---|---|---|
+| Desktop website | Next.js App Router, React, TypeScript; standalone image in frontend/ | frontend/package.json, package-lock.json, Dockerfile |
+| Native app | Expo/React Native with Expo Router; Android APK profiles and iOS preparation | mobile/package.json, package-lock.json, app.json, app.config.js, eas.json |
+| Phone website | Production React Native Web export from mobile/src, hosted under /app | frontend/Dockerfile.phone, infra/aws-test/Caddyfile.phone |
+| Independent admin | Next.js app in admin/ with its own authentication/proxy and interface | admin/package.json, Dockerfile, admin/app/ |
+| Shared API | FastAPI, SQLAlchemy, revocable JWT authentication, Alembic | backend/requirements.txt, requirements.lock, app/, migrations/ |
+| Async worker | Database-backed leased workflow execution, source budgets and retries | backend/app/workflow_worker.py and workflow modules |
+| Database | PostgreSQL 16.6 in normal Compose; SQLite or isolated PostgreSQL for tests | compose.yaml, backend/app/database.py |
+| Reverse proxy | Caddy HTTPS and website/API/admin/phone routing for cloud testing | infra/aws-test/Caddyfile and compose.cloud.yaml |
 
-The frontend uses Next.js App Router and shared React templates. The public route group renders its header and footer; `/admin` has an independent sidebar and topbar. CSS custom properties and shared styles live in `frontend/app/globals.css`. All images are local and inventoried.
+Local normal URLs are website localhost:3100, API localhost:8100 and admin
+localhost:3200 when using the documented .env template. Container ports are
+3000 for web/admin and 8000 for API. Database ports remain unpublished.
+Compose defaults without an env file differ; explicit environment selection
+is required. Environment boundaries and commands are in ENVIRONMENTS.md.
 
-`frontend/lib/urls.ts` owns URL construction and route resolution. One catch-all catalogue route implements the specified disjoint structures without conflicting dynamic directory names:
+## Shared API and authentication
 
-- `/service/{category}`
-- `/service/{category}/{subcategory}`
-- `/service/{category}/service/{service}`
-- `/service/{category}/{subcategory}/service/{service}`
-- `/service/{category}/service/{service}/request`
-- `/service/{category}/{subcategory}/{service}/request`
-- `/service/{category}/{subcategory}/{service}/companies`
-- `/service/{category}/{subcategory}/{service}/companies/{provider}`
+- Native requests go to the shared API with a bearer JWT. SecureStore persists
+  the native session; the API verifies issuer/audience/expiry and a revocable
+  database session. Customer and seller may use one identity, but sign in and
+  sign out independently using separate tokens/SecureStore keys. Seller access
+  remains a capability with ownership checks. Administrator role checks remain independent.
+- Desktop browser requests use frontend/app/api/[...path]/route.ts. The proxy
+  holds customer and seller sessions in separate HttpOnly cookies, selects the
+  appropriate session by API route (explicit scope for identity/logout), validates
+  mutation origins and body limits, strips token fields and preserves backend errors.
+  Neither session falls back to the other; logout/401 clears only its own cookie.
+- The production phone website uses the same cookie proxy under /api, while
+  rendering the native screen source under /app. Legacy website bookmarks are
+  translated to native routes. Local Expo browser preview uses the loopback
+  development proxy and a development API URL; it is not production cookie mode.
+- The independent admin application uses its own cookie/proxy. Public website
+  login does not automatically enter admin routes. Backend authorization is
+  authoritative; UI visibility is not an access-control boundary.
+- Password recovery uses hashed, expiring single-use tokens, neutral responses,
+  persistent throttles and session revocation. Actual SMTP delivery requires
+  private configuration and a real acceptance/inbox check.
 
-Only valid catalogue relationships resolve. Unknown/inactive slugs return a Next.js 404. Provider destinations additionally require an active, verified provider associated with that exact service. Public directory data excludes private provenance and verification evidence.
+All clients share PostgreSQL-backed business, service, account and job data.
+Client-specific layouts do not create separate backends or databases.
 
-Public server-rendered catalogue pages use the backend directly. Browser requests pass through `/api/[...path]`, which forwards the HTTP-only session token, checks mutation origins, limits request size and returns backend error codes. Tokens are not exposed to browser JavaScript or localStorage. Account display guards improve UX; backend ownership and role checks provide authorization.
+## Discovery, services and seller workflows
 
-FastAPI separates schemas, models, authentication, catalogue lookup, database session creation and the payment integration service. The REST controllers compose those modules and use one database transaction for each domain mutation and corresponding audit record. SQLAlchemy statements bind parameters. Alembic revision 001 uses a frozen schema snapshot; later revisions change that schema explicitly.
+The initial shared/catalogue.json bootstraps catalogue data. Runtime catalogue
+lookup/editing reads PostgreSQL, not a JSON fallback. Website URL construction
+and relation checks live in frontend/lib/urls.ts; native catalogue/service IDs
+and the synthetic Find Jobs entry live in mobile/src/lib/catalogue.ts.
 
-The canonical initial catalogue is seeded once. All application lookup uses PostgreSQL thereafter. The plan is stored as 12900 paise in INR with a 30-day validity period. No provider or customer records are part of normal seeding. Member preparation guides are stored in a separate table and exposed only through an authenticated membership-protected endpoint.
+Public catalogue browsing and public job listings are available separately
+from membership-protected provider information, preparation guides and service
+enquiries. The three service pathways remain Find Service Provider, VISTRAH
+Recommended and VISTRAH Services. Enquiries request human review; they do not
+create bookings or guarantee provider availability.
 
-Sandbox gateway events are authenticated with HMAC-SHA256 and a five-minute timestamp window. Stored event IDs are immutable. Stable business-field hashes allow equivalent delivery retries but reject event ID reuse with a different payload. Payment row locks serialize webhook/refund updates. User locks serialize purchases and membership extensions. Unique keys backstop duplicate checkout, event, refund and allocation handling. Membership changes, successful-payment credits and event records commit atomically.
+Business ownership, private evidence, provider applications and each service
+listing require their existing review gates. Published requirement versions,
+conditional form rules and proposed publication changes retain revision guards
+and histories. Seller dashboards expose owned businesses, listings and leads;
+admin reviews do not expose private customer workflow profiles/results.
+Employer jobs are drafted for an owned business and independently approved
+before eligible public publication.
 
-Allocation entries are append-only credits or reversals. Full refunds create a new refund record and reversal, then revoke the membership linked to that transaction. Reconciliation compares the net ledger to transaction status and appends results. Settlement eligibility is calculated from status and ledger balance; no settlement/disbursement action is exposed. Gateway replacement requires a genuine adapter and contract tests.
+Homepage migration 013, admin /admin/homepage and GET /homepage now provide
+private draft/publish/restore configuration for banners, grids and carousels.
+Desktop and native/shared-phone clients render the same published sequence;
+the original source-composed homepage remains the fallback. Provider requirement
+and publication editors retain their separate purpose. Source implementation
+has not migrated/replaced the normal runtime; see the Phase 3 rollout gate.
 
-Audit, allocations, refunds, webhook events and reconciliation records have database triggers forbidding update/delete. Ordinary admin APIs expose no mutation of these histories. Database owners can manage schema/triggers, so this is application-level immutability rather than a tamper-proof external archive.
+## Payments and production boundary
 
-## Provider onboarding
+Current payment checkout purchases a sandbox membership plan only. Commerce
+migration 015 provides private carts and an unpaid development-only TEST order
+request/confirmation/fulfilment lifecycle. /commerce/orders is separate from
+/me/orders (enquiry history). Client cart/order screens and live ordering remain
+pending; no tax invoice, gateway charge or appointment reservation is implied. Payment amount/ownership/signature/timestamp,
+idempotency and refund/reconciliation rules are enforced on the API; financial
+history is append-only at the application/database-trigger level.
 
-The existing Provider/ProviderService directory now shares a versioned, declarative
-requirements registry and authenticated application workflow. Alembic 005 adds
-private application/evidence/history tables and per-service approval grants.
-Backend directory and lead queries require global verification and activation
-plus approval for the exact service. See [provider onboarding](PROVIDER_ONBOARDING.md)
-for schemas, immutable versions, corrections and storage limits.
+Sandbox paid access qualifies only under explicitly configured development.
+Production membership access fails closed because a real gateway/entitlement
+adapter is not implemented. Phase 5 must extend the sandbox-only model through
+reviewed migrations/tests; changing APP_ENV alone or weakening membership
+checks is not a production payment integration.
+
+Phase 4 defines the commerce domain and shared order contract; Phase 5 supplies
+verified live payment events and entitlement/refund behavior. Existing service
+enquiries and seller approval semantics remain distinct.
+
+## Worker and external integrations
+
+Finds/workflow execution persists definitions, inputs, dependencies, approvals,
+leases, attempts, private documents/results and histories. External job
+acquisition reads approved configured sources through budgeted adapters;
+public jobs read the cache. Execution completion does not imply every source
+succeeded, nor does it submit candidate applications.
+
+Workflow/source launch is explicit. Copied cloud plans must be reviewed before
+starting the worker. Existing temporary cloud configuration keeps the worker
+optional and source acquisition disabled. Customer location is temporary unless
+explicitly saved; GPS/geocoding requires the opt-in chooser and preserves manual
+fallback/privacy. Existing MapTiler keys are public, restricted client keys;
+new provider/billing choices require separate authorization.
+
+## Persistence, schema and deployment
+
+- Named PostgreSQL volumes retain records across container replacement/restart.
+  Private evidence is currently stored in the database. Bundled public images
+  live in frontend/public and mobile/assets; no S3 media system is implemented.
+- The backend Dockerfile default command migrates and seeds on startup.
+  compose.api-runtime.yaml and the cloud test runtime run Uvicorn directly after
+  controlled schema rollout. Normal restart verification must use the existing
+  controlled runtime and never silently migrate or seed the normal database.
+- Migration 012 adds employer jobs; source migration 013 adds homepage draft and
+  immutable published history without seeding content. Migrations and domain tests must first run
+  against disposable data; normal rollout needs backup/recovery and explicit
+  authorization. Existing requirements/publication schemas retain immutability
+  triggers and history guards.
+- Dockerfiles use pinned base versions and non-root runtime users; web/admin
+  use standalone production bundles. Source pushes do not rebuild running
+  containers, the shared phone export or installed APKs.
+- Native icons/splash/modules need a new native build. Native startup/loading
+  and first-run light theme are implemented; saved preferences are respected.
+- AWS Terraform provisions a temporary EC2/VPC/subnet/security-group test stack.
+  The earlier trial was deployed and HTTPS verified, but teardown was requested;
+  current availability is unconfirmed. The root disk is deleted on termination,
+  including host-bound Docker volumes. Domain registration/local data are separate.
+- The cloud test Compose explicitly uses development/sandbox mode. Phase 7
+  creates staging/production wiring after live application and security gates;
+  environment templates alone are not production-ready deployment manifests.
+
+## Verification and roadmap
+
+Dependency manifests/locks are authoritative; do not force-upgrade framework
+trees to resolve file locks. Current mobile npm audit findings require triage in
+Phase 6 (or earlier for exposed/runtime risk); older zero-advisory records are
+historical. Unit/integration tests and scoped builds do not replace physical
+Android/browser, live gateway, SMTP, backup and production rollout verification.
+
+Use module-map.md to find code, API.md for routes, MOBILE.md for device/build
+details, SECURITY.md for current safeguards/limits, and PRODUCTION_PLAN.md for
+phase completion gates. Only read the references relevant to the current task.
+
+Commerce operator is explicit SELLER or admin-created VISTRAH (services only),
+not inferred from names. Seller-entered stock batch quantity, delivery methods/
+fees and cancellation cutoffs are proposed/unpublished until independent review;
+admin approval requires an acknowledgement of configured terms. Cart/request
+holds no units; confirmation atomically allocates approved stock. Cancellable
+orders return that allocation once; completed sales retain it. Order price and
+policy snapshots survive later listing edits. VISTRAH services are managed by
+admin-owned businesses and fulfilled via admin-only transitions. Seller-managed
+orders retain current business ownership guards. Mutations are development-only
+until live tax/payment/refund integration; all operational/release gates remain.

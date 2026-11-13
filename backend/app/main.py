@@ -8,10 +8,13 @@ from .models import *
 from .schemas import *
 from .security import current_user, admin_user, member_user, eligible_memberships, passwords, DUMMY_HASH, issue_token, token_session, bearer
 from .catalogue import catalogue, serialize, active_service, lookup
+from .marketplace_taxonomy import master_taxonomy, resolve_selection
 from .payments import payments, aware
 from datetime import timedelta
+import os
 import hashlib
 import json
+import secrets
 
 app = FastAPI(title='VISTRAH API', version='1.0.0', description='Service marketplace API. All payments are sandbox simulations.')
 from .workflow_routes import router as workflow_router
@@ -28,13 +31,49 @@ from .publication_routes import router as publication_router
 app.include_router(publication_router)
 from .location_routes import router as location_router
 app.include_router(location_router)
+from .google_maps_routes import router as google_maps_router
+app.include_router(google_maps_router)
+from .employer_job_routes import router as employer_job_router
+app.include_router(employer_job_router)
 from .homepage_routes import router as homepage_router
 app.include_router(homepage_router)
+from .commerce_routes import router as commerce_router
+app.include_router(commerce_router)
+from .commerce_order_routes import router as commerce_order_router
+app.include_router(commerce_order_router)
+from .business_membership_routes import router as business_membership_router
+app.include_router(business_membership_router)
+from .catalogue_request_routes import router as catalogue_request_router
+app.include_router(catalogue_request_router)
+from .v_ads_routes import router as v_ads_router
+app.include_router(v_ads_router)
+from .v_ads_engagement_routes import router as v_ads_engagement_router
+app.include_router(v_ads_engagement_router)
+from .v_ads_account_routes import router as v_ads_account_router, ensure_seller_v_ads_account
+app.include_router(v_ads_account_router)
+from .v_ads_media_routes import router as v_ads_media_router
+from .v_ads_video_submission_routes import router as v_ads_submission_router
+app.include_router(v_ads_media_router)
+app.include_router(v_ads_submission_router)
+from .v_ads_management_routes import router as v_ads_management_router
+app.include_router(v_ads_management_router)
+from .v_ads_creator_routes import router as v_ads_creator_router
+app.include_router(v_ads_creator_router)
+from .v_ads_targeting_routes import router as v_ads_targeting_router
+app.include_router(v_ads_targeting_router)
+from .v_ads_review_routes import router as v_ads_review_router
+app.include_router(v_ads_review_router)
+from .edit_vistrah_routes import router as edit_vistrah_router
+app.include_router(edit_vistrah_router)
+from .marketing_pricing_routes import router as marketing_pricing_router
+app.include_router(marketing_pricing_router)
+from .composite_routes import router as composite_router
+app.include_router(composite_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith(('/seller/', '/admin/ownership-claims', '/admin/publication-drafts', '/me/location')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
+    if request.url.path.startswith(('/seller/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
         request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'
@@ -46,14 +85,14 @@ from fastapi.exception_handlers import request_validation_exception_handler
 
 @app.exception_handler(RequestValidationError)
 async def validated_input_error(request, exc):
-    if request.url.path.startswith(('/auth/','/finds/','/admin/job-sources','/provider-','/admin/provider-','/seller/','/admin/ownership-','/admin/publication-','/services/','/me/location','/requests')):
+    if request.url.path.startswith(('/auth/','/finds/','/admin/job-sources','/provider-','/admin/provider-','/seller/','/admin/catalogue-requests','/admin/ownership-','/admin/publication-','/admin/employer-jobs','/admin/homepage','/admin/commerce-listings','/admin/commerce-orders','/admin/vistrah/','/commerce/','/services/','/me/location','/requests')):
         # Do not echo document/profile values; invalid Unicode is unsafe to echo.
         return JSONResponse(status_code=422,content={'detail':[{'loc':error['loc'],'msg':error['msg'],'type':error['type']} for error in exc.errors()]})
     return await request_validation_exception_handler(request, exc)
 
 @app.middleware('http')
 async def workflow_body_limit(request, call_next):
-    provider_path=request.url.path.startswith(('/provider-','/admin/provider-','/seller/','/admin/publication-','/admin/ownership-'))
+    provider_path=request.url.path.startswith(('/provider-','/admin/provider-','/seller/','/admin/catalogue-requests','/admin/publication-','/admin/ownership-','/admin/employer-jobs','/admin/homepage','/admin/commerce-listings','/admin/commerce-orders','/admin/vistrah/','/commerce/cart','/commerce/orders'))
     if (request.url.path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
         limit=3000000 if provider_path and request.url.path.endswith(('/documents','/evidence')) else 128000
         chunks=[]
@@ -103,6 +142,18 @@ def health(db: Session = Depends(get_db)):
 def read_catalogue(db: Session = Depends(get_db)):
     return catalogue(db)
 
+@app.get('/marketplace/taxonomy')
+def read_marketplace_taxonomy():
+    return master_taxonomy()
+
+@app.get('/marketplace/taxonomy/resolve')
+def resolve_marketplace_taxonomy(category: str, subcategory: str, listing_type: str):
+    """Validate a seller's classification choice without creating a listing."""
+    selection = resolve_selection(category, subcategory, listing_type)
+    if selection is None:
+        raise HTTPException(422, 'Choose a valid category, subcategory and listing type')
+    return selection
+
 @app.get('/catalogue/lookup')
 def catalogue_lookup(category: str, service: str, subcategory: str | None = None, db: Session = Depends(get_db)):
     return serialize(lookup(db, category, service, subcategory))
@@ -139,7 +190,7 @@ def register_identity(data, request, db, seller=False):
     rate_limit(db, email, request)
     if db.scalar(select(User).where(User.email == email)):
         raise HTTPException(409, 'An account with this email already exists')
-    user = User(email=email, name=data.name, password_hash=passwords.hash(data.password), seller_enabled=seller)
+    user = User(email=email, name=data.name, password_hash=passwords.hash(data.password), seller_enabled=seller); db.add(user); db.flush(); seller and ensure_seller_v_ads_account(db, user)
     db.add(user)
     db.commit()
     return {'access_token': issue_token(db, user), 'user': user_output(user)}
@@ -157,6 +208,11 @@ def login_identity(data, request, db, seller=False):
     if seller and not user.seller_enabled:
         user.seller_enabled = True
         audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+    if seller or user.role == 'ADMIN':
+        if not user.seller_enabled:
+            user.seller_enabled = True
+            audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+        ensure_seller_v_ads_account(db, user)
     db.execute(delete(LoginAttempt).where(LoginAttempt.key == attempt_key))
     return {'access_token': issue_token(db, user), 'user': user_output(user)}
 
@@ -168,8 +224,65 @@ def seller_register(data: Register, request: Request, db: Session = Depends(get_
 def seller_login(data: Login, request: Request, db: Session = Depends(get_db)):
     return login_identity(data, request, db, seller=True)
 
+async def google_identity(data: GoogleAuth, request: Request, db: Session = Depends(get_db), seller=False):
+    from .google_auth import verify_google_token
+    rate_limit(db, 'google-sign-in', request)
+    info = await verify_google_token((data.credential or data.id_token or '').strip())
+    email = str(info['email']).lower().strip()
+    name = str(info.get('name') or email.split('@')[0]).strip()[:100]
+    identity = db.get(GoogleIdentity, info['sub'])
+    user = db.get(User, identity.user_id) if identity else db.scalar(select(User).where(User.email == email).with_for_update())
+    if identity and not user:
+        raise HTTPException(401, 'Google identity is unavailable')
+    if not identity and user:
+        # Google is authoritative only for Gmail or a verified Workspace domain.
+        if not (email.endswith('@gmail.com') or info.get('hd')):
+            raise HTTPException(409, 'Sign in with your existing email and password to access this account.')
+        linked = db.scalar(select(GoogleIdentity).where(GoogleIdentity.user_id == user.id))
+        if linked:
+            raise HTTPException(409, 'This account is linked to a different Google identity')
+    is_seller = seller
+    if user:
+        if is_seller and not user.seller_enabled:
+            user.seller_enabled = True
+            audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+        if is_seller or user.role == 'ADMIN':
+            if not user.seller_enabled:
+                user.seller_enabled = True
+                audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+            ensure_seller_v_ads_account(db, user)
+    else:
+        user = User(
+            email=email,
+            name=name or email.split('@')[0],
+            password_hash=passwords.hash(secrets.token_urlsafe(32)),
+            seller_enabled=is_seller,
+        )
+        db.add(user)
+        db.flush()
+        if is_seller:
+            ensure_seller_v_ads_account(db, user)
+
+    if not identity:
+        db.add(GoogleIdentity(subject=info['sub'], user_id=user.id))
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(409, 'Account changed during sign-in. Please try again.')
+    return {'access_token': issue_token(db, user), 'user': user_output(user)}
+
+@app.post('/auth/google')
+async def google_login(data: GoogleAuth, request: Request, db: Session = Depends(get_db)):
+    return await google_identity(data, request, db, seller=False)
+
+@app.post('/auth/seller/google')
+async def seller_google_login(data: GoogleAuth, request: Request, db: Session = Depends(get_db)):
+    return await google_identity(data, request, db, seller=True)
+
 @app.post('/auth/seller/enable')
 def enable_seller(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    ensure_seller_v_ads_account(db, user); db.commit()
     if not user.seller_enabled:
         user.seller_enabled = True
         audit(db, user, 'SELLER_ENABLED', 'user', user.id)
@@ -517,3 +630,6 @@ def export_audit(q: str = '', action: str = '', user: User = Depends(admin_user)
         values = [row.id,row.actor_id,row.action,row.entity,row.entity_id,row.created_at.isoformat(),str(row.details)]
         writer.writerow(["'"+v if isinstance(v,str) and v.startswith(('=','+','-','@')) else v for v in values])
     return Response(output.getvalue(), media_type='text/csv', headers={'Content-Disposition': 'attachment; filename=vistrah-audit.csv'})
+
+
+

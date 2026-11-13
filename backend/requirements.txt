@@ -3,7 +3,7 @@ uvicorn==0.34.0
 SQLAlchemy==2.0.48
 psycopg[binary]==3.2.6
 alembic==1.15.1
-PyJWT==2.15.0
+PyJWT[crypto]==2.15.0
 pwdlib[argon2]==0.2.1
 pydantic==2.12.5
 email-validator==2.2.0

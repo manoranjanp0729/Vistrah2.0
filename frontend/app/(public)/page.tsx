@@ -1,38 +1,40 @@
+import {ContentSections} from '@/components/edit-vistrah-content';
+import type {LiveVistrahPage} from '../../../shared/edit-vistrah';
+import {HomepageVideo} from '@/components/homepage-video';
+import {HomepageConnect} from '@/components/homepage-connect';
+import {connectCategorySlugs} from '../../../shared/homepage-connect';
+import {MarketplaceCategories} from '@/components/marketplace-categories';
+import {DiscoveryGuide} from '@/components/discovery-guide';
+import {PublishedHomepage,type Homepage} from '@/components/published-homepage';
 import Link from 'next/link';
-import {ArrowRight,BriefcaseBusiness,House,Calculator,Megaphone,Building2,Wallet,Compass} from 'lucide-react';
-import {LocationChooser} from '@/components/customer-location';
-import {ProvideServiceLink} from '@/components/seller';
+import {T} from '@/components/language-provider';
+import {HorizontalCarousel} from '@/components/horizontal-carousel';
+import {ReferenceHeroCarousel} from '@/components/reference-hero-carousel';
+import {AdsMarketing} from '@/components/ads-marketing';
 import {Visual} from '@/components/visual';
-import {pagePhoto} from '@/lib/imagery';
-import {positioning} from '@/lib/positioning';
-import {serverApi,protectedServerApi,ServerApiError} from '@/lib/server';
-import {HomeNearby,AffiliateBrands} from '@/components/home-discovery';
-import {allServices,urls} from '@/lib/urls';
-import type {Category,Membership} from '@/lib/types';
-import {SearchForm,SectionHeading,ServiceCard,ButtonLink,ContactBanner,EmptyState} from '@/components/ui';
+import {photos} from '@/lib/imagery';
+import {serverApi} from '@/lib/server';
+import {allServices} from '@/lib/urls';
+import type {Category} from '@/lib/types';
+import {SectionHeading,ButtonLink,ServiceCard} from '@/components/ui';
 export const dynamic='force-dynamic';
-const shortcuts=[{title:'Jobs',href:'/jobs',icon:BriefcaseBusiness},{title:'Property',href:'/services?q=property',icon:House},{title:'Tax',href:'/services?q=tax',icon:Calculator}];
-const categoryIcons:Record<string,typeof Building2>={'real-estate':Building2,'tax-compliance':Wallet,'jobs-careers':BriefcaseBusiness,marketing:Megaphone,'civil-construction':House};
-const categoryPriority=(slug:string)=>slug==='real-estate'?0:slug==='tax-compliance'?1:2;
 export default async function Home() {
-  const categories=await serverApi<Category[]>('/catalogue');
-  const services=allServices(categories);const popular=services.filter(s=>s.service.popular).slice(0,4);
-  const marketing=categories.find(category=>category.slug==='marketing');
-  const marketingServices=marketing?allServices([marketing]):[];
-  const displayCategories=categories.filter(category=>category.slug!=='marketing').sort((a,b)=>categoryPriority(a.slug)-categoryPriority(b.slug));
-  let accessStatus=0;
-  try{const membership=await protectedServerApi<Membership>('/me/membership');if(membership.active!==true)accessStatus=403;}catch(error){accessStatus=error instanceof ServerApiError?error.status:503;}
+  const managed=await serverApi<LiveVistrahPage>('/edit-vistrah/pages/home').catch(()=>null);
+  if(managed&&managed.target_platform!=='mobile')return <div className="container"><ContentSections sections={managed.sections}/></div>;
+  const [categories,homepage]=await Promise.all([serverApi<Category[]>('/catalogue'),serverApi<Homepage>('/homepage').catch(()=>null)]);
+  const services=allServices(categories);
+  const topServices=[...services].filter(item=>item.service.active&&item.category.slug!=='marketing').sort((a,b)=>Number(b.service.popular)-Number(a.service.popular));
+  const shortcuts=topServices.filter(item=>item.category.slug!=='marketing').slice(0,10);
+  const marketingSection=<AdsMarketing/>;
+  if(homepage?.version&&homepage.layout.schema_version===1&&homepage.layout.sections.length)return <div className="reference-home"><section className="container reference-hero"><div><p className="reference-label"><T id="home.tagline"/></p><h1><T id="home.title"/></h1><p className="reference-lead"><T id="home.description"/></p></div><ReferenceHeroCarousel/></section><PublishedHomepage homepage={homepage} categories={categories}/><section className="container reference-section homepage-categories"><SectionHeading title={<T id="home.categories"/>} href="/services" label={<T id="home.viewAll"/>}/><MarketplaceCategories compact exclude={connectCategorySlugs}/></section>{marketingSection}<HomepageVideo/><HomepageConnect/><div className="container reference-section"><DiscoveryGuide/><ButtonLink secondary href="/provider"><T id="home.provider"/></ButtonLink></div></div>;
   return <div className="reference-home">
-    <section className="container reference-hero"><div><p className="reference-label">DISCOVER. CONNECT. GROW.</p><h1>Discover VISTRAH</h1><p className="reference-lead">Explore services, products, and opportunities in one place.</p><p className="reference-description">{positioning.description}</p><div className="button-row"><ButtonLink href="/services">Explore services</ButtonLink><ProvideServiceLink/></div><div className="seller-access-summary"><details id="seller-access-status"><summary>Provider access and review</summary><p>{positioning.sellerAccess}</p><Link className="text-link" href="/provide-service">Existing provider application</Link></details></div></div><div className="reference-art" role="img" aria-label="Abstract flowing layers in blue, turquoise and orange"><span/><span/><span/></div></section>
-    <section className="container reference-discovery" aria-label="Search and location"><div className="discovery-bar"><LocationChooser/><SearchForm large/></div></section>
-    <section className="container reference-section"><p className="reference-label">QUICK ACCESS</p><nav className="reference-shortcuts" aria-label="Quick access">{shortcuts.map(({title,href,icon:Icon})=><Link key={title} href={href}><Icon size={30} aria-hidden="true"/><span>{title}</span></Link>)}</nav></section>
-    <section className="container reference-section"><SectionHeading title="Services for you" href="/services" label="View all"/>{displayCategories.length?<div className="reference-categories">{displayCategories.map((category,index)=>{const Icon=categoryIcons[category.slug]??Compass;return <Link key={category.id} href={urls.category(category)} className={`reference-category reference-tone-${index%4}`}><Icon size={30} aria-hidden="true"/><h3>{category.title}</h3><p>{category.description}</p><span>Explore services <ArrowRight size={16}/></span></Link>;})}</div>:<EmptyState title="Our catalogue is being prepared" description="Email VISTRAH about the service you need." href="/call-vistrah" label="Contact VISTRAH"/>}</section>
-    {marketing&&<section className="container reference-section" aria-label="VISTRAH Ads & Marketing"><SectionHeading title="VISTRAH Ads & Marketing" href={urls.category(marketing)} label="View all"/><p>Explore advertising, creative and marketing services for your business.</p>{marketingServices.length?<div className="service-grid">{marketingServices.map(context=><ServiceCard key={context.service.id} context={context}/>)}</div>:<EmptyState title="Marketing services are being prepared" description="Explore VISTRAH Ads & Marketing for updates." href={urls.category(marketing)} label="Explore marketing"/>}</section>}
-    <section className="container reference-section"><SectionHeading title="Featured opportunities"/><article className="reference-feature"><Visual photo={pagePhoto('home')} variant="editorial" decorative/><div><span className="reference-badge">Featured</span><h2>Grow your business</h2><p>Connect with customers and present your services through VISTRAH.</p><Link className="text-link" href="/seller/register">Discover more <ArrowRight size={18}/></Link><small>Business ownership and service listings require review.</small></div></article></section>
-    {popular.length>0&&<section className="container reference-section"><SectionHeading title="Popular services" href="/services" label="View all"/><div className="service-grid">{popular.map(context=><ServiceCard key={context.service.id} context={context}/>)}</div></section>}
-    <HomeNearby services={services} accessStatus={accessStatus}/><AffiliateBrands/>
-    <section className="container reference-section reference-membership"><div><p className="reference-label">SERVICE ACCESS FOR MEMBERS</p><h2>Your next step starts here.</h2><p>{positioning.access} Service costs are separate.</p></div><ButtonLink href="/membership">Explore membership</ButtonLink></section>
-    <div className="container call-wrap"><ContactBanner/></div>
+    <section className="container reference-hero"><div><p className="reference-label"><T id="home.tagline"/></p><h1><T id="home.title"/></h1><p className="reference-lead"><T id="home.description"/></p></div><ReferenceHeroCarousel/></section>
+    <section className="container reference-section homepage-categories"><SectionHeading title={<T id="home.categories"/>} href="/services" label={<T id="home.viewAll"/>}/><MarketplaceCategories compact exclude={connectCategorySlugs}/></section>
+    {marketingSection}<HomepageVideo/><HomepageConnect/>
+    <section className="container reference-section"><p className="reference-label"><T id="home.quick"/></p><div className="reference-shortcuts"><HorizontalCarousel label="Quick access services">{shortcuts.map(context=><ServiceCard key={context.service.id} context={context}/>)}</HorizontalCarousel></div></section>
+    <div className="container reference-section"><DiscoveryGuide/></div>
+    <section className="container reference-section"><SectionHeading title={<T id="home.featured"/>}/><article className="reference-feature"><Visual photo={{id:'page/business-feature',kind:'photo',page:'home',subject:'Team collaboration',photo:'collaboration',alt:photos.collaboration.alt,aspectRatio:'3 / 2',position:photos.collaboration.position,surfaces:['home']}} variant="editorial" decorative/><div><span className="reference-badge"><T id="home.badge"/></span><h2><T id="home.business"/></h2><p><T id="home.businessDescription"/></p><Link className="button light" href="/provider"><T id="home.more"/></Link><small><T id="home.review"/></small></div></article></section><div className="container reference-section"><ButtonLink secondary href="/provider"><T id="home.provider"/></ButtonLink></div>
+
   </div>;
 }
 

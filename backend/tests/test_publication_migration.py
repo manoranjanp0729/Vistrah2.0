@@ -2,11 +2,10 @@
 import os
 import subprocess
 import sys
-import uuid
 from pathlib import Path
 
-def test_publication_migration_round_trip():
-    path=Path(__file__).resolve().parents[2]/'.tools'/f'i4-migration-{uuid.uuid4()}.db'
+def test_publication_migration_round_trip(tmp_path):
+    path=tmp_path/'publication-migration.db'
     env={**os.environ,'DATABASE_URL':'sqlite:///'+path.as_posix(),'JWT_SECRET':'isolated-publication-migration-test-only','APP_ENV':'development'}
     script="""
 from alembic import command
@@ -33,3 +32,4 @@ command.upgrade(cfg,'008');engine.dispose()
 """
     result=subprocess.run([sys.executable,'-c',script],env=env,cwd=Path(__file__).resolve().parents[1],capture_output=True,text=True)
     assert result.returncode==0,result.stdout+result.stderr
+

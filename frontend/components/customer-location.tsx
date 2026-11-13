@@ -1,4 +1,5 @@
 'use client';
+import {UiText,UiSection} from "./localized-ui";
 
 import {createContext,useCallback,useContext,useEffect,useId,useRef,useState,type ReactNode} from 'react';
 import {usePathname} from 'next/navigation';
@@ -6,7 +7,10 @@ import Link from 'next/link';
 import {MapPin} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
 import {destinationLink} from '@/lib/destinations';
-import {providerBlocker,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
+import {LocationMap} from './location-map';
+import {GoogleLocationPicker,googleMapsWebKey} from './google-location-picker';
+import {googlePlaces,googlePrivacy} from '../../shared/google-location';
+import {lookupGpsPlace,providerBlocker,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
 
 export const defaultMapPoint={latitude:20.5937,longitude:78.9629};
 const emptyLocation:CustomerLocation={latitude:NaN,longitude:NaN,locality:'',postal_code:'',address:'',landmark:''};
@@ -63,14 +67,19 @@ function useLocationState(){
     setMessage('Location is temporary unless you choose Save this location.');return true;
   },[]);
   async function gps(){
-    const generation=++gpsGeneration.current;hasEdits.current=true;edits.current++;setError('');
+    const generation=++gpsGeneration.current;hasEdits.current=true;edits.current++;setError('');setMessage('');setBusy(true);
     try{
       const fix=await requestGps(navigator.geolocation);if(generation!==gpsGeneration.current)return;
-      setDraft(previous=>({...previous,...fix.point}));
-      setMessage(`GPS accuracy: approximately ${Math.round(fix.accuracy)} metres.${fix.accuracy>100?' This position may be inaccurate. Adjust the coordinates or pin.':''} Enter locality/PIN and confirm Use this location.`);
+      setDraft({...emptyLocation,...fix.point});setActive(null);
+      const place=googleMapsWebKey?(await googlePlaces(api,fix.point))[0]:await lookupGpsPlace(fix.point);if(generation!==gpsGeneration.current)return;
+      if(!place)throw new Error('No locality found. Enter it manually.');
+      const chosen:CustomerLocation={...emptyLocation,...fix.point,locality:place.label,postal_code:place.postal_code,...(googleMapsWebKey?{source:'google' as const}:{})};setDraft(chosen);setActive(chosen);
+      setMessage(`Using ${place.label} temporarily. GPS accuracy: approximately ${Math.round(fix.accuracy)} metres.${fix.accuracy>100?' This position may be inaccurate; adjust the pin.':''} Save this location only if you want it remembered.`);
     }catch(e){if(generation===gpsGeneration.current)setError((e as Error).message);}
+    finally{if(generation===gpsGeneration.current)setBusy(false);}
   }
   async function save(){
+    if(active?.source==='google'){setError('Google search locations are temporary. Enter your own coordinates and locality to save a location.');return;}
     if(!active)return;setBusy(true);setError('');
     try{await api('/me/location',{method:'PUT',body:JSON.stringify(active)});setMessage('Location saved to your account. You can change it or clear it.');}
     catch(e){setError(e instanceof ApiError&&e.status===401?'Sign in to save this location. Your selection remains temporary.':'Saving is unavailable. Your selection remains temporary. '+(e as Error).message);}
@@ -95,35 +104,40 @@ export function CustomerLocationProvider({children}:{children:ReactNode}){
 export function useCustomerLocation(){
   const value=useContext(CustomerLocationContext);if(!value)throw new Error('Customer location provider missing');return value;
 }
+export function useOptionalCustomerLocation(){
+  return useContext(CustomerLocationContext);
+}
 
 /** Public preference controls only: no provider requests, maps, pins or enquiries. */
 export function LocationChooser({expanded=false}:{expanded?:boolean}){
   const state=useCustomerLocation(),id=useId(),path=usePathname();const [open,setOpen]=useState(expanded);
   const {draft,active,radius,busy,error,message}=state;
-  return <section className="customer-location-entry" aria-label="Customer location">
-    <div className="location-entry-heading"><button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}><MapPin size={18} aria-hidden="true"/>Choose your location</button>
-      <p>{active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}</p>
+  return <UiSection  className="customer-location-entry" aria-label="Customer location">
+    <div className="location-entry-heading"><button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}><MapPin size={18} aria-hidden="true"/><UiText value={"Choose your location"}/></button>
+      <p><UiText value={active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}/></p>
     </div>
-    <p className="location-entry-privacy">Temporary location. Provider details and enquiries require eligible membership.</p>
+    <p className="location-entry-privacy">{googleMapsWebKey?<span>{googlePrivacy}</span>:<UiText value={"Location is temporary unless explicitly saved. GPS runs only when you choose “Use my location”. MapTiler receives coordinates for place lookup and maps. VISTRAH receives them when you search nearby providers or save a location."}/>}</p>
     <div id={id} hidden={!open}>
-      <p>{providerBlocker} Enter coordinates to place your pin; an address or PIN alone is insufficient.</p>
-      {error&&<p className="notice error" role="alert">{error}{error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}>Sign in</Link></>}</p>}
-      <p role="status">{message}</p>
-      <button type="button" className="button secondary" onClick={()=>void state.gps()} disabled={busy}>Use my location</button>
+      <p>{googleMapsWebKey?googlePrivacy:providerBlocker}</p>
+      {error&&<p className="notice error" role="alert"><UiText value={error}/>{error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}><UiText value={"Sign in"}/></Link></>}</p>}
+      <p role="status"><UiText value={message}/></p>
+      <button type="button" className="button secondary" onClick={()=>void state.gps()} disabled={busy}><UiText value={"Use my location"}/></button>
+      {open&&(googleMapsWebKey?<GoogleLocationPicker point={validPoint(draft)?draft:defaultMapPoint} disabled={busy} onPin={point=>state.edit({...point,source:'google',locality:'',postal_code:'',address:'',landmark:''})} onPlace={place=>state.edit({latitude:place.latitude,longitude:place.longitude,postal_code:place.postal_code,locality:place.label,source:'google',address:'',landmark:''})}/>:<LocationMap point={validPoint(draft)?draft:defaultMapPoint} onPin={point=>{if(!busy)state.edit({...point,locality:'',postal_code:'',address:'',landmark:''});}} onView={()=>{}} onSelect={()=>{}}/>)}
       <form className="form location-controls" onSubmit={event=>{event.preventDefault();state.confirmLocation(draft);}}>
         <div className="location-field-grid">
-          <label>Manual address<input value={draft.address} maxLength={500} disabled={busy} onChange={event=>state.edit({address:event.target.value})}/></label>
-          <label>Locality<input value={draft.locality} minLength={2} maxLength={150} required disabled={busy} onChange={event=>state.edit({locality:event.target.value})}/></label>
-          <label>PIN code<input value={draft.postal_code} pattern="[0-9]{6}" maxLength={6} disabled={busy} onChange={event=>state.edit({postal_code:event.target.value})}/></label>
-          <label>Landmark<input value={draft.landmark} maxLength={200} disabled={busy} onChange={event=>state.edit({landmark:event.target.value})}/></label>
-          <label>Search latitude<input type="number" step="any" min={-90} max={90} value={Number.isFinite(draft.latitude)?draft.latitude:''} disabled={busy} onChange={event=>state.edit({latitude:event.target.value===''?NaN:Number(event.target.value)})} required/></label>
-          <label>Search longitude<input type="number" step="any" min={-180} max={180} value={Number.isFinite(draft.longitude)?draft.longitude:''} disabled={busy} onChange={event=>state.edit({longitude:event.target.value===''?NaN:Number(event.target.value)})} required/></label>
+          <label><UiText value={"Manual address"}/><input value={draft.address} maxLength={500} disabled={busy} onChange={event=>state.edit({address:event.target.value})}/></label>
+          <label><UiText value={"Locality"}/><input value={draft.locality} minLength={2} maxLength={150} required disabled={busy} onChange={event=>state.edit({locality:event.target.value})}/></label>
+          <label><UiText value={"PIN code"}/><input value={draft.postal_code} pattern="[0-9]{6}" maxLength={6} disabled={busy} onChange={event=>state.edit({postal_code:event.target.value})}/></label>
+          <label><UiText value={"Landmark"}/><input value={draft.landmark} maxLength={200} disabled={busy} onChange={event=>state.edit({landmark:event.target.value})}/></label>
+          <label><UiText value={"Search latitude"}/><input type="number" step="any" min={-90} max={90} value={Number.isFinite(draft.latitude)?draft.latitude:''} disabled={busy} onChange={event=>state.edit({latitude:event.target.value===''?NaN:Number(event.target.value)})} required/></label>
+          <label><UiText value={"Search longitude"}/><input type="number" step="any" min={-180} max={180} value={Number.isFinite(draft.longitude)?draft.longitude:''} disabled={busy} onChange={event=>state.edit({longitude:event.target.value===''?NaN:Number(event.target.value)})} required/></label>
         </div>
-        <button className="button" disabled={busy}>Use this location</button>
-        <label htmlFor={id+'-radius'}>Search radius</label><select id={id+'-radius'} value={radius} disabled={busy} onChange={event=>state.setRadius(Number(event.target.value) as Radius)}>{radii.map(value=><option key={value} value={value}>{value} km</option>)}</select>
+        <button className="button" disabled={busy}><UiText value={"Use this location"}/></button>
+        <label htmlFor={id+'-radius'}><UiText value={"Search radius"}/></label><select id={id+'-radius'} value={radius} disabled={busy} onChange={event=>state.setRadius(Number(event.target.value) as Radius)}>{radii.map(value=><option key={value} value={value}>{value} <UiText value={"km"}/></option>)}</select>
       </form>
-      <div className="button-row"><button type="button" className="button secondary" disabled={!active||busy} onClick={()=>void state.save()}>Save this location</button><button type="button" className="button secondary" disabled={busy} onClick={()=>void state.clear()}>Clear location</button></div>
-      <p>Sellers receive only locality/PIN for enquiries unless you explicitly supply an exact address for that request. Your search point is never copied into an enquiry.</p>
+      <div className="button-row"><button type="button" className="button secondary" disabled={!active||busy||active.source==='google'} onClick={()=>void state.save()}><UiText value={"Save this location"}/></button><button type="button" className="button secondary" disabled={busy} onClick={()=>void state.clear()}><UiText value={"Clear location"}/></button></div>
+      <p><UiText value={"Sellers receive only locality/PIN for enquiries unless you explicitly supply an exact address for that request. Your search point is never copied into an enquiry."}/></p>
     </div>
-  </section>;
+  </UiSection>;
 }
+

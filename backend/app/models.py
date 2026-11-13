@@ -19,6 +19,12 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     __table_args__ = (CheckConstraint("role IN ('CUSTOMER','ADMIN')"),)
 
+class GoogleIdentity(Base):
+    __tablename__ = 'google_identities'
+    subject: Mapped[str] = mapped_column(String(255), primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'), unique=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
 class AuthSession(Base):
     __tablename__ = 'auth_sessions'
     id: Mapped[str] = mapped_column(String(64), primary_key=True)

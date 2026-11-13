@@ -1,0 +1,337 @@
+{
+  "reviewedOn": "2026-10-26",
+  "scope": "automobiles",
+  "note": "Explicit subject-based illustrative references. Shared photos do not satisfy the separate distinct-original-per-card backlog. No condition, certification, endorsement or service availability is established by stock imagery.",
+  "items": {
+    "subcategory/automobiles/new-vehicles": {
+      "photo": "catalogue-first25-automobiles--new-vehicles",
+      "subject": "New Vehicles",
+      "previousPhoto": "catalogue-first25-automobiles--new-vehicles"
+    },
+    "type/automobiles/new-vehicles/cars": {
+      "photo": "automobiles",
+      "subject": "Cars",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/new-vehicles/motorcycles": {
+      "photo": "motorcycle",
+      "subject": "Motorcycles",
+      "previousPhoto": "motorcycle"
+    },
+    "type/automobiles/new-vehicles/scooters": {
+      "photo": "automobile-scooter",
+      "subject": "Scooters",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/new-vehicles/electric-cars": {
+      "photo": "automobile-electric-car",
+      "subject": "Electric cars",
+      "previousPhoto": "electrical"
+    },
+    "type/automobiles/new-vehicles/electric-two-wheelers": {
+      "photo": "automobile-electric-two-wheeler",
+      "subject": "Electric two-wheelers",
+      "previousPhoto": "air-conditioning"
+    },
+    "type/automobiles/new-vehicles/commercial-vehicles": {
+      "photo": "truck",
+      "subject": "Commercial vehicles",
+      "previousPhoto": "truck"
+    },
+    "subcategory/automobiles/used-vehicles": {
+      "photo": "catalogue-first25-automobiles--used-vehicles",
+      "subject": "Used Vehicles",
+      "previousPhoto": "catalogue-first25-automobiles--used-vehicles"
+    },
+    "type/automobiles/used-vehicles/used-cars": {
+      "photo": "automobiles",
+      "subject": "Used cars",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/used-vehicles/used-motorcycles": {
+      "photo": "motorcycle",
+      "subject": "Used motorcycles",
+      "previousPhoto": "motorcycle"
+    },
+    "type/automobiles/used-vehicles/used-scooters": {
+      "photo": "automobile-scooter",
+      "subject": "Used scooters",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/used-vehicles/used-commercial-vehicles": {
+      "photo": "automobile-fleet",
+      "subject": "Used commercial vehicles",
+      "previousPhoto": "air-conditioning"
+    },
+    "type/automobiles/used-vehicles/certified-pre-owned-vehicles": {
+      "photo": "catalogue-first25-automobiles--used-vehicles",
+      "subject": "Certified pre-owned vehicles",
+      "previousPhoto": "airplane"
+    },
+    "subcategory/automobiles/vehicle-dealers-and-showrooms": {
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
+      "subject": "Vehicle Dealers & Showrooms",
+      "previousPhoto": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms"
+    },
+    "type/automobiles/vehicle-dealers-and-showrooms/car-dealerships": {
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
+      "subject": "Car dealerships",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/vehicle-dealers-and-showrooms/two-wheeler-dealerships": {
+      "photo": "motorcycle",
+      "subject": "Two-wheeler dealerships",
+      "previousPhoto": "motorcycle"
+    },
+    "type/automobiles/vehicle-dealers-and-showrooms/ev-showrooms": {
+      "photo": "automobile-electric-car",
+      "subject": "EV showrooms",
+      "previousPhoto": "truck"
+    },
+    "type/automobiles/vehicle-dealers-and-showrooms/commercial-vehicle-dealers": {
+      "photo": "automobile-fleet",
+      "subject": "Commercial vehicle dealers",
+      "previousPhoto": "accounting-calculation"
+    },
+    "subcategory/automobiles/vehicle-servicing-and-repairs": {
+      "photo": "mechanic",
+      "subject": "Vehicle Servicing & Repairs",
+      "previousPhoto": "mechanic"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/scheduled-servicing": {
+      "photo": "mechanic",
+      "subject": "Scheduled servicing",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/engine-repairs": {
+      "photo": "mechanic",
+      "subject": "Engine repairs",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/brake-repairs": {
+      "photo": "automobile-brakes",
+      "subject": "Brake repairs",
+      "previousPhoto": "air-conditioning"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/battery-services": {
+      "photo": "automobile-battery",
+      "subject": "Battery services",
+      "previousPhoto": "airplane"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/tyre-replacement": {
+      "photo": "automobile-tyre",
+      "subject": "Tyre replacement",
+      "previousPhoto": "architecture"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/wheel-alignment": {
+      "photo": "automobile-alignment",
+      "subject": "Wheel alignment",
+      "previousPhoto": "electrical"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/denting-and-painting": {
+      "photo": "automobile-body-paint",
+      "subject": "Denting and painting",
+      "previousPhoto": "wall-painting"
+    },
+    "type/automobiles/vehicle-servicing-and-repairs/vehicle-diagnostics": {
+      "photo": "automobile-diagnostics",
+      "subject": "Vehicle diagnostics",
+      "previousPhoto": "lab"
+    },
+    "subcategory/automobiles/car-care-and-detailing": {
+      "photo": "car-wash",
+      "subject": "Car Care & Detailing",
+      "previousPhoto": "car-wash"
+    },
+    "type/automobiles/car-care-and-detailing/car-washing": {
+      "photo": "car-wash",
+      "subject": "Car washing",
+      "previousPhoto": "car-wash"
+    },
+    "type/automobiles/car-care-and-detailing/interior-cleaning": {
+      "photo": "automobile-interior-cleaning",
+      "subject": "Interior cleaning",
+      "previousPhoto": "cleaning"
+    },
+    "type/automobiles/car-care-and-detailing/exterior-detailing": {
+      "photo": "automobile-polishing",
+      "subject": "Exterior detailing",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/car-care-and-detailing/ceramic-coating": {
+      "photo": "automobile-ceramic-coating",
+      "subject": "Ceramic coating",
+      "previousPhoto": "mechanic"
+    },
+    "type/automobiles/car-care-and-detailing/paint-protection": {
+      "photo": "automobile-paint-protection",
+      "subject": "Paint protection",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/car-care-and-detailing/polishing": {
+      "photo": "automobile-polishing",
+      "subject": "Polishing",
+      "previousPhoto": "wall-painting"
+    },
+    "subcategory/automobiles/spare-parts-and-accessories": {
+      "photo": "automobile-engine-parts",
+      "subject": "Spare Parts & Accessories",
+      "previousPhoto": "motorcycle"
+    },
+    "type/automobiles/spare-parts-and-accessories/tyres": {
+      "photo": "automobile-tyre",
+      "subject": "Tyres",
+      "previousPhoto": "mechanic"
+    },
+    "type/automobiles/spare-parts-and-accessories/batteries": {
+      "photo": "automobile-battery",
+      "subject": "Batteries",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/spare-parts-and-accessories/engine-parts": {
+      "photo": "automobile-engine-parts",
+      "subject": "Engine parts",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/spare-parts-and-accessories/helmets": {
+      "photo": "automobile-helmet",
+      "subject": "Helmets",
+      "previousPhoto": "air-conditioning"
+    },
+    "type/automobiles/spare-parts-and-accessories/vehicle-accessories": {
+      "photo": "automobile-helmet",
+      "subject": "Vehicle accessories",
+      "previousPhoto": "airplane"
+    },
+    "type/automobiles/spare-parts-and-accessories/audio-systems": {
+      "photo": "automobile-audio",
+      "subject": "Audio systems",
+      "previousPhoto": "architecture"
+    },
+    "type/automobiles/spare-parts-and-accessories/seat-covers": {
+      "photo": "automobile-seats",
+      "subject": "Seat covers",
+      "previousPhoto": "barber"
+    },
+    "subcategory/automobiles/vehicle-insurance-and-finance": {
+      "photo": "automobile-insurance",
+      "subject": "Vehicle Insurance & Finance",
+      "previousPhoto": "finance"
+    },
+    "type/automobiles/vehicle-insurance-and-finance/vehicle-insurance-providers": {
+      "photo": "automobile-insurance",
+      "subject": "Vehicle insurance providers",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/vehicle-insurance-and-finance/vehicle-loans": {
+      "photo": "finance",
+      "subject": "Vehicle loans",
+      "previousPhoto": "air-conditioning"
+    },
+    "type/automobiles/vehicle-insurance-and-finance/insurance-renewal-assistance": {
+      "photo": "automobile-insurance",
+      "subject": "Insurance renewal assistance",
+      "previousPhoto": "airplane"
+    },
+    "type/automobiles/vehicle-insurance-and-finance/financing-enquiries": {
+      "photo": "finance",
+      "subject": "Financing enquiries",
+      "previousPhoto": "accounting-calculation"
+    },
+    "subcategory/automobiles/driving-and-vehicle-documentation": {
+      "photo": "automobile-driving",
+      "subject": "Driving & Vehicle Documentation",
+      "previousPhoto": "registration-paperwork"
+    },
+    "type/automobiles/driving-and-vehicle-documentation/driving-schools": {
+      "photo": "automobile-driving",
+      "subject": "Driving schools",
+      "previousPhoto": "education-and-skills"
+    },
+    "type/automobiles/driving-and-vehicle-documentation/driving-lessons": {
+      "photo": "automobile-driving",
+      "subject": "Driving lessons",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/driving-and-vehicle-documentation/licence-assistance": {
+      "photo": "registration-paperwork",
+      "subject": "Licence assistance",
+      "previousPhoto": "registration-paperwork"
+    },
+    "type/automobiles/driving-and-vehicle-documentation/vehicle-registration-assistance": {
+      "photo": "registration-paperwork",
+      "subject": "Vehicle registration assistance",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/driving-and-vehicle-documentation/vehicle-inspection": {
+      "photo": "automobile-diagnostics",
+      "subject": "Vehicle inspection",
+      "previousPhoto": "air-conditioning"
+    },
+    "type/automobiles/driving-and-vehicle-documentation/pre-purchase-inspection": {
+      "photo": "catalogue-first25-automobiles--used-vehicles",
+      "subject": "Pre-purchase inspection",
+      "previousPhoto": "airplane"
+    },
+    "subcategory/automobiles/roadside-assistance": {
+      "photo": "automobile-towing",
+      "subject": "Roadside Assistance",
+      "previousPhoto": "building-inspection"
+    },
+    "type/automobiles/roadside-assistance/towing": {
+      "photo": "automobile-towing",
+      "subject": "Towing",
+      "previousPhoto": "mechanic"
+    },
+    "type/automobiles/roadside-assistance/breakdown-assistance": {
+      "photo": "automobile-towing",
+      "subject": "Breakdown assistance",
+      "previousPhoto": "truck"
+    },
+    "type/automobiles/roadside-assistance/flat-tyre-assistance": {
+      "photo": "automobile-tyre",
+      "subject": "Flat tyre assistance",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/roadside-assistance/battery-jump-start": {
+      "photo": "automobile-jump-start",
+      "subject": "Battery jump-start",
+      "previousPhoto": "accounting-calculation"
+    },
+    "type/automobiles/roadside-assistance/emergency-fuel-delivery-where-legally-available": {
+      "photo": "automobile-fuel",
+      "subject": "Emergency fuel delivery, where legally available",
+      "previousPhoto": "construction-contract"
+    },
+    "subcategory/automobiles/commercial-and-fleet-services": {
+      "photo": "automobile-fleet",
+      "subject": "Commercial & Fleet Services",
+      "previousPhoto": "truck"
+    },
+    "type/automobiles/commercial-and-fleet-services/fleet-maintenance": {
+      "photo": "automobile-fleet",
+      "subject": "Fleet maintenance",
+      "previousPhoto": "truck"
+    },
+    "type/automobiles/commercial-and-fleet-services/commercial-vehicle-servicing": {
+      "photo": "automobile-fleet",
+      "subject": "Commercial vehicle servicing",
+      "previousPhoto": "mechanic"
+    },
+    "type/automobiles/commercial-and-fleet-services/fleet-management": {
+      "photo": "automobile-fleet",
+      "subject": "Fleet management",
+      "previousPhoto": "accountant-consultation"
+    },
+    "type/automobiles/commercial-and-fleet-services/vehicle-leasing-enquiries": {
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
+      "subject": "Vehicle leasing enquiries",
+      "previousPhoto": "accounting-calculation"
+    },
+    "category/automobiles": {
+      "photo": "automobiles",
+      "subject": "Automobiles",
+      "previousPhoto": "automobiles"
+    }
+  }
+}

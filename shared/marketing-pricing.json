@@ -1,0 +1,1135 @@
+{
+  "version": 1,
+  "currency": "INR",
+  "notice": "Indicative starting prices, pending commercial approval. This is a quotation service, not checkout or a confirmed booking. Ad spend, taxes, add-ons and third-party charges are separate.",
+  "categories": [
+    {
+      "id": "websites",
+      "name": "Website Design & Development",
+      "icon": "monitor"
+    },
+    {
+      "id": "digital",
+      "name": "Digital Marketing",
+      "icon": "bar-chart-2"
+    },
+    {
+      "id": "branding",
+      "name": "Graphic Design & Branding",
+      "icon": "pen-tool"
+    },
+    {
+      "id": "video",
+      "name": "Video Production & AI Ads",
+      "icon": "video"
+    },
+    {
+      "id": "social",
+      "name": "Social Media Marketing",
+      "icon": "users"
+    },
+    {
+      "id": "search",
+      "name": "SEO & Search Marketing",
+      "icon": "search"
+    },
+    {
+      "id": "influencer",
+      "name": "Influencer Marketing",
+      "icon": "star"
+    },
+    {
+      "id": "outdoor",
+      "name": "Outdoor Advertising",
+      "icon": "map-pin"
+    },
+    {
+      "id": "mobility",
+      "name": "Mobility Advertising",
+      "icon": "truck"
+    },
+    {
+      "id": "screens",
+      "name": "Digital Outdoor Screens",
+      "icon": "airplay"
+    },
+    {
+      "id": "cinema",
+      "name": "Cinema & Offline Advertising",
+      "icon": "film"
+    }
+  ],
+  "services": [
+    {
+      "id": "landing-page",
+      "name": "Landing Page",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "one-time",
+      "description": "A focused introduction to your business or campaign.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "portfolio-website",
+      "name": "Portfolio Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 799900,
+      "billing": "one-time",
+      "description": "Showcase your work, experience and enquiry details.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "business-website",
+      "name": "Business Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 1299900,
+      "billing": "one-time",
+      "description": "Introduce your business, services and ways to contact you.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "professional-website",
+      "name": "Professional Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 2499900,
+      "billing": "one-time",
+      "description": "A tailored business presence with a structured content journey.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "corporate-website",
+      "name": "Corporate Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 4999900,
+      "billing": "one-time",
+      "description": "A larger company website with content and navigation scoped to your organisation.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "wordpress-website",
+      "name": "WordPress Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 1999900,
+      "billing": "one-time",
+      "description": "A content-managed website using WordPress.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "booking-website",
+      "name": "Booking Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 2999900,
+      "billing": "one-time",
+      "description": "A website with booking requirements scoped to your operating process.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "ecommerce-website",
+      "name": "E-commerce Website",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 3999900,
+      "billing": "one-time",
+      "description": "An online product catalogue and shopping journey.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "custom-web-app",
+      "name": "Custom Web Application",
+      "category_ids": [
+        "websites"
+      ],
+      "starting_price_paise": 9999900,
+      "billing": "one-time",
+      "description": "A custom application scoped through requirements discovery.",
+      "deliverables": [
+        "Requirements and content review",
+        "Responsive page design",
+        "Contact or enquiry journey",
+        "Launch handover scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional pages",
+        "Copywriting",
+        "Hosting and domain setup",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Domain, hosting, paid plugins and payment-provider fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "social-management",
+      "name": "Social Media Management",
+      "category_ids": [
+        "digital",
+        "social"
+      ],
+      "starting_price_paise": 599900,
+      "billing": "month",
+      "description": "Plan and manage a consistent social presence.",
+      "deliverables": [
+        "Content planning",
+        "Post preparation and scheduling",
+        "Performance summary"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "local-seo",
+      "name": "Local SEO",
+      "category_ids": [
+        "digital",
+        "search"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "month",
+      "description": "Improve the foundations of local search visibility.",
+      "deliverables": [
+        "Local keyword review",
+        "Local presence recommendations",
+        "Progress reporting"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "standard-seo",
+      "name": "Standard SEO",
+      "category_ids": [
+        "digital",
+        "search"
+      ],
+      "starting_price_paise": 999900,
+      "billing": "month",
+      "description": "Plan ongoing search optimisation around your business.",
+      "deliverables": [
+        "Website and keyword review",
+        "On-page recommendations",
+        "Progress reporting"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "google-ads",
+      "name": "Google Ads Management",
+      "category_ids": [
+        "digital",
+        "search"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "month",
+      "description": "Plan, configure and review paid search campaigns.",
+      "deliverables": [
+        "Campaign planning",
+        "Campaign configuration",
+        "Optimisation and reporting"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "meta-ads",
+      "name": "Meta Ads Management",
+      "category_ids": [
+        "digital",
+        "social"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "month",
+      "description": "Manage paid campaigns across supported Meta channels.",
+      "deliverables": [
+        "Audience and campaign planning",
+        "Campaign configuration",
+        "Optimisation and reporting"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "google-business-profile",
+      "name": "Google Business Profile Optimization",
+      "category_ids": [
+        "digital",
+        "search"
+      ],
+      "starting_price_paise": 299900,
+      "billing": "one-time",
+      "description": "Review and improve your business profile information.",
+      "deliverables": [
+        "Profile audit",
+        "Business information optimisation",
+        "Recommendations for ongoing updates"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "content-marketing",
+      "name": "Content Marketing",
+      "category_ids": [
+        "digital",
+        "social"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "month",
+      "description": "Create a content direction aligned with your audience.",
+      "deliverables": [
+        "Content brief",
+        "Editorial planning",
+        "Content deliverables agreed in the quote"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "email-marketing",
+      "name": "Email Marketing",
+      "category_ids": [
+        "digital"
+      ],
+      "starting_price_paise": 399900,
+      "billing": "month",
+      "description": "Plan email communication for your existing permission-based audience.",
+      "deliverables": [
+        "Campaign brief",
+        "Email content planning",
+        "Reporting scope agreed in the quote"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "whatsapp-setup",
+      "name": "WhatsApp Marketing Setup",
+      "category_ids": [
+        "digital"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "one-time",
+      "description": "Set up a permission-based WhatsApp marketing workflow.",
+      "deliverables": [
+        "Business requirements review",
+        "Workflow configuration scope",
+        "Handover guidance"
+      ],
+      "addons": [
+        "Additional channels",
+        "Additional creative production"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Advertising budgets, platform messaging fees and third-party subscriptions are separate.",
+        "No ranking, reach, lead or sales outcome is guaranteed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "social-graphic",
+      "name": "Social Graphic",
+      "category_ids": [
+        "branding"
+      ],
+      "starting_price_paise": 49900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "promotional-poster",
+      "name": "Promotional Poster",
+      "category_ids": [
+        "branding"
+      ],
+      "starting_price_paise": 79900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "digital-banner",
+      "name": "Digital Banner",
+      "category_ids": [
+        "branding"
+      ],
+      "starting_price_paise": 69900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "logo-design",
+      "name": "Logo Design",
+      "category_ids": [
+        "branding"
+      ],
+      "starting_price_paise": 299900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "promotional-reel",
+      "name": "Promotional Reel",
+      "category_ids": [
+        "video"
+      ],
+      "starting_price_paise": 299900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "ai-video-ad",
+      "name": "AI Video Advertisement",
+      "category_ids": [
+        "video"
+      ],
+      "starting_price_paise": 299900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "ugc-video-ad",
+      "name": "UGC-Style Video Ad",
+      "category_ids": [
+        "video"
+      ],
+      "starting_price_paise": 499900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "professional-video-ad",
+      "name": "Professional Video Advertisement",
+      "category_ids": [
+        "video"
+      ],
+      "starting_price_paise": 1999900,
+      "billing": "one-time",
+      "description": "Creative production for your brand or campaign, with scope confirmed before work starts.",
+      "deliverables": [
+        "Creative brief",
+        "Design or video concept",
+        "Platform-ready output as agreed in the quote"
+      ],
+      "addons": [
+        "Additional formats",
+        "Additional revisions",
+        "Additional production scope"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Talent, shoots, travel, stock assets and music licensing are separately scoped.",
+        "Creating a video does not guarantee publication or moderation approval on V Ads."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": true
+    },
+    {
+      "id": "influencer-campaign",
+      "name": "Influencer Marketing",
+      "category_ids": [
+        "influencer"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "roadside-hoarding",
+      "name": "Roadside Hoardings",
+      "category_ids": [
+        "outdoor"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "bus-shelter",
+      "name": "Bus Shelter Advertising",
+      "category_ids": [
+        "outdoor"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "digital-outdoor",
+      "name": "Digital Outdoor Screens",
+      "category_ids": [
+        "screens"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "auto-branding",
+      "name": "Auto-rickshaw Branding",
+      "category_ids": [
+        "mobility"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "bus-advertising",
+      "name": "Bus Advertising",
+      "category_ids": [
+        "mobility"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "vehicle-branding",
+      "name": "Vehicle Branding",
+      "category_ids": [
+        "mobility"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
+      "id": "cinema-advertising",
+      "name": "Cinema Advertising",
+      "category_ids": [
+        "cinema"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Request location-specific options. Inventory, supplier pricing and campaign terms require confirmation.",
+      "deliverables": [
+        "Campaign brief",
+        "Location or route requirements",
+        "Format and quantity review",
+        "A scoped quotation subject to availability"
+      ],
+      "addons": [
+        "Artwork production",
+        "Printing or installation"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Media inventory, permits, production, installation and supplier charges are not confirmed."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    }
+  ],
+  "packages": [
+    {
+      "id": "marketing-starter",
+      "name": "Starter",
+      "monthly_price_paise": 499900,
+      "features": [
+        "Focused campaign planning",
+        "Basic reporting"
+      ],
+      "pricing_state": "PROPOSED",
+      "note": "Proposed inclusions; quantities, channels and final scope must be agreed in the quote."
+    },
+    {
+      "id": "marketing-growth",
+      "name": "Growth",
+      "monthly_price_paise": 999900,
+      "features": [
+        "Campaign planning",
+        "Content coordination",
+        "Performance reporting"
+      ],
+      "pricing_state": "PROPOSED",
+      "note": "Proposed inclusions; quantities, channels and final scope must be agreed in the quote."
+    },
+    {
+      "id": "marketing-professional",
+      "name": "Professional",
+      "monthly_price_paise": 1999900,
+      "features": [
+        "Multi-channel planning",
+        "Content coordination",
+        "Campaign optimisation",
+        "Performance reporting"
+      ],
+      "pricing_state": "PROPOSED",
+      "note": "Proposed inclusions; quantities, channels and final scope must be agreed in the quote."
+    },
+    {
+      "id": "marketing-premium",
+      "name": "Premium",
+      "monthly_price_paise": 3999900,
+      "features": [
+        "Integrated campaign planning",
+        "Content coordination",
+        "Campaign optimisation",
+        "Performance reporting",
+        "Review and recommendations"
+      ],
+      "pricing_state": "PROPOSED",
+      "note": "Proposed inclusions; quantities, channels and final scope must be agreed in the quote."
+    }
+  ]
+}

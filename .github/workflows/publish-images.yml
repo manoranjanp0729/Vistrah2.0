@@ -2,21 +2,235 @@ name: Publish release images
 on:
   workflow_dispatch:
     inputs:
+      release_sha:
+        description: 'Main releases only: approved full 40-character source SHA; must equal the selected main workflow commit.'
+        required: false
+        type: string
+        default: ''
+      release_confirmation:
+        description: 'Main releases only: type PUBLISH VERIFIED RELEASE after separate source/publication approval. Does not deploy or clear the V Ads hold.'
+        required: false
+        type: string
+        default: ''
       candidate_sha:
-        description: Full reviewed development commit SHA
-        required: true
+        description: 'Test candidate: full 40-character commit SHA on chore/protect-local-source-20261020. Leave blank for the existing main release.'
+        required: false
         type: string
+        default: ''
       candidate_confirmation:
-        description: Type PUBLISH TEST CANDIDATE and select the development branch
-        required: true
+        description: 'To publish test candidates, type PUBLISH TEST CANDIDATE. This does not deploy.'
+        required: false
         type: string
+        default: ''
 permissions:
   contents: read
+concurrency:
+  group: publish-images-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  select_development_branch:
+  authorize_release:
+    if: github.ref == 'refs/heads/main' && inputs.candidate_sha == ''
     runs-on: ubuntu-24.04
-    timeout-minutes: 1
+    timeout-minutes: 2
     steps:
-      - run: |
-          echo 'Select chore/protect-local-source-20261020; this registration stub never publishes or deploys.'
-          exit 1
+      - name: Require explicit main release confirmation
+        shell: bash
+        env:
+          RELEASE_CONFIRMATION: ${{ inputs.release_confirmation }}
+          RELEASE_SHA: ${{ inputs.release_sha }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_CONFIRMATION" == 'PUBLISH VERIFIED RELEASE' ]] || { echo 'Explicit publication confirmation is required; nothing will be built or published.' >&2; exit 1; }
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ && "$RELEASE_SHA" == "$GITHUB_SHA" ]] || { echo 'Approved full release SHA must match this workflow commit.' >&2; exit 1; }
+  checks:
+    needs: authorize_release
+    if: github.ref == 'refs/heads/main' && inputs.candidate_sha == ''
+    uses: ./.github/workflows/ci.yml
+  publish:
+    name: Publish (${{ matrix.image }})
+    needs: checks
+    if: github.ref == 'refs/heads/main' && inputs.candidate_sha == ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: api
+            dockerfile: backend/Dockerfile
+          - image: web
+            dockerfile: frontend/Dockerfile
+          - image: admin
+            dockerfile: admin/Dockerfile
+          - image: phone-web
+            dockerfile: frontend/Dockerfile.phone
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Image identity
+        id: identity
+        shell: bash
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY,,}/${{ matrix.image }}" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish
+        id: build
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.identity.outputs.name }}:sha-${{ github.sha }}
+          build-args: |
+            EXPO_PUBLIC_MAPTILER_WEB_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
+            NEXT_PUBLIC_MAPTILER_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          provenance: mode=min
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+      - name: Record immutable reference
+        env:
+          IMAGE_NAME: ${{ steps.identity.outputs.name }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          echo "### ${{ matrix.image }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit: $GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+          echo "Digest: $IMAGE_NAME@$IMAGE_DIGEST" >> "$GITHUB_STEP_SUMMARY"
+  resolve_candidate:
+    if: github.ref == 'refs/heads/chore/protect-local-source-20261020' && inputs.candidate_sha != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      sha: ${{ steps.source.outputs.sha }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact candidate and manual confirmation
+        id: source
+        shell: bash
+        env:
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          CANDIDATE_CONFIRMATION: ${{ inputs.candidate_confirmation }}
+        run: |
+          set -euo pipefail
+          [[ "$CANDIDATE_CONFIRMATION" == 'PUBLISH TEST CANDIDATE' ]] || { echo 'Explicit candidate publication confirmation is required.' >&2; exit 1; }
+          [[ "$CANDIDATE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'A full lowercase commit SHA is required.' >&2; exit 1; }
+          git cat-file -e "$CANDIDATE_SHA^{commit}"
+          git merge-base --is-ancestor "$CANDIDATE_SHA" "$GITHUB_SHA"
+          git show "$CANDIDATE_SHA:backend/Dockerfile" | grep -Fq 'apt-get install -y --no-install-recommends ffmpeg'
+          echo "sha=$CANDIDATE_SHA" >> "$GITHUB_OUTPUT"
+          echo "Candidate commit: $CANDIDATE_SHA" >> "$GITHUB_STEP_SUMMARY"
+  candidate_checks:
+    needs: resolve_candidate
+    uses: ./.github/workflows/ci.yml
+    with:
+      source_ref: ${{ needs.resolve_candidate.outputs.sha }}
+      server_images_only: true
+  publish_candidate:
+    name: Test candidate (${{ matrix.image }})
+    needs: [resolve_candidate, candidate_checks]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: api
+            dockerfile: backend/Dockerfile
+          - image: web
+            dockerfile: frontend/Dockerfile
+          - image: admin
+            dockerfile: admin/Dockerfile
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.resolve_candidate.outputs.sha }}
+          persist-credentials: false
+      - name: Candidate identity
+        id: identity
+        shell: bash
+        env:
+          CANDIDATE_SHA: ${{ needs.resolve_candidate.outputs.sha }}
+          IMAGE: ${{ matrix.image }}
+        run: |
+          echo "name=ghcr.io/${GITHUB_REPOSITORY,,}/candidate-$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "tag=sha-$CANDIDATE_SHA-run-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and publish candidate
+        id: build
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.identity.outputs.name }}:${{ steps.identity.outputs.tag }}
+          build-args: |
+            EXPO_PUBLIC_MAPTILER_WEB_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
+            NEXT_PUBLIC_MAPTILER_API_KEY=${{ vars.EXPO_PUBLIC_MAPTILER_WEB_API_KEY }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ needs.resolve_candidate.outputs.sha }}
+          provenance: mode=min
+          cache-from: type=gha,scope=candidate-${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=candidate-${{ matrix.image }}
+      - name: Verify candidate API video runtime without starting the API
+        if: matrix.image == 'api'
+        shell: bash
+        env:
+          IMAGE_NAME: ${{ steps.identity.outputs.name }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --memory 256m --cpus 1 --pids-limit 64 \
+            --tmpfs /tmp:rw,noexec,nosuid,size=16m --entrypoint sh \
+            "$IMAGE_NAME@$IMAGE_DIGEST" -ec '
+              ffmpeg -version >/dev/null
+              ffprobe -version >/dev/null
+              ffmpeg -hide_banner -loglevel error -filter_threads 1 -f lavfi \
+                -i color=c=black:s=96x96:d=0.25 -an -c:v libx264 -threads 1 \
+                -movflags +faststart /tmp/candidate.mp4
+              python -c "from pathlib import Path; import fastapi, sqlalchemy, psycopg; from app.v_ads_video_validation import validate_video; result=validate_video(Path(\"/tmp/candidate.mp4\")); assert result[\"video_codec\"]==\"h264\"; print(\"Candidate FFmpeg, FFprobe, Python imports and private MP4 validation passed\")"
+            '
+          echo 'API media runtime smoke: passed (no network, API startup, database or persistent volume).' >> "$GITHUB_STEP_SUMMARY"
+      - name: Record candidate immutable reference
+        shell: bash
+        env:
+          CANDIDATE_SHA: ${{ needs.resolve_candidate.outputs.sha }}
+          IMAGE_NAME: ${{ steps.identity.outputs.name }}
+          IMAGE_TAG: ${{ steps.identity.outputs.tag }}
+          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          [[ "$IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]
+          echo "### $IMAGE_NAME" >> "$GITHUB_STEP_SUMMARY"
+          echo "Commit: $CANDIDATE_SHA" >> "$GITHUB_STEP_SUMMARY"
+          echo "Tag: $IMAGE_NAME:$IMAGE_TAG" >> "$GITHUB_STEP_SUMMARY"
+          echo "Digest: $IMAGE_NAME@$IMAGE_DIGEST" >> "$GITHUB_STEP_SUMMARY"
+          echo "Run: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,13 @@
+# Use with compose.yaml after the controlled database rollout.
+# Migration and seeding are deliberately separate from API startup.
+services:
+  api:
+    command: [uvicorn, app.main:app, --host, 0.0.0.0, --port, '8000']
+    environment:
+      SEED_CATALOGUE: 'false'
+      V_ADS_MEDIA_ENABLED: ${V_ADS_MEDIA_ENABLED:-1}
+      V_ADS_AUTO_APPROVE: ${V_ADS_AUTO_APPROVE:-true}
+      V_ADS_PRIVATE_ROOT: ${V_ADS_PRIVATE_ROOT:-/data/v-ads}
+      V_ADS_DEV_MIRROR_ROOT: ${V_ADS_DEV_MIRROR_ROOT:-/data/v-ads-e}
+    volumes:
+      - ./artifacts/v-ads-uploads:/data/v-ads-e

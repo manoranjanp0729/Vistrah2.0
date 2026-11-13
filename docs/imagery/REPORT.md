@@ -1,5 +1,63 @@
 # Image registry correction
 
+## Canonical catalogue preparation — 20 October 2026
+
+Scope: 889 canonical cards (14 categories, 126 subcategories, 749 listing types),
+their images, and the existing approved legacy catalogue photo pools. Existing
+published-service imagery below remains historical/separate and unchanged.
+
+- Audited and decoded **181 approved photographs**: 168 canonical assets plus
+  13 additional legacy-approved candidates. No identical encoded/decoded photos,
+  reused original sources or dHash near-duplicates at distance <=8 after alias
+  canonicalization. Every canonical web/native pair has identical bytes and
+  verified recorded SHA-256, dimensions and native static binding.
+- Removed **six redundant aliases**, not photographs: events-and-celebrations →
+  events; jobs-and-careers → career-workplace; plumbing → home-and-everyday-services;
+  professional-services → professional-advice; rental-services → construction-equipment;
+  store-signage → shopping-and-local-retail. All alias metadata was identical.
+  Existing rendered image/alt/crop/provenance values are preserved; native static
+  requires now contain 168 unique entries. No image file deleted/re-encoded.
+- `shared/catalogue-imagery.json` is the catalogue-specific **prepared/inactive**
+  mapping: 168 unique photographs assigned to one existing best-matching card
+  each, and **721 original-image requests** in `originalImageQueue`. Each request
+  identifies exact card ID, level/category/subcategory, subject, current approved
+  reference and reason. Requirements explicitly reject alternate crops/renames
+  as unique photographs and require subject relevance/rights provenance. There
+  is no Pexels/API/download dependency or new network asset in this preparation.
+- Both clients retain `shared/marketplace-imagery.json` as their active source
+  while originals are incomplete; no placeholders were exposed in working UI.
+  **98 active reuse groups remain intentionally unchanged** to preserve current
+  appearance. Zero duplicate assignments applies to the prepared catalogue, not
+  a claim that unique-photo rollout has happened. Original queue completion and
+  review are prerequisites for a future deliberate activation.
+- Preparation: `node scripts/prepare-catalogue-photos.cjs` only normalizes
+  identical aliases and writes shared/static manifests. Existing sync generator
+  now also canonicalizes identical aliases so regeneration cannot restore them.
+  The audit is `npm run audit:catalogue-images` from frontend (or
+  `node scripts/audit-catalogue-photos.cjs` at root). Optional JSON report path
+  stays inside workspace. Original approved metadata/licensing records retained.
+
+Verification: **7 new duplicate/queue tests pass**, including same-source images
+with different encoded hashes, duplicate assignments, complete queue and repeatable
+generation. Four affected agriculture-image tests pass, including the pre-change
+resolved-image SHA-256 regression. Five mobile catalogue/image tests and two
+non-render photo-card tests pass. The expanded image audit passes with no errors.
+Taxonomy SHA-256 remains
+`c3de59e3e73955205d3bb2c73a63b306382e10376b59cf1445b40fd037d7ec07`.
+
+Four unrelated existing test failures surfaced and were not repaired: two web
+PhotoCard render tests lack LanguageProvider; mobile tests reference removed
+`src/app/(tabs)/services.tsx` and expect two old homepage compact markers. No
+routes/providers/homepage behavior changed by this image preparation. No full
+build/type/lint/browser pass claimed. Evidence:
+`artifacts/catalogue-imagery-audit/result.json` (local/ignored).
+
+Next authorized image work is review/creation of the queued originals, including
+the 13 legacy candidates where they fit the exact subject and do not duplicate a
+logical catalogue assignment. Keep the prepared manifest inactive until reviewed.
+No running service, database, taxonomy, production setting or Git publication
+changed. V Ads deployment is not resumed by this image task.
+
 Audited 8 categories, 1 subcategory and all 59 seeded services, including their category/search/related cards, landing pages, enquiry forms and confirmations, and provider directories/details. The registry also inventories public landing pages, account/Finds contexts, authentication/recovery states and all ten admin sections: 97 stable subject/context entries in total. Navigation, tables, forms and dialogs do not contain separate photographic mappings. Provider initials and source vacancy records remain intact.
 
 ## Findings and results

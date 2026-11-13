@@ -92,6 +92,51 @@ def test_multi_service_draft_submit_approval_and_lead_eligibility(client,seeded,
     assert client.get('/provider-leads',headers=customer).json()==[]
     assert client.post(f'/admin/requests/{request(sids[0])}/provider',headers=admin,json={'provider_id':pid}).status_code==409
 
+def test_cross_section_batch_and_draft_service_changes(client,seeded,customer,db):
+    categories=client.get('/catalogue').json()
+    first=next(category for category in categories if len(category['services'])>=2)
+    second=next(category for category in categories if category['id']!=first['id'] and category['services'])
+    first_ids=[service['id'] for service in first['services'][:2]]
+    second_id=second['services'][0]['id']
+    payload={'groups':[
+        {'category_id':first['id'],'subcategory_id':None,'service_ids':[first_ids[0]]},
+        {'category_id':second['id'],'subcategory_id':None,'service_ids':[second_id]},
+    ]}
+    created=client.post('/provider-applications/batch',headers=customer,json=payload)
+    assert created.status_code==201,created.text
+    applications=created.json()
+    assert len(applications)==2
+    assert [item['services'][0]['service_id'] for item in applications]==[first_ids[0],second_id]
+
+    first_app=applications[0]
+    changed=client.put(f"/provider-applications/{first_app['id']}/services",headers=customer,json={
+        'revision':first_app['revision'],'service_ids':first_ids,
+    })
+    assert changed.status_code==200,changed.text
+    assert {item['service_id'] for item in changed.json()['services']}==set(first_ids)
+    removed=client.put(f"/provider-applications/{first_app['id']}/services",headers=customer,json={
+        'revision':changed.json()['revision'],'service_ids':[first_ids[0]],
+    })
+    assert removed.status_code==200 and len(removed.json()['services'])==1
+
+    before=client.get('/provider-applications',headers=customer).json()
+    invalid=client.post('/provider-applications/batch',headers=customer,json={'groups':[
+        {'category_id':first['id'],'subcategory_id':None,'service_ids':[first_ids[0]]},
+        {'category_id':second['id'],'subcategory_id':None,'service_ids':[first_ids[0]]},
+    ]})
+    assert invalid.status_code==422
+    assert client.get('/provider-applications',headers=customer).json()==before
+
+    saved=complete(client,customer,removed.json())
+    submitted=submit(client,customer,saved)
+    assert submitted.status_code==200,submitted.text
+    locked=client.put(f"/provider-applications/{saved['id']}/services",headers=customer,json={
+        'revision':submitted.json()['revision'],'service_ids':[first_ids[0]],
+    })
+    assert locked.status_code==409
+    from app.models import ProviderService
+    assert db.scalar(select(ProviderService).where(ProviderService.application_id==saved['id'])) is None
+
 def test_conditional_validation_document_ownership_and_binary_download(client,seeded,customer,admin,db):
     app=start(client,customer,client.get('/catalogue').json()[1]);sid=app['services'][0]['service_id']
     app=complete(client,customer,app,{sid:{'represents_owners':True}})

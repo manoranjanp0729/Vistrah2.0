@@ -2,8 +2,8 @@ import {describe,it,expect} from 'vitest';
 import {LatestSearch,locationProviders,providerBlocker,requestGps,resolveAddress,validPoint,wrapPoint,radii} from './location';
 
 describe('location privacy and provider boundary',()=>{
-  it('has no live provider and exposes only the approved radii',()=>{
-    expect(locationProviders).toEqual({tiles:null,geocoder:null});expect(radii).toEqual([2,5,10,25]);expect(providerBlocker).toContain('terms and costs');
+  it('keeps manual fallback when no map key is configured and exposes only the approved radii',()=>{
+    expect(locationProviders).toEqual({tiles:null,geocoder:null});expect(radii).toEqual([2,5,10,25]);expect(providerBlocker).toContain('MapTiler API key');
   });
   it('validates ranges, nonfinite values and date-line wrapping',()=>{
     expect(validPoint({latitude:90,longitude:180})).toBe(true);
@@ -12,7 +12,7 @@ describe('location privacy and provider boundary',()=>{
   });
   it('supports a replaceable mock geocoder and preserves manual fallback on error',async()=>{
     const signal=new AbortController().signal;
-    await expect(resolveAddress('private address',locationProviders,signal)).rejects.toThrow('terms and costs');
+    await expect(resolveAddress('private address',locationProviders,signal)).rejects.toThrow('MapTiler API key');
     const fixture={latitude:12,longitude:77,locality:'Mock locality',postal_code:'560001',address:'',landmark:''};
     expect(await resolveAddress('fixture',{tiles:null,geocoder:{id:'mock',search:async()=>[fixture,{...fixture,latitude:91}]}},signal)).toEqual([fixture]);
     await expect(resolveAddress('private address',{tiles:null,geocoder:{id:'mock',search:async()=>{throw new Error('private query');}}},signal)).rejects.toThrow('manual pin');
@@ -39,3 +39,4 @@ describe('location privacy and provider boundary',()=>{
     expect(await pending).toEqual({current:false});
   });
 });
+

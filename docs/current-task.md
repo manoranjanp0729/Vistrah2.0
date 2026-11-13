@@ -1,7 +1,7 @@
 # V Ads nearest-first always-loaded spatial feed fix - 13 November 2026
 
 - Updated `GET /v-ads/reels` spatial branch in `backend/app/v_ads_routes.py` so customers always receive approved ads ordered nearest-first (never an empty feed when approved ads exist): (0) `local` in-range ads by nearest `distance_km`, (1) regional in-range `farther` ads by nearest `distance_km`, (2) beyond-radius geo-approved ads by nearest `distance_km`, and (3) remaining approved ads without an approved geo-pin (global or pending targeting, without exposing unapproved coordinates). Explicit `local_only=true` retains strict local filtering.
-- Verification (source only; local/AWS running builds untouched): `test_v_ads_feed_spatial`, `test_v_ads_geography`, `test_v_ads_targeting_routes`, and `test_v_ads_review_routes` passed `23/23` (`unittest`); `git diff --check` clean. Next: await user approval to commit, push, and redeploy `vistrah20-api` on AWS (`13.235.104.68`).
+- Verification & live AWS rollout: `test_v_ads_feed_spatial`, `test_v_ads_geography`, `test_v_ads_targeting_routes`, and `test_v_ads_review_routes` passed `23/23` (`unittest`); committed/pushed `5132f02` to `origin/main` and rebuilt/restarted `vistrah20-api` on AWS (`13.235.104.68`, direct Uvicorn, DB/media untouched). Live HTTPS checks confirmed `8` reels on unlocated `GET /v-ads/reels?page=1`, Bengaluru `lat=12.9716&lon=77.5946&radius_km=5`, and remote Delhi `https://vistrah.in/api/v-ads/reels?page=1&lat=28.6139&lon=77.2090&radius_km=5`. Await user acceptance review on `https://vistrah.in/v-ads` and `https://vistrah.in/app/v-ads`.
 
 # Google Sign-In button full-width sizing fix deployed - 13 November 2026
 

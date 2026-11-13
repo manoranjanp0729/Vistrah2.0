@@ -1,8 +1,12 @@
-# Google Sign-In button full-width sizing fix (source) - 13 November 2026
+# V Ads nearest-first always-loaded spatial feed fix - 13 November 2026
+
+- Updated `GET /v-ads/reels` spatial branch in `backend/app/v_ads_routes.py` so customers always receive approved ads ordered nearest-first (never an empty feed when approved ads exist): (0) `local` in-range ads by nearest `distance_km`, (1) regional in-range `farther` ads by nearest `distance_km`, (2) beyond-radius geo-approved ads by nearest `distance_km`, and (3) remaining approved ads without an approved geo-pin (global or pending targeting, without exposing unapproved coordinates). Explicit `local_only=true` retains strict local filtering.
+- Verification (source only; local/AWS running builds untouched): `test_v_ads_feed_spatial`, `test_v_ads_geography`, `test_v_ads_targeting_routes`, and `test_v_ads_review_routes` passed `23/23` (`unittest`); `git diff --check` clean. Next: await user approval to commit, push, and redeploy `vistrah20-api` on AWS (`13.235.104.68`).
+
+# Google Sign-In button full-width sizing fix deployed - 13 November 2026
 
 - Updated `shared/google-web.ts` (`width` & `logo_alignment` GIS button options), `frontend/components/google-sign-in.tsx` (`100%` width, `48px` height, `18px` radius matching `.button`), and `mobile/src/components/google-sign-in.web.tsx` (`100%` width, `50px` `controlHeights.standard`, `17px` `radii.action` matching `<Action>`) using `ResizeObserver` container measurement and uniform GIS scaling.
-- Verification (source only; running AWS build not yet rebuilt): `frontend` and `mobile` `tsc --noEmit` and `git diff --check` passed.
-- Next: Await authorization to commit/push to `main` and rebuild `web` + `phone-web` on AWS (`https://vistrah.in`).
+- Verification & live rollout: `frontend` and `mobile` `tsc --noEmit` passed; committed/pushed as `25dfa25` to `origin/main`; rebuilt and deployed `vistrah20-web` and `vistrah20-phone-web` on AWS (`13.235.104.68`) with all 6 containers healthy. Await user visual review on `https://vistrah.in/login` and `https://vistrah.in/app/auth`.
 
 # Google Sign-In enabled on AWS (`https://vistrah.in`) & local env - 13 November 2026
 

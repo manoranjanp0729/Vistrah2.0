@@ -1,7 +1,7 @@
 """Public read-only V Ads feed and advertiser profiles."""
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic.fields import FieldInfo
-from sqlalchemy import select, func
+from sqlalchemy import exists, func, select
 from sqlalchemy.orm import Session
 
 from .database import get_db
@@ -113,7 +113,6 @@ def list_reels(
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from None
 
-        lat_delta = (VAdsTargetingRevision.targeting_radius_km + EDGE_KM) * DEG_PER_KM
         spatial_stmt = (
             select(VAdsVideo, VAdsAdvertiser, VAdsTargetingRevision)
             .join(
@@ -133,17 +132,18 @@ def list_reels(
             .where(
                 VAdsVideo.status == "APPROVED",
                 VAdsAdvertiser.status == "APPROVED",
-                VAdsTargetingRevision.latitude.between(
-                    user_lat - lat_delta,
-                    user_lat + lat_delta,
-                ),
             )
         )
         if only_local:
+            lat_delta = (VAdsTargetingRevision.targeting_radius_km + EDGE_KM) * DEG_PER_KM
             min_lat, max_lat, min_lon, max_lon = bounding_box(
                 user_lat, user_lon, discovery_radius
             )
             spatial_stmt = spatial_stmt.where(
+                VAdsTargetingRevision.latitude.between(
+                    user_lat - lat_delta,
+                    user_lat + lat_delta,
+                ),
                 VAdsTargetingRevision.latitude.between(min_lat, max_lat),
                 VAdsTargetingRevision.longitude.between(min_lon, max_lon),
             )
@@ -155,13 +155,8 @@ def list_reels(
             )
         ).all()
 
-        matched: list[tuple[int, VAdsVideo, VAdsAdvertiser, float, str, float]] = []
+        matched: list[tuple[int, float, VAdsVideo, VAdsAdvertiser, float | None, str | None, float | None]] = []
         for video, advertiser, rev in candidates:
-            b_min_lat, b_max_lat, b_min_lon, b_max_lon = bounding_box(
-                rev.latitude, rev.longitude, rev.targeting_radius_km
-            )
-            if not (b_min_lat <= user_lat <= b_max_lat and b_min_lon <= user_lon <= b_max_lon):
-                continue
             tier = classify_targeting(
                 user_lat,
                 user_lon,
@@ -170,33 +165,77 @@ def list_reels(
                 rev.targeting_radius_km,
                 discovery_radius,
             )
-            if tier is None or (only_local and tier != "local"):
+            if only_local and tier != "local":
                 continue
             dist = distance_km(user_lat, user_lon, rev.latitude, rev.longitude)
+            if tier == "local":
+                rank_tier, proximity = 0, "local"
+            elif tier == "farther":
+                rank_tier, proximity = 1, "farther"
+            else:
+                rank_tier, proximity = 2, "farther"
             matched.append((
-                0 if tier == "local" else 1,
+                rank_tier,
+                dist,
                 video,
                 advertiser,
                 round(dist, 4),
-                tier,
+                proximity,
                 rev.targeting_radius_km,
             ))
 
-        matched.sort(key=lambda item: item[0])
+        matched.sort(key=lambda item: (item[0], item[1]))
         start = (page - 1) * page_size
-        window = matched[start : start + page_size]
-        has_more = len(matched) > start + page_size
-        counts = engagement_counts(db, [item[1].id for item in window])
+        combined_slice = list(matched[start : start + page_size + 1])
+
+        if not only_local and len(combined_slice) < page_size + 1:
+            unpinned_offset = max(0, start - len(matched))
+            unpinned_limit = (page_size + 1) - len(combined_slice)
+            unpinned_rows = db.execute(
+                select(VAdsVideo, VAdsAdvertiser)
+                .join(
+                    VAdsAdvertiser,
+                    VAdsVideo.advertiser_id == VAdsAdvertiser.id,
+                )
+                .where(
+                    VAdsVideo.status == "APPROVED",
+                    VAdsAdvertiser.status == "APPROVED",
+                    ~exists(
+                        select(VAdsTargetingRevision.video_id).where(
+                            VAdsTargetingRevision.video_id == VAdsVideo.id,
+                            VAdsTargetingRevision.status == "APPROVED",
+                        )
+                    ),
+                )
+                .order_by(
+                    VAdsVideo.published_at.desc(),
+                    VAdsVideo.id.desc(),
+                )
+                .offset(unpinned_offset)
+                .limit(unpinned_limit)
+            ).all()
+            combined_slice.extend(
+                (3, 0.0, video, advertiser, None, None, None)
+                for video, advertiser in unpinned_rows
+            )
+
+        window = combined_slice[:page_size]
+        has_more = len(combined_slice) > page_size
+        counts = engagement_counts(db, [item[2].id for item in window])
 
         return {
             "items": [
-                {
-                    **video_payload(db, video, advertiser, counts),
-                    "distance_km": dist_km,
-                    "proximity": tier,
-                    "targeting_radius_km": target_radius_km,
-                }
-                for _, video, advertiser, dist_km, tier, target_radius_km in window
+                (
+                    {
+                        **video_payload(db, video, advertiser, counts),
+                        "distance_km": dist_km,
+                        "proximity": tier,
+                        "targeting_radius_km": target_radius_km,
+                    }
+                    if tier is not None
+                    else video_payload(db, video, advertiser, counts)
+                )
+                for _, _, video, advertiser, dist_km, tier, target_radius_km in window
             ],
             "page": page,
             "has_more": has_more,

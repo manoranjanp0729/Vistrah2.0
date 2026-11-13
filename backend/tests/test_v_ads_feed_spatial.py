@@ -262,39 +262,82 @@ class VAdsFeedSpatialTests(unittest.TestCase):
         self._add_video("ad-untargeted", minutes_offset=13, targeting=None)
         self.db.commit()
 
-        # Bengaluru query with 3 km local discovery radius: local ad ranks before farther citywide ad
+        # Bengaluru query with 3 km local discovery radius:
+        # local -> in-range farther -> nearest beyond-radius ads -> unpinned approved ads
         blr_resp = self.client.get(f"/v-ads/reels?lat={viewer_lat}&lon={viewer_lon}&radius_km=3")
         self.assertEqual(blr_resp.status_code, 200)
         blr_items = blr_resp.json()["items"]
-        self.assertEqual([item["id"] for item in blr_items], ["ad-mg-local", "ad-koramangala-wide"])
+        self.assertEqual(
+            [item["id"] for item in blr_items],
+            [
+                "ad-mg-local",
+                "ad-koramangala-wide",
+                "ad-box-corner-outside-circle",
+                "ad-whitefield-narrow",
+                "ad-mysuru",
+                "ad-untargeted",
+                "ad-superseded-rev",
+                "ad-rejected-rev",
+                "ad-pending-rev",
+            ],
+        )
         self.assertEqual(blr_items[0]["proximity"], "local")
         self.assertLess(blr_items[0]["distance_km"], 3.0)
         self.assertEqual(blr_items[1]["proximity"], "farther")
         self.assertGreater(blr_items[1]["distance_km"], 3.0)
+        # Beyond-radius pinned ads are still returned sorted by nearest distance_km
+        self.assertLess(blr_items[2]["distance_km"], blr_items[3]["distance_km"])
+        self.assertLess(blr_items[3]["distance_km"], blr_items[4]["distance_km"])
+        # Unpinned / unapproved-pin videos stay loadable without exposing unapproved coordinates
+        for unpinned in blr_items[5:]:
+            self.assertNotIn("proximity", unpinned)
+            self.assertNotIn("distance_km", unpinned)
 
-        # Strict local_only=true excludes farther ads outside the 3 km discovery ring
+        # Strict local_only=true excludes farther and unpinned ads outside the 3 km discovery ring
         local_only_resp = self.client.get(
             f"/v-ads/reels?lat={viewer_lat}&lon={viewer_lon}&radius_km=3&local_only=true"
         )
         self.assertEqual(local_only_resp.status_code, 200)
         self.assertEqual([item["id"] for item in local_only_resp.json()["items"]], ["ad-mg-local"])
 
-        # Viewer passing radius_km=25 still cannot expand Whitefield's 3 km campaign
+        # Viewer passing radius_km=25 promotes Koramangala to local (sorted nearest first: MG Road < Koramangala),
+        # while Whitefield (3 km campaign at ~16.8 km) stays farther behind local ads
         wide_viewer_resp = self.client.get(f"/v-ads/reels?lat={viewer_lat}&lon={viewer_lon}&radius_km=25")
+        wide_items = wide_viewer_resp.json()["items"]
         self.assertEqual(
-            [item["id"] for item in wide_viewer_resp.json()["items"]],
-            ["ad-koramangala-wide", "ad-mg-local"],
+            [item["id"] for item in wide_items[:5]],
+            [
+                "ad-mg-local",
+                "ad-koramangala-wide",
+                "ad-box-corner-outside-circle",
+                "ad-whitefield-narrow",
+                "ad-mysuru",
+            ],
         )
+        self.assertEqual(wide_items[0]["proximity"], "local")
+        self.assertEqual(wide_items[1]["proximity"], "local")
+        self.assertEqual(wide_items[2]["proximity"], "farther")
+        self.assertEqual(wide_items[3]["proximity"], "farther")
 
-        # Mysuru viewer (12.3051, 76.6551) receives only the Mysuru campaign
+        # Mysuru viewer (12.3051, 76.6551) receives Mysuru campaign #1, then nearest Bengaluru ads, then unpinned
         mys_resp = self.client.get("/v-ads/reels?lat=12.3051&lon=76.6551&radius_km=5")
         self.assertEqual(mys_resp.status_code, 200)
-        self.assertEqual([item["id"] for item in mys_resp.json()["items"]], ["ad-mysuru"])
-        self.assertEqual(mys_resp.json()["items"][0]["proximity"], "local")
+        mys_items = mys_resp.json()["items"]
+        self.assertEqual(mys_items[0]["id"], "ad-mysuru")
+        self.assertEqual(mys_items[0]["proximity"], "local")
+        self.assertEqual(len(mys_items), 9)
 
-        # Location headers work identically to query params and support pagination
+        # Remote Delhi viewer (28.6139, 77.2090) far outside every radius still sees nearest ads, never empty
+        delhi_resp = self.client.get("/v-ads/reels?lat=28.6139&lon=77.2090&radius_km=5")
+        self.assertEqual(delhi_resp.status_code, 200)
+        delhi_items = delhi_resp.json()["items"]
+        self.assertEqual(len(delhi_items), 9)
+        pinned_distances = [item["distance_km"] for item in delhi_items[:5]]
+        self.assertEqual(pinned_distances, sorted(pinned_distances))
+
+        # Location headers work identically to query params and paginate across tiers
         header_p1 = self.client.get(
-            "/v-ads/reels?page=1&page_size=1",
+            "/v-ads/reels?page=1&page_size=2",
             headers={
                 "X-User-Latitude": str(viewer_lat),
                 "X-User-Longitude": str(viewer_lon),
@@ -302,20 +345,36 @@ class VAdsFeedSpatialTests(unittest.TestCase):
             },
         ).json()
         header_p2 = self.client.get(
-            "/v-ads/reels?page=2&page_size=1",
+            "/v-ads/reels?page=2&page_size=2",
             headers={
                 "X-User-Latitude": str(viewer_lat),
                 "X-User-Longitude": str(viewer_lon),
                 "X-User-Radius-Km": "3",
             },
         ).json()
-        self.assertEqual([item["id"] for item in header_p1["items"]], ["ad-mg-local"])
+        self.assertEqual([item["id"] for item in header_p1["items"]], ["ad-mg-local", "ad-koramangala-wide"])
         self.assertTrue(header_p1["has_more"])
-        self.assertEqual([item["id"] for item in header_p2["items"]], ["ad-koramangala-wide"])
-        self.assertFalse(header_p2["has_more"])
+        self.assertEqual(
+            [item["id"] for item in header_p2["items"]],
+            ["ad-box-corner-outside-circle", "ad-whitefield-narrow"],
+        )
+        self.assertTrue(header_p2["has_more"])
+
+    def test_spatial_feed_keeps_untargeted_videos_visible_after_location_hydrates(self):
+        self._add_video("ad-global-older", minutes_offset=1, targeting=None)
+        self._add_video("ad-global-newer", minutes_offset=2, targeting=None)
+        self.db.commit()
+
+        located = self.client.get("/v-ads/reels?lat=12.9716&lon=77.5946&radius_km=5")
+        self.assertEqual(located.status_code, 200)
+        self.assertEqual(
+            [item["id"] for item in located.json()["items"]],
+            ["ad-global-newer", "ad-global-older"],
+        )
 
     def test_end_to_end_seller_submit_admin_approve_and_feed_visibility(self):
         self._add_video("ad-e2e", minutes_offset=1, targeting=None)
+        self._add_video("ad-other-far", minutes_offset=2, targeting=(12.2958, 76.6394, 20.0, "APPROVED"))
         self.db.commit()
 
         # Submit seller targeting for Indiranagar Bengaluru (12.9784, 77.6408), 8 km radius
@@ -331,11 +390,16 @@ class VAdsFeedSpatialTests(unittest.TestCase):
         )
         self.assertEqual(sub.status_code, 201)
 
-        # Pending targeting is NOT surfaced in spatial feed
+        # While targeting is PENDING, approved video still loads (behind approved geo ads) without unapproved proximity
         before = self.client.get("/v-ads/reels?lat=12.9716&lon=77.5946&radius_km=10").json()
-        self.assertEqual(before["items"], [])
+        self.assertEqual([item["id"] for item in before["items"]], ["ad-other-far", "ad-e2e"])
+        self.assertNotIn("proximity", before["items"][1])
+        self.assertEqual(
+            self.client.get("/v-ads/reels?lat=12.9716&lon=77.5946&radius_km=10&local_only=true").json()["items"],
+            [],
+        )
 
-        # Admin approves targeting -> immediately surfaced in Bengaluru spatial feed
+        # Admin approves targeting -> immediately promoted to #1 local in Bengaluru spatial feed
         rev = self.client.patch(
             "/v-ads/admin/targeting/ad-e2e/review",
             headers={"Authorization": f"Bearer {self.token_admin}"},
@@ -344,7 +408,7 @@ class VAdsFeedSpatialTests(unittest.TestCase):
         self.assertEqual(rev.status_code, 200)
 
         after = self.client.get("/v-ads/reels?lat=12.9716&lon=77.5946&radius_km=10").json()
-        self.assertEqual([item["id"] for item in after["items"]], ["ad-e2e"])
+        self.assertEqual([item["id"] for item in after["items"]], ["ad-e2e", "ad-other-far"])
         self.assertEqual(after["items"][0]["proximity"], "local")
 
 

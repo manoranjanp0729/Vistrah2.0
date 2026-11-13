@@ -1,5 +1,5 @@
 import {describe,it,expect,vi} from 'vitest';
-import {managementClient,adminVAdsClient,moderationInput,advanceView,type AdminAccount} from '../../shared/v-ads-management';
+import {managementClient,adminVAdsClient,moderationInput,parseTargetingInput,advanceView,type AdminAccount} from '../../shared/v-ads-management';
 import type {Api,AdvertiserAccount,SellerVideo} from '../../shared/v-ads';
 import {proxyVAdsPreview} from '../../admin/lib/v-ads-preview';
 describe('Phase 3 management contracts and admin preview boundary',()=>{
@@ -49,5 +49,28 @@ describe('Phase 3 management contracts and admin preview boundary',()=>{
  it('fails closed when administrator verification is unavailable',async()=>{
   const fetcher=vi.fn(async()=>{throw new Error('offline');});
   expect((await proxyVAdsPreview(new Request('http://admin.test/preview'),{apiUrl:'http://api.test',videoId:'video',token:'synthetic',fetcher})).status).toBe(503);
+ });
+ it('validates geo targeting coordinates and binds seller/admin targeting routes',async()=>{
+  expect(parseTargetingInput(' 12.9716 ',' 77.5946 ',' 15 ',' Bengaluru, Mysuru, bengaluru ')).toEqual({
+   latitude:12.9716,longitude:77.5946,radius_km:15,target_regions:['Bengaluru','Mysuru'],
+  });
+  expect(()=>parseTargetingInput('95','77.59','10')).toThrow();
+  expect(()=>parseTargetingInput('12.97','190','10')).toThrow();
+  expect(()=>parseTargetingInput('12.97','77.59','0')).toThrow();
+  expect(()=>parseTargetingInput('','','')).toThrow();
+  const calls:{path:string;options?:RequestInit}[]=[];
+  const api:Api=async<T>(path:string,options?:RequestInit)=>{calls.push({path,options});return {} as T;};
+  const seller=managementClient(api),admin=adminVAdsClient(api);
+  await seller.targeting('ad-1');
+  expect(calls[0]).toEqual({path:'/v-ads/seller/targeting/ad-1',options:undefined});
+  await seller.submitTargeting('ad-1',parseTargetingInput(12.9716,77.5946,12,'Bengaluru'));
+  expect(calls[1].path).toBe('/v-ads/seller/targeting/ad-1');
+  expect(JSON.parse(calls[1].options!.body as string)).toEqual({latitude:12.9716,longitude:77.5946,radius_km:12,target_regions:['Bengaluru']});
+  await admin.targeting('PENDING',2);
+  expect(calls[2].path).toBe('/admin/v-ads/targeting?status=PENDING&page=2');
+  expect(()=>admin.reviewTargeting({rule_id:'ad-1',revision:2},'REJECTED','   ')).toThrow();
+  await admin.reviewTargeting({rule_id:'ad-1',revision:2},'APPROVED','  Verified area  ');
+  expect(calls[3].path).toBe('/admin/v-ads/targeting/ad-1/review');
+  expect(JSON.parse(calls[3].options!.body as string)).toEqual({status:'APPROVED',reason:'Verified area',expected_revision:2});
  });
 });

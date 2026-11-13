@@ -6,7 +6,7 @@ import {Action,Field,ErrorPanel,Heading} from './ui';
 import {useTheme} from '../lib/theme';
 import {api} from '../lib/api';
 import type {AdvertiserAccount,SellerVideo} from '../../../shared/v-ads';
-import {managementClient,type History,type Performance} from '../../../shared/v-ads-management';
+import {managementClient,parseTargetingInput,type AdTargeting,type History,type Performance} from '../../../shared/v-ads-management';
 const client=managementClient(api);
 export function AdvertiserManagement({account,onChanged}:{account:AdvertiserAccount;onChanged:()=>void}){
  const {styles}=useTheme();const [open,setOpen]=useState(false),[name,setName]=useState(account.name),[description,setDescription]=useState(account.description??'');
@@ -19,8 +19,19 @@ export function AdvertiserManagement({account,onChanged}:{account:AdvertiserAcco
 export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:()=>void}){
  const {styles}=useTheme();const [editing,setEditing]=useState(false),[title,setTitle]=useState(video.title),[description,setDescription]=useState(video.description??'');
  const [showAnalytics,setShowAnalytics]=useState(false);
+ const [showTargeting,setShowTargeting]=useState(false),[targeting,setTargeting]=useState<AdTargeting|null>(null),[loadingTargeting,setLoadingTargeting]=useState(false);
+ const [lat,setLat]=useState(''),[lon,setLon]=useState(''),[radiusKm,setRadiusKm]=useState(''),[regionsText,setRegionsText]=useState(''),[targetingNotice,setTargetingNotice]=useState('');
  const [busy,setBusy]=useState(false),[error,setError]=useState('');const lock=useRef(false);
  async function run(work:()=>Promise<void>){if(lock.current)return;lock.current=true;setBusy(true);setError('');try{await work();onChanged();}catch(e){setError((e as Error).message);}finally{lock.current=false;setBusy(false);}}
+ async function toggleTargeting(){
+  if(showTargeting){setShowTargeting(false);return;}
+  setShowTargeting(true);setTargetingNotice('');setError('');setLoadingTargeting(true);
+  try{
+   const state=await client.targeting(video.id);setTargeting(state);
+   const seed=state.pending_revision??state.active_revision??state.latest_revision;
+   if(seed){setLat(String(seed.latitude));setLon(String(seed.longitude));setRadiusKm(String(seed.radius_km));setRegionsText(seed.target_regions.join(', '));}
+  }catch(e){setError((e as Error).message);}finally{setLoadingTargeting(false);}
+ }
  if(video.status==='REMOVED')return <View style={{gap:8}}>{video.upload_id&&video.media_status==='VALIDATED'&&<UiElement as={Action} label="Release private upload" secondary disabled={busy} onPress={()=>void run(async()=>{await client.release(video.upload_id!);})}/>}{Boolean(error)&&<ErrorPanel error={new Error(error)}/>}</View>;
  const views=video.views??0;
  const likes=video.likes??0;
@@ -29,6 +40,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
  return <View style={{gap:10}}>
   <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
    <UiElement as={Action} label={showAnalytics?'Hide Analytics':'Analytics'} secondary disabled={busy} onPress={()=>setShowAnalytics(v=>!v)}/>
+   <UiElement as={Action} label={showTargeting?'Hide Geo Targeting':'Geo Targeting'} secondary disabled={busy||loadingTargeting} onPress={()=>void toggleTargeting()}/>
    <UiElement as={Action} label={editing?'Cancel Edit':'Edit Ad'} secondary disabled={busy} onPress={()=>{setTitle(video.title);setDescription(video.description??'');setEditing(v=>!v);}}/>
    <UiElement as={Action} label="Delete Ad" secondary disabled={busy} onPress={()=>void run(async()=>{await client.deleteVideo(video.id);})}/>
    {video.status==='REJECTED'&&video.upload_id&&video.media_status==='VALIDATED'&&<UiElement as={Action} label="Release private upload" secondary disabled={busy} onPress={()=>void run(async()=>{await client.release(video.upload_id!);})}/>}
@@ -58,6 +70,23 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Engagement"}/></Text>
       </View>
     </View>
+  </View>}
+  {showTargeting&&<View style={[styles.card,{padding:12,borderRadius:14,gap:8}]}>
+   <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Geographic Targeting"}/></Text>
+   {loadingTargeting?<Text style={styles.muted}><UiText value={"Loading targeting…"}/></Text>:<>
+    <Text style={styles.muted}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
+    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
+    {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:'#dc2626'}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
+    {Boolean(targetingNotice)&&<Text style={styles.muted}><UiText value={targetingNotice}/></Text>}
+    {targeting?.pending_revision?<Text style={styles.muted}><UiText value={"A pending targeting revision is awaiting administrator review."}/></Text>:<>
+     <UiElement as={Field} label="Center latitude" placeholder="e.g. 12.9716" keyboardType="numbers-and-punctuation" value={lat} onChangeText={setLat}/>
+     <UiElement as={Field} label="Center longitude" placeholder="e.g. 77.5946" keyboardType="numbers-and-punctuation" value={lon} onChangeText={setLon}/>
+     <UiElement as={Field} label="Radius (km)" placeholder="e.g. 15" keyboardType="decimal-pad" value={radiusKm} onChangeText={setRadiusKm}/>
+     <UiElement as={Field} label="Target regions (optional, comma-separated)" placeholder="e.g. Bengaluru, Mysuru" maxLength={1000} value={regionsText} onChangeText={setRegionsText}/>
+     <Text style={styles.muted}><UiText value={"New targeting revisions remain inactive until approved by an independent administrator."}/></Text>
+     <UiElement as={Action} label="Submit targeting for review" disabled={busy||!lat.trim()||!lon.trim()||!radiusKm.trim()} onPress={()=>void run(async()=>{const payload=parseTargetingInput(lat,lon,radiusKm,regionsText);const next=await client.submitTargeting(video.id,payload);setTargeting(next);setTargetingNotice('Targeting revision submitted for administrator review.');})}/>
+    </>}
+   </>}
   </View>}
   {editing&&<View style={{gap:8}}>
    <UiElement as={Field} label="Ad title" value={title} onChangeText={setTitle} maxLength={160}/>

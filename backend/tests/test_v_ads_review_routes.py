@@ -202,6 +202,51 @@ class VAdsTargetingReviewRoutesTests(unittest.TestCase):
                 methods_by_path.setdefault(route.path, set()).update(route.methods or set())
         self.assertIn("/v-ads/admin/targeting/{rule_id}/review", methods_by_path)
         self.assertTrue({"PATCH", "POST"}.issubset(methods_by_path["/v-ads/admin/targeting/{rule_id}/review"]))
+        self.assertIn("/admin/v-ads/targeting/{rule_id}/review", methods_by_path)
+        self.assertTrue({"PATCH", "POST"}.issubset(methods_by_path["/admin/v-ads/targeting/{rule_id}/review"]))
+        self.assertIn("/admin/v-ads/targeting", methods_by_path)
+        self.assertIn("/v-ads/admin/targeting", methods_by_path)
+
+    def test_admin_targeting_queue_filters_and_exposes_active_revision(self):
+        self._submit_targeting(self.token_seller, "ad-seller-1", radius_km=10.0, regions=["Bengaluru"])
+        self.assertEqual(self.client.get("/admin/v-ads/targeting").status_code, 401)
+        self.assertEqual(
+            self.client.get("/admin/v-ads/targeting", headers=self._headers(self.token_seller)).status_code,
+            403,
+        )
+
+        pending_q = self.client.get(
+            "/admin/v-ads/targeting?status=PENDING&page=1",
+            headers=self._headers(self.token_admin),
+        )
+        self.assertEqual(pending_q.status_code, 200)
+        q_body = pending_q.json()
+        self.assertEqual(len(q_body["items"]), 1)
+        self.assertEqual(q_body["items"][0]["rule_id"], "ad-seller-1")
+        self.assertEqual(q_body["items"][0]["video_title"], "Seller Promo")
+        self.assertEqual(q_body["items"][0]["owner_id"], self.seller.id)
+        self.assertEqual(q_body["items"][0]["revision"], 1)
+        self.assertEqual(q_body["items"][0]["target_regions"], ["Bengaluru"])
+        self.assertIsNone(q_body["items"][0]["active_revision"])
+
+        self.assertEqual(
+            self.client.post(
+                "/admin/v-ads/targeting/ad-seller-1/review",
+                headers=self._headers(self.token_admin),
+                json={"status": "APPROVED", "reason": "Initial coverage approved"},
+            ).status_code,
+            200,
+        )
+        self._submit_targeting(self.token_seller, "ad-seller-1", radius_km=25.0, regions=["Bengaluru", "Mysuru"])
+
+        next_pending = self.client.get(
+            "/v-ads/admin/targeting?status=PENDING",
+            headers=self._headers(self.token_admin),
+        ).json()
+        self.assertEqual(len(next_pending["items"]), 1)
+        self.assertEqual(next_pending["items"][0]["revision"], 2)
+        self.assertEqual(next_pending["items"][0]["active_revision"]["revision"], 1)
+        self.assertEqual(next_pending["items"][0]["active_revision"]["radius_km"], 10.0)
 
     def test_admin_privilege_and_independent_review_guards(self):
         self._submit_targeting(self.token_seller, "ad-seller-1")

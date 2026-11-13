@@ -1,14 +1,14 @@
 'use client';
 import {useState, useEffect, useRef} from 'react';
 import {api} from '@/lib/api';
-import {adminVAdsClient, type AdminAccount, type AdminVideo, type Queue, type Performance} from '../../shared/v-ads-management';
+import {adminVAdsClient, type AdminAccount, type AdminTargeting, type AdminVideo, type Queue, type Performance} from '../../shared/v-ads-management';
 import {Notice} from './ui';
 import {UiText,UiElement,UiTextarea} from './localized-ui';
 
 const client = adminVAdsClient(api);
 
 export function AdminVAds({actorId}: {actorId?: number}) {
-  const [tab, setTab] = useState<'videos' | 'advertisers' | 'analytics'>('videos');
+  const [tab, setTab] = useState<'videos' | 'advertisers' | 'targeting' | 'analytics'>('videos');
   const [status, setStatus] = useState('PENDING');
   const [page, setPage] = useState(1);
   const [version, setVersion] = useState(0);
@@ -17,7 +17,7 @@ export function AdminVAds({actorId}: {actorId?: number}) {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [preview, setPreview] = useState('');
-  const [data, setData] = useState<Queue<AdminAccount> | Queue<AdminVideo> | null>(null);
+  const [data, setData] = useState<Queue<AdminAccount> | Queue<AdminVideo> | Queue<AdminTargeting> | null>(null);
   const [loading, setLoading] = useState(false);
   const [analyticsData, setAnalyticsData] = useState<Performance | null>(null);
 
@@ -32,7 +32,7 @@ export function AdminVAds({actorId}: {actorId?: number}) {
     }
 
     setLoading(true);
-    const req = tab === 'advertisers' ? client.accounts(status, page) : client.videos(status, page);
+    const req = tab === 'advertisers' ? client.accounts(status, page) : tab === 'targeting' ? client.targeting(status, page) : client.videos(status, page);
     req.then(res => {
       if (active) {
         setData(res);
@@ -67,7 +67,7 @@ export function AdminVAds({actorId}: {actorId?: number}) {
   return (
     <section className="nested-section" style={{display: 'grid', gap: 16}}>
       <div style={{display: 'flex', gap: 10, flexWrap: 'wrap'}}>
-        {(['videos', 'advertisers', 'analytics'] as const).map(value => (
+        {(['videos', 'advertisers', 'targeting', 'analytics'] as const).map(value => (
           <button
             type="button"
             className={`button ${tab === value ? '' : 'secondary'}`}
@@ -82,7 +82,7 @@ export function AdminVAds({actorId}: {actorId?: number}) {
               setNotice('');
             }}
           >
-            <UiText value={value === 'videos' ? 'Video Moderation' : value === 'advertisers' ? 'Advertiser Accounts' : 'Performance Insights'}/>
+            <UiText value={value === 'videos' ? 'Video Moderation' : value === 'advertisers' ? 'Advertiser Accounts' : value === 'targeting' ? 'Geo Targeting' : 'Performance Insights'}/>
           </button>
         ))}
       </div>
@@ -101,7 +101,9 @@ export function AdminVAds({actorId}: {actorId?: number}) {
             >
               {(tab === 'advertisers'
                 ? ['PENDING', 'APPROVED', 'REJECTED', 'SUSPENDED']
-                : ['PENDING', 'APPROVED', 'REJECTED', 'REMOVED']
+                : tab === 'targeting'
+                  ? ['PENDING', 'APPROVED', 'REJECTED', 'SUPERSEDED']
+                  : ['PENDING', 'APPROVED', 'REJECTED', 'REMOVED']
               ).map(v => <option key={v} value={v}>{v}</option>)}
             </select>
           </label>
@@ -226,6 +228,68 @@ export function AdminVAds({actorId}: {actorId?: number}) {
                           onClick={() => void perform(() => client.removeVideo(row, reason(row.id)))}
                         >
                           <UiText value={"Remove ad "}/></button>
+                      )}
+                    </div>
+                  </>
+                )}
+              </article>
+            );
+          })
+        ) : tab === 'targeting' ? (
+          (data as Queue<AdminTargeting>).items.map(row => {
+            const isSelf = actorId && row.owner_id === actorId;
+            return (
+              <article key={row.id} className="help-card" style={{display: 'grid', gap: 10}}>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap'}}>
+                  <h3>{row.video_title} · Rev #{row.revision}</h3>
+                  <span className="small-label">{row.status}</span>
+                </div>
+                <p><strong><UiText value={"Channel:"}/></strong> {row.advertiser?.name} (@{row.advertiser?.handle}<UiText value={") · Video status: "}/>{row.video_status}</p>
+                <p><strong><UiText value={"Boundary:"}/></strong> {row.latitude}, {row.longitude} · {row.radius_km} km{row.target_regions.length ? ` · ${row.target_regions.join(', ')}` : ''}</p>
+                {row.active_revision && row.active_revision.revision !== row.revision && (
+                  <p className="muted"><UiText value={"Active Rev #"}/>{row.active_revision.revision} ({row.active_revision.latitude}, {row.active_revision.longitude} · {row.active_revision.radius_km} km) <UiText value={"will be superseded on approval."}/></p>
+                )}
+
+                {isSelf ? (
+                  <p className="notice"><UiText value={"Another administrator must review this targeting request."}/></p>
+                ) : (row.status === 'PENDING' || row.status === 'APPROVED') && (
+                  <>
+                    <label>
+                      <UiText value={"Decision reason (required for rejection): "}/><UiTextarea
+                        rows={2}
+                        value={reason(row.id)}
+                        onChange={e => setReasons(old => ({...old, [row.id]: e.target.value}))}
+                        placeholder="e.g. Verified service coverage radius."
+                        style={{display: 'block', width: '100%', marginTop: 4}}
+                      />
+                    </label>
+                    <div style={{display: 'flex', gap: 10, flexWrap: 'wrap'}}>
+                      {row.status === 'PENDING' && (
+                        <>
+                          <button
+                            type="button"
+                            className="button"
+                            disabled={busy}
+                            onClick={() => void perform(() => client.reviewTargeting(row, 'APPROVED', reason(row.id)))}
+                          >
+                            <UiText value={"Approve targeting "}/></button>
+                          <button
+                            type="button"
+                            className="button secondary"
+                            disabled={busy || !reason(row.id).trim()}
+                            onClick={() => void perform(() => client.reviewTargeting(row, 'REJECTED', reason(row.id)))}
+                          >
+                            <UiText value={"Reject targeting "}/></button>
+                        </>
+                      )}
+                      {row.status === 'APPROVED' && (
+                        <button
+                          type="button"
+                          className="button secondary"
+                          disabled={busy}
+                          onClick={() => void perform(() => client.reviewTargeting(row, 'SUPERSEDED', reason(row.id)))}
+                        >
+                          <UiText value={"Supersede targeting "}/></button>
                       )}
                     </div>
                   </>

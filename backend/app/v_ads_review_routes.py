@@ -1,7 +1,7 @@
 """Administrator review of V Ads advertiser, video and targeting requests."""
 from typing import Literal
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import AliasChoices, Field, model_validator
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
@@ -12,7 +12,7 @@ from .models import User, Audit, now
 from .security import admin_user
 from .workflow_schemas import Strict
 from .v_ads_models import VAdsAdvertiser, VAdsVideo
-from .v_ads_account_routes import profile_token
+from .v_ads_account_routes import output, profile_token
 from .v_ads_targeting_models import VAdsTargeting, VAdsTargetingRevision
 from .v_ads_targeting_routes import _targeting_payload
 
@@ -160,6 +160,98 @@ class TargetingDecision(Strict):
         return self
 
 
+@router.get("/admin/v-ads/targeting")
+@router.get("/v-ads/admin/targeting")
+def targeting_queue(
+    status: Literal["PENDING", "APPROVED", "REJECTED", "SUPERSEDED"] = "PENDING",
+    page: int = Query(1, ge=1, le=10000),
+    user: User = Depends(admin_user),
+    db: Session = Depends(get_db),
+):
+    rows = db.execute(
+        select(VAdsTargetingRevision, VAdsVideo, VAdsAdvertiser)
+        .join(VAdsVideo, VAdsVideo.id == VAdsTargetingRevision.video_id)
+        .join(VAdsAdvertiser, VAdsAdvertiser.id == VAdsVideo.advertiser_id)
+        .where(VAdsTargetingRevision.status == status)
+        .order_by(
+            VAdsTargetingRevision.created_at.desc(),
+            VAdsTargetingRevision.video_id.desc(),
+            VAdsTargetingRevision.revision.desc(),
+        )
+        .offset((page - 1) * 30)
+        .limit(31)
+    ).all()
+
+    page_rows = rows[:30]
+    video_ids = list({video.id for _, video, _ in page_rows})
+    regions_by_video: dict[str, dict[int, list[str]]] = {}
+    active_by_video: dict[str, dict] = {}
+
+    if video_ids:
+        audit_rows = db.scalars(
+            select(Audit)
+            .where(
+                Audit.entity == "v_ads_video",
+                Audit.entity_id.in_(video_ids),
+                Audit.action == "V_ADS_TARGETING_SUBMIT",
+            )
+            .order_by(Audit.id.asc())
+        ).all()
+        for audit in audit_rows:
+            details = audit.details if isinstance(audit.details, dict) else {}
+            rev_num = details.get("revision")
+            regions = details.get("target_regions")
+            if isinstance(rev_num, int) and isinstance(regions, list):
+                regions_by_video.setdefault(audit.entity_id, {})[rev_num] = [
+                    r for r in regions if isinstance(r, str)
+                ]
+
+        approved_rows = db.scalars(
+            select(VAdsTargetingRevision).where(
+                VAdsTargetingRevision.video_id.in_(video_ids),
+                VAdsTargetingRevision.status == "APPROVED",
+            )
+        ).all()
+        for active in approved_rows:
+            active_by_video[active.video_id] = {
+                "revision": active.revision,
+                "latitude": active.latitude,
+                "longitude": active.longitude,
+                "radius_km": active.targeting_radius_km,
+                "target_regions": regions_by_video.get(active.video_id, {}).get(active.revision, []),
+            }
+
+    return {
+        "items": [
+            {
+                "id": f"{video.id}:{rev.revision}",
+                "rule_id": video.id,
+                "video_id": video.id,
+                "video_title": video.title,
+                "video_status": video.status,
+                "advertiser": output(account),
+                "owner_id": account.owner_id,
+                "revision": rev.revision,
+                "latitude": rev.latitude,
+                "longitude": rev.longitude,
+                "radius_km": rev.targeting_radius_km,
+                "targeting_radius_km": rev.targeting_radius_km,
+                "target_regions": regions_by_video.get(video.id, {}).get(rev.revision, []),
+                "status": rev.status,
+                "created_at": rev.created_at,
+                "reviewed_at": rev.reviewed_at,
+                "reviewed_by": rev.reviewed_by,
+                "active_revision": active_by_video.get(video.id),
+            }
+            for rev, video, account in page_rows
+        ],
+        "page": page,
+        "has_more": len(rows) > 30,
+    }
+
+
+@router.patch("/admin/v-ads/targeting/{rule_id}/review")
+@router.post("/admin/v-ads/targeting/{rule_id}/review")
 @router.patch("/v-ads/admin/targeting/{rule_id}/review")
 @router.post("/v-ads/admin/targeting/{rule_id}/review")
 def review_targeting(

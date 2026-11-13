@@ -1,4 +1,4 @@
-type GoogleIdentityApi={initialize:(options:{client_id:string;callback:(response:{credential:string})=>void;auto_select:boolean})=>void;renderButton:(element:HTMLElement,options:{theme:string;size:string;text:string;shape:string})=>void};
+type GoogleIdentityApi={initialize:(options:{client_id:string;callback:(response:{credential:string})=>void;auto_select:boolean})=>void;renderButton:(element:HTMLElement,options:{theme:string;size:string;text:string;shape:string;width?:number;logo_alignment?:string})=>void};
 let loading:Promise<GoogleIdentityApi>|undefined;
 export function loadGoogleIdentity():Promise<GoogleIdentityApi>{
  if(loading)return loading;

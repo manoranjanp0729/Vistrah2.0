@@ -1,9 +1,20 @@
+# Google Sign-In button full-width sizing fix (source) - 13 November 2026
+
+- Updated `shared/google-web.ts` (`width` & `logo_alignment` GIS button options), `frontend/components/google-sign-in.tsx` (`100%` width, `48px` height, `18px` radius matching `.button`), and `mobile/src/components/google-sign-in.web.tsx` (`100%` width, `50px` `controlHeights.standard`, `17px` `radii.action` matching `<Action>`) using `ResizeObserver` container measurement and uniform GIS scaling.
+- Verification (source only; running AWS build not yet rebuilt): `frontend` and `mobile` `tsc --noEmit` and `git diff --check` passed.
+- Next: Await authorization to commit/push to `main` and rebuild `web` + `phone-web` on AWS (`https://vistrah.in`).
+
+# Google Sign-In enabled on AWS (`https://vistrah.in`) & local env - 13 November 2026
+
+- Configured Google OAuth Web Client ID (`183198501855-uhsor4jvp5a2ohem6lv0j9i5m05oqnf0.apps.googleusercontent.com`) in private `/home/ec2-user/vistrah/.env` (`GOOGLE_CLIENT_ID`), rebuilt `vistrah20-web` (`NEXT_PUBLIC_GOOGLE_CLIENT_ID`) and `vistrah20-phone-web` (`EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID`) on Mumbai EC2 `13.235.104.68`, and updated gitignored local `.env` and `mobile/.env` (no tracked template changes; no client secret stored).
+- Recreated `api`, `web`, and `phone-web` containers without touching `db`, volumes, `admin`, or Caddy TLS certificates. Customer and Seller Google Sign-In (`/auth/google` and `/auth/seller/google`) are active on desktop web (`https://vistrah.in`) and phone web (`https://vistrah.in/app/`). Await user sign-in verification.
+
 # V Ads Task 01 / Step 8 seller targeting Studio & admin moderation UI - 13 November 2026
 
 - Added paginated admin targeting queue `GET /admin/v-ads/targeting` (plus `/v-ads/admin/targeting`) and `/admin/v-ads/targeting/{rule_id}/review` aliases in `backend/app/v_ads_review_routes.py`, mapping seller `/v-ads/seller/...` routes to `'seller'` scope in `shared/session-scope.ts` and adding typed targeting contracts/`parseTargetingInput` in `shared/v-ads-management.ts`.
 - Wired Seller Studio **Geo Targeting** panels in web `frontend/components/v-ads-management.tsx` and native `mobile/src/components/v-ads-management.tsx`, plus **Geo Targeting** moderation tabs (approve, mandatory-reason reject, supersede, non-owner self-review guard) in `admin/components/v-ads-management.tsx` and `frontend/components/admin-v-ads.tsx`.
 - Verification (source only; local/AWS running builds untouched): backend `unittest` `test_v_ads_review_routes` + `test_v_ads_targeting_routes` passed `10/10`; frontend Vitest `session-scope`, `v-ads-management`, `v-ads-proxy` passed `14/14`; `frontend`, `admin`, and `mobile` `tsc --noEmit` passed; `git diff --check` clean.
-- Blockers/next: GoDaddy `A` records (`vistrah.in`, `api.vistrah.in`, `admin.vistrah.in`) now resolve to `13.235.104.68`, Caddy issued Let's Encrypt TLS certificates, and external HTTPS checks passed (`https://vistrah.in/` `200`, `https://vistrah.in/app/` `200`, `https://api.vistrah.in/health` `200`, `https://admin.vistrah.in/` `307`). Local/AWS containers do not yet include Step 8 changes; await authorization before committing/pushing Step 8 to `main` or updating AWS.
+- Live AWS rollout & V Ads media activation: Committed and pushed Step 8 as `8c2ce0c` to `origin/main` (`https://github.com/manoranjanp0729/Vistrah2.0.git`), rebuilt `vistrah20-api`, `vistrah20-web`, `vistrah20-admin`, and `vistrah20-phone-web` on Mumbai EC2 `i-08287d636ff13ddf0` (`13.235.104.68`). Per user direction, exported local `vistrah20` database (`118` users, `7` advertisers, `9` approved V Ads) and `14` V Ads MP4 objects (`~135 MB`), restored them onto AWS, upgraded Alembic `020 -> 024`, enabled `V_ADS_MEDIA_ENABLED=1` (`V_ADS_PRIVATE_ROOT=/data/v-ads`, `0700` `app:app`, `v_ads_readiness --require-enabled` passed), and verified live HTTPS feed (`https://api.vistrah.in/v-ads/reels` returning `8` reels) and byte-range video streaming (`HTTP 206` `video/mp4`, `8.8G/20G` disk used). Await user acceptance review or next task.
 
 # AWS sandbox deployment (`vistrah-cloud`) live on Mumbai EC2 - 13 November 2026
 

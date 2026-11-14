@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from .database import get_db
 from .models import *
 from .schemas import *
-from .security import current_user, admin_user, member_user, eligible_memberships, passwords, DUMMY_HASH, issue_token, token_session, bearer
+from .security import current_user, admin_user, member_user, eligible_memberships, passwords, DUMMY_HASH, issue_token, token_session, bearer, resolve_user_payload
 from .catalogue import catalogue, serialize, active_service, lookup
 from .marketplace_taxonomy import master_taxonomy, resolve_selection
 from .payments import payments, aware
@@ -130,8 +130,8 @@ def get_or_404(db, model, id):
         raise HTTPException(404, 'Record not found')
     return row
 
-def user_output(user):
-    return {key: getattr(user, key) for key in ['id','name','email','phone','role','seller_enabled']}
+def user_output(user, db: Session | None = None):
+    return resolve_user_payload(user, db)
 
 @app.get('/health')
 def health(db: Session = Depends(get_db)):
@@ -193,7 +193,7 @@ def register_identity(data, request, db, seller=False):
     user = User(email=email, name=data.name, password_hash=passwords.hash(data.password), seller_enabled=seller); db.add(user); db.flush(); seller and ensure_seller_v_ads_account(db, user)
     db.add(user)
     db.commit()
-    return {'access_token': issue_token(db, user), 'user': user_output(user)}
+    return {'access_token': issue_token(db, user), 'user': user_output(user, db)}
 
 @app.post('/auth/login')
 def login(data: Login, request: Request, db: Session = Depends(get_db)):
@@ -205,16 +205,14 @@ def login_identity(data, request, db, seller=False):
     valid = passwords.verify(data.password, user.password_hash if user else DUMMY_HASH)
     if not user or not valid:
         raise HTTPException(401, 'Email or password is incorrect')
-    if seller and not user.seller_enabled:
+    has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
+    if (seller or has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
         user.seller_enabled = True
         audit(db, user, 'SELLER_ENABLED', 'user', user.id)
-    if seller or user.role == 'ADMIN':
-        if not user.seller_enabled:
-            user.seller_enabled = True
-            audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+    if user.seller_enabled or user.role == 'ADMIN':
         ensure_seller_v_ads_account(db, user)
     db.execute(delete(LoginAttempt).where(LoginAttempt.key == attempt_key))
-    return {'access_token': issue_token(db, user), 'user': user_output(user)}
+    return {'access_token': issue_token(db, user), 'user': user_output(user, db)}
 
 @app.post('/auth/seller/register', status_code=201)
 def seller_register(data: Register, request: Request, db: Session = Depends(get_db)):
@@ -243,13 +241,11 @@ async def google_identity(data: GoogleAuth, request: Request, db: Session = Depe
             raise HTTPException(409, 'This account is linked to a different Google identity')
     is_seller = seller
     if user:
-        if is_seller and not user.seller_enabled:
+        has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
+        if (is_seller or has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
             user.seller_enabled = True
             audit(db, user, 'SELLER_ENABLED', 'user', user.id)
-        if is_seller or user.role == 'ADMIN':
-            if not user.seller_enabled:
-                user.seller_enabled = True
-                audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+        if user.seller_enabled or user.role == 'ADMIN':
             ensure_seller_v_ads_account(db, user)
     else:
         user = User(
@@ -270,7 +266,7 @@ async def google_identity(data: GoogleAuth, request: Request, db: Session = Depe
     except IntegrityError:
         db.rollback()
         raise HTTPException(409, 'Account changed during sign-in. Please try again.')
-    return {'access_token': issue_token(db, user), 'user': user_output(user)}
+    return {'access_token': issue_token(db, user), 'user': user_output(user, db)}
 
 @app.post('/auth/google')
 async def google_login(data: GoogleAuth, request: Request, db: Session = Depends(get_db)):
@@ -287,7 +283,7 @@ def enable_seller(user: User = Depends(current_user), db: Session = Depends(get_
         user.seller_enabled = True
         audit(db, user, 'SELLER_ENABLED', 'user', user.id)
         db.commit()
-    return user_output(user)
+    return user_output(user, db)
 
 @app.post('/auth/logout')
 def logout(credentials=Depends(bearer), user: User = Depends(current_user), db: Session = Depends(get_db)):
@@ -297,15 +293,21 @@ def logout(credentials=Depends(bearer), user: User = Depends(current_user), db: 
     return {'message': 'Signed out'}
 
 @app.get('/me')
-def me(user: User = Depends(current_user)):
-    return user_output(user)
+def me(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
+    if (has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
+        user.seller_enabled = True
+        audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+        ensure_seller_v_ads_account(db, user)
+        db.commit()
+    return user_output(user, db)
 
 @app.patch('/me')
 def update_me(data: Profile, user: User = Depends(current_user), db: Session = Depends(get_db)):
     user.name = data.name
     user.phone = data.phone
     db.commit()
-    return user_output(user)
+    return user_output(user, db)
 
 @app.post('/requests', status_code=201)
 def create_request(data: RequestCreate, user: User = Depends(member_user), db: Session = Depends(get_db)):

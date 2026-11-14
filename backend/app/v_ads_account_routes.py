@@ -28,6 +28,10 @@ def seller_workspace(page: int = Query(1, ge=1, le=10000),
     from .v_ads_management_routes import counts
     accounts = db.scalars(select(VAdsAdvertiser).where(
         VAdsAdvertiser.owner_id == user.id).order_by(VAdsAdvertiser.created_at.desc()).limit(30)).all()
+    if not accounts:
+        created = ensure_seller_v_ads_account(db, user)
+        db.commit()
+        accounts = [created]
     owned = select(VAdsAdvertiser.id).where(VAdsAdvertiser.owner_id == user.id)
     videos = db.scalars(select(VAdsVideo).where(
         VAdsVideo.advertiser_id.in_(owned), VAdsVideo.status != "REMOVED")

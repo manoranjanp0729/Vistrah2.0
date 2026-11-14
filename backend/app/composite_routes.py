@@ -5,7 +5,7 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
 from .database import get_db
-from .security import bearer, token_session, eligible_memberships, seller_user
+from .security import bearer, token_session, eligible_memberships, seller_user, resolve_user_payload
 from .catalogue import catalogue, serialize
 from .homepage_models import HomepageState, HomepageRelease
 from .homepage_routes import Layout
@@ -47,14 +47,7 @@ def app_bootstrap(
     if credentials and credentials.credentials:
         try:
             user, session = token_session(db, credentials.credentials)
-            user_data = {
-                'id': user.id,
-                'name': user.name,
-                'email': user.email,
-                'phone': user.phone,
-                'role': user.role,
-                'seller_enabled': user.seller_enabled,
-            }
+            user_data = resolve_user_payload(user, db)
 
             # Membership status
             rows = db.scalars(

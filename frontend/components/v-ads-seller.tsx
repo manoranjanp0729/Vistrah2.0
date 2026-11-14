@@ -1,11 +1,12 @@
 'use client';
 import {UiText,UiNav,UiInput,UiTextarea,UiDiv} from "./localized-ui";
 import Link from 'next/link';
-import {useSearchParams} from 'next/navigation';
+import {redirect,useSearchParams} from 'next/navigation';
 import {Suspense,useCallback,useEffect,useRef,useState} from 'react';
 import {Play,RefreshCw,Eye,Heart,MessageCircle,Video,CheckCircle2,Sparkles,Check,PlusCircle,Volume2,VolumeX,Lock,Globe,ShoppingBag,Briefcase,Truck,X,ArrowRight} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
-import {useUser} from './customer';
+import {isSellerUser,type User} from '@/lib/types';
+import {notifyUserSession,useUser} from './customer';
 import {vAdsClient,validateVideoFile,studioVideoLive,mediaUrl,mergeReels,parseAdDescription,type Workspace,type Reel,type SellerVideo,type AdMetadata,type AdType,type AdProductMeta} from '../../shared/v-ads';
 import s from './v-ads.module.css';
 import {AdvertiserManagement,VideoManagement,DiscardUpload} from './v-ads-management';
@@ -22,21 +23,23 @@ export function VAdsSeller(){
 }
 
 function VAdsSellerContent(){
-  const {user}=useUser();
+  const {user,loading:authLoading}=useUser();
   const [enabled,setEnabled]=useState(false),[enabling,setEnabling]=useState(false),[enableError,setEnableError]=useState('');
-  async function activate(){setEnabling(true);setEnableError('');try{await api('/auth/seller/enable',{method:'POST'});setEnabled(true);}catch(e){setEnableError((e as Error).message);}finally{setEnabling(false);}}
+  async function activate(){setEnabling(true);setEnableError('');try{const updated=await api<User>('/auth/seller/enable',{method:'POST'});notifyUserSession?.(updated);setEnabled(true);}catch(e){setEnableError((e as Error).message);}finally{setEnabling(false);}}
 
-  return <SellerWorkspace user={user} enabled={enabled} activate={activate} enabling={enabling} enableError={enableError}/>;
+  return <SellerWorkspace user={user} authLoading={authLoading} enabled={enabled} activate={activate} enabling={enabling} enableError={enableError}/>;
 }
 
 function SellerWorkspace({
   user,
+  authLoading,
   enabled,
   activate,
   enabling,
   enableError,
 }:{
-  user: any;
+  user: User | null;
+  authLoading: boolean;
   enabled: boolean;
   activate: ()=>Promise<void>;
   enabling: boolean;
@@ -45,17 +48,24 @@ function SellerWorkspace({
   const searchParams=useSearchParams();
   const fromParam=searchParams?.get('from');
   const tabParam=searchParams?.get('tab');
-  const initialTab=fromParam==='v-ads'||tabParam==='public'||!user?'public':'ads';
+  const isSeller=isSellerUser(user)||enabled;
+  const publicBrowse=fromParam==='v-ads'||tabParam==='public';
+  if(!authLoading&&!user&&!publicBrowse){
+    redirect('/login?next=%2Fseller%2Fv-ads');
+  }
+  const initialTab=publicBrowse||!isSeller?'public':'ads';
   const [studioTab,setStudioTab]=useState<'ads'|'upload'|'public'>(initialTab);
 
   useEffect(()=>{
-    if(fromParam==='v-ads'||tabParam==='public'||!user){
+    if(publicBrowse){
       setStudioTab('public');
+    }else if(isSeller){
+      setStudioTab(current=>current==='public'?'ads':current);
     }
-  },[fromParam,tabParam,user]);
+  },[publicBrowse,isSeller]);
 
   const [data,setData]=useState<Workspace|null>(null);
-  const [loading,setLoading]=useState(Boolean(user));
+  const [loading,setLoading]=useState(isSeller);
   const [error,setError]=useState('');
   const [message,setMessage]=useState('');
   const [accountId,setAccountId]=useState('');
@@ -76,13 +86,9 @@ function SellerWorkspace({
   const account=data?.accounts.find(item=>item.id===accountId)??data?.accounts[0];
 
   const refresh=useCallback(async()=>{
-    if(!user)return;
+    if(!user||!isSeller)return;
     try{
-      let result=await client.workspace();
-      if(!result.accounts.length){
-        await api('/auth/seller/enable',{method:'POST'});
-        result=await client.workspace();
-      }
+      const result=await client.workspace();
       setData(result);
       setError('');
     }catch(e){
@@ -90,21 +96,18 @@ function SellerWorkspace({
     }finally{
       setLoading(false);
     }
-  },[user]);
+  },[user,isSeller]);
 
   useEffect(()=>{
-    if(!user){
+    if(!user||!isSeller){
       setLoading(false);
       return;
     }
     let alive=true;
+    setLoading(true);
     (async()=>{
       try{
-        let result=await client.workspace();
-        if(!result.accounts.length){
-          await api('/auth/seller/enable',{method:'POST'});
-          result=await client.workspace();
-        }
+        const result=await client.workspace();
         if(alive){
           setData(result);
           setError('');
@@ -116,7 +119,7 @@ function SellerWorkspace({
       }
     })();
     return()=>{alive=false;};
-  },[user]);
+  },[user,isSeller]);
 
   async function action(work:()=>Promise<void>){
     if(working.current)return;
@@ -167,31 +170,47 @@ function SellerWorkspace({
     </div>
 
     {user ? (
-      <>
-        <p><UiText value={"Signed in as seller: "}/>{user.email}</p>
-        <header className={s.creatorHero}>
-          <div className={s.heroHeader}>
-            <div className={s.heroAvatar}>
-              <Video size={26}/>
+      isSeller ? (
+        <>
+          <p><UiText value={"Signed in: "}/>{user.email}</p>
+          <header className={s.creatorHero}>
+            <div className={s.heroHeader}>
+              <div className={s.heroAvatar}>
+                <Video size={26}/>
+              </div>
+              <div className={s.heroTitleGroup}>
+                <h1>
+                  {account?.name||'Your V Ads Channel'}
+                  {account?.status==='APPROVED'&&<CheckCircle2 size={18} color="#4ade80"/>}
+                </h1>
+                <p className={s.heroHandle}>@{account?.handle||'seller'} <UiText value={"· Free V Ads Creator Channel"}/></p>
+              </div>
             </div>
-            <div className={s.heroTitleGroup}>
-              <h1>
-                {account?.name||'Your V Ads Channel'}
-                {account?.status==='APPROVED'&&<CheckCircle2 size={18} color="#4ade80"/>}
-              </h1>
-              <p className={s.heroHandle}>@{account?.handle||'seller'} <UiText value={"· Free V Ads Creator Channel"}/></p>
+            <div className={s.heroActions}>
+              <Link href="/v-ads" className={s.heroActionBtn}>
+                <Play size={14}/> <UiText value={"Watch V Ads "}/></Link>
+              <button disabled={busy||loading} onClick={()=>void refresh()} className={s.heroActionBtn}>
+                <RefreshCw size={14}/> <UiText value={"Refresh "}/></button>
+              <Link href="/account" className={s.heroActionBtn} style={{marginLeft:'auto'}}>
+                <UiText value={"Account "}/></Link>
             </div>
+          </header>
+        </>
+      ) : (
+        <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:16}}>
+          <div>
+            <h2 style={{margin:0,fontSize:16,fontWeight:700}}><UiText value="Complete Seller Onboarding / Register Business"/></h2>
+            <p style={{margin:'4px 0 0',fontSize:13,color:'var(--text-secondary)'}}>
+              <UiText value="Enable seller access or register your business to create your V Ads channel and upload videos."/>
+            </p>
+            {enableError&&<p role="alert" className={s.error} style={{marginTop:8}}>{enableError}</p>}
           </div>
-          <div className={s.heroActions}>
-            <Link href="/v-ads" className={s.heroActionBtn}>
-              <Play size={14}/> <UiText value={"Watch V Ads "}/></Link>
-            <button disabled={busy||loading} onClick={()=>void refresh()} className={s.heroActionBtn}>
-              <RefreshCw size={14}/> <UiText value={"Refresh "}/></button>
-            <Link href="/account" className={s.heroActionBtn} style={{marginLeft:'auto'}}>
-              <UiText value={"Account "}/></Link>
+          <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+            <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
+            <Link href="/provide-service" className="button secondary"><UiText value="Register business"/></Link>
           </div>
-        </header>
-      </>
+        </div>
+      )
     ) : (
       <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:16}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
@@ -254,12 +273,15 @@ function SellerWorkspace({
         description="Track views, likes, comments, and manage all your published video ads."
         icon="video"
       />
-    ) : (!user.seller_enabled&&!enabled) ? (
+    ) : !isSeller ? (
       <div className={s.panel}>
-        <h2><UiText value={"Enable Seller Access"}/></h2>
-        <p><UiText value={"All sellers can upload V Ads for free. Enable seller access on your account to create your free V Ads account immediately."}/></p>
+        <h2><UiText value={"Complete Seller Onboarding / Register Business"}/></h2>
+        <p><UiText value={"All sellers can upload V Ads for free. Complete seller onboarding or register your business on your account to unlock V Ads Studio immediately."}/></p>
         {enableError&&<p role="alert" className={s.error}>{enableError}</p>}
-        <button disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Enable free V Ads account'}/></button>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+          <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
+          <Link href="/provide-service" className="button secondary"><UiText value={"Register business"}/></Link>
+        </div>
       </div>
     ) : loading ? (
       <p role="status"><UiText value={"Loading your V Ads studio…"}/></p>
@@ -324,12 +346,15 @@ function SellerWorkspace({
         description="Upload up to 60-second MP4 videos to promote your business across Vistrah."
         icon="upload"
       />
-    ) : (!user.seller_enabled&&!enabled) ? (
+    ) : !isSeller ? (
       <div className={s.panel}>
-        <h2><UiText value={"Enable Seller Access"}/></h2>
-        <p><UiText value={"All sellers can upload V Ads for free. Enable seller access on your account to create your free V Ads account immediately."}/></p>
+        <h2><UiText value={"Complete Seller Onboarding / Register Business"}/></h2>
+        <p><UiText value={"All sellers can upload V Ads for free. Complete seller onboarding or register your business on your account to unlock V Ads Studio immediately."}/></p>
         {enableError&&<p role="alert" className={s.error}>{enableError}</p>}
-        <button disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Enable free V Ads account'}/></button>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+          <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
+          <Link href="/provide-service" className="button secondary"><UiText value={"Register business"}/></Link>
+        </div>
       </div>
     ) : loading ? (
       <p role="status"><UiText value={"Loading your V Ads studio…"}/></p>

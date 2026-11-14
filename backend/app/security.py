@@ -10,7 +10,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, func
 from .config import JWT_SECRET
 from .database import get_db
-from .models import User, AuthSession, Membership, Payment, Plan, WebhookEvent, Allocation, now
+from .models import User, AuthSession, Provider, Membership, Payment, Plan, WebhookEvent, Allocation, now
+from .catalogue import serialize
 
 passwords = PasswordHash.recommended()
 bearer = HTTPBearer(auto_error=False)
@@ -50,6 +51,52 @@ def seller_user(user: User = Depends(current_user)):
     if not user.seller_enabled and user.role != 'ADMIN':
         raise HTTPException(403, 'Enable seller access using your existing account first')
     return user
+
+
+def resolve_seller_profile(db: Session | None, user: User):
+    if db is None:
+        return None
+    from .v_ads_models import VAdsAdvertiser
+    provider = db.scalar(select(Provider).where(Provider.owner_user_id == user.id).order_by(Provider.id))
+    advertiser = db.scalar(select(VAdsAdvertiser).where(VAdsAdvertiser.owner_id == user.id).order_by(VAdsAdvertiser.created_at))
+    if provider is not None:
+        data = serialize(provider)
+        data['business_id'] = provider.id
+        data['advertiser_id'] = advertiser.id if advertiser else None
+        data['advertiser_handle'] = advertiser.handle if advertiser else None
+        return data
+    if advertiser is not None:
+        return {
+            'id': None,
+            'business_id': None,
+            'name': advertiser.name,
+            'company': advertiser.name,
+            'verification_status': advertiser.status,
+            'active': advertiser.status == 'APPROVED',
+            'advertiser_id': advertiser.id,
+            'advertiser_handle': advertiser.handle,
+        }
+    return None
+
+
+def resolve_user_payload(user: User, db: Session | None = None):
+    is_seller = bool(user.seller_enabled or user.role == 'ADMIN')
+    roles = ['user']
+    if is_seller:
+        roles.append('seller')
+    if user.role == 'ADMIN':
+        roles.append('admin')
+    return {
+        'id': user.id,
+        'name': user.name,
+        'email': user.email,
+        'phone': user.phone,
+        'role': user.role,
+        'seller_enabled': bool(user.seller_enabled),
+        'isSeller': is_seller,
+        'roles': roles,
+        'sellerProfile': resolve_seller_profile(db, user) if is_seller else None,
+    }
 
 
 def eligible_memberships(db, user):

@@ -104,3 +104,19 @@ def test_new_approval_explicit_owner_composite_service_uniqueness_and_history(cl
     assert client.get('/seller/businesses',headers=customer).json()==[]
     assert client.get('/provider-leads',headers=customer).json()==[]
     assert client.get('/provider-applications/'+app['id'],headers=customer).status_code==200
+
+def test_unified_login_and_me_resolve_is_seller_roles_and_profile(client,db):
+    reg=client.post('/auth/register',json={'name':'Unified User','email':'unified@example.com','password':'unified-secure-password'})
+    assert reg.status_code==201,reg.text
+    payload=reg.json()['user']
+    headers={'Authorization':'Bearer '+reg.json()['access_token']}
+    assert payload['isSeller'] is False and payload['roles']==['user'] and payload['sellerProfile'] is None
+    p=provider(db,owner=payload['id'],email='unified@example.com')
+    p.active=True;p.verification_status='VERIFIED';db.commit()
+    hydrated=client.get('/me',headers=headers).json()
+    assert hydrated['isSeller'] is True and hydrated['seller_enabled'] is True
+    assert hydrated['roles']==['user','seller']
+    assert hydrated['sellerProfile']['business_id']==p.id
+    login=client.post('/auth/login',json={'email':'unified@example.com','password':'unified-secure-password'}).json()['user']
+    assert login['isSeller'] is True and login['sellerProfile']['business_id']==p.id
+    assert client.get('/v-ads/me',headers=headers).status_code==200

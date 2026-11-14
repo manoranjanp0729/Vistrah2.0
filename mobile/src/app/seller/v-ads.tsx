@@ -4,13 +4,14 @@ import {useEffect,useMemo,useRef,useState} from 'react';
 import {View,Pressable,ScrollView,AppState,Dimensions,Modal} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
-import {router,useLocalSearchParams} from 'expo-router';
+import {Redirect,router,useLocalSearchParams} from 'expo-router';
 import {useVideoPlayer, VideoView} from 'expo-video';
 import {mobileVideoCoordinator} from '../../lib/video-coordinator';
 import {SelectionFill,Page,Heading,Action,Field,Loading,ErrorPanel} from '../../components/ui';
-import {SellerGate} from '../../components/seller-gate';
+import {SellerGate,SellerOnboardingCard} from '../../components/seller-gate';
 import {useTheme} from '../../lib/theme';
 import {useSession} from '../../lib/session';
+import {isSellerUser} from '../../lib/types';
 import {useResource} from '../../lib/resource';
 import {api} from '../../lib/api';
 import {vAds, toPlayableUrl} from '../../lib/v-ads';
@@ -376,16 +377,19 @@ export default function SellerVAds(){
 }
 
 function WorkspaceScreen(){
-  const {styles,colors,mode}=useTheme();const {user}=useSession();
+  const {styles,colors,mode}=useTheme();const {user,ready}=useSession();const isSeller=isSellerUser(user);
   const surface=mode==='light'?brandTheme.headerLight:brandTheme.headerDark;
   const brandGradient=[brandTheme.gradient[0],brandTheme.gradient[1],brandTheme.gradient[2]] as const;
-  const resource=useResource<Workspace>('/v-ads/me',user?.id??null);
+  const resource=useResource<Workspace>('/v-ads/me',isSeller?(user?.id??null):null);
   const params=useLocalSearchParams<{from?:string;tab?:string}>();
-  const initialTab=params.from==='v-ads'||params.tab==='public'||!user?'public':'ads';
+  const publicBrowse=params.from==='v-ads'||params.tab==='public';
+  const initialTab=publicBrowse||!isSeller?'public':'ads';
   const [studioTab,setStudioTab]=useState<'ads'|'create'|'upload'|'public'>(initialTab);
   useEffect(()=>{
-    if(params.from==='v-ads'||params.tab==='public'||!user)setStudioTab('public');
-  },[params.from,params.tab,user]);
+    if(publicBrowse)setStudioTab('public');
+    else if(isSeller)setStudioTab(current=>current==='public'?'ads':current);
+    else if(!user)setStudioTab('public');
+  },[publicBrowse,isSeller,user]);
   const [title,setTitle]=useState(''),[videoDescription,setVideoDescription]=useState(''),[uploadId,setUploadId]=useState('');
   const [adType,setAdType]=useState<AdType>('PRODUCT');
   const [productName,setProductName]=useState('');
@@ -407,15 +411,8 @@ function WorkspaceScreen(){
   const [busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
   const [history,setHistory]=useState<Workspace['videos']>([]);
   const [historyMore,setHistoryMore]=useState<boolean|null>(null);
-  const working=useRef(false),provisioned=useRef(false);
+  const working=useRef(false);
   const data=resource.data;
-
-  useEffect(()=>{
-    if(user&&data&&(!data.accounts.length)&&!provisioned.current){
-      provisioned.current=true;
-      void api('/auth/seller/enable',{method:'POST'}).then(()=>resource.retry()).catch(()=>{});
-    }
-  },[user,data,resource]);
 
   const account=data?.accounts.find(item=>item.id===accountId)??data?.accounts[0];
   async function perform(action:()=>Promise<void>){
@@ -423,8 +420,10 @@ function WorkspaceScreen(){
     working.current=true;setBusy(true);setError('');setMessage('');
     try{await action();}catch(e){setError((e as Error).message);}finally{working.current=false;setBusy(false);}}
 
-  if(user&&resource.loading)return <Loading/>;
-  if(user&&resource.error)return <ErrorPanel error={resource.error} retry={resource.retry}/>;
+  if(!ready)return <Loading/>;
+  if(!user&&!publicBrowse)return <Redirect href={{pathname:'/auth',params:{next:'/seller/v-ads'}}}/>;
+  if(isSeller&&resource.loading)return <Loading/>;
+  if(isSeller&&resource.error)return <ErrorPanel error={resource.error} retry={resource.retry}/>;
 
   const rawVideos=data?[...data.videos,...history.filter(item=>!data.videos.some(v=>v.id===item.id))].filter(v=>v.status!=='REMOVED'):[];
   const accountVideos=data&&data.accounts.length>1&&accountId?rawVideos.filter(v=>v.advertiser_id===accountId):rawVideos;
@@ -478,9 +477,9 @@ function WorkspaceScreen(){
       </LinearGradient>
     </View>
 
-    {user ? (
+    {isSeller && user ? (
       <>
-        <Text accessibilityRole="text" style={styles.muted}><UiText value={"Signed in as seller: "}/>{user.email}</Text>
+        <Text accessibilityRole="text" style={styles.muted}><UiText value={"Signed in as: "}/>{user.email}</Text>
         {/* Clean Channel Identity Card */}
         <View style={[styles.card, {borderRadius: 20, padding: 16, gap: 14}]}>
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -514,6 +513,8 @@ function WorkspaceScreen(){
           </View>
         </View>
       </>
+    ) : user ? (
+      <SellerOnboardingCard onEnabled={()=>setStudioTab('ads')}/>
     ) : (
       <View style={[styles.card, {borderRadius: 16, padding: 14, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10}]}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 10, flex: 1}}>
@@ -529,7 +530,7 @@ function WorkspaceScreen(){
           as={Pressable}
           accessibilityRole="button"
           accessibilityLabel="Sign in"
-          onPress={() => router.push('/auth')}
+          onPress={() => router.push({pathname: '/auth', params: {next: '/seller/v-ads'}})}
           style={({pressed}) => ({
             paddingHorizontal: 14,
             paddingVertical: 8,
@@ -573,6 +574,8 @@ function WorkspaceScreen(){
         description="Track views, likes, comments, and manage all your published video ads."
         icon="video"
       />
+    ) : !isSeller ? (
+      <SellerOnboardingCard onEnabled={()=>setStudioTab('ads')}/>
     ) : !data ? (
       <Loading/>
     ) : (
@@ -783,6 +786,8 @@ function WorkspaceScreen(){
         description="Use the AI and marketing creator tools to build engaging video ads for your services."
         icon="zap"
       />
+    ) : !isSeller ? (
+      <SellerOnboardingCard onEnabled={()=>setStudioTab('create')}/>
     ) : (
       <VAdsCreator
         account={account}
@@ -803,6 +808,8 @@ function WorkspaceScreen(){
         description="Upload up to 60-second MP4 videos to promote your business across Vistrah."
         icon="upload-cloud"
       />
+    ) : !isSeller ? (
+      <SellerOnboardingCard onEnabled={()=>setStudioTab('upload')}/>
     ) : !data ? (
       <Loading/>
     ) : (
@@ -1285,7 +1292,7 @@ function RestrictedStudioTool({
         as={Pressable}
         accessibilityRole="button"
         accessibilityLabel="Sign in to continue"
-        onPress={() => router.push('/auth')}
+        onPress={() => router.push({pathname: '/auth', params: {next: '/seller/v-ads'}})}
         style={({pressed}) => ({
           marginTop: 4,
           paddingHorizontal: 20,

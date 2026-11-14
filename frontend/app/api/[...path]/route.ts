@@ -1,4 +1,4 @@
-import {apiSessionScope,sessionCookie} from '../../../../shared/session-scope';
+import {LEGACY_SELLER_SESSION_COOKIE,sessionCookie} from '../../../../shared/session-scope';
 import {NextRequest,NextResponse} from 'next/server';
 import {API_URL} from '@/lib/server';
 export const dynamic='force-dynamic';
@@ -12,10 +12,8 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
     if(!origin||!allowed.includes(origin)) return NextResponse.json({detail:'Request origin is not allowed'},{status:403});
   }
   const headers:Record<string,string>={'Content-Type':'application/json'};
-  const route='/'+path.join('/');
-  const scope=apiSessionScope(route)==='seller'||(request.headers.get('x-vistrah-session')==='seller'&&['/me','/auth/logout'].includes(route))?'seller':'customer';
-  const cookie=sessionCookie(scope);
-  const token=request.cookies.get(cookie)?.value;
+  const cookie=sessionCookie();
+  const token=request.cookies.get(cookie)?.value||request.cookies.get(LEGACY_SELLER_SESSION_COOKIE)?.value;
   if(token) headers.Authorization=`Bearer ${token}`;
   const signature=request.headers.get('x-signature');
   if(signature) headers['x-signature']=signature;
@@ -34,18 +32,25 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
       const data=await response.json();
       result=NextResponse.json({user:data.user},{status:response.status});
       result.cookies.set(cookie,data.access_token,{httpOnly:true,secure:process.env.COOKIE_SECURE==='true',sameSite:'lax',path:'/',maxAge:43200});
+      if(request.cookies.get(LEGACY_SELLER_SESSION_COOKIE)) result.cookies.delete(LEGACY_SELLER_SESSION_COOKIE);
     } else {
       result=new NextResponse(await response.arrayBuffer(),{status:response.status,headers:{'Content-Type':response.headers.get('content-type')||'application/json'}});
       for(const header of ['Content-Disposition','Content-Security-Policy','X-Content-Type-Options']) {
         const value=response.headers.get(header);if(value)result.headers.set(header,value);
       }
     }
-    if((path[0]==='auth'&&path[1]==='logout')||response.status===401) result.cookies.delete(cookie);
+    if((path[0]==='auth'&&path[1]==='logout')||response.status===401) {
+      result.cookies.delete(cookie);
+      if(request.cookies.get(LEGACY_SELLER_SESSION_COOKIE)) result.cookies.delete(LEGACY_SELLER_SESSION_COOKIE);
+    }
     result.headers.set('Cache-Control','no-store');
     return result;
   } catch {
     const result=NextResponse.json({detail:'VISTRAH is temporarily unavailable. Please try again.'},{status:503});
-    if(path[0]==='auth'&&path[1]==='logout')result.cookies.delete(cookie);
+    if(path[0]==='auth'&&path[1]==='logout') {
+      result.cookies.delete(cookie);
+      if(request.cookies.get(LEGACY_SELLER_SESSION_COOKIE)) result.cookies.delete(LEGACY_SELLER_SESSION_COOKIE);
+    }
     return result;
   }
 }

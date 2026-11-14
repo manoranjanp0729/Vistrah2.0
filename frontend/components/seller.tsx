@@ -1,11 +1,12 @@
 'use client';
 import {UiText,UiElement,UiNav} from "./localized-ui";
 import Link from 'next/link';
+import {redirect} from 'next/navigation';
 import {useEffect,useState} from 'react';
-import {useUser} from './customer';
+import {notifyUserSession,useUser} from './customer';
 import {Notice,EmptyState,ButtonLink} from './ui';
 import {api} from '@/lib/api';
-import type {User} from '@/lib/types';
+import {isSellerUser,type User} from '@/lib/types';
 import {BusinessPublicationEditor,type OwnedBusiness} from './publication';
 import {SellerOwnershipClaims,AdminOwnershipClaimQueue} from './ownership-claims';
 import {SellerCommerce} from './commerce';
@@ -13,14 +14,15 @@ import {businessProgress} from '../../shared/seller-journey';
 import {SellerRecentListings} from './seller-recent-listings';
 type Business=OwnedBusiness;
 
-export function ProvideServiceLink(){const {user}=useUser(false,'seller');return <Link className="button secondary" href={user?.seller_enabled?'/seller':'/seller/login'}><UiText value={"Offer your expertise"}/></Link>;}
+export function ProvideServiceLink(){const {user}=useUser();return <Link className="button secondary" href={user?'/seller':'/login?next=%2Fseller'}><UiText value={"Offer your expertise"}/></Link>;}
 export function SellerDashboard({businessId,listingsOnly=false}:{businessId?:number;listingsOnly?:boolean}={}){
-  const {user,loading,error}=useUser(false,'seller');const [enabled,setEnabled]=useState(false);const [failure,setFailure]=useState('');const [busy,setBusy]=useState(false);
-  async function enable(){setBusy(true);setFailure('');try{await api<User>('/auth/seller/enable',{method:'POST'});setEnabled(true);}catch(e){setFailure((e as Error).message);}finally{setBusy(false);}}
+  const {user,loading,error}=useUser();const [enabled,setEnabled]=useState(false);const [failure,setFailure]=useState('');const [busy,setBusy]=useState(false);
+  const targetPath=businessId?'/seller/'+(listingsOnly?'commerce/':'business/')+businessId:'/seller';
+  async function enable(){setBusy(true);setFailure('');try{const updated=await api<User>('/auth/seller/enable',{method:'POST'});notifyUserSession?.(updated);setEnabled(true);}catch(e){setFailure((e as Error).message);}finally{setBusy(false);}}
   if(loading)return <div className="container page" role="status"><UiText value={"Loading seller access…"}/></div>;
   if(error)return <div className="container page"><Notice error message={error}/></div>;
-  if(!user)return <div className="container page"><h1><UiText value={"Seller access"}/></h1><p><UiText value={"Sign in separately as a seller using your VISTRAH email and password. Your customer session stays independent. Customer membership is not required."}/></p><ButtonLink href={businessId?'/seller/login?next='+encodeURIComponent('/seller/'+(listingsOnly?'commerce/':'business/')+businessId):'/seller/login'}><UiText value={"Login as seller"}/></ButtonLink> <ButtonLink href={businessId?'/seller/register?next='+encodeURIComponent('/seller/'+(listingsOnly?'commerce/':'business/')+businessId):'/seller/register'}><UiText value={"Sign up as seller"}/></ButtonLink></div>;
-  if(!user.seller_enabled&&!enabled)return <div className="container page"><h1><UiText value={"Use your account as a seller"}/></h1><p><UiText value={"Keep your customer account, enquiries and history. Seller access does not approve a business or grant administrator privileges."}/></p>{failure&&<Notice error message={failure}/>}<button className="button" disabled={busy} onClick={enable}><UiText value={"Enable seller access"}/></button></div>;
+  if(!user)redirect('/login?next='+encodeURIComponent(targetPath));
+  if(!isSellerUser(user)&&!enabled)return <div className="container page"><h1><UiText value={"Complete Seller Onboarding / Register Business"}/></h1><p><UiText value={"Keep your customer account, enquiries and history. Enable seller access or register your business to manage services, listings, and V Ads."}/></p>{failure&&<Notice error message={failure}/>}<div className="replica-actions"><button className="button" disabled={busy} onClick={enable}><UiText value={busy?'Enabling…':'Complete seller onboarding'}/></button><ButtonLink href="/provide-service" secondary><UiText value={"Register business"}/></ButtonLink></div></div>;
   return <SellerWorkspace businessId={businessId} listingsOnly={listingsOnly}/>;
 }
 function SellerWorkspace({businessId,listingsOnly}:{businessId?:number;listingsOnly:boolean}){

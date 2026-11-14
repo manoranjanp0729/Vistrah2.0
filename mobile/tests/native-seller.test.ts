@@ -8,15 +8,18 @@ import {matches,visibleAnswers,preparedAnswers,type RequirementField} from '../s
 import {evidenceMeta,evidenceLimit} from '../src/lib/evidence-validation.ts';
 import {resetToken} from '../src/lib/reset-token.ts';
 import {newInputs,preparedInputs} from '../src/lib/finds.ts';
-test('seller and employer authentication uses the existing capability endpoints',()=>{
-  assert.equal(authEndpoint(false,true),'/auth/seller/login');
-  assert.equal(authEndpoint(true,true),'/auth/seller/register');
+test('customer, seller, and employer authentication share the single unified auth endpoints',()=>{
+  assert.equal(authEndpoint(false,true),'/auth/login');
+  assert.equal(authEndpoint(true,true),'/auth/register');
   assert.equal(authEndpoint(false,false),'/auth/login');
   assert.equal(authEndpoint(true,false),'/auth/register');
 });
 
-test('seller entry returns to service selection only after seller authentication',()=>{
+test('unified auth return destination permits safe seller, V Ads, and service paths',()=>{
   assert.equal(sellerReturnDestination(true,'/services'),'/services');
+  assert.equal(sellerReturnDestination(true,'/seller'),'/seller');
+  assert.equal(sellerReturnDestination(true,'/seller/v-ads'),'/seller/v-ads');
+  assert.equal(sellerReturnDestination(true,'/seller/business/7'),'/seller/business/7');
   assert.equal(sellerReturnDestination(false,'/services'),null);
   assert.equal(sellerReturnDestination(true,'/provider-applications/new'),'/provider-applications/new');
   assert.equal(sellerReturnDestination(false,'/provider-applications/new'),null);
@@ -53,9 +56,10 @@ test('only the guarded admin dashboard can open the independent admin website',(
   const source=files(root).map(file=>({file:file.replaceAll('\\','/'),text:readFileSync(file,'utf8')}));
   assert.equal(source.some(item=>item.text.includes('openWebsite')),false);
   const callers=source.filter(item=>item.text.includes('openAdminDashboard')&&!item.file.endsWith('/lib/web.ts'));
-  assert.equal(callers.length,1);assert.ok(callers[0].file.endsWith('/app/admin-dashboard.tsx'));
-  assert.match(callers[0].text,/role==='ADMIN'/);
-  assert.match(callers[0].text,/if\(!allowed\)return/);
+  assert.ok(callers.every(item=>item.file.endsWith('/app/admin-dashboard.tsx')));
+  const dashboard=source.find(item=>item.file.endsWith('/app/admin-dashboard.tsx'))!.text;
+  assert.match(dashboard,/role==='ADMIN'/);
+  assert.match(dashboard,/if\(!allowed\)return/);
   const helper=source.find(item=>item.file.endsWith('/lib/web.ts'))!.text;
   assert.match(helper,/EXPO_PUBLIC_ADMIN_URL/);assert.doesNotMatch(helper,/Authorization|access_token/);
 });

@@ -1,6 +1,5 @@
 'use client';
 import {UiText,UiElement,UiNav} from "./localized-ui";
-import {sellerScreen} from '../../shared/session-scope';
 import {GoogleSignIn} from './google-sign-in';
 import {signupLegalCopy} from '../../shared/legal';
 import {useLanguage} from './language-provider';
@@ -10,13 +9,13 @@ import {ContextHelp,HelpPair} from './context-help';
 import {ContextVisual} from './visual';
 import {accountPhoto,pagePhoto} from '@/lib/imagery';
 import Link from 'next/link';
-import {useRouter,usePathname} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 import {useState,useEffect,useCallback} from 'react';
 import {ArrowUpRight,LogOut,UserRound,ClipboardList,Crown,CreditCard,ShoppingBag,ArrowRight} from 'lucide-react';
 import {api,ApiError,money,date} from '@/lib/api';
 import {safeDestination,destinationLink} from '@/lib/destinations';
 import {ServiceAccessState} from './service-access';
-import type {User,ServiceContext,RequestRecord,Membership,Payment,Offer} from '@/lib/types';
+import {isSellerUser,type User,type ServiceContext,type RequestRecord,type Membership,type Payment,type Offer} from '@/lib/types';
 import {Breadcrumbs,ButtonLink,EmptyState,Notice,Status} from './ui';
 import {Finds} from './finds';
 import {useCustomerLocation} from './customer-location';
@@ -24,41 +23,45 @@ import {AccountLocation} from './account-location';
 import {ProviderApplications} from './provider-onboarding';
 import {enquiryUrl,enquiryModes,type EnquiryIntent} from '@/lib/service-pathways';
 
-export function useUser(refreshOnFocus=false,requestedScope?:'customer'|'seller') {
-  const pathname=usePathname();const scope=requestedScope??(sellerScreen(pathname)?'seller':'customer');
+const sessionListeners=new Set<(user:User|null)=>void>();
+export function notifyUserSession(user:User|null){for(const listener of sessionListeners)listener(user);}
+
+export function useUser(refreshOnFocus=false,_requestedScope?:'customer'|'seller') {
   const [user,setUser]=useState<User|null>(null);const [loading,setLoading]=useState(true);const [error,setError]=useState('');
   useEffect(()=>{let alive=true,request=0;
-    const load=()=>{const current=++request;api<User>('/me',{headers:{'X-Vistrah-Session':scope}}).then(u=>{if(alive&&current===request){setUser(u);setError('');}}).catch(e=>{if(alive&&current===request){setUser(null);if(!(e instanceof ApiError)||e.status!==401)setError(e.message);else setError('');}}).finally(()=>{if(alive&&current===request)setLoading(false);});};
+    const onSync=(next:User|null)=>{if(alive){setUser(next);setError('');setLoading(false);}};
+    sessionListeners.add(onSync);
+    const load=()=>{const current=++request;api<User>('/me').then(u=>{if(alive&&current===request){setUser(u);setError('');}}).catch(e=>{if(alive&&current===request){setUser(null);if(!(e instanceof ApiError)||e.status!==401)setError(e.message);else setError('');}}).finally(()=>{if(alive&&current===request)setLoading(false);});};
     const restore=()=>{setLoading(true);load();};load();
     if(refreshOnFocus){window.addEventListener('focus',restore);window.addEventListener('pageshow',restore);}
-    return()=>{alive=false;if(refreshOnFocus){window.removeEventListener('focus',restore);window.removeEventListener('pageshow',restore);}};
-  },[refreshOnFocus,scope]);
+    return()=>{alive=false;sessionListeners.delete(onSync);if(refreshOnFocus){window.removeEventListener('focus',restore);window.removeEventListener('pageshow',restore);}};
+  },[refreshOnFocus]);
   return {user,loading,error};
 }
-export function AuthGate({children,next='/account'}:{children:(user:User)=>React.ReactNode;next?:string}) {const seller=sellerScreen(usePathname());const {user,loading,error}=useUser();if(loading)return <div className="container page" role="status"><ContextVisual photo={pagePhoto('access')}/><UiText value={"Loading your account…"}/></div>;if(error)return <div className="container page"><ContextVisual photo={pagePhoto('access')}/><Notice error message={error}/></div>;if(!user)return <div className="container page"><ContextVisual photo={pagePhoto('access')} className="access-context"/><UiElement as={EmptyState} title="Sign in to your account" description="Sign in to manage your requests and membership." href={`${seller?'/seller':''}/login?next=${encodeURIComponent(next)}`} label="Sign in"/><p className="center"><UiText value={"New to VISTRAH? "}/><Link className="text-link" href={`${seller?'/seller':''}/register?next=${encodeURIComponent(next)}`}><UiText value={"Create an account"}/></Link></p></div>;return <>{children(user)}</>;}
+export function AuthGate({children,next='/account'}:{children:(user:User)=>React.ReactNode;next?:string}) {const {user,loading,error}=useUser();if(loading)return <div className="container page" role="status"><ContextVisual photo={pagePhoto('access')}/><UiText value={"Loading your account…"}/></div>;if(error)return <div className="container page"><ContextVisual photo={pagePhoto('access')}/><Notice error message={error}/></div>;if(!user)return <div className="container page"><ContextVisual photo={pagePhoto('access')} className="access-context"/><UiElement as={EmptyState} title="Sign in to your account" description="Sign in to manage your requests, membership, and seller tools." href={`/login?next=${encodeURIComponent(next)}`} label="Sign in"/><p className="center"><UiText value={"New to VISTRAH? "}/><Link className="text-link" href={`/register?next=${encodeURIComponent(next)}`}><UiText value={"Create an account"}/></Link></p></div>;return <>{children(user)}</>;}
 
-export function AuthForm({register=false,seller=false,nextPath}:{register?:boolean;seller?:boolean;nextPath?:string}) {const {copy}=useLanguage();
-  const {syncIdentity}=useCustomerLocation();const router=useRouter();const next=websiteLoginDestination(nextPath,seller?'/seller':'/account');
+export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:boolean;nextPath?:string}) {const {copy}=useLanguage();
+  const {syncIdentity}=useCustomerLocation();const router=useRouter();const next=websiteLoginDestination(nextPath,'/account');
   const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);
-  const [consentMode,setConsentMode]=useState({register,seller});
-  if(consentMode.register!==register||consentMode.seller!==seller){setConsentMode({register,seller});setLegalAccepted(false);setWhatsappPromotions(false);}
+  const [consentRegister,setConsentRegister]=useState(register);
+  if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(event:React.FormEvent<HTMLFormElement>) {
     event.preventDefault();setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);const form=new FormData(event.currentTarget);
-    try {const result=await api<{user:User}>(`/auth/${seller?'seller/':''}${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name')}: {})})});if(!seller)syncIdentity(result.user.id);const target=nextPath?next:seller?'/seller':'/account';if(seller)router.replace(target);else router.push(target);router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}
+    try {const result=await api<{user:User}>(`/auth/${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name')}: {})})});syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   async function submitGoogle(credential:string) {
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);
     try {
-      const result=await api<{user:User}>(`/auth/${seller?'seller/':''}google`,{method:'POST',body:JSON.stringify({credential})});
-      if(!seller)syncIdentity(result.user.id);const target=nextPath?next:seller?'/seller':'/account';if(seller)router.replace(target);else router.push(target);router.refresh();
+      const result=await api<{user:User}>('/auth/google',{method:'POST',body:JSON.stringify({credential})});
+      syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();
     } catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
-  return <div className="auth-page"><div className="auth-form-wrap"><h2><UiText value={seller?(register?'Sign up as seller':'Login as seller'):register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={seller?'Sign in separately as a seller. You can use your existing VISTRAH email and password. Your customer session stays signed in independently. Customer membership is not required.':copy.auth.intro}/></p>{error&&<Notice error message={error}/>}<GoogleSignIn disabled={busy||(register&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)}/><div style={{display:'flex',alignItems:'center',gap:12,margin:'12px 0',color:'var(--text-secondary,#6b7280)',fontSize:12}}><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/><span><UiText value={"or with email"}/></span><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/></div><form onSubmit={submit} className="form">{register&&<label><UiText value={copy.auth.name}/><input name="name" autoComplete="name" minLength={2} maxLength={100} required/></label>}<label><UiText value={copy.auth.email}/><input type="email" name="email" autoComplete="email" maxLength={254} required/></label><HelpPair id="auth.password" className="help-field"><label><UiText value={copy.auth.password}/><input type="password" aria-label={copy.auth.password} name="password" autoComplete={register?'new-password':'current-password'} minLength={register?10:1} maxLength={128} required/>{register&&<small><UiText value={"Use at least 10 characters."}/></small>}</label></HelpPair>{register&&<div style={{display:'grid',gap:12}}>
+  return <div className="auth-page"><div className="auth-form-wrap"><h2><UiText value={register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={copy.auth.intro}/></p>{error&&<Notice error message={error}/>}<GoogleSignIn disabled={busy||(register&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)}/><div style={{display:'flex',alignItems:'center',gap:12,margin:'12px 0',color:'var(--text-secondary,#6b7280)',fontSize:12}}><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/><span><UiText value={"or with email"}/></span><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/></div><form onSubmit={submit} className="form">{register&&<label><UiText value={copy.auth.name}/><input name="name" autoComplete="name" minLength={2} maxLength={100} required/></label>}<label><UiText value={copy.auth.email}/><input type="email" name="email" autoComplete="email" maxLength={254} required/></label><HelpPair id="auth.password" className="help-field"><label><UiText value={copy.auth.password}/><input type="password" aria-label={copy.auth.password} name="password" autoComplete={register?'new-password':'current-password'} minLength={register?10:1} maxLength={128} required/>{register&&<small><UiText value={"Use at least 10 characters."}/></small>}</label></HelpPair>{register&&<div style={{display:'grid',gap:12}}>
       <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" required checked={legalAccepted} disabled={busy} onChange={event=>setLegalAccepted(event.target.checked)} aria-label={signupLegalCopy.acceptance} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/><span><UiText value={"I have read and agree to VISTRAH"}/>{'\u2019s '}<Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link> <UiText value={"and "}/><Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link></span></label>
       <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" checked={whatsappPromotions} disabled={busy} onChange={event=>setWhatsappPromotions(event.target.checked)} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/><span>{signupLegalCopy.whatsapp}</span></label>
       <small id="signup-phase-notice">{signupLegalCopy.notice} <UiText value={"Legal links open in a new tab."}/></small>
-    </div>}<button className="button" type="submit" disabled={busy}>{busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn}<ArrowUpRight size={17}/></button></form>{!register&&<p><Link className="text-link" href="/forgot-password"><UiText value={copy.auth.forgot}/></Link><ContextHelp id="auth.recovery"/></p>}<p><Link className="text-link" href={`${seller?'/seller':''}/${register?'login':'register'}${nextPath?'?next='+encodeURIComponent(next):''}`}>{register?copy.auth.existing:copy.auth.new}<ArrowRight size={15}/></Link></p></div></div>;
+    </div>}<button className="button" type="submit" disabled={busy}>{busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn}<ArrowUpRight size={17}/></button></form>{!register&&<p><Link className="text-link" href="/forgot-password"><UiText value={copy.auth.forgot}/></Link><ContextHelp id="auth.recovery"/></p>}<p><Link className="text-link" href={`/${register?'login':'register'}${nextPath?'?next='+encodeURIComponent(next):''}`}>{register?copy.auth.existing:copy.auth.new}<ArrowRight size={15}/></Link></p></div></div>;
 }
 
 export function RequestForm({context,intent='enquiry'}:{context:ServiceContext;intent?:EnquiryIntent}){return <AuthGate next={enquiryUrl(context,intent)}>{user=><RequestFormInner context={context} user={user} intent={intent}/>}</AuthGate>;}
@@ -75,9 +78,8 @@ const accountLinks=[...sellerAccountLinks,...customerAccountLinks];
 export function Account({section='',workflowId}:{section?:string;workflowId?:string}) {return <AuthGate next={`/account${section?'/'+section:''}${workflowId?'/'+workflowId:''}`}>{user=><AccountInner user={user} section={section} workflowId={workflowId}/>}</AuthGate>;}
 function AccountInner({user,section,workflowId}:{user:User;section:string;workflowId?:string}) {
   const {syncIdentity}=useCustomerLocation();const router=useRouter();const [error,setError]=useState('');
-  const seller=sellerScreen(usePathname());
-  async function logout(){try{await api('/auth/logout',{method:'POST',headers:{'X-Vistrah-Session':seller?'seller':'customer'}});if(!seller)syncIdentity(null);router.push(seller?'/seller/login':'/login');router.refresh();}catch(e){setError((e as Error).message);}}
-  const roleLabel=user.role==='ADMIN'?'Administrator':seller?'Seller':'Customer';
+  async function logout(){try{await api('/auth/logout',{method:'POST'});syncIdentity(null);notifyUserSession(null);router.push('/login');router.refresh();}catch(e){setError((e as Error).message);}}
+  const roleLabel=user.role==='ADMIN'?'Administrator':isSellerUser(user)?'Customer & Seller':'Customer';
   return <div className="container page"><Breadcrumbs items={[{label:'My account',...(section?{href:'/account'}:{})},...(section?[{label:accountLinks.find(l=>l.slug===section)!.label}]:[])]}/><div className="account-layout"><aside className="account-sidebar"><div className="account-person"><div className="avatar">{user.name.slice(0,1)}</div><strong>{user.name}</strong><small>{user.email} · <UiText value={roleLabel}/></small></div><UiNav  aria-label="Account navigation"><small className="small-label"><UiText value={"MY ACCOUNT & ACTIVITY"}/></small>{customerAccountLinks.map(l=><HelpPair key={l.slug} id={accountHelp[l.slug]} className="help-nav-row"><Link href={`/account${l.slug?'/'+l.slug:''}`} className={section===l.slug?'active':''}><l.icon size={18}/><UiText value={l.label}/></Link></HelpPair>)}<Link href="/commerce/cart"><ShoppingBag size={18}/><UiText value={"Cart"}/></Link><Link href="/commerce/orders"><ShoppingBag size={18}/><UiText value={"Purchase orders"}/></Link><AccountLocation/><small className="small-label"><UiText value={"SELLER & BUSINESS TOOLS"}/></small><Link href="/seller"><ClipboardList size={18}/><UiText value={"Seller dashboard"}/></Link><Link href="/seller/v-ads"><ClipboardList size={18}/><UiText value={"V Ads Studio"}/></Link>{sellerAccountLinks.map(l=><HelpPair key={l.slug} id={accountHelp[l.slug]} className="help-nav-row"><Link href={`/account${l.slug?'/'+l.slug:''}`} className={section===l.slug?'active':''}><l.icon size={18}/><UiText value={l.label}/></Link></HelpPair>)}<Link href="/app/employer-jobs"><ClipboardList size={18}/><UiText value={"Employer job postings"}/></Link>{user.role==='ADMIN'&&<><small className="small-label">ADMINISTRATION</small><Link href="/admin"><Crown size={18}/><UiText value={"Admin dashboard"}/></Link></>}<button onClick={logout}><LogOut size={18}/><UiText value={"Sign out"}/></button></UiNav></aside><section className="account-content"><ContextVisual photo={accountPhoto(section)} className="account-context"/>{error&&<Notice error message={error}/>}{section==='provider-applications'?<ProviderApplications/>:section==='finds'?<Finds user={user} workflowId={workflowId}/>:<AccountSection key={section} section={section} user={user}/>}</section></div></div>;
 }
 function AccountSection({section,user}:{section:string;user:User}) {

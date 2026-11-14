@@ -24,6 +24,7 @@ import {
 import {nativeMarketplacePhoto, nativeMarketplaceAlt} from '../../../lib/marketplace-photo';
 import {useTheme,spacing,typography} from '../../../lib/theme';
 import {useSession} from '../../../lib/session';
+import {isSellerUser} from '../../../lib/types';
 import {ClassifiedServices} from '../../../components/commerce-browser';
 import {customerListingCopy, listingEnquiryHref} from '../../../../../shared/customer-listing';
 import {officialContact} from '../../../../../shared/public-contact';
@@ -34,7 +35,7 @@ export default function Services() {
   const banner=useBannerTheme();
   const {styles, colors, mode, accentGradient} = useTheme();
   const {t, label} = useLanguage();
-  const session = useSession(true);
+  const session = useSession();
   const scroll = useRef<ScrollView>(null);
   const optionsTop = useRef(0);
   const optionsOffset = useRef(0);
@@ -42,30 +43,18 @@ export default function Services() {
 
   const [cardsWidth,setCardsWidth]=useState(0);
   const cardWidth=cardsWidth>10?(cardsWidth-10)/2:undefined;
-  const seller = Boolean(session.user?.seller_enabled);
+  const seller = isSellerUser(session.user);
   const sellerLabel = !session.ready
-    ? 'Checking seller session...'
+    ? 'Checking account...'
     : seller
     ? `Welcome, ${session.user!.name}`
-    : 'Login/Signup as seller';
+    : session.user
+    ? 'Complete seller onboarding'
+    : 'Sign in to offer services';
   const openSeller = () =>
-    router.push({pathname: '/auth', params: {mode: 'seller', register: '1', next: '/services'}});
-
-  const [loggingOut, setLoggingOut] = useState(false);
-  const [logoutError, setLogoutError] = useState('');
-
-  async function logoutSeller() {
-    if (loggingOut) return;
-    setLoggingOut(true);
-    setLogoutError('');
-    try {
-      await session.signOut();
-    } catch (error) {
-      setLogoutError((error as Error).message);
-    } finally {
-      setLoggingOut(false);
-    }
-  }
+    session.user
+      ? router.push('/seller')
+      : router.push({pathname: '/auth', params: {next: '/services'}});
 
   const raw = useLocalSearchParams<{category?: string; subcategory?: string; type?: string; q?: string}>();
   const params: MarketplaceSelection = {
@@ -716,24 +705,13 @@ export default function Services() {
         )}
 
         {/* BOTTOM SELLER FOOTER ACTIONS */}
-        {(seller || !isListingTypeLevel) && (
+        {!seller && !isListingTypeLevel && (
           <View style={[s.bottomSellerBox, {borderTopColor: colors.border}]}>
-            {Boolean(logoutError) && <ErrorPanel error={logoutError} />}
-            {seller ? (
-              <UiElement
-                as={Action}
-                secondary
-                label={loggingOut ? 'Logging out...' : 'Logout as seller'}
-                disabled={loggingOut}
-                onPress={() => void logoutSeller()}
-              />
-            ) : !isListingTypeLevel ? (
-              <SellerSignInAction
-                label={sellerLabel}
-                disabled={!session.ready}
-                onPress={openSeller}
-              />
-            ) : null}
+            <SellerSignInAction
+              label={sellerLabel}
+              disabled={!session.ready}
+              onPress={openSeller}
+            />
           </View>
         )}
       </ScrollView>

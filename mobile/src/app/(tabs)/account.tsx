@@ -9,6 +9,7 @@ import Feather from '@expo/vector-icons/Feather';
 import {router} from 'expo-router';
 import {Page,Action,Loading,ErrorPanel} from '../../components/ui';
 import {useSession} from '../../lib/session';
+import {isSellerUser} from '../../lib/types';
 import {useTheme,spacing} from '../../lib/theme';
 import {LinearGradient} from 'expo-linear-gradient';
 
@@ -107,9 +108,9 @@ function Group({children}:{children:ReactNode}){const {colors}=useTheme();return
 function Section({title,subtitle,children}:{title:string;subtitle:string;children:ReactNode}){const {styles}=useTheme();return <View style={{gap:spacing.elementGap}}><View style={{gap:spacing.small}}><Text accessibilityRole="header" style={styles.heading}><UiText value={title}/></Text><Text style={[styles.muted,{fontSize:12}]}><UiText value={subtitle}/></Text></View><Group>{children}</Group></View>;}
 
 export default function Account(){const {colors,styles}=useTheme();const banner=useBannerTheme();const {copy,t}=useLanguage();
- const session=useSession(false);const sellerSession=useSession(true);const [error,setError]=useState(''),[busy,setBusy]=useState(false);
+ const session=useSession();const seller=isSellerUser(session.user);const [error,setError]=useState(''),[busy,setBusy]=useState(false);
  async function logout(){setBusy(true);setError('');try{await session.signOut();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
- const roleLabel=session.user?.role==='ADMIN'?'Administrator':'Customer';
+ const roleLabel=session.user?.role==='ADMIN'?'Administrator':seller?'Customer & Seller':'Customer';
  return <Page sectioned>
   <View style={{gap:10}}>
     <UiElement as={FeatureBannerButton}
@@ -141,7 +142,7 @@ export default function Account(){const {colors,styles}=useTheme();const banner=
    <UiElement as={Row} label={copy.nav.location} icon="map-pin" onPress={()=>router.push('/location')}/>
    <UiElement as={Row} label={t('settings.title')} icon="settings" onPress={()=>router.push('/settings')}/>
   </UiElement>
-  <UiElement as={Section} title="Seller & Business Tools" subtitle={sellerSession.user?`Signed in as seller: ${sellerSession.user.name}`:"Sign in separately to manage your seller business"}>
+  <UiElement as={Section} title="Seller & Business Tools" subtitle={seller?"Manage your businesses, listings, and V Ads":session.user?"Complete seller onboarding or register your business":"Sign in once to access customer and seller tools"}>
    {<><Row label={copy.account.seller} icon="grid" onPress={()=>router.push('/seller')}/><UiElement as={Row} label="V Ads Studio" icon="video" onPress={()=>router.push('/seller/v-ads')}/><UiElement as={Row} label="+ Add services" icon="plus-circle" onPress={()=>router.push('/services')}/></>}
    <UiElement as={Row} label={t('account.jobs')} icon="briefcase" onPress={()=>router.push('/employer-jobs')}/>
   </UiElement>

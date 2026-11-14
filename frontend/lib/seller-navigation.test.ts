@@ -1,8 +1,8 @@
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {beforeEach,expect,it,vi} from 'vitest';
-const session=vi.hoisted(()=>({user:null as null|{seller_enabled:boolean},loading:false,error:''}));
-vi.mock('@/components/customer',()=>({useUser:()=>session}));
+const session=vi.hoisted(()=>({user:null as null|{seller_enabled:boolean;isSeller?:boolean},loading:false,error:''}));
+vi.mock('@/components/customer',()=>({useUser:()=>session,notifyUserSession:vi.fn()}));
 vi.mock('@/components/publication',()=>({BusinessPublicationEditor:()=>React.createElement('p',null,'Private publication editor')}));
 vi.mock('@/components/commerce',()=>({SellerCommerce:()=>React.createElement('p',null,'Private listing editor')}));
 vi.mock('@/components/ownership-claims',()=>({SellerOwnershipClaims:()=>null,AdminOwnershipClaimQueue:()=>null}));
@@ -11,22 +11,27 @@ vi.mock('@/components/ui',()=>({
   Notice:({message}:{message:string})=>React.createElement('p',null,message),
   EmptyState:({title}:{title:string})=>React.createElement('p',null,title),
 }));
-vi.mock('next/navigation',()=>({notFound:()=>{throw new Error('NOT_FOUND');}}));
+vi.mock('next/navigation',()=>({
+  notFound:()=>{throw new Error('NOT_FOUND');},
+  redirect:(path:string)=>{throw new Error('REDIRECT:'+path);},
+}));
 import {SellerDashboard} from '../components/seller';
 import SellerBusinessPage from '../app/(public)/seller/business/[id]/page';
 import SellerListingsPage from '../app/(public)/seller/commerce/[id]/page';
 import {websiteLoginDestination} from './login-destination';
 beforeEach(()=>{session.user=null;session.loading=false;session.error='';});
 it('connects the seller dashboard to applications, assigned enquiries and public offers',()=>{
-  session.user={seller_enabled:true};
+  session.user={seller_enabled:true,isSeller:true};
   const html=renderToStaticMarkup(React.createElement(SellerDashboard));
   for(const href of ['/services','/seller/v-ads','/account/provider-applications','/account/provider-applications#assigned-leads','/commerce','/app/employer-jobs'])expect(html).toContain('href="'+href+'"');
   expect(html).not.toContain('Private listing editor');
   expect(html).toContain('Loading your businesses');
 });
-it('preserves the selected business through seller login without exposing private editors',()=>{
+it('redirects unauthenticated visits to unified login and shows seller onboarding for signed-in non-sellers without exposing private editors',()=>{
+  expect(()=>renderToStaticMarkup(React.createElement(()=>SellerDashboard({businessId:7})))).toThrow('REDIRECT:/login?next=%2Fseller%2Fbusiness%2F7');
+  session.user={seller_enabled:false,isSeller:false};
   const html=renderToStaticMarkup(React.createElement(()=>SellerDashboard({businessId:7})));
-  expect(html).toContain('/seller/login?next=%2Fseller%2Fbusiness%2F7');
+  expect(html).toContain('Complete Seller Onboarding / Register Business');
   expect(html).not.toContain('Private publication editor');
   expect(websiteLoginDestination('/seller/business/7')).toBe('/seller/business/7');
 });

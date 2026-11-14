@@ -5,6 +5,7 @@ import Link from 'next/link';
 import {customerListingCopy,listingEnquiryHref} from '../../shared/customer-listing';
 import type {ReactNode} from 'react';
 import {useUser} from './customer';
+import {isSellerUser} from '@/lib/types';
 import {ClassifiedServices} from './commerce';
 import {addServiceUrl,serviceSelection} from '../../shared/service-listing';
 import type {MarketplaceSelection} from '../../shared/marketplace';
@@ -19,7 +20,7 @@ import styles from './marketplace.module.css';
 type Resolved=NonNullable<ReturnType<typeof resolveMarketplaceSelection>>;
 export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;query?:string}) {
   const {category,subcategory,listingType}=selection;
-  const {user}=useUser(true,'seller');const seller=Boolean(user?.seller_enabled);
+  const {user}=useUser(true);const seller=isSellerUser(user);
   const {t,label}=useLanguage();
   const categoryName=category?label(marketplaceItemId(category.slug),category.title):'';
   const subcategoryName=subcategory?label(marketplaceItemId(category!.slug,subcategory.slug),subcategory.title):'';

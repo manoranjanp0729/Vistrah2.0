@@ -12,25 +12,25 @@ import {sellerReturnDestination} from '../lib/seller-auth';
 import {GoogleSignIn} from '../components/google-sign-in';
 
 export default function Auth(){const {copy,t}=useLanguage();const {styles,colors}=useTheme();
-  const params=useLocalSearchParams<{mode?:string;register?:string;next?:string}>();const seller=params.mode==='seller';
-  const {signIn,signInWithGoogle,user,ready}=useSession(seller);const [register,setRegister]=useState(params.register==='1');const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+  const params=useLocalSearchParams<{register?:string;next?:string}>();
+  const {signIn,signInWithGoogle,user,ready}=useSession();const [register,setRegister]=useState(params.register==='1');const [name,setName]=useState('');const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);
-  const [consentMode,setConsentMode]=useState({register,seller});
-  if(consentMode.register!==register||consentMode.seller!==seller){setConsentMode({register,seller});setLegalAccepted(false);setWhatsappPromotions(false);}
+  const [consentRegister,setConsentRegister]=useState(register);
+  if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(){
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?t('validation.authRegister'):t('validation.authSignIn'));return;}
-    setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined,seller);setPassword('');const next=sellerReturnDestination(seller,params.next);if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}
+    setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined);setPassword('');const next=sellerReturnDestination(true,params.next);if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');}catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   async function submitGoogle(credential:string){
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}
     setBusy(true);try{
-      await signInWithGoogle({credential},seller);
-      setPassword('');const next=sellerReturnDestination(seller,params.next);if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');
+      await signInWithGoogle({credential});
+      setPassword('');const next=sellerReturnDestination(true,params.next);if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');
     }catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
-  if(seller&&!ready)return <Page><Loading/></Page>;
-  if(seller&&user?.seller_enabled&&!busy)return <Redirect href={sellerReturnDestination(seller,params.next)??'/seller'}/>;
-  return <UiElement as={Page} title={seller?(register?t('auth.sellerCreate'):t('auth.sellerSignIn')):register?copy.auth.register:copy.auth.welcome}><Text style={styles.muted}><UiText value={copy.auth.intro}/></Text>{Boolean(error)&&<ErrorPanel error={error}/>}
+  if(!ready)return <Page><Loading/></Page>;
+  if(user&&!busy)return <Redirect href={sellerReturnDestination(true,params.next)??'/account'}/>;
+  return <UiElement as={Page} title={register?copy.auth.register:copy.auth.welcome}><Text style={styles.muted}><UiText value={copy.auth.intro}/></Text>{Boolean(error)&&<ErrorPanel error={error}/>}
     {register&&<Field label={copy.auth.name} value={name} onChangeText={setName} autoComplete="name" maxLength={100}/>}
     <Field label={copy.auth.email} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoCorrect={false} autoComplete="email" maxLength={254}/>
     <Field label={copy.auth.password} value={password} onChangeText={setPassword} secureTextEntry autoComplete={register?'new-password':'current-password'} maxLength={128}/>

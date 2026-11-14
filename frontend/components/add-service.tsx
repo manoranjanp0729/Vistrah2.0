@@ -1,21 +1,25 @@
 'use client';
 import {UiText,UiOl} from "./localized-ui";
 import Link from 'next/link';
+import {redirect} from 'next/navigation';
 import {useState} from 'react';
 import {useUser} from './customer';
-import {SellerAuth} from './seller-auth';
+import {SellerOnboardingPrompt} from './seller-auth';
 import {Notice} from './ui';
 import {api} from '@/lib/api';
+import {isSellerUser} from '@/lib/types';
 import {useCommerceResource} from '@/lib/use-commerce-resource';
 import {serviceJourneySteps} from '../../shared/seller-journey';
 import {listingInput} from '../../shared/commerce';
 import {addServiceUrl,businessInput,emptyBusiness,serviceListingForm,type ServiceSelection,type SellerBusiness} from '../../shared/service-listing';
 
 export function AddService({selection,title,pathLabel}:{selection:ServiceSelection;title:string;pathLabel:string}){
-  const {user,loading,error}=useUser(true,'seller');
+  const {user,loading,error}=useUser(true);
+  const [enabled,setEnabled]=useState(false);
   if(loading)return <p role="status"><UiText value={"Checking seller access..."}/></p>;
   if(error)return <Notice error message={error}/>;
-  if(!user?.seller_enabled)return <SellerAuth nextPath={addServiceUrl(selection)}/>;
+  if(!user)redirect('/login?next='+encodeURIComponent(addServiceUrl(selection)));
+  if(!isSellerUser(user)&&!enabled)return <SellerOnboardingPrompt onEnabled={()=>setEnabled(true)}/>;
   return <ServiceForm key={user.id+':'+JSON.stringify(selection)} selection={selection} title={title} pathLabel={pathLabel}/>;
 }
 function ServiceForm({selection,title,pathLabel}:{selection:ServiceSelection;title:string;pathLabel:string}){

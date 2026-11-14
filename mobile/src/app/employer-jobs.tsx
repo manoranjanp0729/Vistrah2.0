@@ -2,19 +2,22 @@ import {Text} from '../components/typography';
 import {UiText,UiElement} from "../components/localized-ui";
 import {useState} from 'react';
 import {Pressable,View} from 'react-native';
-import {router} from 'expo-router';
+import {Redirect,router} from 'expo-router';
 import {Page,Action,Heading,Field,ErrorPanel,Loading} from '../components/ui';
+import {SellerOnboardingCard} from '../components/seller-gate';
 import {useSession} from '../lib/session';
+import {isSellerUser} from '../lib/types';
 import {useResource} from '../lib/resource';
 import {api} from '../lib/api';
 import {emptyJob,jobDraft,type JobDraft,type OwnedJob,type JobPage} from '../lib/employer-jobs';
 import {useTheme} from '../lib/theme';
 type Business={id:number;company:string;name:string;active:boolean;verification_status:string};
 export default function EmployerJobs(){
-  const session=useSession();const {styles}=useTheme();const [busy,setBusy]=useState(false),[error,setError]=useState('');
-  async function enable(){setBusy(true);setError('');try{await api('/auth/seller/enable',{method:'POST'});await session.refresh();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
-  return <UiElement as={Page} title="Employer job postings"><Text style={styles.muted}><UiText value={"Create job drafts for a business you own. VISTRAH reviews each submission before publication."}/></Text>{Boolean(error)&&<ErrorPanel error={error}/>}
-    {!session.ready?<Loading/>:!session.user?<UiElement as={Action} auth label="Sign in to post a job" onPress={()=>router.push('/auth')}/>:!session.user.seller_enabled?<><Text style={styles.muted}><UiText value={"Enable employer access using your existing account. Customer membership is not required."}/></Text><UiElement as={Action} label="Enable employer access" disabled={busy} onPress={()=>void enable()}/></>:<EmployerManager key={session.user.id} userId={session.user.id}/>}
+  const session=useSession();const {styles}=useTheme();
+  if(!session.ready)return <Page><Loading/></Page>;
+  if(!session.user)return <Redirect href={{pathname:'/auth',params:{next:'/employer-jobs'}}}/>;
+  return <UiElement as={Page} title="Employer job postings"><Text style={styles.muted}><UiText value={"Create job drafts for a business you own. VISTRAH reviews each submission before publication."}/></Text>
+    {!isSellerUser(session.user)?<SellerOnboardingCard description="Complete seller onboarding or register your employer business using your existing account. Customer membership is not required."/>:<EmployerManager key={session.user.id} userId={session.user.id}/>}
   </UiElement>;
 }
 function EmployerManager({userId}:{userId:number}){

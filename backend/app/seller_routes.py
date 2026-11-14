@@ -1,4 +1,4 @@
-"""Owned seller reads, independent of customer membership. Legacy grants fail closed."""
+"""Owned seller reads and business management, authorized from the unified user session via user.id."""
 import uuid
 import hashlib
 import re

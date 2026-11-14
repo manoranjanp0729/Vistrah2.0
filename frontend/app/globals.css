@@ -1,18 +1,58 @@
+@font-face { font-family:'Vistrah Montserrat'; src:url('/fonts/Montserrat_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Montserrat'; src:url('/fonts/Montserrat_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Montserrat'; src:url('/fonts/Montserrat_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Montserrat'; src:url('/fonts/Montserrat_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Inter'; src:url('/fonts/Inter_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Inter'; src:url('/fonts/Inter_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Inter'; src:url('/fonts/Inter_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Inter'; src:url('/fonts/Inter_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Poppins'; src:url('/fonts/Poppins_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Poppins'; src:url('/fonts/Poppins_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Poppins'; src:url('/fonts/Poppins_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Poppins'; src:url('/fonts/Poppins_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Nunito'; src:url('/fonts/Nunito_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Nunito'; src:url('/fonts/Nunito_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Nunito'; src:url('/fonts/Nunito_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Nunito'; src:url('/fonts/Nunito_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah DM Sans'; src:url('/fonts/DMSans_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah DM Sans'; src:url('/fonts/DMSans_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah DM Sans'; src:url('/fonts/DMSans_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah DM Sans'; src:url('/fonts/DMSans_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Kannada'; src:url('/fonts/NotoSansKannada_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Kannada'; src:url('/fonts/NotoSansKannada_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Kannada'; src:url('/fonts/NotoSansKannada_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Kannada'; src:url('/fonts/NotoSansKannada_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Devanagari'; src:url('/fonts/NotoSansDevanagari_400Regular.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Devanagari'; src:url('/fonts/NotoSansDevanagari_500Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Devanagari'; src:url('/fonts/NotoSansDevanagari_600SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+@font-face { font-family:'Vistrah Devanagari'; src:url('/fonts/NotoSansDevanagari_700Bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+
 :root {
-  --brand-green-950:#173f35;
-  --brand-green-800:#245744;
-  --brand-green-700:#34745a;
-  --navy-950:#071a3d;
-  --navy-900:#0b1f5b;
-  --accent-orange:#ff8a00;
-  --page-background:#f7f9fc;
-  --surface:#fff;
-  --ivory:#f6f5ed;
-  --border:#dfe5ef;
-  --text-primary:#17231f;
-  --text-secondary:#5c6b64;
-  --text-warning:#806216;
-  --text-error:#923b33;
+  --bg-canvas:#08080D;
+  --bg-surface:#071426;
+  --bg-elevated:#0D213F;
+  --border-subtle:rgba(255,255,255,0.08);
+  --brand-primary:#FF6B00;
+  --brand-primary-hover:#E05A00;
+  --brand-primary-ink:#FFFFFF;
+  --brand-primary-soft:rgba(255,107,0,0.14);
+  --interactive-accent:#503fbd;
+  --interactive-ink:#FFFFFF;
+  --brand-green-950:var(--interactive-accent);
+  --brand-green-800:var(--interactive-accent);
+  --brand-green-700:var(--interactive-accent);
+  --navy-950:#071426;
+  --navy-900:#0D213F;
+  --accent-orange:var(--interactive-accent);
+  --page-background:var(--bg-canvas);
+  --surface:var(--bg-surface);
+  --ivory:var(--bg-elevated);
+  --border:#1c304f;
+  --text-primary:#f4f7fc;
+  --text-secondary:#a9b8cf;
+  --text-muted:var(--text-secondary);
+  --text-warning:#f5c76b;
+  --text-error:#ff9b93;
   --space-1:4px;
   --space-2:8px;
   --space-3:12px;
@@ -22,27 +62,30 @@
   --space-7:48px;
   --space-8:64px;
   --space-9:88px;
-  --radius-sm:6px;
+  --radius-control:8px;
+  --radius-card:12px;
+  --radius-pill:9999px;
+  --radius-sm:8px;
   --radius-md:12px;
-  --radius-lg:20px;
-  --shadow-sm:0 3px 16px #173f3507;
-  --shadow-md:0 12px 32px #173f350c;
+  --radius-lg:12px;
+  --shadow-sm:0 3px 16px rgba(7,20,38,0.08);
+  --shadow-md:0 12px 32px rgba(7,20,38,0.14);
   --breakpoint-mobile:390px;
   --breakpoint-tablet:768px;
   --breakpoint-laptop:1024px;
   --breakpoint-desktop:1440px;
-  /* Native system font stack matching the mobile app */
-  --font-system:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  --font-body:var(--font-system);
-  --font-body-italic:var(--font-system);
-  --font-display:var(--font-system);
-  --font-display-italic:var(--font-system);
-  --font-wordmark:var(--font-system);
+  --vistrah-font:'Vistrah Montserrat','Vistrah Kannada','Vistrah Devanagari',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-system:var(--vistrah-font);
+  --font-body:var(--vistrah-font);
+  --font-body-italic:var(--vistrah-font);
+  --font-display:var(--vistrah-font);
+  --font-display-italic:var(--vistrah-font);
+  --font-wordmark:var(--vistrah-font);
   --weight-regular:400;
   --weight-medium:500;
   --weight-semibold:600;
   --weight-bold:700;
-  /* rem-based fluid headings continue to scale with the user's text settings. */
+  /* Normalized typography metrics across all 5 selectable fonts. */
   --type-display:clamp(2.25rem,1.625rem + 2.5vw,4rem);
   --type-h1:clamp(1.875rem,1.5rem + 1.5vw,2.75rem);
   --type-h2:clamp(1.75rem,1.625rem + .5vw,2rem);
@@ -60,14 +103,14 @@
   --type-membership-mark:5.1875rem;
   --type-membership-mark-compact:4.25rem;
   --type-attribution:1.4375rem;
-  --leading-display:1.1;
-  --leading-heading:1.2;
+  --leading-display:1.15;
+  --leading-heading:1.25;
   --leading-card:1.35;
-  --leading-body:1.65;
-  --leading-ui:1.45;
+  --leading-body:1.55;
+  --leading-ui:1.4;
   --leading-label:1.4;
-  --tracking-display:-.02em;
-  --tracking-heading:-.025em;
+  --tracking-display:-.015em;
+  --tracking-heading:-.015em;
   --tracking-normal:0;
   --tracking-label:.06em;
 }

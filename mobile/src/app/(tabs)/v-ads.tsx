@@ -8,7 +8,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import {Feather} from '@expo/vector-icons';
 import {useVideoPlayer, VideoView} from 'expo-video';
 import {mobileVideoCoordinator} from '../../lib/video-coordinator';
-import {useTheme} from '../../lib/theme';
+import {radii,tabularNums,useTheme} from '../../lib/theme';
 import {useSession} from '../../lib/session';
 import {useOptionalLocation} from '../../lib/location';
 import {vAds,playableReel,publicVideoLink,type PlayableReel as Reel} from '../../lib/v-ads';
@@ -223,15 +223,15 @@ function ReelCard({reel, active, height}: {
       <View style={s.rightActions}>
         <UiElement as={Pressable} style={s.action} disabled={busy} onPress={()=>void toggleLike()} accessibilityLabel={liked?'Unlike video':'Like video'}>
           <View style={[s.actionCircle, liked && s.actionCircleLiked]}>
-            <Feather name="heart" size={21} color={liked ? '#e11d48' : '#FFFFFF'} />
+            <Feather name="heart" size={21} color={liked ? colors.brandPrimary : '#FFFFFF'} />
           </View>
-          <Text style={s.actionText}>{likesCount || (liked ? 'Liked' : 'Like')}</Text>
+          <Text style={[s.actionText, tabularNums]}>{likesCount || (liked ? 'Liked' : 'Like')}</Text>
         </UiElement>
         <Pressable style={s.action} onPress={() => {if(!commentsOpen)setCommentsLoading(true);setCommentsOpen(!commentsOpen);}}>
           <View style={s.actionCircle}>
             <Feather name="message-circle" size={21} color="#FFFFFF" />
           </View>
-          <Text style={s.actionText}>{commentCount || 'Comment'}</Text>
+          <Text style={[s.actionText, tabularNums]}>{commentCount || 'Comment'}</Text>
         </Pressable>
         <Pressable style={s.action} onPress={()=>void share()}>
           <View style={s.actionCircle}>
@@ -249,18 +249,13 @@ function ReelCard({reel, active, height}: {
 
       {/* Bottom video details themed to Spotlight cards */}
       <View style={s.details}>
-        {/* Spotlight brand gradient pill */}
-        <LinearGradient
-          colors={brandGradient}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          style={s.spotlightBadge}
-        >
+        {/* Spotlight brand pill */}
+        <View style={[s.spotlightBadge, {backgroundColor: colors.brandPrimary}]}>
           <Feather name="play" size={10} color="#FFFFFF" />
           <Text numberOfLines={1} style={s.spotlightBadgeText}>
             {reel.account || 'VISTRAH SPOTLIGHT'}
           </Text>
-        </LinearGradient>
+        </View>
 
         {/* Clean channel identity */}
         <UiElement as={Pressable}
@@ -333,12 +328,12 @@ function ReelCard({reel, active, height}: {
 
       {/* Video Progress Bar */}
       <View style={{position:'absolute',bottom:0,left:0,right:0,height:3,backgroundColor:'rgba(255,255,255,0.25)',zIndex:4}}>
-        <View style={{height:'100%',width:`${progress}%`,backgroundColor:brandTheme.defaultAccent}}/>
+        <View style={{height:'100%',width:`${progress}%`,backgroundColor:colors.brandPrimary}}/>
       </View>
 
       {/* Comments Panel */}
       {commentsOpen && (
-        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728', borderColor: colors.border}]}>
+        <View style={[s.commentPanel, {backgroundColor: colors.surface, borderColor: colors.borderSubtle}]}>
           <View style={s.commentGrabHandle} />
           <View style={s.commentHeader}>
             <Text style={[s.commentTitle, {color: colors.text}]}><UiText value={"Comments"}/></Text>
@@ -358,7 +353,7 @@ function ReelCard({reel, active, height}: {
           />
           <View style={s.commentInputRow}>
             <UiElement as={TextInput}
-              style={[s.commentInput, {backgroundColor: colors.surface, color: colors.text, borderColor: colors.border, borderWidth: 1}]}
+              style={[s.commentInput, {backgroundColor: colors.elevated, color: colors.text, borderColor: colors.borderSubtle, borderWidth: 1}]}
               placeholder="Add a comment..."
               placeholderTextColor={colors.muted}
               value={draft}
@@ -366,7 +361,7 @@ function ReelCard({reel, active, height}: {
               maxLength={300}
             />
             <UiElement as={Pressable} disabled={busy||commentsLoading} onPress={()=>void addComment()} accessibilityLabel="Post comment">
-              <Feather name="send" size={22} color={colors.accent} />
+              <Feather name="send" size={22} color={colors.brandPrimary} />
             </UiElement>
           </View>
           {commentsLoading&&<Text style={[s.demoNote, {color: colors.muted}]}><UiText value={"Loading comments…"}/></Text>}
@@ -377,12 +372,12 @@ function ReelCard({reel, active, height}: {
 
       {/* Product Details Sheet for Product Ads */}
       {productDetailsOpen && productMeta && (
-        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728', borderColor: colors.border, height: '70%', maxHeight: 520}]}>
+        <View style={[s.commentPanel, {backgroundColor: colors.surface, borderColor: colors.borderSubtle, height: '70%', maxHeight: 520}]}>
           <View style={s.commentGrabHandle} />
           <View style={s.commentHeader}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1}}>
-              <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a1520', alignItems: 'center', justifyContent: 'center'}}>
-                <Feather name="shopping-bag" size={16} color="#e11d48"/>
+              <View style={{width: 32, height: 32, borderRadius: radii.pill, backgroundColor: colors.brandPrimary + '22', alignItems: 'center', justifyContent: 'center'}}>
+                <Feather name="shopping-bag" size={16} color={colors.brandPrimary}/>
               </View>
               <Text numberOfLines={1} style={[s.commentTitle, {color: colors.text, flex: 1}]}>
                 <UiText value="Product Details" />
@@ -405,7 +400,7 @@ function ReelCard({reel, active, height}: {
                   router.push({pathname:'/advertiser-profile',params:{id:reel.advertiser.id}});
                 }}
               >
-                <Text style={{fontSize: 13, color: colors.accent, fontWeight: '600'}}>
+                <Text style={{fontSize: 13, color: colors.brandPrimary, fontWeight: '600'}}>
                   {reel.account || reel.advertiser.name}
                 </Text>
                 <Feather name="check-circle" size={13} color="#16a34a" />
@@ -416,32 +411,32 @@ function ReelCard({reel, active, height}: {
             </View>
 
             {/* Price Details */}
-            <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
-              <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
+            <View style={{padding: 12, borderRadius: radii.surface, backgroundColor: colors.brandPrimary + '18', borderWidth: 1, borderColor: colors.brandPrimary + '45', gap: 4}}>
+              <Text style={{fontSize: 11, fontWeight: '700', color: colors.brandPrimary, textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
-              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3'}}>
+              <Text style={{fontSize: 20, fontWeight: '800', color: colors.brandPrimary, ...tabularNums}}>
                 {productMeta.product_price || 'Available on request / order'}
               </Text>
             </View>
 
             {/* Delivery Options */}
-            <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f0fdf4' : '#142a1b', borderWidth: 1, borderColor: '#86efac', gap: 4}}>
+            <View style={{padding: 12, borderRadius: radii.surface, backgroundColor: mode === 'light' ? '#f0fdf4' : '#0f281c', borderWidth: 1, borderColor: '#22c55e55', gap: 4}}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
                 <Feather name="truck" size={14} color="#16a34a"/>
                 <Text style={{fontSize: 11, fontWeight: '700', color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5}}>
                   <UiText value="Delivery Options" />
                 </Text>
               </View>
-              <Text style={{fontSize: 13.5, fontWeight: '600', color: mode === 'light' ? '#14532d' : '#bbf7d0'}}>
+              <Text style={{fontSize: 13.5, fontWeight: '600', color: colors.text}}>
                 {productMeta.delivery_info || 'Direct delivery & local pickup available from seller'}
               </Text>
             </View>
 
             {/* Where Product is Used / Video Context */}
-            <View style={{padding: 12, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: 6}}>
+            <View style={{padding: 12, borderRadius: radii.surface, backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, gap: 6}}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-                <Feather name="play-circle" size={14} color={colors.accent}/>
+                <Feather name="play-circle" size={14} color={colors.brandPrimary}/>
                 <Text style={{fontSize: 11.5, fontWeight: '700', color: colors.text, textTransform: 'uppercase', letterSpacing: 0.5}}>
                   <UiText value="Where Product is Used in this Ad" />
                 </Text>
@@ -553,7 +548,7 @@ function VAdsFeed({video}:{video:string}) {
 }
 
 const s = StyleSheet.create({
-  reel: {backgroundColor: '#080B11', overflow: 'hidden'},
+  reel: {backgroundColor: '#08080D', overflow: 'hidden'},
   videoTapArea: {
     position: 'absolute',
     left: 65,
@@ -566,8 +561,8 @@ const s = StyleSheet.create({
   playButton: {
     width: 60,
     height: 60,
-    borderRadius: 30,
-    backgroundColor: 'rgba(0,0,0,0.45)',
+    borderRadius: radii.pill,
+    backgroundColor: 'rgba(8,8,13,0.52)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -591,8 +586,8 @@ const s = StyleSheet.create({
   actionCircle: {
     width: 44,
     height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(0,0,0,0.42)',
+    borderRadius: radii.pill,
+    backgroundColor: 'rgba(8,8,13,0.48)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -604,8 +599,8 @@ const s = StyleSheet.create({
     elevation: 3,
   },
   actionCircleLiked: {
-    backgroundColor: 'rgba(225,29,72,0.25)',
-    borderColor: 'rgba(225,29,72,0.60)',
+    backgroundColor: 'rgba(255,107,0,0.24)',
+    borderColor: 'rgba(255,107,0,0.65)',
   },
   actionText: {
     color: '#FFFFFF',
@@ -629,7 +624,7 @@ const s = StyleSheet.create({
     gap: 6,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    borderRadius: 16,
+    borderRadius: radii.pill,
     maxWidth: '85%',
   },
   spotlightBadgeText: {
@@ -646,14 +641,15 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 12,
     paddingVertical: 7,
-    borderRadius: 14,
-    backgroundColor: '#e11d48',
+    borderRadius: radii.action,
+    backgroundColor: '#FF6B00',
     marginTop: 2,
   },
   exploreProductText: {
     color: '#FFFFFF',
     fontSize: 12.5,
     fontWeight: '700',
+    ...tabularNums,
   },
   exploreBrandBtn: {
     flexDirection: 'row',
@@ -662,8 +658,8 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 12,
     paddingVertical: 7,
-    borderRadius: 14,
-    backgroundColor: '#503fbd',
+    borderRadius: radii.action,
+    backgroundColor: '#FF6B00',
     marginTop: 2,
   },
   exploreBrandText: {
@@ -678,10 +674,10 @@ const s = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.20)',
+    borderRadius: radii.pill,
+    backgroundColor: 'rgba(13,33,63,0.75)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.30)',
+    borderColor: 'rgba(255,255,255,0.22)',
     marginTop: 2,
   },
   sellerBadgeText: {color: '#FFFFFF', fontSize: 12, fontWeight: '700'},
@@ -689,12 +685,12 @@ const s = StyleSheet.create({
   avatar: {
     width: 38,
     height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.20)',
+    borderRadius: radii.pill,
+    backgroundColor: 'rgba(255,107,0,0.22)',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.28)',
+    borderColor: 'rgba(255,107,0,0.45)',
   },
   account: {
     color: '#FFFFFF',
@@ -733,8 +729,8 @@ const s = StyleSheet.create({
     right: 0,
     height: '55%',
     borderTopWidth: 1,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    borderTopLeftRadius: radii.surface,
+    borderTopRightRadius: radii.surface,
     padding: 16,
     gap: 10,
     shadowColor: '#000',
@@ -759,7 +755,7 @@ const s = StyleSheet.create({
   commentInputRow: {flexDirection: 'row', alignItems: 'center', gap: 12},
   commentInput: {
     flex: 1,
-    borderRadius: 22,
+    borderRadius: radii.input,
     paddingHorizontal: 15,
     paddingVertical: 9,
     fontSize: 13.5,

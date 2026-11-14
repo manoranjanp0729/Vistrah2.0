@@ -1,6 +1,5 @@
 /* Self-hosted VISTRAH typography; no runtime font-provider requests.
  * Sources and SIL Open Font Licenses: public/fonts/*-OFL.txt.
- * Variable fonts retain the existing 400/500/600/700 weight hierarchy.
  */
 @font-face {
   font-family: 'Vistrah Montserrat';
@@ -16,6 +15,22 @@
   font-weight: 100 900;
   font-display: swap;
 }
+@font-face { font-family: 'Vistrah Inter'; src: url('/app/fonts/Inter-Regular.ttf') format('truetype'), url('/fonts/Inter-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Vistrah Inter'; src: url('/app/fonts/Inter-Medium.ttf') format('truetype'), url('/fonts/Inter-Medium.ttf') format('truetype'); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Vistrah Inter'; src: url('/app/fonts/Inter-SemiBold.ttf') format('truetype'), url('/fonts/Inter-SemiBold.ttf') format('truetype'); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Vistrah Inter'; src: url('/app/fonts/Inter-Bold.ttf') format('truetype'), url('/fonts/Inter-Bold.ttf') format('truetype'); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Vistrah Poppins'; src: url('/app/fonts/Poppins-Regular.ttf') format('truetype'), url('/fonts/Poppins-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Vistrah Poppins'; src: url('/app/fonts/Poppins-Medium.ttf') format('truetype'), url('/fonts/Poppins-Medium.ttf') format('truetype'); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Vistrah Poppins'; src: url('/app/fonts/Poppins-SemiBold.ttf') format('truetype'), url('/fonts/Poppins-SemiBold.ttf') format('truetype'); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Vistrah Poppins'; src: url('/app/fonts/Poppins-Bold.ttf') format('truetype'), url('/fonts/Poppins-Bold.ttf') format('truetype'); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Vistrah Nunito'; src: url('/app/fonts/Nunito-Regular.ttf') format('truetype'), url('/fonts/Nunito-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Vistrah Nunito'; src: url('/app/fonts/Nunito-Medium.ttf') format('truetype'), url('/fonts/Nunito-Medium.ttf') format('truetype'); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Vistrah Nunito'; src: url('/app/fonts/Nunito-SemiBold.ttf') format('truetype'), url('/fonts/Nunito-SemiBold.ttf') format('truetype'); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Vistrah Nunito'; src: url('/app/fonts/Nunito-Bold.ttf') format('truetype'), url('/fonts/Nunito-Bold.ttf') format('truetype'); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Vistrah DM Sans'; src: url('/app/fonts/DMSans-Regular.ttf') format('truetype'), url('/fonts/DMSans-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Vistrah DM Sans'; src: url('/app/fonts/DMSans-Medium.ttf') format('truetype'), url('/fonts/DMSans-Medium.ttf') format('truetype'); font-style: normal; font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Vistrah DM Sans'; src: url('/app/fonts/DMSans-SemiBold.ttf') format('truetype'), url('/fonts/DMSans-SemiBold.ttf') format('truetype'); font-style: normal; font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Vistrah DM Sans'; src: url('/app/fonts/DMSans-Bold.ttf') format('truetype'), url('/fonts/DMSans-Bold.ttf') format('truetype'); font-style: normal; font-weight: 700; font-display: swap; }
 @font-face {
   font-family: 'Vistrah Kannada';
   src: url('/app/fonts/NotoSansKannada.ttf') format('truetype'), url('/fonts/NotoSansKannada.ttf') format('truetype');

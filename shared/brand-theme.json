@@ -1,8 +1,16 @@
 {
+  "brandPrimary": "#ff6b00",
+  "brandPrimaryHover": "#e05a00",
+  "brandPrimaryInk": "#ffffff",
   "gradient": ["#283db6", "#7741c4", "#b63b8d"],
-  "headerLight": ["#dce3f2", "#e7deef", "#e1e6f2"],
-  "headerDark": ["#1f2639", "#2b2338", "#21293a"],
+  "headerLight": ["#eef2f9", "#f2f5fb", "#f5f7fb"],
+  "headerDark": ["#071426", "#0d213f", "#08080d"],
   "defaultAccent": "indigo",
+  "radii": {
+    "control": 8,
+    "card": 12,
+    "pill": 9999
+  },
   "accentPresets": [
     { "id": "blue", "label": "Ocean Blue", "light": "#283db6", "dark": "#9ca3f7" },
     { "id": "indigo", "label": "Royal Indigo", "light": "#503fbd", "dark": "#b0a9e1" },
@@ -12,16 +20,40 @@
   ],
   "palettes": {
     "light": {
-      "background": "#f6f3fc", "surface": "#ffffff", "border": "#e2dbef",
-      "text": "#20344f", "muted": "#626d82", "accent": "#503fbd", "ink": "#ffffff",
-      "error": "#a42e25", "tile": "#eee9f7", "tileBorder": "#ded4ed",
-      "soft": "#f1ecf8", "hover": "#e9e2f4", "highlight": "#eee6f7", "footer": "#ebe5f5"
+      "background": "#f5f7fb",
+      "surface": "#ffffff",
+      "elevated": "#eef2f9",
+      "border": "#dbe2ee",
+      "borderSubtle": "rgba(7,20,38,0.08)",
+      "text": "#0d213f",
+      "muted": "#4f6078",
+      "accent": "#503fbd",
+      "ink": "#ffffff",
+      "error": "#b42318",
+      "tile": "#eef2f9",
+      "tileBorder": "rgba(7,20,38,0.08)",
+      "soft": "#eff2fa",
+      "hover": "#e7ecf7",
+      "highlight": "#ebeef9",
+      "footer": "#eef2f9"
     },
     "dark": {
-      "background": "#161321", "surface": "#211e2c", "border": "#393246",
-      "text": "#f4edff", "muted": "#c1b6d0", "accent": "#b0a9e1", "ink": "#29183c",
-      "error": "#ffb4ad", "tile": "#29243d", "tileBorder": "#453951",
-      "soft": "#1b1726", "hover": "#30283e", "highlight": "#39304f", "footer": "#181421"
+      "background": "#08080d",
+      "surface": "#071426",
+      "elevated": "#0d213f",
+      "border": "#1c304f",
+      "borderSubtle": "rgba(255,255,255,0.08)",
+      "text": "#f4f7fc",
+      "muted": "#a9b8cf",
+      "accent": "#b0a9e1",
+      "ink": "#08080d",
+      "error": "#ff9b93",
+      "tile": "#0d213f",
+      "tileBorder": "rgba(255,255,255,0.08)",
+      "soft": "#0a1a31",
+      "hover": "#122849",
+      "highlight": "#102443",
+      "footer": "#071426"
     }
   }
 }

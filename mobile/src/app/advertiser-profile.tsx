@@ -1,17 +1,17 @@
 import {Text} from '../components/typography';
 import {UiText} from "../components/localized-ui";
-﻿import React from 'react';
+import React from 'react';
 import {ScrollView,View,Pressable,StyleSheet} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
-import {useTheme} from '../lib/theme';
+import {radii,tabularNums,useTheme} from '../lib/theme';
 import {useResource} from '../lib/resource';
 import type {AdvertiserProfile as Profile} from '../../../shared/v-ads';
 import {listingPrice} from '../../../shared/commerce';
 import {Loading,ErrorPanel} from '../components/ui';
 
 export default function AdvertiserProfile() {
-  const {colors, mode} = useTheme();
+  const {colors} = useTheme();
   const {id}=useLocalSearchParams<{id?:string}>();
   const profile=useResource<Profile>(typeof id==='string'?'/v-ads/advertisers/'+encodeURIComponent(id):null);
 
@@ -26,7 +26,7 @@ export default function AdvertiserProfile() {
       </Pressable>
 
       {profile.loading?<Loading/>:profile.error?<ErrorPanel error={profile.error} retry={profile.retry}/>:!profile.data?<Text style={{color:colors.muted}}><UiText value={"Advertiser not found."}/></Text>:<><View style={s.header}>
-        <View style={s.avatar}>
+        <View style={[s.avatar, {backgroundColor: colors.brandPrimary}]}>
           <Text style={s.avatarText}>V</Text>
         </View>
         <Text style={[s.name, {color: colors.text}]}>
@@ -47,7 +47,7 @@ export default function AdvertiserProfile() {
         profile.data.products.map(product => (
           <Pressable
             key={product.id}
-            style={[s.productCard, {backgroundColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 255, 255, 0.88)', borderColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.18)' : 'rgba(255, 255, 255, 0.60)'}]}
+            style={[s.productCard, {backgroundColor: colors.surface, borderColor: colors.borderSubtle}]}
             onPress={() => router.push({pathname: '/commerce/[id]', params: {id: product.id}})}
           >
             <View style={{flex: 1, gap: 6}}>
@@ -55,7 +55,7 @@ export default function AdvertiserProfile() {
                 <Text numberOfLines={1} style={{fontSize: 15, fontWeight: '700', color: colors.text, flex: 1}}>
                   {product.title}
                 </Text>
-                <Text style={{fontSize: 15, fontWeight: '800', color: '#e11d48'}}>
+                <Text style={{fontSize: 15, fontWeight: '800', color: colors.brandPrimary, ...tabularNums}}>
                   {listingPrice(product.unit_price_paise)}
                 </Text>
               </View>
@@ -66,7 +66,7 @@ export default function AdvertiserProfile() {
               )}
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2}}>
                 <Feather name="truck" size={12} color="#16a34a" />
-                <Text style={{fontSize: 11.5, color: '#16a34a', fontWeight: '600'}}>
+                <Text style={{fontSize: 11.5, color: '#16a34a', fontWeight: '600', ...tabularNums}}>
                   {product.delivery_fee_paise != null
                     ? (product.delivery_fee_paise === 0 ? 'Free Delivery' : `Delivery: ${listingPrice(product.delivery_fee_paise)}`)
                     : 'Standard fulfillment options'}
@@ -77,7 +77,7 @@ export default function AdvertiserProfile() {
           </Pressable>
         ))
       ) : (
-        <View style={[s.emptyCard, {backgroundColor: colors.surface, borderColor: colors.border}]}>
+        <View style={[s.emptyCard, {backgroundColor: colors.surface, borderColor: colors.borderSubtle}]}>
           <Feather name="shopping-bag" size={24} color={colors.muted} />
           <Text style={{fontSize: 13, color: colors.text, fontWeight: '600', textAlign: 'center'}}>
             <UiText value="Brand Catalog & Direct Offerings" />
@@ -94,10 +94,10 @@ export default function AdvertiserProfile() {
       {profile.data.videos.map(video => (
         <Pressable
           key={video.id}
-          style={[s.videoCard, {backgroundColor: colors.surface, borderColor: colors.border}]}
+          style={[s.videoCard, {backgroundColor: colors.surface, borderColor: colors.borderSubtle}]}
           onPress={() => router.dismissTo({pathname:'/v-ads',params:{video:video.id}})}
         >
-          <Feather name="play-circle" size={27} color={colors.accent}/>
+          <Feather name="play-circle" size={27} color={colors.brandPrimary}/>
           <Text style={{color: colors.text, flex: 1}}>{video.title}</Text>
           <Feather name="chevron-right" size={20} color={colors.muted}/>
         </Pressable>
@@ -113,25 +113,24 @@ const s = StyleSheet.create({
   back: {flexDirection: 'row', alignItems: 'center', gap: 10},
   header: {alignItems: 'center', gap: 12, marginVertical: 16},
   avatar: {
-    width: 84, height: 84, borderRadius: 42,
-    backgroundColor: '#F9AA45',
+    width: 84, height: 84, borderRadius: radii.pill,
     alignItems: 'center', justifyContent: 'center',
   },
-  avatarText: {fontSize: 44, fontWeight: '800', color: '#11243F'},
+  avatarText: {fontSize: 44, fontWeight: '800', color: '#FFFFFF'},
   name: {fontSize: 22, fontWeight: '700'},
   subtitle: {fontSize: 13},
   description: {fontSize: 14, lineHeight: 22, textAlign: 'center'},
   section: {fontSize: 18, fontWeight: '700'},
   videoCard: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
-    padding: 18, borderWidth: 1, borderRadius: 16,
+    padding: 18, borderWidth: 1, borderRadius: radii.surface,
   },
   productCard: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
-    padding: 16, borderWidth: 1, borderRadius: 16,
+    padding: 16, borderWidth: 1, borderRadius: radii.surface,
   },
   emptyCard: {
-    padding: 24, borderWidth: 1, borderRadius: 16,
+    padding: 24, borderWidth: 1, borderRadius: radii.surface,
     alignItems: 'center', gap: 8,
   },
   note: {fontSize: 12, lineHeight: 19},

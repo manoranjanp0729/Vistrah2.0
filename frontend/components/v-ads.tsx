@@ -183,12 +183,12 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
       <UiButton onClick={()=>{const element=video.current as (HTMLVideoElement&{webkitEnterFullscreen?:()=>void})|null;if(card.current?.requestFullscreen)void card.current.requestFullscreen().catch(()=>{});else element?.webkitEnterFullscreen?.();}} aria-label="Fullscreen"><Maximize/><UiText value={"Full"}/></UiButton>
     </div>
     <div style={{position:'absolute',bottom:0,left:0,right:0,height:3,background:'rgba(255,255,255,0.25)',zIndex:3}}>
-      <div style={{height:'100%',width:`${progress}%`,background:'var(--accent-orange,#f97316)'}}/>
+      <div style={{height:'100%',width:`${progress}%`,background:'var(--brand-primary,#FF6B00)'}}/>
     </div>
     <div className={s.details}>
       <Link href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)} style={{display:'inline-flex',alignItems:'center',gap:4}}>
         <span>{reel.advertiser.name}</span>
-        <CheckCircle2 size={13} color="#16a34a"/>
+        <CheckCircle2 size={13} color="#22c55e"/>
       </Link>
       <h2>{reel.title}</h2>
       {Boolean(cleanDescription)&&<p>{cleanDescription}</p>}
@@ -201,7 +201,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
           <button
             type="button"
             onClick={()=>{setOpen(false);setProductDetailsOpen(true);}}
-            style={{background:'#e11d48',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'var(--brand-primary,#FF6B00)',color:'#fff',padding:'7px 14px',borderRadius:'var(--radius-control,8px)',border:0,fontWeight:700,fontSize:13,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value={"Explore Product"}/>{adMeta.product_price ? ` · ${adMeta.product_price}` : ''}</span>
@@ -209,7 +209,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)}
-            style={{background:'#503fbd',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'var(--brand-primary,#FF6B00)',color:'#fff',padding:'7px 14px',borderRadius:'var(--radius-control,8px)',border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value={"Explore Brand"}/></span>
@@ -217,7 +217,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         )}
         <Link
           href="/seller/v-ads?from=v-ads"
-          style={{background:'rgba(255,255,255,0.22)',color:'#fff',padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:600,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:4}}
+          style={{background:'rgba(13,33,63,0.78)',border:'1px solid rgba(255,255,255,0.16)',color:'#fff',padding:'6px 12px',borderRadius:'var(--radius-pill,9999px)',fontSize:12,fontWeight:600,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:4}}
         >
           <UiText value={"Studio"}/>
         </Link>
@@ -227,10 +227,10 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
 
     {/* Product Details Sheet for Web */}
     {productDetailsOpen && productMeta && (
-      <div className={s.comments} style={{height:'70%',maxHeight:'520px',overflowY:'auto',background:'var(--surface,#171b25)',color:'var(--text,#fff)',borderTop:'1px solid var(--border)'}}>
+      <div className={s.comments} style={{height:'70%',maxHeight:'520px',overflowY:'auto',background:'var(--bg-surface,#071426)',color:'var(--text-primary,#fff)',borderTop:'1px solid var(--border-subtle,rgba(255,255,255,0.08))'}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
           <div style={{display:'flex',alignItems:'center',gap:8}}>
-            <div style={{width:30,height:30,borderRadius:15,background:'rgba(225,29,72,0.15)',color:'#e11d48',display:'grid',placeItems:'center'}}>
+            <div style={{width:30,height:30,borderRadius:'var(--radius-pill,9999px)',background:'var(--brand-primary-soft,rgba(255,107,0,0.14))',color:'var(--brand-primary,#FF6B00)',display:'grid',placeItems:'center'}}>
               <ShoppingBag size={16}/>
             </div>
             <h3 style={{margin:0,fontSize:16}}><UiText value={"Product Details"}/></h3>
@@ -241,35 +241,35 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         <div style={{display:'grid',gap:12,paddingBottom:16}}>
           <div>
             <h2 style={{margin:'0 0 4px',fontSize:18}}>{productMeta.product_name || reel.title}</h2>
-            <Link href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)} style={{fontSize:13,color:'#503fbd',fontWeight:600,display:'inline-flex',alignItems:'center',gap:4}}>
+            <Link href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)} style={{fontSize:13,color:'var(--interactive-accent,var(--accent-orange))',fontWeight:600,display:'inline-flex',alignItems:'center',gap:4}}>
               <span>{reel.advertiser.name}</span>
-              <CheckCircle2 size={13} color="#16a34a"/>
+              <CheckCircle2 size={13} color="#22c55e"/>
               <span style={{color:'var(--text-secondary)'}}>· <UiText value={"View Brand Channel"}/></span>
             </Link>
           </div>
 
-          <div style={{padding:'12px',borderRadius:10,background:'rgba(225,29,72,0.08)',border:'1px solid rgba(225,29,72,0.3)',display:'grid',gap:2}}>
-            <small style={{fontWeight:700,color:'#e11d48',textTransform:'uppercase',fontSize:10.5,letterSpacing:'0.5px'}}><UiText value={"Price Details"}/></small>
-            <div style={{fontSize:20,fontWeight:800,color:'#e11d48'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
+          <div style={{padding:'12px',borderRadius:'var(--radius-card,12px)',background:'var(--brand-primary-soft,rgba(255,107,0,0.14))',border:'1px solid rgba(255,107,0,0.32)',display:'grid',gap:2}}>
+            <small style={{fontWeight:700,color:'var(--brand-primary,#FF6B00)',textTransform:'uppercase',fontSize:10.5,letterSpacing:'0.06em'}}><UiText value={"Price Details"}/></small>
+            <div style={{fontSize:20,fontWeight:800,fontVariantNumeric:'tabular-nums',color:'var(--brand-primary,#FF6B00)'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
           </div>
 
-          <div style={{padding:'12px',borderRadius:10,background:'rgba(22,163,74,0.08)',border:'1px solid rgba(22,163,74,0.3)',display:'grid',gap:2}}>
-            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontWeight:700,fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.5px'}}>
+          <div style={{padding:'12px',borderRadius:'var(--radius-card,12px)',background:'rgba(34,197,94,0.1)',border:'1px solid rgba(34,197,94,0.28)',display:'grid',gap:2}}>
+            <div style={{display:'flex',alignItems:'center',gap:6,color:'#22c55e',fontWeight:700,fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.06em'}}>
               <Truck size={13}/>
               <span><UiText value={"Delivery Options"}/></span>
             </div>
             <div style={{fontSize:13.5,fontWeight:600}}>{productMeta.delivery_info || 'Direct delivery & local pickup available from seller'}</div>
           </div>
 
-          <div style={{padding:'12px',borderRadius:10,background:'rgba(255,255,255,0.06)',border:'1px solid var(--border)',display:'grid',gap:4}}>
-            <small style={{fontWeight:700,fontSize:11,textTransform:'uppercase',letterSpacing:'0.5px',color:'var(--text-secondary)'}}><UiText value={"Where Product is Used in this Ad"}/></small>
+          <div style={{padding:'12px',borderRadius:'var(--radius-card,12px)',background:'var(--bg-elevated,#0D213F)',border:'1px solid var(--border-subtle,var(--border))',display:'grid',gap:4}}>
+            <small style={{fontWeight:700,fontSize:11,textTransform:'uppercase',letterSpacing:'0.06em',color:'var(--text-secondary)'}}><UiText value={"Where Product is Used in this Ad"}/></small>
             <div style={{fontSize:13,lineHeight:1.5}}>{cleanDescription || reel.title}</div>
           </div>
 
           {Boolean(productMeta.product_id) && (
             <Link
               href={'/commerce/'+encodeURIComponent(productMeta.product_id!)}
-              style={{padding:'10px 16px',borderRadius:10,background:'#e11d48',color:'#fff',textAlign:'center',textDecoration:'none',fontWeight:700,fontSize:14}}
+              style={{padding:'10px 16px',borderRadius:'var(--radius-control,8px)',background:'var(--brand-primary,#FF6B00)',color:'#fff',textAlign:'center',textDecoration:'none',fontWeight:700,fontSize:14}}
             >
               <UiText value={"View Full Product Page & Order"}/>
             </Link>
@@ -277,7 +277,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
 
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)}
-            style={{padding:'10px 16px',borderRadius:10,background:'var(--surface-soft,rgba(255,255,255,0.1))',border:'1px solid var(--border)',color:'inherit',textAlign:'center',textDecoration:'none',fontWeight:600,fontSize:13}}
+            style={{padding:'10px 16px',borderRadius:'var(--radius-control,8px)',background:'var(--bg-elevated,#0D213F)',border:'1px solid var(--border-subtle,var(--border))',color:'inherit',textAlign:'center',textDecoration:'none',fontWeight:600,fontSize:13}}
           >
             <UiText value={"Explore Brand Channel & Available Products"}/>
           </Link>
@@ -292,11 +292,11 @@ export function VAdsAdvertiser({id}:{id:string}) {
   useEffect(()=>{let alive=true;client.profile(id).then(result=>{if(alive){setData(result);setError('');}}).catch(e=>{if(alive)setError(e.message);});return()=>{alive=false;};},[id,version]);
   return <div className={s.page}><Link href="/v-ads"><UiText value={"Back to V Ads"}/></Link>{error?<div role="alert"><UiText value={error}/> <button onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry"}/></button></div>:!data?<p role="status"><UiText value={"Loading advertiser…"}/></p>:<><section className={s.panel} style={{display:'grid',gap:8}}>
     <div style={{display:'flex',alignItems:'center',gap:12}}>
-      <div style={{width:52,height:52,borderRadius:26,background:'#F9AA45',color:'#11243F',display:'grid',placeItems:'center',fontSize:24,fontWeight:800}}>V</div>
+      <div style={{width:52,height:52,borderRadius:'var(--radius-pill,9999px)',background:'var(--brand-primary,#FF6B00)',color:'#FFFFFF',display:'grid',placeItems:'center',fontSize:24,fontWeight:800}}>V</div>
       <div>
         <h1 style={{margin:0,fontSize:22,display:'flex',alignItems:'center',gap:6}}>
           <span>{data.name}</span>
-          <CheckCircle2 size={18} color="#16a34a"/>
+          <CheckCircle2 size={18} color="#22c55e"/>
         </h1>
         <p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>@{data.handle}</p>
       </div>
@@ -311,11 +311,11 @@ export function VAdsAdvertiser({id}:{id:string}) {
         <div key={product.id} className={s.panel} style={{display:'grid',gap:8}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
             <h3 style={{margin:0,fontSize:16}}>{product.title}</h3>
-            <span style={{fontSize:16,fontWeight:800,color:'#e11d48'}}>{listingPrice(product.unit_price_paise)}</span>
+            <span style={{fontSize:16,fontWeight:800,fontVariantNumeric:'tabular-nums',color:'var(--brand-primary,#FF6B00)'}}>{listingPrice(product.unit_price_paise)}</span>
           </div>
           {Boolean(product.description)&&<p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>{product.description}</p>}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,flexWrap:'wrap',paddingTop:4}}>
-            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontSize:12,fontWeight:600}}>
+            <div style={{display:'flex',alignItems:'center',gap:6,color:'#22c55e',fontSize:12,fontWeight:600,fontVariantNumeric:'tabular-nums'}}>
               <Truck size={14}/>
               <span>
                 {product.delivery_fee_paise != null
@@ -323,7 +323,7 @@ export function VAdsAdvertiser({id}:{id:string}) {
                   : 'Standard delivery options'}
               </span>
             </div>
-            <Link href={'/commerce/'+encodeURIComponent(product.id)} style={{fontSize:12.5,fontWeight:700,color:'#503fbd'}}>
+            <Link href={'/commerce/'+encodeURIComponent(product.id)} style={{fontSize:12.5,fontWeight:700,color:'var(--interactive-accent,var(--accent-orange))'}}>
               <UiText value={"View details & order →"}/>
             </Link>
           </div>

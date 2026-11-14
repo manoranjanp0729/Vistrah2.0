@@ -45,33 +45,33 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
    <button type="button" disabled={busy} onClick={()=>void run(async()=>{await client.deleteVideo(video.id);})}><UiText value={"Delete Ad"}/></button>
    {video.status==='REJECTED'&&video.upload_id&&video.media_status==='VALIDATED'&&<button type="button" disabled={busy} onClick={()=>void run(()=>client.release(video.upload_id!) as Promise<void>)}><UiText value={"Release private upload"}/></button>}
   </div>
-  {showAnalytics&&<div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(110px, 1fr))',gap:10,padding:12,borderRadius:10,background:'var(--surface-soft, rgba(0,0,0,0.04))',border:'1px solid var(--border)'}}>
-    <div style={{textAlign:'center',padding:8,borderRadius:8,background:'var(--surface)'}}>
-      <div style={{fontSize:16,fontWeight:700}}>{views.toLocaleString()}</div>
+  {showAnalytics&&<div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(110px, 1fr))',gap:10,padding:12,borderRadius:'var(--radius-card,12px)',background:'var(--bg-elevated,var(--surface-soft))',border:'1px solid var(--border-subtle,var(--border))'}}>
+    <div style={{textAlign:'center',padding:8,borderRadius:'var(--radius-control,8px)',background:'var(--bg-surface,var(--surface))'}}>
+      <div style={{fontSize:16,fontWeight:700,fontVariantNumeric:'tabular-nums'}}>{views.toLocaleString()}</div>
       <small style={{color:'var(--text-secondary)'}}><UiText value={"Views"}/></small>
     </div>
-    <div style={{textAlign:'center',padding:8,borderRadius:8,background:'var(--surface)'}}>
-      <div style={{fontSize:16,fontWeight:700}}>{likes.toLocaleString()}</div>
+    <div style={{textAlign:'center',padding:8,borderRadius:'var(--radius-control,8px)',background:'var(--bg-surface,var(--surface))'}}>
+      <div style={{fontSize:16,fontWeight:700,fontVariantNumeric:'tabular-nums'}}>{likes.toLocaleString()}</div>
       <small style={{color:'var(--text-secondary)'}}><UiText value={"Likes"}/></small>
     </div>
-    <div style={{textAlign:'center',padding:8,borderRadius:8,background:'var(--surface)'}}>
-      <div style={{fontSize:16,fontWeight:700}}>{comments.toLocaleString()}</div>
+    <div style={{textAlign:'center',padding:8,borderRadius:'var(--radius-control,8px)',background:'var(--bg-surface,var(--surface))'}}>
+      <div style={{fontSize:16,fontWeight:700,fontVariantNumeric:'tabular-nums'}}>{comments.toLocaleString()}</div>
       <small style={{color:'var(--text-secondary)'}}><UiText value={"Comments"}/></small>
     </div>
-    <div style={{textAlign:'center',padding:8,borderRadius:8,background:'var(--surface)'}}>
-      <div style={{fontSize:16,fontWeight:700,color:'#16a34a'}}>{engagementRate}</div>
+    <div style={{textAlign:'center',padding:8,borderRadius:'var(--radius-control,8px)',background:'var(--bg-surface,var(--surface))'}}>
+      <div style={{fontSize:16,fontWeight:700,fontVariantNumeric:'tabular-nums',color:'var(--brand-primary,#FF6B00)'}}>{engagementRate}</div>
       <small style={{color:'var(--text-secondary)'}}><UiText value={"Engagement"}/></small>
     </div>
   </div>}
-  {showTargeting&&<div style={{display:'grid',gap:10,padding:12,borderRadius:10,background:'var(--surface-soft, rgba(0,0,0,0.04))',border:'1px solid var(--border)'}}>
+  {showTargeting&&<div style={{display:'grid',gap:10,padding:12,borderRadius:'var(--radius-card,12px)',background:'var(--bg-elevated,var(--surface-soft))',border:'1px solid var(--border-subtle,var(--border))'}}>
    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:6}}>
     <strong><UiText value={"Geographic Targeting"}/></strong>
-    {targeting?.active_revision?<small style={{color:'#16a34a',fontWeight:600}}><UiText value={"Active Rev #"}/>{targeting.active_revision.revision} ({targeting.active_revision.radius_km} km)</small>:<small style={{color:'var(--text-secondary)'}}><UiText value={"Untargeted (shown globally)"}/></small>}
+    {targeting?.active_revision?<small style={{color:'#22c55e',fontWeight:600,fontVariantNumeric:'tabular-nums'}}><UiText value={"Active Rev #"}/>{targeting.active_revision.revision} ({targeting.active_revision.radius_km} km)</small>:<small style={{color:'var(--text-secondary)'}}><UiText value={"Untargeted (shown globally)"}/></small>}
    </div>
    {loadingTargeting?<p role="status"><UiText value={"Loading targeting…"}/></p>:<>
-    {targeting?.active_revision&&<small><UiText value={"Approved coverage: "}/>{targeting.active_revision.latitude}, {targeting.active_revision.longitude} · {targeting.active_revision.radius_km} km{targeting.active_revision.target_regions.length?` · ${targeting.active_revision.target_regions.join(', ')}`:''}</small>}
-    {targeting?.pending_revision&&<small style={{color:'#ca8a04',fontWeight:600}}><UiText value={"Pending review (Rev #"}/>{targeting.pending_revision.revision}): {targeting.pending_revision.latitude}, {targeting.pending_revision.longitude} · {targeting.pending_revision.radius_km} km{targeting.pending_revision.target_regions.length?` · ${targeting.pending_revision.target_regions.join(', ')}`:''}</small>}
-    {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<small style={{color:'#dc2626'}}><UiText value={"Last submitted revision (#"}/>{targeting.latest_revision.revision}<UiText value={") was rejected. Submit an updated boundary below."}/></small>}
+    {targeting?.active_revision&&<small style={{fontVariantNumeric:'tabular-nums'}}><UiText value={"Approved coverage: "}/>{targeting.active_revision.latitude}, {targeting.active_revision.longitude} · {targeting.active_revision.radius_km} km{targeting.active_revision.target_regions.length?` · ${targeting.active_revision.target_regions.join(', ')}`:''}</small>}
+    {targeting?.pending_revision&&<small style={{color:'var(--text-warning,#ca8a04)',fontWeight:600,fontVariantNumeric:'tabular-nums'}}><UiText value={"Pending review (Rev #"}/>{targeting.pending_revision.revision}): {targeting.pending_revision.latitude}, {targeting.pending_revision.longitude} · {targeting.pending_revision.radius_km} km{targeting.pending_revision.target_regions.length?` · ${targeting.pending_revision.target_regions.join(', ')}`:''}</small>}
+    {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<small style={{color:'var(--text-error,#dc2626)'}}><UiText value={"Last submitted revision (#"}/>{targeting.latest_revision.revision}<UiText value={") was rejected. Submit an updated boundary below."}/></small>}
     {targetingNotice&&<p role="status"><UiText value={targetingNotice}/></p>}
     {targeting?.pending_revision?<small><UiText value={"A pending targeting revision is awaiting administrator review before another revision can be submitted."}/></small>:<form style={{display:'grid',gap:8}} onSubmit={event=>{event.preventDefault();void run(async()=>{const payload=parseTargetingInput(lat,lon,radiusKm,regionsText);const next=await client.submitTargeting(video.id,payload);setTargeting(next);setTargetingNotice('Targeting revision submitted for administrator review.');});}}>
      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(130px, 1fr))',gap:8}}>

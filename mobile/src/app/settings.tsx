@@ -7,7 +7,7 @@ import {Platform,Pressable,ScrollView,View,StyleSheet} from 'react-native';
 import {router} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
-import {useTheme, accentPresets} from '../lib/theme';
+import {useTheme, accentPresets, radii} from '../lib/theme';
 import {useFontPreference} from '../lib/font-preference';
 import {fontChoices,fontFace,type FontChoice} from '../lib/font-policy';
 import {webFontFamily} from '../lib/web-fonts';
@@ -34,7 +34,7 @@ export default function Settings() {
         {
           paddingTop: insets.top + 20,
           paddingBottom: insets.bottom + 20,
-          backgroundColor: isDark ? 'rgba(0, 0, 0, 0.65)' : 'rgba(15, 12, 25, 0.45)',
+          backgroundColor: isDark ? 'rgba(8, 8, 13, 0.72)' : 'rgba(7, 20, 38, 0.45)',
         },
       ]}
     >
@@ -47,8 +47,8 @@ export default function Settings() {
         style={[
           s.modalCard,
           {
-            backgroundColor: isDark ? '#1a1922ed' : '#ffffffed',
-            borderColor: isDark ? '#2e2c3b' : '#e5e7eb',
+            backgroundColor: colors.surface,
+            borderColor: colors.borderSubtle,
           },
         ]}
       >
@@ -57,12 +57,12 @@ export default function Settings() {
           style={[
             s.header,
             {
-              borderBottomColor: isDark ? '#272533' : '#f0f0f3',
+              borderBottomColor: colors.borderSubtle,
             },
           ]}
         >
           <View style={{gap: 2, flex: 1}}>
-            <Text style={[s.headerEyebrow, {color: colors.muted}]}>PREFERENCES</Text>
+            <Text style={[s.headerEyebrow, {color: colors.brandPrimary}]}>PREFERENCES</Text>
             <Text accessibilityRole="header" style={[s.headerTitle, {color: colors.text}]}>
               {t('settings.title')}
             </Text>
@@ -74,7 +74,7 @@ export default function Settings() {
             style={({pressed}) => [
               s.closeButton,
               {
-                backgroundColor: isDark ? '#262432' : '#f3f4f6',
+                backgroundColor: colors.elevated,
                 opacity: pressed ? 0.75 : 1,
               },
             ]}
@@ -93,8 +93,8 @@ export default function Settings() {
             style={[
               s.sectionCard,
               {
-                backgroundColor: isDark ? '#211f2c' : '#f9fafb',
-                borderColor: isDark ? '#2e2b3c' : '#eaedf0',
+                backgroundColor: colors.elevated,
+                borderColor: colors.borderSubtle,
               },
             ]}
           >
@@ -122,7 +122,7 @@ export default function Settings() {
             )}
           </View>
 
-          <View style={[s.sectionCard,{backgroundColor:isDark?'#211f2c':'#f9fafb',borderColor:isDark?'#2e2b3c':'#eaedf0'}]}>
+          <View style={[s.sectionCard,{backgroundColor:colors.elevated,borderColor:colors.borderSubtle}]}>
             <Text accessibilityRole="header" style={[s.sectionHeading,{color:colors.text}]}>{t('settings.font')}</Text>
             <Text style={[s.sectionHelp,{color:colors.muted}]}>{t('settings.fontHelp')}</Text>
             <SettingsDropdown label={t('settings.font')} value={fonts.font} disabled={!fonts.ready} options={fontChoices.map(font=>({value:font.id,label:font.label,fontFamily:previewFont(font.id)}))} onSelect={fonts.setFont}/>
@@ -139,8 +139,8 @@ export default function Settings() {
             style={[
               s.sectionCard,
               {
-                backgroundColor: isDark ? '#211f2c' : '#f9fafb',
-                borderColor: isDark ? '#2e2b3c' : '#eaedf0',
+                backgroundColor: colors.elevated,
+                borderColor: colors.borderSubtle,
               },
             ]}
           >
@@ -148,13 +148,13 @@ export default function Settings() {
               <Text accessibilityRole="header" style={[s.sectionHeading, {color: colors.text, flex: 1}]}>
                 {t('settings.themeColor')}
               </Text>
-              {/* Subtle Segmented Light/Dark Switch */}
+              {/* Segmented Light/Dark Switch */}
               <View
                 style={[
                   s.segmentContainer,
                   {
-                    backgroundColor: isDark ? '#16151e' : '#e9ebef',
-                    borderColor: isDark ? '#2b2938' : '#dedfe5',
+                    backgroundColor: colors.background,
+                    borderColor: colors.borderSubtle,
                   },
                 ]}
               >
@@ -172,10 +172,10 @@ export default function Settings() {
                       style={({pressed}) => [
                         s.segmentButton,
                         selected && {
-                          backgroundColor: isDark ? '#2e2c3d' : '#ffffff',
+                          backgroundColor: colors.accent,
                           shadowColor: '#000',
                           shadowOffset: {width: 0, height: 1},
-                          shadowOpacity: 0.12,
+                          shadowOpacity: 0.14,
                           shadowRadius: 2,
                           elevation: 1,
                         },
@@ -186,7 +186,7 @@ export default function Settings() {
                         style={[
                           s.segmentText,
                           {
-                            color: selected ? colors.text : colors.muted,
+                            color: selected ? colors.ink : colors.muted,
                             fontWeight: selected ? '700' : '500',
                           },
                         ]}
@@ -245,10 +245,9 @@ function SettingsDropdown({
   onSelect: (value: string) => void;
   disabled: boolean;
 }) {
-  const {colors, mode} = useTheme();
+  const {colors} = useTheme();
   const [open, setOpen] = useState(false);
   const selected = options.find((option) => option.value === value);
-  const isDark = mode === 'dark';
 
   return (
     <View style={{gap: 6}}>
@@ -261,8 +260,8 @@ function SettingsDropdown({
         style={({pressed}) => [
           s.dropdownTrigger,
           {
-            backgroundColor: isDark ? '#1a1924' : '#ffffff',
-            borderColor: isDark ? '#302d3e' : '#e2e4e9',
+            backgroundColor: colors.surface,
+            borderColor: open ? colors.accent : colors.border,
             opacity: disabled ? 0.5 : pressed ? 0.75 : 1,
           },
         ]}
@@ -285,8 +284,8 @@ function SettingsDropdown({
           style={[
             s.dropdownMenu,
             {
-              backgroundColor: isDark ? '#1a1924' : '#ffffff',
-              borderColor: isDark ? '#302d3e' : '#e2e4e9',
+              backgroundColor: colors.surface,
+              borderColor: colors.borderSubtle,
             },
           ]}
         >
@@ -306,13 +305,9 @@ function SettingsDropdown({
                   s.dropdownItem,
                   {
                     backgroundColor: isSelected
-                      ? isDark
-                        ? '#2b283a'
-                        : '#f2f3f7'
+                      ? colors.highlight
                       : pressed
-                      ? isDark
-                        ? '#222030'
-                        : '#f8f9fa'
+                      ? colors.hover
                       : 'transparent',
                   },
                 ]}
@@ -353,7 +348,7 @@ const s = StyleSheet.create({
     width: '100%',
     maxWidth: 440,
     maxHeight: '100%',
-    borderRadius: 22,
+    borderRadius: radii.surface,
     overflow: 'hidden',
     borderWidth: 1,
     shadowColor: '#000',
@@ -382,7 +377,7 @@ const s = StyleSheet.create({
   closeButton: {
     width: 34,
     height: 34,
-    borderRadius: 17,
+    borderRadius: radii.pill,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -392,7 +387,7 @@ const s = StyleSheet.create({
   },
   sectionCard: {
     padding: 14,
-    borderRadius: 16,
+    borderRadius: radii.surface,
     borderWidth: 1,
     gap: 8,
   },
@@ -413,13 +408,13 @@ const s = StyleSheet.create({
   segmentContainer: {
     flexDirection: 'row',
     padding: 2,
-    borderRadius: 9,
+    borderRadius: radii.input,
     borderWidth: 1,
   },
   segmentButton: {
     minHeight: 28,
     paddingHorizontal: 10,
-    borderRadius: 7,
+    borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -431,7 +426,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: radii.input,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -444,11 +439,11 @@ const s = StyleSheet.create({
   colorDot: {
     width: 16,
     height: 16,
-    borderRadius: 8,
+    borderRadius: radii.pill,
   },
   dropdownMenu: {
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: radii.input,
     overflow: 'hidden',
   },
   dropdownItem: {

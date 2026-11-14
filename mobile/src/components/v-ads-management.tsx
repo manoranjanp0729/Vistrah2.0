@@ -3,7 +3,7 @@ import {UiText,UiElement} from "./localized-ui";
 import {useRef,useState} from 'react';
 import {View} from 'react-native';
 import {Action,Field,ErrorPanel,Heading} from './ui';
-import {useTheme} from '../lib/theme';
+import {radii,tabularNums,useTheme} from '../lib/theme';
 import {api} from '../lib/api';
 import type {AdvertiserAccount,SellerVideo} from '../../../shared/v-ads';
 import {managementClient,parseTargetingInput,type AdTargeting,type History,type Performance} from '../../../shared/v-ads-management';
@@ -17,7 +17,7 @@ export function AdvertiserManagement({account,onChanged}:{account:AdvertiserAcco
  <UiElement as={Action} label="Account decisions" secondary disabled={busy} onPress={()=>historyPage()}/>{Boolean(error)&&<ErrorPanel error={new Error(error)}/>}{history&&<>{history.items.map(item=><Text style={styles.muted} key={item.id}>{item.action} · {item.created_at}{'\n'}{item.details.reason}</Text>)}{!history.items.length&&<Text style={styles.muted}><UiText value={"No decisions recorded yet."}/></Text>}{history.has_more&&<UiElement as={Action} label="More decisions" disabled={busy} secondary onPress={()=>historyPage(history.page+1)}/>}</>}</View>;
 }
 export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:()=>void}){
- const {styles}=useTheme();const [editing,setEditing]=useState(false),[title,setTitle]=useState(video.title),[description,setDescription]=useState(video.description??'');
+ const {styles,colors}=useTheme();const [editing,setEditing]=useState(false),[title,setTitle]=useState(video.title),[description,setDescription]=useState(video.description??'');
  const [showAnalytics,setShowAnalytics]=useState(false);
  const [showTargeting,setShowTargeting]=useState(false),[targeting,setTargeting]=useState<AdTargeting|null>(null),[loadingTargeting,setLoadingTargeting]=useState(false);
  const [lat,setLat]=useState(''),[lon,setLon]=useState(''),[radiusKm,setRadiusKm]=useState(''),[regionsText,setRegionsText]=useState(''),[targetingNotice,setTargetingNotice]=useState('');
@@ -45,38 +45,38 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
    <UiElement as={Action} label="Delete Ad" secondary disabled={busy} onPress={()=>void run(async()=>{await client.deleteVideo(video.id);})}/>
    {video.status==='REJECTED'&&video.upload_id&&video.media_status==='VALIDATED'&&<UiElement as={Action} label="Release private upload" secondary disabled={busy} onPress={()=>void run(async()=>{await client.release(video.upload_id!);})}/>}
   </View>
-  {showAnalytics&&<View style={[styles.card,{padding:12,borderRadius:14,gap:8,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor}]}>
+  {showAnalytics&&<View style={[styles.card,{padding:12,borderRadius:radii.surface,gap:8,backgroundColor:colors.elevated,borderWidth:1,borderColor:colors.borderSubtle}]}>
     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
       <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Ad Analytics & Performance"}/></Text>
-      <View style={{paddingHorizontal:8,paddingVertical:3,borderRadius:8,backgroundColor:video.status==='APPROVED'?'#16a34a20':'#ca8a0420'}}>
-        <Text style={{fontSize:11,fontWeight:'700',color:video.status==='APPROVED'?'#16a34a':'#ca8a04'}}>{video.status}</Text>
+      <View style={{paddingHorizontal:8,paddingVertical:3,borderRadius:radii.pill,backgroundColor:video.status==='APPROVED'?colors.brandPrimary+'22':'#ca8a0420'}}>
+        <Text style={{fontSize:11,fontWeight:'700',color:video.status==='APPROVED'?colors.brandPrimary:'#ca8a04'}}>{video.status}</Text>
       </View>
     </View>
     <View style={{flexDirection:'row',gap:8}}>
-      <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color}}>{views.toLocaleString()}</Text>
+      <View style={{flex:1,padding:8,borderRadius:radii.input,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.borderSubtle,alignItems:'center'}}>
+        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,...tabularNums}}>{views.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Views"}/></Text>
       </View>
-      <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color}}>{likes.toLocaleString()}</Text>
+      <View style={{flex:1,padding:8,borderRadius:radii.input,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.borderSubtle,alignItems:'center'}}>
+        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,...tabularNums}}>{likes.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Likes"}/></Text>
       </View>
-      <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color}}>{comments.toLocaleString()}</Text>
+      <View style={{flex:1,padding:8,borderRadius:radii.input,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.borderSubtle,alignItems:'center'}}>
+        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,...tabularNums}}>{comments.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Comments"}/></Text>
       </View>
-      <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:'#16a34a'}}>{engagementRate}</Text>
+      <View style={{flex:1,padding:8,borderRadius:radii.input,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.borderSubtle,alignItems:'center'}}>
+        <Text style={{fontSize:16,fontWeight:'700',color:colors.brandPrimary,...tabularNums}}>{engagementRate}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Engagement"}/></Text>
       </View>
     </View>
   </View>}
-  {showTargeting&&<View style={[styles.card,{padding:12,borderRadius:14,gap:8}]}>
+  {showTargeting&&<View style={[styles.card,{padding:12,borderRadius:radii.surface,gap:8,backgroundColor:colors.elevated,borderColor:colors.borderSubtle}]}>
    <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Geographic Targeting"}/></Text>
    {loadingTargeting?<Text style={styles.muted}><UiText value={"Loading targeting…"}/></Text>:<>
-    <Text style={styles.muted}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
-    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
-    {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:'#dc2626'}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
+    <Text style={[styles.muted,tabularNums]}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
+    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,tabularNums,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
+    {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:colors.error}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
     {Boolean(targetingNotice)&&<Text style={styles.muted}><UiText value={targetingNotice}/></Text>}
     {targeting?.pending_revision?<Text style={styles.muted}><UiText value={"A pending targeting revision is awaiting administrator review."}/></Text>:<>
      <UiElement as={Field} label="Center latitude" placeholder="e.g. 12.9716" keyboardType="numbers-and-punctuation" value={lat} onChangeText={setLat}/>

@@ -1,6 +1,6 @@
 import {croppedPhoto} from '../lib/photo-crop';
 import {Text} from './typography';
-import {useTheme,spacing,typography} from '../lib/theme';
+import {useTheme,spacing,typography,radii} from '../lib/theme';
 import {UiText,UiElement} from "./localized-ui";
 import {useState} from 'react';
 import {useLanguage} from '../lib/language';
@@ -18,12 +18,12 @@ const highlights=marketingServicePages;
 
 export function AdsMarketing(){
  const {t,locale}=useLanguage();
- const {accent}=useTheme();const buttonAccent=brandTheme.accentPresets.find(p=>p.id===accent)?.light??'#503fbd';
+ const {colors}=useTheme();
  const [headingWidth,setHeadingWidth]=useState(0);
  const android=Platform.OS==='android';
  const brandGradient = [brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]] as const;
 
- const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={[s.startText,{color:buttonAccent}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color={buttonAccent}/></UiElement>;
+ const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{backgroundColor:pressed?colors.brandPrimaryHover:colors.brandPrimary}]}><Text style={[s.startText,{color:colors.brandPrimaryInk}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color={colors.brandPrimaryInk}/></UiElement>;
 
  return <LinearGradient testID="ads-marketing" colors={brandGradient} locations={[0,.52,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.section}>
   <View pointerEvents="none" accessible={false} style={s.blueGlow}/><View pointerEvents="none" accessible={false} style={s.pinkGlow}/>
@@ -58,15 +58,15 @@ export function AdsMarketing(){
  </LinearGradient>;
 }
 const s=StyleSheet.create({
- section:{backgroundColor:'#7741c4',borderRadius:20,padding:spacing.pagePadding,gap:spacing.elementGap,overflow:'hidden'},
- blueGlow:{position:'absolute',right:-65,top:-75,width:210,height:210,borderRadius:105,backgroundColor:'#bca5ff',opacity:.22},
- pinkGlow:{position:'absolute',left:-70,top:135,width:180,height:180,borderRadius:90,backgroundColor:'#ffc5e3',opacity:.18},
+ section:{backgroundColor:'#071426',borderRadius:radii.surface,padding:spacing.pagePadding,gap:spacing.elementGap,overflow:'hidden',borderWidth:1,borderColor:'rgba(255,255,255,0.08)'},
+ blueGlow:{position:'absolute',right:-65,top:-75,width:210,height:210,borderRadius:105,backgroundColor:'#FF6B00',opacity:.16},
+ pinkGlow:{position:'absolute',left:-70,top:135,width:180,height:180,borderRadius:90,backgroundColor:'#2d7cf6',opacity:.14},
  hero:{flexDirection:'row',alignItems:Platform.OS==='android'?'flex-start':'center',gap:8,padding:Platform.OS==='android'?0:2,marginBottom:Platform.OS==='android'?10:0},
  heroCopy:{flex:1,minWidth:0,gap:Platform.OS==='android'?8:9},
  headline:{fontSize:Platform.OS==='android'?25:21,lineHeight:Platform.OS==='android'?31:25,fontWeight:'700',letterSpacing:-.5,color:'#fff'},
  support:{fontSize:Platform.OS==='android'?14:12,lineHeight:Platform.OS==='android'?21:17,color:'#d3deea'},
- start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:44,paddingHorizontal:13,borderRadius:12,backgroundColor:'#fff',boxShadow:'0px 4px 10px rgba(65,24,129,0.16)'},
- startText:{flexShrink:1,fontSize:Platform.OS==='android'?13:12,lineHeight:Platform.OS==='android'?19:17,fontWeight:'700',color:'#6340b8'},
+ start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:44,paddingHorizontal:14,borderRadius:radii.action,backgroundColor:'#FF6B00',boxShadow:'0px 4px 12px rgba(255,107,0,0.25)'},
+ startText:{flexShrink:1,fontSize:Platform.OS==='android'?13:12,lineHeight:Platform.OS==='android'?19:17,fontWeight:'700',color:'#FFFFFF'},
  art:{width:104,height:145},
  halo:{position:'absolute',width:100,height:100,top:23,right:-5,borderRadius:50,backgroundColor:'#ffffff12'},
  ground:{position:'absolute',bottom:9,left:0,width:102,height:13,borderRadius:50,backgroundColor:'#f3b5ef40'},
@@ -84,8 +84,8 @@ const s=StyleSheet.create({
  spark:{position:'absolute',right:0,bottom:37},
  gridHeading:{fontSize:14,lineHeight:20,fontWeight:'600',color:'#fff',marginTop:3},
  grid:{flexDirection:'row',flexWrap:'wrap',alignItems:'stretch',gap:10},
- card:{width:'47%',flexGrow:1,flexBasis:'45%',minWidth:0,borderRadius:design.radius,overflow:'hidden',boxShadow:'0px 3px 8px rgba(67,27,104,0.12)'},
- image:{aspectRatio:16/9,marginTop:5,marginHorizontal:5,borderRadius:design.imageRadius,overflow:'hidden'},
+ card:{width:'47%',flexGrow:1,flexBasis:'45%',minWidth:0,borderRadius:radii.surface,overflow:'hidden',boxShadow:'0px 3px 8px rgba(7,20,38,0.14)'},
+ image:{aspectRatio:16/9,marginTop:5,marginHorizontal:5,borderRadius:radii.input,overflow:'hidden'},
  cardImage:{position:'absolute',top:0,left:0,width:'100%',height:'100%'},
  cardContent:{paddingTop:8,paddingHorizontal:9,paddingBottom:10,gap:6},
  cardTitle:{...typography.cardTitle,color:'#382448'},

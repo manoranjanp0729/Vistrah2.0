@@ -6,13 +6,11 @@ import {AccessibilityInfo,AppState,Dimensions,Pressable,View} from 'react-native
 import {useFocusEffect} from 'expo-router';
 import {useVideoPlayer,VideoView,type VideoSource} from 'expo-video';
 import {nextHomepageVideo} from '../../../shared/homepage-video';
-import {palettes, radii, useTheme} from '../lib/theme';
 import {mobileVideoCoordinator} from '../lib/video-coordinator';
 
 const homepageVideoSources:readonly VideoSource[]=[require('../../assets/videos/vistrah-introduction.mp4')];
 
 export function HomepageVideoPlayer({videos=homepageVideoSources}:{videos?:readonly VideoSource[]}={}){
- const {colors}=useTheme();
  const index=useRef(0),active=useRef(false);
  const container=useRef<View>(null),view=useRef<VideoView>(null),manualPause=useRef(false),timelineWidth=useRef(0);
  const [visible,setVisible]=useState(true),[playing,setPlaying]=useState(false),[muted,setMuted]=useState(false),[error,setError]=useState(false),[time,setTime]=useState(0),[duration,setDuration]=useState(0),[reader,setReader]=useState(false),[activity,setActivity]=useState(0);
@@ -77,20 +75,20 @@ export function HomepageVideoPlayer({videos=homepageVideoSources}:{videos?:reado
   return()=>{mounted=false;subscriptions.forEach(subscription=>subscription.remove());};
  },[player,videos]);
  useEffect(()=>{if(!visible||!playing||reader)return;const timer=setTimeout(()=>setVisible(false),1000);return()=>clearTimeout(timer);},[visible,playing,reader,activity]);
- return <View ref={container} style={{gap:8}}><View style={{width:'100%',aspectRatio:16/9,borderRadius:radii.surface,borderWidth:1,borderColor:colors.borderSubtle,overflow:'hidden',backgroundColor:palettes.dark.background}}>
+ return <View ref={container} style={{gap:8}}><View style={{width:'100%',aspectRatio:16/9,borderRadius:16,overflow:'hidden',backgroundColor:'#000'}}>
   <UiElement as={VideoView} ref={view} player={player} accessibilityLabel="VISTRAH homepage video" style={{width:'100%',height:'100%'}} nativeControls={false} contentFit="contain" fullscreenOptions={{enable:true}}/>
   <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel="Show video controls" onPress={reveal} style={{position:'absolute',top:0,right:0,bottom:0,left:0}}/>
-  {(visible||reader)&&<View style={{position:'absolute',bottom:0,left:0,right:0,flexDirection:'row',alignItems:'center',backgroundColor:'rgba(8, 8, 13, 0.72)',padding:4}}>
-   <UiElement as={PlayerButton} label={playing?'Pause video':'Play video'} icon={playing?'pause':'play'} color={colors.brandPrimaryInk} onPress={()=>{manualPause.current=playing;if(playing)player.pause();else player.play();reveal();}}/>
+  {(visible||reader)&&<View style={{position:'absolute',bottom:0,left:0,right:0,flexDirection:'row',alignItems:'center',backgroundColor:'#000b',padding:4}}>
+   <UiElement as={PlayerButton} label={playing?'Pause video':'Play video'} icon={playing?'pause':'play'} onPress={()=>{manualPause.current=playing;if(playing)player.pause();else player.play();reveal();}}/>
    {/* eslint-disable-next-line react-hooks/immutability -- expo-video exposes muted as an imperative native-player setter. */}
-   <UiElement as={PlayerButton} label={muted?'Unmute video':'Mute video'} icon={muted?'volume-x':'volume-2'} color={colors.brandPrimaryInk} onPress={()=>{player.muted=!player.muted;setMuted(player.muted);reveal();}}/>
+   <UiElement as={PlayerButton} label={muted?'Unmute video':'Mute video'} icon={muted?'volume-x':'volume-2'} onPress={()=>{player.muted=!player.muted;setMuted(player.muted);reveal();}}/>
    {/* eslint-disable-next-line react-hooks/immutability -- Seeking uses the documented mutable expo-video currentTime setter. */}
    <UiElement as={Pressable} accessibilityRole="adjustable" accessibilityLabel="Video position" accessibilityValue={{min:0,max:Math.round(duration),now:Math.round(time)}} accessibilityActions={[{name:'increment'},{name:'decrement'}]} onAccessibilityAction={event=>{player.currentTime=Math.max(0,Math.min(duration,time+(event.nativeEvent.actionName==='increment'?10:-10)));reveal();}} onPress={reveal} style={{flex:1,minWidth:20,height:44,justifyContent:'center'}} onLayout={event=>{timelineWidth.current=event.nativeEvent.layout.width;}} onPressIn={event=>{if(duration&&timelineWidth.current)player.currentTime=duration*Math.max(0,Math.min(1,event.nativeEvent.locationX/timelineWidth.current));}}>
-    <View style={{height:3,backgroundColor:colors.borderSubtle,borderRadius:radii.pill}}><View style={{height:3,backgroundColor:colors.brandPrimary,borderRadius:radii.pill,width:`${duration?Math.min(100,time/duration*100):0}%`}}/></View>
+    <View style={{height:3,backgroundColor:'#ffffff60',borderRadius:2}}><View style={{height:3,backgroundColor:'#fff',width:`${duration?Math.min(100,time/duration*100):0}%`}}/></View>
    </UiElement>
-   <UiElement as={PlayerButton} label="Fullscreen video" icon="maximize" color={colors.brandPrimaryInk} onPress={()=>{void view.current?.enterFullscreen().catch(()=>{});reveal();}}/>
+   <UiElement as={PlayerButton} label="Fullscreen video" icon="maximize" onPress={()=>{void view.current?.enterFullscreen().catch(()=>{});reveal();}}/>
   </View>}
- </View>{error&&<Text accessibilityRole="alert" style={{color:colors.danger}}><UiText value={"Video could not load. Please reopen this page to retry."}/></Text>}</View>;
+ </View>{error&&<Text accessibilityRole="alert" style={{color:'#b93c50'}}><UiText value={"Video could not load. Please reopen this page to retry."}/></Text>}</View>;
 }
 
-function PlayerButton({label,icon,color,onPress}:{label:string;icon:'play'|'pause'|'volume-x'|'volume-2'|'maximize';color:string;onPress:()=>void}){return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={{width:44,height:44,alignItems:'center',justifyContent:'center'}}><Feather name={icon} size={20} color={color}/></Pressable>;}
+function PlayerButton({label,icon,onPress}:{label:string;icon:'play'|'pause'|'volume-x'|'volume-2'|'maximize';onPress:()=>void}){return <Pressable accessibilityRole="button" accessibilityLabel={label} onPress={onPress} style={{width:44,height:44,alignItems:'center',justifyContent:'center'}}><Feather name={icon} size={20} color="#fff"/></Pressable>;}

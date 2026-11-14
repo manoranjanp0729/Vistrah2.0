@@ -2,7 +2,7 @@ import {UiElement} from "./localized-ui";
 import {useCallback,useEffect,useRef,useState} from 'react';
 import {AppState,Image,Platform,Pressable,ScrollView,View} from 'react-native';
 import {router,useFocusEffect,type Href} from 'expo-router';
-import {radii,useTheme} from '../lib/theme';
+import {useTheme} from '../lib/theme';
 const bannerAspectRatio=1736/621;
 const slides=[
  {key:'users',title:'For Users: Find the right services on VISTRAH. Explore services.',route:'/services',image:require('../../assets/hero-journey/for-users-widescreen.jpg')},
@@ -44,11 +44,11 @@ export function ServiceCarousel(){
  useEffect(()=>{if(!width)return;const frame=requestAnimationFrame(()=>{offset.current=current.current*width;scroll.current?.scrollTo({x:offset.current,animated:false});});return()=>cancelAnimationFrame(frame);},[width]);
  return <View ref={frame} style={{gap:8}}><View style={{width:'100%',aspectRatio:bannerAspectRatio}}>
   <ScrollView ref={scroll} onLayout={event=>setWidth(event.nativeEvent.layout.width)} onContentSizeChange={()=>{if(width){offset.current=current.current*width;scroll.current?.scrollTo({x:offset.current,animated:false});}}} style={{flex:1}} contentInsetAdjustmentBehavior="never" automaticallyAdjustContentInsets={false} removeClippedSubviews={false} contentContainerStyle={{height:slideSize.height,paddingHorizontal:0,gap:0}} horizontal snapToOffsets={width?slides.map((_,position)=>position*width):undefined} snapToAlignment="start" decelerationRate="fast" showsHorizontalScrollIndicator={false} scrollEventThrottle={16} onTouchStart={beginInteraction} onTouchEnd={endInteraction} onTouchCancel={endInteraction} onScrollBeginDrag={beginInteraction} onScrollEndDrag={endInteraction} onScroll={event=>{offset.current=event.nativeEvent.contentOffset.x;if(!dragging.current)scheduleSettle();}} onMomentumScrollEnd={event=>{offset.current=event.nativeEvent.contentOffset.x;if(settleTimer.current)clearTimeout(settleTimer.current);settle();}}>
-   {(width>0?slides:[]).map(slide=><Pressable key={slide.key} accessibilityRole="link" accessibilityLabel={slide.title} onPress={()=>router.push(slide.route as Href)} style={[slideSize,{flexGrow:0,flexShrink:0,alignItems:'center',justifyContent:'center',borderRadius:radii.surface,borderWidth:1,borderColor:colors.borderSubtle,backgroundColor:colors.surface,overflow:'hidden'}]}>
+   {(width>0?slides:[]).map(slide=><Pressable key={slide.key} accessibilityRole="link" accessibilityLabel={slide.title} onPress={()=>router.push(slide.route as Href)} style={[slideSize,{flexGrow:0,flexShrink:0,alignItems:'center',justifyContent:'center',borderRadius:20,overflow:'hidden'}]}>
     <Image source={slide.image} resizeMode="contain" accessible={false} style={slideSize} accessibilityIgnoresInvertColors/>
    </Pressable>)}
   </ScrollView>
  </View>
- <UiElement as={View} pointerEvents="none" accessibilityLabel={'Journey slide '+(index+1)+' of 5'} style={{flexDirection:'row',justifyContent:'center',gap:6}}>{slides.map((slide,position)=><View key={slide.key} style={{width:position===index?18:6,height:6,borderRadius:radii.pill,backgroundColor:position===index?colors.accent:colors.muted,opacity:position===index?1:.4}}/>)}</UiElement>
+ <UiElement as={View} pointerEvents="none" accessibilityLabel={'Journey slide '+(index+1)+' of 5'} style={{flexDirection:'row',justifyContent:'center',gap:6}}>{slides.map((slide,position)=><View key={slide.key} style={{width:position===index?18:6,height:6,borderRadius:3,backgroundColor:position===index?colors.accent:colors.muted,opacity:position===index?1:.4}}/>)}</UiElement>
  </View>;
 }

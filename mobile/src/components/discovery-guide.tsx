@@ -7,16 +7,16 @@ import Feather from '@expo/vector-icons/Feather';
 import {LinearGradient} from 'expo-linear-gradient';
 import brandTheme from '../../../shared/brand-theme.json';
 import copy from '../lib/interface-copy';
-import {radii,spacing,tabularNums,useTheme} from '../lib/theme';
+import {useTheme,spacing} from '../lib/theme';
 
 const shortcuts = {
-  jobs: {route: '/service/find-jobs', icon: 'briefcase'},
-  discovery: {route: '/discover-more', icon: 'compass'},
-  employer: {route: '/employer-jobs', icon: 'users'},
+  jobs: {route: '/service/find-jobs', icon: 'briefcase', gradient: ['#2563eb', '#3b82f6']},
+  discovery: {route: '/discover-more', icon: 'compass', gradient: ['#7c3aed', '#a855f7']},
+  employer: {route: '/employer-jobs', icon: 'users', gradient: ['#059669', '#10b981']},
 } as const;
 
 export function DiscoveryGuide() {
-  const {colors, styles, accentGradient} = useTheme();
+  const {colors, styles, mode, accentGradient} = useTheme();
   const [journey, setJourney] = useState<'customer' | 'provider'>('customer');
   const [openQuestion, setOpenQuestion] = useState<string | null>(null);
   const [showFaq, setShowFaq] = useState(true);
@@ -33,9 +33,9 @@ export function DiscoveryGuide() {
             colors={accentGradient}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 1}}
-            style={{paddingHorizontal: 10, paddingVertical: 4, borderRadius: radii.pill}}
+            style={{paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10}}
           >
-            <Text style={{color: colors.brandPrimaryInk, fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}>
+            <Text style={{color: '#fff', fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}>
               <UiText value={"DISCOVERY PATHWAY "}/></Text>
           </LinearGradient>
         </View>
@@ -51,11 +51,11 @@ export function DiscoveryGuide() {
         <View
           style={{
             flexDirection: 'row',
-            backgroundColor: colors.surface,
+            backgroundColor: mode === 'dark' ? '#211e2c' : '#f0ecf7',
             padding: 4,
-            borderRadius: radii.pill,
+            borderRadius: 20,
             borderWidth: 1,
-            borderColor: colors.borderSubtle,
+            borderColor: mode === 'dark' ? '#393246' : '#e2dbef',
             gap: 4,
           }}
         >
@@ -67,7 +67,7 @@ export function DiscoveryGuide() {
                 accessibilityRole="button"
                 accessibilityState={{selected: isSelected}}
                 onPress={() => setJourney(value)}
-                style={{flex: 1, borderRadius: radii.pill, overflow: 'hidden'}}
+                style={{flex: 1, borderRadius: 16, overflow: 'hidden'}}
               >
                 {isSelected ? (
                   <LinearGradient
@@ -79,7 +79,7 @@ export function DiscoveryGuide() {
                       paddingHorizontal: 12,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderRadius: radii.pill,
+                      borderRadius: 16,
                       flexDirection: 'row',
                       gap: 6,
                     }}
@@ -87,9 +87,9 @@ export function DiscoveryGuide() {
                     <Feather
                       name={value === 'customer' ? 'shopping-bag' : 'briefcase'}
                       size={14}
-                      color={colors.brandPrimaryInk}
+                      color="#fff"
                     />
-                    <Text style={{color: colors.brandPrimaryInk, fontSize: 13, fontWeight: '700'}}>
+                    <Text style={{color: '#fff', fontSize: 13, fontWeight: '700'}}>
                       <UiText value={value === 'customer' ? content.customerLabel : content.providerLabel} />
                     </Text>
                   </LinearGradient>
@@ -100,7 +100,7 @@ export function DiscoveryGuide() {
                       paddingHorizontal: 12,
                       alignItems: 'center',
                       justifyContent: 'center',
-                      borderRadius: radii.pill,
+                      borderRadius: 16,
                       flexDirection: 'row',
                       gap: 6,
                     }}
@@ -125,12 +125,17 @@ export function DiscoveryGuide() {
           style={[
             styles.card,
             {
-              borderRadius: radii.surface,
+              borderRadius: 22,
               padding: 20,
               gap: 16,
               borderWidth: 1,
-              borderColor: colors.borderSubtle,
-              backgroundColor: colors.surface,
+              borderColor: mode === 'dark' ? '#393246' : '#e2dbef',
+              backgroundColor: mode === 'dark' ? '#211e2c' : '#ffffff',
+              shadowColor: brandTheme.gradient[1],
+              shadowOffset: {width: 0, height: 6},
+              shadowOpacity: mode === 'dark' ? 0.22 : 0.08,
+              shadowRadius: 14,
+              elevation: 3,
             },
           ]}
           accessibilityLiveRegion="polite"
@@ -156,24 +161,24 @@ export function DiscoveryGuide() {
                   flexDirection: 'row',
                   gap: 12,
                   alignItems: 'flex-start',
-                  backgroundColor: colors.elevated,
+                  backgroundColor: mode === 'dark' ? '#29243d' : '#f9f7fd',
                   padding: 12,
-                  borderRadius: radii.surface,
+                  borderRadius: 14,
                   borderWidth: 1,
-                  borderColor: colors.borderSubtle,
+                  borderColor: mode === 'dark' ? '#393246' : '#ece5f7',
                 }}
               >
                 <View
                   style={{
                     width: 28,
                     height: 28,
-                    borderRadius: radii.pill,
+                    borderRadius: 14,
                     backgroundColor: colors.accent,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Text style={[{color: colors.brandPrimaryInk, fontSize: 11, fontWeight: '800'}, tabularNums]}>
+                  <Text style={{color: '#fff', fontSize: 11, fontWeight: '800'}}>
                     0{index + 1}
                   </Text>
                 </View>
@@ -193,24 +198,27 @@ export function DiscoveryGuide() {
           <Pressable
             accessibilityRole="button"
             onPress={() => router.push(journey === 'customer' ? '/services' : '/provider')}
-            style={({pressed}) => [{borderRadius: radii.action, overflow: 'hidden', backgroundColor: pressed ? colors.brandPrimaryHover : colors.brandPrimary}]}
+            style={({pressed}) => [{borderRadius: 16, overflow: 'hidden', opacity: pressed ? 0.9 : 1}]}
           >
-            <View
+            <LinearGradient
+              colors={accentGradient}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
               style={{
                 paddingVertical: 14,
                 paddingHorizontal: 16,
                 alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: radii.action,
+                borderRadius: 16,
                 flexDirection: 'row',
                 gap: 8,
               }}
             >
-              <Text style={{color: colors.brandPrimaryInk, fontWeight: '800', fontSize: 14}}>
+              <Text style={{color: '#fff', fontWeight: '800', fontSize: 14}}>
                 <UiText value={selected.action} />
               </Text>
-              <Feather name="arrow-right" size={16} color={colors.brandPrimaryInk} />
-            </View>
+              <Feather name="arrow-right" size={16} color="#fff" />
+            </LinearGradient>
           </Pressable>
 
           <Text style={[styles.muted, {fontSize: 11, textAlign: 'center', lineHeight: 16}]}>
@@ -226,10 +234,8 @@ export function DiscoveryGuide() {
             style={{
               paddingHorizontal: 8,
               paddingVertical: 3,
-              borderRadius: radii.pill,
-              backgroundColor: colors.elevated,
-              borderWidth: 1,
-              borderColor: colors.borderSubtle,
+              borderRadius: 8,
+              backgroundColor: mode === 'dark' ? '#2c2542' : '#ebdffc',
             }}
           >
             <Text style={{color: colors.accent, fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
@@ -244,6 +250,7 @@ export function DiscoveryGuide() {
           {content.shortcuts.map(item => {
             const target = shortcuts[item.key as keyof typeof shortcuts];
             const iconName = target?.icon ?? 'compass';
+            const gradientColors = target?.gradient ?? [brandTheme.gradient[0], brandTheme.gradient[1]];
             return (
               <Pressable
                 key={item.key}
@@ -257,24 +264,25 @@ export function DiscoveryGuide() {
                     alignItems: 'center',
                     gap: 14,
                     padding: 14,
-                    borderRadius: radii.surface,
+                    borderRadius: 18,
                     borderWidth: 1,
-                    borderColor: colors.borderSubtle,
-                    backgroundColor: pressed ? colors.elevated : colors.surface,
+                    borderColor: mode === 'dark' ? '#393246' : '#e6e0f0',
+                    backgroundColor: mode === 'dark' ? '#211e2c' : '#ffffff',
+                    opacity: pressed ? 0.85 : 1,
                   },
                 ]}
               >
                 <LinearGradient
-                  colors={[brandTheme.gradient[0], brandTheme.gradient[1]]}
+                  colors={[gradientColors[0], gradientColors[1]]}
                   style={{
                     width: 44,
                     height: 44,
-                    borderRadius: radii.action,
+                    borderRadius: 14,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <Feather name={iconName} size={20} color={colors.brandPrimaryInk} />
+                  <Feather name={iconName} size={20} color="#fff" />
                 </LinearGradient>
                 <View style={{flex: 1, gap: 2}}>
                   <Text style={[styles.text, {fontWeight: '700', fontSize: 14}]}>
@@ -288,10 +296,8 @@ export function DiscoveryGuide() {
                   style={{
                     paddingHorizontal: 10,
                     paddingVertical: 6,
-                    borderRadius: radii.pill,
-                    backgroundColor: colors.elevated,
-                    borderWidth: 1,
-                    borderColor: colors.borderSubtle,
+                    borderRadius: 12,
+                    backgroundColor: mode === 'dark' ? '#2c2542' : '#f0ecf7',
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 4,
@@ -320,10 +326,8 @@ export function DiscoveryGuide() {
                 style={{
                   paddingHorizontal: 8,
                   paddingVertical: 3,
-                  borderRadius: radii.pill,
-                  backgroundColor: colors.elevated,
-                  borderWidth: 1,
-                  borderColor: colors.borderSubtle,
+                  borderRadius: 8,
+                  backgroundColor: mode === 'dark' ? '#2c2542' : '#ebdffc',
                 }}
               >
                 <Text style={{color: colors.accent, fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
@@ -348,10 +352,10 @@ export function DiscoveryGuide() {
                   accessibilityState={{expanded: isItemOpen}}
                   onPress={() => setOpenQuestion(isItemOpen ? null : item.question)}
                   style={{
-                    borderRadius: radii.surface,
+                    borderRadius: 16,
                     borderWidth: 1,
-                    borderColor: colors.borderSubtle,
-                    backgroundColor: colors.surface,
+                    borderColor: mode === 'dark' ? '#393246' : '#e6e0f0',
+                    backgroundColor: mode === 'dark' ? '#211e2c' : '#ffffff',
                     padding: 14,
                     gap: isItemOpen ? 8 : 0,
                   }}
@@ -364,8 +368,8 @@ export function DiscoveryGuide() {
                       style={{
                         width: 24,
                         height: 24,
-                        borderRadius: radii.pill,
-                        backgroundColor: colors.elevated,
+                        borderRadius: 12,
+                        backgroundColor: mode === 'dark' ? '#29243d' : '#f3effa',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}

@@ -22,7 +22,7 @@ import {
   type MarketplaceSelection,
 } from '../../../lib/marketplace';
 import {nativeMarketplacePhoto, nativeMarketplaceAlt} from '../../../lib/marketplace-photo';
-import {radii,spacing,tabularNums,typography,useTheme} from '../../../lib/theme';
+import {useTheme,spacing,typography} from '../../../lib/theme';
 import {useSession} from '../../../lib/session';
 import {ClassifiedServices} from '../../../components/commerce-browser';
 import {customerListingCopy, listingEnquiryHref} from '../../../../../shared/customer-listing';
@@ -133,7 +133,7 @@ export default function Services() {
         <View style={s.topBarRow}>
           {seller ? (
             <View style={s.sellerWelcomeBadge}>
-              <View style={[s.sellerDot, {backgroundColor: colors.success}]} />
+              <View style={s.sellerDot} />
               <Text accessibilityRole="header" style={[s.sellerWelcomeText, {color: colors.text}]}>
                 <UiText value="Welcome, " />
                 {session.user!.name}
@@ -150,8 +150,8 @@ export default function Services() {
             style={[
               s.breadcrumbBar,
               {
-                backgroundColor: colors.surface,
-                borderColor: colors.borderSubtle,
+                backgroundColor: isDark ? '#1a1329' : '#f5effc',
+                borderColor: isDark ? '#322549' : '#e6daf2',
               },
             ]}
           >
@@ -170,7 +170,7 @@ export default function Services() {
               }}
               style={({pressed}) => [
                 s.backCircle,
-                {backgroundColor: colors.elevated, borderColor: colors.borderSubtle, borderWidth: 1, opacity: pressed ? 0.7 : 1},
+                {backgroundColor: isDark ? '#2a1f42' : '#ffffff', opacity: pressed ? 0.7 : 1},
               ]}
             >
               <Feather name="arrow-left" size={16} color={colors.accent} />
@@ -192,13 +192,13 @@ export default function Services() {
                   <Feather name="chevron-right" size={12} color={colors.muted} />
                   <Pressable
                     onPress={() => (subcategory ? open({category: category!.slug}) : null)}
-                    style={[s.crumbItem, isCategoryLevel && {backgroundColor: colors.elevated}]}
+                    style={[s.crumbItem, isCategoryLevel && s.crumbActiveItem]}
                   >
                     <Text
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: isCategoryLevel ? colors.text : colors.accent},
+                        {color: isCategoryLevel ? (isDark ? '#fff' : '#1f1338') : colors.accent},
                         isCategoryLevel && s.crumbActiveText,
                       ]}
                     >
@@ -217,13 +217,13 @@ export default function Services() {
                         ? open({category: category!.slug, subcategory: subcategory!.slug})
                         : null
                     }
-                    style={[s.crumbItem, isSubcategoryLevel && {backgroundColor: colors.elevated}]}
+                    style={[s.crumbItem, isSubcategoryLevel && s.crumbActiveItem]}
                   >
                     <Text
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: isSubcategoryLevel ? colors.text : colors.accent},
+                        {color: isSubcategoryLevel ? (isDark ? '#fff' : '#1f1338') : colors.accent},
                         isSubcategoryLevel && s.crumbActiveText,
                       ]}
                     >
@@ -236,12 +236,12 @@ export default function Services() {
               {Boolean(listingType) && (
                 <>
                   <Feather name="chevron-right" size={12} color={colors.muted} />
-                  <View style={[s.crumbItem, {backgroundColor: colors.elevated}]}>
+                  <View style={[s.crumbItem, s.crumbActiveItem]}>
                     <Text
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: colors.text},
+                        {color: isDark ? '#fff' : '#1f1338'},
                         s.crumbActiveText,
                       ]}
                     >
@@ -256,10 +256,10 @@ export default function Services() {
 
         {/* PROGRESSIVE CONTEXTUAL HERO BANNER */}
         <LinearGradient
-          colors={[colors.surface, colors.elevated, colors.surface]}
+          colors={banner.gradient}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          style={[s.hero, {borderColor: colors.borderSubtle}]}
+          style={s.hero}
         >
           <BannerGeometry/>
           <View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow}]} />
@@ -267,83 +267,95 @@ export default function Services() {
           {isRootLevel ? (
             <>
               <View style={s.heroBadgeRow}>
-                <View
-                  style={[s.heroBadge, {backgroundColor: colors.brandPrimary}]}
+                <LinearGradient
+                  colors={banner.gradient}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 0}}
+                  style={s.heroBadge}
                 >
-                  <Ionicons name="sparkles" size={11} color={colors.brandPrimaryInk} />
-                  <Text style={[s.heroBadgeText, {color: colors.brandPrimaryInk}]}>VISTRAH MARKETPLACE</Text>
-                </View>
-                <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle, borderWidth: 1}]}>
-                  <Feather name="shield" size={11} color={colors.success} />
-                  <Text style={[s.heroPillText,{color:colors.muted}]}>Verified Providers</Text>
+                  <Ionicons name="sparkles" size={11} color="#fff" />
+                  <Text style={s.heroBadgeText}>VISTRAH MARKETPLACE</Text>
+                </LinearGradient>
+                <View style={s.heroPill}>
+                  <Feather name="shield" size={11} color="#34d399" />
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>Verified Providers</Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle, {color: colors.text}]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {t('discovery.title')}
               </Text>
-              <Text style={[s.heroSubtitle,{color:colors.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Browse and connect with verified local professionals, equipment rentals, and specialized services across India." />
               </Text>
             </>
           ) : isCategoryLevel ? (
             <>
               <View style={s.heroBadgeRow}>
-                <View
-                  style={[s.heroBadge, {backgroundColor: colors.brandPrimary}]}
+                <LinearGradient
+                  colors={banner.gradient}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 0}}
+                  style={s.heroBadge}
                 >
-                  <Text style={[s.heroBadgeText, {color: colors.brandPrimaryInk}]}>SECTOR CATEGORY</Text>
-                </View>
-                <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle, borderWidth: 1}]}>
-                  <Text style={[s.heroPillText,{color:colors.muted}, tabularNums]}>
+                  <Text style={s.heroBadgeText}>SECTOR CATEGORY</Text>
+                </LinearGradient>
+                <View style={s.heroPill}>
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>
                     {category!.subcategories.length} <UiText value="Subcategories" />
                   </Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle, {color: colors.text}]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {categoryName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:colors.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Select a specialized subcategory below to view dedicated providers and services." />
               </Text>
             </>
           ) : isSubcategoryLevel ? (
             <>
               <View style={s.heroBadgeRow}>
-                <View
-                  style={[s.heroBadge, {backgroundColor: colors.brandPrimary}]}
+                <LinearGradient
+                  colors={banner.gradient}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 0}}
+                  style={s.heroBadge}
                 >
-                  <Text style={[s.heroBadgeText, {color: colors.brandPrimaryInk}]}>{categoryName.toUpperCase()}</Text>
-                </View>
-                <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle, borderWidth: 1}]}>
-                  <Text style={[s.heroPillText,{color:colors.muted}, tabularNums]}>
+                  <Text style={s.heroBadgeText}>{categoryName.toUpperCase()}</Text>
+                </LinearGradient>
+                <View style={s.heroPill}>
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>
                     {subcategory!.listing_types.length} <UiText value="Service Types" />
                   </Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle, {color: colors.text}]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {subcategoryName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:colors.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Choose an exact service listing type to browse offers, get quotations, and contact verified specialists." />
               </Text>
             </>
           ) : (
             <>
               <View style={s.heroBadgeRow}>
-                <View
-                  style={[s.heroBadge, {backgroundColor: colors.brandPrimary}]}
+                <LinearGradient
+                  colors={banner.gradient}
+                  start={{x: 0, y: 0}}
+                  end={{x: 1, y: 0}}
+                  style={s.heroBadge}
                 >
-                  <Text style={[s.heroBadgeText, {color: colors.brandPrimaryInk}]}>{subcategoryName.toUpperCase()}</Text>
-                </View>
-                <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle, borderWidth: 1}]}>
-                  <Feather name="check-circle" size={11} color={colors.success} />
-                  <Text style={[s.heroPillText,{color:colors.muted}]}>Direct Listings</Text>
+                  <Text style={s.heroBadgeText}>{subcategoryName.toUpperCase()}</Text>
+                </LinearGradient>
+                <View style={s.heroPill}>
+                  <Feather name="check-circle" size={11} color="#34d399" />
+                  <Text style={[s.heroPillText,{color:banner.muted}]}>Direct Listings</Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle, {color: colors.text}]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {listingTypeName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:colors.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Review available packages, verify provider details, and submit direct enquiries." />
               </Text>
             </>
@@ -386,12 +398,13 @@ export default function Services() {
                   style={({pressed}) => [
                     s.flowCard,
                     {
-                      backgroundColor: pressed ? colors.elevated : colors.surface,
-                      borderColor: colors.borderSubtle,
+                      backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
+                      borderColor: isDark ? '#33264c' : '#e5dbee',
+                      opacity: pressed ? 0.88 : 1,
                     },
                   ]}
                 >
-                  <View style={[s.flowPhoto, {backgroundColor: colors.elevated}]}>
+                  <View style={s.flowPhoto}>
                     <Image
                       source={croppedPhoto(nativeMarketplacePhoto(result.id),'square')}
                       resizeMode="cover"
@@ -421,8 +434,8 @@ export default function Services() {
               style={[
                 s.journeyCard,
                 {
-                  backgroundColor: colors.surface,
-                  borderColor: colors.borderSubtle,
+                  backgroundColor: isDark ? '#1a132a' : '#f7f4fb',
+                  borderColor: isDark ? '#322549' : '#e6daf0',
                 },
               ]}
             >
@@ -432,21 +445,21 @@ export default function Services() {
               </Text>
               <View style={s.stepsRow}>
                 <View style={s.stepPill}>
-                  <Text style={[s.stepNum, {backgroundColor: colors.accent, color: colors.brandPrimaryInk}, tabularNums]}>1</Text>
+                  <Text style={s.stepNum}>1</Text>
                   <Text style={[s.stepText, {color: colors.text}]}>
                     <UiText value="Review Offers" />
                   </Text>
                 </View>
                 <Feather name="arrow-right" size={13} color={colors.muted} />
                 <View style={s.stepPill}>
-                  <Text style={[s.stepNum, {backgroundColor: colors.accent, color: colors.brandPrimaryInk}, tabularNums]}>2</Text>
+                  <Text style={s.stepNum}>2</Text>
                   <Text style={[s.stepText, {color: colors.text}]}>
                     <UiText value="Direct Contact" />
                   </Text>
                 </View>
                 <Feather name="arrow-right" size={13} color={colors.muted} />
                 <View style={s.stepPill}>
-                  <Text style={[s.stepNum, {backgroundColor: colors.accent, color: colors.brandPrimaryInk}, tabularNums]}>3</Text>
+                  <Text style={s.stepNum}>3</Text>
                   <Text style={[s.stepText, {color: colors.text}]}>
                     <UiText value="Schedule" />
                   </Text>
@@ -477,8 +490,8 @@ export default function Services() {
                 style={[
                   s.sellerOfferCard,
                   {
-                    backgroundColor: colors.surface,
-                    borderColor: colors.borderSubtle,
+                    backgroundColor: isDark ? '#1f1830' : '#ffffff',
+                    borderColor: isDark ? '#372854' : '#e2d5ed',
                   },
                 ]}
               >
@@ -503,12 +516,17 @@ export default function Services() {
                       },
                     })
                   }
-                  style={({pressed}) => [s.addServiceBtn, {backgroundColor: pressed ? colors.brandPrimaryHover : colors.brandPrimary}]}
+                  style={({pressed}) => [s.addServiceBtn, {opacity: pressed ? 0.85 : 1}]}
                 >
-                  <View style={s.addServiceGradient}>
-                    <Feather name="plus" size={14} color={colors.brandPrimaryInk} />
-                    <Text style={[s.addServiceText, {color: colors.brandPrimaryInk}]}>Add Service</Text>
-                  </View>
+                  <LinearGradient
+                    colors={accentGradient}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={s.addServiceGradient}
+                  >
+                    <Feather name="plus" size={14} color="#fff" />
+                    <Text style={s.addServiceText}>Add Service</Text>
+                  </LinearGradient>
                 </Pressable>
               </View>
             )}
@@ -537,8 +555,9 @@ export default function Services() {
                       style={({pressed}) => [
                         s.sisterChip,
                         {
-                          backgroundColor: pressed ? colors.elevated : colors.surface,
-                          borderColor: colors.borderSubtle,
+                          backgroundColor: isDark ? '#231b34' : '#ffffff',
+                          borderColor: isDark ? '#382a52' : '#e0d4ea',
+                          opacity: pressed ? 0.8 : 1,
                         },
                       ]}
                     >
@@ -564,7 +583,7 @@ export default function Services() {
                   {t('discovery.types')}
                 </Text>
               </View>
-              <Text style={[{fontSize: 12, fontWeight: '600', color: colors.muted}, tabularNums]}>
+              <Text style={{fontSize: 12, fontWeight: '600', color: colors.muted}}>
                 {subcategory!.listing_types.length} <UiText value="types" />
               </Text>
             </View>
@@ -599,12 +618,13 @@ export default function Services() {
                         s.flowGridCard,
                         {
                           paddingBottom:seller?56:10,
-                          backgroundColor: pressed ? colors.elevated : colors.surface,
-                          borderColor: colors.borderSubtle,
+                          backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
+                          borderColor: isDark ? '#33264c' : '#e5dbee',
+                          opacity: pressed ? 0.88 : 1,
                         },
                       ]}
                     >
-                      <View style={[s.flowGridPhoto, {backgroundColor: colors.elevated}]}>
+                      <View style={s.flowGridPhoto}>
                         <Image
                           source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
                           resizeMode="cover"
@@ -640,7 +660,7 @@ export default function Services() {
                   {t('discovery.exploreSubcategories')}
                 </Text>
               </View>
-              <Text style={[{fontSize: 12, fontWeight: '600', color: colors.muted}, tabularNums]}>
+              <Text style={{fontSize: 12, fontWeight: '600', color: colors.muted}}>
                 {category!.subcategories.length} <UiText value="available" />
               </Text>
             </View>
@@ -659,12 +679,13 @@ export default function Services() {
                       s.flowGridCard,
                       {width:cardWidth??'48%',flexGrow:0,flexShrink:0},
                       {
-                        backgroundColor: pressed ? colors.elevated : colors.surface,
-                        borderColor: colors.borderSubtle,
+                        backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
+                        borderColor: isDark ? '#33264c' : '#e5dbee',
+                        opacity: pressed ? 0.88 : 1,
                       },
                     ]}
                   >
-                    <View style={[s.flowGridPhoto, {backgroundColor: colors.elevated}]}>
+                    <View style={s.flowGridPhoto}>
                       <Image
                         source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
                         resizeMode="cover"
@@ -696,7 +717,7 @@ export default function Services() {
 
         {/* BOTTOM SELLER FOOTER ACTIONS */}
         {(seller || !isListingTypeLevel) && (
-          <View style={[s.bottomSellerBox, {borderTopColor: colors.borderSubtle}]}>
+          <View style={[s.bottomSellerBox, {borderTopColor: colors.border}]}>
             {Boolean(logoutError) && <ErrorPanel error={logoutError} />}
             {seller ? (
               <UiElement
@@ -748,12 +769,12 @@ function TypeAction({
             position: 'absolute',
             right: 8,
             bottom: 8,
-            backgroundColor: colors.elevated,
+            backgroundColor: colors.surface,
             minWidth: 40,
             minHeight: 40,
             borderWidth: 1,
-            borderColor: colors.borderSubtle,
-            borderRadius: radii.action,
+            borderColor: colors.border,
+            borderRadius: 12,
             alignItems: 'center',
             justifyContent: 'center',
             elevation: 2,
@@ -799,7 +820,8 @@ const s = StyleSheet.create({
   sellerDot: {
     width: 7,
     height: 7,
-    borderRadius: radii.pill,
+    borderRadius: 3.5,
+    backgroundColor: '#34d399',
   },
   sellerWelcomeText: {
     fontSize: 16,
@@ -813,13 +835,13 @@ const s = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 8,
     paddingVertical: 6,
-    borderRadius: radii.surface,
+    borderRadius: 14,
     borderWidth: 1,
   },
   backCircle: {
     width: 32,
     height: 32,
-    borderRadius: radii.pill,
+    borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 1,
@@ -836,7 +858,10 @@ const s = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 7,
     paddingVertical: 3,
-    borderRadius: radii.pill,
+    borderRadius: 8,
+  },
+  crumbActiveItem: {
+    backgroundColor: '#ffffff28',
   },
   crumbText: {
     fontSize: 12,
@@ -848,12 +873,13 @@ const s = StyleSheet.create({
 
   // Hero
   hero: {
-    borderRadius: radii.surface,
+    borderRadius: 22,
     padding: 18,
     gap: 8,
     overflow: 'hidden',
     position: 'relative',
     borderWidth: 1,
+    borderColor: '#ffffff1a',
   },
   heroGlow: {
     position: 'absolute',
@@ -861,8 +887,9 @@ const s = StyleSheet.create({
     right: -40,
     width: 140,
     height: 140,
-    borderRadius: radii.pill,
-    opacity: 0.2,
+    borderRadius: 70,
+    backgroundColor: '#7741c4',
+    opacity: 0.25,
   },
   heroBadgeRow: {
     flexDirection: 'row',
@@ -875,12 +902,13 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 4,
-    borderRadius: radii.pill,
+    borderRadius: 8,
   },
   heroBadgeText: {
     fontSize: 10,
     fontWeight: '600',
     letterSpacing: 1.1,
+    color: '#fff',
   },
   heroPill: {
     flexDirection: 'row',
@@ -888,21 +916,25 @@ const s = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: radii.pill,
+    borderRadius: 8,
+    backgroundColor: '#ffffff14',
   },
   heroPillText: {
     fontSize: 11,
     fontWeight: '600',
+    color: '#e4d8f5',
   },
   heroTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
     lineHeight: Platform.OS === 'android' ? 27 : 24,
     fontWeight: '600',
     letterSpacing: -0.3,
+    color: '#ffffff',
   },
   heroSubtitle: {
     fontSize: 12.5,
     lineHeight: 18,
+    color: '#d6c8ed',
   },
 
   searchWrap: {
@@ -928,7 +960,7 @@ const s = StyleSheet.create({
 
   flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:10,alignItems:'stretch'},
   flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,flexGrow:1},
-  flowGridPhoto:{width:'100%',aspectRatio:16/9,borderRadius:radii.input,overflow:'hidden',flexShrink:0},
+  flowGridPhoto:{width:'100%',aspectRatio:16/9,borderRadius:12,overflow:'hidden',backgroundColor:'#eeeeeed9',flexShrink:0},
   flowImage:{width:'100%',height:'100%'},
   // Flow Cards (Subcategories & Listing Types)
   flowCard: {
@@ -936,14 +968,20 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     padding: 10,
-    borderRadius: radii.surface,
+    borderRadius: 12,
     borderWidth: 1,
+    elevation: 2,
+    shadowColor: '#071426',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
   },
   flowPhoto: {
     width: 68,
     height: 68,
-    borderRadius: radii.input,
+    borderRadius: 8,
     overflow: 'hidden',
+    backgroundColor: '#eeeeeed9',
     flexShrink: 0,
   },
   flowCardTitle: {
@@ -952,7 +990,7 @@ const s = StyleSheet.create({
   // Level 4 Journey Card
   journeyCard: {
     padding: 14,
-    borderRadius: radii.surface,
+    borderRadius: 12,
     gap: 8,
     borderWidth: 1,
   },
@@ -979,12 +1017,13 @@ const s = StyleSheet.create({
   stepNum: {
     width: 20,
     height: 20,
-    borderRadius: radii.pill,
+    borderRadius: 10,
+    backgroundColor: '#7741c4',
+    color: '#fff',
     fontSize: 11,
     fontWeight: '600',
     textAlign: 'center',
     lineHeight: 20,
-    overflow: 'hidden',
   },
   stepText: {
     fontSize: 11,
@@ -997,7 +1036,7 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     padding: 12,
-    borderRadius: radii.surface,
+    borderRadius: 16,
     borderWidth: 1,
   },
   sellerOfferTitle: {
@@ -1005,7 +1044,7 @@ const s = StyleSheet.create({
     fontWeight: '600',
   },
   addServiceBtn: {
-    borderRadius: radii.action,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   addServiceGradient: {
@@ -1018,6 +1057,7 @@ const s = StyleSheet.create({
   addServiceText: {
     fontSize: 12,
     fontWeight: '600',
+    color: '#fff',
   },
 
   // Sister Listing Chips
@@ -1037,7 +1077,7 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 6,
-    borderRadius: radii.pill,
+    borderRadius: 10,
     borderWidth: 1,
   },
   sisterChipText: {

@@ -8,11 +8,9 @@ import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import {useLanguage} from '../lib/language';
 import {useBannerTheme} from '../lib/banner-theme';
-import {radii, useTheme} from '../lib/theme';
 
 export function HomepagePartnerBanner() {
   const banner = useBannerTheme();
-  const {colors} = useTheme();
   const {copy, t} = useLanguage();
 
   return (
@@ -21,9 +19,7 @@ export function HomepagePartnerBanner() {
       start={{x: 0, y: 0}}
       end={{x: 1, y: 1}}
       style={{
-        borderRadius: radii.surface,
-        borderWidth: 1,
-        borderColor: colors.borderSubtle,
+        borderRadius: 24,
         padding: 22,
         gap: 14,
         position: 'relative',
@@ -47,7 +43,7 @@ export function HomepagePartnerBanner() {
           right: -40,
           width: 140,
           height: 140,
-          borderRadius: radii.pill,
+          borderRadius: 70,
           backgroundColor: banner.glow,
           opacity: 0.25,
         }}
@@ -55,15 +51,18 @@ export function HomepagePartnerBanner() {
 
       {/* Top Header Badge */}
       <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-        <View
-          style={{paddingHorizontal: 10, paddingVertical: 4, borderRadius: radii.pill, backgroundColor: colors.brandPrimary}}
+        <LinearGradient
+          colors={banner.gradient}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          style={{paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10}}
         >
-          <Text style={{color: colors.brandPrimaryInk, fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}>
+          <Text style={{color: '#fff', fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}>
             ⭐ {t('home.badge') || 'FEATURED OPPORTUNITY'}
           </Text>
-        </View>
+        </LinearGradient>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-          <View style={{width: 6, height: 6, borderRadius: radii.pill, backgroundColor: colors.success}} />
+          <View style={{width: 6, height: 6, borderRadius: 3, backgroundColor: '#34d399'}} />
           <Text style={{color: banner.muted, fontSize: 11, fontWeight: '600'}}><UiText value={"Verified Network"}/></Text>
         </View>
       </View>
@@ -73,7 +72,7 @@ export function HomepagePartnerBanner() {
         <Text
           accessibilityRole="header"
           style={{
-            color: banner.text,
+            color: '#ffffff',
             fontSize: Platform.OS === 'android' ? 22 : 20,
             lineHeight: Platform.OS === 'android' ? 28 : 25,
             fontWeight: '800',

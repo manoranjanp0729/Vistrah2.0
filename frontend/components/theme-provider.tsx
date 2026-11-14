@@ -25,21 +25,9 @@ export function ThemeProvider({children,initialMode,initialAccent='indigo',initi
  const [font,updateFont]=useState<FontChoice>(initialFont);
 
  useEffect(()=>{
-   let resolvedMode=mode;
    let resolvedAccent=accent;
    let resolvedFont=font;
    try {
-     const themeMatch=document.cookie.match(/(?:^|;\s*)vistrah_theme=(dark|light)/);
-     const savedMode=themeMatch?themeMatch[1]:(localStorage.getItem('vistrah.theme')??localStorage.getItem('vistrah_theme'));
-     if(savedMode==='light'||savedMode==='dark'){
-       resolvedMode=savedMode;
-       if(savedMode!==mode){
-         updateMode(savedMode);
-         document.documentElement.dataset.theme=savedMode;
-       }
-     } else {
-       document.documentElement.dataset.theme=resolvedMode;
-     }
      const accentMatch=document.cookie.match(/(?:^|;\s*)vistrah_accent=([^;]+)/);
      const savedAccent=accentMatch?decodeURIComponent(accentMatch[1]):(localStorage.getItem('vistrah_accent')??localStorage.getItem('vistrah.theme.accent'));
      if(savedAccent&&accentPresets.some(p=>p.id===savedAccent)){
@@ -53,7 +41,7 @@ export function ThemeProvider({children,initialMode,initialAccent='indigo',initi
        updateFont(savedFont);
      }
    } catch {}
-   Object.entries(themeVariables(resolvedMode,resolvedAccent,resolvedFont,locale)).forEach(([key,value])=>document.documentElement.style.setProperty(key,String(value)));
+   Object.entries(themeVariables(mode,resolvedAccent,resolvedFont,locale)).forEach(([key,value])=>document.documentElement.style.setProperty(key,String(value)));
  },[mode,locale]);
 
  function setMode(next:ThemeMode){
@@ -102,7 +90,7 @@ export function ThemeSettings(){
     <section className="panel" aria-labelledby={id+'-font-title'}>
       <h2 id={id+'-font-title'} style={{margin:'0 0 6px'}}>{t('settings.font')}</h2>
       <p id={id+'-font-help'}>{t('settings.fontHelp')}</p>
-      <UiSelect aria-label={t('settings.font')} aria-describedby={id+'-font-help'} value={theme.font} onChange={event=>theme.setFont(event.target.value)} style={{minHeight:44,width:'100%',minWidth:0,padding:'10px 12px',borderRadius:'var(--radius-control)',border:'1px solid var(--border-subtle)',background:'var(--bg-surface)',color:'var(--text-primary)',fontFamily:webFontStack(theme.font,locale)}}>
+      <UiSelect aria-label={t('settings.font')} aria-describedby={id+'-font-help'} value={theme.font} onChange={event=>theme.setFont(event.target.value)} style={{minHeight:44,width:'100%',minWidth:0,padding:'10px 12px',borderRadius:'var(--radius-control, 8px)',border:'1px solid var(--border)',background:'var(--bg-surface)',color:'var(--text-primary)',fontFamily:webFontStack(theme.font,locale)}}>
         {fontChoices.map(choice=><option key={choice.id} value={choice.id} style={{fontFamily:webFontStack(choice.id,'en')}}>{choice.label}</option>)}
       </UiSelect>
       <p style={{margin:'8px 0 0',fontSize:15,lineHeight:1.5,color:'var(--text-primary)',fontFamily:webFontStack(theme.font,locale)}}>{t('settings.fontPreview')}</p>
@@ -112,14 +100,14 @@ export function ThemeSettings(){
     <section className="panel" aria-labelledby={id+'-title'}>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,marginBottom:8}}>
         <h2 id={id+'-title'} style={{margin:0,flex:1,minWidth:0}}>{t('settings.themeColor')}</h2>
-        <div role="group" aria-label={t('settings.darkTheme')} style={{display:'flex',flexShrink:0,padding:2,borderRadius:'var(--radius-control)',border:'1px solid var(--border-subtle)',background:'var(--bg-elevated)'}}>
-          {(['light','dark'] as const).map(mode=><UiButton key={mode} type="button" aria-pressed={theme.mode===mode} onClick={()=>theme.setMode(mode)} style={{minHeight:28,padding:'3px 10px',lineHeight:'20px',border:0,borderRadius:'var(--radius-control)',cursor:'pointer',font:'inherit',fontSize:12,fontWeight:theme.mode===mode?700:500,background:theme.mode===mode?'var(--interactive-accent)':'transparent',color:theme.mode===mode?'var(--interactive-ink)':'var(--text-secondary)'}}>{t('settings.'+mode)}</UiButton>)}
+        <div role="group" aria-label={t('settings.darkTheme')} style={{display:'flex',flexShrink:0,padding:2,borderRadius:'var(--radius-control, 8px)',border:'1px solid var(--border)',background:'var(--bg-elevated)'}}>
+          {(['light','dark'] as const).map(mode=><UiButton key={mode} type="button" aria-pressed={theme.mode===mode} onClick={()=>theme.setMode(mode)} style={{minHeight:28,padding:'3px 10px',lineHeight:'20px',border:0,borderRadius:6,cursor:'pointer',font:'inherit',fontSize:12,fontWeight:theme.mode===mode?700:500,background:theme.mode===mode?'var(--interactive-accent)':'transparent',color:theme.mode===mode?'var(--interactive-ink)':'var(--text-secondary)'}}>{t('settings.'+mode)}</UiButton>)}
         </div>
       </div>
       <p id={id+'-help'}>{t('settings.themeColorHelp')}</p>
       <div style={{display:'flex',alignItems:'center',gap:12,maxWidth:400}}>
-        <span aria-hidden="true" style={{width:22,height:22,borderRadius:'var(--radius-pill)',flexShrink:0,backgroundColor:accentPresets.find(preset=>preset.id===theme.accent)?.[theme.mode],border:'1px solid var(--border-subtle)'}}/>
-        <UiSelect aria-label={t('settings.themeColor')} aria-describedby={id+'-help'} value={theme.accent} onChange={event=>theme.setAccent(event.target.value)} style={{minHeight:44,width:'100%',minWidth:0,padding:'10px 12px',borderRadius:'var(--radius-control)',border:'1px solid var(--border-subtle)',background:'var(--bg-surface)',color:'var(--text-primary)',font:'inherit'}}>
+        <span aria-hidden="true" style={{width:22,height:22,borderRadius:'var(--radius-pill, 9999px)',flexShrink:0,backgroundColor:accentPresets.find(preset=>preset.id===theme.accent)?.[theme.mode],border:'1px solid var(--border)'}}/>
+        <UiSelect aria-label={t('settings.themeColor')} aria-describedby={id+'-help'} value={theme.accent} onChange={event=>theme.setAccent(event.target.value)} style={{minHeight:44,width:'100%',minWidth:0,padding:'10px 12px',borderRadius:'var(--radius-control, 8px)',border:'1px solid var(--border)',background:'var(--bg-surface)',color:'var(--text-primary)',font:'inherit'}}>
           {accentPresets.map(preset=><option key={preset.id} value={preset.id}>{t('settings.theme.'+preset.id,{},preset.label)}</option>)}
         </UiSelect>
       </div>

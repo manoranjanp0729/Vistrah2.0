@@ -1,9 +1,3 @@
-# Component-wide dark brand surface, border, radius & typography reskin - 14 November 2026
-
-- Reskinned `88` component, page, and stylesheet files across `frontend/` (`27` files), `mobile/src/` (`53` files), and `admin/` (`8` files) so every page background, header, listing/V Ad card, modal, input, Seller V Ads Studio, Settings screen, and Admin panel uses semantic tokens (`--bg-canvas: #08080D`, `--bg-surface: #071426`, `--bg-elevated: #0D213F`, `1px solid rgba(255,255,255,0.08)` via `--border-subtle` / `colors.borderSubtle`) with default `'dark'` mode unless `'light'` is explicitly saved, unified radii (`12px` cards/modals, `8px` buttons/inputs/controls, `9999px` badges/pills), normalized typography, and `tabular-nums` (`tabularNums`), without altering routes, layouts, or UX flows (`shared/brand-theme.ts` preserved unchanged).
-- Verification (source only; local/AWS running containers untouched): `frontend`, `mobile`, and `admin` `tsc --noEmit` passed (`0` errors); `frontend` Vitest passed `66/66`; `mobile` `font-policy.test.ts` + `v-ads.test.ts` passed `10/10`; `git diff --check` clean.
-- Blockers/next: None. Await user review of `git diff --stat` and explicit approval before committing, pushing, or rebuilding/deploying containers.
-
 # Brand palette, 5-font picker & unified radii unification across Web, Mobile & Admin - 14 November 2026
 
 - Consolidated brand palette & semantic tokens in `shared/brand-theme.ts` (`shared/brand-theme.json`, `shared/theme-appearance.ts`): dark `--bg-canvas: #08080D`, `--bg-surface: #071426`, `--bg-elevated: #0D213F`, `--border-subtle: rgba(255,255,255,0.08)` (paired slate-white light surfaces), locked primary CTA/brand anchor `#FF6B00` (hover `#E05A00`), and scoped the 5 Settings accents (`blue`–`pink`) strictly to interactive chrome (active nav, selected chips, focus rings, toggles/sliders).

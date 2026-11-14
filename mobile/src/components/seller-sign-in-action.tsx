@@ -25,8 +25,8 @@ export function SellerSignInAction({label,disabled,onPress}:{label:string;disabl
   shadowRadius:8,
   elevation:disabled?0:(pressed?2:4),
  })}>
-   <View style={{width:34,height:34,borderRadius:radii.action,backgroundColor:colors.brandPrimaryHover,alignItems:'center',justifyContent:'center'}}><Feather name="briefcase" size={18} color={colors.brandPrimaryInk}/></View>
+   <View style={{width:34,height:34,borderRadius:radii.action,backgroundColor:'rgba(255,255,255,0.18)',alignItems:'center',justifyContent:'center'}}><Feather name="briefcase" size={18} color="#fff"/></View>
    <Text style={{...typography.action,color:colors.brandPrimaryInk,flex:1}}><UiText value={label}/></Text>
-   <Feather name="arrow-right" size={20} color={colors.brandPrimaryInk}/>
+   <Feather name="arrow-right" size={20} color="#fff"/>
  </Pressable>;
 }

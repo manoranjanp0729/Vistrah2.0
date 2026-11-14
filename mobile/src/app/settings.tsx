@@ -7,7 +7,7 @@ import {Platform,Pressable,ScrollView,View,StyleSheet} from 'react-native';
 import {router} from 'expo-router';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
-import {useTheme, accentPresets, radii, typography} from '../lib/theme';
+import {useTheme, accentPresets, radii} from '../lib/theme';
 import {useFontPreference} from '../lib/font-preference';
 import {fontChoices,fontFace,type FontChoice} from '../lib/font-policy';
 import {webFontFamily} from '../lib/web-fonts';
@@ -173,7 +173,7 @@ export default function Settings() {
                         s.segmentButton,
                         selected && {
                           backgroundColor: colors.accent,
-                          shadowColor: colors.background,
+                          shadowColor: '#000',
                           shadowOffset: {width: 0, height: 1},
                           shadowOpacity: 0.14,
                           shadowRadius: 2,
@@ -261,7 +261,7 @@ function SettingsDropdown({
           s.dropdownTrigger,
           {
             backgroundColor: colors.surface,
-            borderColor: open ? colors.accent : colors.borderSubtle,
+            borderColor: open ? colors.accent : colors.border,
             opacity: disabled ? 0.5 : pressed ? 0.75 : 1,
           },
         ]}
@@ -307,7 +307,7 @@ function SettingsDropdown({
                     backgroundColor: isSelected
                       ? colors.highlight
                       : pressed
-                      ? colors.elevated
+                      ? colors.hover
                       : 'transparent',
                   },
                 ]}
@@ -351,6 +351,11 @@ const s = StyleSheet.create({
     borderRadius: radii.surface,
     overflow: 'hidden',
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 10},
+    shadowOpacity: 0.16,
+    shadowRadius: 20,
+    elevation: 10,
   },
   header: {
     paddingHorizontal: 18,
@@ -361,11 +366,12 @@ const s = StyleSheet.create({
     borderBottomWidth: 1,
   },
   headerEyebrow: {
-    ...typography.label,
+    fontSize: 10,
     fontWeight: '800',
+    letterSpacing: 1.2,
   },
   headerTitle: {
-    ...typography.heading,
+    fontSize: 19,
     fontWeight: '700',
   },
   closeButton: {
@@ -402,13 +408,13 @@ const s = StyleSheet.create({
   segmentContainer: {
     flexDirection: 'row',
     padding: 2,
-    borderRadius: radii.pill,
+    borderRadius: radii.input,
     borderWidth: 1,
   },
   segmentButton: {
     minHeight: 28,
     paddingHorizontal: 10,
-    borderRadius: radii.pill,
+    borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },

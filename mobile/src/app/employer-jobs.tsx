@@ -8,7 +8,7 @@ import {useSession} from '../lib/session';
 import {useResource} from '../lib/resource';
 import {api} from '../lib/api';
 import {emptyJob,jobDraft,type JobDraft,type OwnedJob,type JobPage} from '../lib/employer-jobs';
-import {radii, tabularNums, useTheme} from '../lib/theme';
+import {useTheme} from '../lib/theme';
 type Business={id:number;company:string;name:string;active:boolean;verification_status:string};
 export default function EmployerJobs(){
   const session=useSession();const {styles}=useTheme();const [busy,setBusy]=useState(false),[error,setError]=useState('');
@@ -31,7 +31,7 @@ function BusinessJobs({provider,userId}:{provider:Business;userId:number}){
   async function save(){if(!form)return;setBusy(true);setError('');setNotice('');try{await api(editing?path+'/'+editing.id:path,{method:editing?'PATCH':'POST',body:JSON.stringify({...jobDraft(form),...(editing?{revision:editing.revision}:{})})});setForm(null);setEditing(null);setPage(1);setNotice('Draft saved. Submit it when you are ready for review.');jobs.retry();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
   async function change(job:OwnedJob,action:'submit'|'close'){setBusy(true);setError('');setNotice('');try{await api(path+'/'+job.id+'/'+action,{method:'POST',body:JSON.stringify({revision:job.revision})});setNotice(action==='submit'?'Submitted for admin approval. The job is not public yet.':'Job closed. It is no longer available to applicants.');}catch(e){setError((e as Error).message);}finally{setBusy(false);jobs.retry();}}
   function field<K extends keyof JobDraft>(key:K,value:JobDraft[K]){setForm(current=>current?{...current,[key]:value}:current);}
-  function choices<K extends 'arrangement'|'employment_type'>(key:K,values:JobDraft[K][]){return <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{values.map(value=><Pressable key={value} accessibilityRole="radio" accessibilityState={{checked:form?.[key]===value,disabled:busy}} disabled={busy} onPress={()=>field(key,value)} style={{minHeight:44,paddingHorizontal:14,paddingVertical:10,borderRadius:radii.pill,backgroundColor:form?.[key]===value?colors.accent:colors.surface,borderWidth:1,borderColor:form?.[key]===value?colors.accent:colors.borderSubtle,justifyContent:'center'}}><Text style={{color:form?.[key]===value?colors.ink:colors.text,fontSize:12,fontWeight:'600'}}>{value.replaceAll('_',' ')}</Text></Pressable>)}</View>;}
+  function choices<K extends 'arrangement'|'employment_type'>(key:K,values:JobDraft[K][]){return <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{values.map(value=><Pressable key={value} accessibilityRole="radio" accessibilityState={{checked:form?.[key]===value,disabled:busy}} disabled={busy} onPress={()=>field(key,value)} style={{minHeight:44,padding:12,borderRadius:12,backgroundColor:form?.[key]===value?colors.accent:colors.surface,borderWidth:1,borderColor:colors.border}}><Text style={{color:form?.[key]===value?colors.ink:colors.text,fontSize:12}}>{value.replaceAll('_',' ')}</Text></Pressable>)}</View>;}
   return <>{!verified&&<Text style={styles.muted}><UiText value={"Drafts can be saved now. Your business must be active and verified before submission."}/></Text>}
     {Boolean(error)&&<ErrorPanel error={error}/>}
     {Boolean(notice)&&<Text accessibilityRole="alert" style={styles.text}>{notice}</Text>}
@@ -54,7 +54,7 @@ function BusinessJobs({provider,userId}:{provider:Business;userId:number}){
         {job.status==='DRAFT'&&job.actor_id===userId&&<UiElement as={Action} label="Submit for admin approval" disabled={busy||!verified} onPress={()=>void change(job,'submit')}/>}
         {job.status!=='CLOSED'&&<UiElement as={Action} label="Close job" secondary disabled={busy} onPress={()=>void change(job,'close')}/>}
       </View>)}
-      <View style={styles.row}>{page>1&&<UiElement as={Action} label="Previous" secondary disabled={busy} onPress={()=>setPage(value=>value-1)}/>}<Text style={[styles.muted, tabularNums]}><UiText value={"Page "}/>{page}</Text>{page*20<(jobs.data?.total??0)&&<UiElement as={Action} label="Next" secondary disabled={busy} onPress={()=>setPage(value=>value+1)}/>}</View>
+      <View style={styles.row}>{page>1&&<UiElement as={Action} label="Previous" secondary disabled={busy} onPress={()=>setPage(value=>value-1)}/>}<Text style={styles.muted}><UiText value={"Page "}/>{page}</Text>{page*20<(jobs.data?.total??0)&&<UiElement as={Action} label="Next" secondary disabled={busy} onPress={()=>setPage(value=>value+1)}/>}</View>
     </>}
   </>;
 }

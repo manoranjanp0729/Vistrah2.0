@@ -27,7 +27,7 @@ export default function AdvertiserProfile() {
 
       {profile.loading?<Loading/>:profile.error?<ErrorPanel error={profile.error} retry={profile.retry}/>:!profile.data?<Text style={{color:colors.muted}}><UiText value={"Advertiser not found."}/></Text>:<><View style={s.header}>
         <View style={[s.avatar, {backgroundColor: colors.brandPrimary}]}>
-          <Text style={[s.avatarText, {color: colors.brandPrimaryInk}]}>V</Text>
+          <Text style={s.avatarText}>V</Text>
         </View>
         <Text style={[s.name, {color: colors.text}]}>
           {profile.data.name}
@@ -65,8 +65,8 @@ export default function AdvertiserProfile() {
                 </Text>
               )}
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2}}>
-                <Feather name="truck" size={12} color={colors.success} />
-                <Text style={{fontSize: 11.5, color: colors.success, fontWeight: '600', ...tabularNums}}>
+                <Feather name="truck" size={12} color="#16a34a" />
+                <Text style={{fontSize: 11.5, color: '#16a34a', fontWeight: '600', ...tabularNums}}>
                   {product.delivery_fee_paise != null
                     ? (product.delivery_fee_paise === 0 ? 'Free Delivery' : `Delivery: ${listingPrice(product.delivery_fee_paise)}`)
                     : 'Standard fulfillment options'}
@@ -116,7 +116,7 @@ const s = StyleSheet.create({
     width: 84, height: 84, borderRadius: radii.pill,
     alignItems: 'center', justifyContent: 'center',
   },
-  avatarText: {fontSize: 44, fontWeight: '800'},
+  avatarText: {fontSize: 44, fontWeight: '800', color: '#FFFFFF'},
   name: {fontSize: 22, fontWeight: '700'},
   subtitle: {fontSize: 13},
   description: {fontSize: 14, lineHeight: 22, textAlign: 'center'},

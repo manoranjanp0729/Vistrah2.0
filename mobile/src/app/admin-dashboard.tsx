@@ -8,35 +8,34 @@ import {useVideoPlayer, VideoView} from 'expo-video';
 import {Page, Loading, ErrorPanel} from '../components/ui';
 import {useSession} from '../lib/session';
 import {useResource} from '../lib/resource';
-import {useTheme} from '../lib/theme';
+import {BRAND_PRIMARY, BRAND_PRIMARY_HOVER, palettes, radii, tabularNums, useTheme} from '../lib/theme';
 import {api} from '../lib/api';
 import {toPlayableUrl} from '../lib/v-ads';
 import {AdminEditVistrahTab, AdminHomepageTab, AdminMembershipsTab, AdminVistrahServicesTab} from '../components/admin-manage-tabs';
 import {adminTaskGroups, adminSummary, type AdminOverview} from '../../../shared/admin-dashboard';
-import brandTheme from '../../../shared/brand-theme.json';
 
 const adminTheme = {
-  heroGradient: ['#08080D', '#071426', '#0D213F', '#152C52'] as const,
-  tabActiveGradient: ['#FF6B00', '#E05A00', '#FF6B00'] as const,
-  badgeGradient: ['#FF6B00', '#E05A00', '#FF6B00'] as const,
-  brandChipGradient: ['#071426', '#0D213F', '#152C52'] as const,
-  approveGradient: ['#059669', '#10b981'] as const,
-  rejectGradient: ['#be123c', '#f43f5e'] as const,
-  accent: '#FF6B00',
-  accentDark: '#E05A00',
-  accentLight: '#FF8533',
-  accentRose: '#FF6B00',
-  accentEmerald: '#10b981',
-  borderLight: 'rgba(7,20,38,0.08)',
-  borderDark: 'rgba(255,255,255,0.08)',
-  cardLight: '#FFFFFF',
-  cardDark: '#071426',
-  subtleLight: '#EEF2F9',
-  subtleDark: '#0D213F',
-  textLight: '#071426',
-  textDark: '#f4f7fc',
-  mutedLight: '#53627a',
-  mutedDark: '#a9b8cf',
+  heroGradient: [palettes.dark.background, palettes.dark.surface, palettes.dark.elevated, palettes.dark.elevated] as const,
+  tabActiveGradient: [BRAND_PRIMARY, BRAND_PRIMARY_HOVER, BRAND_PRIMARY] as const,
+  badgeGradient: [BRAND_PRIMARY, BRAND_PRIMARY_HOVER, BRAND_PRIMARY] as const,
+  brandChipGradient: [palettes.dark.surface, palettes.dark.elevated, palettes.dark.elevated] as const,
+  approveGradient: [palettes.dark.success, palettes.dark.success] as const,
+  rejectGradient: [palettes.dark.danger, palettes.dark.danger] as const,
+  accent: BRAND_PRIMARY,
+  accentDark: BRAND_PRIMARY_HOVER,
+  accentLight: BRAND_PRIMARY,
+  accentRose: BRAND_PRIMARY,
+  accentEmerald: palettes.dark.success,
+  borderLight: palettes.light.borderSubtle,
+  borderDark: palettes.dark.borderSubtle,
+  cardLight: palettes.light.surface,
+  cardDark: palettes.dark.surface,
+  subtleLight: palettes.light.elevated,
+  subtleDark: palettes.dark.elevated,
+  textLight: palettes.light.text,
+  textDark: palettes.dark.text,
+  mutedLight: palettes.light.muted,
+  mutedDark: palettes.dark.muted,
 };
 
 type AdminTab = 'overview' | 'requests' | 'v-ads' | 'commerce' | 'providers' | 'edit-vistrah' | 'homepage' | 'memberships' | 'vistrah-services' | 'catalogue' | 'audit';
@@ -73,7 +72,7 @@ type VideoItem = {
 };
 
 function AdminVideoPlayer({video}: {video: VideoItem}) {
-  const {mode} = useTheme();
+  const {colors} = useTheme();
   const videoUrl = video.video_url || (video.preview_available ? `/admin/v-ads/videos/${encodeURIComponent(video.id)}/preview` : '');
   const url = useMemo(() => toPlayableUrl(videoUrl), [videoUrl]);
   const player = useVideoPlayer(url || null, p => {
@@ -88,16 +87,16 @@ function AdminVideoPlayer({video}: {video: VideoItem}) {
         style={{
           width: '100%',
           height: 160,
-          borderRadius: 14,
-          backgroundColor: mode === 'dark' ? '#181228' : '#f6f3fc',
+          borderRadius: radii.surface,
+          backgroundColor: colors.elevated,
           alignItems: 'center',
           justifyContent: 'center',
           padding: 16,
           borderWidth: 1,
-          borderColor: mode === 'dark' ? '#392f4e' : '#e4dbf0',
+          borderColor: colors.borderSubtle,
         }}
       >
-        <Text style={{color: mode === 'dark' ? '#caa5f5' : '#7741c4', fontSize: 13, fontWeight: '600'}}>
+        <Text style={{color: colors.accent, fontSize: 13, fontWeight: '600'}}>
           <UiText value={video.preview_available ? 'Preview stream loading…' : 'Video media not uploaded'}/>
         </Text>
       </View>
@@ -109,11 +108,11 @@ function AdminVideoPlayer({video}: {video: VideoItem}) {
       style={{
         width: '100%',
         height: 220,
-        borderRadius: 14,
+        borderRadius: radii.surface,
         overflow: 'hidden',
-        backgroundColor: '#000',
+        backgroundColor: palettes.dark.background,
         borderWidth: 1,
-        borderColor: mode === 'dark' ? '#392f4e' : '#e4dbf0',
+        borderColor: colors.borderSubtle,
       }}
     >
       <VideoView
@@ -488,26 +487,26 @@ export default function AdminDashboard() {
     return (
       <Page>
         <LinearGradient
-          colors={accentGradient}
+          colors={[colors.surface, colors.elevated]}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          style={{padding: 24, borderRadius: 24, gap: 10}}
+          style={{padding: 24, borderRadius: radii.surface, borderWidth: 1, borderColor: colors.borderSubtle, gap: 10}}
         >
-          <Text style={{color: '#caa5f5', fontSize: 11, fontWeight: '700', letterSpacing: 2}}><UiText value={"VISTRAH CONTROL CENTER"}/></Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: '700'}}><UiText value={"Administrator sign-in"}/></Text>
-          <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}><UiText value={"Sign in with your authorized administrator account to access platform controls."}/></Text>
+          <Text style={{color: colors.brandPrimary, fontSize: 11, fontWeight: '700', letterSpacing: 2}}><UiText value={"VISTRAH CONTROL CENTER"}/></Text>
+          <Text style={{color: colors.text, fontSize: 24, fontWeight: '700'}}><UiText value={"Administrator sign-in"}/></Text>
+          <Text style={{color: colors.muted, fontSize: 13, lineHeight: 19}}><UiText value={"Sign in with your authorized administrator account to access platform controls."}/></Text>
         </LinearGradient>
         <Pressable
           onPress={() => router.push('/auth')}
           style={{
             marginTop: 12,
-            backgroundColor: adminTheme.accent,
+            backgroundColor: colors.brandPrimary,
             paddingVertical: 14,
-            borderRadius: 16,
+            borderRadius: radii.action,
             alignItems: 'center',
           }}
         >
-          <Text style={{color: '#fff', fontWeight: '700', fontSize: 15}}><UiText value={"Sign in →"}/></Text>
+          <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 15}}><UiText value={"Sign in →"}/></Text>
         </Pressable>
       </Page>
     );
@@ -516,14 +515,14 @@ export default function AdminDashboard() {
     return (
       <Page>
         <LinearGradient
-          colors={accentGradient}
+          colors={[colors.surface, colors.elevated]}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          style={{padding: 24, borderRadius: 24, gap: 10}}
+          style={{padding: 24, borderRadius: radii.surface, borderWidth: 1, borderColor: colors.borderSubtle, gap: 10}}
         >
-          <Text style={{color: '#ef4444', fontSize: 11, fontWeight: '700', letterSpacing: 2}}><UiText value={"ACCESS DENIED"}/></Text>
-          <Text style={{color: '#ffffff', fontSize: 22, fontWeight: '700'}}><UiText value={"Administrator access required"}/></Text>
-          <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}><UiText value={"This customer account cannot access the Vistrah Administration control center."}/></Text>
+          <Text style={{color: colors.danger, fontSize: 11, fontWeight: '700', letterSpacing: 2}}><UiText value={"ACCESS DENIED"}/></Text>
+          <Text style={{color: colors.text, fontSize: 22, fontWeight: '700'}}><UiText value={"Administrator access required"}/></Text>
+          <Text style={{color: colors.muted, fontSize: 13, lineHeight: 19}}><UiText value={"This customer account cannot access the Vistrah Administration control center."}/></Text>
         </LinearGradient>
       </Page>
     );
@@ -547,42 +546,35 @@ export default function AdminDashboard() {
     <Page>
       {/* 1. VISTRAH SIGNATURE HERO BANNER */}
       <LinearGradient
-        colors={accentGradient}
+        colors={[colors.surface, colors.elevated]}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
         style={{
-          borderRadius: 24,
+          borderRadius: radii.surface,
+          borderWidth: 1,
+          borderColor: colors.borderSubtle,
           padding: 24,
           gap: 10,
           position: 'relative',
           overflow: 'hidden',
-          shadowColor: '#283db6',
-          shadowOffset: {width: 0, height: 8},
-          shadowOpacity: 0.28,
-          shadowRadius: 18,
           elevation: 6,
         }}
       >
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <LinearGradient
-              colors={accentGradient}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 1}}
-              style={{paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}
-            >
-              <Text style={{color: '#ffffff', fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}><UiText value={"PLATFORM CONTROL"}/></Text>
-            </LinearGradient>
+            <View style={{paddingHorizontal: 8, paddingVertical: 3, borderRadius: radii.pill, backgroundColor: colors.brandPrimary}}>
+              <Text style={{color: colors.brandPrimaryInk, fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}><UiText value={"PLATFORM CONTROL"}/></Text>
+            </View>
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <View style={{width: 7, height: 7, borderRadius: 4, backgroundColor: adminTheme.accentEmerald}} />
-            <Text style={{color: '#c2b2df', fontSize: 11, fontWeight: '600'}}><UiText value={"Live sync"}/></Text>
+            <View style={{width: 7, height: 7, borderRadius: radii.pill, backgroundColor: colors.success}} />
+            <Text style={{color: colors.muted, fontSize: 11, fontWeight: '600'}}><UiText value={"Live sync"}/></Text>
           </View>
         </View>
 
-        <Text accessibilityRole="header" style={{color: '#ffffff', fontSize: 24, fontWeight: '800', letterSpacing: -0.3}}>
+        <Text accessibilityRole="header" style={{color: colors.text, fontSize: 24, fontWeight: '800', letterSpacing: -0.3}}>
           <UiText value={"Admin Workspace "}/></Text>
-        <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}>
+        <Text style={{color: colors.muted, fontSize: 13, lineHeight: 19}}>
           <UiText value={"Moderate V Ads, review customer enquiries, verify providers, and manage platform commerce. "}/></Text>
       </LinearGradient>
 
@@ -600,58 +592,54 @@ export default function AdminDashboard() {
               }}
               style={({pressed}) => [
                 {
-                  borderRadius: 20,
+                  borderRadius: radii.pill,
                   overflow: 'hidden',
                   opacity: pressed ? 0.85 : 1,
                 },
               ]}
             >
               {isSelected ? (
-                <LinearGradient
-                  colors={accentGradient}
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 1}}
+                <View
                   style={{
                     paddingHorizontal: 16,
                     paddingVertical: 10,
-                    borderRadius: 20,
+                    borderRadius: radii.pill,
+                    backgroundColor: colors.accent,
+                    borderWidth: 1,
+                    borderColor: colors.accent,
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 6,
-                    shadowColor: '#7741c4',
-                    shadowOffset: {width: 0, height: 4},
-                    shadowOpacity: 0.35,
-                    shadowRadius: 8,
                     elevation: 4,
                   }}
                 >
-                  <Text style={{fontWeight: '700', color: '#fff', fontSize: 13}}><UiText value={tab.label}/></Text>
+                  <Text style={{fontWeight: '700', color: colors.brandPrimaryInk, fontSize: 13}}><UiText value={tab.label}/></Text>
                   {Boolean(tab.badge && tab.badge > 0) && (
-                    <View style={{backgroundColor: '#fff', paddingHorizontal: 6, paddingVertical: 1, borderRadius: 10}}>
-                      <Text style={{fontSize: 10, fontWeight: '800', color: adminTheme.accent}}>
+                    <View style={{backgroundColor: colors.brandPrimaryInk, paddingHorizontal: 6, paddingVertical: 1, borderRadius: radii.pill}}>
+                      <Text style={[{fontSize: 10, fontWeight: '800', color: colors.accent}, tabularNums]}>
                         {tab.badge}
                       </Text>
                     </View>
                   )}
-                </LinearGradient>
+                </View>
               ) : (
                 <View
                   style={{
                     paddingHorizontal: 16,
                     paddingVertical: 10,
-                    borderRadius: 20,
+                    borderRadius: radii.pill,
                     borderWidth: 1,
-                    borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                    backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                    borderColor: colors.borderSubtle,
+                    backgroundColor: colors.surface,
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 6,
                   }}
                 >
-                  <Text style={{fontWeight: '600', color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 13}}><UiText value={tab.label}/></Text>
+                  <Text style={{fontWeight: '600', color: colors.text, fontSize: 13}}><UiText value={tab.label}/></Text>
                   {Boolean(tab.badge && tab.badge > 0) && (
-                    <View style={{backgroundColor: adminTheme.accent, paddingHorizontal: 6, paddingVertical: 1, borderRadius: 10}}>
-                      <Text style={{fontSize: 10, fontWeight: '800', color: '#fff'}}>
+                    <View style={{backgroundColor: colors.brandPrimary, paddingHorizontal: 6, paddingVertical: 1, borderRadius: radii.pill}}>
+                      <Text style={[{fontSize: 10, fontWeight: '800', color: colors.brandPrimaryInk}, tabularNums]}>
                         {tab.badge}
                       </Text>
                     </View>
@@ -665,8 +653,8 @@ export default function AdminDashboard() {
 
       {/* Global Notices */}
       {Boolean(actionNotice) && (
-        <View style={[styles.card, {borderColor: '#34d399', backgroundColor: '#064e3b15'}]}>
-          <Text style={{color: '#34d399', fontWeight: '700', fontSize: 13}}>✓ {actionNotice}</Text>
+        <View style={[styles.card, {borderColor: colors.success, backgroundColor: colors.elevated}]}>
+          <Text style={{color: colors.success, fontWeight: '700', fontSize: 13}}>✓ {actionNotice}</Text>
         </View>
       )}
       {Boolean(actionError) && <ErrorPanel error={actionError} />}
@@ -685,40 +673,33 @@ export default function AdminDashboard() {
                 style={[
                   styles.card,
                   {
-                    borderColor: '#f59e0b',
-                    backgroundColor: mode === 'dark' ? '#2c1e0e' : '#fff9ee',
+                    borderColor: colors.borderSubtle,
+                    backgroundColor: colors.surface,
                     position: 'relative',
                     overflow: 'hidden',
                   },
                 ]}
               >
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                  <View style={{backgroundColor: '#f59e0b25', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}>
-                    <Text style={{color: '#d97706', fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
+                  <View style={{backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, paddingHorizontal: 8, paddingVertical: 3, borderRadius: radii.pill}}>
+                    <Text style={{color: colors.warning, fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
                       <UiText value={"NEEDS YOUR ATTENTION "}/></Text>
                   </View>
                   <Pressable onPress={overviewResult.retry} style={{padding: 4}}>
-                    <Text style={{color: '#d97706', fontSize: 12, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
+                    <Text style={{color: colors.accent, fontSize: 12, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
                   </Pressable>
                 </View>
 
-                <Text accessibilityRole="header" style={[styles.heading, {fontSize: 22, color: mode === 'dark' ? '#fde68a' : '#78350f'}]}>
+                <Text accessibilityRole="header" style={[styles.heading, {fontSize: 22, color: colors.text}, tabularNums]}>
                   {overviewResult.data.new_requests} <UiText value={"new enquiries "}/></Text>
-                <Text style={{color: mode === 'dark' ? '#fcd34d' : '#92400e', fontSize: 13, lineHeight: 18}}>
+                <Text style={{color: colors.muted, fontSize: 13, lineHeight: 18}}>
                   <UiText value={"Customer requirements awaiting review, lead routing, and quotation. "}/></Text>
 
                 <Pressable
                   onPress={() => setActiveTab('requests')}
-                  style={{borderRadius: 14, overflow: 'hidden', marginTop: 4}}
+                  style={({pressed}) => ({borderRadius: radii.action, backgroundColor: pressed ? colors.brandPrimaryHover : colors.brandPrimary, paddingVertical: 12, alignItems: 'center', marginTop: 4})}
                 >
-                  <LinearGradient
-                    colors={accentGradient}
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 1}}
-                    style={{paddingVertical: 12, alignItems: 'center', borderRadius: 14}}
-                  >
-                    <Text style={{color: '#fff', fontWeight: '700', fontSize: 14}}><UiText value={"Review customer enquiries →"}/></Text>
-                  </LinearGradient>
+                  <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 14}}><UiText value={"Review customer enquiries →"}/></Text>
                 </Pressable>
               </View>
 
@@ -734,16 +715,16 @@ export default function AdminDashboard() {
                         minWidth: 96,
                         position: 'relative',
                         overflow: 'hidden',
-                        borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                        backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                        borderColor: colors.borderSubtle,
+                        backgroundColor: colors.surface,
                       },
                     ]}
                   >
-                    <View style={{position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: adminTheme.accent}} />
-                    <Text style={[styles.heading, {fontSize: 24, color: adminTheme.accent}]}>
+                    <View style={{position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: colors.brandPrimary}} />
+                    <Text style={[styles.heading, {fontSize: 24, color: colors.brandPrimary}, tabularNums]}>
                       {overviewResult.data![item.key]}
                     </Text>
-                    <Text style={[styles.muted, {fontSize: 12, fontWeight: '600', color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={item.label}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, fontWeight: '600', color: colors.muted}]}><UiText value={item.label}/></Text>
                   </View>
                 ))}
                 <View
@@ -754,21 +735,21 @@ export default function AdminDashboard() {
                       minWidth: 96,
                       position: 'relative',
                       overflow: 'hidden',
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                      borderColor: colors.borderSubtle,
+                      backgroundColor: colors.surface,
                     },
                   ]}
                 >
-                  <View style={{position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: adminTheme.accentEmerald}} />
-                  <Text style={[styles.heading, {fontSize: 24, color: adminTheme.accentEmerald}]}>
+                  <View style={{position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: colors.success}} />
+                  <Text style={[styles.heading, {fontSize: 24, color: colors.success}, tabularNums]}>
                     {overviewResult.data.customers}
                   </Text>
-                  <Text style={[styles.muted, {fontSize: 12, fontWeight: '600', color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Customers"}/></Text>
+                  <Text style={[styles.muted, {fontSize: 12, fontWeight: '600', color: colors.muted}]}><UiText value={"Customers"}/></Text>
                 </View>
               </View>
 
               {/* Administrative Workspaces Quick Launch */}
-              <Text style={[styles.heading, {fontSize: 17, marginTop: 6, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Administrative Hubs"}/></Text>
+              <Text style={[styles.heading, {fontSize: 17, marginTop: 6, color: colors.text}]}><UiText value={"Administrative Hubs"}/></Text>
               <View style={{gap: 10}}>
                 {/* V Ads Card */}
                 <Pressable
@@ -776,27 +757,25 @@ export default function AdminDashboard() {
                   style={({pressed}) => [
                     styles.card,
                     {
-                      opacity: pressed ? 0.8 : 1,
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 14,
                       padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                      borderColor: colors.borderSubtle,
+                      backgroundColor: pressed ? colors.elevated : colors.surface,
                     },
                   ]}
                 >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
+                  <View
+                    style={{width: 44, height: 44, borderRadius: radii.action, backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, alignItems: 'center', justifyContent: 'center'}}
                   >
                     <Text style={{fontSize: 20}}>🎬</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"V Ads Moderation"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Review video ads, approve advertiser channels & metrics."}/></Text>
                   </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
+                  <View style={{flex: 1}}>
+                    <Text style={[styles.heading, {fontSize: 15, color: colors.text}]}><UiText value={"V Ads Moderation"}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}><UiText value={"Review video ads, approve advertiser channels & metrics."}/></Text>
+                  </View>
+                  <Text style={{color: colors.brandPrimary, fontSize: 16, fontWeight: '700'}}>→</Text>
                 </Pressable>
 
                 {/* Edit Vistrah Card */}
@@ -805,27 +784,25 @@ export default function AdminDashboard() {
                   style={({pressed}) => [
                     styles.card,
                     {
-                      opacity: pressed ? 0.8 : 1,
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 14,
                       padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                      borderColor: colors.borderSubtle,
+                      backgroundColor: pressed ? colors.elevated : colors.surface,
                     },
                   ]}
                 >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
+                  <View
+                    style={{width: 44, height: 44, borderRadius: radii.action, backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, alignItems: 'center', justifyContent: 'center'}}
                   >
                     <Text style={{fontSize: 20}}>🎨</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Edit Vistrah"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Choose a page, tap a section, and edit its content."}/></Text>
                   </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
+                  <View style={{flex: 1}}>
+                    <Text style={[styles.heading, {fontSize: 15, color: colors.text}]}><UiText value={"Edit Vistrah"}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}><UiText value={"Choose a page, tap a section, and edit its content."}/></Text>
+                  </View>
+                  <Text style={{color: colors.brandPrimary, fontSize: 16, fontWeight: '700'}}>→</Text>
                 </Pressable>
 
                 {/* Commerce Card */}
@@ -834,27 +811,25 @@ export default function AdminDashboard() {
                   style={({pressed}) => [
                     styles.card,
                     {
-                      opacity: pressed ? 0.8 : 1,
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 14,
                       padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                      borderColor: colors.borderSubtle,
+                      backgroundColor: pressed ? colors.elevated : colors.surface,
                     },
                   ]}
                 >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
+                  <View
+                    style={{width: 44, height: 44, borderRadius: radii.action, backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, alignItems: 'center', justifyContent: 'center'}}
                   >
                     <Text style={{fontSize: 20}}>🛍️</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Commerce Approvals"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Inspect products & service packages before publication."}/></Text>
                   </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
+                  <View style={{flex: 1}}>
+                    <Text style={[styles.heading, {fontSize: 15, color: colors.text}]}><UiText value={"Commerce Approvals"}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}><UiText value={"Inspect products & service packages before publication."}/></Text>
+                  </View>
+                  <Text style={{color: colors.brandPrimary, fontSize: 16, fontWeight: '700'}}>→</Text>
                 </Pressable>
 
                 {/* Providers Card */}
@@ -863,27 +838,25 @@ export default function AdminDashboard() {
                   style={({pressed}) => [
                     styles.card,
                     {
-                      opacity: pressed ? 0.8 : 1,
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 14,
                       padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                      borderColor: colors.borderSubtle,
+                      backgroundColor: pressed ? colors.elevated : colors.surface,
                     },
                   ]}
                 >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
+                  <View
+                    style={{width: 44, height: 44, borderRadius: radii.action, backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, alignItems: 'center', justifyContent: 'center'}}
                   >
                     <Text style={{fontSize: 20}}>🏢</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Provider Verification"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Verify registrations, credential evidence & availability."}/></Text>
                   </View>
-                  <Text style={{color: adminTheme.accentRose, fontSize: 16, fontWeight: '700'}}>→</Text>
+                  <View style={{flex: 1}}>
+                    <Text style={[styles.heading, {fontSize: 15, color: colors.text}]}><UiText value={"Provider Verification"}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}><UiText value={"Verify registrations, credential evidence & availability."}/></Text>
+                  </View>
+                  <Text style={{color: colors.brandPrimary, fontSize: 16, fontWeight: '700'}}>→</Text>
                 </Pressable>
 
                 {/* Audit Card */}
@@ -892,27 +865,25 @@ export default function AdminDashboard() {
                   style={({pressed}) => [
                     styles.card,
                     {
-                      opacity: pressed ? 0.8 : 1,
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 14,
                       padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                      borderColor: colors.borderSubtle,
+                      backgroundColor: pressed ? colors.elevated : colors.surface,
                     },
                   ]}
                 >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
+                  <View
+                    style={{width: 44, height: 44, borderRadius: radii.action, backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, alignItems: 'center', justifyContent: 'center'}}
                   >
                     <Text style={{fontSize: 20}}>📜</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Activity & Audit Trail"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Immutable log of all administrative decisions."}/></Text>
                   </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
+                  <View style={{flex: 1}}>
+                    <Text style={[styles.heading, {fontSize: 15, color: colors.text}]}><UiText value={"Activity & Audit Trail"}/></Text>
+                    <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}><UiText value={"Immutable log of all administrative decisions."}/></Text>
+                  </View>
+                  <Text style={{color: colors.brandPrimary, fontSize: 16, fontWeight: '700'}}>→</Text>
                 </Pressable>
               </View>
 
@@ -942,11 +913,11 @@ export default function AdminDashboard() {
                             styles.card,
                             {
                               padding: 14,
-                              opacity: pressed ? 0.75 : 1,
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                               alignItems: 'center',
-                              borderColor: colors.border,
+                              backgroundColor: pressed ? colors.elevated : colors.surface,
+                              borderColor: colors.borderSubtle,
                             },
                           ]}
                         >
@@ -986,13 +957,13 @@ export default function AdminDashboard() {
                   style={{
                     paddingHorizontal: 14,
                     paddingVertical: 7,
-                    borderRadius: 16,
+                    borderRadius: radii.pill,
                     borderWidth: 1,
-                    borderColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight),
-                    backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
+                    borderColor: active ? colors.accent : colors.borderSubtle,
+                    backgroundColor: active ? colors.accent : colors.surface,
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? colors.brandPrimaryInk : colors.text, fontSize: 12, fontWeight: '700'}}>
                     {status.replace('_', ' ')}
                   </Text>
                 </Pressable>
@@ -1016,24 +987,20 @@ export default function AdminDashboard() {
                 const isBusy = busyAction === `request-${req.id}`;
                 const statusColor =
                   req.status === 'NEW'
-                    ? '#f59e0b'
-                    : req.status === 'UNDER_REVIEW'
-                    ? '#3b82f6'
-                    : req.status === 'ASSIGNED'
-                    ? '#8b5cf6'
-                    : req.status === 'IN_PROGRESS'
-                    ? '#06b6d4'
+                    ? colors.warning
                     : req.status === 'COMPLETED'
-                    ? '#10b981'
-                    : '#9ca3af';
+                    ? colors.success
+                    : req.status === 'CANCELLED'
+                    ? colors.muted
+                    : colors.accent;
 
                 return (
-                  <View key={req.id} style={[styles.card, {gap: 10, borderColor: colors.border}]}>
+                  <View key={req.id} style={[styles.card, {gap: 10, borderColor: colors.borderSubtle}]}>
                     <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                      <Text style={[styles.heading, {fontSize: 15, flex: 1}]}>
+                      <Text style={[styles.heading, {fontSize: 15, flex: 1}, tabularNums]}>
                         #{req.id} · {req.service_title}
                       </Text>
-                      <View style={{backgroundColor: statusColor + '20', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, borderWidth: 1, borderColor: statusColor + '40'}}>
+                      <View style={{backgroundColor: colors.elevated, paddingHorizontal: 10, paddingVertical: 4, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.borderSubtle}}>
                         <Text style={{color: statusColor, fontSize: 11, fontWeight: '800'}}>
                           {req.status.replace('_', ' ')}
                         </Text>
@@ -1044,7 +1011,7 @@ export default function AdminDashboard() {
                       <Text style={{color: colors.text, fontSize: 13, fontWeight: '600'}}><UiText value={"Customer: "}/>{req.customer}</Text>
                     )}
                     <Text style={[styles.text, {fontSize: 13, lineHeight: 18}]}>{req.requirements || 'No extra requirements specified.'}</Text>
-                    <Text style={[styles.muted, {fontSize: 11}]}><UiText value={"Submitted: "}/>{new Date(req.created_at).toLocaleString()}</Text>
+                    <Text style={[styles.muted, {fontSize: 11}, tabularNums]}><UiText value={"Submitted: "}/>{new Date(req.created_at).toLocaleString()}</Text>
 
                     {/* Action Transitions */}
                     <View style={[styles.row, {gap: 8, marginTop: 4}]}>
@@ -1056,18 +1023,13 @@ export default function AdminDashboard() {
                             <>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'UNDER_REVIEW')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.brandPrimary, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={accentGradient}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"Start review"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"Start review"}/></Text>
                               </Pressable>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'CANCELLED')}
-                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12}]}
+                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: radii.action}]}
                               >
                                 <Text style={{color: colors.muted, fontWeight: '600', fontSize: 12}}><UiText value={"Cancel"}/></Text>
                               </Pressable>
@@ -1077,18 +1039,13 @@ export default function AdminDashboard() {
                             <>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'ASSIGNED')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.brandPrimary, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={accentGradient}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"Mark assigned"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"Mark assigned"}/></Text>
                               </Pressable>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'CANCELLED')}
-                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12}]}
+                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: radii.action}]}
                               >
                                 <Text style={{color: colors.muted, fontWeight: '600', fontSize: 12}}><UiText value={"Cancel"}/></Text>
                               </Pressable>
@@ -1098,18 +1055,13 @@ export default function AdminDashboard() {
                             <>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'IN_PROGRESS')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.brandPrimary, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={accentGradient}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"Start work"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"Start work"}/></Text>
                               </Pressable>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'UNDER_REVIEW')}
-                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12}]}
+                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: radii.action}]}
                               >
                                 <Text style={{color: colors.text, fontWeight: '600', fontSize: 12}}><UiText value={"Back to review"}/></Text>
                               </Pressable>
@@ -1119,18 +1071,13 @@ export default function AdminDashboard() {
                             <>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'COMPLETED')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.success, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={adminTheme.approveGradient}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Complete"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✓ Complete"}/></Text>
                               </Pressable>
                               <Pressable
                                 onPress={() => updateRequestStatus(req.id, 'CANCELLED')}
-                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12}]}
+                                style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: radii.action}]}
                               >
                                 <Text style={{color: colors.muted, fontWeight: '600', fontSize: 12}}><UiText value={"Cancel"}/></Text>
                               </Pressable>
@@ -1158,18 +1105,18 @@ export default function AdminDashboard() {
           </View>
 
           {/* Sub-tab toggle */}
-          <View style={[styles.row, {backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, padding: 4, borderRadius: 16, borderWidth: 1, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight}]}>
+          <View style={[styles.row, {backgroundColor: colors.surface, padding: 4, borderRadius: radii.pill, borderWidth: 1, borderColor: colors.borderSubtle}]}>
             <Pressable
               onPress={() => setVAdsSubTab('videos')}
               style={{
                 flex: 1,
                 paddingVertical: 9,
-                borderRadius: 12,
+                borderRadius: radii.pill,
                 alignItems: 'center',
-                backgroundColor: vAdsSubTab === 'videos' ? adminTheme.accent : 'transparent',
+                backgroundColor: vAdsSubTab === 'videos' ? colors.accent : 'transparent',
               }}
             >
-              <Text style={{color: vAdsSubTab === 'videos' ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontWeight: '700', fontSize: 13}}>
+              <Text style={{color: vAdsSubTab === 'videos' ? colors.brandPrimaryInk : colors.text, fontWeight: '700', fontSize: 13}}>
                 <UiText value={"Video Ads "}/></Text>
             </Pressable>
             <Pressable
@@ -1177,12 +1124,12 @@ export default function AdminDashboard() {
               style={{
                 flex: 1,
                 paddingVertical: 9,
-                borderRadius: 12,
+                borderRadius: radii.pill,
                 alignItems: 'center',
-                backgroundColor: vAdsSubTab === 'advertisers' ? adminTheme.accent : 'transparent',
+                backgroundColor: vAdsSubTab === 'advertisers' ? colors.accent : 'transparent',
               }}
             >
-              <Text style={{color: vAdsSubTab === 'advertisers' ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontWeight: '700', fontSize: 13}}>
+              <Text style={{color: vAdsSubTab === 'advertisers' ? colors.brandPrimaryInk : colors.text, fontWeight: '700', fontSize: 13}}>
                 <UiText value={"Advertiser Channels "}/></Text>
             </Pressable>
           </View>
@@ -1201,13 +1148,13 @@ export default function AdminDashboard() {
                   style={{
                     paddingHorizontal: 14,
                     paddingVertical: 7,
-                    borderRadius: 16,
+                    borderRadius: radii.pill,
                     borderWidth: 1,
-                    borderColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight),
-                    backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
+                    borderColor: active ? colors.accent : colors.borderSubtle,
+                    backgroundColor: active ? colors.accent : colors.surface,
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? colors.brandPrimaryInk : colors.text, fontSize: 12, fontWeight: '700'}}>
                     {st}
                   </Text>
                 </Pressable>
@@ -1219,26 +1166,26 @@ export default function AdminDashboard() {
             <Loading />
           ) : vAdsSubTab === 'videos' ? (
             !videos.length ? (
-              <View style={[styles.card, {borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight}]}>
-                <Text style={[styles.muted, {color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"No video ads in "}/>{vAdsStatus.toLowerCase()} <UiText value={"queue."}/></Text>
+              <View style={[styles.card, {borderColor: colors.borderSubtle, backgroundColor: colors.surface}]}>
+                <Text style={[styles.muted, {color: colors.muted}]}><UiText value={"No video ads in "}/>{vAdsStatus.toLowerCase()} <UiText value={"queue."}/></Text>
               </View>
             ) : (
               videos.map(vid => {
                 const isBusy = busyAction === `video-${vid.id}`;
                 return (
-                  <View key={vid.id} style={[styles.card, {gap: 12, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
+                  <View key={vid.id} style={[styles.card, {gap: 12, borderColor: colors.borderSubtle, backgroundColor: colors.surface, borderWidth: 1, borderRadius: radii.surface}]}>
                     <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                      <Text style={[styles.heading, {fontSize: 16, flex: 1, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}>{vid.title}</Text>
+                      <Text style={[styles.heading, {fontSize: 16, flex: 1, color: colors.text}]}>{vid.title}</Text>
                       <View style={{
-                        backgroundColor: vid.status === 'APPROVED' ? '#e6f7f0' : vid.status === 'PENDING' ? '#fef3c7' : '#fee2e2',
+                        backgroundColor: colors.elevated,
                         paddingHorizontal: 10,
                         paddingVertical: 4,
-                        borderRadius: 10,
+                        borderRadius: radii.pill,
                         borderWidth: 1,
-                        borderColor: vid.status === 'APPROVED' ? '#bbf0db' : vid.status === 'PENDING' ? '#fde68a' : '#fecaca',
+                        borderColor: colors.borderSubtle,
                       }}>
                         <Text style={{
-                          color: vid.status === 'APPROVED' ? '#065f46' : vid.status === 'PENDING' ? '#92400e' : '#991b1b',
+                          color: vid.status === 'APPROVED' ? colors.success : vid.status === 'PENDING' ? colors.warning : colors.danger,
                           fontSize: 11,
                           fontWeight: '700',
                         }}>
@@ -1249,64 +1196,49 @@ export default function AdminDashboard() {
 
                     {/* Spotlight Channel Badge */}
                     <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-                      <LinearGradient
-                        colors={accentGradient}
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 1}}
-                        style={{paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}
-                      >
-                        <Text style={{color: '#fff', fontSize: 10, fontWeight: '800'}}>
+                      <View style={{paddingHorizontal: 8, paddingVertical: 3, borderRadius: radii.pill, backgroundColor: colors.brandPrimary}}>
+                        <Text style={{color: colors.brandPrimaryInk, fontSize: 10, fontWeight: '800'}}>
                           ▷ {vid.advertiser?.name || 'VISTRAH'}
                         </Text>
-                      </LinearGradient>
-                      <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>@{vid.advertiser?.handle}</Text>
+                      </View>
+                      <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}>@{vid.advertiser?.handle}</Text>
                     </View>
 
                     {/* Real Video Player Component */}
                     <AdminVideoPlayer video={vid} />
 
-                    <Text style={[styles.text, {fontSize: 13, lineHeight: 18, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}>{vid.description || 'No caption provided.'}</Text>
-                    <Text style={[styles.muted, {fontSize: 11, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>
+                    <Text style={[styles.text, {fontSize: 13, lineHeight: 18, color: colors.text}]}>{vid.description || 'No caption provided.'}</Text>
+                    <Text style={[styles.muted, {fontSize: 11, color: colors.muted}, tabularNums]}>
                       {vid.views} <UiText value={"views · "}/>{vid.likes} <UiText value={"likes · "}/>{vid.comments} <UiText value={"comments "}/></Text>
 
                     {/* Action buttons */}
                     <View style={[styles.row, {gap: 8, marginTop: 4}]}>
                       {isBusy ? (
-                        <ActivityIndicator color={adminTheme.accentEmerald} size="small" />
+                        <ActivityIndicator color={colors.success} size="small" />
                       ) : (
                         <>
                           {vid.status === 'PENDING' && (
                             <>
                               <Pressable
                                 onPress={() => reviewVideo(vid.id, 'APPROVED')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.success, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={[adminTheme.approveGradient[0], adminTheme.approveGradient[1]]}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve ad"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve ad"}/></Text>
                               </Pressable>
                               <Pressable
                                 onPress={() => reviewVideo(vid.id, 'REJECTED')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.danger, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={[adminTheme.rejectGradient[0], adminTheme.rejectGradient[1]]}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                               </Pressable>
                             </>
                           )}
                           {vid.status !== 'REMOVED' && vid.status !== 'PENDING' && (
                             <Pressable
                               onPress={() => removeVideo(vid.id, vid.status)}
-                              style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12, borderColor: '#fca5a5'}]}
+                              style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: radii.action, borderColor: colors.danger}]}
                             >
-                              <Text style={{color: '#ef4444', fontWeight: '700', fontSize: 12}}><UiText value={"Remove ad"}/></Text>
+                              <Text style={{color: colors.danger, fontWeight: '700', fontSize: 12}}><UiText value={"Remove ad"}/></Text>
                             </Pressable>
                           )}
                         </>
@@ -1324,7 +1256,7 @@ export default function AdminDashboard() {
             advertisers.map(acc => {
               const isBusy = busyAction === `advertiser-${acc.id}`;
               return (
-                <View key={acc.id} style={[styles.card, {gap: 10, borderColor: colors.border}]}>
+                <View key={acc.id} style={[styles.card, {gap: 10, borderColor: colors.borderSubtle}]}>
                   <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                     <Text style={[styles.heading, {fontSize: 16}]}>{acc.name}</Text>
                     <Text style={{color: colors.accent, fontWeight: '700', fontSize: 12}}>@{acc.handle}</Text>
@@ -1340,25 +1272,15 @@ export default function AdminDashboard() {
                         <>
                           <Pressable
                             onPress={() => reviewAdvertiser(acc, 'APPROVED')}
-                            style={{borderRadius: 12, overflow: 'hidden'}}
+                            style={{borderRadius: radii.action, backgroundColor: colors.success, paddingVertical: 9, paddingHorizontal: 16}}
                           >
-                            <LinearGradient
-                              colors={[adminTheme.approveGradient[0], adminTheme.approveGradient[1]]}
-                              style={{paddingVertical: 9, paddingHorizontal: 16}}
-                            >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve channel"}/></Text>
-                            </LinearGradient>
+                            <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve channel"}/></Text>
                           </Pressable>
                           <Pressable
                             onPress={() => reviewAdvertiser(acc, 'REJECTED')}
-                            style={{borderRadius: 12, overflow: 'hidden'}}
+                            style={{borderRadius: radii.action, backgroundColor: colors.danger, paddingVertical: 9, paddingHorizontal: 16}}
                           >
-                            <LinearGradient
-                              colors={[adminTheme.rejectGradient[0], adminTheme.rejectGradient[1]]}
-                              style={{paddingVertical: 9, paddingHorizontal: 16}}
-                            >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
-                            </LinearGradient>
+                            <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                           </Pressable>
                         </>
                       )
@@ -1392,13 +1314,13 @@ export default function AdminDashboard() {
                   style={{
                     paddingHorizontal: 14,
                     paddingVertical: 7,
-                    borderRadius: 16,
+                    borderRadius: radii.pill,
                     borderWidth: 1,
-                    borderColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight),
-                    backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
+                    borderColor: active ? colors.accent : colors.borderSubtle,
+                    backgroundColor: active ? colors.accent : colors.surface,
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? colors.brandPrimaryInk : colors.text, fontSize: 12, fontWeight: '700'}}>
                     {st}
                   </Text>
                 </Pressable>
@@ -1409,51 +1331,41 @@ export default function AdminDashboard() {
           {loadingCommerce ? (
             <Loading />
           ) : !commerceListings.length ? (
-            <View style={[styles.card, {borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight}]}>
-              <Text style={[styles.muted, {color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"No listings awaiting review in "}/>{commerceStatus.toLowerCase()}.</Text>
+            <View style={[styles.card, {borderColor: colors.borderSubtle, backgroundColor: colors.surface}]}>
+              <Text style={[styles.muted, {color: colors.muted}]}><UiText value={"No listings awaiting review in "}/>{commerceStatus.toLowerCase()}.</Text>
             </View>
           ) : (
             commerceListings.map(item => {
               const isBusy = busyAction === `commerce-${item.id}`;
               return (
-                <View key={item.id} style={[styles.card, {gap: 10, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
+                <View key={item.id} style={[styles.card, {gap: 10, borderColor: colors.borderSubtle, backgroundColor: colors.surface, borderWidth: 1, borderRadius: radii.surface}]}>
                   <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                    <Text style={[styles.heading, {fontSize: 16, flex: 1, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={item.title}/></Text>
-                    <Text style={{fontSize: 17, fontWeight: '800', color: adminTheme.accentEmerald}}>
+                    <Text style={[styles.heading, {fontSize: 16, flex: 1, color: colors.text}]}><UiText value={item.title}/></Text>
+                    <Text style={[{fontSize: 17, fontWeight: '800', color: colors.brandPrimary}, tabularNums]}>
                       ₹{(item.unit_price_paise / 100).toFixed(2)}
                     </Text>
                   </View>
-                  <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>{item.business} · {item.kind}</Text>
-                  <Text style={[styles.text, {fontSize: 13, lineHeight: 18, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={item.description}/></Text>
+                  <Text style={[styles.muted, {fontSize: 12, color: colors.muted}]}>{item.business} · {item.kind}</Text>
+                  <Text style={[styles.text, {fontSize: 13, lineHeight: 18, color: colors.text}]}><UiText value={item.description}/></Text>
 
                   {/* Actions */}
                   <View style={[styles.row, {gap: 8, marginTop: 4}]}>
                     {isBusy ? (
-                      <ActivityIndicator color={adminTheme.accentEmerald} size="small" />
+                      <ActivityIndicator color={colors.success} size="small" />
                     ) : (
                       item.status === 'SUBMITTED' && (
                         <>
                           <Pressable
                             onPress={() => reviewCommerce(item, 'APPROVED')}
-                            style={{borderRadius: 12, overflow: 'hidden'}}
+                            style={{borderRadius: radii.action, backgroundColor: colors.success, paddingVertical: 9, paddingHorizontal: 16}}
                           >
-                            <LinearGradient
-                              colors={adminTheme.approveGradient}
-                              style={{paddingVertical: 9, paddingHorizontal: 16}}
-                            >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve listing"}/></Text>
-                            </LinearGradient>
+                            <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve listing"}/></Text>
                           </Pressable>
                           <Pressable
                             onPress={() => reviewCommerce(item, 'REJECTED')}
-                            style={{borderRadius: 12, overflow: 'hidden'}}
+                            style={{borderRadius: radii.action, backgroundColor: colors.danger, paddingVertical: 9, paddingHorizontal: 16}}
                           >
-                            <LinearGradient
-                              colors={adminTheme.rejectGradient}
-                              style={{paddingVertical: 9, paddingHorizontal: 16}}
-                            >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
-                            </LinearGradient>
+                            <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                           </Pressable>
                         </>
                       )
@@ -1487,13 +1399,13 @@ export default function AdminDashboard() {
                   style={{
                     paddingHorizontal: 14,
                     paddingVertical: 7,
-                    borderRadius: 16,
+                    borderRadius: radii.pill,
                     borderWidth: 1,
-                    borderColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight),
-                    backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
+                    borderColor: active ? colors.accent : colors.borderSubtle,
+                    backgroundColor: active ? colors.accent : colors.surface,
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? colors.brandPrimaryInk : colors.text, fontSize: 12, fontWeight: '700'}}>
                     <UiText value={st === 'ALL' ? 'All Businesses' : st}/>
                   </Text>
                 </Pressable>
@@ -1512,8 +1424,8 @@ export default function AdminDashboard() {
 
               if (!filtered.length) {
                 return (
-                  <View style={[styles.card, {borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight}]}>
-                    <Text style={[styles.muted, {color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"No providers found matching this filter."}/></Text>
+                  <View style={[styles.card, {borderColor: colors.borderSubtle, backgroundColor: colors.surface}]}>
+                    <Text style={[styles.muted, {color: colors.muted}]}><UiText value={"No providers found matching this filter."}/></Text>
                   </View>
                 );
               }
@@ -1521,22 +1433,22 @@ export default function AdminDashboard() {
               return filtered.map(prov => {
                 const isBusy = busyAction === `provider-${prov.id}`;
                 return (
-                  <View key={prov.id} style={[styles.card, {gap: 10, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
+                  <View key={prov.id} style={[styles.card, {gap: 10, borderColor: colors.borderSubtle, backgroundColor: colors.surface, borderWidth: 1, borderRadius: radii.surface}]}>
                     <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                      <Text style={[styles.heading, {fontSize: 16, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}>{prov.company}</Text>
+                      <Text style={[styles.heading, {fontSize: 16, color: colors.text}]}>{prov.company}</Text>
                       <View
                         style={{
-                          backgroundColor: prov.verification_status === 'VERIFIED' ? '#e6f7f0' : '#fef3c7',
+                          backgroundColor: colors.elevated,
                           paddingHorizontal: 10,
                           paddingVertical: 4,
-                          borderRadius: 10,
+                          borderRadius: radii.pill,
                           borderWidth: 1,
-                          borderColor: prov.verification_status === 'VERIFIED' ? '#bbf0db' : '#fde68a',
+                          borderColor: colors.borderSubtle,
                         }}
                       >
                         <Text
                           style={{
-                            color: prov.verification_status === 'VERIFIED' ? '#065f46' : '#92400e',
+                            color: prov.verification_status === 'VERIFIED' ? colors.success : colors.warning,
                             fontSize: 11,
                             fontWeight: '800',
                           }}
@@ -1546,11 +1458,11 @@ export default function AdminDashboard() {
                       </View>
                     </View>
 
-                    <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 13}}>
+                    <Text style={{color: colors.text, fontSize: 13}}>
                       <UiText value={"Contact: "}/>{prov.name} <UiText value={"· Location: "}/>{prov.location}
                     </Text>
                     {Boolean(prov.phone || prov.email) && (
-                      <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>
+                      <Text style={[styles.muted, {fontSize: 12, color: colors.muted}, tabularNums]}>
                         {[prov.phone, prov.email].filter(Boolean).join(' · ')}
                       </Text>
                     )}
@@ -1558,38 +1470,28 @@ export default function AdminDashboard() {
                     {/* Actions */}
                     <View style={[styles.row, {gap: 8, marginTop: 4}]}>
                       {isBusy ? (
-                        <ActivityIndicator color={adminTheme.accentEmerald} size="small" />
+                        <ActivityIndicator color={colors.success} size="small" />
                       ) : (
                         <>
                           {prov.verification_status === 'PENDING' && (
                             <>
                               <Pressable
                                 onPress={() => verifyProvider(prov.id, 'VERIFIED')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.success, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={adminTheme.approveGradient}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Verify provider"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✓ Verify provider"}/></Text>
                               </Pressable>
                               <Pressable
                                 onPress={() => verifyProvider(prov.id, 'REJECTED')}
-                                style={{borderRadius: 12, overflow: 'hidden'}}
+                                style={{borderRadius: radii.action, backgroundColor: colors.danger, paddingVertical: 9, paddingHorizontal: 16}}
                               >
-                                <LinearGradient
-                                  colors={adminTheme.rejectGradient}
-                                  style={{paddingVertical: 9, paddingHorizontal: 16}}
-                                >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
-                                </LinearGradient>
+                                <Text style={{color: colors.brandPrimaryInk, fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                               </Pressable>
                             </>
                           )}
                           <Pressable
                             onPress={() => toggleProviderActive(prov.id, !prov.active)}
-                            style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12}]}
+                            style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: radii.action}]}
                           >
                             <Text style={{color: colors.text, fontWeight: '700', fontSize: 12}}>
                               <UiText value={prov.active ? 'Deactivate' : 'Activate'}/>
@@ -1619,29 +1521,29 @@ export default function AdminDashboard() {
           {loadingAudits ? (
             <Loading />
           ) : !audits.length ? (
-            <View style={[styles.card, {borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight}]}>
-              <Text style={[styles.muted, {color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"No activity recorded yet."}/></Text>
+            <View style={[styles.card, {borderColor: colors.borderSubtle, backgroundColor: colors.surface}]}>
+              <Text style={[styles.muted, {color: colors.muted}]}><UiText value={"No activity recorded yet."}/></Text>
             </View>
           ) : (
             audits.map(item => (
-              <View key={item.id} style={[styles.card, {gap: 8, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
+              <View key={item.id} style={[styles.card, {gap: 8, borderColor: colors.borderSubtle, backgroundColor: colors.surface, borderWidth: 1, borderRadius: radii.surface}]}>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-                  <View style={{backgroundColor: adminTheme.accent + '20', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}>
-                    <Text style={{color: adminTheme.accentLight, fontSize: 11, fontWeight: '800'}}>
+                  <View style={{backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, paddingHorizontal: 8, paddingVertical: 3, borderRadius: radii.pill}}>
+                    <Text style={{color: colors.brandPrimary, fontSize: 11, fontWeight: '800'}}>
                       {item.action.replace(/_/g, ' ')}
                     </Text>
                   </View>
-                  <Text style={[styles.muted, {fontSize: 11, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Actor #"}/>{item.actor_id}</Text>
+                  <Text style={[styles.muted, {fontSize: 11, color: colors.muted}, tabularNums]}><UiText value={"Actor #"}/>{item.actor_id}</Text>
                 </View>
-                <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 13, fontWeight: '600'}}>
+                <Text style={[{color: colors.text, fontSize: 13, fontWeight: '600'}, tabularNums]}>
                   <UiText value={"Entity: "}/>{item.entity} #{item.entity_id}
                 </Text>
                 {Boolean(item.details) && (
-                  <Text style={[styles.muted, {fontSize: 12, fontFamily: 'monospace', color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>
+                  <Text style={[styles.muted, {fontSize: 12, fontFamily: 'monospace', color: colors.muted}]}>
                     {JSON.stringify(item.details)}
                   </Text>
                 )}
-                <Text style={[styles.muted, {fontSize: 10, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>
+                <Text style={[styles.muted, {fontSize: 10, color: colors.muted}, tabularNums]}>
                   {new Date(item.created_at).toLocaleString()}
                 </Text>
               </View>
@@ -1656,25 +1558,25 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"Service Catalogue"}/></Text>
             <Pressable onPress={loadCategories} style={{padding: 6}}>
-              <Text style={{color: adminTheme.accentLight, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: colors.accent, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 
           {loadingCategories ? (
             <Loading />
           ) : !categories.length ? (
-            <View style={[styles.card, {borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight}]}>
-              <Text style={[styles.muted, {color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"No catalogue services recorded."}/></Text>
+            <View style={[styles.card, {borderColor: colors.borderSubtle, backgroundColor: colors.surface}]}>
+              <Text style={[styles.muted, {color: colors.muted}]}><UiText value={"No catalogue services recorded."}/></Text>
             </View>
           ) : (
             categories.map(cat => (
-              <View key={cat.id} style={[styles.card, {gap: 10, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
-                <Text style={[styles.heading, {fontSize: 16, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}>{cat.title}</Text>
-                <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}>
+              <View key={cat.id} style={[styles.card, {gap: 10, borderColor: colors.borderSubtle, backgroundColor: colors.surface, borderWidth: 1, borderRadius: radii.surface}]}>
+                <Text style={[styles.heading, {fontSize: 16, color: colors.text}]}>{cat.title}</Text>
+                <Text style={[styles.muted, {fontSize: 12, color: colors.muted}, tabularNums]}>
                   {cat.services?.length || 0} <UiText value={"services registered under this category. "}/></Text>
                 <View style={{gap: 4}}>
                   {cat.services?.map(srv => (
-                    <Text key={srv.id} style={[styles.text, {fontSize: 13, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}>
+                    <Text key={srv.id} style={[styles.text, {fontSize: 13, color: colors.text}]}>
                       • {srv.title} <UiText value={srv.active ? '' : '(Inactive)'}/>
                     </Text>
                   ))}

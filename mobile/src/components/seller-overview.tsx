@@ -6,7 +6,7 @@ import {Text} from './typography';
 import {UiText} from './localized-ui';
 import {Heading,Action,Loading,ErrorPanel} from './ui';
 import {useResource} from '../lib/resource';
-import {useTheme} from '../lib/theme';
+import {radii,tabularNums,useTheme} from '../lib/theme';
 import {useSession} from '../lib/session';
 import type {ListingPage,SellerListing} from '../../../shared/commerce';
 import {listingProgress} from '../../../shared/seller-journey';
@@ -61,7 +61,7 @@ export function SellerBusinessFilters({businesses,children}:{businesses:Business
   const visible=businesses.filter(b=>filter==='All'||(filter==='Active & verified'?verified(b):!verified(b)));
   return <View style={{gap:12}}><View style={s.grid}>{(['All','Active & verified','Needs attention'] as const).map(value=><Pressable key={value}
     accessibilityRole="button" accessibilityState={{selected:filter===value}} onPress={()=>setFilter(value)}
-    style={[s.chip,{backgroundColor:filter===value?colors.accent:colors.surface,borderColor:colors.border}]}>
+    style={[s.chip,{backgroundColor:filter===value?colors.accent:colors.surface,borderColor:filter===value?colors.accent:colors.borderSubtle}]}>
     <Text style={{color:filter===value?colors.ink:colors.text,fontSize:12,fontWeight:'600'}}><UiText value={value}/></Text></Pressable>)}</View>
     {visible.length?visible.map(children):<Text style={styles.muted}><UiText value="No businesses match this filter."/></Text>}
   </View>;
@@ -69,14 +69,14 @@ export function SellerBusinessFilters({businesses,children}:{businesses:Business
 
 function Metric({label,value}:{label:string;value?:number}){
   const {styles,colors}=useTheme();
-  return <View style={[styles.card,s.tile]}><Text style={[styles.heading,{fontSize:26,lineHeight:34,color:colors.accent}]}>{value===undefined?'—':value.toLocaleString('en-IN')}</Text>
+  return <View style={[styles.card,s.tile]}><Text style={[styles.heading,{fontSize:26,lineHeight:34,color:colors.accent},tabularNums]}>{value===undefined?'—':value.toLocaleString('en-IN')}</Text>
     <Text style={styles.muted}><UiText value={label}/></Text></View>;
 }
 function Tool({icon,title,detail,onPress}:{icon:React.ComponentProps<typeof Feather>['name'];title:string;detail:string;onPress:()=>void}){
   const {styles,colors}=useTheme();
-  return <Pressable accessibilityRole="link" onPress={onPress} style={({pressed})=>[styles.card,s.tile,{opacity:pressed?.75:1}]}>
+  return <Pressable accessibilityRole="link" onPress={onPress} style={({pressed})=>[styles.card,s.tile,{backgroundColor:pressed?colors.elevated:colors.surface}]}>
     <Feather name={icon} size={22} color={colors.accent}/><Text style={[styles.text,{fontWeight:'600'}]}><UiText value={title}/></Text>
     <Text style={styles.muted}><UiText value={detail}/></Text></Pressable>;
 }
 const s=StyleSheet.create({grid:{flexDirection:'row',flexWrap:'wrap',gap:10},tile:{flexGrow:1,flexBasis:'45%',minWidth:125,gap:8},
-  chip:{minHeight:44,paddingHorizontal:12,paddingVertical:10,borderWidth:1,borderRadius:22,justifyContent:'center'}});
+  chip:{minHeight:44,paddingHorizontal:12,paddingVertical:10,borderWidth:1,borderRadius:radii.pill,justifyContent:'center'}});

@@ -7,7 +7,7 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 
 import {UiText,UiElement} from './localized-ui';
 import { Action, Field, ErrorPanel } from './ui';
-import { useTheme } from '../lib/theme';
+import { radii, tabularNums, useTheme } from '../lib/theme';
 import { vAds, toPlayableUrl } from '../lib/v-ads';
 import { pickImageForVideo } from '../lib/v-ads-image-picker';
 import {
@@ -26,6 +26,7 @@ interface VAdsCreatorProps {
 }
 
 function GeneratedVideoPreview({ videoUrl }: { videoUrl: string }) {
+  const { colors } = useTheme();
   const url = useMemo(() => toPlayableUrl(videoUrl), [videoUrl]);
   const player = useVideoPlayer(url || null, instance => {
     instance.loop = true;
@@ -46,15 +47,17 @@ function GeneratedVideoPreview({ videoUrl }: { videoUrl: string }) {
         style={{
           width: '100%',
           height: 260,
-          borderRadius: 16,
-          backgroundColor: '#0c0714',
+          borderRadius: radii.surface,
+          backgroundColor: colors.background,
+          borderWidth: 1,
+          borderColor: colors.borderSubtle,
           alignItems: 'center',
           justifyContent: 'center',
           gap: 6,
         }}
       >
-        <Feather name="video-off" size={24} color="#888" />
-        <Text style={{ fontSize: 12, color: '#888' }}>
+        <Feather name="video-off" size={24} color={colors.muted} />
+        <Text style={{ fontSize: 12, color: colors.muted }}>
           <UiText value="Video preview unavailable" />
         </Text>
       </View>
@@ -66,9 +69,11 @@ function GeneratedVideoPreview({ videoUrl }: { videoUrl: string }) {
       style={{
         width: '100%',
         height: 320,
-        borderRadius: 16,
+        borderRadius: radii.surface,
         overflow: 'hidden',
-        backgroundColor: '#000',
+        backgroundColor: colors.background,
+        borderWidth: 1,
+        borderColor: colors.borderSubtle,
       }}
     >
       <VideoView
@@ -230,12 +235,12 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
         style={[
           styles.card,
           {
-            borderRadius: 20,
+            borderRadius: radii.surface,
             padding: 16,
             gap: 8,
-            backgroundColor: mode === 'light' ? '#fdfaff' : '#1f192b',
+            backgroundColor: colors.surface,
             borderWidth: 1,
-            borderColor: colors.accent + '40',
+            borderColor: colors.borderSubtle,
           },
         ]}
       >
@@ -244,8 +249,8 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             style={{
               width: 38,
               height: 38,
-              borderRadius: 19,
-              backgroundColor: colors.soft,
+              borderRadius: radii.pill,
+              backgroundColor: colors.elevated,
               alignItems: 'center',
               justifyContent: 'center',
             }}
@@ -272,8 +277,8 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
           style={[
             styles.card,
             {
-              backgroundColor: mode === 'light' ? '#e6f4ea' : '#132b1b',
-              borderColor: '#16a34a',
+              backgroundColor: colors.elevated,
+              borderColor: colors.borderSubtle,
               padding: 12,
               flexDirection: 'row',
               alignItems: 'center',
@@ -281,10 +286,10 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             },
           ]}
         >
-          <Feather name="check-circle" size={16} color="#16a34a" />
+          <Feather name="check-circle" size={16} color={colors.success} />
           <Text
             style={{
-              color: mode === 'light' ? '#137333' : '#86efac',
+              color: colors.success,
               fontWeight: '600',
               fontSize: 13,
             }}
@@ -300,11 +305,11 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
           style={[
             styles.card,
             {
-              borderRadius: 20,
+              borderRadius: radii.surface,
               padding: 16,
               gap: 12,
-              borderWidth: 1.5,
-              borderColor: '#16a34a',
+              borderWidth: 1,
+              borderColor: colors.borderSubtle,
             },
           ]}
         >
@@ -316,7 +321,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-              <Feather name="check-circle" size={18} color="#16a34a" />
+              <Feather name="check-circle" size={18} color={colors.success} />
               <Text style={[styles.heading, { fontSize: 16 }]}>
                 <UiText value="Your Video Ad is Ready!" />
               </Text>
@@ -325,12 +330,14 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               style={{
                 paddingHorizontal: 8,
                 paddingVertical: 3,
-                borderRadius: 8,
-                backgroundColor: mode === 'light' ? '#e6f4ea' : '#132b1b',
+                borderRadius: radii.pill,
+                backgroundColor: colors.elevated,
+                borderWidth: 1,
+                borderColor: colors.borderSubtle,
               }}
             >
               <Text
-                style={{ fontSize: 11, fontWeight: '700', color: '#16a34a' }}
+                style={{ fontSize: 11, fontWeight: '700', color: colors.success }}
               >
                 <UiText value="12s Vertical MP4" />
               </Text>
@@ -365,7 +372,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
       )}
 
       {/* STEP 1: TEMPLATE SELECTOR */}
-      <View style={[styles.card, { borderRadius: 20, padding: 16, gap: 12 }]}>
+      <View style={[styles.card, { borderRadius: radii.surface, padding: 16, gap: 12 }]}>
         <View
           style={{
             flexDirection: 'row',
@@ -379,7 +386,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
           >
             <UiText value="1. Select Marketing Template" />
           </Text>
-          <Text style={[styles.muted, { fontSize: 12 }]}>
+          <Text style={[styles.muted, { fontSize: 12 }, tabularNums]}>
             {MARKETING_TEMPLATES.length} <UiText value={"templates "}/></Text>
         </View>
 
@@ -396,22 +403,13 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 onPress={() => handleSelectTemplate(template)}
                 style={({ pressed }) => ({
                   width: 200,
-                  borderRadius: 16,
+                  borderRadius: radii.surface,
                   padding: 14,
                   gap: 8,
-                  backgroundColor: isSelected
-                    ? mode === 'light'
-                      ? '#f8f4fc'
-                      : '#271d36'
-                    : colors.surface,
-                  borderWidth: 2,
-                  borderColor: isSelected ? template.themeColor : colors.border,
+                  backgroundColor: isSelected ? colors.elevated : colors.surface,
+                  borderWidth: 1,
+                  borderColor: isSelected ? colors.accent : colors.borderSubtle,
                   opacity: pressed ? 0.8 : 1,
-                  shadowColor: isSelected ? template.themeColor : '#000',
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: isSelected ? 0.15 : 0.04,
-                  shadowRadius: 4,
-                  elevation: isSelected ? 3 : 1,
                 })}
               >
                 <View
@@ -425,15 +423,15 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                     style={{
                       paddingHorizontal: 8,
                       paddingVertical: 3,
-                      borderRadius: 8,
-                      backgroundColor: template.themeColor + '20',
+                      borderRadius: radii.pill,
+                      backgroundColor: colors.brandPrimarySoft,
                     }}
                   >
                     <Text
                       style={{
                         fontSize: 10,
                         fontWeight: '800',
-                        color: template.themeColor,
+                        color: colors.brandPrimary,
                       }}
                     >
                       {template.badge}
@@ -443,7 +441,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                     <Feather
                       name="check-circle"
                       size={16}
-                      color={template.themeColor}
+                      color={colors.accent}
                     />
                   )}
                 </View>
@@ -466,7 +464,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
       </View>
 
       {/* STEP 2: PHOTOS / SLIDES */}
-      <View style={[styles.card, { borderRadius: 20, padding: 16, gap: 12 }]}>
+      <View style={[styles.card, { borderRadius: radii.surface, padding: 16, gap: 12 }]}>
         <View
           style={{
             flexDirection: 'row',
@@ -489,11 +487,11 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             style={{
               paddingHorizontal: 8,
               paddingVertical: 3,
-              borderRadius: 8,
-              backgroundColor: colors.soft,
+              borderRadius: radii.pill,
+              backgroundColor: colors.elevated,
             }}
           >
-            <Text style={{ fontSize: 11, fontWeight: '700', color: colors.text }}>
+            <Text style={[{ fontSize: 11, fontWeight: '700', color: colors.text }, tabularNums]}>
               {images.length} / 4
             </Text>
           </View>
@@ -511,10 +509,10 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               style={{
                 width: 72,
                 height: 100,
-                borderRadius: 12,
+                borderRadius: radii.surface,
                 overflow: 'hidden',
                 borderWidth: 1,
-                borderColor: colors.border,
+                borderColor: colors.borderSubtle,
                 position: 'relative',
               }}
             >
@@ -531,13 +529,13 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                   right: 4,
                   width: 22,
                   height: 22,
-                  borderRadius: 11,
-                  backgroundColor: 'rgba(0,0,0,0.65)',
+                  borderRadius: radii.pill,
+                  backgroundColor: 'rgba(8,8,13,0.75)',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <Feather name="x" size={13} color="#fff" />
+                <Feather name="x" size={13} color={colors.brandPrimaryInk} />
               </Pressable>
             </View>
           ))}
@@ -548,11 +546,11 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               style={({ pressed }) => ({
                 width: 80,
                 height: 100,
-                borderRadius: 12,
-                borderWidth: 1.5,
+                borderRadius: radii.surface,
+                borderWidth: 1,
                 borderStyle: 'dashed',
                 borderColor: colors.accent,
-                backgroundColor: colors.soft,
+                backgroundColor: colors.elevated,
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 4,
@@ -581,7 +579,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
       </View>
 
       {/* STEP 3: AD COPY & CONTENT */}
-      <View style={[styles.card, { borderRadius: 20, padding: 16, gap: 12 }]}>
+      <View style={[styles.card, { borderRadius: radii.surface, padding: 16, gap: 12 }]}>
         <Text
           accessibilityRole="header"
           style={[styles.heading, { fontSize: 15 }]}
@@ -663,10 +661,10 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 style={{
                   paddingHorizontal: 12,
                   paddingVertical: 6,
-                  borderRadius: 12,
+                  borderRadius: radii.pill,
                   backgroundColor: cta === opt ? colors.accent : colors.surface,
                   borderWidth: 1,
-                  borderColor: cta === opt ? colors.accent : colors.border,
+                  borderColor: cta === opt ? colors.accent : colors.borderSubtle,
                 }}
               >
                 <Text
@@ -702,7 +700,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
       </View>
 
       {/* STEP 4: BACKGROUND MUSIC MOOD */}
-      <View style={[styles.card, { borderRadius: 20, padding: 16, gap: 12 }]}>
+      <View style={[styles.card, { borderRadius: radii.surface, padding: 16, gap: 12 }]}>
         <Text
           accessibilityRole="header"
           style={[styles.heading, { fontSize: 15 }]}
@@ -721,14 +719,10 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                   flex: 1,
                   minWidth: 140,
                   padding: 12,
-                  borderRadius: 14,
-                  backgroundColor: isSelected
-                    ? mode === 'light'
-                      ? '#f3e8ff'
-                      : '#2e1c3e'
-                    : colors.surface,
-                  borderWidth: 1.5,
-                  borderColor: isSelected ? colors.accent : colors.border,
+                  borderRadius: radii.surface,
+                  backgroundColor: isSelected ? colors.elevated : colors.surface,
+                  borderWidth: 1,
+                  borderColor: isSelected ? colors.accent : colors.borderSubtle,
                   gap: 4,
                   opacity: pressed ? 0.8 : 1,
                 })}
@@ -766,7 +760,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
       </View>
 
       {/* STEP 5: LIVE AD VISUAL PREVIEW MOCKUP */}
-      <View style={[styles.card, { borderRadius: 20, padding: 16, gap: 10 }]}>
+      <View style={[styles.card, { borderRadius: radii.surface, padding: 16, gap: 10 }]}>
         <Text
           accessibilityRole="header"
           style={[styles.heading, { fontSize: 15 }]}
@@ -782,17 +776,12 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             alignSelf: 'center',
             width: 250,
             height: 444, // 9:16 aspect ratio
-            borderRadius: 24,
+            borderRadius: radii.surface,
             overflow: 'hidden',
-            borderWidth: 2,
-            borderColor: colors.border,
+            borderWidth: 1,
+            borderColor: colors.borderSubtle,
             position: 'relative',
-            backgroundColor: '#0a0a0f',
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.25,
-            shadowRadius: 10,
-            elevation: 6,
+            backgroundColor: colors.background,
           }}
         >
           {/* Background image or gradient */}
@@ -843,8 +832,8 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               style={{
                 paddingHorizontal: 8,
                 paddingVertical: 3,
-                borderRadius: 8,
-                backgroundColor: currentTemplate.themeColor,
+                borderRadius: radii.pill,
+                backgroundColor: colors.brandPrimary,
               }}
             >
               <Text
@@ -852,7 +841,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 style={{
                   fontSize: 9,
                   fontWeight: '800',
-                  color: '#fff',
+                  color: colors.brandPrimaryInk,
                   letterSpacing: 0.5,
                 }}
               >
@@ -864,7 +853,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               style={{
                 fontSize: 10,
                 fontWeight: '700',
-                color: '#fff',
+                color: colors.brandPrimaryInk,
                 maxWidth: 110,
               }}
             >
@@ -887,7 +876,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               style={{
                 fontSize: 15,
                 fontWeight: '800',
-                color: '#fff',
+                color: colors.brandPrimaryInk,
                 lineHeight: 18,
               }}
             >
@@ -897,7 +886,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             {Boolean(subtitle) && (
               <Text
                 numberOfLines={1}
-                style={{ fontSize: 11, color: '#e2e8f0', fontWeight: '500' }}
+                style={{ fontSize: 11, color: colors.muted, fontWeight: '500' }}
               >
                 <UiText value={subtitle}/>
               </Text>
@@ -908,7 +897,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               {Boolean(highlight1) && (
                 <Text
                   numberOfLines={1}
-                  style={{ fontSize: 10, color: '#a7f3d0' }}
+                  style={{ fontSize: 10, color: colors.success }}
                 >
                   ✓ {highlight1}
                 </Text>
@@ -916,7 +905,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               {Boolean(highlight2) && (
                 <Text
                   numberOfLines={1}
-                  style={{ fontSize: 10, color: '#a7f3d0' }}
+                  style={{ fontSize: 10, color: colors.success }}
                 >
                   ✓ {highlight2}
                 </Text>
@@ -926,8 +915,8 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             {/* CTA Button */}
             <View
               style={{
-                borderRadius: 10,
-                backgroundColor: currentTemplate.themeColor,
+                borderRadius: radii.action,
+                backgroundColor: colors.brandPrimary,
                 paddingVertical: 8,
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -935,10 +924,10 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 gap: 4,
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: '700', color: '#fff' }}>
+              <Text style={{ fontSize: 12, fontWeight: '700', color: colors.brandPrimaryInk }}>
                 {cta.toUpperCase()}
               </Text>
-              <Feather name="arrow-right" size={12} color="#fff" />
+              <Feather name="arrow-right" size={12} color={colors.brandPrimaryInk} />
             </View>
 
             {/* Contact info */}
@@ -947,7 +936,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 numberOfLines={1}
                 style={{
                   fontSize: 9.5,
-                  color: '#cbd5e1',
+                  color: colors.muted,
                   textAlign: 'center',
                 }}
               >

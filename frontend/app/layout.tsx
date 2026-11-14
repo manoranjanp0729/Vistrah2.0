@@ -13,7 +13,7 @@ import {inter,interItalic,dmSerif,dmSerifItalic} from './fonts';
 export const metadata:Metadata={title:{default:`VISTRAH — ${positioning.descriptor}`,template:'%s | VISTRAH'},description:positioning.description};
 export default async function RootLayout({children}:{children:React.ReactNode}) {
   const saved=await cookies();
-  const mode=saved.get('vistrah_theme')?.value==='dark'?'dark':'light';
+  const mode=saved.get('vistrah_theme')?.value==='light'?'light':'dark';
   const preference=saved.get('vistrah_language')?.value;
   const locale=isLocale(preference)?preference:'en';
   const savedAccent=saved.get('vistrah_accent')?.value??'indigo';

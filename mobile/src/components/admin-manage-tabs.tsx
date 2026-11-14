@@ -4,7 +4,7 @@ import {Pressable,View,Alert} from 'react-native';
 import {UiText} from './localized-ui';
 import {Loading} from './ui';
 import {api} from '../lib/api';
-import {useTheme} from '../lib/theme';
+import {radii, tabularNums, useTheme} from '../lib/theme';
 export {AdminPageEditor as AdminEditVistrahTab} from './admin-page-editor';
 
 export type AdminTheme = {
@@ -137,26 +137,26 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
     <View style={{ gap: 14 }}>
       <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.heading, { fontSize: 18, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight }]}>
+          <Text style={[styles.heading, { fontSize: 18, color: colors.text }]}>
             <UiText value={'Homepage Editor'} />
           </Text>
-          <Text style={[styles.muted, { fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight }]}>
+          <Text style={[styles.muted, { fontSize: 12, color: colors.muted }, tabularNums]}>
             Revision {draft?.revision || 1} · Published v{draft?.published_version || 'None'}
           </Text>
         </View>
         <Pressable onPress={() => void loadHomepage()} style={{ padding: 6 }}>
-          <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>Refresh ↺</Text>
+          <Text style={{ color: colors.accent, fontWeight: '700' }}>Refresh ↺</Text>
         </Pressable>
       </View>
 
       {Boolean(error) && (
-        <View style={{ backgroundColor: '#be123c20', borderColor: '#be123c', borderWidth: 1, padding: 10, borderRadius: 10 }}>
-          <Text style={{ color: '#f43f5e', fontSize: 12 }}>{error}</Text>
+        <View style={{ backgroundColor: colors.elevated, borderColor: colors.danger, borderWidth: 1, padding: 10, borderRadius: radii.surface }}>
+          <Text style={{ color: colors.danger, fontSize: 12 }}>{error}</Text>
         </View>
       )}
       {Boolean(notice) && (
-        <View style={{ backgroundColor: '#05966920', borderColor: '#059669', borderWidth: 1, padding: 10, borderRadius: 10 }}>
-          <Text style={{ color: '#10b981', fontSize: 12 }}>{notice}</Text>
+        <View style={{ backgroundColor: colors.elevated, borderColor: colors.success, borderWidth: 1, padding: 10, borderRadius: radii.surface }}>
+          <Text style={{ color: colors.success, fontSize: 12 }}>{notice}</Text>
         </View>
       )}
 
@@ -165,16 +165,16 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
         <Pressable
           onPress={() => void handleSaveDraft()}
           disabled={busy || !dirty}
-          style={{ flex: 1, padding: 12, borderRadius: 10, backgroundColor: dirty ? '#3b82f6' : '#64748b', alignItems: 'center' }}
+          style={{ flex: 1, padding: 12, borderRadius: radii.action, borderWidth: 1, borderColor: dirty ? colors.accent : colors.borderSubtle, backgroundColor: dirty ? colors.accent : colors.elevated, alignItems: 'center' }}
         >
-          <Text style={{ color: '#fff', fontWeight: '700' }}>Save Draft</Text>
+          <Text style={{ color: dirty ? colors.brandPrimaryInk : colors.muted, fontWeight: '700' }}>Save Draft</Text>
         </Pressable>
         <Pressable
           onPress={() => void handlePublish()}
           disabled={busy}
-          style={{ flex: 1, padding: 12, borderRadius: 10, backgroundColor: '#16a34a', alignItems: 'center' }}
+          style={{ flex: 1, padding: 12, borderRadius: radii.action, backgroundColor: colors.brandPrimary, alignItems: 'center' }}
         >
-          <Text style={{ color: '#fff', fontWeight: '800' }}>⚡ Publish Live</Text>
+          <Text style={{ color: colors.brandPrimaryInk, fontWeight: '800' }}>⚡ Publish Live</Text>
         </Pressable>
       </View>
 
@@ -186,8 +186,8 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
             style={[
               styles.card,
               {
-                borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                borderColor: colors.borderSubtle,
+                backgroundColor: colors.surface,
                 padding: 14,
                 gap: 8,
               },
@@ -195,20 +195,20 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
           >
             <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.heading, { fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight }]}>
+                <Text style={[styles.heading, { fontSize: 15, color: colors.text }]}>
                   {idx + 1}. {sec.title || 'Untitled Section'}
                 </Text>
-                <Text style={[styles.muted, { fontSize: 11 }]}>
+                <Text style={[styles.muted, { fontSize: 11 }, tabularNums]}>
                   Type: {sec.template} · Size: {sec.size} · {sec.service_ids?.length || 0} services
                 </Text>
               </View>
 
               <View style={{ flexDirection: 'row', gap: 6 }}>
                 <Pressable onPress={() => moveSection(idx, -1)} disabled={idx === 0} style={{ padding: 6, opacity: idx === 0 ? 0.3 : 1 }}>
-                  <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>▲</Text>
+                  <Text style={{ color: colors.accent, fontWeight: '700' }}>▲</Text>
                 </Pressable>
                 <Pressable onPress={() => moveSection(idx, 1)} disabled={idx === draft.layout.sections.length - 1} style={{ padding: 6, opacity: idx === draft.layout.sections.length - 1 ? 0.3 : 1 }}>
-                  <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>▼</Text>
+                  <Text style={{ color: colors.accent, fontWeight: '700' }}>▼</Text>
                 </Pressable>
               </View>
             </View>
@@ -223,7 +223,7 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
 // 3. MEMBERSHIPS & BENEFITS TAB (Native Business Subscribers & Quotas)
 // ============================================================================
 export function AdminMembershipsTab({ adminTheme }: { adminTheme: AdminTheme }) {
-  const { styles, colors, mode } = useTheme();
+  const { styles, colors } = useTheme();
   const [memberships, setMemberships] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -251,27 +251,27 @@ export function AdminMembershipsTab({ adminTheme }: { adminTheme: AdminTheme }) 
     <View style={{ gap: 14 }}>
       <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.heading, { fontSize: 18, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight }]}>
+          <Text style={[styles.heading, { fontSize: 18, color: colors.text }]}>
             <UiText value={'Memberships & Benefits'} />
           </Text>
-          <Text style={[styles.muted, { fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight }]}>
+          <Text style={[styles.muted, { fontSize: 12, color: colors.muted }, tabularNums]}>
             {memberships.length} businesses subscribed
           </Text>
         </View>
         <Pressable onPress={() => void loadMemberships()} style={{ padding: 6 }}>
-          <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>Refresh ↺</Text>
+          <Text style={{ color: colors.accent, fontWeight: '700' }}>Refresh ↺</Text>
         </Pressable>
       </View>
 
       {Boolean(error) && (
-        <View style={{ backgroundColor: '#be123c20', borderColor: '#be123c', borderWidth: 1, padding: 10, borderRadius: 10 }}>
-          <Text style={{ color: '#f43f5e', fontSize: 12 }}>{error}</Text>
+        <View style={{ backgroundColor: colors.elevated, borderColor: colors.danger, borderWidth: 1, padding: 10, borderRadius: radii.surface }}>
+          <Text style={{ color: colors.danger, fontSize: 12 }}>{error}</Text>
         </View>
       )}
 
       {!memberships.length ? (
-        <View style={[styles.card, { borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight }]}>
-          <Text style={[styles.muted, { color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight }]}>
+        <View style={[styles.card, { borderColor: colors.borderSubtle, backgroundColor: colors.surface }]}>
+          <Text style={[styles.muted, { color: colors.muted }]}>
             No business memberships recorded.
           </Text>
         </View>
@@ -282,24 +282,24 @@ export function AdminMembershipsTab({ adminTheme }: { adminTheme: AdminTheme }) 
             style={[
               styles.card,
               {
-                borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                borderColor: colors.borderSubtle,
+                backgroundColor: colors.surface,
                 padding: 14,
                 gap: 8,
               },
             ]}
           >
             <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
-              <Text style={[styles.heading, { fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight }]}>
+              <Text style={[styles.heading, { fontSize: 15, color: colors.text }]}>
                 {m.business_name || `Business #${m.user_id}`}
               </Text>
-              <View style={{ backgroundColor: '#e5a93c25', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}>
-                <Text style={{ color: '#e5a93c', fontWeight: '800', fontSize: 11 }}>{m.tier || 'MEMBER'}</Text>
+              <View style={{ backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, paddingHorizontal: 8, paddingVertical: 3, borderRadius: radii.pill }}>
+                <Text style={{ color: colors.brandPrimary, fontWeight: '800', fontSize: 11 }}>{m.tier || 'MEMBER'}</Text>
               </View>
             </View>
 
-            <Text style={[styles.muted, { fontSize: 12 }]}>
-              Status: <Text style={{ color: '#22c55e', fontWeight: '700' }}>{m.status || 'ACTIVE'}</Text> · Quota: {m.job_posts_remaining ?? 'Unlimited'} jobs
+            <Text style={[styles.muted, { fontSize: 12 }, tabularNums]}>
+              Status: <Text style={{ color: colors.success, fontWeight: '700' }}>{m.status || 'ACTIVE'}</Text> · Quota: {m.job_posts_remaining ?? 'Unlimited'} jobs
             </Text>
           </View>
         ))
@@ -312,7 +312,7 @@ export function AdminMembershipsTab({ adminTheme }: { adminTheme: AdminTheme }) 
 // 4. VISTRAH PACKAGES TAB (Official Platform Service Packages)
 // ============================================================================
 export function AdminVistrahServicesTab({ adminTheme }: { adminTheme: AdminTheme }) {
-  const { styles, colors, mode } = useTheme();
+  const { styles, colors } = useTheme();
   const [packages, setPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -340,27 +340,27 @@ export function AdminVistrahServicesTab({ adminTheme }: { adminTheme: AdminTheme
     <View style={{ gap: 14 }}>
       <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.heading, { fontSize: 18, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight }]}>
+          <Text style={[styles.heading, { fontSize: 18, color: colors.text }]}>
             <UiText value={'VISTRAH Platform Packages'} />
           </Text>
-          <Text style={[styles.muted, { fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight }]}>
+          <Text style={[styles.muted, { fontSize: 12, color: colors.muted }, tabularNums]}>
             {packages.length} curated service packages
           </Text>
         </View>
         <Pressable onPress={() => void loadPackages()} style={{ padding: 6 }}>
-          <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>Refresh ↺</Text>
+          <Text style={{ color: colors.accent, fontWeight: '700' }}>Refresh ↺</Text>
         </Pressable>
       </View>
 
       {Boolean(error) && (
-        <View style={{ backgroundColor: '#be123c20', borderColor: '#be123c', borderWidth: 1, padding: 10, borderRadius: 10 }}>
-          <Text style={{ color: '#f43f5e', fontSize: 12 }}>{error}</Text>
+        <View style={{ backgroundColor: colors.elevated, borderColor: colors.danger, borderWidth: 1, padding: 10, borderRadius: radii.surface }}>
+          <Text style={{ color: colors.danger, fontSize: 12 }}>{error}</Text>
         </View>
       )}
 
       {!packages.length ? (
-        <View style={[styles.card, { borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight }]}>
-          <Text style={[styles.muted, { color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight }]}>
+        <View style={[styles.card, { borderColor: colors.borderSubtle, backgroundColor: colors.surface }]}>
+          <Text style={[styles.muted, { color: colors.muted }]}>
             No platform packages created yet.
           </Text>
         </View>
@@ -371,24 +371,24 @@ export function AdminVistrahServicesTab({ adminTheme }: { adminTheme: AdminTheme
             style={[
               styles.card,
               {
-                borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+                borderColor: colors.borderSubtle,
+                backgroundColor: colors.surface,
                 padding: 14,
                 gap: 8,
               },
             ]}
           >
             <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'center' }]}>
-              <Text style={[styles.heading, { fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight }]}>
+              <Text style={[styles.heading, { fontSize: 15, color: colors.text }]}>
                 {pkg.title}
               </Text>
-              <View style={{ backgroundColor: '#15803d25', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}>
-                <Text style={{ color: '#22c55e', fontWeight: '800', fontSize: 11 }}>{pkg.status}</Text>
+              <View style={{ backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle, paddingHorizontal: 8, paddingVertical: 3, borderRadius: radii.pill }}>
+                <Text style={{ color: colors.success, fontWeight: '800', fontSize: 11 }}>{pkg.status}</Text>
               </View>
             </View>
 
-            <Text style={[styles.muted, { fontSize: 12 }]}>
-              Price: <Text style={{ color: '#e5a93c', fontWeight: '700' }}>₹{(pkg.unit_price_paise / 100).toFixed(2)}</Text> · Business: {pkg.business}
+            <Text style={[styles.muted, { fontSize: 12 }, tabularNums]}>
+              Price: <Text style={{ color: colors.brandPrimary, fontWeight: '700' }}>₹{(pkg.unit_price_paise / 100).toFixed(2)}</Text> · Business: {pkg.business}
             </Text>
           </View>
         ))

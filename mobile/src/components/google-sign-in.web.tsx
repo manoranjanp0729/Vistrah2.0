@@ -38,7 +38,7 @@ export function GoogleSignIn({disabled,onCredential,onError}:{disabled:boolean;o
  if(!clientId)return <Text style={styles.muted}><UiText value={"Google sign-in is not configured yet. Use email and password."}/></Text>;
  const clipWidth=Math.min(effectiveWidth,Math.max(200,Math.round(gsiWidth*SCALE)-4));
  return <div aria-disabled={disabled} style={{width:'100%',opacity:disabled?.5:1,pointerEvents:disabled?'none':undefined}}>
-  <div ref={wrap} style={{width:'100%',minHeight:TARGET_HEIGHT,height:TARGET_HEIGHT,borderRadius:radii.action,backgroundColor:'#ffffff',border:`${layout.borderWidth}px solid ${colors.accent}`,display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',boxSizing:'border-box'}}>
+  <div ref={wrap} style={{width:'100%',minHeight:TARGET_HEIGHT,height:TARGET_HEIGHT,borderRadius:radii.action,backgroundColor:colors.surface,border:`1px solid ${colors.borderSubtle}`,display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',boxSizing:'border-box'}}>
    <div style={{width:clipWidth,height:TARGET_HEIGHT-4,overflow:'hidden'}}>
     <div ref={host} style={{width:gsiWidth,height:BASE_HEIGHT,transform:`translate(-2px,-2px) scale(${SCALE})`,transformOrigin:'0 0'}}/>
    </div>

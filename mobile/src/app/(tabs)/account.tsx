@@ -9,7 +9,7 @@ import Feather from '@expo/vector-icons/Feather';
 import {router} from 'expo-router';
 import {Page,Action,Loading,ErrorPanel} from '../../components/ui';
 import {useSession} from '../../lib/session';
-import {useTheme,spacing} from '../../lib/theme';
+import {radii,spacing,useTheme} from '../../lib/theme';
 import {LinearGradient} from 'expo-linear-gradient';
 
 function FeatureBannerButton({
@@ -17,7 +17,6 @@ function FeatureBannerButton({
   subtitle,
   icon,
   badgeText,
-  gradientColors,
   onPress,
   accessibilityLabel,
 }: {
@@ -25,32 +24,27 @@ function FeatureBannerButton({
   subtitle: string;
   icon: ComponentProps<typeof Feather>['name'];
   badgeText: string;
-  gradientColors: [string, string, string];
+  gradientColors?: [string, string, string];
   onPress: () => void;
   accessibilityLabel: string;
 }) {
-  const banner=useBannerTheme();
+  const {colors}=useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       onPress={onPress}
       style={({pressed}) => ({
-        borderRadius: 20,
+        borderRadius: radii.surface,
         overflow: 'hidden',
         opacity: pressed ? 0.92 : 1,
         transform: [{scale: pressed ? 0.99 : 1}],
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.22)',
-        shadowColor: banner.shadow,
-        shadowOffset: {width: 0, height: 3},
-        shadowOpacity: 0.16,
-        shadowRadius: 8,
-        elevation: 3,
+        borderColor: colors.borderSubtle,
       })}
     >
       <LinearGradient
-        colors={gradientColors}
+        colors={[colors.surface, colors.elevated, colors.surface]}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
         style={{
@@ -66,22 +60,22 @@ function FeatureBannerButton({
           style={{
             width: 44,
             height: 44,
-            borderRadius: 22,
-            backgroundColor: 'rgba(255,255,255,0.20)',
+            borderRadius: radii.pill,
+            backgroundColor: colors.brandPrimary,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Feather name={icon} size={22} color="#FFFFFF" />
+          <Feather name={icon} size={22} color={colors.brandPrimaryInk} />
         </View>
         <View style={{flex: 1, gap: 2}}>
-          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: banner.muted, textTransform: 'uppercase'}}>
+          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: colors.brandPrimary, textTransform: 'uppercase'}}>
             <UiText value={badgeText}/>
           </Text>
-          <Text style={{fontSize: 16, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2}}>
+          <Text style={{fontSize: 16, fontWeight: '800', color: colors.text, letterSpacing: 0.2}}>
             <UiText value={title}/>
           </Text>
-          <Text numberOfLines={1} style={{fontSize: 12, color: banner.muted, fontWeight: '500'}}>
+          <Text numberOfLines={1} style={{fontSize: 12, color: colors.muted, fontWeight: '500'}}>
             <UiText value={subtitle}/>
           </Text>
         </View>
@@ -89,21 +83,23 @@ function FeatureBannerButton({
           style={{
             width: 32,
             height: 32,
-            borderRadius: 16,
-            backgroundColor: 'rgba(255,255,255,0.18)',
+            borderRadius: radii.pill,
+            backgroundColor: colors.elevated,
+            borderWidth: 1,
+            borderColor: colors.borderSubtle,
             alignItems: 'center',
             justifyContent: 'center',
           }}
         >
-          <Feather name="chevron-right" size={18} color="#FFFFFF" />
+          <Feather name="chevron-right" size={18} color={colors.text} />
         </View>
       </LinearGradient>
     </Pressable>
   );
 }
 
-function Row({label,icon,onPress,external=false}:{label:string;icon:ComponentProps<typeof Feather>['name'];onPress:()=>void;external?:boolean}){const {colors,styles}=useTheme();return <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel={label+(external?', opens website':'')} onPress={onPress} style={({pressed})=>({minHeight:54,padding:14,flexDirection:'row',alignItems:'center',gap:12,backgroundColor:pressed?colors.background:colors.surface})}><Feather name={icon} size={18} color={colors.text}/><Text style={[styles.text,{flex:1,fontSize:13,lineHeight:18}]}><UiText value={label}/></Text><Feather name={external?'external-link':'chevron-right'} size={16} color={colors.muted}/></UiElement>;}
-function Group({children}:{children:ReactNode}){const {colors}=useTheme();return <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,gap:1,backgroundColor:colors.border}}>{children}</View>;}
+function Row({label,icon,onPress,external=false}:{label:string;icon:ComponentProps<typeof Feather>['name'];onPress:()=>void;external?:boolean}){const {colors,styles}=useTheme();return <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel={label+(external?', opens website':'')} onPress={onPress} style={({pressed})=>({minHeight:54,padding:14,flexDirection:'row',alignItems:'center',gap:12,backgroundColor:pressed?colors.elevated:colors.surface})}><Feather name={icon} size={18} color={colors.text}/><Text style={[styles.text,{flex:1,fontSize:13,lineHeight:18}]}><UiText value={label}/></Text><Feather name={external?'external-link':'chevron-right'} size={16} color={colors.muted}/></UiElement>;}
+function Group({children}:{children:ReactNode}){const {colors}=useTheme();return <View style={{borderRadius:radii.surface,overflow:'hidden',borderWidth:1,borderColor:colors.borderSubtle,gap:1,backgroundColor:colors.borderSubtle}}>{children}</View>;}
 function Section({title,subtitle,children}:{title:string;subtitle:string;children:ReactNode}){const {styles}=useTheme();return <View style={{gap:spacing.elementGap}}><View style={{gap:spacing.small}}><Text accessibilityRole="header" style={styles.heading}><UiText value={title}/></Text><Text style={[styles.muted,{fontSize:12}]}><UiText value={subtitle}/></Text></View><Group>{children}</Group></View>;}
 
 export default function Account(){const {colors,styles}=useTheme();const banner=useBannerTheme();const {copy,t}=useLanguage();

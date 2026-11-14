@@ -1,16 +1,15 @@
 import {BannerGeometry} from '../../components/banner-geometry';
 import {useBannerTheme} from '../../lib/banner-theme';
 import {Text} from '../../components/typography';
-import {UiText, UiElement} from '../../components/localized-ui';
+import {UiText} from '../../components/localized-ui';
 import {useLanguage} from '../../lib/language';
-import {useTheme} from '../../lib/theme';
+import {radii, useTheme} from '../../lib/theme';
 import {useEffect, useState} from 'react';
 import {AccessibilityInfo,Animated,Easing,Image,Platform,Pressable,StyleSheet,View,} from 'react-native';
 import {router} from 'expo-router';
 import {LinearGradient} from 'expo-linear-gradient';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
-import brandTheme from '../../../../shared/brand-theme.json';
 import {Page} from '../../components/ui';
 
 const agriPhoto = require('../../../assets/connect/agriconnect-tractor-paddy.png');
@@ -43,8 +42,6 @@ const popularServices = [
     category: 'agriculture-and-farming',
     subcategory: 'farm-equipment-and-machinery',
     icon: 'truck' as const,
-    accent: '#2d6a4f',
-    bg: '#edf7f1',
   },
   {
     key: 'soil',
@@ -53,8 +50,6 @@ const popularServices = [
     category: 'agriculture-and-farming',
     subcategory: 'soil-testing-and-crop-care',
     icon: 'layers' as const,
-    accent: '#315f33',
-    bg: '#f1f8ed',
   },
   {
     key: 'doctor',
@@ -63,8 +58,6 @@ const popularServices = [
     category: 'health-fitness-and-wellness',
     subcategory: 'doctors-and-specialists',
     icon: 'user' as const,
-    accent: '#1f6f8b',
-    bg: '#ecf6fa',
   },
   {
     key: 'diagnostics',
@@ -73,16 +66,13 @@ const popularServices = [
     category: 'health-fitness-and-wellness',
     subcategory: 'diagnostic-services',
     icon: 'activity' as const,
-    accent: '#19537a',
-    bg: '#eaf2f8',
   },
 ] as const;
 
 export default function VistrahEssentials() {
   const banner=useBannerTheme();
-  const {mode, colors} = useTheme();
+  const {colors} = useTheme();
   const {t} = useLanguage();
-  const isDark = mode === 'dark';
 
   const [reducedMotion, setReducedMotion] = useState(true);
   const [paddySway] = useState(() => new Animated.Value(0));
@@ -154,54 +144,49 @@ export default function VistrahEssentials() {
     <Page sectioned>
       {/* 1. SIGNATURE VISTRAH ESSENTIALS HERO */}
       <LinearGradient
-        colors={banner.gradient}
+        colors={[colors.surface, colors.elevated, colors.elevated]}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
-        style={s.hero}
+        style={[s.hero, {borderColor: colors.borderSubtle}]}
       >
         <BannerGeometry/>
         <View pointerEvents="none" style={[s.heroGlowOrb,{backgroundColor:banner.glow}]} />
         <View style={s.heroTopRow}>
-          <LinearGradient
-            colors={banner.gradient}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={s.heroTag}
-          >
-            <Ionicons name="sparkles" size={11} color="#fff" />
-            <Text style={s.heroTagText}>VISTRAH ESSENTIALS</Text>
-          </LinearGradient>
-          <View style={s.heroVerifiedTag}>
-            <Feather name="check-circle" size={12} color="#34d399" />
-            <Text style={[s.heroVerifiedText,{color:banner.muted}]}>
+          <View style={[s.heroTag, {backgroundColor: colors.brandPrimary}]}>
+            <Ionicons name="sparkles" size={11} color={colors.brandPrimaryInk} />
+            <Text style={[s.heroTagText, {color: colors.brandPrimaryInk}]}>VISTRAH ESSENTIALS</Text>
+          </View>
+          <View style={[s.heroVerifiedTag, {backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle}]}>
+            <Feather name="check-circle" size={12} color={colors.success} />
+            <Text style={[s.heroVerifiedText,{color:colors.muted}]}>
               <UiText value="Community Lifelines" />
             </Text>
           </View>
         </View>
 
-        <Text accessibilityRole="header" style={s.heroTitle}>
+        <Text accessibilityRole="header" style={[s.heroTitle, {color: colors.text}]}>
           <UiText value="Essential Agriculture & Healthcare" />
         </Text>
-        <Text style={[s.heroSubtitle,{color:banner.muted}]}>
+        <Text style={[s.heroSubtitle,{color:colors.muted}]}>
           <UiText value="Dedicated community ecosystems connecting farmers, healthcare seekers, and verified neighborhood experts across India." />
         </Text>
 
         <View style={s.heroPillsRow}>
-          <View style={s.heroPill}>
-            <Ionicons name="leaf" size={12} color="#95d5b2" />
-            <Text style={[s.heroPillText,{color:banner.muted}]}>
+          <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+            <Ionicons name="leaf" size={12} color={colors.success} />
+            <Text style={[s.heroPillText,{color:colors.text}]}>
               <UiText value="Direct Farm Access" />
             </Text>
           </View>
-          <View style={s.heroPill}>
-            <Ionicons name="heart" size={12} color="#90e0ef" />
-            <Text style={[s.heroPillText,{color:banner.muted}]}>
+          <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+            <Ionicons name="heart" size={12} color={colors.accent} />
+            <Text style={[s.heroPillText,{color:colors.text}]}>
               <UiText value="Verified Health" />
             </Text>
           </View>
-          <View style={s.heroPill}>
-            <Feather name="shield" size={12} color="#f0b27a" />
-            <Text style={[s.heroPillText,{color:banner.muted}]}>
+          <View style={[s.heroPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+            <Feather name="shield" size={12} color={colors.brandPrimary} />
+            <Text style={[s.heroPillText,{color:colors.text}]}>
               <UiText value="Zero Middlemen" />
             </Text>
           </View>
@@ -210,10 +195,10 @@ export default function VistrahEssentials() {
 
       {/* 2. FLAGSHIP AGRICONNECT SHOWCASE CARD */}
       <LinearGradient
-        colors={['#173c26', '#225235', '#32724c']}
+        colors={[colors.surface, colors.elevated, colors.elevated]}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
-        style={s.connectCard}
+        style={[s.connectCard, {borderColor: colors.borderSubtle}]}
       >
         {/* Animated Paddy Sway */}
         <View pointerEvents="none" style={s.paddyWrap}>
@@ -242,21 +227,21 @@ export default function VistrahEssentials() {
 
         {/* Card Header */}
         <View style={s.cardHeaderRow}>
-          <View style={[s.cardIconCircle, {backgroundColor: '#276340'}]}>
-            <Ionicons name="leaf" size={20} color="#a3e635" />
+          <View style={[s.cardIconCircle, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+            <Ionicons name="leaf" size={20} color={colors.success} />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
-            <Text style={[s.cardEyebrow, {color: '#d4e6a8'}]}>FARM &amp; HARVEST ECOSYSTEM</Text>
-            <Text accessibilityRole="header" style={s.cardTitle}>
+            <Text style={[s.cardEyebrow, {color: colors.success}]}>FARM &amp; HARVEST ECOSYSTEM</Text>
+            <Text accessibilityRole="header" style={[s.cardTitle, {color: colors.text}]}>
               VISTRAH AgriConnect
             </Text>
           </View>
         </View>
 
-        <Text style={s.cardHeadline}>{t('agri.headline')}</Text>
+        <Text style={[s.cardHeadline, {color: colors.text}]}>{t('agri.headline')}</Text>
 
         {/* Feature Hero Photo */}
-        <View style={s.photoFrame}>
+        <View style={[s.photoFrame, {backgroundColor: colors.background, borderColor: colors.borderSubtle}]}>
           <Image
             source={agriPhoto}
             resizeMode="contain"
@@ -265,12 +250,12 @@ export default function VistrahEssentials() {
           />
         </View>
 
-        <Text style={s.cardDescription}>{t('agri.description')}</Text>
+        <Text style={[s.cardDescription, {color: colors.muted}]}>{t('agri.description')}</Text>
 
         {/* Free Membership Badge */}
-        <View style={s.agriOfferPill}>
-          <Ionicons name="ribbon-outline" size={14} color="#d4e6a8" />
-          <Text style={s.agriOfferText}>{t('agri.membership')}</Text>
+        <View style={[s.agriOfferPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+          <Ionicons name="ribbon-outline" size={14} color={colors.success} />
+          <Text style={[s.agriOfferText, {color: colors.success}]}>{t('agri.membership')}</Text>
         </View>
 
         {/* Direct Subcategory Shortcut Tags */}
@@ -285,10 +270,10 @@ export default function VistrahEssentials() {
                   params: {category: 'agriculture-and-farming', subcategory: tag.slug},
                 })
               }
-              style={({pressed}) => [s.agriTag, {opacity: pressed ? 0.8 : 1}]}
+              style={({pressed}) => [s.agriTag, {backgroundColor: pressed ? colors.elevated : colors.surface, borderColor: colors.borderSubtle}]}
             >
-              <Feather name={tag.icon as any} size={11} color="#d4e6a8" />
-              <Text style={s.agriTagText}>{tag.title}</Text>
+              <Feather name={tag.icon as any} size={11} color={colors.success} />
+              <Text style={[s.agriTagText, {color: colors.text}]}>{tag.title}</Text>
             </Pressable>
           ))}
         </View>
@@ -297,19 +282,19 @@ export default function VistrahEssentials() {
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push('/agri-connect')}
-          style={({pressed}) => [s.agriCtaButton, {opacity: pressed ? 0.9 : 1}]}
+          style={({pressed}) => [s.agriCtaButton, {backgroundColor: pressed ? colors.brandPrimaryHover : colors.brandPrimary}]}
         >
-          <Text style={s.agriCtaText}>{t('agri.cta')}</Text>
-          <Feather name="arrow-right" size={16} color="#1b4332" />
+          <Text style={[s.agriCtaText, {color: colors.brandPrimaryInk}]}>{t('agri.cta')}</Text>
+          <Feather name="arrow-right" size={16} color={colors.brandPrimaryInk} />
         </Pressable>
       </LinearGradient>
 
       {/* 3. FLAGSHIP HEALTHCONNECT SHOWCASE CARD */}
       <LinearGradient
-        colors={['#0f3554', '#154d7b', '#1e6f9f']}
+        colors={[colors.surface, colors.elevated, colors.elevated]}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
-        style={s.connectCard}
+        style={[s.connectCard, {borderColor: colors.borderSubtle}]}
       >
         {/* Animated ECG Pulse */}
         <View pointerEvents="none" style={s.ecgDecoration}>
@@ -327,7 +312,7 @@ export default function VistrahEssentials() {
                       width: Math.hypot(x - px, y - py),
                       height: 1.5,
                       borderRadius: 1,
-                      backgroundColor: '#e9fbff',
+                      backgroundColor: colors.accent,
                       transformOrigin: 'left center',
                       transform: [{rotate: `${(Math.atan2(y - py, x - px) * 180) / Math.PI}deg`}],
                     }}
@@ -354,7 +339,7 @@ export default function VistrahEssentials() {
                       width: Math.hypot(x - px, y - py),
                       height: 1.5,
                       borderRadius: 1,
-                      backgroundColor: '#ffffff',
+                      backgroundColor: colors.text,
                       transformOrigin: 'left center',
                       transform: [{rotate: `${(Math.atan2(y - py, x - px) * 180) / Math.PI}deg`}],
                     }}
@@ -367,21 +352,21 @@ export default function VistrahEssentials() {
 
         {/* Card Header */}
         <View style={s.cardHeaderRow}>
-          <View style={[s.cardIconCircle, {backgroundColor: '#1b5f8c'}]}>
-            <Ionicons name="heart" size={20} color="#38bdf8" />
+          <View style={[s.cardIconCircle, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+            <Ionicons name="heart" size={20} color={colors.accent} />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
-            <Text style={[s.cardEyebrow, {color: '#a5f3fc'}]}>CARE &amp; WELLNESS NETWORK</Text>
-            <Text accessibilityRole="header" style={s.cardTitle}>
+            <Text style={[s.cardEyebrow, {color: colors.accent}]}>CARE &amp; WELLNESS NETWORK</Text>
+            <Text accessibilityRole="header" style={[s.cardTitle, {color: colors.text}]}>
               VISTRAH HealthConnect
             </Text>
           </View>
         </View>
 
-        <Text style={s.cardHeadline}>{t('health.headline')}</Text>
+        <Text style={[s.cardHeadline, {color: colors.text}]}>{t('health.headline')}</Text>
 
         {/* Feature Hero Photo */}
-        <View style={s.photoFrame}>
+        <View style={[s.photoFrame, {backgroundColor: colors.background, borderColor: colors.borderSubtle}]}>
           <Image
             source={healthPhoto}
             resizeMode="contain"
@@ -390,12 +375,12 @@ export default function VistrahEssentials() {
           />
         </View>
 
-        <Text style={s.cardDescription}>{t('health.description')}</Text>
+        <Text style={[s.cardDescription, {color: colors.muted}]}>{t('health.description')}</Text>
 
         {/* Highlight Note */}
-        <View style={s.healthOfferPill}>
-          <Ionicons name="shield-checkmark-outline" size={14} color="#a5f3fc" />
-          <Text style={s.healthOfferText}>{t('health.highlight')}</Text>
+        <View style={[s.healthOfferPill, {backgroundColor: colors.elevated, borderColor: colors.borderSubtle}]}>
+          <Ionicons name="shield-checkmark-outline" size={14} color={colors.accent} />
+          <Text style={[s.healthOfferText, {color: colors.accent}]}>{t('health.highlight')}</Text>
         </View>
 
         {/* Direct Subcategory Shortcut Tags */}
@@ -410,10 +395,10 @@ export default function VistrahEssentials() {
                   params: {category: 'health-fitness-and-wellness', subcategory: tag.slug},
                 })
               }
-              style={({pressed}) => [s.healthTag, {opacity: pressed ? 0.8 : 1}]}
+              style={({pressed}) => [s.healthTag, {backgroundColor: pressed ? colors.elevated : colors.surface, borderColor: colors.borderSubtle}]}
             >
-              <Feather name={tag.icon as any} size={11} color="#bae6fd" />
-              <Text style={s.healthTagText}>{tag.title}</Text>
+              <Feather name={tag.icon as any} size={11} color={colors.accent} />
+              <Text style={[s.healthTagText, {color: colors.text}]}>{tag.title}</Text>
             </Pressable>
           ))}
         </View>
@@ -422,10 +407,10 @@ export default function VistrahEssentials() {
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push('/health-connect')}
-          style={({pressed}) => [s.healthCtaButton, {opacity: pressed ? 0.9 : 1}]}
+          style={({pressed}) => [s.healthCtaButton, {backgroundColor: pressed ? colors.brandPrimaryHover : colors.brandPrimary}]}
         >
-          <Text style={s.healthCtaText}>{t('health.cta')}</Text>
-          <Feather name="arrow-right" size={16} color="#0c4a6e" />
+          <Text style={[s.healthCtaText, {color: colors.brandPrimaryInk}]}>{t('health.cta')}</Text>
+          <Feather name="arrow-right" size={16} color={colors.brandPrimaryInk} />
         </Pressable>
       </LinearGradient>
 
@@ -463,14 +448,13 @@ export default function VistrahEssentials() {
               style={({pressed}) => [
                 s.gridCard,
                 {
-                  backgroundColor: isDark ? '#1e182d' : '#ffffff',
-                  borderColor: isDark ? '#362a4d' : '#e4dcee',
-                  opacity: pressed ? 0.88 : 1,
+                  backgroundColor: pressed ? colors.elevated : colors.surface,
+                  borderColor: colors.borderSubtle,
                 },
               ]}
             >
-              <View style={[s.gridIconWrap, {backgroundColor: isDark ? '#2a223f' : item.bg}]}>
-                <Feather name={item.icon} size={18} color={item.accent} />
+              <View style={[s.gridIconWrap, {backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle}]}>
+                <Feather name={item.icon} size={18} color={colors.brandPrimary} />
               </View>
               <View style={{flex: 1, minWidth: 0}}>
                 <Text numberOfLines={1} style={[s.gridCardTitle, {color: colors.text}]}>
@@ -491,8 +475,8 @@ export default function VistrahEssentials() {
         style={[
           s.trustBox,
           {
-            backgroundColor: isDark ? '#191329' : '#f7f4fc',
-            borderColor: isDark ? '#312547' : '#e7def0',
+            backgroundColor: colors.surface,
+            borderColor: colors.borderSubtle,
           },
         ]}
       >
@@ -502,8 +486,8 @@ export default function VistrahEssentials() {
         </Text>
 
         <View style={s.trustItem}>
-          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#29213e' : '#edf7f1'}]}>
-            <Feather name="users" size={16} color="#2d6a4f" />
+          <View style={[s.trustIconBox, {backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle}]}>
+            <Feather name="users" size={16} color={colors.success} />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
             <Text style={[s.trustItemTitle, {color: colors.text}]}>
@@ -516,8 +500,8 @@ export default function VistrahEssentials() {
         </View>
 
         <View style={s.trustItem}>
-          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#29213e' : '#ebf8ff'}]}>
-            <Feather name="check-circle" size={16} color="#1f6f8b" />
+          <View style={[s.trustIconBox, {backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle}]}>
+            <Feather name="check-circle" size={16} color={colors.accent} />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
             <Text style={[s.trustItemTitle, {color: colors.text}]}>
@@ -530,8 +514,8 @@ export default function VistrahEssentials() {
         </View>
 
         <View style={s.trustItem}>
-          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#29213e' : '#faf5ff'}]}>
-            <Feather name="globe" size={16} color="#7741c4" />
+          <View style={[s.trustIconBox, {backgroundColor: colors.elevated, borderWidth: 1, borderColor: colors.borderSubtle}]}>
+            <Feather name="globe" size={16} color={colors.brandPrimary} />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
             <Text style={[s.trustItemTitle, {color: colors.text}]}>
@@ -546,52 +530,42 @@ export default function VistrahEssentials() {
 
       {/* 6. PARTNER & PROVIDER ECOSYSTEM INVITATION BANNER */}
       <LinearGradient
-        colors={isDark ? ['#130e22', '#1f1636', '#2f1847'] : ['#181126', '#261746', '#3f1a63']}
+        colors={[colors.surface, colors.elevated, colors.elevated]}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
-        style={s.partnerBanner}
+        style={[s.partnerBanner, {borderColor: colors.borderSubtle}]}
       >
-        <View pointerEvents="none" style={s.partnerGlow} />
+        <View pointerEvents="none" style={[s.partnerGlow, {backgroundColor: banner.glow}]} />
         <View style={s.partnerTopRow}>
-          <LinearGradient
-            colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={s.partnerTag}
-          >
-            <Text style={s.partnerTagText}>⭐ PROVIDER PARTNERSHIP</Text>
-          </LinearGradient>
+          <View style={[s.partnerTag, {backgroundColor: colors.brandPrimary}]}>
+            <Text style={[s.partnerTagText, {color: colors.brandPrimaryInk}]}>⭐ PROVIDER PARTNERSHIP</Text>
+          </View>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-            <View style={{width: 6, height: 6, borderRadius: 3, backgroundColor: '#34d399'}} />
-            <Text style={{color: '#c2b2df', fontSize: 11, fontWeight: '600'}}>
+            <View style={{width: 6, height: 6, borderRadius: radii.pill, backgroundColor: colors.success}} />
+            <Text style={{color: colors.muted, fontSize: 11, fontWeight: '600'}}>
               <UiText value="Open Registration" />
             </Text>
           </View>
         </View>
 
-        <Text accessibilityRole="header" style={s.partnerTitle}>
+        <Text accessibilityRole="header" style={[s.partnerTitle, {color: colors.text}]}>
           <UiText value="Are you an Agricultural Specialist, Doctor, or Clinic?" />
         </Text>
-        <Text style={s.partnerBody}>
+        <Text style={[s.partnerBody, {color: colors.muted}]}>
           <UiText value="List your essential services on Vistrah to connect with thousands of local households and farmers across your region." />
         </Text>
 
         <Pressable
           accessibilityRole="button"
           onPress={() => router.push('/membership')}
-          style={({pressed}) => [s.partnerButton, {opacity: pressed ? 0.9 : 1}]}
+          style={({pressed}) => [s.partnerButton, {backgroundColor: pressed ? colors.brandPrimaryHover : colors.brandPrimary}]}
         >
-          <LinearGradient
-            colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            style={s.partnerButtonGradient}
-          >
-            <Text style={s.partnerButtonText}>
+          <View style={s.partnerButtonGradient}>
+            <Text style={[s.partnerButtonText, {color: colors.brandPrimaryInk}]}>
               <UiText value="Join Verified Provider Network" />
             </Text>
-            <Feather name="arrow-right" size={16} color="#fff" />
-          </LinearGradient>
+            <Feather name="arrow-right" size={16} color={colors.brandPrimaryInk} />
+          </View>
         </Pressable>
       </LinearGradient>
     </Page>
@@ -601,13 +575,12 @@ export default function VistrahEssentials() {
 const s = StyleSheet.create({
   // Hero
   hero: {
-    borderRadius: 22,
+    borderRadius: radii.surface,
     padding: 18,
     gap: 10,
     overflow: 'hidden',
     position: 'relative',
     borderWidth: 1,
-    borderColor: '#ffffff1a',
   },
   heroGlowOrb: {
     position: 'absolute',
@@ -615,8 +588,7 @@ const s = StyleSheet.create({
     right: -40,
     width: 140,
     height: 140,
-    borderRadius: 70,
-    backgroundColor: '#7741c4',
+    borderRadius: radii.pill,
     opacity: 0.28,
   },
   heroTopRow: {
@@ -630,13 +602,12 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 4,
-    borderRadius: 9,
+    borderRadius: radii.pill,
   },
   heroTagText: {
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.2,
-    color: '#fff',
   },
   heroVerifiedTag: {
     flexDirection: 'row',
@@ -644,25 +615,21 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 8,
-    backgroundColor: '#ffffff12',
+    borderRadius: radii.pill,
   },
   heroVerifiedText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#e2d9f3',
   },
   heroTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
     lineHeight: Platform.OS === 'android' ? 27 : 24,
     fontWeight: '800',
     letterSpacing: -0.3,
-    color: '#ffffff',
   },
   heroSubtitle: {
     fontSize: 12.5,
     lineHeight: 18,
-    color: '#d4c7ea',
   },
   heroPillsRow: {
     flexDirection: 'row',
@@ -676,28 +643,23 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 4,
-    borderRadius: 12,
-    backgroundColor: '#ffffff15',
-    borderWidth: 0.5,
-    borderColor: '#ffffff28',
+    borderRadius: radii.pill,
+    borderWidth: 1,
   },
   heroPillText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#f0eaff',
   },
 
   // Connect Card (Shared Agri & Health)
   connectCard: {
-    borderRadius: 22,
+    borderRadius: radii.surface,
     padding: 16,
     gap: 10,
     overflow: 'hidden',
     position: 'relative',
     borderWidth: 1,
-    borderColor: '#ffffff22',
     elevation: 3,
-    shadowColor: '#000',
     shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.16,
     shadowRadius: 8,
@@ -736,11 +698,10 @@ const s = StyleSheet.create({
   cardIconCircle: {
     width: 38,
     height: 38,
-    borderRadius: 12,
+    borderRadius: radii.action,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#ffffff35',
   },
   cardEyebrow: {
     fontSize: 10,
@@ -751,28 +712,23 @@ const s = StyleSheet.create({
     fontSize: Platform.OS === 'android' ? 20 : 18,
     fontWeight: '800',
     letterSpacing: -0.2,
-    color: '#ffffff',
   },
   cardHeadline: {
     fontSize: 14,
     fontWeight: '700',
     lineHeight: 19,
-    color: '#ffffff',
   },
   photoImage: {position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'},
   photoFrame: {
     width: '100%',
     aspectRatio: 2,
-    borderRadius: 14,
+    borderRadius: radii.surface,
     overflow: 'hidden',
-    backgroundColor: '#00000020',
     borderWidth: 1,
-    borderColor: '#ffffff26',
   },
   cardDescription: {
     fontSize: 12.5,
     lineHeight: 18,
-    color: '#eaf4ee',
   },
   agriOfferPill: {
     flexDirection: 'row',
@@ -780,15 +736,12 @@ const s = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 10,
-    backgroundColor: '#ffffff18',
-    borderWidth: 0.5,
-    borderColor: '#d4e6a840',
+    borderRadius: radii.pill,
+    borderWidth: 1,
   },
   agriOfferText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#d4e6a8',
   },
   healthOfferPill: {
     flexDirection: 'row',
@@ -796,15 +749,12 @@ const s = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: 10,
-    backgroundColor: '#ffffff18',
-    borderWidth: 0.5,
-    borderColor: '#bae6fd40',
+    borderRadius: radii.pill,
+    borderWidth: 1,
   },
   healthOfferText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#e0f2fe',
   },
   tagsRow: {
     flexDirection: 'row',
@@ -817,15 +767,12 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 5,
-    borderRadius: 10,
-    backgroundColor: '#12301f',
-    borderWidth: 0.5,
-    borderColor: '#d4e6a835',
+    borderRadius: radii.pill,
+    borderWidth: 1,
   },
   agriTagText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#edf7ee',
   },
   healthTag: {
     flexDirection: 'row',
@@ -833,15 +780,12 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 5,
-    borderRadius: 10,
-    backgroundColor: '#0c2e47',
-    borderWidth: 0.5,
-    borderColor: '#7dd3fc35',
+    borderRadius: radii.pill,
+    borderWidth: 1,
   },
   healthTagText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#f0f9ff',
   },
   agriCtaButton: {
     flexDirection: 'row',
@@ -849,14 +793,12 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     paddingVertical: 12,
-    borderRadius: 14,
-    backgroundColor: '#d4e6a8',
+    borderRadius: radii.action,
     marginTop: 2,
   },
   agriCtaText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#143825',
   },
   healthCtaButton: {
     flexDirection: 'row',
@@ -864,14 +806,12 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
     paddingVertical: 12,
-    borderRadius: 14,
-    backgroundColor: '#bae6fd',
+    borderRadius: radii.action,
     marginTop: 2,
   },
   healthCtaText: {
     fontSize: 13,
     fontWeight: '800',
-    color: '#073b5c',
   },
 
   // Popular Grid
@@ -902,13 +842,13 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     padding: 10,
-    borderRadius: 14,
+    borderRadius: radii.surface,
     borderWidth: 1,
   },
   gridIconWrap: {
     width: 36,
     height: 36,
-    borderRadius: 10,
+    borderRadius: radii.action,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -924,7 +864,7 @@ const s = StyleSheet.create({
   // Trust Strip
   trustBox: {
     padding: 16,
-    borderRadius: 20,
+    borderRadius: radii.surface,
     gap: 12,
     borderWidth: 1,
   },
@@ -941,7 +881,7 @@ const s = StyleSheet.create({
   trustIconBox: {
     width: 32,
     height: 32,
-    borderRadius: 10,
+    borderRadius: radii.action,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 2,
@@ -958,13 +898,12 @@ const s = StyleSheet.create({
 
   // Partner Banner
   partnerBanner: {
-    borderRadius: 22,
+    borderRadius: radii.surface,
     padding: 18,
     gap: 12,
     overflow: 'hidden',
     position: 'relative',
     borderWidth: 1,
-    borderColor: '#ffffff1a',
     marginTop: 4,
   },
   partnerGlow: {
@@ -973,8 +912,7 @@ const s = StyleSheet.create({
     right: -40,
     width: 140,
     height: 140,
-    borderRadius: 70,
-    backgroundColor: '#7741c4',
+    borderRadius: radii.pill,
     opacity: 0.25,
   },
   partnerTopRow: {
@@ -985,27 +923,24 @@ const s = StyleSheet.create({
   partnerTag: {
     paddingHorizontal: 9,
     paddingVertical: 4,
-    borderRadius: 8,
+    borderRadius: radii.pill,
   },
   partnerTagText: {
     fontSize: 10,
     fontWeight: '800',
     letterSpacing: 1.1,
-    color: '#fff',
   },
   partnerTitle: {
     fontSize: Platform.OS === 'android' ? 18 : 16,
     lineHeight: Platform.OS === 'android' ? 23 : 21,
     fontWeight: '800',
-    color: '#ffffff',
   },
   partnerBody: {
     fontSize: 12,
     lineHeight: 17,
-    color: '#d6c8ed',
   },
   partnerButton: {
-    borderRadius: 14,
+    borderRadius: radii.action,
     overflow: 'hidden',
   },
   partnerButtonGradient: {
@@ -1019,6 +954,5 @@ const s = StyleSheet.create({
   partnerButtonText: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#ffffff',
   },
 });

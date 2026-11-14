@@ -37,8 +37,8 @@ export default function Discover() {
       {/* Eyebrow badge with brand orange anchor */}
       <View style={s.topBadgeRow}>
         <View style={[s.topBadgePill, {backgroundColor: colors.brandPrimary}]}>
-          <Ionicons name="sparkles" size={10} color="#fff" />
-          <Text style={s.topBadgeText}>VISTRAH INDIA</Text>
+          <Ionicons name="sparkles" size={10} color={colors.brandPrimaryInk} />
+          <Text style={[s.topBadgeText, {color: colors.brandPrimaryInk}]}>VISTRAH INDIA</Text>
         </View>
         <Text style={[s.topTagline, {color: colors.muted}]}>
           <UiText value={copy.home.tagline} />
@@ -52,11 +52,6 @@ export default function Discover() {
           {
             backgroundColor: colors.surface,
             borderColor: searchFocused ? colors.accent : colors.borderSubtle,
-            shadowColor: searchFocused ? colors.accent : '#000000',
-            shadowOffset: {width: 0, height: searchFocused ? 3 : 1},
-            shadowOpacity: searchFocused ? 0.14 : 0.05,
-            shadowRadius: 8,
-            elevation: searchFocused ? 3 : 1,
           },
         ]}
       >
@@ -135,11 +130,11 @@ export default function Discover() {
       ]}
     >
       <View style={[s.providerIconBadge, {backgroundColor: colors.brandPrimary}]}>
-        <Feather name="briefcase" size={18} color="#fff" />
+        <Feather name="briefcase" size={18} color={colors.brandPrimaryInk} />
       </View>
       <View style={{flex: 1, gap: 5}}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-          <View style={s.providerVerifiedDot} />
+          <View style={[s.providerVerifiedDot, {backgroundColor: colors.success}]} />
           <Text style={[s.providerEyebrow, {color: colors.brandPrimary}]}>{t('home.providerEyebrow')}</Text>
         </View>
         <Text style={[s.providerTitle, {color: colors.text}]}>{t('home.providerTitle')}</Text>
@@ -256,8 +251,8 @@ export default function Discover() {
               ) : (
                 <View style={[StyleSheet.absoluteFill, {backgroundColor: colors.elevated}]} />
               )}
-              <View style={s.shortcutIconBadge}>
-                <Feather name={item.icon} size={12} color="#fff" />
+              <View style={[s.shortcutIconBadge, {backgroundColor: colors.surface, borderColor: colors.borderSubtle, borderWidth: 1}]}>
+                <Feather name={item.icon} size={12} color={colors.brandPrimaryInk} />
               </View>
             </View>
             <View style={s.shortcutCopy}>
@@ -283,7 +278,7 @@ export default function Discover() {
         <PublishedHomepage homepage={homepage.data} categories={catalogue.data} />
         <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
           <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
-          <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />
+          <MarketplaceCategories compact homepage exclude={connectCategorySlugs}/>
         </View>
         {providerBanner}
         {marketingSection}
@@ -303,7 +298,7 @@ export default function Discover() {
       <ServiceCarousel />
       <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
         <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
-        <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />
+        <MarketplaceCategories compact homepage exclude={connectCategorySlugs}/>
       </View>
       {providerBanner}
       {marketingSection}
@@ -336,7 +331,6 @@ const s = StyleSheet.create({
     borderRadius: radii.pill,
   },
   topBadgeText: {
-    color: '#ffffff',
     fontSize: 9.5,
     fontWeight: '700',
     letterSpacing: 1,
@@ -410,7 +404,6 @@ const s = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: radii.pill,
-    backgroundColor: '#34d399',
   },
   providerTitle: {
     fontSize: Platform.OS === 'android' ? 16 : 15,
@@ -477,11 +470,6 @@ const s = StyleSheet.create({
     borderRadius: radii.surface,
     borderWidth: 1,
     overflow: 'hidden',
-    elevation: 2,
-    shadowColor: '#000000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.06,
-    shadowRadius: 5,
   },
   shortcutPhoto: {
     margin: 7,
@@ -508,7 +496,6 @@ const s = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: radii.pill,
-    backgroundColor: 'rgba(7, 20, 38, 0.78)',
     alignItems: 'center',
     justifyContent: 'center',
   },

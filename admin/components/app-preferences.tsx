@@ -6,10 +6,10 @@ import {accentPresets,defaultAccent,themeProperties} from '../../shared/brand-th
 import {defaultFontChoice,fontChoices,fontPreferenceCookie,fontPreferenceKey,isFontChoice,webFontStack,type FontChoice} from '../../shared/fonts';
 import styles from './app-preferences.module.css';
 
-const initial=JSON.stringify({locale:'en',mode:'light',accent:defaultAccent,font:defaultFontChoice});
+const initial=JSON.stringify({locale:'en',mode:'dark',accent:defaultAccent,font:defaultFontChoice});
 const event='vistrah:preferences';
 function subscribe(listener:()=>void){window.addEventListener('storage',listener);window.addEventListener(event,listener);return()=>{window.removeEventListener('storage',listener);window.removeEventListener(event,listener);};}
-function snapshot(){try{return JSON.stringify({locale:localStorage.getItem('vistrah.language')??'en',mode:document.cookie.match(/(?:^|;\s*)vistrah_theme=(dark|light)/)?.[1]??localStorage.getItem('vistrah.theme')??'light',accent:localStorage.getItem('vistrah_accent')??localStorage.getItem('vistrah.theme.accent')??defaultAccent,font:localStorage.getItem(fontPreferenceKey)??document.cookie.match(/(?:^|;\s*)vistrah_font=([^;]+)/)?.[1]??defaultFontChoice});}catch{return initial;}}
+function snapshot(){try{return JSON.stringify({locale:localStorage.getItem('vistrah.language')??'en',mode:document.cookie.match(/(?:^|;\s*)vistrah_theme=(dark|light)/)?.[1]??localStorage.getItem('vistrah.theme')??'dark',accent:localStorage.getItem('vistrah_accent')??localStorage.getItem('vistrah.theme.accent')??defaultAccent,font:localStorage.getItem(fontPreferenceKey)??document.cookie.match(/(?:^|;\s*)vistrah_font=([^;]+)/)?.[1]??defaultFontChoice});}catch{return initial;}}
 
 function persistPreference(key:'locale'|'mode'|'accent'|'font',value:string){
    const storage={locale:'vistrah.language',mode:'vistrah.theme',accent:'vistrah_accent',font:fontPreferenceKey};
@@ -23,7 +23,7 @@ function persistPreference(key:'locale'|'mode'|'accent'|'font',value:string){
 /** Public display preferences only; this component does not access admin identity or APIs. */
 export function AppPreferences(){
  const saved=JSON.parse(useSyncExternalStore(subscribe,snapshot,()=>initial)) as Record<string,string>;
- const locale=isLocale(saved.locale)?saved.locale:'en',mode=saved.mode==='dark'?'dark':'light';
+ const locale=isLocale(saved.locale)?saved.locale:'en',mode=saved.mode==='light'?'light':'dark';
  const accent=accentPresets.some(item=>item.id===saved.accent)?saved.accent:defaultAccent;
  const font:FontChoice=isFontChoice(saved.font)?saved.font:defaultFontChoice;
  const t=(key:string)=>translate(locale,key);const dialog=useRef<HTMLDialogElement>(null);const [error,setError]=useState('');

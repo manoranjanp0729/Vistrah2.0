@@ -159,11 +159,10 @@ export function AdminVAds({actorId}: {actorId?: number}) {
                     <div style={{
                       width: '100%',
                       maxWidth: 480,
-                      borderRadius: 14,
+                      borderRadius: 'var(--radius-card)',
                       overflow: 'hidden',
-                      backgroundColor: '#120d20',
-                      border: '1px solid #ded3f3',
-                      boxShadow: '0 4px 16px rgba(40,20,70,0.15)',
+                      backgroundColor: 'var(--bg-canvas)',
+                      border: '1px solid var(--border-subtle)',
                       margin: '6px 0',
                     }}>
                       <video
@@ -171,16 +170,16 @@ export function AdminVAds({actorId}: {actorId?: number}) {
                         preload="metadata"
                         playsInline
                         src={videoSrc}
-                        style={{display: 'block', width: '100%', maxHeight: 270, backgroundColor: '#000'}}
+                        style={{display: 'block', width: '100%', maxHeight: 270, backgroundColor: 'var(--bg-canvas)'}}
                       />
                     </div>
                   ) : (
                     <div style={{
                       padding: '16px 20px',
-                      borderRadius: 12,
-                      backgroundColor: '#f8f5fc',
-                      border: '1px dashed #cfc0e8',
-                      color: '#655780',
+                      borderRadius: 'var(--radius-card)',
+                      backgroundColor: 'var(--bg-elevated)',
+                      border: '1px dashed var(--border-subtle)',
+                      color: 'var(--text-secondary)',
                       fontSize: 13,
                       margin: '6px 0',
                     }}>

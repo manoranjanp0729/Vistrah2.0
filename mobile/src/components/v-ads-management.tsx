@@ -48,8 +48,8 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
   {showAnalytics&&<View style={[styles.card,{padding:12,borderRadius:radii.surface,gap:8,backgroundColor:colors.elevated,borderWidth:1,borderColor:colors.borderSubtle}]}>
     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
       <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Ad Analytics & Performance"}/></Text>
-      <View style={{paddingHorizontal:8,paddingVertical:3,borderRadius:radii.pill,backgroundColor:video.status==='APPROVED'?colors.brandPrimary+'22':'#ca8a0420'}}>
-        <Text style={{fontSize:11,fontWeight:'700',color:video.status==='APPROVED'?colors.brandPrimary:'#ca8a04'}}>{video.status}</Text>
+      <View style={{paddingHorizontal:8,paddingVertical:3,borderRadius:radii.pill,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.borderSubtle}}>
+        <Text style={{fontSize:11,fontWeight:'700',color:video.status==='APPROVED'?colors.brandPrimary:colors.warning}}>{video.status}</Text>
       </View>
     </View>
     <View style={{flexDirection:'row',gap:8}}>
@@ -75,7 +75,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
    <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Geographic Targeting"}/></Text>
    {loadingTargeting?<Text style={styles.muted}><UiText value={"Loading targeting…"}/></Text>:<>
     <Text style={[styles.muted,tabularNums]}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
-    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,tabularNums,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
+    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,tabularNums,{color:colors.warning}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
     {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:colors.error}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
     {Boolean(targetingNotice)&&<Text style={styles.muted}><UiText value={targetingNotice}/></Text>}
     {targeting?.pending_revision?<Text style={styles.muted}><UiText value={"A pending targeting revision is awaiting administrator review."}/></Text>:<>

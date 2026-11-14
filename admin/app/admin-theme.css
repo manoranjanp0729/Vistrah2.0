@@ -1,35 +1,5 @@
 /* Unified VISTRAH semantic brand tokens & radii for Admin. */
 :root,
-html[data-theme="light"] {
-  color-scheme: light;
-  --bg-canvas: #F5F7FB;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #EEF2F9;
-  --border-subtle: rgba(7, 20, 38, 0.08);
-  --brand-primary: #FF6B00;
-  --brand-primary-hover: #E05A00;
-  --brand-primary-ink: #FFFFFF;
-  --brand-primary-soft: rgba(255, 107, 0, 0.12);
-  --page-background: var(--bg-canvas);
-  --surface: var(--bg-surface);
-  --surface-soft: var(--bg-elevated);
-  --text-primary: #071426;
-  --text-secondary: #53627a;
-  --border: #d9e2ef;
-  --radius-control: 8px;
-  --radius-card: 12px;
-  --radius-pill: 9999px;
-  --type-body: .875rem;
-  --type-secondary: .8125rem;
-  --type-meta: .75rem;
-  --type-caption: .6875rem;
-  --type-h1: 1.625rem;
-  --type-h2: 1.25rem;
-  --type-h3: 1.0625rem;
-  --leading-body: 1.55;
-  --leading-ui: 1.4;
-}
-
 html[data-theme="dark"] {
   color-scheme: dark;
   --bg-canvas: #08080D;
@@ -46,6 +16,36 @@ html[data-theme="dark"] {
   --text-primary: #f4f7fc;
   --text-secondary: #a9b8cf;
   --border: #1c304f;
+  --radius-control: 8px;
+  --radius-card: 12px;
+  --radius-pill: 9999px;
+  --type-body: .875rem;
+  --type-secondary: .8125rem;
+  --type-meta: .75rem;
+  --type-caption: .6875rem;
+  --type-h1: 1.625rem;
+  --type-h2: 1.25rem;
+  --type-h3: 1.0625rem;
+  --leading-body: 1.55;
+  --leading-ui: 1.4;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+  --bg-canvas: #F5F7FB;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #EEF2F9;
+  --border-subtle: rgba(7, 20, 38, 0.08);
+  --brand-primary: #FF6B00;
+  --brand-primary-hover: #E05A00;
+  --brand-primary-ink: #FFFFFF;
+  --brand-primary-soft: rgba(255, 107, 0, 0.12);
+  --page-background: var(--bg-canvas);
+  --surface: var(--bg-surface);
+  --surface-soft: var(--bg-elevated);
+  --text-primary: #071426;
+  --text-secondary: #53627a;
+  --border: #d9e2ef;
 }
 
 .admin-dashboard{display:grid;gap:20px;min-width:0}
@@ -131,7 +131,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .button:hover:not(:disabled){background:var(--brand-primary-hover);border-color:var(--brand-primary-hover)}
 .button.secondary{background:var(--bg-surface);color:var(--text-primary);border-color:var(--border-subtle)}
 .button.secondary:hover:not(:disabled){background:var(--bg-elevated);border-color:var(--interactive-accent,var(--accent-orange))}
-.button.light{background:#FFFFFF;border-color:#FFFFFF;color:#071426}
+.button.light{background:var(--bg-elevated);border-color:var(--border-subtle);color:var(--text-primary)}
 
 .form{gap:16px}
 .form label{font-size:.8125rem;line-height:1.4}

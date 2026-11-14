@@ -132,36 +132,35 @@ function SellerWorkspace({
   return <div className={s.page}>
     {/* V Ads Studio Header Banner */}
     <div style={{
-      background: 'linear-gradient(135deg, #071426 0%, #0D213F 68%, rgba(255,107,0,0.28) 100%)',
-      borderRadius: 'var(--radius-card, 12px)',
-      border: '1px solid var(--border-subtle, rgba(255,255,255,0.08))',
+      background: 'var(--bg-surface)',
+      borderRadius: 'var(--radius-card)',
+      border: '1px solid var(--border-subtle)',
       padding: '20px 24px',
-      color: '#FFFFFF',
+      color: 'var(--text-primary)',
       display: 'flex',
       alignItems: 'center',
       gap: 16,
-      boxShadow: '0 6px 20px rgba(7, 20, 38, 0.24)',
     }}>
       <div style={{
         width: 48,
         height: 48,
-        borderRadius: 'var(--radius-pill, 9999px)',
-        background: 'var(--brand-primary, #FF6B00)',
+        borderRadius: 'var(--radius-pill)',
+        background: 'var(--brand-primary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
       }}>
-        <Video size={24} color="#FFFFFF" />
+        <Video size={24} color="var(--brand-primary-ink)" />
       </div>
       <div>
-        <div style={{fontSize: 11, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--brand-primary, #FF6B00)'}}>
+        <div style={{fontSize: 11, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: 'var(--brand-primary)'}}>
           <UiText value="Creator Studio"/>
         </div>
-        <h1 style={{margin: '2px 0', fontSize: 22, fontWeight: 800, color: '#FFFFFF'}}>
+        <h1 style={{margin: '2px 0', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)'}}>
           <UiText value="V Ads Studio"/>
         </h1>
-        <p style={{margin: 0, fontSize: 13, color: '#d8e3f2'}}>
+        <p style={{margin: 0, fontSize: 13, color: 'var(--text-secondary)'}}>
           <UiText value="Create, promote & track your video ads"/>
         </p>
       </div>
@@ -178,7 +177,7 @@ function SellerWorkspace({
             <div className={s.heroTitleGroup}>
               <h1>
                 {account?.name||'Your V Ads Channel'}
-                {account?.status==='APPROVED'&&<CheckCircle2 size={18} color="#4ade80"/>}
+                {account?.status==='APPROVED'&&<CheckCircle2 size={18} color="var(--brand-primary)"/>}
               </h1>
               <p className={s.heroHandle}>@{account?.handle||'seller'} <UiText value={"· Free V Ads Creator Channel"}/></p>
             </div>
@@ -194,9 +193,9 @@ function SellerWorkspace({
         </header>
       </>
     ) : (
-      <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:'var(--radius-card,12px)'}}>
+      <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:'var(--radius-card)'}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <div style={{width:40,height:40,borderRadius:'var(--radius-pill,9999px)',background:'var(--brand-primary-soft,rgba(255,107,0,0.14))',color:'var(--brand-primary,#FF6B00)',display:'grid',placeItems:'center'}}>
+          <div style={{width:40,height:40,borderRadius:'var(--radius-pill)',background:'var(--brand-primary-soft)',color:'var(--brand-primary)',display:'grid',placeItems:'center'}}>
             <Globe size={20}/>
           </div>
           <div>
@@ -206,7 +205,7 @@ function SellerWorkspace({
             </p>
           </div>
         </div>
-        <Link href="/login?next=%2Fseller%2Fv-ads" style={{padding:'8px 16px',borderRadius:'var(--radius-control,8px)',background:'var(--brand-primary,#FF6B00)',color:'#fff',fontWeight:700,fontSize:13,textDecoration:'none'}}>
+        <Link href="/login?next=%2Fseller%2Fv-ads" style={{padding:'8px 16px',borderRadius:'var(--radius-control)',background:'var(--brand-primary)',color:'var(--brand-primary-ink)',fontWeight:700,fontSize:13,textDecoration:'none'}}>
           <UiText value="Sign in / Register"/>
         </Link>
       </div>
@@ -214,7 +213,7 @@ function SellerWorkspace({
 
     {Boolean(error)&&<p role="alert" className={s.error}><UiText value={error}/></p>}
     {authRequired&&<Link href="/login?next=%2Fseller%2Fv-ads"><UiText value={"Sign in again"}/></Link>}
-    {Boolean(message)&&<div className={s.panel} style={{borderColor:'var(--interactive-accent,var(--accent-orange))',background:'var(--bg-surface,var(--surface))'}}><p role="status" style={{margin:0,color:'var(--text-primary)',fontWeight:500}}><UiText value={message}/></p></div>}
+    {Boolean(message)&&<div className={s.panel} style={{borderColor:'var(--interactive-accent)',background:'var(--bg-surface)'}}><p role="status" style={{margin:0,color:'var(--text-primary)',fontWeight:500}}><UiText value={message}/></p></div>}
 
     {/* Clean Segmented Toggle Tabs */}
     <UiNav className={s.tabNav} aria-label="Creator Studio Sections">
@@ -338,7 +337,7 @@ function SellerWorkspace({
       <p role="status"><UiText value={"Unable to load workspace data."}/></p>
     ) : (
       <section style={{display:'grid',gap:12}}>
-        {account?.status!=='APPROVED'?<div className={s.panel}><p><UiText value={"An approved advertiser profile is required to upload V Ads."}/></p></div>:!data.uploads_available?<div className={s.panel}><h2><UiText value={"Upload new V Ad (Free)"}/></h2><p role="status"><UiText value={"Video storage is currently offline in this environment. Once enabled, upload MP4 videos (H.264/AAC, up to 60s and 100 MB) here for free."}/></p></div>:<form className={s.panel} style={{borderColor:uploadId?'var(--interactive-accent,var(--accent-orange))':'var(--border-subtle,var(--border))'}} onSubmit={event=>{event.preventDefault();if(!uploadId)return;void action(async()=>{
+        {account?.status!=='APPROVED'?<div className={s.panel}><p><UiText value={"An approved advertiser profile is required to upload V Ads."}/></p></div>:!data.uploads_available?<div className={s.panel}><h2><UiText value={"Upload new V Ad (Free)"}/></h2><p role="status"><UiText value={"Video storage is currently offline in this environment. Once enabled, upload MP4 videos (H.264/AAC, up to 60s and 100 MB) here for free."}/></p></div>:<form className={s.panel} style={{borderColor:uploadId?'var(--interactive-accent)':'var(--border-subtle)'}} onSubmit={event=>{event.preventDefault();if(!uploadId)return;void action(async()=>{
             const meta: AdMetadata = adType === 'PRODUCT'
               ? {
                   ad_type: 'PRODUCT',
@@ -365,7 +364,7 @@ function SellerWorkspace({
             await refresh();
           });}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:36,height:36,borderRadius:'var(--radius-pill,9999px)',background:'var(--brand-primary-soft,rgba(255,107,0,0.14))',color:'var(--brand-primary,#FF6B00)',display:'grid',placeItems:'center'}}>
+            <div style={{width:36,height:36,borderRadius:'var(--radius-pill)',background:'var(--brand-primary-soft)',color:'var(--brand-primary)',display:'grid',placeItems:'center'}}>
               <Video size={18}/>
             </div>
             <div>
@@ -378,7 +377,7 @@ function SellerWorkspace({
             <input type="file" accept="video/mp4,.mp4" disabled={busy} onChange={event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;void action(async()=>{validateVideoFile(file.name,file.size);const result=await api<{id:string}>('/v-ads/advertisers/'+encodeURIComponent(account.id)+'/uploads',{method:'POST',headers:{'Content-Type':'video/mp4'},body:file});setUploadId(result.id);setMessage('Video file validated. Add a title and caption below to submit for admin approval.');});}}/>
           </label>
           {data.uploads.filter(item=>item.advertiser_id===account.id&&!item.video_id).map(item=><div key={item.id} className={s.bar}><button type="button" disabled={busy} onClick={()=>setUploadId(item.id)}><UiText value={uploadId===item.id?'✓ Selected upload '+item.id.slice(0,8):'Use saved upload '+item.id.slice(0,8)}/></button><DiscardUpload id={item.id} onChanged={async()=>{if(uploadId===item.id)setUploadId('');await refresh();}}/></div>)}
-          {Boolean(uploadId)&&<div style={{padding:'8px 12px',borderRadius:'var(--radius-control,8px)',background:'rgba(34,197,94,0.12)',color:'#22c55e',fontSize:12,fontWeight:600,display:'flex',alignItems:'center',gap:6}}><Check size={16}/> <UiText value={"Video validated and ready for submission."}/></div>}
+          {Boolean(uploadId)&&<div style={{padding:'8px 12px',borderRadius:'var(--radius-control)',background:'var(--bg-elevated)',border:'1px solid var(--border-subtle)',color:'var(--brand-primary)',fontSize:12,fontWeight:600,display:'flex',alignItems:'center',gap:6}}><Check size={16}/> <UiText value={"Video validated and ready for submission."}/></div>}
 
           {/* Ad Type Selector: Product Ad vs Brand Ad */}
           <div style={{display:'grid',gap:8}}>
@@ -389,10 +388,10 @@ function SellerWorkspace({
                 onClick={()=>setAdType('PRODUCT')}
                 style={{
                   padding:'12px',
-                  borderRadius:'var(--radius-control,8px)',
-                  border:adType==='PRODUCT'?'2px solid var(--interactive-accent,var(--accent-orange))':'1px solid var(--border-subtle,var(--border))',
-                  background:adType==='PRODUCT'?'var(--brand-highlight)':'var(--bg-surface,var(--surface))',
-                  color:adType==='PRODUCT'?'var(--interactive-accent,var(--accent-orange))':'var(--text-primary)',
+                  borderRadius:'var(--radius-control)',
+                  border:adType==='PRODUCT'?'2px solid var(--interactive-accent)':'1px solid var(--border-subtle)',
+                  background:adType==='PRODUCT'?'var(--bg-elevated)':'var(--bg-surface)',
+                  color:adType==='PRODUCT'?'var(--interactive-accent)':'var(--text-primary)',
                   cursor:'pointer',
                   display:'flex',
                   flexDirection:'column',
@@ -410,10 +409,10 @@ function SellerWorkspace({
                 onClick={()=>setAdType('BRAND')}
                 style={{
                   padding:'12px',
-                  borderRadius:'var(--radius-control,8px)',
-                  border:adType==='BRAND'?'2px solid var(--interactive-accent,var(--accent-orange))':'1px solid var(--border-subtle,var(--border))',
-                  background:adType==='BRAND'?'var(--brand-highlight)':'var(--bg-surface,var(--surface))',
-                  color:adType==='BRAND'?'var(--interactive-accent,var(--accent-orange))':'var(--text-primary)',
+                  borderRadius:'var(--radius-control)',
+                  border:adType==='BRAND'?'2px solid var(--interactive-accent)':'1px solid var(--border-subtle)',
+                  background:adType==='BRAND'?'var(--bg-elevated)':'var(--bg-surface)',
+                  color:adType==='BRAND'?'var(--interactive-accent)':'var(--text-primary)',
                   cursor:'pointer',
                   display:'flex',
                   flexDirection:'column',
@@ -430,8 +429,8 @@ function SellerWorkspace({
           </div>
 
           {adType==='PRODUCT' ? (
-            <div style={{display:'grid',gap:10,padding:14,borderRadius:'var(--radius-card,12px)',border:'1px solid var(--border-subtle,var(--border))',background:'var(--bg-elevated,var(--surface-soft))'}}>
-              <span style={{fontSize:12,fontWeight:700,color:'var(--brand-primary,#FF6B00)',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Product Details & Purchasing Options"}/></span>
+            <div style={{display:'grid',gap:10,padding:14,borderRadius:'var(--radius-card)',border:'1px solid var(--border-subtle)',background:'var(--bg-elevated)'}}>
+              <span style={{fontSize:12,fontWeight:700,color:'var(--brand-primary)',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Product Details & Purchasing Options"}/></span>
               <label>
                 <span style={{fontWeight:600}}><UiText value={"Product Name"}/></span>
                 <UiInput maxLength={100} placeholder="E.g., Pure Kanchipuram Silk Saree" value={productName} onChange={event=>setProductName(event.target.value)}/>
@@ -450,8 +449,8 @@ function SellerWorkspace({
               </label>
             </div>
           ) : (
-            <div style={{display:'grid',gap:10,padding:14,borderRadius:'var(--radius-card,12px)',border:'1px solid var(--border-subtle,var(--border))',background:'var(--bg-elevated,var(--surface-soft))'}}>
-              <span style={{fontSize:12,fontWeight:700,color:'var(--brand-primary,#FF6B00)',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Brand Details & Products Available"}/></span>
+            <div style={{display:'grid',gap:10,padding:14,borderRadius:'var(--radius-card)',border:'1px solid var(--border-subtle)',background:'var(--bg-elevated)'}}>
+              <span style={{fontSize:12,fontWeight:700,color:'var(--brand-primary)',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Brand Details & Products Available"}/></span>
               <label>
                 <span style={{fontWeight:600}}><UiText value={"Products & Services Available"}/></span>
                 <UiTextarea maxLength={200} placeholder="E.g., Custom tailoring, silk sarees, bridal accessories, fabric dyes" value={productsAvailable} onChange={event=>setProductsAvailable(event.target.value)}/>
@@ -467,7 +466,7 @@ function SellerWorkspace({
             <span style={{fontWeight:600}}><UiText value={"4. Where Product/Brand is Used & Caption"}/></span>
             <UiTextarea maxLength={2000} placeholder="Describe where and how the product is used in the video, business contact, shop location…" value={videoDescription} onChange={event=>setVideoDescription(event.target.value)}/>
           </label>
-          <button disabled={busy||!uploadId||title.trim().length<3} style={{background:uploadId&&title.trim().length>=3?'var(--brand-primary,#FF6B00)':'',color:uploadId&&title.trim().length>=3?'#fff':''}}><UiText value={"Submit V Ad for admin review"}/></button>
+          <button disabled={busy||!uploadId||title.trim().length<3} style={{background:uploadId&&title.trim().length>=3?'var(--brand-primary)':'',color:uploadId&&title.trim().length>=3?'var(--brand-primary-ink)':''}}><UiText value={"Submit V Ad for admin review"}/></button>
         </form>}
 
         {/* Creator Growth Tips Card */}
@@ -497,15 +496,15 @@ function RestrictedStudioTool({
   icon: 'video' | 'upload';
 }){
   return (
-    <div className={s.panel} style={{textAlign:'center',padding:'44px 24px',borderRadius:'var(--radius-card,12px)',display:'grid',gap:12,justifyItems:'center'}}>
-      <div style={{width:54,height:54,borderRadius:'var(--radius-pill,9999px)',background:'var(--brand-primary-soft,rgba(255,107,0,0.14))',color:'var(--brand-primary,#FF6B00)',display:'grid',placeItems:'center'}}>
+    <div className={s.panel} style={{textAlign:'center',padding:'44px 24px',borderRadius:'var(--radius-card)',display:'grid',gap:12,justifyItems:'center'}}>
+      <div style={{width:54,height:54,borderRadius:'var(--radius-pill)',background:'var(--brand-primary-soft)',color:'var(--brand-primary)',display:'grid',placeItems:'center'}}>
         {icon==='video'?<Video size={26}/>:<PlusCircle size={26}/>}
       </div>
       <h2 style={{margin:0,fontSize:18,fontWeight:700}}><UiText value={title}/></h2>
       <p style={{margin:0,fontSize:13,color:'var(--text-secondary)',maxWidth:420,lineHeight:1.5}}>
         <UiText value={description}/>
       </p>
-      <Link href="/login?next=%2Fseller%2Fv-ads" style={{marginTop:6,padding:'10px 24px',borderRadius:'var(--radius-control,8px)',background:'var(--brand-primary,#FF6B00)',color:'#fff',fontWeight:700,fontSize:13,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}}>
+      <Link href="/login?next=%2Fseller%2Fv-ads" style={{marginTop:6,padding:'10px 24px',borderRadius:'var(--radius-control)',background:'var(--brand-primary)',color:'var(--brand-primary-ink)',fontWeight:700,fontSize:13,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}}>
         <Lock size={14}/>
         <UiText value="Sign in / Register"/>
       </Link>
@@ -562,7 +561,7 @@ function PublicAdsFeed(){
           onClick={()=>void loadFeed(1)}
           disabled={loading||busyMore}
           className={s.heroActionBtn}
-          style={{background:'var(--surface)',color:'var(--text-primary)!important',border:'1px solid var(--border)'}}
+          style={{background:'var(--bg-surface)',color:'var(--text-primary)',border:'1px solid var(--border-subtle)'}}
         >
           <RefreshCw size={13}/> <UiText value="Refresh"/>
         </button>
@@ -704,7 +703,7 @@ function PublicAdCard({reel}:{reel:Reel}){
     >
       <div className={s.videoCardHeader}>
         <div>
-          <span style={{fontSize:11,fontWeight:700,letterSpacing:'0.5px',textTransform:'uppercase',color:'var(--brand-primary,#FF6B00)'}}>
+          <span style={{fontSize:11,fontWeight:700,letterSpacing:'0.5px',textTransform:'uppercase',color:'var(--brand-primary)'}}>
             {advertiserName}
           </span>
           <h3 className={s.videoTitle} style={{marginTop:2}}>{reel.title}</h3>
@@ -733,7 +732,7 @@ function PublicAdCard({reel}:{reel:Reel}){
               description: cleanDesc,
               meta: reelMeta,
             })}
-            style={{background:'var(--brand-primary,#FF6B00)',color:'#fff',padding:'7px 14px',borderRadius:'var(--radius-control,8px)',border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'var(--brand-primary)',color:'var(--brand-primary-ink)',padding:'7px 14px',borderRadius:'var(--radius-control)',border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value="Explore Product"/>{reelMeta.product_price ? ` · ${reelMeta.product_price}` : ''}</span>
@@ -741,7 +740,7 @@ function PublicAdCard({reel}:{reel:Reel}){
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser?.id || '')}
-            style={{background:'var(--brand-primary,#FF6B00)',color:'#fff',padding:'7px 14px',borderRadius:'var(--radius-control,8px)',border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'var(--brand-primary)',color:'var(--brand-primary-ink)',padding:'7px 14px',borderRadius:'var(--radius-control)',border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -752,7 +751,7 @@ function PublicAdCard({reel}:{reel:Reel}){
       {source&&(
         <div style={{
           position:'relative',
-          borderRadius:'var(--radius-card,12px)',
+          borderRadius:'var(--radius-card)',
           overflow:'hidden',
           background:'transparent',
           width:'100%',
@@ -800,7 +799,7 @@ function PublicAdCard({reel}:{reel:Reel}){
                 flexDirection:'column',
                 justifyContent:'space-between',
                 padding:12,
-                background:'rgba(0,0,0,0.25)',
+                background:'transparent',
                 pointerEvents:'none',
                 transition:'opacity 0.2s ease',
               }}
@@ -821,10 +820,10 @@ function PublicAdCard({reel}:{reel:Reel}){
                   style={{
                     width:34,
                     height:34,
-                    borderRadius:'var(--radius-pill,9999px)',
-                    border:'none',
-                    background:'rgba(0,0,0,0.6)',
-                    color:'#fff',
+                    borderRadius:'var(--radius-pill)',
+                    border:'1px solid var(--border-subtle)',
+                    background:'var(--bg-surface)',
+                    color:'var(--text-primary)',
                     display:'grid',
                     placeItems:'center',
                     cursor:'pointer',
@@ -855,10 +854,10 @@ function PublicAdCard({reel}:{reel:Reel}){
                   style={{
                     width:48,
                     height:48,
-                    borderRadius:'var(--radius-pill,9999px)',
-                    border:'1.5px solid rgba(255,255,255,0.4)',
-                    background:'rgba(0,0,0,0.6)',
-                    color:'#fff',
+                    borderRadius:'var(--radius-pill)',
+                    border:'1px solid var(--border-subtle)',
+                    background:'var(--bg-surface)',
+                    color:'var(--text-primary)',
                     display:'grid',
                     placeItems:'center',
                     cursor:'pointer',
@@ -876,7 +875,7 @@ function PublicAdCard({reel}:{reel:Reel}){
       {/* Engagement bar + Watch Full Reel */}
       <div className={s.engagementBar}>
         <div className={s.engagementItem}>
-          <Heart size={15} color="var(--brand-primary,#FF6B00)"/>
+          <Heart size={15} color="var(--brand-primary)"/>
           <span style={{fontVariantNumeric:'tabular-nums'}}>{(reel.likes_count??0).toLocaleString()} <UiText value="likes"/></span>
         </div>
         <div className={s.engagementItem}>
@@ -885,7 +884,7 @@ function PublicAdCard({reel}:{reel:Reel}){
         </div>
         <Link
           href={`/v-ads?video=${encodeURIComponent(reel.id)}`}
-          style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:4,color:'var(--brand-primary,#FF6B00)',fontWeight:600,fontSize:13,textDecoration:'none'}}
+          style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:4,color:'var(--brand-primary)',fontWeight:600,fontSize:13,textDecoration:'none'}}
         >
           <UiText value="Watch Full Reel"/> &rarr;
         </Link>
@@ -1023,7 +1022,7 @@ function SellerVideoCard({
               description: cleanDesc,
               meta: videoMeta,
             })}
-            style={{background:'var(--brand-primary,#FF6B00)',color:'#fff',padding:'7px 14px',borderRadius:'var(--radius-control,8px)',border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'var(--brand-primary)',color:'var(--brand-primary-ink)',padding:'7px 14px',borderRadius:'var(--radius-control)',border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value="Explore Product"/>{videoMeta.product_price ? ` · ${videoMeta.product_price}` : ''}</span>
@@ -1031,19 +1030,19 @@ function SellerVideoCard({
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(video.advertiser_id || '')}
-            style={{background:'var(--brand-primary,#FF6B00)',color:'#fff',padding:'7px 14px',borderRadius:'var(--radius-control,8px)',border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'var(--brand-primary)',color:'var(--brand-primary-ink)',padding:'7px 14px',borderRadius:'var(--radius-control)',border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
           </Link>
         )}
       </div>
-      {Boolean(video.review_reason)&&<div style={{padding:'8px 12px',borderRadius:'var(--radius-control,8px)',background:'rgba(245,199,107,0.16)',color:'var(--text-warning,#856404)',fontSize:12}}><strong><UiText value={"Admin Note:"}/></strong> {video.review_reason}</div>}
+      {Boolean(video.review_reason)&&<div style={{padding:'8px 12px',borderRadius:'var(--radius-control)',background:'var(--bg-elevated)',border:'1px solid var(--border-subtle)',color:'var(--text-warning)',fontSize:12}}><strong><UiText value={"Admin Note:"}/></strong> {video.review_reason}</div>}
 
       {source&&(
         <div style={{
           position:'relative',
-          borderRadius:'var(--radius-card,12px)',
+          borderRadius:'var(--radius-card)',
           overflow:'hidden',
           background:'transparent',
           width:'100%',
@@ -1097,7 +1096,7 @@ function SellerVideoCard({
                 flexDirection:'column',
                 justifyContent:'space-between',
                 padding:12,
-                background:'rgba(0,0,0,0.25)',
+                background:'transparent',
                 pointerEvents:'none',
                 transition:'opacity 0.2s ease',
               }}
@@ -1118,10 +1117,10 @@ function SellerVideoCard({
                   style={{
                     width:34,
                     height:34,
-                    borderRadius:'var(--radius-pill,9999px)',
-                    border:'none',
-                    background:'rgba(0,0,0,0.6)',
-                    color:'#fff',
+                    borderRadius:'var(--radius-pill)',
+                    border:'1px solid var(--border-subtle)',
+                    background:'var(--bg-surface)',
+                    color:'var(--text-primary)',
                     display:'grid',
                     placeItems:'center',
                     cursor:'pointer',
@@ -1152,10 +1151,10 @@ function SellerVideoCard({
                   style={{
                     width:48,
                     height:48,
-                    borderRadius:'var(--radius-pill,9999px)',
-                    border:'1.5px solid rgba(255,255,255,0.4)',
-                    background:'rgba(0,0,0,0.6)',
-                    color:'#fff',
+                    borderRadius:'var(--radius-pill)',
+                    border:'1px solid var(--border-subtle)',
+                    background:'var(--bg-surface)',
+                    color:'var(--text-primary)',
                     display:'grid',
                     placeItems:'center',
                     cursor:'pointer',
@@ -1177,7 +1176,7 @@ function SellerVideoCard({
           <span style={{fontVariantNumeric:'tabular-nums'}}>{(video.views??0).toLocaleString()} <UiText value={"views"}/></span>
         </div>
         <div className={s.engagementItem}>
-          <Heart size={15} color="var(--brand-primary,#FF6B00)"/>
+          <Heart size={15} color="var(--brand-primary)"/>
           <span style={{fontVariantNumeric:'tabular-nums'}}>{(video.likes??0).toLocaleString()} <UiText value={"likes"}/></span>
         </div>
         <div className={s.engagementItem}>
@@ -1213,7 +1212,7 @@ function StudioWebProductModal({
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(8,8,13,0.72)',
+        backgroundColor: 'var(--bg-canvas)',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
@@ -1228,20 +1227,19 @@ function StudioWebProductModal({
           width: '100%',
           maxHeight: '90vh',
           overflowY: 'auto',
-          background: 'var(--bg-surface, #071426)',
-          color: 'var(--text-primary, #fff)',
-          borderRadius: 'var(--radius-card, 12px)',
-          border: '1px solid var(--border-subtle, rgba(255,255,255,0.08))',
+          background: 'var(--bg-surface)',
+          color: 'var(--text-primary)',
+          borderRadius: 'var(--radius-card)',
+          border: '1px solid var(--border-subtle)',
           padding: 22,
           display: 'grid',
           gap: 14,
-          boxShadow: '0 12px 36px rgba(0,0,0,0.4)',
         }}
         onClick={e => e.stopPropagation()}
       >
         <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
           <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
-            <div style={{width: 32, height: 32, borderRadius: 'var(--radius-pill, 9999px)', background: 'var(--brand-primary-soft, rgba(255,107,0,0.15))', color: 'var(--brand-primary, #FF6B00)', display: 'grid', placeItems: 'center'}}>
+            <div style={{width: 32, height: 32, borderRadius: 'var(--radius-pill)', background: 'var(--brand-primary-soft)', color: 'var(--brand-primary)', display: 'grid', placeItems: 'center'}}>
               <ShoppingBag size={16}/>
             </div>
             <h3 style={{margin: 0, fontSize: 16}}><UiText value="Product Details"/></h3>
@@ -1255,25 +1253,25 @@ function StudioWebProductModal({
           <div>
             <h2 style={{margin: '0 0 4px', fontSize: 18}}>{meta.product_name || title}</h2>
             {Boolean(advertiserId) && (
-              <Link href={'/v-ads/advertisers/' + encodeURIComponent(advertiserId!)} style={{fontSize: 13, color: 'var(--brand-primary, #FF6B00)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4}}>
+              <Link href={'/v-ads/advertisers/' + encodeURIComponent(advertiserId!)} style={{fontSize: 13, color: 'var(--brand-primary)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4}}>
                 <span>{channelName}</span>
-                <CheckCircle2 size={13} color="#22c55e"/>
+                <CheckCircle2 size={13} color="var(--brand-primary)"/>
                 <span style={{color: 'var(--text-secondary)'}}>· <UiText value="View Brand Profile"/></span>
               </Link>
             )}
           </div>
 
-          <div style={{padding: 12, borderRadius: 'var(--radius-card, 12px)', background: 'var(--brand-primary-soft, rgba(255,107,0,0.1))', border: '1px solid rgba(255,107,0,0.28)', display: 'grid', gap: 2}}>
-            <small style={{fontWeight: 700, color: 'var(--brand-primary, #FF6B00)', textTransform: 'uppercase', fontSize: 10.5, letterSpacing: '0.5px'}}>
+          <div style={{padding: 12, borderRadius: 'var(--radius-card)', background: 'var(--brand-primary-soft)', border: '1px solid var(--border-subtle)', display: 'grid', gap: 2}}>
+            <small style={{fontWeight: 700, color: 'var(--brand-primary)', textTransform: 'uppercase', fontSize: 10.5, letterSpacing: '0.5px'}}>
               <UiText value="Price Details"/>
             </small>
-            <div style={{fontSize: 20, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: 'var(--brand-primary, #FF6B00)'}}>
+            <div style={{fontSize: 20, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: 'var(--brand-primary)'}}>
               {meta.product_price || 'Available on enquiry / order'}
             </div>
           </div>
 
-          <div style={{padding: 12, borderRadius: 'var(--radius-card, 12px)', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.28)', display: 'grid', gap: 2}}>
-            <div style={{display: 'flex', alignItems: 'center', gap: 6, color: '#22c55e', fontWeight: 700, fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.5px'}}>
+          <div style={{padding: 12, borderRadius: 'var(--radius-card)', background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', display: 'grid', gap: 2}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: 6, color: 'var(--brand-primary)', fontWeight: 700, fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.5px'}}>
               <Truck size={13}/>
               <span><UiText value="Delivery Options"/></span>
             </div>
@@ -1282,7 +1280,7 @@ function StudioWebProductModal({
             </div>
           </div>
 
-          <div style={{padding: 12, borderRadius: 'var(--radius-card, 12px)', background: 'var(--bg-elevated, #0D213F)', border: '1px solid var(--border-subtle, var(--border))', display: 'grid', gap: 4}}>
+          <div style={{padding: 12, borderRadius: 'var(--radius-card)', background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', display: 'grid', gap: 4}}>
             <small style={{fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-secondary)'}}>
               <UiText value="Where Product is Used in this Ad"/>
             </small>
@@ -1294,7 +1292,7 @@ function StudioWebProductModal({
           {Boolean(meta.product_id) && (
             <Link
               href={'/commerce/' + encodeURIComponent(meta.product_id!)}
-              style={{padding: '10px 16px', borderRadius: 'var(--radius-control, 8px)', background: 'var(--brand-primary, #FF6B00)', color: '#fff', textAlign: 'center', textDecoration: 'none', fontWeight: 700, fontSize: 14}}
+              style={{padding: '10px 16px', borderRadius: 'var(--radius-control)', background: 'var(--brand-primary)', color: 'var(--brand-primary-ink)', textAlign: 'center', textDecoration: 'none', fontWeight: 700, fontSize: 14}}
             >
               <UiText value="View Full Product Page & Order"/>
             </Link>
@@ -1303,7 +1301,7 @@ function StudioWebProductModal({
           {Boolean(advertiserId) && (
             <Link
               href={'/v-ads/advertisers/' + encodeURIComponent(advertiserId!)}
-              style={{padding: '10px 16px', borderRadius: 'var(--radius-control, 8px)', background: 'var(--bg-elevated, #0D213F)', border: '1px solid var(--border-subtle, var(--border))', color: 'inherit', textAlign: 'center', textDecoration: 'none', fontWeight: 600, fontSize: 13}}
+              style={{padding: '10px 16px', borderRadius: 'var(--radius-control)', background: 'var(--bg-elevated)', border: '1px solid var(--border-subtle)', color: 'inherit', textAlign: 'center', textDecoration: 'none', fontWeight: 600, fontSize: 13}}
             >
               <UiText value="Explore Brand Channel & Available Products"/>
             </Link>

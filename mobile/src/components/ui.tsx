@@ -19,10 +19,10 @@ export function Page({children,title,gradientColors,sectioned=false}:{children:R
 
 export function PageTitle({title,gradientColors}:{title:string;gradientColors?:[string,string,string]}){
   const {colors}=useTheme();
-  const defaultBanner:[string,string,string]=['#071426','#0D213F','#152C52'];
-  return <LinearGradient colors={gradientColors??defaultBanner} start={{x:0,y:0}} end={{x:1,y:1}} style={{padding:20,borderRadius:radii.surface,borderWidth:1,borderColor:'rgba(255,255,255,0.08)',gap:8}}>
+  const defaultBanner:[string,string,string]=[colors.surface,colors.elevated,colors.elevated];
+  return <LinearGradient colors={gradientColors??defaultBanner} start={{x:0,y:0}} end={{x:1,y:1}} style={{padding:20,borderRadius:radii.surface,borderWidth:1,borderColor:colors.borderSubtle,gap:8}}>
     <Text style={{fontSize:10,letterSpacing:1.5,fontWeight:'700',color:colors.brandPrimary}}>VISTRAH</Text>
-    <Text accessibilityRole="header" style={{...typography.title,color:'#ffffff'}}><UiText value={title}/></Text>
+    <Text accessibilityRole="header" style={{...typography.title,color:gradientColors?colors.brandPrimaryInk:colors.text}}><UiText value={title}/></Text>
   </LinearGradient>;
 }
 
@@ -30,8 +30,8 @@ export function Action({label,onPress,secondary=false,disabled=false,onColor=fal
   const {colors}=useTheme();
   return <Pressable accessibilityRole="button" accessibilityState={{disabled}} disabled={disabled} onPress={onPress} style={({pressed})=>{
     const primaryBg = pressed ? colors.brandPrimaryHover : colors.brandPrimary;
-    const bg = onColor ? '#ffffff' : secondary ? colors.elevated : primaryBg;
-    const border = onColor ? '#ffffff' : secondary ? colors.border : primaryBg;
+    const bg = onColor ? colors.elevated : secondary ? colors.elevated : primaryBg;
+    const border = onColor ? colors.borderSubtle : secondary ? colors.borderSubtle : primaryBg;
     return {
       minHeight:controlHeights.standard,
       padding:spacing.controlPadding,
@@ -43,7 +43,7 @@ export function Action({label,onPress,secondary=false,disabled=false,onColor=fal
       transform:[{scale:pressed&&!disabled?0.99:1}],
       borderWidth:layout.borderWidth,
       borderColor:border,
-      shadowColor:secondary?'#000000':colors.brandPrimary,
+      shadowColor:secondary?colors.background:colors.brandPrimary,
       shadowOffset:{width:0,height:pressed?2:4},
       shadowOpacity:disabled?0:secondary?0.04:0.18,
       shadowRadius:8,

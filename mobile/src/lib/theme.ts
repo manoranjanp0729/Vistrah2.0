@@ -8,7 +8,7 @@ import {
   UNIFIED_RADII,
   accentPresets as sharedAccentPresets,
   defaultAccent,
-  palettes,
+  palettes as sharedPalettes,
   themeAppearance,
   type ThemePalette,
 } from '../../../shared/brand-theme';
@@ -17,15 +17,33 @@ export type ThemeMode='light'|'dark';
 export const accentPresets = sharedAccentPresets;
 export type AccentPreset = (typeof accentPresets)[number];
 export type AccentId = AccentPreset['id'];
-type Palette = ThemePalette;
+type Palette = ThemePalette & {
+  success: string;
+  warning: string;
+  danger: string;
+};
 
-export {BRAND_PRIMARY, BRAND_PRIMARY_HOVER, BRAND_PRIMARY_INK, palettes};
+function withStatusTokens(mode: ThemeMode, base: ThemePalette): Palette {
+  return {
+    ...base,
+    success: mode === 'dark' ? '#34d399' : '#15803d',
+    warning: mode === 'dark' ? '#f5c76b' : '#b45309',
+    danger: base.error,
+  };
+}
+
+export const palettes: Record<ThemeMode, Palette> = {
+  light: withStatusTokens('light', sharedPalettes.light),
+  dark: withStatusTokens('dark', sharedPalettes.dark),
+};
+
+export {BRAND_PRIMARY, BRAND_PRIMARY_HOVER, BRAND_PRIMARY_INK};
 
 export const tones=[
-  {background:'#e6edfb',text:'#213c5b'},
-  {background:'#fff1e6',text:'#9a3f00'},
-  {background:'#e8e4f5',text:'#493a69'},
-  {background:'#dfece3',text:'#294934'},
+  {background:palettes.dark.elevated,text:palettes.dark.text},
+  {background:palettes.dark.elevated,text:BRAND_PRIMARY},
+  {background:palettes.dark.elevated,text:palettes.dark.text},
+  {background:palettes.dark.elevated,text:palettes.dark.success},
 ];
 
 export const tabularNums = {fontVariant: ['tabular-nums'] as ('tabular-nums')[]};
@@ -61,7 +79,7 @@ const makeStyles=(colors:Palette)=>StyleSheet.create({
   card:{padding:spacing.pagePadding,borderRadius:radii.surface,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.borderSubtle,gap:spacing.cardGap},
   row:{flexDirection:'row',alignItems:'center',gap:spacing.regular,flexWrap:'wrap'},
   grid:{flexDirection:'row',flexWrap:'wrap',gap:spacing.regular},
-  input:{backgroundColor:colors.surface,color:colors.text,borderWidth:layout.borderWidth,borderColor:colors.border,borderRadius:radii.input,padding:spacing.regular,...typography.input,minHeight:controlHeights.standard},
+  input:{backgroundColor:colors.surface,color:colors.text,borderWidth:layout.borderWidth,borderColor:colors.borderSubtle,borderRadius:radii.input,padding:spacing.regular,...typography.input,minHeight:controlHeights.standard},
   divider:{height:layout.borderWidth,backgroundColor:colors.borderSubtle,marginVertical:spacing.small},
 });
 
@@ -108,7 +126,7 @@ type Theme={accentGradient:[string,string,string];headerGradient:[string,string,
 const Context=createContext<Theme|null>(null);
 
 export function ThemeProvider({children}:{children:ReactNode}){
- const [mode,updateMode]=useState<ThemeMode>('light');
+ const [mode,updateMode]=useState<ThemeMode>('dark');
  const [accent,updateAccent]=useState<string>(defaultAccent);
  const [ready,setReady]=useState(false);
  const [error,setError]=useState('');
@@ -134,7 +152,7 @@ export function ThemeProvider({children}:{children:ReactNode}){
  },[]);
 
  const appearance=useMemo(()=>themeAppearance(mode,accent),[mode,accent]);
- const colors=appearance.colors;
+ const colors=useMemo(()=>withStatusTokens(mode,appearance.colors),[mode,appearance.colors]);
 
  const styles=useMemo(()=>makeStyles(colors),[colors]);
 

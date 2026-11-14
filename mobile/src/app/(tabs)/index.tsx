@@ -6,6 +6,7 @@ import {HomepageVideo} from '../../components/homepage-video';
 import {useState} from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {LinearGradient} from 'expo-linear-gradient';
 import {HomepageConnect} from '../../components/homepage-connect';
 import {connectCategorySlugs} from '../../../../shared/homepage-connect';
 import {DiscoveryGuide} from '../../components/discovery-guide';
@@ -13,7 +14,7 @@ import {HomepagePartnerBanner} from '../../components/homepage-partner-banner';
 import {PublishedHomepage, type Homepage} from '../../components/published-homepage';
 import {useLanguage} from '../../lib/language';
 import {servicePhotos} from '../../lib/service-photos';
-import {Platform,Image,Pressable,ScrollView,View,StyleSheet} from 'react-native';
+import {Platform,Image,Pressable,ScrollView,View,StyleSheet,} from 'react-native';
 import {router} from 'expo-router';
 import {AdsMarketing} from '../../components/ads-marketing';
 import {Page, Heading, Action} from '../../components/ui';
@@ -21,25 +22,32 @@ import {MarketplaceCategories} from '../../components/marketplace-categories';
 import {ServiceCarousel} from '../../components/service-carousel';
 import {useResource} from '../../lib/resource';
 import {allServices, type Category} from '../../lib/catalogue';
-import {useTheme,spacing,typography,radii} from '../../lib/theme';
+import brandTheme from '../../../../shared/brand-theme.json';
+import {useTheme,spacing,typography} from '../../lib/theme';
 
 export default function Discover() {
-  const {colors} = useTheme();
+  const {colors, mode, accentGradient} = useTheme();
   const {copy, t} = useLanguage();
   const catalogue = useResource<Category[]>('/catalogue');
   const homepage = useResource<Homepage>('/homepage');
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
+  const isDark = mode === 'dark';
 
   // Area 1: Top Hero Greeting & Search Bar with Quick Filter Tags
   const searchSection = (
     <View style={s.topGreetingWrap}>
-      {/* Eyebrow badge with brand orange anchor */}
+      {/* Eyebrow badge with glowing sparkle */}
       <View style={s.topBadgeRow}>
-        <View style={[s.topBadgePill, {backgroundColor: colors.brandPrimary}]}>
+        <LinearGradient
+          colors={accentGradient}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          style={s.topBadgePill}
+        >
           <Ionicons name="sparkles" size={10} color="#fff" />
           <Text style={s.topBadgeText}>VISTRAH INDIA</Text>
-        </View>
+        </LinearGradient>
         <Text style={[s.topTagline, {color: colors.muted}]}>
           <UiText value={copy.home.tagline} />
         </Text>
@@ -50,24 +58,24 @@ export default function Discover() {
         style={[
           s.searchContainer,
           {
-            backgroundColor: colors.surface,
-            borderColor: searchFocused ? colors.accent : colors.borderSubtle,
-            shadowColor: searchFocused ? colors.accent : '#000000',
+            backgroundColor: isDark ? '#1f1a2e' : '#ffffff',
+            borderColor: searchFocused ? colors.accent : isDark ? '#33294c' : '#e0d8eb',
+            shadowColor: '#503fbd',
             shadowOffset: {width: 0, height: searchFocused ? 3 : 1},
-            shadowOpacity: searchFocused ? 0.14 : 0.05,
+            shadowOpacity: searchFocused ? 0.16 : 0.06,
             shadowRadius: 8,
             elevation: searchFocused ? 3 : 1,
           },
         ]}
       >
-        <View style={[s.searchIconWrap, {backgroundColor: colors.elevated}]}>
+        <View style={[s.searchIconWrap, {backgroundColor: isDark ? '#2e2444' : '#f5effa'}]}>
           <Feather name="search" size={16} color={colors.accent} />
         </View>
         <UiElement
           as={TextInput}
           accessibilityLabel={t('home.search.placeholder')}
           placeholder={searchFocused ? '' : t('home.search.placeholder')}
-          placeholderTextColor={colors.muted}
+          placeholderTextColor={isDark ? '#8b7f9d' : '#9ca3af'}
           value={search}
           onChangeText={setSearch}
           onFocus={() => setSearchFocused(true)}
@@ -105,8 +113,8 @@ export default function Discover() {
             style={({pressed}) => [
               s.quickTagPill,
               {
-                backgroundColor: colors.elevated,
-                borderColor: colors.borderSubtle,
+                backgroundColor: isDark ? '#241c36' : '#f7f4fb',
+                borderColor: isDark ? '#382a53' : '#e5daef',
                 opacity: pressed ? 0.8 : 1,
               },
             ]}
@@ -128,27 +136,32 @@ export default function Discover() {
       style={({pressed}) => [
         s.elevatedProviderCard,
         {
-          backgroundColor: colors.surface,
-          borderColor: colors.borderSubtle,
+          backgroundColor: isDark ? '#1a122c' : '#f8f4fc',
+          borderColor: isDark ? '#3b2a50' : '#e4d7ef',
           opacity: pressed ? 0.88 : 1,
         },
       ]}
     >
-      <View style={[s.providerIconBadge, {backgroundColor: colors.brandPrimary}]}>
+      <LinearGradient
+        colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
+        style={s.providerIconBadge}
+      >
         <Feather name="briefcase" size={18} color="#fff" />
-      </View>
+      </LinearGradient>
       <View style={{flex: 1, gap: 5}}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
           <View style={s.providerVerifiedDot} />
-          <Text style={[s.providerEyebrow, {color: colors.brandPrimary}]}>{t('home.providerEyebrow')}</Text>
+          <Text style={[s.providerEyebrow, {color: colors.accent}]}>{t('home.providerEyebrow')}</Text>
         </View>
         <Text style={[s.providerTitle, {color: colors.text}]}>{t('home.providerTitle')}</Text>
         <Text style={[s.providerCopy, {color: colors.muted}]}>{t('home.providerCopy')}</Text>
         <View style={s.providerBottomRow}>
-          <Text style={[s.providerOfferText, {color: colors.brandPrimary}]}>{t('home.providerOffer')}</Text>
+          <Text style={[s.providerOfferText, {color: colors.accent}]}>{t('home.providerOffer')}</Text>
           <View style={s.providerCtaPill}>
-            <Text style={[s.providerCtaText, {color: colors.brandPrimary}]}>{t('home.membershipPlans')}</Text>
-            <Feather name="arrow-right" size={14} color={colors.brandPrimary} />
+            <Text style={[s.providerCtaText, {color: colors.accent}]}>{t('home.membershipPlans')}</Text>
+            <Feather name="arrow-right" size={14} color={colors.accent} />
           </View>
         </View>
       </View>
@@ -187,8 +200,8 @@ export default function Discover() {
       <View style={s.sectionHeaderWrap}>
         <View style={{flex: 1, minWidth: 0}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Ionicons name="sparkles" size={12} color={colors.brandPrimary} />
-            <Text style={[s.sectionEyebrow, {color: colors.brandPrimary}]}>COMMUNITY LIFELINES</Text>
+            <Ionicons name="sparkles" size={12} color="#52b788" />
+            <Text style={[s.sectionEyebrow, {color: colors.accent}]}>COMMUNITY LIFELINES</Text>
           </View>
           <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
             <UiText value="Vistrah Essentials" />
@@ -199,7 +212,7 @@ export default function Discover() {
           onPress={() => router.push('/requests')}
           style={({pressed}) => [{opacity: pressed ? 0.7 : 1}]}
         >
-          <Text style={{color: colors.brandPrimary, fontSize: 13, fontWeight: '600'}}>
+          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '600'}}>
             <UiText value="Explore Hub" /> →
           </Text>
         </Pressable>
@@ -213,7 +226,7 @@ export default function Discover() {
     <View style={s.shortcutsSectionWrap}>
       <View style={s.sectionHeaderWrap}>
         <View style={{flex: 1, minWidth: 0}}>
-          <Text style={[s.sectionEyebrow, {color: colors.brandPrimary}]}>HANDPICKED SERVICES</Text>
+          <Text style={[s.sectionEyebrow, {color: colors.accent}]}>HANDPICKED SERVICES</Text>
           <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
             <UiText value={copy.home.quick} />
           </Text>
@@ -223,7 +236,7 @@ export default function Discover() {
           onPress={() => router.push('/services')}
           style={({pressed}) => [{opacity: pressed ? 0.7 : 1}]}
         >
-          <Text style={{color: colors.brandPrimary, fontSize: 13, fontWeight: '600'}}>
+          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '600'}}>
             <UiText value="View all" /> →
           </Text>
         </Pressable>
@@ -244,17 +257,17 @@ export default function Discover() {
             style={({pressed}) => [
               s.shortcutCard,
               {
-                backgroundColor: colors.surface,
-                borderColor: colors.borderSubtle,
+                backgroundColor: isDark ? '#1c172a' : '#ffffff',
+                borderColor: isDark ? '#302644' : '#e6dced',
                 opacity: pressed ? 0.88 : 1,
               },
             ]}
           >
-            <View style={[s.shortcutPhoto, {backgroundColor: colors.elevated}]}>
+            <View style={s.shortcutPhoto}>
               {item.photo ? (
                 <Image source={croppedPhoto(item.photo,'landscape')} resizeMode="cover" style={s.shortcutImage} />
               ) : (
-                <View style={[StyleSheet.absoluteFill, {backgroundColor: colors.elevated}]} />
+                <View style={[StyleSheet.absoluteFill, {backgroundColor: '#eee'}]} />
               )}
               <View style={s.shortcutIconBadge}>
                 <Feather name={item.icon} size={12} color="#fff" />
@@ -266,7 +279,7 @@ export default function Discover() {
               </Text>
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
                 <Text style={[s.shortcutMeta, {color: colors.muted}]}>Verified</Text>
-                <Feather name="arrow-right" size={13} color={colors.brandPrimary} />
+                <Feather name="arrow-right" size={13} color={colors.accent} />
               </View>
             </View>
           </Pressable>
@@ -318,6 +331,7 @@ export default function Discover() {
 }
 
 const s = StyleSheet.create({
+  // Area 1: Top Greeting & Search
   topGreetingWrap: {
     gap: spacing.elementGap,
     paddingVertical: 2,
@@ -333,12 +347,12 @@ const s = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: radii.pill,
+    borderRadius: 8,
   },
   topBadgeText: {
     color: '#ffffff',
     fontSize: 9.5,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   topTagline: {
@@ -350,7 +364,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 9,
-    borderRadius: radii.input,
+    borderRadius: 16,
     borderWidth: 1,
     paddingHorizontal: 10,
     minHeight: 46,
@@ -358,7 +372,7 @@ const s = StyleSheet.create({
   searchIconWrap: {
     width: 28,
     height: 28,
-    borderRadius: radii.input,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -378,7 +392,7 @@ const s = StyleSheet.create({
   quickTagPill: {
     paddingHorizontal: 10,
     paddingVertical: 5,
-    borderRadius: radii.pill,
+    borderRadius: 10,
     borderWidth: 1,
   },
   quickTagText: {
@@ -386,30 +400,31 @@ const s = StyleSheet.create({
     fontWeight: '600',
   },
 
+  // Area 1: Elevated Provider Banner
   elevatedProviderCard: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
     padding: spacing.pagePadding,
-    borderRadius: radii.surface,
+    borderRadius: 20,
     borderWidth: 1,
   },
   providerIconBadge: {
     width: 36,
     height: 36,
-    borderRadius: radii.action,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
   providerEyebrow: {
     fontSize: 9.5,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   providerVerifiedDot: {
     width: 5,
     height: 5,
-    borderRadius: radii.pill,
+    borderRadius: 2.5,
     backgroundColor: '#34d399',
   },
   providerTitle: {
@@ -439,9 +454,10 @@ const s = StyleSheet.create({
   },
   providerCtaText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '600',
   },
 
+  // Area 2: Section Header
   sectionHeaderWrap: {
     flexDirection: 'row',
     alignItems: 'flex-end',
@@ -450,7 +466,7 @@ const s = StyleSheet.create({
   },
   sectionEyebrow: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: 1,
   },
   sectionTitle: {
@@ -458,11 +474,13 @@ const s = StyleSheet.create({
     letterSpacing: -0.2,
   },
 
+  // Area 2: Essentials Section
   essentialsSectionWrap: {
     gap: spacing.elementGap,
     marginTop: 0,
   },
 
+  // Area 2: Popular Shortcuts
   shortcutsSectionWrap: {
     gap: spacing.elementGap,
     marginTop: 0,
@@ -474,11 +492,11 @@ const s = StyleSheet.create({
   shortcutCard: {
     width: 140,
     flexDirection: 'column',
-    borderRadius: radii.surface,
+    borderRadius: 16,
     borderWidth: 1,
     overflow: 'hidden',
     elevation: 2,
-    shadowColor: '#000000',
+    shadowColor: '#503fbd',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.06,
     shadowRadius: 5,
@@ -487,8 +505,9 @@ const s = StyleSheet.create({
     margin: 7,
     height: 90,
     flexShrink: 0,
-    borderRadius: radii.input,
+    borderRadius: 14,
     overflow: 'hidden',
+    backgroundColor: '#ede9f5',
     position: 'relative',
   },
   shortcutImage: {
@@ -507,8 +526,8 @@ const s = StyleSheet.create({
     right: 6,
     width: 22,
     height: 22,
-    borderRadius: radii.pill,
-    backgroundColor: 'rgba(7, 20, 38, 0.78)',
+    borderRadius: 11,
+    backgroundColor: 'rgba(24, 17, 38, 0.75)',
     alignItems: 'center',
     justifyContent: 'center',
   },

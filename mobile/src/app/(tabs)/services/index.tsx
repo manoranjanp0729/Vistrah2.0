@@ -968,10 +968,10 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
     padding: 10,
-    borderRadius: 12,
+    borderRadius: 16,
     borderWidth: 1,
     elevation: 2,
-    shadowColor: '#071426',
+    shadowColor: '#503fbd',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.06,
     shadowRadius: 6,
@@ -979,7 +979,7 @@ const s = StyleSheet.create({
   flowPhoto: {
     width: 68,
     height: 68,
-    borderRadius: 8,
+    borderRadius: 12,
     overflow: 'hidden',
     backgroundColor: '#eeeeeed9',
     flexShrink: 0,
@@ -990,7 +990,7 @@ const s = StyleSheet.create({
   // Level 4 Journey Card
   journeyCard: {
     padding: 14,
-    borderRadius: 12,
+    borderRadius: 18,
     gap: 8,
     borderWidth: 1,
   },

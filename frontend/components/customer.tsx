@@ -1,6 +1,7 @@
 'use client';
 import {UiText,UiElement,UiNav} from "./localized-ui";
-import {GoogleSignIn} from './google-sign-in';
+import {GoogleSignIn,type GoogleAuthGrant} from './google-sign-in';
+import {disableGoogleAutoSelect} from '../../shared/google-web';
 import {legalVersion,signupLegalCopy} from '../../shared/legal';
 import {useLanguage} from './language-provider';
 import {websiteLoginDestination} from '@/lib/login-destination';
@@ -44,70 +45,35 @@ export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:bo
   const {syncIdentity}=useCustomerLocation();const router=useRouter();const next=websiteLoginDestination(nextPath,'/account');
   const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);
-  const [pendingGoogleCredential,setPendingGoogleCredential]=useState('');
   const [consentRegister,setConsentRegister]=useState(register);
-  if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);setPendingGoogleCredential('');}
-  const consentRequiredForButton=register||Boolean(pendingGoogleCredential);
+  if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(event:React.FormEvent<HTMLFormElement>) {
     event.preventDefault();setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);const form=new FormData(event.currentTarget);
     try {const result=await api<{user:User}>(`/auth/${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name'),privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}: {})})});syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
-  async function submitGoogle(credential:string) {
+  async function submitGoogle(credential:string,grant?:GoogleAuthGrant) {
     setError('');
-    if(consentRequiredForButton&&!legalAccepted){setError(signupLegalCopy.required);return;}
+    if(!legalAccepted){setError(signupLegalCopy.required);return;}
     setBusy(true);
     try {
-      const payload=legalAccepted
-        ? {credential,privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}
-        : {credential,require_consent_for_new:true};
+      const payload=grant?.accessToken
+        ? {access_token:grant.accessToken,privacy_policy_version:grant.privacyPolicyVersion||legalVersion,marketing_consent:grant.marketingConsent??whatsappPromotions}
+        : {credential:grant?.credential||credential,privacy_policy_version:grant?.privacyPolicyVersion||legalVersion,marketing_consent:grant?.marketingConsent??whatsappPromotions};
       const result=await api<{user:User}>('/auth/google',{method:'POST',body:JSON.stringify(payload)});
-      setPendingGoogleCredential('');
       syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();
     } catch(e){
-      if(e instanceof ApiError&&e.status===428){
-        setPendingGoogleCredential(credential);
-        setError('');
-      }else{
-        setError((e as Error).message);
-      }
+      setError((e as Error).message);
     }finally{setBusy(false);}
   }
   return <div className="auth-page"><div className="auth-form-wrap"><h2><UiText value={register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={copy.auth.intro}/></p>{error&&<Notice error message={error}/>}
-    <div role="region" aria-label="DPDP privacy and marketing consent" style={{display:'grid',gap:10,padding:14,marginBottom:14,borderRadius:12,border:'1px solid var(--border,rgba(15,23,42,0.1))',background:'var(--surface-soft,rgba(15,23,42,0.02))'}}>
-      {Boolean(pendingGoogleCredential)&&<p role="status" style={{margin:0,fontSize:13,fontWeight:600,lineHeight:1.45}}>
-        <UiText value={"Welcome to VISTRAH! Because this is your first Google sign-in, please check the DPDP privacy consent box below to complete your new account."}/>
-      </p>}
-      <label className="checkbox-label" style={{alignItems:'flex-start'}}>
-        <input type="checkbox" checked={legalAccepted} disabled={busy} onChange={event=>setLegalAccepted(event.target.checked)} aria-label={signupLegalCopy.acceptance} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/>
-        <span>
-          <UiText value={"I have read and agree to Vistrah Groups Pvt Ltd"}/>{'\u2019s '}
-          <Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link>{', '}
-          <Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', '}
-          <UiText value={"and "}/>
-          <Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Redressal Policy"}/></Link>
-        </span>
-      </label>
-      <label className="checkbox-label" style={{alignItems:'flex-start'}}>
-        <input type="checkbox" checked={whatsappPromotions} disabled={busy} onChange={event=>setWhatsappPromotions(event.target.checked)} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/>
-        <span><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah Groups Pvt Ltd."}/></span>
-      </label>
-      <small id="signup-phase-notice" style={{lineHeight:1.45,color:'var(--text-secondary,#64748b)'}}>
-        {!legalAccepted
-          ? <UiText value={register||pendingGoogleCredential?"Accept the required DPDP Privacy Policy & Terms above to enable new account creation.":"Required for first-time account creation (returning users with an existing account may continue directly)."}/>
-          : <>{signupLegalCopy.notice} <UiText value={"Legal links open in a new tab."}/></>}
-      </small>
-      {Boolean(pendingGoogleCredential)&&(
-        <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-          <button type="button" className="button" disabled={busy||!legalAccepted} onClick={()=>void submitGoogle(pendingGoogleCredential)}>
-            <UiText value={busy?'Completing Google sign-in…':'Accept & Complete Google Sign-In'}/>
-          </button>
-          <button type="button" className="button secondary" disabled={busy} onClick={()=>{setPendingGoogleCredential('');setLegalAccepted(false);}}>
-            <UiText value={"Cancel"}/>
-          </button>
-        </div>
-      )}
-    </div>
-    <GoogleSignIn disabled={busy||(consentRequiredForButton&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)}/>
+    <GoogleSignIn
+      disabled={busy}
+      legalAccepted={legalAccepted}
+      onLegalAcceptedChange={setLegalAccepted}
+      marketingConsent={whatsappPromotions}
+      onMarketingConsentChange={setWhatsappPromotions}
+      onCredential={(credential,grant)=>void submitGoogle(credential,grant)}
+    />
     <div style={{display:'flex',alignItems:'center',gap:12,margin:'12px 0',color:'var(--text-secondary,#6b7280)',fontSize:12}}><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/><span><UiText value={"or with email"}/></span><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/></div>
     <form onSubmit={submit} className="form">{register&&<label><UiText value={copy.auth.name}/><input name="name" autoComplete="name" minLength={2} maxLength={100} required/></label>}<label><UiText value={copy.auth.email}/><input type="email" name="email" autoComplete="email" maxLength={254} required/></label><HelpPair id="auth.password" className="help-field"><label><UiText value={copy.auth.password}/><input type="password" aria-label={copy.auth.password} name="password" autoComplete={register?'new-password':'current-password'} minLength={register?10:1} maxLength={128} required/>{register&&<small><UiText value={"Use at least 10 characters."}/></small>}</label></HelpPair><button className="button" type="submit" disabled={busy||(register&&!legalAccepted)}>{busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn}<ArrowUpRight size={17}/></button></form>{!register&&<p><Link className="text-link" href="/forgot-password"><UiText value={copy.auth.forgot}/></Link><ContextHelp id="auth.recovery"/></p>}<p><Link className="text-link" href={`/${register?'login':'register'}${nextPath?'?next='+encodeURIComponent(next):''}`}>{register?copy.auth.existing:copy.auth.new}<ArrowRight size={15}/></Link></p></div></div>;
 }
@@ -126,7 +92,7 @@ const accountLinks=[...sellerAccountLinks,...customerAccountLinks];
 export function Account({section='',workflowId}:{section?:string;workflowId?:string}) {return <AuthGate next={`/account${section?'/'+section:''}${workflowId?'/'+workflowId:''}`}>{user=><AccountInner user={user} section={section} workflowId={workflowId}/>}</AuthGate>;}
 function AccountInner({user,section,workflowId}:{user:User;section:string;workflowId?:string}) {
   const {syncIdentity}=useCustomerLocation();const router=useRouter();const [error,setError]=useState('');
-  async function logout(){try{await api('/auth/logout',{method:'POST'});syncIdentity(null);notifyUserSession(null);router.push('/login');router.refresh();}catch(e){setError((e as Error).message);}}
+  async function logout(){try{await api('/auth/logout',{method:'POST'});disableGoogleAutoSelect();syncIdentity(null);notifyUserSession(null);router.push('/login');router.refresh();}catch(e){setError((e as Error).message);}}
   const isSeller=isSellerUser(user);
   const roleLabel=user.role==='ADMIN'?'Administrator':isSeller?'Customer & Seller':'Customer';
   return <div className="container page"><Breadcrumbs items={[{label:'My account',...(section?{href:'/account'}:{})},...(section?[{label:accountLinks.find(l=>l.slug===section)!.label}]:[])]}/><div className="account-layout"><aside className="account-sidebar"><div className="account-person"><div className="avatar">{user.name.slice(0,1)}</div><strong>{user.name}</strong><small>{user.email} · <UiText value={roleLabel}/></small>{isSeller&&user.sellerProfile?.company&&<small>{user.sellerProfile.company}</small>}</div><UiNav  aria-label="Account navigation"><small className="small-label"><UiText value={"MY ACCOUNT & ACTIVITY"}/></small>{customerAccountLinks.map(l=><HelpPair key={l.slug} id={accountHelp[l.slug]} className="help-nav-row"><Link href={`/account${l.slug?'/'+l.slug:''}`} className={section===l.slug?'active':''}><l.icon size={18}/><UiText value={l.label}/></Link></HelpPair>)}<Link href="/commerce/cart"><ShoppingBag size={18}/><UiText value={"Cart"}/></Link><Link href="/commerce/orders"><ShoppingBag size={18}/><UiText value={"Purchase orders"}/></Link><AccountLocation/><small className="small-label"><UiText value={"SELLER & BUSINESS TOOLS"}/></small><Link href="/seller"><ClipboardList size={18}/><UiText value={isSeller?"Seller dashboard":"Complete seller onboarding"}/></Link><Link href="/seller/v-ads"><ClipboardList size={18}/><UiText value={"V Ads Studio"}/></Link>{sellerAccountLinks.map(l=><HelpPair key={l.slug} id={accountHelp[l.slug]} className="help-nav-row"><Link href={`/account${l.slug?'/'+l.slug:''}`} className={section===l.slug?'active':''}><l.icon size={18}/><UiText value={l.label}/></Link></HelpPair>)}<Link href="/app/employer-jobs"><ClipboardList size={18}/><UiText value={"Employer job postings"}/></Link>{user.role==='ADMIN'&&<><small className="small-label">ADMINISTRATION</small><Link href="/admin"><Crown size={18}/><UiText value={"Admin dashboard"}/></Link></>}<button onClick={logout}><LogOut size={18}/><UiText value={"Sign out"}/></button></UiNav></aside><section className="account-content"><ContextVisual photo={accountPhoto(section)} className="account-context"/>{error&&<Notice error message={error}/>}{section==='provider-applications'?<ProviderApplications/>:section==='finds'?<Finds user={user} workflowId={workflowId}/>:<AccountSection key={section} section={section} user={user}/>}</section></div></div>;
@@ -192,6 +158,7 @@ export function AccountDataPrivacyControls({user}:{user:User}){
     setDeleting(true);setError('');setMessage('');
     try{
       await api('/account',{method:'DELETE'});
+      disableGoogleAutoSelect();
       syncIdentity(null);
       notifyUserSession(null);
       router.push('/login');

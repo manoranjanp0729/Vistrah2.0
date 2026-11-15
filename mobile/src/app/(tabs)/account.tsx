@@ -9,6 +9,7 @@ import Feather from '@expo/vector-icons/Feather';
 import {router} from 'expo-router';
 import {Page,Action,Loading,ErrorPanel} from '../../components/ui';
 import {useSession} from '../../lib/session';
+import {disableGoogleAutoSelect} from '../../../../shared/google-web';
 import {isSellerUser} from '../../lib/types';
 import {useTheme,spacing} from '../../lib/theme';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -109,7 +110,7 @@ function Section({title,subtitle,children}:{title:string;subtitle:string;childre
 
 export default function Account(){const {colors,styles}=useTheme();const banner=useBannerTheme();const {copy,t}=useLanguage();
  const session=useSession();const seller=isSellerUser(session.user);const [error,setError]=useState(''),[busy,setBusy]=useState(false);
- async function logout(){setBusy(true);setError('');try{await session.signOut();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+ async function logout(){setBusy(true);setError('');try{disableGoogleAutoSelect();await session.signOut();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
  const roleLabel=session.user?.role==='ADMIN'?'Administrator':seller?'Customer & Seller':'Customer';
  return <Page sectioned>
   <View style={{gap:10}}>

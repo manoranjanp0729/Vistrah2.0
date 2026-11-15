@@ -255,9 +255,11 @@ def seller_login(data: Login, request: Request, db: Session = Depends(get_db)):
     return login_identity(data, request, db, seller=True)
 
 async def google_identity(data: GoogleAuth, request: Request, db: Session = Depends(get_db), seller=False):
-    from .google_auth import verify_google_token
+    from .google_auth import verify_google_access_token, verify_google_token
     rate_limit(db, 'google-sign-in', request)
-    info = await verify_google_token((data.credential or data.id_token or '').strip())
+    id_tok = (data.credential or data.id_token or '').strip()
+    access_tok = (data.access_token or '').strip()
+    info = await (verify_google_access_token(access_tok) if (access_tok and not id_tok) else verify_google_token(id_tok))
     email = str(info['email']).lower().strip()
     name = str(info.get('name') or email.split('@')[0]).strip()[:100]
     identity = db.get(GoogleIdentity, info['sub'])

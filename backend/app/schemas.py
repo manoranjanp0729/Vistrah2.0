@@ -22,6 +22,7 @@ class Login(Schema):
 class GoogleAuth(Schema):
     credential: str | None = Field(default=None, max_length=4096)
     id_token: str | None = Field(default=None, max_length=4096)
+    access_token: str | None = Field(default=None, max_length=4096)
     privacy_policy_version: str | None = Field(default=None, min_length=1, max_length=32, pattern=r'^[A-Za-z0-9._-]+$')
     marketing_consent: bool | None = None
     require_consent_for_new: bool = False

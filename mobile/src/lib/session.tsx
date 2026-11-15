@@ -5,6 +5,7 @@ import {api,ApiError,onUnauthorized,setToken,usesBrowserCookies} from './api';
 import type {User} from './catalogue';
 import {authEndpoint} from './seller-auth';
 import {fetchBootstrap} from './bootstrap';
+import {disableGoogleAutoSelect} from '../../../shared/google-web';
 const PRIMARY_STORAGE_KEY='vistrah.session';
 const LEGACY_SELLER_STORAGE_KEY='vistrah.seller.session';
 const readToken=async()=>{
@@ -25,7 +26,7 @@ const removeToken=async()=>{
   await SecureStore.deleteItemAsync(PRIMARY_STORAGE_KEY);
   await SecureStore.deleteItemAsync(LEGACY_SELLER_STORAGE_KEY).catch(()=>{});
 };
-type GoogleAuthPayload={credential:string;privacy_policy_version?:string;marketing_consent?:boolean;require_consent_for_new?:boolean};
+type GoogleAuthPayload={credential?:string;access_token?:string;privacy_policy_version?:string;marketing_consent?:boolean;require_consent_for_new?:boolean};
 type SignupConsent={privacy_policy_version?:string;marketing_consent?:boolean};
 type Session={user:User|null;ready:boolean;error:string;signIn:(email:string,password:string,name?:string,seller?:boolean,consent?:SignupConsent)=>Promise<void>;signInWithGoogle:(payload:GoogleAuthPayload,seller?:boolean)=>Promise<void>;signOut:()=>Promise<void>;retry:()=>void;refresh:()=>Promise<void>};
 const Context=createContext<Session|null>(null);
@@ -73,6 +74,8 @@ function useStoredSession():Session {
   }
   async function signOut(){
     generation.current++;let revocationError:Error|null=null;
+    disableGoogleAutoSelect();
+    if(Platform.OS!=='web')void import('@react-native-google-signin/google-signin').then(m=>m.GoogleSignin.signOut()).catch(()=>{});
     await api('/auth/logout',{method:'POST'}).catch(e=>{if(!(e instanceof ApiError&&e.status===401))revocationError=e;});
     await removeToken();setToken(null);setUser(null);setError('');
     if(revocationError)throw new Error('Signed out on this device. VISTRAH could not revoke the server session because it was unreachable.');

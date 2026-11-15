@@ -6,6 +6,7 @@ import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 
 import {api,money,date} from '@/lib/api';
+import {disableGoogleAutoSelect} from '../../shared/google-web';
 import type {User,RequestRecord,Payment} from '@/lib/types';
 import {AccountDataPrivacyControls,useUser} from './customer';
 import {useCustomerLocation} from './customer-location';
@@ -13,7 +14,7 @@ import {Notice} from './ui';
 export function ReplicaAccount(){
  const {copy,t}=useLanguage();
   const {user,loading,error}=useUser();const router=useRouter();const location=useCustomerLocation();const [failure,setFailure]=useState('');
-  async function logout(){try{await api('/auth/logout',{method:'POST'});location.syncIdentity(null);router.refresh();window.location.assign('/account');}catch(e){setFailure((e as Error).message);}}
+  async function logout(){try{await api('/auth/logout',{method:'POST'});disableGoogleAutoSelect();location.syncIdentity(null);router.refresh();window.location.assign('/account');}catch(e){setFailure((e as Error).message);}}
   const roleLabel=user?.role==='ADMIN'?'Administrator':user?.seller_enabled?'Seller & Customer':'Customer';
   return <div className="container page replica-page"><h1><UiText value={copy.account.title}/></h1>{loading?<p><UiText value={copy.common.loading}/></p>:user?<div className="panel"><h2>{user.name}</h2><p>{user.email} · <UiText value={roleLabel}/></p><button className="button secondary" onClick={()=>void logout()}><UiText value={copy.account.signOut}/></button></div>:<><p><UiText value={copy.account.intro}/></p><Link className="button" href="/login"><UiText value={copy.account.signIn}/></Link></>}{(failure||error)&&<Notice error message={failure||error}/>}<UiNav  aria-label="Account navigation" className="account-categories"><section className="account-category"><h2><UiText value={"My Account & Activity"}/></h2><p><UiText value={"Profile, requests, orders, membership and preferences"}/></p><div className="replica-actions">{user&&<><Link href="/account/profile"><UiText value={copy.account.profile}/></Link><Link href="/account/requests"><UiText value={copy.nav.requests}/></Link></>}<Link href="/commerce/cart">{t('account.cart')}</Link>{user&&<Link href="/commerce/orders">{t('account.orders')}</Link>}<Link href="/membership"><UiText value={copy.account.membership}/></Link>{user&&<Link href="/account/payments"><UiText value={copy.account.history}/></Link>}<Link href="/account/settings">{t('settings.title')}</Link></div></section><section className="account-category"><h2><UiText value={"Seller & Business Tools"}/></h2><p><UiText value={"Manage businesses, service listings, V Ads and job postings"}/></p><div className="replica-actions">{user&&<><Link href="/seller"><UiText value={copy.account.seller}/></Link><Link href="/seller/v-ads"><UiText value={"V Ads Studio"}/></Link><Link href="/services"><UiText value={"+ Add services"}/></Link></>}{!user&&<Link href="/seller/v-ads"><UiText value={"V Ads Studio"}/></Link>}<Link href="/app/employer-jobs">{t('account.jobs')}</Link></div></section>{user?.role==='ADMIN'&&<section className="account-category"><h2><UiText value={"Administration"}/></h2><p><UiText value={"Platform operations, approvals and oversight"}/></p><div className="replica-actions"><Link href="/admin"><UiText value={copy.account.admin}/></Link></div></section>}</UiNav></div>;
 }

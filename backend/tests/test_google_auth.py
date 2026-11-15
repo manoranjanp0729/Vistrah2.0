@@ -121,3 +121,93 @@ def test_google_first_time_dpdp_consent_gate_and_returning_user_flow(client,db,g
     returning=client.post('/auth/google',json={'credential':cred,'require_consent_for_new':True})
     assert returning.status_code==200
     assert returning.json()['user']['id']==user_payload['id']
+
+
+def test_google_select_account_access_token_creates_different_account_and_fails_closed(client,db,google,monkeypatch):
+    import httpx
+
+    class MockResponse:
+        def __init__(self, status_code: int, payload: dict):
+            self.status_code = status_code
+            self._payload = payload
+
+        def raise_for_status(self):
+            if self.status_code >= 500:
+                raise httpx.HTTPStatusError('Upstream error', request=None, response=None)
+
+        def json(self):
+            return self._payload
+
+    state = {
+        'aud': 'fixture-client.apps.googleusercontent.com',
+        'azp': 'fixture-client.apps.googleusercontent.com',
+        'sub': 'google-second-account-sub',
+        'exp': int(time.time()) + 300,
+        'user_sub': 'google-second-account-sub',
+        'email': 'second.account@gmail.com',
+        'email_verified': True,
+        'name': 'Second Google Account',
+    }
+
+    class MockAsyncClient:
+        def __init__(self, *args, **kwargs):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, exc_type, exc, tb):
+            return False
+
+        async def post(self, url, data=None):
+            assert url == 'https://oauth2.googleapis.com/tokeninfo'
+            assert data == {'access_token': 'ya29.mock-select-account-token'}
+            return MockResponse(200, {
+                'aud': state['aud'],
+                'azp': state['azp'],
+                'sub': state['sub'],
+                'exp': str(state['exp']),
+                'expires_in': '300',
+            })
+
+        async def get(self, url, headers=None):
+            assert url == 'https://openidconnect.googleapis.com/v1/userinfo'
+            assert headers == {'Authorization': 'Bearer ya29.mock-select-account-token'}
+            return MockResponse(200, {
+                'sub': state['user_sub'],
+                'email': state['email'],
+                'email_verified': state['email_verified'],
+                'name': state['name'],
+            })
+
+    monkeypatch.setattr(google_auth.httpx, 'AsyncClient', MockAsyncClient)
+
+    # First sign in with standard account 1, then sign out, then sign in with account 2 via select_account access_token
+    first = client.post('/auth/google', json={
+        'credential': google(),
+        'privacy_policy_version': '2026-11-dpdp-v1',
+        'marketing_consent': False,
+    })
+    assert first.status_code == 200
+    first_token = first.json()['access_token']
+    assert client.post('/auth/logout', headers={'Authorization': f'Bearer {first_token}'}).status_code == 200
+
+    second = client.post('/auth/google', json={
+        'access_token': 'ya29.mock-select-account-token',
+        'privacy_policy_version': '2026-11-dpdp-v1',
+        'marketing_consent': True,
+    })
+    assert second.status_code == 200, second.text
+    second_user = second.json()['user']
+    assert second_user['email'] == 'second.account@gmail.com'
+    assert second_user['id'] != first.json()['user']['id']
+    assert second_user['privacy_policy_version'] == '2026-11-dpdp-v1'
+    assert second_user['marketing_consent'] is True
+
+    # Fail-closed checks: untrusted audience or mismatched userinfo subject must return 401
+    state['aud'] = 'attacker-client.apps.googleusercontent.com'
+    assert client.post('/auth/google', json={'access_token': 'ya29.mock-select-account-token'}).status_code == 401
+
+    state['aud'] = 'fixture-client.apps.googleusercontent.com'
+    state['user_sub'] = 'different-sub'
+    assert client.post('/auth/google', json={'access_token': 'ya29.mock-select-account-token'}).status_code == 401

@@ -54,6 +54,7 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="provider" options={{title:'Offer your services'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="terms" options={{title:'Terms & Conditions'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="privacy" options={{title:'Privacy Policy'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="grievance-officer" options={{title:'Grievance Officer'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="settings" options={{title:t('settings.title'),headerShown:false,presentation:'transparentModal',animation:'fade',contentStyle:{backgroundColor:'transparent'}}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="profile" options={{title:'Your profile'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="my-requests" options={{title:'Your requests'}}/>

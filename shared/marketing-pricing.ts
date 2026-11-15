@@ -37,25 +37,34 @@ export type PricingIntent='boosts'|'studio';
 export type VAdsRadiusKm=2|5|10|25;
 export type VAdsDurationDays=3|7|15|30;
 
+export const VADS_FREE_FIRST_MONTH={
+ headline:'Launch V Ads Free for Your First Month',
+ subheadline:'Run hyperlocal V Ads across your neighborhood at ₹0 for the first 30 days. Experience real customer inquiries before paying a rupee.',
+ primaryCta:'Start Free First Month',
+ primaryHref:'/seller/v-ads',
+ microcopy:'₹0 due today • No upfront payment required • Transparent monthly rates from Day 31',
+ studioBoundary:'The First 30 Days Free offer applies exclusively to self-serve spatial & 9:16 Reels V Ads. VISTRAH Ads & Marketing Studio retainers, creative/video production, outdoor signage, and mobility billboards are scoped and billed separately.',
+} as const;
+
 export const FREE_LISTING_ANCHOR={
  priceLabel:'₹0',
- badge:'FIRST 90 DAYS FREE · BASIC BUSINESS MEMBERSHIP',
- title:'Start with a ₹0 Verified Business Listing',
- summary:'Eligible new service providers receive 90 days of Basic Membership at ₹0 (₹149/month afterward, no automatic renewal)—including a verified business profile, spatial discovery, 5 job-posting credits, and V Ads Seller Studio access.',
- primaryHref:'/provide-service',
- primaryLabel:'Claim Free Listing',
- secondaryHref:'/membership',
- secondaryLabel:'Membership Rules',
+ badge:'FIRST 30 DAYS FREE · SELF-SERVE V ADS',
+ title:'First Month Free on V Ads + 90-Day Free Basic Listing',
+ summary:'Verified businesses get 30 days of hyperlocal V Ads visibility at ₹0 (zero auto-charge from Day 31), alongside 90 days of Basic Business Membership at ₹0 for eligible new service providers. Studio agency & outdoor services are quoted separately.',
+ primaryHref:'/seller/v-ads',
+ primaryLabel:'Start Free First Month',
+ secondaryHref:'/provide-service',
+ secondaryLabel:'Register Business Free',
 } as const;
 
 export const VADS_RADIUS_OPTIONS:readonly VAdsRadiusKm[]=[2,5,10,25];
 export const VADS_DURATION_OPTIONS:readonly VAdsDurationDays[]=[3,7,15,30];
 
-export const VADS_RADIUS_TIERS:Record<VAdsRadiusKm,{radiusKm:VAdsRadiusKm;label:string;zoneLabel:string;dailyPaise:number;reachMinPerDay:number;reachMaxPerDay:number}>={
- 2:{radiusKm:2,label:'2 km',zoneLabel:'Neighbourhood catchment',dailyPaise:15000,reachMinPerDay:900,reachMaxPerDay:1800},
- 5:{radiusKm:5,label:'5 km',zoneLabel:'Ward & locality cluster',dailyPaise:25000,reachMinPerDay:2200,reachMaxPerDay:4500},
- 10:{radiusKm:10,label:'10 km',zoneLabel:'Multi-zone corridor',dailyPaise:45000,reachMinPerDay:5000,reachMaxPerDay:9800},
- 25:{radiusKm:25,label:'25 km',zoneLabel:'City-wide metro reach',dailyPaise:80000,reachMinPerDay:12000,reachMaxPerDay:24000},
+export const VADS_RADIUS_TIERS:Record<VAdsRadiusKm,{radiusKm:VAdsRadiusKm;label:string;zoneLabel:string;dailyPaise:number;monthlyPaise:number;reachMinPerDay:number;reachMaxPerDay:number}>={
+ 2:{radiusKm:2,label:'2 km',zoneLabel:'Neighbourhood catchment',dailyPaise:15000,monthlyPaise:450000,reachMinPerDay:900,reachMaxPerDay:1800},
+ 5:{radiusKm:5,label:'5 km',zoneLabel:'Ward & locality cluster',dailyPaise:25000,monthlyPaise:750000,reachMinPerDay:2200,reachMaxPerDay:4500},
+ 10:{radiusKm:10,label:'10 km',zoneLabel:'Multi-zone corridor',dailyPaise:45000,monthlyPaise:1350000,reachMinPerDay:5000,reachMaxPerDay:9800},
+ 25:{radiusKm:25,label:'25 km',zoneLabel:'City-wide metro reach',dailyPaise:80000,monthlyPaise:2400000,reachMinPerDay:12000,reachMaxPerDay:24000},
 };
 
 const inNumberFormat=new Intl.NumberFormat('en-IN');
@@ -65,19 +74,28 @@ export function estimateVAdsBoost(radiusKm:VAdsRadiusKm,days:VAdsDurationDays){
  const subtotalPaise=tier.dailyPaise*days;
  const gstPaise=Math.round(subtotalPaise*0.18);
  const totalWithGstPaise=subtotalPaise+gstPaise;
+ const monthlyGstPaise=Math.round(tier.monthlyPaise*0.18);
+ const monthlyTotalWithGstPaise=tier.monthlyPaise+monthlyGstPaise;
  const reachMin=tier.reachMinPerDay*days;
  const reachMax=tier.reachMaxPerDay*days;
+ const firstMonthReachMin=tier.reachMinPerDay*30;
+ const firstMonthReachMax=tier.reachMaxPerDay*30;
  return {
   radiusKm,
   days,
   zoneLabel:tier.zoneLabel,
+  firstMonthDuePaise:0,
   dailyPaise:tier.dailyPaise,
+  monthlyPaise:tier.monthlyPaise,
+  monthlyGstPaise,
+  monthlyTotalWithGstPaise,
   subtotalPaise,
   gstPaise,
   totalWithGstPaise,
   reachMin,
   reachMax,
   reachFormatted:`${inNumberFormat.format(reachMin)} – ${inNumberFormat.format(reachMax)}`,
+  firstMonthReachFormatted:`${inNumberFormat.format(firstMonthReachMin)} – ${inNumberFormat.format(firstMonthReachMax)}`,
  };
 }
 
@@ -148,15 +166,21 @@ export function serviceFeeClarity(service:PricingService):string{
 export const PRICING_COMPARISON_ROWS=[
  {
   criteria:'Best suited for',
-  free:'New local providers establishing verified trust',
-  boosts:'Hyperlocal shops, clinics, salons & restaurants driving nearby walk-ins',
-  studio:'Growing SMBs, multi-outlet brands & city-wide launches',
+  free:'New local providers establishing verified directory trust',
+  boosts:'Neighbourhood shops, clinics, salons & restaurants testing local V Ads risk-free',
+  studio:'Growing SMBs, multi-outlet brands & city-wide agency/outdoor launches',
  },
  {
-  criteria:'Indicative starting outlay',
-  free:'₹0 for first 90 days (₹149/mo Basic after)',
-  boosts:'From ₹150/day (2 km) to ₹800/day (25 km) + 18% GST',
-  studio:'From ₹499 creative · ₹4,999/mo retainers · Custom OOH/transit quotes',
+  criteria:'Month 1 (Days 1–30) outlay',
+  free:'₹0 (First 90 days Basic Membership free)',
+  boosts:'₹0 — First 30 Days Free (₹0 due today, no upfront payment)',
+  studio:'Quoted per scope — from ₹499 creative · ₹4,999/mo retainers · Custom OOH quotes',
+ },
+ {
+  criteria:'Standard rate from Day 31+',
+  free:'₹149/month Basic after Day 90 (no auto-renewal)',
+  boosts:'₹4,500–₹24,000/mo (₹150–₹800/day by km radius) + 18% GST — only if you continue',
+  studio:'Per approved Studio retainer or campaign quote + 18% GST (free-month offer excluded)',
  },
  {
   criteria:'Geographic & channel reach',
@@ -167,42 +191,36 @@ export const PRICING_COMPARISON_ROWS=[
  {
   criteria:'Creative & campaign execution',
   free:'Self-managed business profile & service listings',
-  boosts:'Upload your own 9:16 Reel in V Ads Seller Studio',
+  boosts:'Self-serve upload & live inquiry tracking in V Ads Seller Studio',
   studio:'Dedicated Vistrah creative, web, media-planning & fabrication Desk',
  },
  {
-  criteria:'Media spend & third-party costs',
-  free:'None required',
-  boosts:'Transparent daily rate × duration; no external agency retainer',
-  studio:'Agency/production fee quoted upfront; ad spend & site media at actuals',
- },
- {
-  criteria:'Tax invoicing & compliance',
+  criteria:'Media spend & tax invoicing',
   free:'No charge during 90-day promotional window',
-  boosts:'18% GST itemised; ad & geo-radius moderated before going live',
-  studio:'18% GST B2B tax invoice (GSTIN ITC eligible) upon commercial sign-off',
+  boosts:'₹0 for Month 1; 18% GST itemised (GSTIN ITC eligible) from Day 31 onward',
+  studio:'Agency/production fee quoted upfront; ad spend at actuals + 18% GST tax invoice',
  },
 ] as const;
 
 export const MERCHANT_PRICING_FAQS=[
  {
-  question:'Do I receive a GST tax invoice for 18% Input Tax Credit (ITC)?',
-  answer:'Yes. Applicable 18% GST is itemised separately on tax invoices issued by Vistrah Groups Pvt Ltd. GST-registered Indian businesses can provide their 15-digit GSTIN at billing confirmation to claim eligible B2B Input Tax Credit.',
+  question:'How does the Free First Month of V Ads work?',
+  answer:'Verified businesses on VISTRAH receive their first 30 days of self-serve spatial V Ads and 9:16 Reels visibility at ₹0—with ₹0 due today and zero automatic billing lock-in. Configure your neighborhood km radius, publish moderated Reels, and track live reach, views, and customer inquiries inside V Ads Seller Studio. Standard transparent rates (plus 18% GST) apply only from Day 31 onward if you choose to continue. VISTRAH Ads & Marketing Studio agency retainers, creative shoots, outdoor hoardings, and mobility billboards are quoted separately.',
  },
  {
-  question:'How does upgrading from the ₹0 90-day Free Basic Membership work?',
-  answer:'Eligible new service providers receive 90 days of Basic Membership at ₹0 (₹149/month afterward, with zero automatic renewal). You can keep Basic, upgrade to Plus (₹799/mo) or Premium (₹1,899/mo) for monthly creative/social allowances, or request standalone V Ads boosts and Studio services anytime.',
+  question:'Do I receive a GST tax invoice for 18% Input Tax Credit (ITC) from Day 31?',
+  answer:'Yes. Your first 30 days of self-serve V Ads are ₹0. For paid campaigns from Day 31 onward—or any approved Studio service—applicable 18% GST is itemised separately on tax invoices issued by Vistrah Groups Pvt Ltd so GST-registered businesses can claim eligible B2B Input Tax Credit using their 15-digit GSTIN.',
  },
  {
-  question:'Can I pause, adjust my km radius, or extend a V Ads Reels boost?',
-  answer:'Yes. In V Ads Seller Studio (/seller/v-ads), you can submit updated geo-pin and radius revisions (from 2 km neighbourhood catchments up to 25 km+ city corridors) or withdraw a video at any time. Targeting and creative updates undergo moderation review before republication.',
+  question:'How does the ₹0 90-day Free Basic Membership work alongside Free First Month V Ads?',
+  answer:'Eligible new service providers get 90 days of Basic Business Membership at ₹0 (₹149/month afterward, no automatic renewal), which includes your verified business profile, spatial directory presence, 5 job-posting credits, and V Ads Seller Studio access—where you can immediately activate your ₹0 first 30 days of V Ads.',
  },
  {
-  question:'Are Google or Meta ad budgets included in Digital Marketing monthly retainers?',
-  answer:'No. Monthly retainers (starting at ₹4,999/month) cover campaign strategy, setup, creative coordination, optimisation, and reporting. Actual media spend paid to Google, Meta, or creator partners is billed transparently at actuals within your approved budget cap.',
+  question:'Can I pause, adjust my km radius, or stop before Day 31?',
+  answer:'Yes. In V Ads Seller Studio (/seller/v-ads), you can submit updated geo-pin and radius revisions (2 km to 25 km) or withdraw an active video anytime during or after your free 30-day period. Nothing is billed automatically when Day 30 ends.',
  },
  {
-  question:'How are Outdoor Hoardings, Digital Screens, and Mobility Billboards priced?',
-  answer:'Outdoor and transit rates vary by city corridor, board dimensions, lighting, fleet count, printing/mounting, and municipal permissions. Submit a Custom Media Plan brief with your target city, preferred junctions or routes, and dates—we return an itemised availability quotation before any commitment.',
+  question:'Does the Free First Month apply to VISTRAH Ads & Marketing Studio, websites, or hoardings?',
+  answer:'No. The ₹0 First 30 Days offer applies strictly to self-serve V Ads on the VISTRAH platform. Managed agency retainers (from ₹4,999/month, excluding Google/Meta ad spend), website builds, video production, roadside hoardings, and auto/bus transit branding require separate custom quotations.',
  },
 ] as const;

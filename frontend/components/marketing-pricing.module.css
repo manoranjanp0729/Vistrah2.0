@@ -136,6 +136,66 @@
   margin-top: 18px;
 }
 
+.heroMicrocopy {
+  margin-top: 12px !important;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.optionFreeBadge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+}
+
+.ledgerFreeBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 12px 0 14px;
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.ledgerFreeBanner div {
+  display: grid;
+  gap: 2px;
+}
+
+.ledgerFreeBanner span {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.ledgerFreeBanner strong {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--accent-orange);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ledgerSubhead {
+  padding-top: 12px;
+  padding-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
 .anchorActions {
   display: flex;
   gap: 10px;

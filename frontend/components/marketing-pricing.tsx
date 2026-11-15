@@ -37,6 +37,7 @@ import {
   quotePayload,
   marketingPricingClient,
   pricingHref,
+  VADS_FREE_FIRST_MONTH,
   FREE_LISTING_ANCHOR,
   VADS_RADIUS_OPTIONS,
   VADS_DURATION_OPTIONS,
@@ -661,29 +662,19 @@ export function MarketingPricing({
       ) : (
         <header className={styles.hero}>
           <div>
-            <p className={styles.eyebrow}>VISTRAH ADS &amp; MARKETING</p>
-            <h1>Get discovered within 5 km—or scale across the city</h1>
-            <p>
-              Transparent INR pricing built for Indian neighbourhood businesses
-              and multi-city brands. Start free on spatial search, boost 9:16 V
-              Ads Reels by pin-code radius, or brief our full-stack Digital,
-              Creative, Outdoor, and Mobility Studio.
+            <p className={styles.eyebrow}>
+              VISTRAH ADS &amp; MARKETING · FIRST 30 DAYS FREE
             </p>
+            <h1>{VADS_FREE_FIRST_MONTH.headline}</h1>
+            <p>{VADS_FREE_FIRST_MONTH.subheadline}</p>
             <div className={styles.actions}>
-              <button
-                type="button"
+              <Link
+                href={VADS_FREE_FIRST_MONTH.primaryHref}
                 className={styles.primary}
-                onClick={() => {
-                  setIntent("boosts");
-                  workspaceRef.current?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-                }}
               >
-                Estimate V Ads Boost
+                {VADS_FREE_FIRST_MONTH.primaryCta}
                 <ArrowUpRight size={16} />
-              </button>
+              </Link>
               <button
                 type="button"
                 className={styles.secondary}
@@ -694,13 +685,16 @@ export function MarketingPricing({
                   )
                 }
               >
-                Request Custom Media Plan
+                Explore Studio &amp; Custom Quotes
               </button>
             </div>
+            <p className={styles.heroMicrocopy}>
+              {VADS_FREE_FIRST_MONTH.microcopy}
+            </p>
           </div>
           <aside
             className={styles.heroAside}
-            aria-label="Free Verified Business Listing"
+            aria-label="First 30 Days Free V Ads Offer"
           >
             <span>{FREE_LISTING_ANCHOR.badge}</span>
             <div className={styles.freePriceRow}>
@@ -708,7 +702,7 @@ export function MarketingPricing({
                 {FREE_LISTING_ANCHOR.priceLabel}
               </span>
               <span className={styles.freeTitle}>
-                Verified Business Listing
+                First 30 Days Free on V Ads
               </span>
             </div>
             <p>{FREE_LISTING_ANCHOR.summary}</p>
@@ -758,11 +752,10 @@ export function MarketingPricing({
               onClick={() => setIntent("boosts")}
             >
               <span className={styles.intentTitle}>
-                1. Self-Serve V Ads Boosts
+                1. Self-Serve V Ads — First Month Free
               </span>
               <span className={styles.intentMeta}>
-                Hyperlocal spatial feed &amp; 9:16 Reels · From ₹150/day · 2–25
-                km
+                ₹0 for Days 1–30 · Then standard 2–25 km rates from Day 31
               </span>
             </button>
             <button
@@ -777,11 +770,12 @@ export function MarketingPricing({
               onClick={() => setIntent("studio")}
             >
               <span className={styles.intentTitle}>
-                2. VISTRAH Ads &amp; Marketing Studio
+                2. VISTRAH Ads &amp; Marketing Studio — Quoted Services
               </span>
               <span className={styles.intentMeta}>
-                Digital, Creative/Video, Outdoor &amp; Mobility ·{" "}
+                Agency retainers, creative/video, hoardings &amp; mobility ·{" "}
                 {catalogue.services.filter((s) => s.enabled).length} services
+                (billed separately)
               </span>
             </button>
           </div>
@@ -796,19 +790,20 @@ export function MarketingPricing({
               <div className={styles.sectionHeading}>
                 <div>
                   <p className={styles.eyebrow}>
-                    HYPERLOCAL SPATIAL &amp; REELS DISCOVERY
+                    SELF-SERVE SPATIAL &amp; 9:16 REELS · ₹0 FOR FIRST 30 DAYS
                   </p>
-                  <h2>Self-Serve V Ads Boost Estimator</h2>
+                  <h2>V Ads Plans &amp; Month 2+ Rate Estimator</h2>
                 </div>
                 <span className={styles.countBadge}>
-                  Pin-code radius targeting · 18% GST itemised
+                  ₹0 Month 1 · Zero lock-in · 18% GST from Day 31
                 </span>
               </div>
               <div className={styles.estimatorGrid}>
                 <div className={styles.estimatorControls}>
                   <div className={styles.controlGroup}>
                     <span className={styles.controlLabel}>
-                      Select Target Radius Around Your Business Pin
+                      Select Target Radius — ₹0 for Month 1, Standard Rate From
+                      Day 31
                     </span>
                     <div
                       className={styles.optionGrid}
@@ -828,11 +823,15 @@ export function MarketingPricing({
                             }
                             onClick={() => setRadiusKm(km)}
                           >
+                            <span className={styles.optionFreeBadge}>
+                              ₹0 First 30 Days
+                            </span>
                             <span className={styles.optionValue}>
                               {tier.label}
                             </span>
                             <span className={styles.optionSub}>
-                              {formatPricingMoney(tier.dailyPaise)}/day
+                              Then {formatPricingMoney(tier.monthlyPaise)}/mo +
+                              GST from Day 31
                             </span>
                           </button>
                         );
@@ -842,7 +841,7 @@ export function MarketingPricing({
 
                   <div className={styles.controlGroup}>
                     <span className={styles.controlLabel}>
-                      Select Campaign Duration
+                      Preview Optional Post-Trial Window (From Day 31 Onward)
                     </span>
                     <div
                       className={styles.optionGrid}
@@ -862,9 +861,10 @@ export function MarketingPricing({
                             onClick={() => setDurationDays(days)}
                           >
                             <span className={styles.optionValue}>
-                              {days} days
+                              {days === 30 ? "30 days (Monthly)" : `${days} days`}
                             </span>
                             <span className={styles.optionSub}>
+                              Day 31+:{" "}
                               {formatPricingMoney(
                                 VADS_RADIUS_TIERS[radiusKm].dailyPaise * days,
                               )}{" "}
@@ -880,25 +880,26 @@ export function MarketingPricing({
                     <li>
                       <Check size={16} />
                       <span>
-                        <strong>{boostEstimate.zoneLabel}:</strong> Reach high-intent
-                        customers browsing within {radiusKm} km of your verified
-                        coordinates.
+                        <strong>₹0 — First 30 Days Free ({radiusKm} km):</strong>{" "}
+                        Run moderated 9:16 Reels and spatial discovery across your{" "}
+                        {boostEstimate.zoneLabel.toLowerCase()} for 30 days at ₹0.
                       </span>
                     </li>
                     <li>
                       <Check size={16} />
                       <span>
-                        <strong>Spatial Feed + V Ads 9:16 Reels:</strong>{" "}
-                        Promote video reels with transparent views, likes, and
-                        comments reporting in Seller Studio.
+                        <strong>Zero hidden lock-ins:</strong> Track live local
+                        views, likes, and inquiries in Seller Studio; nothing
+                        auto-renews on Day 31 unless you opt to continue.
                       </span>
                     </li>
                     <li>
                       <Check size={16} />
                       <span>
-                        <strong>Flexible radius &amp; pause control:</strong>{" "}
-                        Submit geo-radius revisions or withdraw active videos
-                        anytime from Seller Studio.
+                        <strong>Self-Serve vs. Studio clarity:</strong> Free
+                        first month covers self-serve V Ads media; custom Studio
+                        video shoots, retainers, and outdoor hoardings are
+                        quoted separately.
                       </span>
                     </li>
                   </ul>
@@ -906,38 +907,51 @@ export function MarketingPricing({
 
                 <div className={styles.ledgerPanel}>
                   <div>
-                    <p className={styles.eyebrow}>INDICATIVE CAMPAIGN LEDGER</p>
-                    <div className={styles.reachBox}>
-                      <span>Estimated local views ({durationDays} days)</span>
-                      <strong>{boostEstimate.reachFormatted} views</strong>
+                    <p className={styles.eyebrow}>TRANSPARENT RATE LEDGER</p>
+                    <div className={styles.ledgerFreeBanner}>
+                      <div>
+                        <strong>₹0 — First 30 Days Free</strong>
+                        <span>
+                          Due today for Month 1 ({radiusKm} km ·{" "}
+                          {boostEstimate.firstMonthReachFormatted} est. 30-day
+                          views)
+                        </span>
+                      </div>
+                      <strong>₹0</strong>
+                    </div>
+
+                    <div className={styles.ledgerSubhead}>
+                      Standard Rate From Day 31 (Only If You Continue)
                     </div>
                     <div className={styles.ledgerRows}>
                       <div className={styles.ledgerRow}>
-                        <span>Coverage zone</span>
+                        <span>Month 2+ monthly plan ({radiusKm} km)</span>
                         <strong>
-                          {radiusKm} km · {durationDays} days
+                          ₹0 Month 1, then{" "}
+                          {formatPricingMoney(boostEstimate.monthlyPaise)}/mo +
+                          GST
                         </strong>
                       </div>
                       <div className={styles.ledgerRow}>
-                        <span>Indicative daily rate</span>
-                        <strong>
-                          {formatPricingMoney(boostEstimate.dailyPaise)} / day
-                        </strong>
-                      </div>
-                      <div className={styles.ledgerRow}>
-                        <span>Campaign subtotal ({durationDays} days)</span>
+                        <span>Selected Day 31+ window ({durationDays} days)</span>
                         <strong>
                           {formatPricingMoney(boostEstimate.subtotalPaise)}
                         </strong>
                       </div>
                       <div className={styles.ledgerRow}>
-                        <span>GST (18% · B2B GSTIN ITC eligible)</span>
+                        <span>Day 31+ GST (18% · GSTIN ITC eligible)</span>
                         <strong>
                           {formatPricingMoney(boostEstimate.gstPaise)}
                         </strong>
                       </div>
                       <div className={styles.ledgerTotalRow}>
-                        <span>Total indicative outlay</span>
+                        <span>Due today (Days 1–30)</span>
+                        <strong>₹0</strong>
+                      </div>
+                      <div className={styles.ledgerRow}>
+                        <span>
+                          Optional Day 31+ total ({durationDays} days incl. GST)
+                        </span>
                         <strong>
                           {formatPricingMoney(boostEstimate.totalWithGstPaise)}
                         </strong>
@@ -946,22 +960,26 @@ export function MarketingPricing({
                   </div>
 
                   <div className={styles.controlGroup}>
-                    <Link href="/seller/v-ads" className={styles.primary}>
-                      Open V Ads Seller Studio
+                    <Link
+                      href={VADS_FREE_FIRST_MONTH.primaryHref}
+                      className={styles.primary}
+                    >
+                      {VADS_FREE_FIRST_MONTH.primaryCta}
                       <ArrowUpRight size={16} />
                     </Link>
                     <Link
                       href={pricingHref("promotional-reel")}
                       className={styles.secondary}
                     >
-                      Need a 9:16 Reel edited? From ₹2,999
+                      Need Studio Reel production? From ₹2,999 (quoted
+                      separately)
                       <ChevronRight size={15} />
                     </Link>
                     <p className={styles.ledgerNote}>
-                      Indicative self-serve planning calculator. Video uploads
-                      and geo-radius targeting are configured in V Ads Seller
-                      Studio and require moderation approval before going live;
-                      reach is estimated and not guaranteed.
+                      {VADS_FREE_FIRST_MONTH.microcopy}. Video uploads and
+                      geo-radius targeting are configured in V Ads Seller Studio
+                      and require moderation approval before publication; reach
+                      is indicative and not guaranteed.
                     </p>
                   </div>
                 </div>
@@ -975,6 +993,9 @@ export function MarketingPricing({
               className={styles.section}
               ref={catalogueRef}
             >
+              <p className={styles.notice}>
+                {VADS_FREE_FIRST_MONTH.studioBoundary}
+              </p>
               <div className={styles.sectionHeading} id="catalogue">
                 <div>
                   <p className={styles.eyebrow}>
@@ -1203,8 +1224,10 @@ export function MarketingPricing({
                   <tr>
                     <th scope="col">Dimension</th>
                     <th scope="col">₹0 Verified Listing (90 Days Free)</th>
-                    <th scope="col">Self-Serve V Ads Boosts</th>
-                    <th scope="col">VISTRAH Ads &amp; Marketing Studio</th>
+                    <th scope="col">Self-Serve V Ads (First Month Free)</th>
+                    <th scope="col">
+                      VISTRAH Ads &amp; Marketing Studio (Quoted)
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -1229,8 +1252,12 @@ export function MarketingPricing({
               </div>
             </div>
             <div className={styles.faqList}>
-              {MERCHANT_PRICING_FAQS.map((faq) => (
-                <details key={faq.question} className={styles.faqItem}>
+              {MERCHANT_PRICING_FAQS.map((faq, idx) => (
+                <details
+                  key={faq.question}
+                  className={styles.faqItem}
+                  open={idx === 0}
+                >
                   <summary>
                     <span>{faq.question}</span>
                     <ChevronDown size={18} aria-hidden="true" />

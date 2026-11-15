@@ -75,6 +75,8 @@ from .composite_routes import router as composite_router
 app.include_router(composite_router)
 from .compliance_routes import router as compliance_router
 app.include_router(compliance_router)
+from .admin_console_routes import router as admin_console_router, build_admin_overview
+app.include_router(admin_console_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
@@ -481,11 +483,7 @@ async def webhook(request: Request, x_signature: str = Header(default=''), db: S
 
 @app.get('/admin/overview')
 def overview(user: User = Depends(admin_user), db: Session = Depends(get_db)):
-    counts = {name: db.scalar(select(func.count()).select_from(model)) for name, model in [('customers',User),('requests',ServiceRequest),('providers',Provider),('services',Service),('payments',Payment)]}
-    counts['customers'] = db.scalar(select(func.count()).select_from(User).where(User.role == 'CUSTOMER'))
-    counts['new_requests'] = db.scalar(select(func.count()).select_from(ServiceRequest).where(ServiceRequest.status == 'NEW'))
-    counts['payment_mode'] = 'SANDBOX'
-    return counts
+    return build_admin_overview(db)
 
 @app.get('/admin/requests')
 def admin_requests(user: User = Depends(admin_user), db: Session = Depends(get_db)):

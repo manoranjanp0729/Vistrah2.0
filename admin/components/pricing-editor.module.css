@@ -10,10 +10,9 @@
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  padding: 16px 20px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  padding: 0 0 14px;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
 }
 
 .topMeta {

@@ -3,12 +3,14 @@ import {UiText,UiElement} from "./localized-ui";
 import {useEffect,useRef,useState} from 'react';
 import {Pressable,View} from 'react-native';
 import {router} from 'expo-router';
+import {Action} from './ui';
 
 import {disableGoogleAutoSelect,getGoogleOAuth2,loadGoogleIdentity} from '../../../shared/google-web';
 import {legalVersion,signupLegalCopy} from '../../../shared/legal';
 import {controlHeights,layout,radii,useTheme} from '../lib/theme';
 
-const TARGET_HEIGHT=controlHeights.standard,BASE_HEIGHT=40,SCALE=TARGET_HEIGHT/BASE_HEIGHT;
+const TARGET_HEIGHT=controlHeights.standard,BASE_HEIGHT=40;
+const computeGsiWidth=(el:HTMLElement)=>Math.min(400,Math.max(240,Math.floor(el.getBoundingClientRect().width||360)));
 
 export type GoogleAuthGrant={
  credential?:string;
@@ -51,7 +53,7 @@ export function GoogleSignIn({
 
  const wrap=useRef<HTMLDivElement>(null),host=useRef<HTMLDivElement>(null);
  const latest=useRef({disabled,accepted,marketing,onCredential,onError}),initialized=useRef(false);
- const [error,setError]=useState(''),[consentAlert,setConsentAlert]=useState(''),[boxWidth,setBoxWidth]=useState(0),[gsiReady,setGsiReady]=useState(false);
+ const [error,setError]=useState(''),[consentAlert,setConsentAlert]=useState(''),[gsiWidth,setGsiWidth]=useState(360),[gsiReady,setGsiReady]=useState(false);
  const clientId=process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID;
  useEffect(()=>{latest.current={disabled,accepted,marketing,onCredential,onError};},[disabled,accepted,marketing,onCredential,onError]);
 
@@ -61,15 +63,23 @@ export function GoogleSignIn({
 
  useEffect(()=>{
   const el=wrap.current;if(!clientId||!el)return;
-  const measure=()=>setBoxWidth(Math.round(el.getBoundingClientRect().width));
-  measure();
+  let timer:ReturnType<typeof setTimeout>|undefined;
+  const applyWidth=()=>{
+   const next=computeGsiWidth(el);
+   setGsiWidth(prev=>prev===next?prev:next);
+  };
+  applyWidth();
   if(typeof ResizeObserver==='undefined')return;
-  const ro=new ResizeObserver(measure);ro.observe(el);
-  return()=>ro.disconnect();
+  const ro=new ResizeObserver(()=>{
+   if(timer)clearTimeout(timer);
+   timer=setTimeout(applyWidth,80);
+  });
+  ro.observe(el);
+  return()=>{
+   if(timer)clearTimeout(timer);
+   ro.disconnect();
+  };
  },[clientId]);
-
- const effectiveWidth=boxWidth||360;
- const gsiWidth=Math.min(400,Math.max(200,Math.ceil((effectiveWidth+4)/SCALE)));
 
  useEffect(()=>{
   let active=true;if(!clientId)return;
@@ -96,8 +106,10 @@ export function GoogleSignIn({
     });
     initialized.current=true;
    }
+   const measured=wrap.current?computeGsiWidth(wrap.current):gsiWidth;
+   if(measured!==gsiWidth)setGsiWidth(measured);
    host.current.innerHTML='';
-   api.renderButton(host.current,{theme:'outline',size:'large',text:'continue_with',shape:'rectangular',width:gsiWidth,logo_alignment:'center'});
+   api.renderButton(host.current,{theme:'outline',size:'large',text:'continue_with',shape:'rectangular',width:measured,logo_alignment:'left'});
    setGsiReady(true);
   }).catch(err=>{if(active)setError((err as Error).message);});
   return()=>{active=false;};
@@ -141,9 +153,9 @@ export function GoogleSignIn({
   tokenClient.requestAccessToken({prompt:'select_account'});
  }
 
- const clipWidth=Math.min(effectiveWidth,Math.max(200,Math.round(gsiWidth*SCALE)-4));
+ const clipWidth=Math.max(236,gsiWidth-4);
 
- return <View style={{width:'100%',gap:10}}>
+ return <View style={{width:'100%',maxWidth:400,alignSelf:'center',gap:10}}>
   <View
    style={[
     styles.card,
@@ -210,13 +222,13 @@ export function GoogleSignIn({
   {!clientId?(
    <Text style={styles.muted}><UiText value={"Google sign-in is not configured yet. Use email and password."}/></Text>
   ):(
-   <div style={{display:'grid',gap:8,width:'100%'}}>
+   <View style={{width:'100%',gap:10}}>
     <div
      aria-disabled={disabled||!accepted}
      style={{
       position:'relative',
       width:'100%',
-      opacity:disabled?.5:!accepted?.82:1,
+      opacity:disabled?.5:!accepted?.85:1,
       pointerEvents:disabled?'none':undefined,
      }}
     >
@@ -236,8 +248,8 @@ export function GoogleSignIn({
        boxSizing:'border-box',
       }}
      >
-      <div style={{width:clipWidth,height:TARGET_HEIGHT-4,overflow:'hidden',pointerEvents:accepted?'auto':'none'}}>
-       <div ref={host} style={{width:gsiWidth,height:BASE_HEIGHT,transform:`translate(-2px,-2px) scale(${SCALE})`,transformOrigin:'0 0'}}/>
+      <div style={{width:clipWidth,height:BASE_HEIGHT-4,overflow:'hidden',pointerEvents:accepted?'auto':'none'}}>
+       <div ref={host} style={{width:gsiWidth,height:BASE_HEIGHT,transform:'translate(-2px,-2px)'}}/>
       </div>
      </div>
      {!accepted&&(
@@ -259,26 +271,15 @@ export function GoogleSignIn({
       />
      )}
     </div>
-    <button
-     type="button"
+    <UiElement
+     as={Action}
+     secondary
+     label="Sign in with a different Google account"
      disabled={disabled||(!gsiReady&&accepted)}
-     onClick={switchGoogleAccount}
-     style={{
-      justifySelf:'center',
-      background:'transparent',
-      border:'none',
-      padding:'6px 10px',
-      fontSize:13,
-      fontWeight:500,
-      color:colors.accent,
-      cursor:disabled?'not-allowed':'pointer',
-      textDecoration:'underline',
-     }}
-    >
-     <UiText value={"Sign in with a different Google account"}/>
-    </button>
+     onPress={switchGoogleAccount}
+    />
     {error&&<p role="alert" style={{margin:0,fontSize:13,color:'#dc2626'}}><UiText value={error}/></p>}
-   </div>
+   </View>
   )}
  </View>;
 }

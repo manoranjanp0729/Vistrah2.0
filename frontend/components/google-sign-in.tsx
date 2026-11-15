@@ -5,7 +5,8 @@ import {useEffect,useRef,useState} from 'react';
 import {disableGoogleAutoSelect,getGoogleOAuth2,loadGoogleIdentity} from '../../shared/google-web';
 import {legalVersion,signupLegalCopy} from '../../shared/legal';
 
-const TARGET_HEIGHT=44,BASE_HEIGHT=40,SCALE=TARGET_HEIGHT/BASE_HEIGHT;
+const TARGET_HEIGHT=44,BASE_HEIGHT=40,BUTTON_RADIUS=8;
+const computeGsiWidth=(el:HTMLElement)=>Math.min(400,Math.max(240,Math.floor(el.getBoundingClientRect().width||400)));
 
 export type GoogleAuthGrant={
  credential?:string;
@@ -45,7 +46,7 @@ export function GoogleSignIn({
 
  const wrap=useRef<HTMLDivElement>(null),host=useRef<HTMLDivElement>(null),checkboxRef=useRef<HTMLInputElement>(null);
  const latest=useRef({disabled,accepted,marketing,onCredential}),initialized=useRef(false);
- const [error,setError]=useState(''),[consentAlert,setConsentAlert]=useState(''),[boxWidth,setBoxWidth]=useState(0),[gsiReady,setGsiReady]=useState(false);
+ const [error,setError]=useState(''),[consentAlert,setConsentAlert]=useState(''),[gsiWidth,setGsiWidth]=useState(400),[gsiReady,setGsiReady]=useState(false);
  useEffect(()=>{latest.current={disabled,accepted,marketing,onCredential};},[disabled,accepted,marketing,onCredential]);
  const clientId=process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
@@ -56,15 +57,23 @@ export function GoogleSignIn({
 
  useEffect(()=>{
   const el=wrap.current;if(!clientId||!el)return;
-  const measure=()=>setBoxWidth(Math.round(el.getBoundingClientRect().width));
-  measure();
+  let timer:ReturnType<typeof setTimeout>|undefined;
+  const applyWidth=()=>{
+   const next=computeGsiWidth(el);
+   setGsiWidth(prev=>prev===next?prev:next);
+  };
+  applyWidth();
   if(typeof ResizeObserver==='undefined')return;
-  const ro=new ResizeObserver(measure);ro.observe(el);
-  return()=>ro.disconnect();
+  const ro=new ResizeObserver(()=>{
+   if(timer)clearTimeout(timer);
+   timer=setTimeout(applyWidth,80);
+  });
+  ro.observe(el);
+  return()=>{
+   if(timer)clearTimeout(timer);
+   ro.disconnect();
+  };
  },[clientId]);
-
- const effectiveWidth=boxWidth||480;
- const gsiWidth=Math.min(400,Math.max(200,Math.ceil((effectiveWidth+4)/SCALE)));
 
  useEffect(()=>{
   let active=true;if(!clientId)return;
@@ -92,8 +101,10 @@ export function GoogleSignIn({
     });
     initialized.current=true;
    }
+   const measured=wrap.current?computeGsiWidth(wrap.current):gsiWidth;
+   if(measured!==gsiWidth)setGsiWidth(measured);
    host.current.innerHTML='';
-   api.renderButton(host.current,{theme:'outline',size:'large',text:'continue_with',shape:'rectangular',width:gsiWidth,logo_alignment:'center'});
+   api.renderButton(host.current,{theme:'outline',size:'large',text:'continue_with',shape:'rectangular',width:measured,logo_alignment:'left'});
    setGsiReady(true);
   }).catch(err=>{if(active)setError((err as Error).message);});
   return()=>{active=false;};
@@ -137,9 +148,9 @@ export function GoogleSignIn({
   tokenClient.requestAccessToken({prompt:'select_account'});
  }
 
- const clipWidth=Math.min(effectiveWidth,Math.max(200,Math.round(gsiWidth*SCALE)-4));
+ const clipWidth=Math.max(236,gsiWidth-4);
 
- return <div style={{width:'100%',marginBottom:16}}>
+ return <div style={{width:'100%',maxWidth:400,marginInline:'auto',marginBottom:16}}>
   <div
    role="region"
    aria-label="DPDP privacy and marketing consent"
@@ -148,7 +159,8 @@ export function GoogleSignIn({
     gap:10,
     padding:14,
     marginBottom:12,
-    borderRadius:12,
+    borderRadius:BUTTON_RADIUS,
+    boxSizing:'border-box',
     border:consentAlert?'1.5px solid #dc2626':'1px solid var(--border,rgba(15,23,42,0.12))',
     background:consentAlert?'rgba(220,38,38,0.04)':'var(--surface-soft,rgba(15,23,42,0.02))',
     transition:'border-color 0.15s ease, background-color 0.15s ease',
@@ -201,13 +213,13 @@ export function GoogleSignIn({
   {!clientId?(
    <p role="status"><UiText value={"Google sign-in is not configured yet. Use email and password."}/></p>
   ):(
-   <div style={{display:'grid',gap:8,width:'100%'}}>
+   <div style={{display:'grid',gap:10,width:'100%'}}>
     <div
      aria-disabled={disabled||!accepted}
      style={{
       position:'relative',
       width:'100%',
-      opacity:disabled?.5:!accepted?.82:1,
+      opacity:disabled?.5:!accepted?.85:1,
       pointerEvents:disabled?'none':undefined,
      }}
     >
@@ -217,9 +229,9 @@ export function GoogleSignIn({
        width:'100%',
        minHeight:TARGET_HEIGHT,
        height:TARGET_HEIGHT,
-       borderRadius:18,
+       borderRadius:BUTTON_RADIUS,
        backgroundColor:'#ffffff',
-       border:consentAlert?'1.5px solid #dc2626':'1px solid #dadce0',
+       border:consentAlert?'1.5px solid #dc2626':'1px solid var(--border,#dadce0)',
        display:'flex',
        alignItems:'center',
        justifyContent:'center',
@@ -227,8 +239,8 @@ export function GoogleSignIn({
        boxSizing:'border-box',
       }}
      >
-      <div style={{width:clipWidth,height:TARGET_HEIGHT-4,overflow:'hidden',pointerEvents:accepted?'auto':'none'}}>
-       <div ref={host} style={{width:gsiWidth,height:BASE_HEIGHT,transform:`translate(-2px,-2px) scale(${SCALE})`,transformOrigin:'0 0'}}/>
+      <div style={{width:clipWidth,height:BASE_HEIGHT-4,overflow:'hidden',pointerEvents:accepted?'auto':'none'}}>
+       <div ref={host} style={{width:gsiWidth,height:BASE_HEIGHT,transform:'translate(-2px,-2px)'}}/>
       </div>
      </div>
      {!accepted&&(
@@ -243,7 +255,7 @@ export function GoogleSignIn({
         height:'100%',
         background:'transparent',
         border:'none',
-        borderRadius:18,
+        borderRadius:BUTTON_RADIUS,
         cursor:'pointer',
         zIndex:2,
        }}
@@ -252,18 +264,15 @@ export function GoogleSignIn({
     </div>
     <button
      type="button"
-     className="text-link"
+     className="button secondary"
      disabled={disabled||(!gsiReady&&accepted)}
      onClick={switchGoogleAccount}
      style={{
-      justifySelf:'center',
-      background:'transparent',
-      border:'none',
-      padding:'4px 8px',
-      fontSize:13,
-      fontWeight:500,
-      cursor:disabled?'not-allowed':'pointer',
-      textDecoration:'underline',
+      width:'100%',
+      minHeight:TARGET_HEIGHT,
+      height:TARGET_HEIGHT,
+      borderRadius:BUTTON_RADIUS,
+      boxSizing:'border-box',
      }}
     >
      <UiText value={"Sign in with a different Google account"}/>

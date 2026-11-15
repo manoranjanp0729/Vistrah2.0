@@ -65,7 +65,7 @@ export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:bo
       setError((e as Error).message);
     }finally{setBusy(false);}
   }
-  return <div className="auth-page"><div className="auth-form-wrap"><h2><UiText value={register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={copy.auth.intro}/></p>{error&&<Notice error message={error}/>}
+  return <div className="auth-page"><div className="auth-form-wrap" style={{width:'100%',maxWidth:400,marginInline:'auto'}}><h2><UiText value={register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={copy.auth.intro}/></p>{error&&<Notice error message={error}/>}
     <GoogleSignIn
       disabled={busy}
       legalAccepted={legalAccepted}

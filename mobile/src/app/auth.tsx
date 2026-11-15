@@ -42,7 +42,7 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
   }
   if(!ready)return <Page><Loading/></Page>;
   if(user&&!busy)return <Redirect href={sellerReturnDestination(true,params.next)??'/account'}/>;
-  return <UiElement as={Page} title={register?copy.auth.register:copy.auth.welcome}><Text style={styles.muted}><UiText value={copy.auth.intro}/></Text>{Boolean(error)&&<ErrorPanel error={error}/>}
+  return <UiElement as={Page} title={register?copy.auth.register:copy.auth.welcome}><View style={{width:'100%',maxWidth:400,alignSelf:'center',gap:12}}><Text style={styles.muted}><UiText value={copy.auth.intro}/></Text>{Boolean(error)&&<ErrorPanel error={error}/>}
     <GoogleSignIn
       disabled={busy}
       legalAccepted={legalAccepted}
@@ -52,7 +52,7 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
       onCredential={(credential,grant)=>void submitGoogle(credential,grant)}
       onError={setError}
     />
-    <View style={{flexDirection:'row',alignItems:'center',gap:10,marginVertical:8}}>
+    <View style={{flexDirection:'row',alignItems:'center',gap:10,marginVertical:4}}>
       <View style={{flex:1,height:1,backgroundColor:colors.border}}/>
       <Text style={{color:colors.muted,fontSize:12}}><UiText value={"or with email"}/></Text>
       <View style={{flex:1,height:1,backgroundColor:colors.border}}/>
@@ -63,5 +63,5 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
     <Action auth label={busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn} disabled={busy||(register&&!legalAccepted)} onPress={()=>void submit()}/>
     <Action auth label={register?copy.auth.existing:copy.auth.new} disabled={busy} secondary onPress={()=>{setRegister(!register);setError('');setPassword('');}}/>
     {!register&&<Action label={copy.auth.forgot} secondary onPress={()=>{router.push('/forgot-password');}}/>}
-  </UiElement>;
+  </View></UiElement>;
 }

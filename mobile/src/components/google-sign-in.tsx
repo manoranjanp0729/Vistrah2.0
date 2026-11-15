@@ -76,7 +76,7 @@ export function GoogleSignIn({
   finally{setWorking(false);}
  }
 
- return <View style={{width:'100%',gap:10}}>
+ return <View style={{width:'100%',maxWidth:400,alignSelf:'center',gap:10}}>
   <View style={[styles.card,{gap:8,borderWidth:consentAlert?1.5:1,borderColor:consentAlert?'#dc2626':colors.border}]}>
    <View style={{flexDirection:'row',alignItems:'flex-start',gap:6}}>
     <UiElement as={Pressable} accessibilityRole="checkbox" accessibilityLabel={signupLegalCopy.acceptance} accessibilityState={{checked:accepted,disabled}} disabled={disabled} onPress={()=>setAccepted(!accepted)} style={{width:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><View style={{width:22,height:22,borderWidth:1,borderColor:consentAlert?'#dc2626':colors.accent,borderRadius:4,alignItems:'center',justifyContent:'center'}}><Text style={{color:colors.text}}>{accepted?'\u2713':''}</Text></View></UiElement>
@@ -103,11 +103,9 @@ export function GoogleSignIn({
   ):!supported?(
    <Text style={styles.muted}><UiText value={"Google sign-in requires a development build. Use email and password in Expo Go."}/></Text>
   ):(
-   <View style={{gap:6}}>
+   <View style={{gap:10,width:'100%'}}>
     <UiElement as={Action} secondary label={working?'Opening Google...':'Continue with Google'} disabled={disabled||working} onPress={()=>void signIn()}/>
-    <Pressable accessibilityRole="button" disabled={disabled||working} onPress={()=>void signIn()} style={{alignSelf:'center',paddingVertical:6,paddingHorizontal:10}}>
-     <Text style={{color:colors.accent,textDecorationLine:'underline',fontSize:13}}><UiText value={"Sign in with a different Google account"}/></Text>
-    </Pressable>
+    <UiElement as={Action} secondary label="Sign in with a different Google account" disabled={disabled||working} onPress={()=>void signIn()}/>
    </View>
   )}
  </View>;

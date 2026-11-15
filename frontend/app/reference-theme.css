@@ -149,7 +149,7 @@ th,.admin-table th,.table-actions button,.admin-search button{background:var(--i
 .account-category{display:flex;flex-direction:column;gap:12px}
 .account-sidebar nav .small-label{display:block;padding:12px 12px 4px;color:var(--text-secondary);font-size:11px;letter-spacing:.05em}
 .replica-search{display:flex;align-items:flex-end;flex-direction:row}.replica-search label{flex:1}
-.auth-page{display:block;max-width:640px;margin:28px auto;padding:20px;border:0}.auth-form-wrap{padding:0}.auth-form-wrap h2{font-size:24px;margin-bottom:12px}.auth-form-wrap p{font-size:13px;line-height:1.45}
+.auth-page{display:block;max-width:440px;margin:28px auto;padding:20px;border:0}.auth-form-wrap{padding:0;width:100%;max-width:400px;margin-inline:auto}.auth-form-wrap h2{font-size:24px;margin-bottom:12px}.auth-form-wrap p{font-size:13px;line-height:1.45}.auth-form-wrap .form input{min-height:44px;border-radius:8px;box-sizing:border-box}.auth-form-wrap .form .button{width:100%;min-height:44px;box-sizing:border-box}
 .reference-service-banner{height:72px;border-radius:12px;overflow:hidden;background:var(--surface-soft);border:1px solid var(--border);position:relative;display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:16px}
 .banner-orbit{display:none}
 .banner-document{width:44px;height:44px;background:var(--surface);color:var(--accent-orange);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center}

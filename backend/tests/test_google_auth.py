@@ -90,3 +90,34 @@ def test_third_party_email_cannot_take_over_existing_account(client,db,google):
 
 def test_customer_endpoint_cannot_accept_seller_upgrade_flag(client,google):
     assert client.post('/auth/google',json={'credential':google(),'seller':True}).status_code==422
+
+
+def test_google_first_time_dpdp_consent_gate_and_returning_user_flow(client,db,google):
+    from app.models import Audit
+    cred=google(sub='google-dpdp-sub-1',email='dpdp.google.user@gmail.com',name='DPDP Google User')
+    # 1. First-time user on /login without accepted DPDP consent triggers 428 inline consent prompt
+    gated=client.post('/auth/google',json={'credential':cred,'require_consent_for_new':True})
+    assert gated.status_code==428
+    assert db.get(GoogleIdentity,'google-dpdp-sub-1') is None
+
+    # 2. Submitting with explicit DPDP consent creates account and persists timestamps + audit
+    created=client.post('/auth/google',json={
+        'credential':cred,
+        'privacy_policy_version':'2026-11-dpdp-v1',
+        'marketing_consent':True,
+    })
+    assert created.status_code==200,created.text
+    user_payload=created.json()['user']
+    assert user_payload['privacy_policy_version']=='2026-11-dpdp-v1'
+    assert user_payload['privacy_consented_at'] is not None
+    assert user_payload['marketing_consent'] is True
+    assert user_payload['marketing_consented_at'] is not None
+
+    audit_entry=db.scalar(select(Audit).where(Audit.actor_id==user_payload['id'],Audit.action=='CONSENT_RECORDED'))
+    assert audit_entry is not None
+    assert audit_entry.details.get('auth_method')=='google'
+
+    # 3. Returning Google user on /login signs in immediately without nagging
+    returning=client.post('/auth/google',json={'credential':cred,'require_consent_for_new':True})
+    assert returning.status_code==200
+    assert returning.json()['user']['id']==user_payload['id']

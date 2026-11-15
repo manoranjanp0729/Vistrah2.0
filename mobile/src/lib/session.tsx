@@ -25,7 +25,9 @@ const removeToken=async()=>{
   await SecureStore.deleteItemAsync(PRIMARY_STORAGE_KEY);
   await SecureStore.deleteItemAsync(LEGACY_SELLER_STORAGE_KEY).catch(()=>{});
 };
-type Session={user:User|null;ready:boolean;error:string;signIn:(email:string,password:string,name?:string,seller?:boolean)=>Promise<void>;signInWithGoogle:(payload:{credential:string},seller?:boolean)=>Promise<void>;signOut:()=>Promise<void>;retry:()=>void;refresh:()=>Promise<void>};
+type GoogleAuthPayload={credential:string;privacy_policy_version?:string;marketing_consent?:boolean;require_consent_for_new?:boolean};
+type SignupConsent={privacy_policy_version?:string;marketing_consent?:boolean};
+type Session={user:User|null;ready:boolean;error:string;signIn:(email:string,password:string,name?:string,seller?:boolean,consent?:SignupConsent)=>Promise<void>;signInWithGoogle:(payload:GoogleAuthPayload,seller?:boolean)=>Promise<void>;signOut:()=>Promise<void>;retry:()=>void;refresh:()=>Promise<void>};
 const Context=createContext<Session|null>(null);
 export function SessionProvider({children}:{children:ReactNode}) {
   const session=useStoredSession();
@@ -53,15 +55,15 @@ function useStoredSession():Session {
     };
     void restore();return()=>{active=false;onUnauthorized(()=>{});};
   },[attempt]);
-  async function signIn(email:string,password:string,name?:string,_seller=false) {
+  async function signIn(email:string,password:string,name?:string,_seller=false,consent?:SignupConsent) {
     generation.current++;const serial=generation.current;
-    const result=await api<{access_token?:string;user:User}>(authEndpoint(Boolean(name)),{method:'POST',body:JSON.stringify({email,password,...(name?{name}:{})})});
+    const result=await api<{access_token?:string;user:User}>(authEndpoint(Boolean(name)),{method:'POST',body:JSON.stringify({email,password,...(name?{name,...(consent??{})}:{})})});
     if(serial!==generation.current)return;
     if(!usesBrowserCookies&&!result.access_token)throw new Error('Sign-in could not be completed. Please try again.');
     if(result.access_token&&!usesBrowserCookies)await storeToken(result.access_token);
     setToken(usesBrowserCookies?null:result.access_token!);setUser(result.user);setError('');
   }
-  async function signInWithGoogle(payload:{credential:string},_seller=false){
+  async function signInWithGoogle(payload:GoogleAuthPayload,_seller=false){
     generation.current++;const serial=generation.current;
     const result=await api<{access_token?:string;user:User}>('/auth/google',{method:'POST',body:JSON.stringify(payload)});
     if(serial!==generation.current)return;

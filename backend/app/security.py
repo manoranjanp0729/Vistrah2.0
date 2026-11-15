@@ -106,6 +106,7 @@ def resolve_user_payload(user: User, db: Session | None = None):
         'privacy_policy_version': user.privacy_policy_version,
         'privacy_consented_at': user.privacy_consented_at.isoformat() if user.privacy_consented_at else None,
         'marketing_consent': bool(user.marketing_consent),
+        'marketing_consented_at': user.marketing_consented_at.isoformat() if user.marketing_consented_at else None,
         'seller_terms_version': user.seller_terms_version,
         'seller_consented_at': user.seller_consented_at.isoformat() if user.seller_consented_at else None,
     }

@@ -8,8 +8,12 @@ import {useTheme} from '../lib/theme';
 
 export function LegalPage({document}:{document:LegalDocumentKey}){
   const {styles}=useTheme();const content=legalDocuments[document];
-  return <Page title={content.title}><Text style={styles.text}>{legalDraftNotice}</Text><Text style={styles.muted}><UiText value={"English draft for customer and seller review."}/></Text>
+  return <Page title={content.title}>
+    <Text style={styles.muted}><UiText value={"Vistrah Groups Pvt Ltd · vistrah.in"}/></Text>
+    <Text style={styles.text}>{legalDraftNotice}</Text>
     {content.sections.map(section=><View key={section.title} style={{gap:8}}><Text accessibilityRole="header" style={styles.heading}><UiText value={section.title}/></Text><Text selectable style={styles.text}>{section.text}</Text></View>)}
-    <UiElement as={Action} secondary label={document==='terms'?'Read Privacy Policy':'Read Terms & Conditions'} onPress={()=>router.replace(document==='terms'?'/privacy':'/terms')}/>
+    {document!=='terms'&&<UiElement as={Action} secondary label="Terms & Conditions" onPress={()=>router.replace('/terms')}/>}
+    {document!=='privacy'&&<UiElement as={Action} secondary label="Privacy Policy" onPress={()=>router.replace('/privacy')}/>}
+    {document!=='grievance'&&<UiElement as={Action} secondary label="Grievance Officer (24h ack / 15-day SLA)" onPress={()=>router.replace('/grievance-officer')}/>}
   </Page>;
 }

@@ -276,14 +276,39 @@ async def google_identity(data: GoogleAuth, request: Request, db: Session = Depe
     if user:
         if user.deleted_at is not None:
             raise HTTPException(401, 'This account is no longer active')
-        if data.privacy_policy_version and not user.privacy_policy_version:
+        consent_updated = False
+        if data.privacy_policy_version:
             user.privacy_policy_version = data.privacy_policy_version
             user.privacy_consented_at = consent_ts
+            if is_seller:
+                user.seller_terms_version = data.privacy_policy_version
+                user.seller_consented_at = consent_ts
+            consent_updated = True
         if data.marketing_consent is not None:
             user.marketing_consent = bool(data.marketing_consent)
             user.marketing_consented_at = consent_ts if data.marketing_consent else None
+            consent_updated = True
         _sync_seller_profile(db, user, explicit_seller=is_seller)
+        if consent_updated:
+            audit(
+                db,
+                user,
+                'CONSENT_RECORDED',
+                'user',
+                user.id,
+                {
+                    'privacy_policy_version': user.privacy_policy_version,
+                    'marketing_consent': bool(user.marketing_consent),
+                    'seller_onboarding': is_seller,
+                    'auth_method': 'google',
+                },
+            )
     else:
+        if data.require_consent_for_new and not data.privacy_policy_version:
+            raise HTTPException(
+                428,
+                'Please review and accept the Terms & Conditions and Privacy Policy before creating a new VISTRAH account with Google.',
+            )
         policy_ver = data.privacy_policy_version or DEFAULT_PRIVACY_POLICY_VERSION
         mkt_consent = bool(data.marketing_consent)
         user = User(
@@ -302,6 +327,19 @@ async def google_identity(data: GoogleAuth, request: Request, db: Session = Depe
         db.flush()
         if is_seller:
             ensure_seller_v_ads_account(db, user)
+        audit(
+            db,
+            user,
+            'CONSENT_RECORDED',
+            'user',
+            user.id,
+            {
+                'privacy_policy_version': policy_ver,
+                'marketing_consent': mkt_consent,
+                'seller_onboarding': is_seller,
+                'auth_method': 'google',
+            },
+        )
 
     if not identity:
         db.add(GoogleIdentity(subject=info['sub'], user_id=user.id))

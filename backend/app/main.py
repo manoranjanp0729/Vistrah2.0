@@ -17,6 +17,8 @@ import json
 import secrets
 
 app = FastAPI(title='VISTRAH API', version='1.0.0', description='Service marketplace API. All payments are sandbox simulations.')
+from .http_security import configure_http_security
+configure_http_security(app)
 from .workflow_routes import router as workflow_router
 app.include_router(workflow_router)
 from .discovery_routes import router as discovery_router
@@ -199,18 +201,28 @@ def register_identity(data, request, db, seller=False):
 def login(data: Login, request: Request, db: Session = Depends(get_db)):
     return login_identity(data, request, db)
 
+def _sync_seller_profile(db: Session, user: User, explicit_seller: bool = False) -> bool:
+    from .v_ads_models import VAdsAdvertiser
+    changed = False
+    has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
+    if (explicit_seller or has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
+        user.seller_enabled = True
+        audit(db, user, 'SELLER_ENABLED', 'user', user.id)
+        changed = True
+    if user.seller_enabled or user.role == 'ADMIN':
+        has_advertiser = bool(db.scalar(select(VAdsAdvertiser.id).where(VAdsAdvertiser.owner_id == user.id).limit(1)))
+        if not has_advertiser:
+            ensure_seller_v_ads_account(db, user)
+            changed = True
+    return changed
+
 def login_identity(data, request, db, seller=False):
     attempt_key = rate_limit(db, str(data.email), request)
     user = db.scalar(select(User).where(User.email == str(data.email).lower()).with_for_update())
     valid = passwords.verify(data.password, user.password_hash if user else DUMMY_HASH)
     if not user or not valid:
         raise HTTPException(401, 'Email or password is incorrect')
-    has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
-    if (seller or has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
-        user.seller_enabled = True
-        audit(db, user, 'SELLER_ENABLED', 'user', user.id)
-    if user.seller_enabled or user.role == 'ADMIN':
-        ensure_seller_v_ads_account(db, user)
+    _sync_seller_profile(db, user, explicit_seller=seller)
     db.execute(delete(LoginAttempt).where(LoginAttempt.key == attempt_key))
     return {'access_token': issue_token(db, user), 'user': user_output(user, db)}
 
@@ -241,12 +253,7 @@ async def google_identity(data: GoogleAuth, request: Request, db: Session = Depe
             raise HTTPException(409, 'This account is linked to a different Google identity')
     is_seller = seller
     if user:
-        has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
-        if (is_seller or has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
-            user.seller_enabled = True
-            audit(db, user, 'SELLER_ENABLED', 'user', user.id)
-        if user.seller_enabled or user.role == 'ADMIN':
-            ensure_seller_v_ads_account(db, user)
+        _sync_seller_profile(db, user, explicit_seller=is_seller)
     else:
         user = User(
             email=email,
@@ -294,11 +301,7 @@ def logout(credentials=Depends(bearer), user: User = Depends(current_user), db: 
 
 @app.get('/me')
 def me(user: User = Depends(current_user), db: Session = Depends(get_db)):
-    has_active_business = bool(db.scalar(select(Provider.id).where(Provider.owner_user_id == user.id, Provider.active.is_(True)).limit(1)))
-    if (has_active_business or user.role == 'ADMIN') and not user.seller_enabled:
-        user.seller_enabled = True
-        audit(db, user, 'SELLER_ENABLED', 'user', user.id)
-        ensure_seller_v_ads_account(db, user)
+    if _sync_seller_profile(db, user):
         db.commit()
     return user_output(user, db)
 

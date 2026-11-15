@@ -117,6 +117,12 @@ def test_unified_login_and_me_resolve_is_seller_roles_and_profile(client,db):
     assert hydrated['isSeller'] is True and hydrated['seller_enabled'] is True
     assert hydrated['roles']==['user','seller']
     assert hydrated['sellerProfile']['business_id']==p.id
-    login=client.post('/auth/login',json={'email':'unified@example.com','password':'unified-secure-password'}).json()['user']
+    assert hydrated['sellerProfile']['advertiser_id'] is not None
+    for private_key in ('email','phone','address','owner_user_id'):
+        assert private_key not in hydrated['sellerProfile']
+    login_resp=client.post('/auth/login',json={'email':'unified@example.com','password':'unified-secure-password'}).json()
+    login=login_resp['user']
+    unified_headers={'Authorization':'Bearer '+login_resp['access_token']}
     assert login['isSeller'] is True and login['sellerProfile']['business_id']==p.id
-    assert client.get('/v-ads/me',headers=headers).status_code==200
+    assert client.get('/seller/businesses',headers=unified_headers).status_code==200
+    assert client.get('/v-ads/me',headers=unified_headers).status_code==200

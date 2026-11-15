@@ -60,11 +60,18 @@ def resolve_seller_profile(db: Session | None, user: User):
     provider = db.scalar(select(Provider).where(Provider.owner_user_id == user.id).order_by(Provider.id))
     advertiser = db.scalar(select(VAdsAdvertiser).where(VAdsAdvertiser.owner_id == user.id).order_by(VAdsAdvertiser.created_at))
     if provider is not None:
-        data = serialize(provider)
-        data['business_id'] = provider.id
-        data['advertiser_id'] = advertiser.id if advertiser else None
-        data['advertiser_handle'] = advertiser.handle if advertiser else None
-        return data
+        return {
+            'id': provider.id,
+            'business_id': provider.id,
+            'slug': provider.slug,
+            'name': provider.name,
+            'company': provider.company,
+            'location': provider.location,
+            'verification_status': provider.verification_status,
+            'active': bool(provider.active),
+            'advertiser_id': advertiser.id if advertiser else None,
+            'advertiser_handle': advertiser.handle if advertiser else None,
+        }
     if advertiser is not None:
         return {
             'id': None,

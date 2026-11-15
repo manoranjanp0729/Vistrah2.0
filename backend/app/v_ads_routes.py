@@ -22,6 +22,15 @@ from .v_ads_targeting_models import VAdsTargeting, VAdsTargetingRevision
 
 router = APIRouter(prefix="/v-ads", tags=["V Ads"])
 
+AREA_COORDINATE_PRECISION = 2  # ~1.1 km locality grid; never expose exact seller or viewer GPS
+
+
+def area_coordinates(latitude: float, longitude: float) -> dict[str, float]:
+    return {
+        "latitude": round(float(latitude), AREA_COORDINATE_PRECISION),
+        "longitude": round(float(longitude), AREA_COORDINATE_PRECISION),
+    }
+
 
 def _opt_float(value) -> float | None:
     if value is None or isinstance(value, FieldInfo):
@@ -155,7 +164,18 @@ def list_reels(
             )
         ).all()
 
-        matched: list[tuple[int, float, VAdsVideo, VAdsAdvertiser, float | None, str | None, float | None]] = []
+        matched: list[
+            tuple[
+                int,
+                float,
+                VAdsVideo,
+                VAdsAdvertiser,
+                float | None,
+                str | None,
+                float | None,
+                dict[str, float] | None,
+            ]
+        ] = []
         for video, advertiser, rev in candidates:
             tier = classify_targeting(
                 user_lat,
@@ -179,9 +199,10 @@ def list_reels(
                 dist,
                 video,
                 advertiser,
-                round(dist, 4),
+                round(dist, 2),
                 proximity,
                 rev.targeting_radius_km,
+                area_coordinates(rev.latitude, rev.longitude),
             ))
 
         matched.sort(key=lambda item: (item[0], item[1]))
@@ -215,7 +236,7 @@ def list_reels(
                 .limit(unpinned_limit)
             ).all()
             combined_slice.extend(
-                (3, 0.0, video, advertiser, None, None, None)
+                (3, 0.0, video, advertiser, None, None, None, None)
                 for video, advertiser in unpinned_rows
             )
 
@@ -231,11 +252,12 @@ def list_reels(
                         "distance_km": dist_km,
                         "proximity": tier,
                         "targeting_radius_km": target_radius_km,
+                        "area_coordinates": coarse_area,
                     }
                     if tier is not None
                     else video_payload(db, video, advertiser, counts)
                 )
-                for _, _, video, advertiser, dist_km, tier, target_radius_km in window
+                for _, _, video, advertiser, dist_km, tier, target_radius_km, coarse_area in window
             ],
             "page": page,
             "has_more": has_more,

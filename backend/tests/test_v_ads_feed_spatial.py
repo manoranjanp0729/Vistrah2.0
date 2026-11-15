@@ -1,3 +1,4 @@
+
 """Isolated unittest for public V Ads spatial feed filtering; never touches normal DB."""
 import importlib
 import os
@@ -35,12 +36,21 @@ from app.v_ads_models import VAdsAdvertiser, VAdsComment, VAdsLike, VAdsMediaUpl
 from app.v_ads_targeting_models import VAdsTargeting, VAdsTargetingRevision
 
 
-@event.listens_for(normal_engine, "connect")
 def _forbid_normal_db(*_args):
     raise AssertionError("Normal DB must never be accessed in unit tests")
 
 
 class VAdsFeedSpatialTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        normal_engine.dispose()
+        event.listen(normal_engine, "connect", _forbid_normal_db)
+
+    @classmethod
+    def tearDownClass(cls):
+        if event.contains(normal_engine, "connect", _forbid_normal_db):
+            event.remove(normal_engine, "connect", _forbid_normal_db)
+
     def setUp(self):
         self.engine = create_engine(
             "sqlite://",
@@ -410,6 +420,76 @@ class VAdsFeedSpatialTests(unittest.TestCase):
         after = self.client.get("/v-ads/reels?lat=12.9716&lon=77.5946&radius_km=10").json()
         self.assertEqual([item["id"] for item in after["items"]], ["ad-e2e", "ad-other-far"])
         self.assertEqual(after["items"][0]["proximity"], "local")
+
+    def test_public_spatial_privacy_security_headers_cors_and_rate_limiting(self):
+        import json as _json
+        from unittest.mock import patch
+        from app.http_security import reset_rate_limits
+
+        self._add_video(
+            "ad-precise-pin",
+            minutes_offset=3,
+            targeting=(12.978456, 77.640879, 8.0, "APPROVED"),
+        )
+        self._add_video("ad-unpinned-privacy", minutes_offset=1, targeting=None)
+        self.db.commit()
+
+        resp = self.client.get(
+            "/v-ads/reels?lat=12.971634&lon=77.594589&radius_km=10",
+            headers={"Origin": "https://vistrah.in"},
+        )
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.headers.get("X-Content-Type-Options"), "nosniff")
+        self.assertEqual(resp.headers.get("X-Frame-Options"), "DENY")
+        self.assertIn("max-age=", resp.headers.get("Strict-Transport-Security", ""))
+        self.assertEqual(resp.headers.get("Referrer-Policy"), "strict-origin-when-cross-origin")
+        self.assertEqual(resp.headers.get("access-control-allow-origin"), "https://vistrah.in")
+
+        admin_origin_resp = self.client.get(
+            "/v-ads/reels",
+            headers={"Origin": "https://admin.vistrah.in"},
+        )
+        self.assertEqual(admin_origin_resp.headers.get("access-control-allow-origin"), "https://admin.vistrah.in")
+
+        untrusted_resp = self.client.get(
+            "/v-ads/reels",
+            headers={"Origin": "https://evil.example"},
+        )
+        self.assertIsNone(untrusted_resp.headers.get("access-control-allow-origin"))
+
+        items = resp.json()["items"]
+        geo_item = items[0]
+        self.assertEqual(geo_item["id"], "ad-precise-pin")
+        self.assertEqual(geo_item["area_coordinates"], {"latitude": 12.98, "longitude": 77.64})
+        self.assertEqual(geo_item["distance_km"], round(geo_item["distance_km"], 2))
+        self.assertNotIn("latitude", geo_item)
+        self.assertNotIn("longitude", geo_item)
+        self.assertNotIn("area_coordinates", items[1])
+
+        serialized = _json.dumps(resp.json())
+        self.assertNotIn("12.978456", serialized)
+        self.assertNotIn("77.640879", serialized)
+        self.assertNotIn("12.971634", serialized)
+        self.assertNotIn("77.594589", serialized)
+        for forbidden_field in ("owner_id", "email", "phone", "address"):
+            self.assertNotIn(forbidden_field, geo_item)
+            self.assertNotIn(forbidden_field, geo_item["advertiser"])
+
+        adv_resp = self.client.get(f"/v-ads/advertisers/{self.advertiser.id}")
+        self.assertEqual(adv_resp.status_code, 200)
+        for forbidden_field in ("owner_id", "email", "phone", "address"):
+            self.assertNotIn(forbidden_field, adv_resp.json())
+
+        reset_rate_limits()
+        try:
+            with patch.dict(os.environ, {"PUBLIC_SEARCH_RATE_LIMIT_PER_MINUTE": "2"}):
+                self.assertEqual(self.client.get("/v-ads/reels").status_code, 200)
+                self.assertEqual(self.client.get("/v-ads/reels").status_code, 200)
+                throttled = self.client.get("/v-ads/reels")
+                self.assertEqual(throttled.status_code, 429)
+                self.assertEqual(throttled.headers.get("X-Content-Type-Options"), "nosniff")
+        finally:
+            reset_rate_limits()
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ export type Subcategory = {id:number; category_id:number; slug:string; title:str
 export type Category = {id:number; slug:string; title:string; description:string; image:string; active:boolean; services:Service[]; subcategories:Subcategory[]};
 export type SellerProfile = {id:number|null; business_id:number|null; name:string; company:string; verification_status:string; active:boolean; slug?:string; location?:string; advertiser_id?:string|null; advertiser_handle?:string|null};
 export type User = {id:number; name:string; email:string; phone:string; role:'CUSTOMER'|'ADMIN'; seller_enabled?:boolean; isSeller?:boolean; roles?:string[]; sellerProfile?:SellerProfile|null};
-export const isSellerUser=(user?:Pick<User,'isSeller'|'seller_enabled'|'role'>|null)=>Boolean(user&&(user.isSeller??(user.seller_enabled||user.role==='ADMIN')));
+export const isSellerUser=(user?:Pick<User,'isSeller'|'seller_enabled'|'role'|'sellerProfile'>|null)=>Boolean(user&&(user.isSeller??(user.seller_enabled||user.role==='ADMIN'||Boolean(user.sellerProfile?.active))));
 export type ServiceContext = {category:Category; subcategory?:Subcategory; service:Service};
 export type Provider = {id:number; slug:string; name:string; company:string; location:string; verification_status:string; email?:string; phone?:string; address:string;description?:string};
 export type RequestRecord = {id:number; service_title:string; requirements:string; location:string; phone:string; status:string; created_at:string; customer?:string};

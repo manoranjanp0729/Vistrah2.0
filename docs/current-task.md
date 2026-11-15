@@ -1,3 +1,9 @@
+# Phase 2 DevSecOps CI gates & Zero-SSH SSM deployment prepared - 15 November 2026
+
+- Added `.github/workflows/devsecops.yml` triggered on `push` and `pull_request` to `main`: runs Gitleaks secret & tracked-`.env` scanning, Python static/dependency checks (`bandit -r backend/app -ll` and `pip-audit -r backend/requirements.lock`), and workspace `npm audit --audit-level=high` across `frontend`, `admin`, and `mobile` (zero app UI or runtime business logic modified).
+- Added Zero-SSH AWS SSM deployment helpers `infra/aws-test/deploy-ssm.ps1` and `infra/aws-test/deploy-ssm.sh` targeting `i-08287d636ff13ddf0` (`ap-south-1`) via `aws ssm send-command` (`AWS-RunShellScript`) with direct-Uvicorn guard, automatic rollback tags, and `/api/health` verification; documented the `AmazonSSMManagedInstanceCore` + ECR/Secrets Manager IAM instance profile policy and `sg-0bfc5b562b0051b03` Port 22 revocation commands in `infra/aws-test/README.md`.
+- Verification: `yaml.safe_load` schema check on `.github/workflows/devsecops.yml`, PowerShell AST parser + `-DryRun` on `deploy-ssm.ps1`, and `bash -n` + `DRY_RUN=1` on `deploy-ssm.sh` all passed cleanly. Next: await user approval to commit/push or attach the IAM SSM profile on `i-08287d636ff13ddf0`.
+
 # Unified Single Login & Phase 1 API Security Hardening (`9401d2d`, `fd31d2e`) deployed on AWS - 15 November 2026
 
 - Committed and pushed `9401d2d` (`feat(security): unify user/seller session and harden backend APIs`) and `fd31d2e` (`useUser` optional scope compatibility) to `origin/main` across `backend/app/{main,security,http_security,v_ads_routes}.py`, `frontend/{components/customer.tsx,lib/types.ts}`, `mobile/src/lib/types.ts`, and `.gitignore`.

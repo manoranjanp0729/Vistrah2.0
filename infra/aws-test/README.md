@@ -94,3 +94,113 @@ Run `scripts/build-phone-website.ps1` on the PC to create the phone/static image
 
 The restore helper also refuses a running phone-web service. Browser sign-in uses HttpOnly cookies and should persist after reload. Mail/worker behavior is unchanged. Test phone screen appearance and seller/customer flows before considering this rollout complete. The native APK already in the EAS queue is independent of this website image update.
 
+## Zero-SSH deployment via AWS Systems Manager (SSM)
+
+`deploy-ssm.ps1` (PowerShell) and `deploy-ssm.sh` (Bash) run container pulls, rollback-safe `docker compose` updates, and `/api/health` verification on EC2 instance `i-08287d636ff13ddf0` (`ap-south-1`) via `aws ssm send-command` (`AWS-RunShellScript`), eliminating inbound SSH (`TCP 22`) on security group `sg-0bfc5b562b0051b03`.
+
+### 1. Required IAM Role & Instance Profile (`vistrah-ec2-ssm-profile`)
+
+Attach an IAM role trusted by `ec2.amazonaws.com` with:
+1. AWS managed policy **`arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore`** (SSM Agent registration & Run Command / Session Manager channel over outbound HTTPS `443`).
+2. Scoped inline read policy (`VistrahRuntimePullAndSecretsRead`) for ECR image pulls and Secrets Manager runtime config (replace `<ACCOUNT_ID>` with your 12-digit AWS account ID):
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "EcrAuthToken",
+      "Effect": "Allow",
+      "Action": ["ecr:GetAuthorizationToken"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "EcrPullVistrahRepositories",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage"
+      ],
+      "Resource": "arn:aws:ecr:ap-south-1:<ACCOUNT_ID>:repository/vistrah20-*"
+    },
+    {
+      "Sid": "SecretsManagerReadVistrahEnv",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret"
+      ],
+      "Resource": "arn:aws:secretsmanager:ap-south-1:<ACCOUNT_ID>:secret:vistrah/*"
+    }
+  ]
+}
+```
+
+Create and associate the instance profile once with `i-08287d636ff13ddf0`:
+
+```powershell
+$profile = "vistrah-manu"
+$region  = "ap-south-1"
+
+aws iam create-role --profile $profile --role-name vistrah-ec2-ssm-role `
+  --assume-role-policy-document '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"ec2.amazonaws.com"},"Action":"sts:AssumeRole"}]}'
+
+aws iam attach-role-policy --profile $profile --role-name vistrah-ec2-ssm-role `
+  --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+
+aws iam create-instance-profile --profile $profile --instance-profile-name vistrah-ec2-ssm-profile
+aws iam add-role-to-instance-profile --profile $profile `
+  --instance-profile-name vistrah-ec2-ssm-profile --role-name vistrah-ec2-ssm-role
+
+aws ec2 associate-iam-instance-profile --profile $profile --region $region `
+  --instance-id i-08287d636ff13ddf0 `
+  --iam-instance-profile Name=vistrah-ec2-ssm-profile
+
+# Verify SSM agent reports PingStatus = Online before closing Port 22:
+aws ssm describe-instance-information --profile $profile --region $region `
+  --filters "Key=InstanceIds,Values=i-08287d636ff13ddf0" `
+  --query "InstanceInformationList[0].[InstanceId,PingStatus,PlatformName]" --output table
+```
+
+### 2. Run Zero-SSH Rollouts (`deploy-ssm.ps1` / `deploy-ssm.sh`)
+
+```powershell
+# Preview generated SSM shell commands without dispatching:
+.\infra\aws-test\deploy-ssm.ps1 -DryRun
+
+# Pull tagged images from ECR and recreate api, web, and phone-web with health verification:
+.\infra\aws-test\deploy-ssm.ps1 `
+  -Profile vistrah-manu `
+  -EcrRegistry "<ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com" `
+  -ImageTag "sha-<40-char-commit>" `
+  -Services api,web,phone-web
+```
+
+### 3. Permanently Close TCP Port 22 on `sg-0bfc5b562b0051b03`
+
+Once `PingStatus` is `Online` and an SSM rollout succeeds, revoke every inbound SSH (`TCP 22`) rule on `sg-0bfc5b562b0051b03` so only Caddy (`80`/`443`) remains exposed:
+
+```powershell
+$profile = "vistrah-manu"
+$region  = "ap-south-1"
+$sgId    = "sg-0bfc5b562b0051b03"
+
+# Revoke all TCP port 22 ingress rule IDs on sg-0bfc5b562b0051b03:
+$sshRuleIds = (aws ec2 describe-security-group-rules --profile $profile --region $region `
+  --filters "Name=group-id,Values=$sgId" `
+  --query "SecurityGroupRules[? !IsEgress && IpProtocol=='tcp' && FromPort==``22`` && ToPort==``22``].SecurityGroupRuleId" `
+  --output text) -split '\s+' | Where-Object { $_ }
+
+if ($sshRuleIds) {
+  aws ec2 revoke-security-group-ingress --profile $profile --region $region `
+    --group-id $sgId --security-group-rule-ids $sshRuleIds
+}
+
+# Confirm zero Port 22 rules remain (only 80 and 443 inbound):
+aws ec2 describe-security-group-rules --profile $profile --region $region `
+  --filters "Name=group-id,Values=$sgId" `
+  --query "SecurityGroupRules[? !IsEgress].[SecurityGroupRuleId,IpProtocol,FromPort,ToPort,CidrIpv4]" `
+  --output table
+```
+

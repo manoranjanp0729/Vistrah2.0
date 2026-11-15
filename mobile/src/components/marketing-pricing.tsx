@@ -18,18 +18,13 @@ import {
  quotePayload,
  marketingPricingClient,
  pricingHref,
- VADS_FREE_FIRST_MONTH,
- FREE_LISTING_ANCHOR,
- VADS_RADIUS_OPTIONS,
  VADS_DURATION_OPTIONS,
- VADS_RADIUS_TIERS,
- estimateVAdsBoost,
- STUDIO_PILLARS,
+ defaultHydratedPricing,
+ hydrateLivePricing,
+ computeTierBoostEstimate,
  serviceFeeClarity,
  PRICING_COMPARISON_ROWS,
- MERCHANT_PRICING_FAQS,
  type PricingIntent,
- type VAdsRadiusKm,
  type VAdsDurationDays,
  type QuoteDraft,
  type MarketingQuote,
@@ -52,9 +47,11 @@ const fields:[keyof QuoteDraft,string][]=[
 
 export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:string;initialPackage?:string}){
  const {styles,colors}=useTheme(),{user}=useSession(false);
- const [catalogue,setCatalogue]=useState(pricingCatalogue),[live,setLive]=useState(false),[notice,setNotice]=useState(''),[cap,setCap]=useState<PricingCapabilities|null>(null);
+ const [hydrated,setHydrated]=useState(defaultHydratedPricing);
+ const {catalogue,promo,vAdsTiers,pillars,faqs,serviceFeeLabels}=hydrated;
+ const [live,setLive]=useState(false),[notice,setNotice]=useState(''),[cap,setCap]=useState<PricingCapabilities|null>(null);
  const [intent,setIntent]=useState<PricingIntent>('boosts');
- const [radiusKm,setRadiusKm]=useState<VAdsRadiusKm>(5),[durationDays,setDurationDays]=useState<VAdsDurationDays>(7);
+ const [selectedTierId,setSelectedTierId]=useState<string>('v-ads-5km'),[durationDays,setDurationDays]=useState<VAdsDurationDays>(7);
  const [query,setQuery]=useState(''),[category,setCategory]=useState(''),[billing,setBilling]=useState('all'),[compare,setCompare]=useState(false),[requestOpen,setRequestOpen]=useState(false);
  const [openFaq,setOpenFaq]=useState<number|null>(0);
  const defaultPlanServiceId=serviceId??'digital-campaign';
@@ -64,16 +61,26 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
  const [categoryOpen,setCategoryOpen]=useState(false),[servicePickerOpen,setServicePickerOpen]=useState(false);
 
  const items=searchPricing(catalogue,query,category,billing),selectedCategory=catalogue.categories.find(c=>c.id===category);
- const boostEstimate=estimateVAdsBoost(radiusKm,durationDays);
+ const selectedTier=vAdsTiers.find(t=>t.id===selectedTierId)??vAdsTiers[0];
+ const boostEstimate=computeTierBoostEstimate(selectedTier,durationDays);
+ const feeLabel=(svc:typeof catalogue.services[number])=>serviceFeeLabels[svc.id]??serviceFeeClarity(svc);
 
  function selectCategory(id:string){setCategory(id);setBilling('all');setQuery('');setCategoryOpen(false);}
 
  useEffect(()=>{
   let active=true;
-  void Promise.allSettled([client.catalogue(),client.capabilities()]).then(([prices,availability])=>{
+  void Promise.allSettled([client.livePricing(),client.capabilities()]).then(async([liveRes,availability])=>{
    if(!active)return;
-   if(prices.status==='fulfilled'){setCatalogue(prices.value);setLive(true);}
-   else setNotice('Live pricing could not load. Showing indicative proposals only.');
+   if(liveRes.status==='fulfilled'){setHydrated(hydrateLivePricing(liveRes.value));setLive(true);}
+   else{
+    try{
+     const cat=await client.catalogue();
+     if(!active)return;
+     setHydrated(prev=>({...prev,catalogue:cat}));setLive(true);
+    }catch{
+     if(active)setNotice('Live pricing could not load. Showing indicative proposals only.');
+    }
+   }
    if(availability.status==='fulfilled')setCap(availability.value);
   });
   return()=>{active=false;};
@@ -163,7 +170,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
      <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:8}}>
       <Feather name={(catalogue.categories.find(c=>c.id===detailService.category_ids[0])?.icon??'briefcase') as React.ComponentProps<typeof Feather>['name']} size={24} color={colors.accent}/>
       <Text style={[styles.heading,styles.tabular,{fontSize:22,letterSpacing:-0.55}]}>{servicePrice(detailService)}</Text>
-      <Text style={{color:colors.text,fontSize:13,fontWeight:'600'}}>{serviceFeeClarity(detailService)}</Text>
+      <Text style={{color:colors.text,fontSize:13,fontWeight:'600'}}>{feeLabel(detailService)}</Text>
       <Text style={styles.muted}>{detailService.description}</Text>
       <Text style={styles.muted}>{catalogue.notice}</Text>
       {Boolean(notice)&&<Text accessibilityRole="alert" style={styles.muted}>{notice}</Text>}
@@ -174,28 +181,28 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
     <>
      {/* Editorial Hero: Free First Month V Ads */}
      <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:12}}>
-      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH ADS &amp; MARKETING · FIRST 30 DAYS FREE</Text>
+      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH ADS &amp; MARKETING{promo.promoEnabled?` · FIRST ${promo.freeTrialDays} DAYS FREE`:''}</Text>
       <Text accessibilityRole="header" style={[styles.title,{fontSize:24,lineHeight:29,letterSpacing:-0.6}]}>
-       {VADS_FREE_FIRST_MONTH.headline}
+       {promo.headline}
       </Text>
       <Text style={styles.muted}>
-       {VADS_FREE_FIRST_MONTH.subheadline}
+       {promo.subheadline}
       </Text>
       <View style={{gap:8,marginTop:2}}>
-       <Action label={VADS_FREE_FIRST_MONTH.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
-       <Action secondary label="Explore Studio & Custom Quotes" onPress={()=>openCustomPlan('digital-campaign',STUDIO_PILLARS[0].defaultBrief)}/>
-       <Text style={[styles.muted,styles.tabular,{fontSize:12,marginTop:2}]}>{VADS_FREE_FIRST_MONTH.microcopy}</Text>
+       <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
+       <Action secondary label="Explore Studio & Custom Quotes" onPress={()=>openCustomPlan(pillars[0]?.defaultServiceId??'digital-campaign',pillars[0]?.defaultBrief)}/>
+       <Text style={[styles.muted,styles.tabular,{fontSize:12,marginTop:2}]}>{promo.microcopy}</Text>
       </View>
 
       <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:8}}>
-       <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{FREE_LISTING_ANCHOR.badge}</Text>
+       <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{promo.anchorBadge}</Text>
        <View style={{flexDirection:'row',alignItems:'baseline',gap:8,flexWrap:'wrap'}}>
-        <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'700',color:colors.accent,letterSpacing:-0.6}]}>{FREE_LISTING_ANCHOR.priceLabel}</Text>
-        <Text style={[styles.heading,{fontSize:16}]}>First 30 Days Free on V Ads</Text>
+        <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'700',color:colors.accent,letterSpacing:-0.6}]}>{promo.anchorPriceLabel}</Text>
+        <Text style={[styles.heading,{fontSize:16}]}>{promo.anchorTitle}</Text>
        </View>
-       <Text style={styles.muted}>{FREE_LISTING_ANCHOR.summary}</Text>
+       <Text style={styles.muted}>{promo.anchorSummary}</Text>
        <View style={{gap:8,marginTop:4}}>
-        <Action secondary label="Register Business Free (90 Days Basic)" onPress={()=>router.push('/provider')}/>
+        <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/provider')}/>
         <Action secondary label="Membership Rules" onPress={()=>router.push('/membership')}/>
        </View>
       </View>
@@ -253,14 +260,14 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        <View style={{gap:8}}>
         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>TARGET RADIUS — ₹0 MONTH 1, STANDARD RATE FROM DAY 31</Text>
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
-         {VADS_RADIUS_OPTIONS.map(km=>{
-          const tier=VADS_RADIUS_TIERS[km],active=radiusKm===km;
+         {vAdsTiers.map(tier=>{
+          const active=selectedTier.id===tier.id;
           return (
            <Pressable
-            key={km}
+            key={tier.id}
             accessibilityRole="button"
             accessibilityState={{selected:active}}
-            onPress={()=>setRadiusKm(km)}
+            onPress={()=>setSelectedTierId(tier.id)}
             style={{
              width:'48%',
              flexGrow:1,
@@ -273,9 +280,9 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
              gap:2,
             }}
            >
-            <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:11}]}>₹0 FIRST 30 DAYS</Text>
+            {tier.freeTrialEnabled&&Boolean(tier.promoBadge)&&<Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:11}]}>{tier.promoBadge.toUpperCase()}</Text>}
             <Text style={[styles.tabular,{color:colors.text,fontWeight:'700',fontSize:15}]}>{tier.label}</Text>
-            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>Then {formatPricingMoney(tier.monthlyPaise)}/mo + GST</Text>
+            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>{tier.freeTrialEnabled?`Then ${formatPricingMoney(tier.monthlyPaise)}/mo + GST`:`${formatPricingMoney(tier.monthlyPaise)}/mo + GST`}</Text>
            </Pressable>
           );
          })}
@@ -283,7 +290,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        </View>
 
        <View style={{gap:8}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PREVIEW OPTIONAL POST-TRIAL WINDOW (FROM DAY 31)</Text>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{selectedTier.freeTrialEnabled?`PREVIEW OPTIONAL POST-TRIAL WINDOW (FROM DAY ${selectedTier.freeTrialDays+1})`:'CAMPAIGN DURATION'}</Text>
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
          {VADS_DURATION_OPTIONS.map(days=>{
           const active=durationDays===days;
@@ -306,7 +313,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
             }}
            >
             <Text style={[styles.tabular,{color:colors.text,fontWeight:'700',fontSize:14}]}>{days===30?'30 days (Monthly)':`${days} days`}</Text>
-            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>Day 31+: {formatPricingMoney(VADS_RADIUS_TIERS[radiusKm].dailyPaise*days)} + GST</Text>
+            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>{selectedTier.freeTrialEnabled?`Day ${selectedTier.freeTrialDays+1}+: `:''}{formatPricingMoney(selectedTier.dailyPaise*days)} + GST</Text>
            </Pressable>
           );
          })}
@@ -316,20 +323,22 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        {/* Hairline Ledger Readout */}
        <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:2}}>
         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,marginBottom:4}]}>TRANSPARENT RATE LEDGER</Text>
-        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingVertical:10,borderBottomWidth:1,borderColor:colors.border}}>
-         <View style={{flex:1,gap:2}}>
-          <Text style={{color:colors.text,fontWeight:'700',fontSize:15}}>₹0 — First 30 Days Free</Text>
-          <Text style={[styles.muted,styles.tabular,{fontSize:11}]}>{radiusKm} km · {boostEstimate.firstMonthReachFormatted} est. 30-day views</Text>
+        {boostEstimate.freeTrialEnabled&&(
+         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingVertical:10,borderBottomWidth:1,borderColor:colors.border}}>
+          <View style={{flex:1,gap:2}}>
+           <Text style={{color:colors.text,fontWeight:'700',fontSize:15}}>₹0 — First {boostEstimate.freeTrialDays} Days Free</Text>
+           <Text style={[styles.muted,styles.tabular,{fontSize:11}]}>{selectedTier.label} · {boostEstimate.firstMonthReachFormatted} est. {boostEstimate.freeTrialDays}-day views</Text>
+          </View>
+          <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:26,letterSpacing:-0.55}]}>₹0</Text>
          </View>
-         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:26,letterSpacing:-0.55}]}>₹0</Text>
-        </View>
+        )}
 
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,paddingTop:10,paddingBottom:4}]}>STANDARD RATE FROM DAY 31 (IF YOU CONTINUE)</Text>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,paddingTop:10,paddingBottom:4}]}>{boostEstimate.freeTrialEnabled?`STANDARD RATE FROM DAY ${boostEstimate.freeTrialDays+1} (IF YOU CONTINUE)`:'STANDARD RATE'}</Text>
         {[
-         [`Month 2+ plan (${radiusKm} km)`,`₹0 Mo 1, then ${formatPricingMoney(boostEstimate.monthlyPaise)}/mo + GST`],
-         [`Day 31+ window (${durationDays} days)`,formatPricingMoney(boostEstimate.subtotalPaise)],
-         ['Day 31+ GST (18% · GSTIN ITC)',formatPricingMoney(boostEstimate.gstPaise)],
-         [`Optional Day 31+ total (${durationDays}d)`,formatPricingMoney(boostEstimate.totalWithGstPaise)],
+         [`Monthly plan (${selectedTier.label})`,`${boostEstimate.freeTrialEnabled?'₹0 Mo 1, then ':''}${formatPricingMoney(boostEstimate.monthlyPaise)}/mo + GST`],
+         [`Selected window (${durationDays} days)`,formatPricingMoney(boostEstimate.subtotalPaise)],
+         ['GST (18% · GSTIN ITC)',formatPricingMoney(boostEstimate.gstPaise)],
+         [`Total (${durationDays}d incl. GST)`,formatPricingMoney(boostEstimate.totalWithGstPaise)],
         ].map(([k,v])=>(
          <View key={k} style={{flexDirection:'row',justifyContent:'space-between',gap:12,paddingVertical:8,borderBottomWidth:1,borderColor:colors.border}}>
           <Text style={styles.muted}>{k}</Text>
@@ -337,21 +346,21 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
          </View>
         ))}
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingTop:10}}>
-         <Text style={{color:colors.text,fontWeight:'600',fontSize:14}}>Due today (Days 1–30)</Text>
-         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:22,letterSpacing:-0.45}]}>₹0</Text>
+         <Text style={{color:colors.text,fontWeight:'600',fontSize:14}}>{boostEstimate.freeTrialEnabled?`Due today (Days 1–${boostEstimate.freeTrialDays})`:'Due today'}</Text>
+         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:22,letterSpacing:-0.45}]}>{formatPricingMoney(boostEstimate.dueTodayPaise)}</Text>
         </View>
        </View>
 
-       <Action label={VADS_FREE_FIRST_MONTH.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
+       <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
        <Action secondary label="Need Studio Reel production? From ₹2,999" onPress={()=>router.push(pricingHref('promotional-reel') as never)}/>
        <Text style={[styles.muted,{fontSize:11}]}>
-        {VADS_FREE_FIRST_MONTH.microcopy}. Video uploads and geo-radius targeting are configured in V Ads Seller Studio and require moderation approval before going live; reach is estimated and not guaranteed.
+        {promo.microcopy}. Video uploads and geo-radius targeting are configured in V Ads Seller Studio and require moderation approval before going live; reach is estimated and not guaranteed.
        </Text>
       </View>
      ):(
       <View style={{gap:14}}>
        <View style={{padding:12,borderRadius:8,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
-        <Text style={styles.muted}>{VADS_FREE_FIRST_MONTH.studioBoundary}</Text>
+        <Text style={styles.muted}>{promo.studioBoundary}</Text>
        </View>
        <View style={{gap:4}}>
         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>FULL-STACK AGENCY &amp; CITY MEDIA</Text>
@@ -426,7 +435,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         <Text accessibilityLiveRegion="polite" style={[styles.muted,styles.tabular]}>{items.length} options</Text>
        </View>
 
-       {STUDIO_PILLARS.map(pillar=>{
+       {pillars.map(pillar=>{
         const pillarItems=items.filter(item=>item.category_ids.some(cid=>pillar.categoryIds.includes(cid)));
         if(!pillarItems.length)return null;
         return (
@@ -450,7 +459,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
               <Feather name="arrow-up-right" size={17} color={colors.accent}/>
              </View>
              <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:16}]}>{servicePrice(item)}</Text>
-             <Text style={[styles.muted,{fontSize:12}]}>{serviceFeeClarity(item)}</Text>
+             <Text style={[styles.muted,{fontSize:12}]}>{feeLabel(item)}</Text>
              <Text numberOfLines={2} style={styles.muted}>Deliverables: {item.deliverables.slice(0,3).join(' · ')}</Text>
             </Pressable>
            ))}
@@ -653,10 +662,10 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
       <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>BILLING, GST &amp; CAMPAIGN RULES</Text>
       <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Frequently asked questions</Text>
       <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
-       {MERCHANT_PRICING_FAQS.map((faq,idx)=>{
+       {faqs.map((faq,idx)=>{
         const expanded=openFaq===idx;
         return (
-         <View key={faq.question} style={{borderBottomWidth:1,borderColor:colors.border}}>
+         <View key={faq.id} style={{borderBottomWidth:1,borderColor:colors.border}}>
           <Pressable
            accessibilityRole="button"
            accessibilityState={{expanded}}

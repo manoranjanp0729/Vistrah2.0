@@ -12,6 +12,7 @@ from app import business_membership_models
 from app import v_ads_models
 from app import v_ads_targeting_models
 from app import marketing_pricing_models
+from app import pricing_models
 
 with engine.connect() as connection:
     context.configure(connection=connection, target_metadata=Base.metadata, compare_type=True)

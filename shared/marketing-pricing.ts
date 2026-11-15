@@ -31,7 +31,278 @@ export function quotePayload(draft:QuoteDraft,key:string){
 }
 export type MarketingQuote={id:string;service_id:string;service_name:string;package_id:string|null;status:string;revision:number;estimate_paise:number|null;pricing_state:string;customer_note:string;created_at:string};
 export type PricingCapabilities={quote_requests_available:boolean;message:string};
-export function marketingPricingClient(fetcher:<T>(path:string,options?:RequestInit)=>Promise<T>){return {catalogue:()=>fetcher<PricingCatalogue>('/marketing-pricing/catalogue'),capabilities:()=>fetcher<PricingCapabilities>('/marketing-pricing/capabilities'),submit:(payload:ReturnType<typeof quotePayload>)=>fetcher<MarketingQuote>('/marketing-pricing/quotes',{method:'POST',body:JSON.stringify(payload)}),requests:()=>fetcher<{items:MarketingQuote[]}>('/marketing-pricing/quotes')};}
+export type LivePricingSection={
+ id:string;
+ tab_group:string;
+ step_label:string;
+ title:string;
+ subtitle:string;
+ fee_note:string;
+ promo_enabled:boolean;
+ free_trial_days:number;
+ promo_badge:string;
+ cta_label:string;
+ cta_href:string;
+ meta:Record<string,unknown>;
+ sort_order:number;
+ active:boolean;
+ revision:number;
+ updated_at:string|null;
+};
+
+export type LivePricingItem={
+ id:string;
+ section_id:string;
+ item_type:'v_ads_tier'|'studio_service'|'package'|'faq';
+ title:string;
+ subtitle:string;
+ description:string;
+ price_paise:number|null;
+ monthly_price_paise:number|null;
+ billing_interval:'day'|'month'|'one-time'|'quote'|'none';
+ gst_label:string;
+ free_trial_enabled:boolean;
+ free_trial_days:number;
+ promo_badge:string;
+ deliverables:string[];
+ meta:Record<string,unknown>;
+ sort_order:number;
+ active:boolean;
+ revision:number;
+ updated_at:string|null;
+};
+
+export type LivePricingFaq={
+ id:string;
+ question:string;
+ answer:string;
+ default_open:boolean;
+};
+
+export type LivePricingResponse={
+ currency:string;
+ notice:string;
+ categories:{id:string;name:string;icon:string}[];
+ promo:LivePricingSection|null;
+ v_ads_tiers:LivePricingItem[];
+ pillars:LivePricingSection[];
+ services:(PricingService&{gst_label?:string;subtitle?:string})[];
+ packages:(MarketingPackage&{gst_label?:string})[];
+ faqs:LivePricingFaq[];
+ sections:LivePricingSection[];
+ items:LivePricingItem[];
+};
+
+export type AdminPricingResponse={
+ currency:string;
+ categories:{id:string;name:string;icon:string}[];
+ sections:LivePricingSection[];
+ items:LivePricingItem[];
+};
+
+export type HydratedVAdsTier={
+ id:string;
+ radiusKm:number;
+ label:string;
+ zoneLabel:string;
+ dailyPaise:number;
+ monthlyPaise:number;
+ gstLabel:string;
+ freeTrialEnabled:boolean;
+ freeTrialDays:number;
+ promoBadge:string;
+ deliverables:string[];
+ reachMinPerDay:number;
+ reachMaxPerDay:number;
+};
+
+export type HydratedPricingState={
+ catalogue:PricingCatalogue;
+ serviceFeeLabels:Record<string,string>;
+ promo:{
+  headline:string;
+  subheadline:string;
+  primaryCta:string;
+  primaryHref:string;
+  microcopy:string;
+  promoEnabled:boolean;
+  freeTrialDays:number;
+  anchorBadge:string;
+  anchorPriceLabel:string;
+  anchorTitle:string;
+  anchorSummary:string;
+  secondaryCtaLabel:string;
+  secondaryCtaHref:string;
+  studioBoundary:string;
+ };
+ vAdsTiers:HydratedVAdsTier[];
+ pillars:StudioPillar[];
+ faqs:{id:string;question:string;answer:string;defaultOpen:boolean}[];
+};
+
+export function defaultHydratedPricing():HydratedPricingState{
+ return {
+  catalogue:pricingCatalogue,
+  serviceFeeLabels:{},
+  promo:{
+   headline:VADS_FREE_FIRST_MONTH.headline,
+   subheadline:VADS_FREE_FIRST_MONTH.subheadline,
+   primaryCta:VADS_FREE_FIRST_MONTH.primaryCta,
+   primaryHref:VADS_FREE_FIRST_MONTH.primaryHref,
+   microcopy:VADS_FREE_FIRST_MONTH.microcopy,
+   promoEnabled:true,
+   freeTrialDays:30,
+   anchorBadge:FREE_LISTING_ANCHOR.badge,
+   anchorPriceLabel:FREE_LISTING_ANCHOR.priceLabel,
+   anchorTitle:'First 30 Days Free on V Ads',
+   anchorSummary:FREE_LISTING_ANCHOR.summary,
+   secondaryCtaLabel:FREE_LISTING_ANCHOR.secondaryLabel,
+   secondaryCtaHref:FREE_LISTING_ANCHOR.secondaryHref,
+   studioBoundary:VADS_FREE_FIRST_MONTH.studioBoundary,
+  },
+  vAdsTiers:VADS_RADIUS_OPTIONS.map(km=>{
+   const t=VADS_RADIUS_TIERS[km];
+   return {
+    id:`v-ads-${km}km`,
+    radiusKm:t.radiusKm,
+    label:t.label,
+    zoneLabel:t.zoneLabel,
+    dailyPaise:t.dailyPaise,
+    monthlyPaise:t.monthlyPaise,
+    gstLabel:'₹0 Month 1 · +18% GST from Day 31',
+    freeTrialEnabled:true,
+    freeTrialDays:30,
+    promoBadge:'₹0 First 30 Days',
+    deliverables:[
+     `₹0 — First 30 Days Free (${km} km ${t.zoneLabel.toLowerCase()})`,
+     'Spatial Feed + V Ads 9:16 Reels placement',
+     'Live views, likes & inquiries in Seller Studio; zero auto-charge on Day 31',
+    ],
+    reachMinPerDay:t.reachMinPerDay,
+    reachMaxPerDay:t.reachMaxPerDay,
+   };
+  }),
+  pillars:[...STUDIO_PILLARS],
+  faqs:MERCHANT_PRICING_FAQS.map((f,i)=>({id:`faq-${i+1}`,question:f.question,answer:f.answer,defaultOpen:i===0})),
+ };
+}
+
+export function hydrateLivePricing(data:LivePricingResponse):HydratedPricingState{
+ const fallback=defaultHydratedPricing();
+ const feeMap:Record<string,string>={};
+ for(const s of data.services??[]){
+  if(s.gst_label)feeMap[s.id]=s.gst_label;
+  else if(s.subtitle)feeMap[s.id]=s.subtitle;
+ }
+ const promoSec=data.promo;
+ const promoMeta=(promoSec?.meta??{}) as Record<string,unknown>;
+ const promo=promoSec?{
+  headline:promoSec.title||fallback.promo.headline,
+  subheadline:promoSec.subtitle||fallback.promo.subheadline,
+  primaryCta:promoSec.cta_label||fallback.promo.primaryCta,
+  primaryHref:promoSec.cta_href||fallback.promo.primaryHref,
+  microcopy:promoSec.fee_note||fallback.promo.microcopy,
+  promoEnabled:Boolean(promoSec.promo_enabled),
+  freeTrialDays:Number(promoSec.free_trial_days??0),
+  anchorBadge:promoSec.promo_badge||fallback.promo.anchorBadge,
+  anchorPriceLabel:String(promoMeta.anchor_price_label??(promoSec.promo_enabled?'₹0':'From ₹150/d')),
+  anchorTitle:String(promoMeta.anchor_title??fallback.promo.anchorTitle),
+  anchorSummary:String(promoMeta.anchor_summary??fallback.promo.anchorSummary),
+  secondaryCtaLabel:String(promoMeta.secondary_cta_label??fallback.promo.secondaryCtaLabel),
+  secondaryCtaHref:String(promoMeta.secondary_cta_href??fallback.promo.secondaryCtaHref),
+  studioBoundary:String(promoMeta.studio_boundary??fallback.promo.studioBoundary),
+ }:fallback.promo;
+
+ const vAdsTiers:HydratedVAdsTier[]=(data.v_ads_tiers?.length?data.v_ads_tiers.map(t=>{
+  const m=(t.meta??{}) as Record<string,unknown>;
+  const daily=t.price_paise??15000;
+  const monthly=t.monthly_price_paise??daily*30;
+  const km=Number(m.radius_km??(parseInt(t.title,10)||5));
+  return {
+   id:t.id,
+   radiusKm:km,
+   label:t.title,
+   zoneLabel:t.subtitle||'Local catchment',
+   dailyPaise:daily,
+   monthlyPaise:monthly,
+   gstLabel:t.gst_label||'18% GST extra',
+   freeTrialEnabled:Boolean(t.free_trial_enabled&&promo.promoEnabled),
+   freeTrialDays:t.free_trial_enabled&&promo.promoEnabled?Number(t.free_trial_days||promo.freeTrialDays||30):0,
+   promoBadge:t.promo_badge||(t.free_trial_enabled?'₹0 First 30 Days':''),
+   deliverables:t.deliverables?.length?t.deliverables:[],
+   reachMinPerDay:Number(m.reach_min_per_day??1000),
+   reachMaxPerDay:Number(m.reach_max_per_day??2500),
+  };
+ }):fallback.vAdsTiers);
+
+ const pillars:StudioPillar[]=(data.pillars?.length?data.pillars.map(p=>{
+  const m=(p.meta??{}) as Record<string,unknown>;
+  const rawKey=String(m.pillar_key??p.id.replace('pillar_',''));
+  const pillarId=(['digital','creative','outdoor','mobility'].includes(rawKey)?rawKey:'digital') as StudioPillar['id'];
+  return {
+   id:pillarId,
+   step:p.step_label||'01',
+   title:p.title,
+   subtitle:p.subtitle,
+   feeNote:p.fee_note,
+   categoryIds:Array.isArray(m.category_ids)?(m.category_ids as string[]):['digital'],
+   defaultServiceId:String(m.default_service_id??'digital-campaign'),
+   defaultBrief:String(m.default_brief??''),
+  };
+ }):fallback.pillars);
+
+ const faqs=(data.faqs?.length?data.faqs.map((f,idx)=>({
+  id:f.id,
+  question:f.question,
+  answer:f.answer,
+  defaultOpen:f.default_open||(idx===0),
+ })):fallback.faqs);
+
+ return {
+  catalogue:{
+   version:pricingCatalogue.version,
+   currency:data.currency||pricingCatalogue.currency,
+   notice:data.notice||pricingCatalogue.notice,
+   categories:data.categories?.length?data.categories:pricingCatalogue.categories,
+   services:data.services?.length?data.services:pricingCatalogue.services,
+   packages:data.packages?.length?data.packages:pricingCatalogue.packages,
+  },
+  serviceFeeLabels:feeMap,
+  promo,
+  vAdsTiers,
+  pillars,
+  faqs,
+ };
+}
+
+export function computeTierBoostEstimate(tier:HydratedVAdsTier,days:number){
+ const subtotalPaise=tier.dailyPaise*days;
+ const gstPaise=Math.round(subtotalPaise*0.18);
+ const totalWithGstPaise=subtotalPaise+gstPaise;
+ const trialDays=tier.freeTrialEnabled?tier.freeTrialDays:0;
+ const reachMin=tier.reachMinPerDay*days;
+ const reachMax=tier.reachMaxPerDay*days;
+ const firstMonthReachMin=tier.reachMinPerDay*(trialDays||30);
+ const firstMonthReachMax=tier.reachMaxPerDay*(trialDays||30);
+ return {
+  radiusKm:tier.radiusKm,
+  days,
+  zoneLabel:tier.zoneLabel,
+  freeTrialEnabled:tier.freeTrialEnabled,
+  freeTrialDays:trialDays,
+  promoBadge:tier.promoBadge,
+  dueTodayPaise:tier.freeTrialEnabled?0:totalWithGstPaise,
+  dailyPaise:tier.dailyPaise,
+  monthlyPaise:tier.monthlyPaise,
+  subtotalPaise,
+  gstPaise,
+  totalWithGstPaise,
+  reachFormatted:`${inNumberFormat.format(reachMin)} – ${inNumberFormat.format(reachMax)}`,
+  firstMonthReachFormatted:`${inNumberFormat.format(firstMonthReachMin)} – ${inNumberFormat.format(firstMonthReachMax)}`,
+ };
+}
+
+export function marketingPricingClient(fetcher:<T>(path:string,options?:RequestInit)=>Promise<T>){return {livePricing:()=>fetcher<LivePricingResponse>('/pricing'),catalogue:()=>fetcher<PricingCatalogue>('/marketing-pricing/catalogue'),capabilities:()=>fetcher<PricingCapabilities>('/marketing-pricing/capabilities'),submit:(payload:ReturnType<typeof quotePayload>)=>fetcher<MarketingQuote>('/marketing-pricing/quotes',{method:'POST',body:JSON.stringify(payload)}),requests:()=>fetcher<{items:MarketingQuote[]}>('/marketing-pricing/quotes')};}
 
 export type PricingIntent='boosts'|'studio';
 export type VAdsRadiusKm=2|5|10|25;

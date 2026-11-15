@@ -37,18 +37,13 @@ import {
   quotePayload,
   marketingPricingClient,
   pricingHref,
-  VADS_FREE_FIRST_MONTH,
-  FREE_LISTING_ANCHOR,
-  VADS_RADIUS_OPTIONS,
   VADS_DURATION_OPTIONS,
-  VADS_RADIUS_TIERS,
-  estimateVAdsBoost,
-  STUDIO_PILLARS,
+  defaultHydratedPricing,
+  hydrateLivePricing,
+  computeTierBoostEstimate,
   serviceFeeClarity,
   PRICING_COMPARISON_ROWS,
-  MERCHANT_PRICING_FAQS,
   type PricingIntent,
-  type VAdsRadiusKm,
   type VAdsDurationDays,
   type QuoteDraft,
   type MarketingQuote,
@@ -91,7 +86,9 @@ export function MarketingPricing({
   serviceId?: string;
   initialPackage?: string;
 }) {
-  const [catalogue, setCatalogue] = useState(pricingCatalogue);
+  const [hydrated, setHydrated] = useState(defaultHydratedPricing);
+  const catalogue = hydrated.catalogue;
+  const { promo, vAdsTiers, pillars, faqs, serviceFeeLabels } = hydrated;
   const [live, setLive] = useState(false);
   const [notice, setNotice] = useState("");
   const [capabilities, setCapabilities] = useState<PricingCapabilities | null>(
@@ -100,7 +97,7 @@ export function MarketingPricing({
 
   // Buyer-intent state on the overview rate card
   const [intent, setIntent] = useState<PricingIntent>("boosts");
-  const [radiusKm, setRadiusKm] = useState<VAdsRadiusKm>(5);
+  const [selectedTierId, setSelectedTierId] = useState<string>("v-ads-5km");
   const [durationDays, setDurationDays] = useState<VAdsDurationDays>(7);
 
   // Studio search / filter state
@@ -142,16 +139,24 @@ export function MarketingPricing({
 
   useEffect(() => {
     let active = true;
-    void Promise.allSettled([client.catalogue(), client.capabilities()]).then(
-      ([prices, availability]) => {
+    void Promise.allSettled([client.livePricing(), client.capabilities()]).then(
+      async ([liveRes, availability]) => {
         if (!active) return;
-        if (prices.status === "fulfilled") {
-          setCatalogue(prices.value);
+        if (liveRes.status === "fulfilled") {
+          setHydrated(hydrateLivePricing(liveRes.value));
           setLive(true);
         } else {
-          setNotice(
-            "Live pricing could not load. Showing indicative proposals only.",
-          );
+          try {
+            const cat = await client.catalogue();
+            if (!active) return;
+            setHydrated((prev) => ({ ...prev, catalogue: cat }));
+            setLive(true);
+          } catch {
+            if (!active) return;
+            setNotice(
+              "Live pricing could not load. Showing indicative proposals only.",
+            );
+          }
         }
         if (availability.status === "fulfilled") {
           setCapabilities(availability.value);
@@ -199,7 +204,11 @@ export function MarketingPricing({
       : catalogue.packages.find((pack) => pack.id === draft.package_id);
 
   const items = searchPricing(catalogue, query, category, billing);
-  const boostEstimate = estimateVAdsBoost(radiusKm, durationDays);
+  const selectedTier =
+    vAdsTiers.find((t) => t.id === selectedTierId) ?? vAdsTiers[0];
+  const boostEstimate = computeTierBoostEstimate(selectedTier, durationDays);
+  const feeLabel = (svc: (typeof catalogue.services)[number]) =>
+    serviceFeeLabels[svc.id] ?? serviceFeeClarity(svc);
   const ServiceIcon =
     icons[
       catalogue.categories.findIndex(
@@ -650,7 +659,7 @@ export function MarketingPricing({
           <div className={styles.heroAside}>
             <span>INDICATIVE STARTING PRICE</span>
             <strong>{servicePrice(detailService)}</strong>
-            <p>{serviceFeeClarity(detailService)}</p>
+            <p>{feeLabel(detailService)}</p>
             <p>
               {detailService.pricing_state === "APPROVED"
                 ? "Public starting-price fields approved. Your scope still needs a quotation."
@@ -663,16 +672,16 @@ export function MarketingPricing({
         <header className={styles.hero}>
           <div>
             <p className={styles.eyebrow}>
-              VISTRAH ADS &amp; MARKETING · FIRST 30 DAYS FREE
+              VISTRAH ADS &amp; MARKETING
+              {promo.promoEnabled
+                ? ` · FIRST ${promo.freeTrialDays} DAYS FREE`
+                : ""}
             </p>
-            <h1>{VADS_FREE_FIRST_MONTH.headline}</h1>
-            <p>{VADS_FREE_FIRST_MONTH.subheadline}</p>
+            <h1>{promo.headline}</h1>
+            <p>{promo.subheadline}</p>
             <div className={styles.actions}>
-              <Link
-                href={VADS_FREE_FIRST_MONTH.primaryHref}
-                className={styles.primary}
-              >
-                {VADS_FREE_FIRST_MONTH.primaryCta}
+              <Link href={promo.primaryHref} className={styles.primary}>
+                {promo.primaryCta}
                 <ArrowUpRight size={16} />
               </Link>
               <button
@@ -680,45 +689,33 @@ export function MarketingPricing({
                 className={styles.secondary}
                 onClick={() =>
                   openCustomMediaPlan(
-                    "digital-campaign",
-                    STUDIO_PILLARS[0].defaultBrief,
+                    pillars[0]?.defaultServiceId ?? "digital-campaign",
+                    pillars[0]?.defaultBrief,
                   )
                 }
               >
                 Explore Studio &amp; Custom Quotes
               </button>
             </div>
-            <p className={styles.heroMicrocopy}>
-              {VADS_FREE_FIRST_MONTH.microcopy}
-            </p>
+            <p className={styles.heroMicrocopy}>{promo.microcopy}</p>
           </div>
           <aside
             className={styles.heroAside}
             aria-label="First 30 Days Free V Ads Offer"
           >
-            <span>{FREE_LISTING_ANCHOR.badge}</span>
+            <span>{promo.anchorBadge}</span>
             <div className={styles.freePriceRow}>
-              <span className={styles.freeZero}>
-                {FREE_LISTING_ANCHOR.priceLabel}
-              </span>
-              <span className={styles.freeTitle}>
-                First 30 Days Free on V Ads
-              </span>
+              <span className={styles.freeZero}>{promo.anchorPriceLabel}</span>
+              <span className={styles.freeTitle}>{promo.anchorTitle}</span>
             </div>
-            <p>{FREE_LISTING_ANCHOR.summary}</p>
+            <p>{promo.anchorSummary}</p>
             <div className={styles.anchorActions}>
-              <Link
-                href={FREE_LISTING_ANCHOR.primaryHref}
-                className={styles.primary}
-              >
-                {FREE_LISTING_ANCHOR.primaryLabel}
+              <Link href={promo.primaryHref} className={styles.primary}>
+                {promo.primaryCta}
                 <ChevronRight size={16} />
               </Link>
-              <Link
-                href={FREE_LISTING_ANCHOR.secondaryHref}
-                className={styles.secondary}
-              >
-                {FREE_LISTING_ANCHOR.secondaryLabel}
+              <Link href={promo.secondaryCtaHref} className={styles.secondary}>
+                {promo.secondaryCtaLabel}
               </Link>
             </div>
           </aside>
@@ -810,28 +807,30 @@ export function MarketingPricing({
                       role="group"
                       aria-label="Target radius in kilometres"
                     >
-                      {VADS_RADIUS_OPTIONS.map((km) => {
-                        const tier = VADS_RADIUS_TIERS[km];
-                        const active = radiusKm === km;
+                      {vAdsTiers.map((tier) => {
+                        const active = selectedTier.id === tier.id;
                         return (
                           <button
-                            key={km}
+                            key={tier.id}
                             type="button"
                             aria-pressed={active}
                             className={
                               active ? styles.optionBtnActive : styles.optionBtn
                             }
-                            onClick={() => setRadiusKm(km)}
+                            onClick={() => setSelectedTierId(tier.id)}
                           >
-                            <span className={styles.optionFreeBadge}>
-                              ₹0 First 30 Days
-                            </span>
+                            {tier.freeTrialEnabled && tier.promoBadge && (
+                              <span className={styles.optionFreeBadge}>
+                                {tier.promoBadge}
+                              </span>
+                            )}
                             <span className={styles.optionValue}>
                               {tier.label}
                             </span>
                             <span className={styles.optionSub}>
-                              Then {formatPricingMoney(tier.monthlyPaise)}/mo +
-                              GST from Day 31
+                              {tier.freeTrialEnabled
+                                ? `Then ${formatPricingMoney(tier.monthlyPaise)}/mo + GST from Day ${tier.freeTrialDays + 1}`
+                                : `${formatPricingMoney(tier.monthlyPaise)}/mo + GST`}
                             </span>
                           </button>
                         );
@@ -841,7 +840,9 @@ export function MarketingPricing({
 
                   <div className={styles.controlGroup}>
                     <span className={styles.controlLabel}>
-                      Preview Optional Post-Trial Window (From Day 31 Onward)
+                      {selectedTier.freeTrialEnabled
+                        ? `Preview Optional Post-Trial Window (From Day ${selectedTier.freeTrialDays + 1} Onward)`
+                        : "Select Campaign Duration"}
                     </span>
                     <div
                       className={styles.optionGrid}
@@ -864,9 +865,11 @@ export function MarketingPricing({
                               {days === 30 ? "30 days (Monthly)" : `${days} days`}
                             </span>
                             <span className={styles.optionSub}>
-                              Day 31+:{" "}
+                              {selectedTier.freeTrialEnabled
+                                ? `Day ${selectedTier.freeTrialDays + 1}+: `
+                                : ""}
                               {formatPricingMoney(
-                                VADS_RADIUS_TIERS[radiusKm].dailyPaise * days,
+                                selectedTier.dailyPaise * days,
                               )}{" "}
                               + GST
                             </span>
@@ -877,94 +880,108 @@ export function MarketingPricing({
                   </div>
 
                   <ul className={styles.boostHighlights}>
-                    <li>
-                      <Check size={16} />
-                      <span>
-                        <strong>₹0 — First 30 Days Free ({radiusKm} km):</strong>{" "}
-                        Run moderated 9:16 Reels and spatial discovery across your{" "}
-                        {boostEstimate.zoneLabel.toLowerCase()} for 30 days at ₹0.
-                      </span>
-                    </li>
-                    <li>
-                      <Check size={16} />
-                      <span>
-                        <strong>Zero hidden lock-ins:</strong> Track live local
-                        views, likes, and inquiries in Seller Studio; nothing
-                        auto-renews on Day 31 unless you opt to continue.
-                      </span>
-                    </li>
-                    <li>
-                      <Check size={16} />
-                      <span>
-                        <strong>Self-Serve vs. Studio clarity:</strong> Free
-                        first month covers self-serve V Ads media; custom Studio
-                        video shoots, retainers, and outdoor hoardings are
-                        quoted separately.
-                      </span>
-                    </li>
+                    {selectedTier.deliverables.length ? (
+                      selectedTier.deliverables.map((line) => (
+                        <li key={line}>
+                          <Check size={16} />
+                          <span>{line}</span>
+                        </li>
+                      ))
+                    ) : (
+                      <li>
+                        <Check size={16} />
+                        <span>
+                          <strong>
+                            ₹0 — First {boostEstimate.freeTrialDays || 30} Days
+                            Free ({selectedTier.label}):
+                          </strong>{" "}
+                          Run moderated 9:16 Reels and spatial discovery across
+                          your {boostEstimate.zoneLabel.toLowerCase()}.
+                        </span>
+                      </li>
+                    )}
                   </ul>
                 </div>
 
                 <div className={styles.ledgerPanel}>
                   <div>
                     <p className={styles.eyebrow}>TRANSPARENT RATE LEDGER</p>
-                    <div className={styles.ledgerFreeBanner}>
-                      <div>
-                        <strong>₹0 — First 30 Days Free</strong>
-                        <span>
-                          Due today for Month 1 ({radiusKm} km ·{" "}
-                          {boostEstimate.firstMonthReachFormatted} est. 30-day
-                          views)
-                        </span>
+                    {boostEstimate.freeTrialEnabled && (
+                      <div className={styles.ledgerFreeBanner}>
+                        <div>
+                          <strong>
+                            ₹0 — First {boostEstimate.freeTrialDays} Days Free
+                          </strong>
+                          <span>
+                            Due today for Month 1 ({selectedTier.label} ·{" "}
+                            {boostEstimate.firstMonthReachFormatted} est.{" "}
+                            {boostEstimate.freeTrialDays}-day views)
+                          </span>
+                        </div>
+                        <strong>₹0</strong>
                       </div>
-                      <strong>₹0</strong>
-                    </div>
+                    )}
 
                     <div className={styles.ledgerSubhead}>
-                      Standard Rate From Day 31 (Only If You Continue)
+                      {boostEstimate.freeTrialEnabled
+                        ? `Standard Rate From Day ${boostEstimate.freeTrialDays + 1} (Only If You Continue)`
+                        : "Standard Self-Serve V Ads Rate"}
                     </div>
                     <div className={styles.ledgerRows}>
                       <div className={styles.ledgerRow}>
-                        <span>Month 2+ monthly plan ({radiusKm} km)</span>
+                        <span>
+                          Monthly plan ({selectedTier.label} ·{" "}
+                          {selectedTier.gstLabel})
+                        </span>
                         <strong>
-                          ₹0 Month 1, then{" "}
+                          {boostEstimate.freeTrialEnabled
+                            ? "₹0 Month 1, then "
+                            : ""}
                           {formatPricingMoney(boostEstimate.monthlyPaise)}/mo +
                           GST
                         </strong>
                       </div>
                       <div className={styles.ledgerRow}>
-                        <span>Selected Day 31+ window ({durationDays} days)</span>
+                        <span>Selected window ({durationDays} days)</span>
                         <strong>
                           {formatPricingMoney(boostEstimate.subtotalPaise)}
                         </strong>
                       </div>
                       <div className={styles.ledgerRow}>
-                        <span>Day 31+ GST (18% · GSTIN ITC eligible)</span>
+                        <span>GST (18% · GSTIN ITC eligible)</span>
                         <strong>
                           {formatPricingMoney(boostEstimate.gstPaise)}
                         </strong>
                       </div>
                       <div className={styles.ledgerTotalRow}>
-                        <span>Due today (Days 1–30)</span>
-                        <strong>₹0</strong>
-                      </div>
-                      <div className={styles.ledgerRow}>
                         <span>
-                          Optional Day 31+ total ({durationDays} days incl. GST)
+                          {boostEstimate.freeTrialEnabled
+                            ? `Due today (Days 1–${boostEstimate.freeTrialDays})`
+                            : "Due today"}
                         </span>
                         <strong>
-                          {formatPricingMoney(boostEstimate.totalWithGstPaise)}
+                          {formatPricingMoney(boostEstimate.dueTodayPaise)}
                         </strong>
                       </div>
+                      {boostEstimate.freeTrialEnabled && (
+                        <div className={styles.ledgerRow}>
+                          <span>
+                            Optional Day {boostEstimate.freeTrialDays + 1}+
+                            total ({durationDays} days incl. GST)
+                          </span>
+                          <strong>
+                            {formatPricingMoney(
+                              boostEstimate.totalWithGstPaise,
+                            )}
+                          </strong>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className={styles.controlGroup}>
-                    <Link
-                      href={VADS_FREE_FIRST_MONTH.primaryHref}
-                      className={styles.primary}
-                    >
-                      {VADS_FREE_FIRST_MONTH.primaryCta}
+                    <Link href={promo.primaryHref} className={styles.primary}>
+                      {promo.primaryCta}
                       <ArrowUpRight size={16} />
                     </Link>
                     <Link
@@ -976,10 +993,10 @@ export function MarketingPricing({
                       <ChevronRight size={15} />
                     </Link>
                     <p className={styles.ledgerNote}>
-                      {VADS_FREE_FIRST_MONTH.microcopy}. Video uploads and
-                      geo-radius targeting are configured in V Ads Seller Studio
-                      and require moderation approval before publication; reach
-                      is indicative and not guaranteed.
+                      {promo.microcopy}. Video uploads and geo-radius targeting
+                      are configured in V Ads Seller Studio and require
+                      moderation approval before publication; reach is
+                      indicative and not guaranteed.
                     </p>
                   </div>
                 </div>
@@ -993,9 +1010,7 @@ export function MarketingPricing({
               className={styles.section}
               ref={catalogueRef}
             >
-              <p className={styles.notice}>
-                {VADS_FREE_FIRST_MONTH.studioBoundary}
-              </p>
+              <p className={styles.notice}>{promo.studioBoundary}</p>
               <div className={styles.sectionHeading} id="catalogue">
                 <div>
                   <p className={styles.eyebrow}>
@@ -1066,7 +1081,7 @@ export function MarketingPricing({
               </div>
 
               <div className={styles.pillars}>
-                {STUDIO_PILLARS.map((pillar) => {
+                {pillars.map((pillar) => {
                   const pillarItems = items.filter((item) =>
                     item.category_ids.some((cid) =>
                       pillar.categoryIds.includes(cid),
@@ -1113,7 +1128,7 @@ export function MarketingPricing({
                                 {item.pricing_state === "APPROVED"
                                   ? "Approved starting price"
                                   : "Indicative proposal"}{" "}
-                                · {serviceFeeClarity(item)}
+                                · {feeLabel(item)}
                               </span>
                               <ArrowUpRight size={18} />
                             </div>
@@ -1252,11 +1267,11 @@ export function MarketingPricing({
               </div>
             </div>
             <div className={styles.faqList}>
-              {MERCHANT_PRICING_FAQS.map((faq, idx) => (
+              {faqs.map((faq) => (
                 <details
-                  key={faq.question}
+                  key={faq.id}
                   className={styles.faqItem}
-                  open={idx === 0}
+                  open={faq.defaultOpen}
                 >
                   <summary>
                     <span>{faq.question}</span>

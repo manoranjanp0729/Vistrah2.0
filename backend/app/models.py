@@ -232,3 +232,5 @@ class ServiceInformation(Base):
     __tablename__ = 'service_information'
     service_id: Mapped[int] = mapped_column(ForeignKey('services.id', ondelete='CASCADE'), primary_key=True)
     notes: Mapped[list] = mapped_column(JSON, default=list)
+
+from .pricing_models import PricingSection, PricingItem  # noqa: E402,F401

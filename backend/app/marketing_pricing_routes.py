@@ -30,6 +30,26 @@ def require_ready(db):
 
 def catalogue(db):
     result = json.loads(CATALOGUE.read_text(encoding='utf-8'))
+    inspector = inspect(db.get_bind())
+    if inspector.has_table('pricing_items'):
+        from .pricing_models import PricingItem
+        live_items = {row.id: row for row in db.scalars(select(PricingItem)).all()}
+        for service in result['services']:
+            item = live_items.get(service['id'])
+            if item and item.item_type == 'studio_service':
+                service['name'] = item.title
+                service['starting_price_paise'] = None if item.billing_interval == 'quote' else item.price_paise
+                service['billing'] = 'month' if item.billing_interval == 'month' else 'one-time'
+                service['description'] = item.description
+                service['deliverables'] = list(item.deliverables or [])
+                service['enabled'] = bool(item.active)
+        for pack in result.get('packages', []):
+            item = live_items.get(pack['id'])
+            if item and item.item_type == 'package':
+                pack['name'] = item.title
+                pack['monthly_price_paise'] = item.monthly_price_paise if item.monthly_price_paise is not None else (item.price_paise or 0)
+                pack['features'] = list(item.deliverables or [])
+                pack['note'] = item.description
     if ready(db):
         overrides = {row.service_id: row.published for row in db.scalars(select(MarketingPriceOverride)).all() if row.published is not None}
         for service in result['services']:

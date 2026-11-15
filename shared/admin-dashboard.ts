@@ -21,6 +21,7 @@ export const adminTaskGroups:AdminGroup[] = [
     {slug:'catalogue',label:'Service catalogue',description:'Manage categories and discoverable services.'},
     {slug:'homepage',label:'Homepage',description:'Edit and publish homepage content.'},
     {slug:'edit-vistrah',label:'Edit Vistrah',description:'Define sections, variations, features, and photos for all pages.'},
+    {slug:'pricing',label:'Pricing Editor',description:'Edit V Ads promos, self-serve rates, Studio pillars, and FAQs.'},
     {slug:'memberships',label:'Memberships & benefits',description:'Review subscriptions and benefit records.'},
     {slug:'offers',label:'Member offers',description:'Manage membership offers.'},
     {slug:'vistrah-services',label:'VISTRAH packages',description:'Manage platform service packages.'},

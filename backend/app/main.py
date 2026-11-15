@@ -69,6 +69,8 @@ from .edit_vistrah_routes import router as edit_vistrah_router
 app.include_router(edit_vistrah_router)
 from .marketing_pricing_routes import router as marketing_pricing_router
 app.include_router(marketing_pricing_router)
+from .pricing_routes import router as pricing_router
+app.include_router(pricing_router)
 from .composite_routes import router as composite_router
 app.include_router(composite_router)
 from .compliance_routes import router as compliance_router
@@ -77,7 +79,7 @@ app.include_router(compliance_router)
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith(('/seller/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests') or (
+    if request.url.path.startswith(('/seller/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/', '/admin/pricing', '/api/admin/pricing')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests', '/pricing', '/api/pricing') or (
         request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'

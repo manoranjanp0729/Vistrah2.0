@@ -1,8 +1,7 @@
-import { AdminApp } from '@/components/admin';
-
-export const metadata = { title: 'Edit Vistrah — Page & Section Architecture' };
+'use client';
+import {AdminReviewFrame} from '@/components/admin-workspace';
+import {AdminEditVistrah} from '@/components/admin-edit-vistrah';
 
 export default function EditVistrahPage() {
-  return <AdminApp section="edit-vistrah" />;
+  return <AdminReviewFrame>{user => <AdminEditVistrah actorId={user.id} />}</AdminReviewFrame>;
 }
-

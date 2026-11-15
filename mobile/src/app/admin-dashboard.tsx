@@ -12,34 +12,35 @@ import {useTheme} from '../lib/theme';
 import {api} from '../lib/api';
 import {toPlayableUrl} from '../lib/v-ads';
 import {AdminEditVistrahTab, AdminHomepageTab, AdminMembershipsTab, AdminVistrahServicesTab} from '../components/admin-manage-tabs';
+import {AdminPricingTab} from '../components/admin-pricing-tab';
 import {adminTaskGroups, adminSummary, type AdminOverview} from '../../../shared/admin-dashboard';
 import brandTheme from '../../../shared/brand-theme.json';
 
 const adminTheme = {
-  heroGradient: ['#140c26', '#22133e', '#391557', '#4f1a6f'] as const,
-  tabActiveGradient: ['#283db6', '#7741c4', '#b63b8d'] as const,
-  badgeGradient: ['#283db6', '#7741c4', '#b63b8d'] as const,
-  brandChipGradient: ['#283db6', '#7741c4', '#b63b8d'] as const,
+  heroGradient: ['#0f172a', '#1e293b', '#173f35', '#173f35'] as const,
+  tabActiveGradient: ['#173f35', '#173f35', '#1e4d40'] as const,
+  badgeGradient: ['#173f35', '#173f35', '#1e4d40'] as const,
+  brandChipGradient: ['#173f35', '#173f35', '#1e4d40'] as const,
   approveGradient: ['#059669', '#10b981'] as const,
   rejectGradient: ['#be123c', '#f43f5e'] as const,
-  accent: '#503fbd',
-  accentDark: '#352586',
-  accentLight: '#7741c4',
-  accentRose: '#b63b8d',
+  accent: '#173f35',
+  accentDark: '#0f2d25',
+  accentLight: '#10b981',
+  accentRose: '#b91c1c',
   accentEmerald: '#10b981',
-  borderLight: '#e4dbf0',
-  borderDark: '#392f4e',
+  borderLight: '#e2e8f0',
+  borderDark: '#334155',
   cardLight: '#ffffff',
-  cardDark: '#211e2c',
-  subtleLight: '#f6f3fc',
-  subtleDark: '#161321',
-  textLight: '#1a1033',
-  textDark: '#f4edff',
-  mutedLight: '#655780',
-  mutedDark: '#c1b6d0',
+  cardDark: '#1e293b',
+  subtleLight: '#f8fafc',
+  subtleDark: '#0f172a',
+  textLight: '#0f172a',
+  textDark: '#f8fafc',
+  mutedLight: '#475569',
+  mutedDark: '#94a3b8',
 };
 
-type AdminTab = 'overview' | 'requests' | 'v-ads' | 'commerce' | 'providers' | 'edit-vistrah' | 'homepage' | 'memberships' | 'vistrah-services' | 'catalogue' | 'audit';
+type AdminTab = 'overview' | 'requests' | 'v-ads' | 'commerce' | 'providers' | 'pricing' | 'edit-vistrah' | 'homepage' | 'memberships' | 'vistrah-services' | 'catalogue' | 'audit';
 
 type RequestItem = {
   id: number;
@@ -464,7 +465,8 @@ export default function AdminDashboard() {
   function handleTaskGroupClick(slug: string) {
     if(!allowed)return;
     if (slug === 'requests') setActiveTab('requests');
-    else if (slug === 'v-ads') setActiveTab('v-ads');
+    else if (slug === 'moderation' || slug === 'v-ads') setActiveTab('v-ads');
+    else if (slug === 'pricing') setActiveTab('pricing');
     else if (slug === 'commerce-listings' || slug === 'commerce-orders') setActiveTab('commerce');
     else if (slug === 'providers' || slug === 'provider-services') setActiveTab('providers');
     else if (slug === 'provider-applications') router.push('/provider-applications');
@@ -487,27 +489,31 @@ export default function AdminDashboard() {
   if (!user) {
     return (
       <Page>
-        <LinearGradient
-          colors={accentGradient}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          style={{padding: 24, borderRadius: 24, gap: 10}}
+        <View
+          style={{
+            padding: 20,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
+            backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+            gap: 8,
+          }}
         >
-          <Text style={{color: '#caa5f5', fontSize: 11, fontWeight: '700', letterSpacing: 2}}><UiText value={"VISTRAH CONTROL CENTER"}/></Text>
-          <Text style={{color: '#ffffff', fontSize: 24, fontWeight: '700'}}><UiText value={"Administrator sign-in"}/></Text>
-          <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}><UiText value={"Sign in with your authorized administrator account to access platform controls."}/></Text>
-        </LinearGradient>
+          <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 11, fontWeight: '700', letterSpacing: 1.4}}><UiText value={"EDITORIAL ADMIN"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 22, fontWeight: '700'}}><UiText value={"Administrator sign-in"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 13, lineHeight: 19}}><UiText value={"Sign in with your authorized administrator account to access platform controls."}/></Text>
+        </View>
         <Pressable
           onPress={() => router.push('/auth')}
           style={{
             marginTop: 12,
             backgroundColor: adminTheme.accent,
-            paddingVertical: 14,
-            borderRadius: 16,
+            paddingVertical: 12,
+            borderRadius: 8,
             alignItems: 'center',
           }}
         >
-          <Text style={{color: '#fff', fontWeight: '700', fontSize: 15}}><UiText value={"Sign in →"}/></Text>
+          <Text style={{color: '#fff', fontWeight: '600', fontSize: 14}}><UiText value={"Sign in →"}/></Text>
         </Pressable>
       </Page>
     );
@@ -515,147 +521,165 @@ export default function AdminDashboard() {
   if (!allowed) {
     return (
       <Page>
-        <LinearGradient
-          colors={accentGradient}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          style={{padding: 24, borderRadius: 24, gap: 10}}
+        <View
+          style={{
+            padding: 20,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
+            backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
+            gap: 8,
+          }}
         >
-          <Text style={{color: '#ef4444', fontSize: 11, fontWeight: '700', letterSpacing: 2}}><UiText value={"ACCESS DENIED"}/></Text>
-          <Text style={{color: '#ffffff', fontSize: 22, fontWeight: '700'}}><UiText value={"Administrator access required"}/></Text>
-          <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}><UiText value={"This customer account cannot access the Vistrah Administration control center."}/></Text>
-        </LinearGradient>
+          <Text style={{color: '#dc2626', fontSize: 11, fontWeight: '700', letterSpacing: 1.4}}><UiText value={"ACCESS DENIED"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 20, fontWeight: '700'}}><UiText value={"Administrator access required"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 13, lineHeight: 19}}><UiText value={"This customer account cannot access the Vistrah Administration control center."}/></Text>
+        </View>
       </Page>
     );
   }
 
-  const tabs: Array<{key: AdminTab; label: string; badge?: number}> = [
-    {key: 'overview', label: 'Overview'},
-    {key: 'requests', label: 'Enquiries', badge: overviewResult.data?.new_requests},
-    {key: 'v-ads', label: 'V Ads'},
-    {key: 'commerce', label: 'Commerce'},
-    {key: 'providers', label: 'Providers'},
-    {key: 'edit-vistrah', label: 'Edit Vistrah'},
-    {key: 'homepage', label: 'Homepage'},
-    {key: 'memberships', label: 'Memberships'},
-    {key: 'vistrah-services', label: 'Packages'},
-    {key: 'catalogue', label: 'Catalogue'},
-    {key: 'audit', label: 'Activity'},
+  const primaryDestinations: Array<{
+    key: 'overview' | 'moderation' | 'pricing' | 'homepage' | 'audit';
+    label: string;
+    defaultTab: AdminTab;
+    matches: AdminTab[];
+    badge?: number;
+  }> = [
+    {key: 'overview', label: 'Overview', defaultTab: 'overview', matches: ['overview']},
+    {
+      key: 'moderation',
+      label: 'V Ads & Sellers',
+      defaultTab: 'v-ads',
+      matches: ['v-ads', 'providers', 'requests', 'commerce'],
+      badge: (overviewResult.data?.pending_v_ads ?? 0) + (overviewResult.data?.new_requests ?? 0),
+    },
+    {
+      key: 'pricing',
+      label: 'Pricing',
+      defaultTab: 'pricing',
+      matches: ['pricing', 'memberships', 'vistrah-services'],
+    },
+    {
+      key: 'homepage',
+      label: 'Homepage',
+      defaultTab: 'homepage',
+      matches: ['homepage', 'edit-vistrah', 'catalogue'],
+    },
+    {key: 'audit', label: 'Audit & Health', defaultTab: 'audit', matches: ['audit']},
   ];
+
+  const activePrimary =
+    primaryDestinations.find(d => d.matches.includes(activeTab)) ?? primaryDestinations[0];
+
+  const subTabsByGroup: Record<string, Array<{key: AdminTab; label: string; badge?: number}>> = {
+    moderation: [
+      {key: 'v-ads', label: 'V Ads', badge: overviewResult.data?.pending_v_ads},
+      {key: 'providers', label: 'Sellers', badge: overviewResult.data?.pending_sellers},
+      {key: 'requests', label: 'Enquiries', badge: overviewResult.data?.new_requests},
+      {key: 'commerce', label: 'Commerce'},
+    ],
+    pricing: [
+      {key: 'pricing', label: 'Pricing Editor'},
+      {key: 'memberships', label: 'Memberships'},
+      {key: 'vistrah-services', label: 'Packages'},
+    ],
+    homepage: [
+      {key: 'homepage', label: 'Homepage Layout'},
+      {key: 'edit-vistrah', label: 'Edit Vistrah (CMS)'},
+      {key: 'catalogue', label: 'Catalogue'},
+    ],
+  };
+
+  const currentSubTabs = subTabsByGroup[activePrimary.key] ?? [];
+  const activeAccent = mode === 'dark' ? '#10b981' : '#173f35';
+  const surfaceBg = mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight;
+  const borderCol = mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight;
+  const textPri = mode === 'dark' ? adminTheme.textDark : adminTheme.textLight;
+  const textSec = mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight;
 
   return (
     <Page>
-      {/* 1. VISTRAH SIGNATURE HERO BANNER */}
-      <LinearGradient
-        colors={accentGradient}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
+      {/* 1. CLEAN EDITORIAL ADMIN HEADER */}
+      <View
         style={{
-          borderRadius: 24,
-          padding: 24,
-          gap: 10,
-          position: 'relative',
-          overflow: 'hidden',
-          shadowColor: '#283db6',
-          shadowOffset: {width: 0, height: 8},
-          shadowOpacity: 0.28,
-          shadowRadius: 18,
-          elevation: 6,
+          borderRadius: 12,
+          padding: 18,
+          gap: 6,
+          backgroundColor: surfaceBg,
+          borderWidth: 1,
+          borderColor: borderCol,
         }}
       >
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <LinearGradient
-              colors={accentGradient}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 1}}
-              style={{paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}
-            >
-              <Text style={{color: '#ffffff', fontSize: 10, fontWeight: '800', letterSpacing: 1.2}}><UiText value={"PLATFORM CONTROL"}/></Text>
-            </LinearGradient>
-          </View>
+          <Text style={{color: textSec, fontSize: 11, fontWeight: '700', letterSpacing: 1.3}}>
+            <UiText value={"EDITORIAL ADMIN · CONTROL CENTER"}/>
+          </Text>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
             <View style={{width: 7, height: 7, borderRadius: 4, backgroundColor: adminTheme.accentEmerald}} />
-            <Text style={{color: '#c2b2df', fontSize: 11, fontWeight: '600'}}><UiText value={"Live sync"}/></Text>
+            <Text style={{color: textSec, fontSize: 11, fontWeight: '600', fontVariant: ['tabular-nums']}}>
+              {overviewResult.data?.payment_mode ?? 'SANDBOX'}
+            </Text>
           </View>
         </View>
 
-        <Text accessibilityRole="header" style={{color: '#ffffff', fontSize: 24, fontWeight: '800', letterSpacing: -0.3}}>
-          <UiText value={"Admin Workspace "}/></Text>
-        <Text style={{color: '#d8ccf0', fontSize: 13, lineHeight: 19}}>
-          <UiText value={"Moderate V Ads, review customer enquiries, verify providers, and manage platform commerce. "}/></Text>
-      </LinearGradient>
+        <Text accessibilityRole="header" style={{color: textPri, fontSize: 22, fontWeight: '700', letterSpacing: -0.4}}>
+          <UiText value={activePrimary.label}/>
+        </Text>
+        <Text style={{color: textSec, fontSize: 13, lineHeight: 19}}>
+          <UiText value={"Live platform KPIs, V Ads & seller moderation, live Pricing Editor, homepage publishing, and DPDP audit logs."}/>
+        </Text>
+      </View>
 
-      {/* 2. SEGMENTED TAB NAVIGATION */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8, paddingVertical: 4}}>
-        {tabs.map(tab => {
-          const isSelected = activeTab === tab.key;
+      {/* 2. 5-DESTINATION PRIMARY RAIL */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8, paddingVertical: 2}}>
+        {primaryDestinations.map(dest => {
+          const isSelected = activePrimary.key === dest.key;
           return (
             <Pressable
-              key={tab.key}
+              key={dest.key}
               onPress={() => {
-                setActiveTab(tab.key);
+                setActiveTab(dest.defaultTab);
                 setActionNotice('');
                 setActionError('');
               }}
               style={({pressed}) => [
                 {
-                  borderRadius: 20,
-                  overflow: 'hidden',
+                  paddingHorizontal: 14,
+                  paddingVertical: 9,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: isSelected ? activeAccent : borderCol,
+                  backgroundColor: isSelected ? activeAccent : surfaceBg,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 6,
                   opacity: pressed ? 0.85 : 1,
                 },
               ]}
             >
-              {isSelected ? (
-                <LinearGradient
-                  colors={accentGradient}
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 1}}
-                  style={{
-                    paddingHorizontal: 16,
-                    paddingVertical: 10,
-                    borderRadius: 20,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 6,
-                    shadowColor: '#7741c4',
-                    shadowOffset: {width: 0, height: 4},
-                    shadowOpacity: 0.35,
-                    shadowRadius: 8,
-                    elevation: 4,
-                  }}
-                >
-                  <Text style={{fontWeight: '700', color: '#fff', fontSize: 13}}><UiText value={tab.label}/></Text>
-                  {Boolean(tab.badge && tab.badge > 0) && (
-                    <View style={{backgroundColor: '#fff', paddingHorizontal: 6, paddingVertical: 1, borderRadius: 10}}>
-                      <Text style={{fontSize: 10, fontWeight: '800', color: adminTheme.accent}}>
-                        {tab.badge}
-                      </Text>
-                    </View>
-                  )}
-                </LinearGradient>
-              ) : (
+              <Text style={{fontWeight: '600', color: isSelected ? '#ffffff' : textPri, fontSize: 13}}>
+                <UiText value={dest.label}/>
+              </Text>
+              {Boolean(dest.badge && dest.badge > 0) && (
                 <View
                   style={{
-                    paddingHorizontal: 16,
-                    paddingVertical: 10,
-                    borderRadius: 20,
-                    borderWidth: 1,
-                    borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                    backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 6,
+                    backgroundColor: isSelected ? '#ffffff' : '#ecf5f1',
+                    paddingHorizontal: 6,
+                    paddingVertical: 1,
+                    borderRadius: 999,
                   }}
                 >
-                  <Text style={{fontWeight: '600', color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 13}}><UiText value={tab.label}/></Text>
-                  {Boolean(tab.badge && tab.badge > 0) && (
-                    <View style={{backgroundColor: adminTheme.accent, paddingHorizontal: 6, paddingVertical: 1, borderRadius: 10}}>
-                      <Text style={{fontSize: 10, fontWeight: '800', color: '#fff'}}>
-                        {tab.badge}
-                      </Text>
-                    </View>
-                  )}
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      fontWeight: '700',
+                      color: '#173f35',
+                      fontVariant: ['tabular-nums'],
+                    }}
+                  >
+                    {dest.badge}
+                  </Text>
                 </View>
               )}
             </Pressable>
@@ -663,10 +687,49 @@ export default function AdminDashboard() {
         })}
       </ScrollView>
 
+      {/* Optional Sub-Segment Bar for V Ads & Sellers / Pricing / Homepage */}
+      {currentSubTabs.length > 0 && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 6}}>
+          {currentSubTabs.map(sub => {
+            const active = activeTab === sub.key;
+            return (
+              <Pressable
+                key={sub.key}
+                onPress={() => {
+                  setActiveTab(sub.key);
+                  setActionNotice('');
+                  setActionError('');
+                }}
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: active ? textPri : borderCol,
+                  backgroundColor: active ? (mode === 'dark' ? '#334155' : '#f1f5f9') : 'transparent',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                <Text style={{fontSize: 12, fontWeight: active ? '700' : '500', color: textPri}}>
+                  {sub.label}
+                </Text>
+                {Boolean(sub.badge && sub.badge > 0) && (
+                  <Text style={{fontSize: 11, fontWeight: '700', color: activeAccent, fontVariant: ['tabular-nums']}}>
+                    {sub.badge}
+                  </Text>
+                )}
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+      )}
+
       {/* Global Notices */}
       {Boolean(actionNotice) && (
-        <View style={[styles.card, {borderColor: '#34d399', backgroundColor: '#064e3b15'}]}>
-          <Text style={{color: '#34d399', fontWeight: '700', fontSize: 13}}>✓ {actionNotice}</Text>
+        <View style={[styles.card, {borderColor: '#34d399', backgroundColor: '#064e3b15', borderRadius: 8}]}>
+          <Text style={{color: '#10b981', fontWeight: '600', fontSize: 13}}>✓ {actionNotice}</Text>
         </View>
       )}
       {Boolean(actionError) && <ErrorPanel error={actionError} />}
@@ -680,244 +743,153 @@ export default function AdminDashboard() {
             <ErrorPanel error={overviewResult.error} retry={overviewResult.retry} />
           ) : overviewResult.data ? (
             <>
-              {/* Highlight Card: Needs Attention */}
-              <View
-                style={[
-                  styles.card,
+              {/* Live Tabular-Nums 4-KPI Strip */}
+              <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10}}>
+                {[
                   {
-                    borderColor: '#f59e0b',
-                    backgroundColor: mode === 'dark' ? '#2c1e0e' : '#fff9ee',
-                    position: 'relative',
-                    overflow: 'hidden',
+                    label: 'Pending V Ads',
+                    value: String(overviewResult.data.pending_v_ads ?? 0),
+                    sub: `${overviewResult.data.pending_videos ?? 0} reels · ${overviewResult.data.pending_targeting ?? 0} spatial`,
+                    target: 'v-ads' as AdminTab,
                   },
-                ]}
+                  {
+                    label: 'Active Sellers',
+                    value: String(overviewResult.data.active_sellers ?? overviewResult.data.providers),
+                    sub: `${overviewResult.data.providers} total · ${overviewResult.data.pending_sellers ?? 0} pending`,
+                    target: 'providers' as AdminTab,
+                  },
+                  {
+                    label: 'Verified Users',
+                    value: String(overviewResult.data.verified_users ?? overviewResult.data.customers),
+                    sub: `${overviewResult.data.dpdp_consented_users ?? 0} DPDP consented`,
+                    target: 'audit' as AdminTab,
+                  },
+                  {
+                    label: 'Payment Mode',
+                    value: String(overviewResult.data.payment_mode ?? 'SANDBOX'),
+                    sub: `${overviewResult.data.payments} ledger entries`,
+                    target: 'pricing' as AdminTab,
+                  },
+                ].map(kpi => (
+                  <Pressable
+                    key={kpi.label}
+                    onPress={() => setActiveTab(kpi.target)}
+                    style={{
+                      flexGrow: 1,
+                      minWidth: 150,
+                      padding: 14,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: borderCol,
+                      backgroundColor: surfaceBg,
+                      gap: 4,
+                    }}
+                  >
+                    <Text style={{fontSize: 11, fontWeight: '600', color: textSec}}>{kpi.label}</Text>
+                    <Text style={{fontSize: 22, fontWeight: '700', color: textPri, fontVariant: ['tabular-nums']}}>
+                      {kpi.value}
+                    </Text>
+                    <Text style={{fontSize: 11, color: textSec, fontVariant: ['tabular-nums']}}>
+                      {kpi.sub}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+
+              {/* Needs Review Now Actionable Queue */}
+              <View
+                style={{
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: borderCol,
+                  backgroundColor: surfaceBg,
+                  padding: 16,
+                  gap: 10,
+                }}
               >
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                  <View style={{backgroundColor: '#f59e0b25', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}>
-                    <Text style={{color: '#d97706', fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
-                      <UiText value={"NEEDS YOUR ATTENTION "}/></Text>
+                  <View>
+                    <Text style={{fontSize: 10, fontWeight: '700', letterSpacing: 1, color: textSec}}>
+                      ACTIONABLE QUEUE
+                    </Text>
+                    <Text style={{fontSize: 16, fontWeight: '700', color: textPri}}>Needs Review Now</Text>
                   </View>
                   <Pressable onPress={overviewResult.retry} style={{padding: 4}}>
-                    <Text style={{color: '#d97706', fontSize: 12, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
+                    <Text style={{color: activeAccent, fontSize: 12, fontWeight: '600'}}>Refresh ↺</Text>
                   </Pressable>
                 </View>
 
-                <Text accessibilityRole="header" style={[styles.heading, {fontSize: 22, color: mode === 'dark' ? '#fde68a' : '#78350f'}]}>
-                  {overviewResult.data.new_requests} <UiText value={"new enquiries "}/></Text>
-                <Text style={{color: mode === 'dark' ? '#fcd34d' : '#92400e', fontSize: 13, lineHeight: 18}}>
-                  <UiText value={"Customer requirements awaiting review, lead routing, and quotation. "}/></Text>
-
-                <Pressable
-                  onPress={() => setActiveTab('requests')}
-                  style={{borderRadius: 14, overflow: 'hidden', marginTop: 4}}
-                >
-                  <LinearGradient
-                    colors={accentGradient}
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 1}}
-                    style={{paddingVertical: 12, alignItems: 'center', borderRadius: 14}}
-                  >
-                    <Text style={{color: '#fff', fontWeight: '700', fontSize: 14}}><UiText value={"Review customer enquiries →"}/></Text>
-                  </LinearGradient>
-                </Pressable>
-              </View>
-
-              {/* Stats Grid */}
-              <View style={styles.row}>
-                {adminSummary.map(item => (
-                  <View
-                    key={item.key}
-                    style={[
-                      styles.card,
-                      {
-                        flexGrow: 1,
-                        minWidth: 96,
-                        position: 'relative',
-                        overflow: 'hidden',
-                        borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                        backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                      },
-                    ]}
-                  >
-                    <View style={{position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: adminTheme.accent}} />
-                    <Text style={[styles.heading, {fontSize: 24, color: adminTheme.accent}]}>
-                      {overviewResult.data![item.key]}
-                    </Text>
-                    <Text style={[styles.muted, {fontSize: 12, fontWeight: '600', color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={item.label}/></Text>
-                  </View>
-                ))}
-                <View
-                  style={[
-                    styles.card,
-                    {
-                      flexGrow: 1,
-                      minWidth: 96,
-                      position: 'relative',
-                      overflow: 'hidden',
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    },
-                  ]}
-                >
-                  <View style={{position: 'absolute', top: 0, left: 0, right: 0, height: 3, backgroundColor: adminTheme.accentEmerald}} />
-                  <Text style={[styles.heading, {fontSize: 24, color: adminTheme.accentEmerald}]}>
-                    {overviewResult.data.customers}
+                {(overviewResult.data.needs_review ?? []).filter(q => q.count > 0).length > 0 ? (
+                  (overviewResult.data.needs_review ?? [])
+                    .filter(q => q.count > 0)
+                    .map(q => (
+                      <Pressable
+                        key={q.id}
+                        onPress={() => {
+                          if (q.id.includes('v-ads')) setActiveTab('v-ads');
+                          else if (q.id.includes('seller')) setActiveTab('providers');
+                          else setActiveTab('requests');
+                        }}
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          paddingVertical: 10,
+                          borderTopWidth: 1,
+                          borderTopColor: borderCol,
+                          gap: 10,
+                        }}
+                      >
+                        <View style={{flex: 1, gap: 2}}>
+                          <Text style={{fontSize: 13, fontWeight: '600', color: textPri}}>{q.label}</Text>
+                          <Text style={{fontSize: 12, color: textSec}}>{q.detail}</Text>
+                        </View>
+                        <Text style={{fontSize: 13, fontWeight: '700', color: activeAccent, fontVariant: ['tabular-nums']}}>
+                          {q.count} →
+                        </Text>
+                      </Pressable>
+                    ))
+                ) : (
+                  <Text style={{fontSize: 13, color: textSec}}>
+                    All moderation and onboarding queues are currently clear.
                   </Text>
-                  <Text style={[styles.muted, {fontSize: 12, fontWeight: '600', color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Customers"}/></Text>
-                </View>
+                )}
               </View>
 
-              {/* Administrative Workspaces Quick Launch */}
-              <Text style={[styles.heading, {fontSize: 17, marginTop: 6, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Administrative Hubs"}/></Text>
-              <View style={{gap: 10}}>
-                {/* V Ads Card */}
-                <Pressable
-                  onPress={() => setActiveTab('v-ads')}
-                  style={({pressed}) => [
-                    styles.card,
-                    {
-                      opacity: pressed ? 0.8 : 1,
+              {/* Quick Editorial Destinations */}
+              <View style={{gap: 8}}>
+                {[
+                  {tab: 'pricing' as AdminTab, title: 'Pricing Editor (Live DB)', desc: 'Edit V Ads First-Month-Free promo, km rates, Studio pillars & FAQs.'},
+                  {tab: 'v-ads' as AdminTab, title: 'V Ads & Sellers Moderation', desc: 'Approve reels, spatial revisions, advertiser channels & sellers.'},
+                  {tab: 'homepage' as AdminTab, title: 'Homepage & Edit Vistrah', desc: 'Publish editorial sections across desktop and mobile web.'},
+                  {tab: 'audit' as AdminTab, title: 'Audit & Health', desc: 'Inspect immutable admin decisions and DPDP compliance records.'},
+                ].map(card => (
+                  <Pressable
+                    key={card.tab}
+                    onPress={() => setActiveTab(card.tab)}
+                    style={{
+                      padding: 14,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: borderCol,
+                      backgroundColor: surfaceBg,
                       flexDirection: 'row',
                       alignItems: 'center',
-                      gap: 14,
-                      padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    },
-                  ]}
-                >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
+                      justifyContent: 'space-between',
+                      gap: 12,
+                    }}
                   >
-                    <Text style={{fontSize: 20}}>🎬</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"V Ads Moderation"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Review video ads, approve advertiser channels & metrics."}/></Text>
-                  </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
-                </Pressable>
-
-                {/* Edit Vistrah Card */}
-                <Pressable
-                  onPress={() => setActiveTab('edit-vistrah')}
-                  style={({pressed}) => [
-                    styles.card,
-                    {
-                      opacity: pressed ? 0.8 : 1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 14,
-                      padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    },
-                  ]}
-                >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
-                  >
-                    <Text style={{fontSize: 20}}>🎨</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Edit Vistrah"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Choose a page, tap a section, and edit its content."}/></Text>
-                  </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
-                </Pressable>
-
-                {/* Commerce Card */}
-                <Pressable
-                  onPress={() => setActiveTab('commerce')}
-                  style={({pressed}) => [
-                    styles.card,
-                    {
-                      opacity: pressed ? 0.8 : 1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 14,
-                      padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    },
-                  ]}
-                >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
-                  >
-                    <Text style={{fontSize: 20}}>🛍️</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Commerce Approvals"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Inspect products & service packages before publication."}/></Text>
-                  </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
-                </Pressable>
-
-                {/* Providers Card */}
-                <Pressable
-                  onPress={() => setActiveTab('providers')}
-                  style={({pressed}) => [
-                    styles.card,
-                    {
-                      opacity: pressed ? 0.8 : 1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 14,
-                      padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    },
-                  ]}
-                >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
-                  >
-                    <Text style={{fontSize: 20}}>🏢</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Provider Verification"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Verify registrations, credential evidence & availability."}/></Text>
-                  </View>
-                  <Text style={{color: adminTheme.accentRose, fontSize: 16, fontWeight: '700'}}>→</Text>
-                </Pressable>
-
-                {/* Audit Card */}
-                <Pressable
-                  onPress={() => setActiveTab('audit')}
-                  style={({pressed}) => [
-                    styles.card,
-                    {
-                      opacity: pressed ? 0.8 : 1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 14,
-                      padding: 16,
-                      borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight,
-                      backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight,
-                    },
-                  ]}
-                >
-                  <LinearGradient
-                    colors={accentGradient}
-                    style={{width: 44, height: 44, borderRadius: 14, alignItems: 'center', justifyContent: 'center'}}
-                  >
-                    <Text style={{fontSize: 20}}>📜</Text>
-                  </LinearGradient>
-                  <View style={{flex: 1}}>
-                    <Text style={[styles.heading, {fontSize: 15, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={"Activity & Audit Trail"}/></Text>
-                    <Text style={[styles.muted, {fontSize: 12, color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight}]}><UiText value={"Immutable log of all administrative decisions."}/></Text>
-                  </View>
-                  <Text style={{color: adminTheme.accentLight, fontSize: 16, fontWeight: '700'}}>→</Text>
-                </Pressable>
+                    <View style={{flex: 1, gap: 2}}>
+                      <Text style={{fontSize: 14, fontWeight: '600', color: textPri}}>{card.title}</Text>
+                      <Text style={{fontSize: 12, color: textSec}}>{card.desc}</Text>
+                    </View>
+                    <Text style={{fontSize: 14, fontWeight: '700', color: activeAccent}}>→</Text>
+                  </Pressable>
+                ))}
               </View>
 
               {/* All Platform Tools Directory */}
-              <Text style={[styles.heading, {fontSize: 17, marginTop: 10}]}><UiText value={"All Management Tools"}/></Text>
+              <Text style={[styles.heading, {fontSize: 16, marginTop: 6}]}><UiText value={"All Platform Controls"}/></Text>
               {adminTaskGroups.map(group => {
                 const visible = !group.collapsed || expandedGroups.includes(group.title);
                 return (
@@ -930,8 +902,8 @@ export default function AdminDashboard() {
                       }
                       style={[styles.row, {justifyContent: 'space-between', paddingVertical: 6}]}
                     >
-                      <Text style={[styles.heading, {fontSize: 15}]}><UiText value={group.title}/></Text>
-                      <Text style={[styles.text, {fontWeight: '700', color: colors.accent}]}>{visible ? '−' : '+'}</Text>
+                      <Text style={[styles.heading, {fontSize: 14}]}><UiText value={group.title}/></Text>
+                      <Text style={[styles.text, {fontWeight: '700', color: activeAccent}]}>{visible ? '−' : '+'}</Text>
                     </Pressable>
                     {visible &&
                       group.items.map(item => (
@@ -942,11 +914,13 @@ export default function AdminDashboard() {
                             styles.card,
                             {
                               padding: 14,
+                              borderRadius: 12,
                               opacity: pressed ? 0.75 : 1,
                               flexDirection: 'row',
                               justifyContent: 'space-between',
                               alignItems: 'center',
-                              borderColor: colors.border,
+                              borderColor: borderCol,
+                              backgroundColor: surfaceBg,
                             },
                           ]}
                         >
@@ -954,7 +928,7 @@ export default function AdminDashboard() {
                             <Text style={[styles.heading, {fontSize: 14}]}><UiText value={item.label}/></Text>
                             <Text style={[styles.muted, {fontSize: 12}]}><UiText value={item.description}/></Text>
                           </View>
-                          <Text style={[styles.text, {color: colors.accent, fontWeight: '700'}]}><UiText value={"Open →"}/></Text>
+                          <Text style={[styles.text, {color: activeAccent, fontWeight: '600'}]}><UiText value={"Open →"}/></Text>
                         </Pressable>
                       ))}
                   </View>
@@ -1702,6 +1676,11 @@ export default function AdminDashboard() {
       {/* 13. VISTRAH SERVICES TAB */}
       {activeTab === 'vistrah-services' && (
         <AdminVistrahServicesTab adminTheme={adminTheme} />
+      )}
+
+      {/* 14. LIVE PRICING EDITOR TAB */}
+      {activeTab === 'pricing' && (
+        <AdminPricingTab />
       )}
     </Page>
   );

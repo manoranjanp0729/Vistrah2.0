@@ -34,7 +34,7 @@ export function AdminNavigation({onNavigate}:{onNavigate?:()=>void}) {
   const activeDest = resolvePrimaryDestination(path);
 
   return (
-    <nav aria-label="Admin navigation" className="admin-primary-rail">
+    <nav aria-label="Admin navigation" className="admin-rail">
       {adminPrimaryDestinations.map(dest => {
         const Icon = navIcons[dest.slug as keyof typeof navIcons] ?? LayoutDashboard;
         const isActive = activeDest.slug === dest.slug;
@@ -43,7 +43,7 @@ export function AdminNavigation({onNavigate}:{onNavigate?:()=>void}) {
             key={dest.href}
             href={dest.href}
             onClick={onNavigate}
-            className={isActive ? 'active' : ''}
+            className={isActive ? 'admin-rail-link active' : 'admin-rail-link'}
             aria-current={isActive ? 'page' : undefined}
           >
             <Icon size={17} aria-hidden="true" />

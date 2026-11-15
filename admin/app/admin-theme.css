@@ -117,6 +117,8 @@ summary:focus-visible {
   gap: 4px;
 }
 
+.admin-sidebar nav > a.admin-rail-link,
+.admin-mobile-navigation nav > a.admin-rail-link,
 .admin-rail-link {
   display: flex;
   align-items: center;
@@ -133,11 +135,22 @@ summary:focus-visible {
   transition: background-color 0.12s ease, color 0.12s ease;
 }
 
+.admin-sidebar nav > a.admin-rail-link svg,
+.admin-mobile-navigation nav > a.admin-rail-link svg,
+.admin-rail-link svg {
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+.admin-sidebar nav > a.admin-rail-link:hover,
+.admin-mobile-navigation nav > a.admin-rail-link:hover,
 .admin-rail-link:hover {
   background: var(--surface-soft);
   color: var(--text-primary);
 }
 
+.admin-sidebar nav > a.admin-rail-link.active,
+.admin-mobile-navigation nav > a.admin-rail-link.active,
 .admin-rail-link.active {
   background: var(--accent-editorial-soft);
   color: var(--accent-editorial);
@@ -1436,7 +1449,7 @@ a.editorial-kpi-cell:hover {
   }
 }
 
-@media (max-width: 820px) {
+@media (max-width: 900px) {
   .admin-desktop-navigation {
     display: none;
   }
@@ -1483,28 +1496,26 @@ a.editorial-kpi-cell:hover {
   }
 }
 
-/* Display Preferences & Dark Theme Compatibility */
-html[data-preferences] .admin-rail-link.active {
-  color: var(--accent-orange);
-  background: var(--brand-highlight);
+/* Preserve calm neutral editorial surfaces in light mode even when AppPreferences sets inline root vars */
+html:not([data-theme="dark"]) body,
+html:not([data-theme="dark"]) .admin-app {
+  --page-background: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border: #e2e8f0;
+  --accent-editorial: #173f35;
+  --accent-editorial-soft: #ecf5f1;
+  background: #f8fafc;
+  color: #0f172a;
 }
 
-html[data-preferences] .button:not(.secondary):not(.light),
-html[data-preferences] .editorial-segmented button.active {
-  background: var(--accent-orange) !important;
-  border-color: var(--accent-orange) !important;
-  color: var(--button-ink) !important;
-}
-
-html[data-preferences] a:focus-visible,
-html[data-preferences] button:focus-visible,
-html[data-preferences] input:focus-visible,
-html[data-preferences] select:focus-visible {
-  outline-color: var(--accent-orange);
-}
-
+/* Dark Theme Compatibility */
 html[data-preferences][data-theme="dark"] {
   color-scheme: dark;
+  --accent-editorial: var(--accent-orange);
+  --accent-editorial-soft: var(--brand-highlight);
 }
 
 html[data-preferences][data-theme="dark"] .admin-sidebar,

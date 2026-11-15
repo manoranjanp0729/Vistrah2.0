@@ -188,6 +188,41 @@ export function AdminWorkspace({
   );
 }
 
+export function AdminShellSkeleton({message = 'Verifying administrator session…'}: {message?: string}) {
+  return (
+    <div className="admin-app">
+      <aside className="admin-sidebar admin-desktop-navigation">
+        <Link href="/admin" className="admin-brand">
+          VISTRAH
+          <span>EDITORIAL ADMIN</span>
+        </Link>
+        <AdminNavigation />
+        <div className="sidebar-bottom">
+          <a
+            href={LIVE_SITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar-live-link"
+          >
+            <span>vistrah.in</span>
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+          <span className="tabular-nums">DPDP 2023 · Sandbox Billing</span>
+        </div>
+      </aside>
+      <div className="admin-main">
+        <details className="admin-mobile-navigation">
+          <summary>Navigation</summary>
+          <AdminNavigation />
+        </details>
+        <main className="admin-content" role="status">
+          <p className="editorial-loading-note">{message}</p>
+        </main>
+      </div>
+    </div>
+  );
+}
+
 export function AdminReviewFrame({
   actions,
   children,
@@ -198,11 +233,7 @@ export function AdminReviewFrame({
   const path = usePathname() || '/admin';
   const {user, loading, error} = useUser();
   if (loading) {
-    return (
-      <main className="admin-loading" role="status">
-        Loading administrator access…
-      </main>
-    );
+    return <AdminShellSkeleton />;
   }
   if (error) {
     return (

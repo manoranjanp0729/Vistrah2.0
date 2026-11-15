@@ -39,7 +39,7 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
         const value=response.headers.get(header);if(value)result.headers.set(header,value);
       }
     }
-    if((path[0]==='auth'&&path[1]==='logout')||response.status===401) {
+    if((path[0]==='auth'&&path[1]==='logout')||(path[0]==='account'&&path.length===1&&request.method==='DELETE'&&response.ok)||response.status===401) {
       result.cookies.delete(cookie);
       if(request.cookies.get(LEGACY_SELLER_SESSION_COOKIE)) result.cookies.delete(LEGACY_SELLER_SESSION_COOKIE);
     }

@@ -31,7 +31,7 @@ def token_session(db, token):
         payload = jwt.decode(token, JWT_SECRET, algorithms=['HS256'], issuer='vistrah', audience='vistrah-api', options={'require': ['sub','sid','exp','iat']})
         session = db.get(AuthSession, hashlib.sha256(payload['sid'].encode()).hexdigest())
         user = db.get(User, int(payload['sub']))
-        if not session or session.revoked or not user or session.user_id != user.id:
+        if not session or session.revoked or not user or user.deleted_at is not None or session.user_id != user.id:
             raise ValueError('invalid session')
         return user, session
     except (jwt.InvalidTokenError, ValueError, KeyError, TypeError):
@@ -103,6 +103,11 @@ def resolve_user_payload(user: User, db: Session | None = None):
         'isSeller': is_seller,
         'roles': roles,
         'sellerProfile': resolve_seller_profile(db, user) if is_seller else None,
+        'privacy_policy_version': user.privacy_policy_version,
+        'privacy_consented_at': user.privacy_consented_at.isoformat() if user.privacy_consented_at else None,
+        'marketing_consent': bool(user.marketing_consent),
+        'seller_terms_version': user.seller_terms_version,
+        'seller_consented_at': user.seller_consented_at.isoformat() if user.seller_consented_at else None,
     }
 
 

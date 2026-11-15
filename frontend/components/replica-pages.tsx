@@ -7,7 +7,7 @@ import {useRouter} from 'next/navigation';
 
 import {api,money,date} from '@/lib/api';
 import type {User,RequestRecord,Payment} from '@/lib/types';
-import {useUser} from './customer';
+import {AccountDataPrivacyControls,useUser} from './customer';
 import {useCustomerLocation} from './customer-location';
 import {Notice} from './ui';
 export function ReplicaAccount(){
@@ -29,7 +29,7 @@ export function ReplicaProfile(){const {copy}=useLanguage();
 function ProfileForm({user}:{user:User}){const {copy}=useLanguage();
  const [error,setError]=useState(''),[saved,setSaved]=useState(false),[busy,setBusy]=useState(false);
  async function save(event:React.FormEvent<HTMLFormElement>){event.preventDefault();const form=new FormData(event.currentTarget);setBusy(true);setSaved(false);setError('');try{await api('/me',{method:'PATCH',body:JSON.stringify({name:form.get('name'),phone:form.get('phone')})});setSaved(true);}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
- return <><h1><UiText value={copy.profile.title}/></h1><p>{user.email}</p>{error&&<Notice error message={error}/>}<form className="form" onSubmit={save}><label><UiText value={copy.auth.name}/><input name="name" defaultValue={user.name} minLength={2} maxLength={100} required/></label><label><UiText value={copy.profile.phone}/><input name="phone" type="tel" defaultValue={user.phone} maxLength={20}/></label><button className="button" disabled={busy}>{busy?copy.profile.saving:copy.profile.save}</button></form>{saved&&<p role="status"><UiText value={copy.profile.saved}/></p>}</>;
+ return <><h1><UiText value={copy.profile.title}/></h1><p>{user.email}</p>{error&&<Notice error message={error}/>}<form className="form" onSubmit={save}><label><UiText value={copy.auth.name}/><input name="name" defaultValue={user.name} minLength={2} maxLength={100} required/></label><label><UiText value={copy.profile.phone}/><input name="phone" type="tel" defaultValue={user.phone} maxLength={20}/></label><button className="button" disabled={busy}>{busy?copy.profile.saving:copy.profile.save}</button></form>{saved&&<p role="status"><UiText value={copy.profile.saved}/></p>}<AccountDataPrivacyControls user={user}/></>;
 }
 export {BusinessMembershipPage as ReplicaMembership} from './business-membership';
 export function ReplicaPayments(){const {copy}=useLanguage();

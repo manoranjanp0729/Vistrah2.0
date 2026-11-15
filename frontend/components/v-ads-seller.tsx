@@ -7,6 +7,7 @@ import {Play,RefreshCw,Eye,Heart,MessageCircle,Video,CheckCircle2,Sparkles,Check
 import {api,ApiError} from '@/lib/api';
 import {isSellerUser,type User} from '@/lib/types';
 import {notifyUserSession,useUser} from './customer';
+import {legalVersion,sellerLegalCopy} from '../../shared/legal';
 import {vAdsClient,validateVideoFile,studioVideoLive,mediaUrl,mergeReels,parseAdDescription,type Workspace,type Reel,type SellerVideo,type AdMetadata,type AdType,type AdProductMeta} from '../../shared/v-ads';
 import s from './v-ads.module.css';
 import {AdvertiserManagement,VideoManagement,DiscardUpload} from './v-ads-management';
@@ -25,9 +26,10 @@ export function VAdsSeller(){
 function VAdsSellerContent(){
   const {user,loading:authLoading}=useUser();
   const [enabled,setEnabled]=useState(false),[enabling,setEnabling]=useState(false),[enableError,setEnableError]=useState('');
-  async function activate(){setEnabling(true);setEnableError('');try{const updated=await api<User>('/auth/seller/enable',{method:'POST'});notifyUserSession?.(updated);setEnabled(true);}catch(e){setEnableError((e as Error).message);}finally{setEnabling(false);}}
+  const [termsAccepted,setTermsAccepted]=useState(false),[marketingConsent,setMarketingConsent]=useState(false);
+  async function activate(){if(!termsAccepted){setEnableError(sellerLegalCopy.required);return;}setEnabling(true);setEnableError('');try{const updated=await api<User>('/auth/seller/enable',{method:'POST',body:JSON.stringify({privacy_policy_version:legalVersion,marketing_consent:marketingConsent})});notifyUserSession?.(updated);setEnabled(true);}catch(e){setEnableError((e as Error).message);}finally{setEnabling(false);}}
 
-  return <SellerWorkspace user={user} authLoading={authLoading} enabled={enabled} activate={activate} enabling={enabling} enableError={enableError}/>;
+  return <SellerWorkspace user={user} authLoading={authLoading} enabled={enabled} activate={activate} enabling={enabling} enableError={enableError} termsAccepted={termsAccepted} setTermsAccepted={setTermsAccepted} marketingConsent={marketingConsent} setMarketingConsent={setMarketingConsent}/>;
 }
 
 function SellerWorkspace({
@@ -37,6 +39,10 @@ function SellerWorkspace({
   activate,
   enabling,
   enableError,
+  termsAccepted,
+  setTermsAccepted,
+  marketingConsent,
+  setMarketingConsent,
 }:{
   user: User | null;
   authLoading: boolean;
@@ -44,6 +50,10 @@ function SellerWorkspace({
   activate: ()=>Promise<void>;
   enabling: boolean;
   enableError: string;
+  termsAccepted: boolean;
+  setTermsAccepted: (value:boolean)=>void;
+  marketingConsent: boolean;
+  setMarketingConsent: (value:boolean)=>void;
 }){
   const searchParams=useSearchParams();
   const fromParam=searchParams?.get('from');
@@ -254,8 +264,12 @@ function SellerWorkspace({
         <h2><UiText value={"Complete Seller Onboarding / Register Business"}/></h2>
         <p><UiText value={"Verify and manage your business listing to publish hyper-local video ads across Vistrah."}/></p>
         {enableError&&<p role="alert" className={s.error}>{enableError}</p>}
+        <div style={{display:'grid',gap:8,margin:'8px 0'}}>
+          <label className="checkbox-label" style={{alignItems:'flex-start',fontSize:13}}><input type="checkbox" checked={termsAccepted} disabled={enabling} onChange={event=>setTermsAccepted(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:3}}/><span><UiText value={"I accept Vistrah Groups Pvt Ltd’s "}/><Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms"}/></Link>{', '}<Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', & '}<Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Policy"}/></Link></span></label>
+          <label className="checkbox-label" style={{alignItems:'flex-start',fontSize:13}}><input type="checkbox" checked={marketingConsent} disabled={enabling} onChange={event=>setMarketingConsent(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:3}}/><span>{sellerLegalCopy.marketing}</span></label>
+        </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-          <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
+          <button type="button" disabled={enabling||!termsAccepted} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
           <Link href="/provide-service" className="button secondary"><UiText value={"Register business"}/></Link>
         </div>
       </div>
@@ -327,8 +341,12 @@ function SellerWorkspace({
         <h2><UiText value={"Complete Seller Onboarding / Register Business"}/></h2>
         <p><UiText value={"Verify and manage your business listing to publish hyper-local video ads across Vistrah."}/></p>
         {enableError&&<p role="alert" className={s.error}>{enableError}</p>}
+        <div style={{display:'grid',gap:8,margin:'8px 0'}}>
+          <label className="checkbox-label" style={{alignItems:'flex-start',fontSize:13}}><input type="checkbox" checked={termsAccepted} disabled={enabling} onChange={event=>setTermsAccepted(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:3}}/><span><UiText value={"I accept Vistrah Groups Pvt Ltd’s "}/><Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms"}/></Link>{', '}<Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', & '}<Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Policy"}/></Link></span></label>
+          <label className="checkbox-label" style={{alignItems:'flex-start',fontSize:13}}><input type="checkbox" checked={marketingConsent} disabled={enabling} onChange={event=>setMarketingConsent(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:3}}/><span>{sellerLegalCopy.marketing}</span></label>
+        </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-          <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
+          <button type="button" disabled={enabling||!termsAccepted} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
           <Link href="/provide-service" className="button secondary"><UiText value={"Register business"}/></Link>
         </div>
       </div>

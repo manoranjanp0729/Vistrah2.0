@@ -6,10 +6,14 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, mo
 class Schema(BaseModel):
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
 
+DEFAULT_PRIVACY_POLICY_VERSION = '2026-11-dpdp-v1'
+
 class Register(Schema):
     name: str = Field(min_length=2, max_length=100)
     email: EmailStr
     password: str = Field(min_length=10, max_length=128)
+    privacy_policy_version: str | None = Field(default=None, min_length=1, max_length=32, pattern=r'^[A-Za-z0-9._-]+$')
+    marketing_consent: bool = False
 
 class Login(Schema):
     email: EmailStr
@@ -18,6 +22,12 @@ class Login(Schema):
 class GoogleAuth(Schema):
     credential: str | None = Field(default=None, max_length=4096)
     id_token: str | None = Field(default=None, max_length=4096)
+    privacy_policy_version: str | None = Field(default=None, min_length=1, max_length=32, pattern=r'^[A-Za-z0-9._-]+$')
+    marketing_consent: bool | None = None
+
+class SellerConsentInput(Schema):
+    privacy_policy_version: str | None = Field(default=None, min_length=1, max_length=32, pattern=r'^[A-Za-z0-9._-]+$')
+    marketing_consent: bool | None = None
 
 class Profile(Schema):
     name: str = Field(min_length=2, max_length=100)

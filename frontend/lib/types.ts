@@ -2,7 +2,7 @@ export type Service = {id:number; category_id:number; subcategory_id:number|null
 export type Subcategory = {id:number; category_id:number; slug:string; title:string; description:string; active:boolean; services:Service[]};
 export type Category = {id:number; slug:string; title:string; description:string; image:string; active:boolean; services:Service[]; subcategories:Subcategory[]};
 export type SellerProfile = {id:number|null; business_id:number|null; name:string; company:string; verification_status:string; active:boolean; slug?:string; location?:string; advertiser_id?:string|null; advertiser_handle?:string|null};
-export type User = {id:number; name:string; email:string; phone:string; role:'CUSTOMER'|'ADMIN'; seller_enabled?:boolean; isSeller?:boolean; roles?:string[]; sellerProfile?:SellerProfile|null};
+export type User = {id:number; name:string; email:string; phone:string; role:'CUSTOMER'|'ADMIN'; seller_enabled?:boolean; isSeller?:boolean; roles?:string[]; sellerProfile?:SellerProfile|null; privacy_policy_version?:string|null; privacy_consented_at?:string|null; marketing_consent?:boolean; seller_terms_version?:string|null; seller_consented_at?:string|null};
 export const isSellerUser=(user?:Pick<User,'isSeller'|'seller_enabled'|'role'|'sellerProfile'>|null)=>Boolean(user&&(user.isSeller??(user.seller_enabled||user.role==='ADMIN'||Boolean(user.sellerProfile?.active))));
 export type ServiceContext = {category:Category; subcategory?:Subcategory; service:Service};
 export type Provider = {id:number; slug:string; name:string; company:string; location:string; verification_status:string; email?:string; phone?:string; address:string;description?:string};

@@ -9,6 +9,7 @@ import {Notice} from './ui';
 import {api} from '@/lib/api';
 import {isSellerUser,type User} from '@/lib/types';
 import {websiteLoginDestination} from '@/lib/login-destination';
+import {legalVersion,sellerLegalCopy} from '../../shared/legal';
 
 export function SellerEntry({secondary=false,footer=false}:{secondary?:boolean;footer?:boolean}){
   const path=usePathname();
@@ -28,11 +29,13 @@ function SellerEntryState({secondary}:{secondary:boolean}){
 export function SellerOnboardingPrompt({nextPath,onEnabled}:{nextPath?:string;onEnabled?:(user:User)=>void}){
   const router=useRouter();
   const [busy,setBusy]=useState(false),[error,setError]=useState('');
+  const [termsAccepted,setTermsAccepted]=useState(false),[marketingConsent,setMarketingConsent]=useState(false);
   async function enable(){
     if(busy)return;
+    if(!termsAccepted){setError(sellerLegalCopy.required);return;}
     setBusy(true);setError('');
     try{
-      const updated=await api<User>('/auth/seller/enable',{method:'POST'});
+      const updated=await api<User>('/auth/seller/enable',{method:'POST',body:JSON.stringify({privacy_policy_version:legalVersion,marketing_consent:marketingConsent})});
       notifyUserSession?.(updated);
       onEnabled?.(updated);
       if(nextPath){
@@ -45,8 +48,12 @@ export function SellerOnboardingPrompt({nextPath,onEnabled}:{nextPath?:string;on
     <h1><UiText value={"Complete Seller Onboarding / Register Business"}/></h1>
     <p><UiText value={"Your account is signed in, and you do not have a seller profile enabled yet. Enable seller access or register your business to manage listings and V Ads."}/></p>
     {error&&<Notice error message={error}/>}
+    <div style={{display:'grid',gap:10,margin:'16px 0'}}>
+      <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" checked={termsAccepted} disabled={busy} onChange={event=>setTermsAccepted(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:4}}/><span><UiText value={"I accept the Seller Onboarding "}/><Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link>{', '}<Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', '}<UiText value={"and "}/><Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Redressal Policy"}/></Link><UiText value={" of Vistrah Groups Pvt Ltd."}/></span></label>
+      <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" checked={marketingConsent} disabled={busy} onChange={event=>setMarketingConsent(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:4}}/><span>{sellerLegalCopy.marketing}</span></label>
+    </div>
     <div className="replica-actions">
-      <button type="button" className="button" disabled={busy} onClick={()=>void enable()}><UiText value={busy?'Enabling seller access…':'Complete seller onboarding'}/></button>
+      <button type="button" className="button" disabled={busy||!termsAccepted} onClick={()=>void enable()}><UiText value={busy?'Enabling seller access…':'Complete seller onboarding'}/></button>
       <Link className="button secondary" href="/provide-service"><UiText value={"Register business"}/></Link>
     </div>
   </div>;

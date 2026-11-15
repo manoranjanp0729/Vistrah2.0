@@ -1,7 +1,7 @@
 'use client';
 import {UiText,UiElement,UiNav} from "./localized-ui";
 import {GoogleSignIn} from './google-sign-in';
-import {signupLegalCopy} from '../../shared/legal';
+import {legalVersion,signupLegalCopy} from '../../shared/legal';
 import {useLanguage} from './language-provider';
 import {websiteLoginDestination} from '@/lib/login-destination';
 import {accountHelp} from '@/lib/help-content';
@@ -48,17 +48,17 @@ export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:bo
   if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);}
   async function submit(event:React.FormEvent<HTMLFormElement>) {
     event.preventDefault();setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);const form=new FormData(event.currentTarget);
-    try {const result=await api<{user:User}>(`/auth/${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name')}: {})})});syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}
+    try {const result=await api<{user:User}>(`/auth/${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name'),privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}: {})})});syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   async function submitGoogle(credential:string) {
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);
     try {
-      const result=await api<{user:User}>('/auth/google',{method:'POST',body:JSON.stringify({credential})});
+      const result=await api<{user:User}>('/auth/google',{method:'POST',body:JSON.stringify({credential,...(register?{privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}:{})})});
       syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();
     } catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   return <div className="auth-page"><div className="auth-form-wrap"><h2><UiText value={register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={copy.auth.intro}/></p>{error&&<Notice error message={error}/>}<GoogleSignIn disabled={busy||(register&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)}/><div style={{display:'flex',alignItems:'center',gap:12,margin:'12px 0',color:'var(--text-secondary,#6b7280)',fontSize:12}}><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/><span><UiText value={"or with email"}/></span><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/></div><form onSubmit={submit} className="form">{register&&<label><UiText value={copy.auth.name}/><input name="name" autoComplete="name" minLength={2} maxLength={100} required/></label>}<label><UiText value={copy.auth.email}/><input type="email" name="email" autoComplete="email" maxLength={254} required/></label><HelpPair id="auth.password" className="help-field"><label><UiText value={copy.auth.password}/><input type="password" aria-label={copy.auth.password} name="password" autoComplete={register?'new-password':'current-password'} minLength={register?10:1} maxLength={128} required/>{register&&<small><UiText value={"Use at least 10 characters."}/></small>}</label></HelpPair>{register&&<div style={{display:'grid',gap:12}}>
-      <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" required checked={legalAccepted} disabled={busy} onChange={event=>setLegalAccepted(event.target.checked)} aria-label={signupLegalCopy.acceptance} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/><span><UiText value={"I have read and agree to VISTRAH"}/>{'\u2019s '}<Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link> <UiText value={"and "}/><Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link></span></label>
+      <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" required checked={legalAccepted} disabled={busy} onChange={event=>setLegalAccepted(event.target.checked)} aria-label={signupLegalCopy.acceptance} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/><span><UiText value={"I have read and agree to Vistrah Groups Pvt Ltd"}/>{'\u2019s '}<Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link>{', '}<Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', '}<UiText value={"and "}/><Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Redressal Policy"}/></Link></span></label>
       <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" checked={whatsappPromotions} disabled={busy} onChange={event=>setWhatsappPromotions(event.target.checked)} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/><span>{signupLegalCopy.whatsapp}</span></label>
       <small id="signup-phase-notice">{signupLegalCopy.notice} <UiText value={"Legal links open in a new tab."}/></small>
     </div>}<button className="button" type="submit" disabled={busy}>{busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn}<ArrowUpRight size={17}/></button></form>{!register&&<p><Link className="text-link" href="/forgot-password"><UiText value={copy.auth.forgot}/></Link><ContextHelp id="auth.recovery"/></p>}<p><Link className="text-link" href={`/${register?'login':'register'}${nextPath?'?next='+encodeURIComponent(next):''}`}>{register?copy.auth.existing:copy.auth.new}<ArrowRight size={15}/></Link></p></div></div>;
@@ -90,7 +90,7 @@ function AccountSection({section,user}:{section:string;user:User}) {
   async function save(event:React.FormEvent<HTMLFormElement>){event.preventDefault();setBusy(true);setError('');setMessage('');const form=new FormData(event.currentTarget);try{await api('/me',{method:'PATCH',body:JSON.stringify({name:form.get('name'),phone:form.get('phone')})});setMessage('Your profile has been saved.');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
   if(error)return <Notice error message={error}/>;
   if(data===null)return <p role="status"><UiText value={"Loading your details…"}/></p>;
-  if(section==='profile')return <><p className="eyebrow"><UiText value={"YOUR DETAILS"}/></p><h1><UiText value={"My profile"}/></h1>{message&&<Notice message={message}/>}<form className="form profile-form" onSubmit={save}><label><UiText value={"Name"}/><input name="name" defaultValue={user.name} minLength={2} maxLength={100} required/></label><label><UiText value={"Email"}/><input value={user.email} readOnly/><small><UiText value={"Your sign-in email cannot be changed here."}/></small></label><HelpPair id="account.profile" className="help-field"><label><UiText value={"Phone"}/><input name="phone" type="tel" defaultValue={user.phone} maxLength={20} pattern="[+0-9\s-]*"/></label></HelpPair><button className="button" disabled={busy}><UiText value={busy?'Saving…':'Save profile'}/></button></form></>;
+  if(section==='profile')return <><p className="eyebrow"><UiText value={"YOUR DETAILS"}/></p><h1><UiText value={"My profile"}/></h1>{message&&<Notice message={message}/>}<form className="form profile-form" onSubmit={save}><label><UiText value={"Name"}/><input name="name" defaultValue={user.name} minLength={2} maxLength={100} required/></label><label><UiText value={"Email"}/><input value={user.email} readOnly/><small><UiText value={"Your sign-in email cannot be changed here."}/></small></label><HelpPair id="account.profile" className="help-field"><label><UiText value={"Phone"}/><input name="phone" type="tel" defaultValue={user.phone} maxLength={20} pattern="[+0-9\s-]*"/></label></HelpPair><button className="button" disabled={busy}><UiText value={busy?'Saving…':'Save profile'}/></button></form><AccountDataPrivacyControls user={user}/></>;
   if(section==='membership')return <MembershipSection membership={data as Membership}/>;
   if(section==='requests'){const records=data as RequestRecord[];return <><p className="eyebrow"><UiText value={"YOUR NEXT STEPS"}/></p><h1><UiText value={"My requests "}/><ContextHelp id="account.requests"/></h1>{records.length?<div className="request-list">{records.map(r=><article className="request-card" key={r.id}><div className="row-between"><span className="small-label"><UiText value={"REQUEST #"}/>{r.id} · {date(r.created_at)}</span><Status context="request" value={r.status}/></div><h3>{r.service_title}</h3><p>{r.requirements}</p><small>{r.location} · {r.phone}</small></article>)}</div>:<UiElement as={EmptyState} title="No service enquiries yet" description="Explore a service and submit your requirements to get started." href="/services"/>}</>;}
   if(section==='orders'||section==='payments'){const records=data as Payment[];return <><p className="eyebrow"><UiText value={"YOUR HISTORY"}/></p><h1><UiText value={section==='orders'?'My orders':'My payments'}/></h1><p><UiText value={"Membership transactions in sandbox mode. Service purchases are not collected through this version."}/></p>{records.length?<div className="table-wrap"><table><thead><tr><th><UiText value={"Reference"}/></th><th><UiText value={"Amount"}/></th><th><UiText value={"Status"}/></th><th><UiText value={"Date"}/></th></tr></thead><tbody>{records.map(r=><tr key={r.id}><td><strong>{r.title||'Membership'}</strong><small>{r.id}</small><span className="small-label">SANDBOX</span></td><td>{money(r.amount)}</td><td><Status context="payment" value={r.status}/></td><td>{date(r.created_at)}</td></tr>)}</tbody></table></div>:<UiElement as={EmptyState} title={`No ${section} yet`} description="Your membership transaction history will appear here." href="/membership" label="Explore membership"/>}</>;}
@@ -105,6 +105,118 @@ function CheckoutInner({next}:{next:string}){const router=useRouter();const [pla
   async function resume(){setBusy(true);setError('');try{const membership=await api<Membership>('/me/membership');if(!membership.active){setError('Access is not active. Sandbox terms qualify only in development. Check your membership status before continuing.');return;}router.push(next);router.refresh();}catch(e){if(e instanceof ApiError&&e.status===401)setAccess(401);else setError((e as Error).message);}finally{setBusy(false);}}
   if(access)return <ServiceAccessState status={access} next={destinationLink('/sandbox-checkout',next)}/>;
   return <div className="container page"><Breadcrumbs items={[{label:'Membership',href:'/membership'},{label:'Sandbox checkout'}]}/><div className="checkout-card"><ContextVisual photo={pagePhoto('checkout')}/><p className="eyebrow"><UiText value={"SANDBOX · NO REAL MONEY"}/></p><h1><UiText value={"Try the membership journey."}/></h1><p><UiText value={"This checkout records a test transaction. No card, CVV, UPI PIN or bank information is collected."}/></p>{error&&<Notice error message={error}/>}<div className="checkout-summary"><span><UiText value={"VISTRAH Membership"}/></span><strong><UiText value={plan?money(plan.amount):'Loading…'}/></strong></div>{!payment?<HelpPair id="public.membership"><button className="button" disabled={busy||!plan} onClick={create}><UiText value={busy?'Creating transaction…':'Create sandbox transaction'}/><ArrowUpRight size={17}/></button></HelpPair>:<><div className="row-between"><span className="small-label">{payment.id}</span><Status context="payment" value={payment.status}/></div>{payment.status==='PENDING'?<><p><UiText value={"Choose a test outcome. The backend validates a signed sandbox event before updating the transaction."}/></p><div className="button-row"><HelpPair id="status.payment"><button className="button" disabled={busy} onClick={()=>simulate('SUCCEEDED')}><UiText value={busy?'Processing…':'Simulate successful payment'}/></button></HelpPair><HelpPair id="status.payment"><button className="button secondary" disabled={busy} onClick={()=>simulate('FAILED')}><UiText value={"Simulate failed payment"}/></button></HelpPair></div></>:<><Notice message={payment.status==='SUCCEEDED'?'Sandbox payment recorded. Check backend eligibility before returning; this does not confirm genuine paid membership.':payment.status==='REFUNDED'?'This sandbox payment was refunded.':'Test payment failed. Membership was not activated.'}/><ButtonLink href="/account/membership"><UiText value={"View membership"}/></ButtonLink>{payment.status==='SUCCEEDED'&&<button className="button" disabled={busy} onClick={resume}><UiText value={"Check access and return"}/></button>}<button className="button secondary" onClick={()=>{sessionStorage.removeItem('vistrah_checkout_key');sessionStorage.removeItem('vistrah_checkout_payment');setPayment(null);}}><UiText value={"Start a new test"}/></button></>}</>}</div></div>;
+}
+
+export function AccountDataPrivacyControls({user}:{user:User}){
+  const {syncIdentity}=useCustomerLocation();
+  const router=useRouter();
+  const [exporting,setExporting]=useState(false);
+  const [confirmOpen,setConfirmOpen]=useState(false);
+  const [confirmText,setConfirmText]=useState('');
+  const [deleting,setDeleting]=useState(false);
+  const [error,setError]=useState('');
+  const [message,setMessage]=useState('');
+
+  async function downloadMyData(){
+    if(exporting)return;
+    setExporting(true);setError('');setMessage('');
+    try{
+      const payload=await api<Record<string,unknown>>('/account/export-data');
+      const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob);
+      const anchor=document.createElement('a');
+      anchor.href=url;
+      anchor.download=`vistrah-data-export-${user.id}.json`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+      setMessage('Your personal and business profile export (JSON) has been downloaded.');
+    }catch(e){
+      setError((e as Error).message);
+    }finally{
+      setExporting(false);
+    }
+  }
+
+  async function deleteAccount(){
+    if(deleting||confirmText.trim()!=='DELETE')return;
+    setDeleting(true);setError('');setMessage('');
+    try{
+      await api('/account',{method:'DELETE'});
+      syncIdentity(null);
+      notifyUserSession(null);
+      router.push('/login');
+      router.refresh();
+    }catch(e){
+      setError((e as Error).message);
+      setDeleting(false);
+    }
+  }
+
+  return <section aria-labelledby="dpdp-controls-heading" style={{marginTop:32,paddingTop:24,borderTop:'1px solid var(--border,rgba(15,23,42,0.08))',display:'grid',gap:16}}>
+    <div>
+      <p className="eyebrow"><UiText value={"DATA PRIVACY & COMPLIANCE (DPDP ACT 2023)"}/></p>
+      <h2 id="dpdp-controls-heading" style={{margin:'4px 0 8px',letterSpacing:'-0.025em'}}><UiText value={"Account Data & Privacy"}/></h2>
+      <p style={{margin:0,lineHeight:1.5,color:'var(--text-secondary,#475569)'}}>
+        <UiText value={"Manage your personal and seller profile data processed by Vistrah Groups Pvt Ltd (vistrah.in). Export a machine-readable JSON archive or request account deletion and anonymization."}/>
+      </p>
+    </div>
+    <small className="tabular-nums" style={{color:'var(--text-secondary,#64748b)',lineHeight:1.5}}>
+      <UiText value={"Consent policy: "}/>{user.privacy_policy_version||legalVersion}
+      {' · '}
+      <UiText value={"Promotional updates: "}/>{user.marketing_consent?'Opted in':'Opted out'}
+      {' · '}
+      <Link href="/privacy" className="text-link"><UiText value={"Privacy Policy"}/></Link>
+      {' · '}
+      <Link href="/terms" className="text-link"><UiText value={"Terms & Conditions"}/></Link>
+      {' · '}
+      <Link href="/grievance-officer" className="text-link"><UiText value={"Grievance Officer (24h ack / 15-day SLA)"}/></Link>
+    </small>
+    {error&&<Notice error message={error}/>}
+    {message&&<Notice message={message}/>}
+    <div style={{display:'flex',flexWrap:'wrap',gap:12,alignItems:'center'}}>
+      <button type="button" className="button secondary" disabled={exporting||deleting} onClick={()=>void downloadMyData()}>
+        <UiText value={exporting?'Preparing export…':'Download My Data'}/>
+      </button>
+      {user.role!=='ADMIN'&&!confirmOpen&&(
+        <button type="button" className="button secondary" style={{borderColor:'#dc2626',color:'#dc2626'}} disabled={exporting||deleting} onClick={()=>setConfirmOpen(true)}>
+          <UiText value={"Delete Account"}/>
+        </button>
+      )}
+    </div>
+    {confirmOpen&&(
+      <div role="region" aria-label="Confirm account deletion" style={{padding:16,borderRadius:12,border:'1px solid rgba(220,38,38,0.35)',display:'grid',gap:12}}>
+        <strong style={{color:'#dc2626'}}><UiText value={"Permanent Account Deletion & Anonymization"}/></strong>
+        <p style={{margin:0,fontSize:14,lineHeight:1.5}}>
+          <UiText value={"This revokes all active sessions, anonymizes your personal identifiers, deactivates owned seller profiles, and unpublishes V Ads and commerce listings while retaining statutory non-personal audit logs. Type DELETE to confirm."}/>
+        </p>
+        <label style={{display:'grid',gap:6,maxWidth:280}}>
+          <span style={{fontSize:13,fontWeight:600}}><UiText value={"Type DELETE to confirm"}/></span>
+          <input value={confirmText} onChange={event=>setConfirmText(event.target.value)} placeholder="DELETE" autoComplete="off" disabled={deleting}/>
+        </label>
+        <div style={{display:'flex',flexWrap:'wrap',gap:12}}>
+          <button type="button" className="button" style={{background:'#dc2626',borderColor:'#dc2626',color:'#fff'}} disabled={deleting||confirmText.trim()!=='DELETE'} onClick={()=>void deleteAccount()}>
+            <UiText value={deleting?'Deleting account…':'Confirm Delete Account'}/>
+          </button>
+          <button type="button" className="button secondary" disabled={deleting} onClick={()=>{setConfirmOpen(false);setConfirmText('');}}>
+            <UiText value={"Cancel"}/>
+          </button>
+        </div>
+      </div>
+    )}
+  </section>;
+}
+
+export function AccountPrivacySettingsSection(){
+  const {user,loading}=useUser();
+  if(loading)return null;
+  if(!user)return <section style={{marginTop:32,paddingTop:24,borderTop:'1px solid var(--border,rgba(15,23,42,0.08))'}}>
+    <h2><UiText value={"Account Data & Privacy"}/></h2>
+    <p><UiText value={"Sign in to download your personal and seller data archive or request account deletion."}/>{' '}<Link className="text-link" href="/login?next=%2Faccount%2Fsettings"><UiText value={"Sign in"}/></Link></p>
+    <p><Link className="text-link" href="/privacy"><UiText value={"Privacy Policy"}/></Link>{' · '}<Link className="text-link" href="/terms"><UiText value={"Terms & Conditions"}/></Link>{' · '}<Link className="text-link" href="/grievance-officer"><UiText value={"Grievance Officer"}/></Link></p>
+  </section>;
+  return <AccountDataPrivacyControls user={user}/>;
 }
 
 

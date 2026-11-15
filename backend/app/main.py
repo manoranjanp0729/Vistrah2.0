@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, Request, Header
+from fastapi import FastAPI, Depends, HTTPException, Request, Header, Body
 from fastapi.responses import JSONResponse
 from sqlalchemy import select, func, text, delete
 from sqlalchemy.exc import IntegrityError
@@ -71,6 +71,8 @@ from .marketing_pricing_routes import router as marketing_pricing_router
 app.include_router(marketing_pricing_router)
 from .composite_routes import router as composite_router
 app.include_router(composite_router)
+from .compliance_routes import router as compliance_router
+app.include_router(compliance_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
@@ -192,8 +194,26 @@ def register_identity(data, request, db, seller=False):
     rate_limit(db, email, request)
     if db.scalar(select(User).where(User.email == email)):
         raise HTTPException(409, 'An account with this email already exists')
-    user = User(email=email, name=data.name, password_hash=passwords.hash(data.password), seller_enabled=seller); db.add(user); db.flush(); seller and ensure_seller_v_ads_account(db, user)
+    consent_ts = now()
+    policy_ver = data.privacy_policy_version or DEFAULT_PRIVACY_POLICY_VERSION
+    mkt_consent = bool(data.marketing_consent)
+    user = User(
+        email=email,
+        name=data.name,
+        password_hash=passwords.hash(data.password),
+        seller_enabled=seller,
+        privacy_policy_version=policy_ver,
+        privacy_consented_at=consent_ts,
+        marketing_consent=mkt_consent,
+        marketing_consented_at=consent_ts if mkt_consent else None,
+        seller_terms_version=policy_ver if seller else None,
+        seller_consented_at=consent_ts if seller else None,
+    )
     db.add(user)
+    db.flush()
+    if seller:
+        ensure_seller_v_ads_account(db, user)
+    audit(db, user, 'CONSENT_RECORDED', 'user', user.id, {'privacy_policy_version': policy_ver, 'marketing_consent': mkt_consent, 'seller_onboarding': seller})
     db.commit()
     return {'access_token': issue_token(db, user), 'user': user_output(user, db)}
 
@@ -220,7 +240,7 @@ def login_identity(data, request, db, seller=False):
     attempt_key = rate_limit(db, str(data.email), request)
     user = db.scalar(select(User).where(User.email == str(data.email).lower()).with_for_update())
     valid = passwords.verify(data.password, user.password_hash if user else DUMMY_HASH)
-    if not user or not valid:
+    if not user or user.deleted_at is not None or not valid:
         raise HTTPException(401, 'Email or password is incorrect')
     _sync_seller_profile(db, user, explicit_seller=seller)
     db.execute(delete(LoginAttempt).where(LoginAttempt.key == attempt_key))
@@ -252,14 +272,31 @@ async def google_identity(data: GoogleAuth, request: Request, db: Session = Depe
         if linked:
             raise HTTPException(409, 'This account is linked to a different Google identity')
     is_seller = seller
+    consent_ts = now()
     if user:
+        if user.deleted_at is not None:
+            raise HTTPException(401, 'This account is no longer active')
+        if data.privacy_policy_version and not user.privacy_policy_version:
+            user.privacy_policy_version = data.privacy_policy_version
+            user.privacy_consented_at = consent_ts
+        if data.marketing_consent is not None:
+            user.marketing_consent = bool(data.marketing_consent)
+            user.marketing_consented_at = consent_ts if data.marketing_consent else None
         _sync_seller_profile(db, user, explicit_seller=is_seller)
     else:
+        policy_ver = data.privacy_policy_version or DEFAULT_PRIVACY_POLICY_VERSION
+        mkt_consent = bool(data.marketing_consent)
         user = User(
             email=email,
             name=name or email.split('@')[0],
             password_hash=passwords.hash(secrets.token_urlsafe(32)),
             seller_enabled=is_seller,
+            privacy_policy_version=policy_ver,
+            privacy_consented_at=consent_ts,
+            marketing_consent=mkt_consent,
+            marketing_consented_at=consent_ts if mkt_consent else None,
+            seller_terms_version=policy_ver if is_seller else None,
+            seller_consented_at=consent_ts if is_seller else None,
         )
         db.add(user)
         db.flush()
@@ -284,12 +321,28 @@ async def seller_google_login(data: GoogleAuth, request: Request, db: Session = 
     return await google_identity(data, request, db, seller=True)
 
 @app.post('/auth/seller/enable')
-def enable_seller(user: User = Depends(current_user), db: Session = Depends(get_db)):
-    ensure_seller_v_ads_account(db, user); db.commit()
+def enable_seller(
+    consent: SellerConsentInput | None = Body(default=None),
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+):
+    consent_ts = now()
+    policy_ver = (consent.privacy_policy_version if consent and consent.privacy_policy_version else None) or user.privacy_policy_version or DEFAULT_PRIVACY_POLICY_VERSION
+    if not user.privacy_policy_version or (consent and consent.privacy_policy_version):
+        user.privacy_policy_version = policy_ver
+        user.privacy_consented_at = consent_ts
+    user.seller_terms_version = policy_ver
+    user.seller_consented_at = consent_ts
+    if consent and consent.marketing_consent is not None:
+        user.marketing_consent = bool(consent.marketing_consent)
+        user.marketing_consented_at = consent_ts if consent.marketing_consent else None
+    ensure_seller_v_ads_account(db, user)
     if not user.seller_enabled:
         user.seller_enabled = True
-        audit(db, user, 'SELLER_ENABLED', 'user', user.id)
-        db.commit()
+        audit(db, user, 'SELLER_ENABLED', 'user', user.id, {'seller_terms_version': policy_ver, 'marketing_consent': bool(user.marketing_consent)})
+    else:
+        audit(db, user, 'SELLER_CONSENT_RECORDED', 'user', user.id, {'seller_terms_version': policy_ver, 'marketing_consent': bool(user.marketing_consent)})
+    db.commit()
     return user_output(user, db)
 
 @app.post('/auth/logout')

@@ -16,6 +16,13 @@ class User(Base):
     role: Mapped[str] = mapped_column(String(20), default='CUSTOMER')
     seller_enabled: Mapped[bool] = mapped_column(Boolean, default=False, server_default='false')
     saved_location: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    privacy_policy_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    privacy_consented_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    marketing_consent: Mapped[bool] = mapped_column(Boolean, default=False, server_default='false')
+    marketing_consented_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    seller_terms_version: Mapped[str | None] = mapped_column(String(32), nullable=True)
+    seller_consented_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
     __table_args__ = (CheckConstraint("role IN ('CUSTOMER','ADMIN')"),)
 

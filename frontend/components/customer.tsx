@@ -26,7 +26,7 @@ import {enquiryUrl,enquiryModes,type EnquiryIntent} from '@/lib/service-pathways
 const sessionListeners=new Set<(user:User|null)=>void>();
 export function notifyUserSession(user:User|null){for(const listener of sessionListeners)listener(user);}
 
-export function useUser(refreshOnFocus=false) {
+export function useUser(refreshOnFocus=false,_requestedScope?:'customer'|'seller') {
   const [user,setUser]=useState<User|null>(null);const [loading,setLoading]=useState(true);const [error,setError]=useState('');
   useEffect(()=>{let alive=true,request=0;
     const onSync=(next:User|null)=>{if(alive){setUser(next);setError('');setLoading(false);}};
@@ -40,7 +40,7 @@ export function useUser(refreshOnFocus=false) {
 }
 export function AuthGate({children,next='/account'}:{children:(user:User)=>React.ReactNode;next?:string}) {const {user,loading,error}=useUser();if(loading)return <div className="container page" role="status"><ContextVisual photo={pagePhoto('access')}/><UiText value={"Loading your account…"}/></div>;if(error)return <div className="container page"><ContextVisual photo={pagePhoto('access')}/><Notice error message={error}/></div>;if(!user)return <div className="container page"><ContextVisual photo={pagePhoto('access')} className="access-context"/><UiElement as={EmptyState} title="Sign in to your account" description="Sign in to manage your requests, membership, and seller tools." href={`/login?next=${encodeURIComponent(next)}`} label="Sign in"/><p className="center"><UiText value={"New to VISTRAH? "}/><Link className="text-link" href={`/register?next=${encodeURIComponent(next)}`}><UiText value={"Create an account"}/></Link></p></div>;return <>{children(user)}</>;}
 
-export function AuthForm({register=false,nextPath}:{register?:boolean;nextPath?:string}) {const {copy}=useLanguage();
+export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:boolean;nextPath?:string}) {const {copy}=useLanguage();
   const {syncIdentity}=useCustomerLocation();const router=useRouter();const next=websiteLoginDestination(nextPath,'/account');
   const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);

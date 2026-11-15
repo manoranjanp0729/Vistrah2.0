@@ -1,8 +1,8 @@
-# Typography & 4pt/8pt spatial rhythm refinement (source only) - 14 November 2026
+# Typography & 4pt/8pt spatial rhythm (`e8a28bc`) deployed on AWS - 15 November 2026
 
-- Normalized font metrics & optical scale compensation in `shared/fonts.ts`, `mobile/src/lib/{font-policy.ts,fonts.css,font-preference.tsx}`, `mobile/src/components/typography.tsx`, `frontend/app/fonts.ts`, and `admin/app/fonts.ts` (`montserrat` `0.94x`/`94%`, `inter` `1x`, `poppins` `0.95x`, `nunito` `0.98x`, `dm-sans` `0.99x`; `1x` for `kn`/`hi`; `-0.025em` page titles, `-0.015em` card titles; `1.2` heading / `1.5` body line-heights; `tabular-nums` on prices, `km` distances, and V Ad metrics).
-- Enforced 4pt/8pt spatial rhythm across `frontend/`, `mobile/src/`, and `admin/` (`16px` mobile / `24px` desktop & admin horizontal padding, `16px`/`20px` card padding, `24px` section gaps, `12px` feed gaps, `44px` buttons/inputs, `36px` pills) with zero color, gradient, route, or UX flow changes.
-- Verification & next step: targeted `mobile/tests/font-policy.test.ts` verified; running local/AWS containers untouched. Await user review and approval before commit/push/deploy.
+- Committed and pushed `e8a28bc` to `origin/main` across `shared/fonts.ts`, `frontend/`, `mobile/src/`, `mobile/tests/font-policy.test.ts`, and `admin/`: normalized optical font compensation (`montserrat` `0.94x`/`94%`, `poppins` `0.95x`, `nunito` `0.98x`, `dm-sans` `0.99x`, `inter` `1x`), heading/body metrics (`-0.025em`/`-0.015em` tracking, `1.2`/`1.5` line-heights, `tabular-nums`), and 4pt/8pt spatial rhythm (`16px`/`24px` page padding, `16px`/`20px` cards, `24px` section gaps, `12px` feed gaps, `44px` controls, `36px` pills).
+- Built production `linux/amd64` images (`vistrah20-web:latest`, `vistrah20-phone-web:latest`, `vistrah20-admin:latest`) and deployed them onto AWS EC2 `i-08287d636ff13ddf0` (`13.235.104.68`) via EC2 Instance Connect (`db`, `api`, `proxy`, and volumes untouched; temporary archive removed; `53%` / `11G/20G` disk used).
+- Verification: all 6 `vistrah-cloud` containers healthy; external and internal HTTPS checks returned `HTTP 200` across `https://vistrah.in/`, `/app/`, `/login`, `/api/health`, and `https://admin.vistrah.in/login`. Await user visual review.
 
 # UI reskin revert (`882085e`) & Unified User/Seller Auth (`7d0522d`) deployed on AWS - 14 November 2026
 

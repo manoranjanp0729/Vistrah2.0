@@ -1,12 +1,12 @@
-.section{padding-block:20px}
-.card{padding:20px;border:1px solid var(--border);border-radius:24px;background:var(--brand-header-gradient);box-shadow:0 5px 22px #503fbd0a;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:24px;align-items:center}
+.section{padding-block:24px}
+.card{padding:20px;border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:24px;align-items:center}
 .copy{min-width:0;display:grid;gap:12px;justify-items:start}
-.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--brand-gradient);color:#fff;border-radius:20px;padding:7px 11px;font-size:10px;font-weight:700;letter-spacing:1px}
-.copy h2{margin:0;font-size:clamp(22px,2.5vw,30px);line-height:1.2;letter-spacing:-.02em}
-.copy p{margin:0;color:var(--text-secondary);font-size:14px;line-height:1.6}
+.eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--brand-highlight);color:var(--accent-orange);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;letter-spacing:.08em}
+.copy h2{margin:0;font-size:clamp(22px,2.4vw,28px);line-height:1.2;letter-spacing:-.025em}
+.copy p{margin:0;color:var(--text-secondary);font-size:14px;line-height:1.5}
 .action{display:inline-flex;align-items:center;gap:8px;min-height:44px;color:var(--accent-orange);font-weight:600;text-decoration:none;font-size:14px}
 .action:hover{text-decoration:underline}.action:focus-visible{outline:3px solid var(--accent-orange);outline-offset:3px;border-radius:6px}
-.media{min-width:0}.media video{display:block;width:100%;aspect-ratio:16/9;border-radius:16px;background:#000;border:1px solid var(--border);box-shadow:0 4px 16px #00000012}
+.media{min-width:0}.media video{display:block;width:100%;aspect-ratio:16/9;border-radius:8px;background:#000;border:1px solid var(--border);box-shadow:none}
 .error{font-size:13px;color:var(--text-secondary)}
 @media(max-width:700px){.card{grid-template-columns:minmax(0,1fr);gap:16px;padding:16px}.copy{gap:8px}.action{padding-top:4px}}
 

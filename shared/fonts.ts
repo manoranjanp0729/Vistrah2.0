@@ -46,6 +46,7 @@ export const typographyMetrics = {
   lineHeightHeading: 1.2,
   lineHeightBody: 1.5,
   numericTabular: 'tabular-nums',
+  fontFeatureTabular: '"tnum"',
 } as const;
 
 export const spatialRhythm = {
@@ -53,6 +54,8 @@ export const spatialRhythm = {
   pagePaddingDesktop: 24,
   cardPaddingCompact: 16,
   cardPaddingStandard: 20,
+  cardRadius: 12,
+  inputRadius: 8,
   sectionGap: 24,
   feedGap: 12,
   buttonHeight: 44,

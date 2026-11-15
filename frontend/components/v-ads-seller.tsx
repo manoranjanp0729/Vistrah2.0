@@ -133,75 +133,51 @@ function SellerWorkspace({
   const rejectedCount=rawVideos.filter(v=>v.status==='REJECTED').length;
 
   return <div className={s.page}>
-    {/* V Ads Studio Header Banner */}
-    <div style={{
-      background: 'linear-gradient(135deg, #2D1F50 0%, #48257C 50%, #642E9E 100%)',
-      borderRadius: 18,
-      padding: '20px 24px',
-      color: '#FFFFFF',
-      display: 'flex',
-      alignItems: 'center',
-      gap: 16,
-      boxShadow: '0 4px 14px rgba(72, 37, 124, 0.25)',
-    }}>
-      <div style={{
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        background: 'rgba(255, 255, 255, 0.2)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <Video size={24} color="#FFFFFF" />
-      </div>
+    {/* V Ads Studio Editorial Header */}
+    <header style={{paddingBottom: 16, borderBottom: '1px solid var(--hairline, var(--border))', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap'}}>
       <div>
-        <div style={{fontSize: 11, fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#eadaff'}}>
-          <UiText value="Creator Studio"/>
+        <div style={{fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-secondary)'}}>
+          <UiText value="ADVERTISER & CREATOR WORKSPACE"/>
         </div>
-        <h1 style={{margin: '2px 0', fontSize: 22, fontWeight: 800, color: '#FFFFFF'}}>
+        <h1 style={{margin: '4px 0 4px', fontSize: 26, fontWeight: 600, letterSpacing: '-0.025em', lineHeight: 1.2, color: 'var(--text-primary)'}}>
           <UiText value="V Ads Studio"/>
         </h1>
-        <p style={{margin: 0, fontSize: 13, color: '#eadaff'}}>
-          <UiText value="Create, promote & track your video ads"/>
+        <p style={{margin: 0, fontSize: 14, lineHeight: 1.5, color: 'var(--text-secondary)'}}>
+          <UiText value="Publish local video ads, configure advertising radius, and monitor verified views."/>
         </p>
       </div>
-    </div>
+    </header>
 
     {user ? (
       isSeller ? (
-        <>
-          <p><UiText value={"Signed in: "}/>{user.email}</p>
-          <header className={s.creatorHero}>
-            <div className={s.heroHeader}>
-              <div className={s.heroAvatar}>
-                <Video size={26}/>
-              </div>
-              <div className={s.heroTitleGroup}>
-                <h1>
-                  {account?.name||'Your V Ads Channel'}
-                  {account?.status==='APPROVED'&&<CheckCircle2 size={18} color="#4ade80"/>}
-                </h1>
-                <p className={s.heroHandle}>@{account?.handle||'seller'} <UiText value={"· Free V Ads Creator Channel"}/></p>
-              </div>
+        <header className={s.creatorHero}>
+          <div className={s.heroHeader}>
+            <div className={s.heroAvatar}>
+              <Video size={22}/>
             </div>
-            <div className={s.heroActions}>
-              <Link href="/v-ads" className={s.heroActionBtn}>
-                <Play size={14}/> <UiText value={"Watch V Ads "}/></Link>
-              <button disabled={busy||loading} onClick={()=>void refresh()} className={s.heroActionBtn}>
-                <RefreshCw size={14}/> <UiText value={"Refresh "}/></button>
-              <Link href="/account" className={s.heroActionBtn} style={{marginLeft:'auto'}}>
-                <UiText value={"Account "}/></Link>
+            <div className={s.heroTitleGroup}>
+              <h1>
+                {account?.name||'Your V Ads Channel'}
+                {account?.status==='APPROVED'&&<CheckCircle2 size={18} color="#16a34a"/>}
+              </h1>
+              <p className={s.heroHandle}>@{account?.handle||'seller'} · {user.email}</p>
             </div>
-          </header>
-        </>
+          </div>
+          <div className={s.heroActions}>
+            <Link href="/v-ads" className={s.heroActionBtn}>
+              <Play size={14}/> <UiText value={"Watch V Ads"}/></Link>
+            <button disabled={busy||loading} onClick={()=>void refresh()} className={s.heroActionBtn}>
+              <RefreshCw size={14}/> <UiText value={"Refresh"}/></button>
+            <Link href="/account" className={s.heroActionBtn} style={{marginLeft:'auto'}}>
+              <UiText value={"Account"}/></Link>
+          </div>
+        </header>
       ) : (
-        <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:16}}>
+        <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:12}}>
           <div>
-            <h2 style={{margin:0,fontSize:16,fontWeight:700}}><UiText value="Complete Seller Onboarding / Register Business"/></h2>
-            <p style={{margin:'4px 0 0',fontSize:13,color:'var(--text-secondary)'}}>
-              <UiText value="Enable seller access or register your business to create your V Ads channel and upload videos."/>
+            <h2 style={{margin:0,fontSize:16,fontWeight:600}}><UiText value="Complete Seller Onboarding / Register Business"/></h2>
+            <p style={{margin:'4px 0 0',fontSize:13,lineHeight:1.5,color:'var(--text-secondary)'}}>
+              <UiText value="Verify and manage your business listing to publish hyper-local video ads."/>
             </p>
             {enableError&&<p role="alert" className={s.error} style={{marginTop:8}}>{enableError}</p>}
           </div>
@@ -212,19 +188,19 @@ function SellerWorkspace({
         </div>
       )
     ) : (
-      <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:16}}>
+      <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:12}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <div style={{width:40,height:40,borderRadius:20,background:'rgba(80,63,189,0.1)',color:'#503fbd',display:'grid',placeItems:'center'}}>
+          <div style={{width:40,height:40,borderRadius:8,background:'rgba(80,63,189,0.08)',color:'#503fbd',display:'grid',placeItems:'center'}}>
             <Globe size={20}/>
           </div>
           <div>
-            <h2 style={{margin:0,fontSize:16,fontWeight:700}}><UiText value="Public V Ads Studio"/></h2>
-            <p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>
-              <UiText value="Browse community ads. Sign in for creator & upload tools."/>
+            <h2 style={{margin:0,fontSize:16,fontWeight:600}}><UiText value="Public V Ads Directory"/></h2>
+            <p style={{margin:0,fontSize:13,lineHeight:1.5,color:'var(--text-secondary)'}}>
+              <UiText value="Browse verified business video ads. Sign in to manage your advertiser channel."/>
             </p>
           </div>
         </div>
-        <Link href="/login?next=%2Fseller%2Fv-ads" style={{padding:'8px 16px',borderRadius:10,background:'#503fbd',color:'#fff',fontWeight:700,fontSize:13,textDecoration:'none'}}>
+        <Link href="/login?next=%2Fseller%2Fv-ads" style={{padding:'8px 16px',borderRadius:8,background:'#503fbd',color:'#fff',fontWeight:600,fontSize:13,textDecoration:'none'}}>
           <UiText value="Sign in / Register"/>
         </Link>
       </div>
@@ -270,13 +246,13 @@ function SellerWorkspace({
     {studioTab==='ads'&&(!user ? (
       <RestrictedStudioTool
         title="Sign In to Manage Your V Ads"
-        description="Track views, likes, comments, and manage all your published video ads."
+        description="Monitor verified views, enquiries, and approved video campaigns."
         icon="video"
       />
     ) : !isSeller ? (
       <div className={s.panel}>
         <h2><UiText value={"Complete Seller Onboarding / Register Business"}/></h2>
-        <p><UiText value={"All sellers can upload V Ads for free. Complete seller onboarding or register your business on your account to unlock V Ads Studio immediately."}/></p>
+        <p><UiText value={"Verify and manage your business listing to publish hyper-local video ads across Vistrah."}/></p>
         {enableError&&<p role="alert" className={s.error}>{enableError}</p>}
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
@@ -290,19 +266,19 @@ function SellerWorkspace({
     ) : (
       <section style={{display:'grid',gap:12}}>
         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
-          <h2 style={{margin:0,fontSize:18}}><UiText value={"Your V Ads ("}/>{rawVideos.length})</h2>
+          <h2 className="tabular-nums" style={{margin:0,fontSize:18}}><UiText value={"Your V Ads ("}/>{rawVideos.length})</h2>
           <div className={s.filterBar}>
             <button type="button" onClick={()=>setFilter('ALL')} className={`${s.filterPill} ${filter==='ALL'?s.filterPillActive:''}`}>
               <UiText value={"All ("}/>{rawVideos.length})
             </button>
             <button type="button" onClick={()=>setFilter('APPROVED')} className={`${s.filterPill} ${filter==='APPROVED'?s.filterPillActive:''}`}>
-              <UiText value={"● Approved ("}/>{rawVideos.filter(v=>v.status==='APPROVED').length})
+              <UiText value={"Approved ("}/>{rawVideos.filter(v=>v.status==='APPROVED').length})
             </button>
             <button type="button" onClick={()=>setFilter('PENDING')} className={`${s.filterPill} ${filter==='PENDING'?s.filterPillActive:''}`}>
-              <UiText value={"⏳ Review ("}/>{pendingCount})
+              <UiText value={"In Review ("}/>{pendingCount})
             </button>
             <button type="button" onClick={()=>setFilter('REJECTED')} className={`${s.filterPill} ${filter==='REJECTED'?s.filterPillActive:''}`}>
-              <UiText value={"⚠️ Changes ("}/>{rejectedCount})
+              <UiText value={"Needs Changes ("}/>{rejectedCount})
             </button>
           </div>
         </div>
@@ -314,11 +290,11 @@ function SellerWorkspace({
         </div>
 
         {!activeVideos.length&&<div className={s.panel} style={{textAlign:'center',padding:32}}>
-          <Video size={36} style={{margin:'0 auto 10px',opacity:0.4}}/>
-          <h3 style={{margin:'0 0 6px'}}><UiText value={"No V Ads in this view"}/></h3>
-          <p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}><UiText value={"Upload your first V Ad to start reaching customers."}/></p>
+          <Video size={32} style={{margin:'0 auto 10px',opacity:0.4}}/>
+          <h3 style={{margin:'0 0 6px'}}><UiText value={"No V Ads in this filter"}/></h3>
+          <p style={{margin:0,fontSize:13,lineHeight:1.5,color:'var(--text-secondary)'}}><UiText value={"Upload a product or brand demonstration MP4 to submit for advertiser review."}/></p>
           <div style={{marginTop:12}}>
-            <button type="button" onClick={()=>setStudioTab('upload')}><UiText value={"+ Upload New V Ad"}/></button>
+            <button type="button" onClick={()=>setStudioTab('upload')}><UiText value={"Upload New V Ad"}/></button>
           </div>
         </div>}
 
@@ -329,7 +305,7 @@ function SellerWorkspace({
           <div className={s.bar}>
             <div>
               <h2>{item.name}</h2>
-              <small>@{item.handle} · {item.status} <UiText value={"· Free seller V Ads channel"}/></small>
+              <small>@{item.handle} · {item.status}</small>
             </div>
             {data.accounts.length>1&&<button disabled={busy} onClick={()=>{setAccountId(item.id);setUploadId('');}}><UiText value={account?.id===item.id?'Selected channel':'Use this channel'}/></button>}
           </div>
@@ -343,13 +319,13 @@ function SellerWorkspace({
     {studioTab==='upload'&&(!user ? (
       <RestrictedStudioTool
         title="Sign In to Upload V Ads"
-        description="Upload up to 60-second MP4 videos to promote your business across Vistrah."
+        description="Submit up to 60-second MP4 product or brand ads for local distribution."
         icon="upload"
       />
     ) : !isSeller ? (
       <div className={s.panel}>
         <h2><UiText value={"Complete Seller Onboarding / Register Business"}/></h2>
-        <p><UiText value={"All sellers can upload V Ads for free. Complete seller onboarding or register your business on your account to unlock V Ads Studio immediately."}/></p>
+        <p><UiText value={"Verify and manage your business listing to publish hyper-local video ads across Vistrah."}/></p>
         {enableError&&<p role="alert" className={s.error}>{enableError}</p>}
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
@@ -362,7 +338,7 @@ function SellerWorkspace({
       <p role="status"><UiText value={"Unable to load workspace data."}/></p>
     ) : (
       <section style={{display:'grid',gap:12}}>
-        {account?.status!=='APPROVED'?<div className={s.panel}><p><UiText value={"An approved advertiser profile is required to upload V Ads."}/></p></div>:!data.uploads_available?<div className={s.panel}><h2><UiText value={"Upload new V Ad (Free)"}/></h2><p role="status"><UiText value={"Video storage is currently offline in this environment. Once enabled, upload MP4 videos (H.264/AAC, up to 60s and 100 MB) here for free."}/></p></div>:<form className={s.panel} style={{borderColor:uploadId?'#503fbd':'var(--border)'}} onSubmit={event=>{event.preventDefault();if(!uploadId)return;void action(async()=>{
+        {account?.status!=='APPROVED'?<div className={s.panel}><p><UiText value={"An approved advertiser profile is required to upload V Ads."}/></p></div>:!data.uploads_available?<div className={s.panel}><h2><UiText value={"Upload New V Ad"}/></h2><p role="status"><UiText value={"Video storage is currently offline in this environment. Once enabled, upload MP4 videos (H.264/AAC, up to 60s and 100 MB) here."}/></p></div>:<form className={s.panel} style={{borderColor:uploadId?'#503fbd':'var(--border)'}} onSubmit={event=>{event.preventDefault();if(!uploadId)return;void action(async()=>{
             const meta: AdMetadata = adType === 'PRODUCT'
               ? {
                   ad_type: 'PRODUCT',
@@ -389,19 +365,19 @@ function SellerWorkspace({
             await refresh();
           });}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:36,height:36,borderRadius:18,background:'#faf4fb',color:'#503fbd',display:'grid',placeItems:'center'}}>
+            <div style={{width:36,height:36,borderRadius:8,background:'var(--surface-soft)',border:'1px solid var(--border)',color:'#503fbd',display:'grid',placeItems:'center'}}>
               <Video size={18}/>
             </div>
             <div>
-              <h2 style={{margin:0,fontSize:17}}><UiText value={"Upload New V Ad (Free)"}/></h2>
-              <small><UiText value={"MP4 (H.264/AAC) · Up to 60s · Max 100 MB · Live on V Ads tab upon admin approval"}/></small>
+              <h2 style={{margin:0,fontSize:17}}><UiText value={"Submit Local Video Ad"}/></h2>
+              <small><UiText value={"MP4 (H.264/AAC) · Up to 60s · Max 100 MB · Reviewed prior to feed publication"}/></small>
             </div>
           </div>
           <label>
             <span style={{fontWeight:600}}><UiText value={"1. Select MP4 video"}/></span>
             <input type="file" accept="video/mp4,.mp4" disabled={busy} onChange={event=>{const file=event.target.files?.[0];event.target.value='';if(!file)return;void action(async()=>{validateVideoFile(file.name,file.size);const result=await api<{id:string}>('/v-ads/advertisers/'+encodeURIComponent(account.id)+'/uploads',{method:'POST',headers:{'Content-Type':'video/mp4'},body:file});setUploadId(result.id);setMessage('Video file validated. Add a title and caption below to submit for admin approval.');});}}/>
           </label>
-          {data.uploads.filter(item=>item.advertiser_id===account.id&&!item.video_id).map(item=><div key={item.id} className={s.bar}><button type="button" disabled={busy} onClick={()=>setUploadId(item.id)}><UiText value={uploadId===item.id?'✓ Selected upload '+item.id.slice(0,8):'Use saved upload '+item.id.slice(0,8)}/></button><DiscardUpload id={item.id} onChanged={async()=>{if(uploadId===item.id)setUploadId('');await refresh();}}/></div>)}
+          {data.uploads.filter(item=>item.advertiser_id===account.id&&!item.video_id).map(item=><div key={item.id} className={s.bar}><button type="button" disabled={busy} onClick={()=>setUploadId(item.id)}><UiText value={uploadId===item.id?'Selected upload '+item.id.slice(0,8):'Use saved upload '+item.id.slice(0,8)}/></button><DiscardUpload id={item.id} onChanged={async()=>{if(uploadId===item.id)setUploadId('');await refresh();}}/></div>)}
           {Boolean(uploadId)&&<div style={{padding:'8px 12px',borderRadius:8,background:'#e6f4ea',color:'#137333',fontSize:12,fontWeight:600,display:'flex',alignItems:'center',gap:6}}><Check size={16}/> <UiText value={"Video validated and ready for submission."}/></div>}
 
           {/* Ad Type Selector: Product Ad vs Brand Ad */}

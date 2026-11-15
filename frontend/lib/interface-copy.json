@@ -7,19 +7,19 @@
     "location": "Choose location"
   },
   "home": {
-    "tagline": "DISCOVER. CONNECT. GROW.",
-    "title": "What can we help you with?",
-    "description": "Find help for today. Discover possibilities for tomorrow. Explore services, jobs and business opportunities in one place.",
+    "tagline": "VERIFIED SERVICES & LOCAL BUSINESSES",
+    "title": "Find verified providers & business services",
+    "description": "Compare reviewed professionals across GST & tax compliance, civil construction, home services, jobs, and local commerce.",
     "quick": "QUICK ACCESS",
     "categories": "Services for you",
     "viewAll": "View all",
-    "featured": "Make room for your next opportunity",
-    "badge": "FEATURED",
-    "business": "Your expertise deserves to be discovered.",
-    "businessDescription": "Introduce your business, show the services you offer, and take the next step towards connecting with customers.",
-    "more": "Start with your business →",
-    "review": "Business ownership and service listings require review.",
-    "provider": "I provide a service"
+    "featured": "Business & Provider Onboarding",
+    "badge": "SELLER WORKSPACE",
+    "business": "Verify and manage your business listing",
+    "businessDescription": "Register your business, submit ownership verification, and manage approved service listings and customer enquiries.",
+    "more": "Verify & register business →",
+    "review": "Business ownership and service listings require independent review.",
+    "provider": "Register business"
   },
   "catalogue": {
     "title": "Service categories",
@@ -132,11 +132,11 @@
     "history": "Payment history"
   },
   "provider": {
-    "title": "Turn what you do into your next opportunity.",
-    "subtitle": "Let people discover your expertise.",
+    "title": "Verify and manage your business listings",
+    "subtitle": "Reach local customers across verified service categories.",
     "intro": "Use one account as a customer and seller. Customer membership is not required for seller onboarding. Business ownership and each service listing require separate review.",
-    "business": "Start with your business",
-    "businessCopy": "Introduce your business, add ownership evidence, and prepare the services you want customers to discover.",
+    "business": "Register & verify business",
+    "businessCopy": "Submit business details, ownership documentation, and service scope for verification.",
     "register": "Create your seller account",
     "login": "Already a seller? Sign in",
     "application": "Start a provider application",
@@ -148,50 +148,50 @@
     "error": "VISTRAH is temporarily unavailable. Please try again."
   },
   "engagement": {
-    "title": "What brings you here?",
-    "intro": "A little direction. A lot of possibility.",
+    "title": "How VISTRAH works",
+    "intro": "Verified provider discovery for customers and structured listing tools for businesses.",
     "customerLabel": "I need a service",
     "providerLabel": "I offer a service",
     "customer": {
-      "eyebrow": "MAKE YOUR NEXT MOVE",
-      "title": "From “where do I start?” to a clear next step.",
-      "description": "Explore your options, understand what you need, and decide how to connect.",
+      "eyebrow": "CUSTOMER DISCOVERY",
+      "title": "Compare local providers and submit requirements",
+      "description": "Filter by city or PIN code, review service scope, and send enquiries for human review.",
       "steps": [
         {
-          "title": "Find your starting point",
-          "description": "Browse services for your home, business or next career move."
+          "title": "Select category & locality",
+          "description": "Browse verified categories across compliance, home services, construction, and hiring."
         },
         {
-          "title": "Get ready with confidence",
-          "description": "Check the service guide and gather the details that matter."
+          "title": "Review scope & preparation guide",
+          "description": "Check inclusions, required documents, and indicative package pricing."
         },
         {
-          "title": "Choose how to connect",
-          "description": "Eligible members can view providers or send an enquiry for human review."
+          "title": "Contact providers or submit enquiry",
+          "description": "Eligible members can view provider profiles or submit requirements for review."
         }
       ],
       "action": "Explore services",
       "note": "Browse freely. Provider details, guides and enquiries need eligible membership."
     },
     "provider": {
-      "eyebrow": "PUT YOUR EXPERTISE IN VIEW",
-      "title": "You bring the skill. Give it a place to be found.",
-      "description": "Build a business profile, present your services and manage customer enquiries in one place.",
+      "eyebrow": "SELLER & PROVIDER TOOLS",
+      "title": "Verify business ownership and publish services",
+      "description": "Register your business, submit service packages or V Ads, and manage incoming leads.",
       "steps": [
         {
-          "title": "Introduce your business",
-          "description": "Add your business details and ownership evidence."
+          "title": "Submit ownership verification",
+          "description": "Provide GST/registration details and business address coordinates."
         },
         {
-          "title": "Show what you do",
-          "description": "Prepare your service listings and submit them for review."
+          "title": "Publish service listings & V Ads",
+          "description": "Configure service coverage radius, fixed-price packages, or local video ads."
         },
         {
-          "title": "Keep things moving",
-          "description": "Manage approved listings and incoming leads from your seller dashboard."
+          "title": "Manage enquiries & orders",
+          "description": "Track approved listings, customer leads, and purchase requests from one workspace."
         }
       ],
-      "action": "Start offering services",
+      "action": "Verify and manage listing",
       "note": "Customer membership is not required to get started as a seller. Ownership and listings need approval."
     },
     "shortcutsTitle": "More ways to move forward",

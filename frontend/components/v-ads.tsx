@@ -50,12 +50,12 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
     return()=>{observer.disconnect();window.removeEventListener('resize',fit);viewport?.removeEventListener('resize',fit);};
   },[loading,items.length]);
   async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;const next=await client.feed(page+1,filter);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
-  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><Link href="/seller/v-ads?from=v-ads"><UiText value={"V Ads Studio"}/></Link></div>
-    {loading?<p className={s.status} role="status"><UiText value={"Loading videos…"}/></p>:!items.length?<div className={s.status}><p role="status">{error||'No approved videos yet.'}</p><button onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry / refresh"}/></button></div>:<>
+  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><Link href="/seller/v-ads?from=v-ads" className="button secondary"><UiText value={"V Ads Studio"}/></Link></div>
+    {loading?<p className={s.status} role="status"><UiText value={"Loading videos…"}/></p>:!items.length?<div className={s.status}><p role="status">{error||'No approved local video ads in this view yet.'}</p><button className="button secondary" onClick={()=>setVersion(v=>v+1)}><UiText value={"Refresh feed"}/></button></div>:<>
       <UiDiv  className={s.feed} ref={root} aria-label="V Ads videos" tabIndex={0} onScroll={event=>{const node=event.currentTarget;if(!error&&node.scrollHeight-node.scrollTop-node.clientHeight<node.clientHeight*.5)void loadMore();}}>
         {items.map(item=><ReelCard key={item.id+':'+(user?.id??'guest')} reel={item} root={root} authenticated={Boolean(user)}/>)}</UiDiv>
-      {Boolean(error)&&<div role="alert" className={s.error}><UiText value={error}/> <button onClick={()=>void loadMore()}><UiText value={"Retry"}/></button></div>}
-      {more&&<button disabled={paging} onClick={()=>void loadMore()}><UiText value={paging?'Loading…':'Load more videos'}/></button>}
+      {Boolean(error)&&<div role="alert" className={s.error}><UiText value={error}/> <button className="button secondary" onClick={()=>void loadMore()}><UiText value={"Retry"}/></button></div>}
+      {more&&<button className="button secondary" disabled={paging} onClick={()=>void loadMore()}><UiText value={paging?'Loading…':'Load more videos'}/></button>}
     </>}
   </div>;
 }
@@ -228,11 +228,9 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
     {/* Product Details Sheet for Web */}
     {productDetailsOpen && productMeta && (
       <div className={s.comments} style={{height:'70%',maxHeight:'520px',overflowY:'auto',background:'var(--surface,#171b25)',color:'var(--text,#fff)',borderTop:'1px solid var(--border)'}}>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',paddingBottom:12,borderBottom:'1px solid var(--hairline,var(--border))'}}>
           <div style={{display:'flex',alignItems:'center',gap:8}}>
-            <div style={{width:30,height:30,borderRadius:15,background:'rgba(225,29,72,0.15)',color:'#e11d48',display:'grid',placeItems:'center'}}>
-              <ShoppingBag size={16}/>
-            </div>
+            <ShoppingBag size={16} color="#e11d48"/>
             <h3 style={{margin:0,fontSize:16}}><UiText value={"Product Details"}/></h3>
           </div>
           <button type="button" onClick={()=>setProductDetailsOpen(false)} style={{background:'transparent',border:0,color:'inherit',cursor:'pointer'}}><X size={20}/></button>
@@ -248,28 +246,28 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
             </Link>
           </div>
 
-          <div style={{padding:'12px',borderRadius:10,background:'rgba(225,29,72,0.08)',border:'1px solid rgba(225,29,72,0.3)',display:'grid',gap:2}}>
-            <small style={{fontWeight:700,color:'#e11d48',textTransform:'uppercase',fontSize:10.5,letterSpacing:'0.5px'}}><UiText value={"Price Details"}/></small>
-            <div style={{fontSize:20,fontWeight:800,color:'#e11d48',fontVariantNumeric:'tabular-nums'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
+          <div style={{padding:'12px 0',borderTop:'1px solid var(--hairline,var(--border))',borderBottom:'1px solid var(--hairline,var(--border))',display:'grid',gap:4}}>
+            <small style={{fontWeight:600,color:'var(--text-secondary)',textTransform:'uppercase',fontSize:11,letterSpacing:'0.04em'}}><UiText value={"Price Details"}/></small>
+            <div style={{fontSize:20,fontWeight:700,color:'#e11d48',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
           </div>
 
-          <div style={{padding:'12px',borderRadius:10,background:'rgba(22,163,74,0.08)',border:'1px solid rgba(22,163,74,0.3)',display:'grid',gap:2}}>
-            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontWeight:700,fontSize:10.5,textTransform:'uppercase',letterSpacing:'0.5px'}}>
-              <Truck size={13}/>
+          <div style={{padding:'0 0 12px',borderBottom:'1px solid var(--hairline,var(--border))',display:'grid',gap:4}}>
+            <div style={{display:'flex',alignItems:'center',gap:6,color:'var(--text-secondary)',fontWeight:600,fontSize:11,textTransform:'uppercase',letterSpacing:'0.04em'}}>
+              <Truck size={13} color="#16a34a"/>
               <span><UiText value={"Delivery Options"}/></span>
             </div>
-            <div style={{fontSize:13.5,fontWeight:600}}>{productMeta.delivery_info || 'Direct delivery & local pickup available from seller'}</div>
+            <div style={{fontSize:13.5,fontWeight:500,lineHeight:1.5}}>{productMeta.delivery_info || 'Direct delivery & local pickup available from seller'}</div>
           </div>
 
-          <div style={{padding:'12px',borderRadius:10,background:'rgba(255,255,255,0.06)',border:'1px solid var(--border)',display:'grid',gap:4}}>
-            <small style={{fontWeight:700,fontSize:11,textTransform:'uppercase',letterSpacing:'0.5px',color:'var(--text-secondary)'}}><UiText value={"Where Product is Used in this Ad"}/></small>
+          <div style={{padding:'0 0 12px',borderBottom:'1px solid var(--hairline,var(--border))',display:'grid',gap:4}}>
+            <small style={{fontWeight:600,fontSize:11,textTransform:'uppercase',letterSpacing:'0.04em',color:'var(--text-secondary)'}}><UiText value={"Product & Demonstration Scope"}/></small>
             <div style={{fontSize:13,lineHeight:1.5}}>{cleanDescription || reel.title}</div>
           </div>
 
           {Boolean(productMeta.product_id) && (
             <Link
               href={'/commerce/'+encodeURIComponent(productMeta.product_id!)}
-              style={{padding:'10px 16px',borderRadius:10,background:'#e11d48',color:'#fff',textAlign:'center',textDecoration:'none',fontWeight:700,fontSize:14}}
+              style={{padding:'10px 16px',borderRadius:8,background:'#e11d48',color:'#fff',textAlign:'center',textDecoration:'none',fontWeight:600,fontSize:14}}
             >
               <UiText value={"View Full Product Page & Order"}/>
             </Link>
@@ -277,7 +275,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
 
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)}
-            style={{padding:'10px 16px',borderRadius:10,background:'var(--surface-soft,rgba(255,255,255,0.1))',border:'1px solid var(--border)',color:'inherit',textAlign:'center',textDecoration:'none',fontWeight:600,fontSize:13}}
+            style={{padding:'10px 16px',borderRadius:8,background:'var(--surface-soft,rgba(255,255,255,0.06))',border:'1px solid var(--border)',color:'inherit',textAlign:'center',textDecoration:'none',fontWeight:600,fontSize:13}}
           >
             <UiText value={"Explore Brand Channel & Available Products"}/>
           </Link>
@@ -290,32 +288,32 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
 export function VAdsAdvertiser({id}:{id:string}) {
   const [data,setData]=useState<AdvertiserProfile|null>(null),[error,setError]=useState(''),[version,setVersion]=useState(0);
   useEffect(()=>{let alive=true;client.profile(id).then(result=>{if(alive){setData(result);setError('');}}).catch(e=>{if(alive)setError(e.message);});return()=>{alive=false;};},[id,version]);
-  return <div className={s.page}><Link href="/v-ads"><UiText value={"Back to V Ads"}/></Link>{error?<div role="alert"><UiText value={error}/> <button onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry"}/></button></div>:!data?<p role="status"><UiText value={"Loading advertiser…"}/></p>:<><section className={s.panel} style={{display:'grid',gap:8}}>
+  return <div className={s.page}><Link href="/v-ads"><UiText value={"Back to V Ads"}/></Link>{error?<div role="alert"><UiText value={error}/> <button className="button secondary" onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry"}/></button></div>:!data?<p role="status"><UiText value={"Loading advertiser…"}/></p>:<><section className={s.panel} style={{display:'grid',gap:8}}>
     <div style={{display:'flex',alignItems:'center',gap:12}}>
-      <div style={{width:52,height:52,borderRadius:26,background:'#F9AA45',color:'#11243F',display:'grid',placeItems:'center',fontSize:24,fontWeight:800}}>V</div>
+      <div style={{width:48,height:48,borderRadius:12,background:'#F9AA45',color:'#11243F',display:'grid',placeItems:'center',fontSize:22,fontWeight:700}}>V</div>
       <div>
-        <h1 style={{margin:0,fontSize:22,display:'flex',alignItems:'center',gap:6}}>
+        <h1 style={{margin:0,fontSize:22,fontWeight:600,letterSpacing:'-0.025em',display:'flex',alignItems:'center',gap:6}}>
           <span>{data.name}</span>
           <CheckCircle2 size={18} color="#16a34a"/>
         </h1>
         <p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>@{data.handle}</p>
       </div>
     </div>
-    {Boolean(data.description)&&<p style={{margin:0,fontSize:14,lineHeight:1.6}}>{data.description}</p>}
+    {Boolean(data.description)&&<p style={{margin:0,fontSize:14,lineHeight:1.5}}>{data.description}</p>}
   </section>
 
   <h2><UiText value={"Products Available"}/></h2>
   {data.products && data.products.length > 0 ? (
-    <div style={{display:'grid',gap:12}}>
+    <div className={s.editorialList}>
       {data.products.map(product => (
-        <div key={product.id} className={s.panel} style={{display:'grid',gap:8}}>
+        <div key={product.id} className={s.editorialRow}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
-            <h3 style={{margin:0,fontSize:16}}>{product.title}</h3>
-            <span style={{fontSize:16,fontWeight:800,color:'#e11d48',fontVariantNumeric:'tabular-nums'}}>{listingPrice(product.unit_price_paise)}</span>
+            <h3 style={{margin:0,fontSize:16,fontWeight:600,letterSpacing:'-0.015em'}}>{product.title}</h3>
+            <span style={{fontSize:16,fontWeight:700,color:'#e11d48',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>{listingPrice(product.unit_price_paise)}</span>
           </div>
-          {Boolean(product.description)&&<p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>{product.description}</p>}
+          {Boolean(product.description)&&<p style={{margin:0,fontSize:13,lineHeight:1.5,color:'var(--text-secondary)'}}>{product.description}</p>}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,flexWrap:'wrap',paddingTop:4}}>
-            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontSize:12,fontWeight:600,fontVariantNumeric:'tabular-nums'}}>
+            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontSize:12,fontWeight:600,fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>
               <Truck size={14}/>
               <span>
                 {product.delivery_fee_paise != null
@@ -323,7 +321,7 @@ export function VAdsAdvertiser({id}:{id:string}) {
                   : 'Standard delivery options'}
               </span>
             </div>
-            <Link href={'/commerce/'+encodeURIComponent(product.id)} style={{fontSize:12.5,fontWeight:700,color:'#503fbd'}}>
+            <Link href={'/commerce/'+encodeURIComponent(product.id)} style={{fontSize:13,fontWeight:600,color:'#503fbd'}}>
               <UiText value={"View details & order →"}/>
             </Link>
           </div>
@@ -331,16 +329,23 @@ export function VAdsAdvertiser({id}:{id:string}) {
       ))}
     </div>
   ) : (
-    <div className={s.panel} style={{textAlign:'center',padding:24,gap:6}}>
-      <ShoppingBag size={28} style={{margin:'0 auto',opacity:0.4}}/>
-      <h3 style={{margin:0,fontSize:15}}><UiText value={"Brand Catalog & Offerings"}/></h3>
-      <p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>
-        <UiText value={"Browse this brand's video demonstrations below or enquire directly to explore all available products and services."}/>
-      </p>
+    <div className={s.editorialList}>
+      <div className={s.editorialRow}>
+        <h3 style={{margin:0,fontSize:15,fontWeight:600}}><UiText value={"Verified Brand Catalog"}/></h3>
+        <p style={{margin:0,fontSize:13,lineHeight:1.5,color:'var(--text-secondary)'}}>
+          <UiText value={"Review published video demonstrations below or submit an enquiry for direct pricing and local fulfilment."}/>
+        </p>
+      </div>
     </div>
   )}
 
-  <h2><UiText value={"Videos"}/></h2>
-  {data.videos.map(video=><Link className={s.panel} key={video.id} href={sharePath(video.id)}>{video.title}</Link>)}
-  {!data.videos.length&&<p><UiText value={"No approved videos yet."}/></p>}</>}</div>;
+  <h2><UiText value={"Published Video Ads"}/></h2>
+  {data.videos.length ? (
+    <div className={s.editorialList}>
+      {data.videos.map(video=><Link className={s.editorialRow} key={video.id} href={sharePath(video.id)}>
+        <span style={{fontWeight:600,fontSize:15}}>{video.title}</span>
+        <span style={{fontSize:13,color:'var(--text-secondary)'}}><UiText value={"Watch video ad →"}/></span>
+      </Link>)}
+    </div>
+  ) : <p><UiText value={"No approved local video ads published yet."}/></p>}</>}</div>;
 }

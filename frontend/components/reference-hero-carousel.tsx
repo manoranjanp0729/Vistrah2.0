@@ -4,11 +4,11 @@ import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 
 const slides=[
- {step:'01 · DISCOVER',title:'Find the right services for your needs',description:'Explore services for home, work and business in one place.',action:'Explore services',href:'/services'},
- {step:'02 · CONNECT',title:'Find and connect with service providers',description:'Explore provider options and choose who to contact.',action:'Find a provider',href:'/services'},
- {step:'03 · PROVIDE',title:'Have a service to offer?',description:'Showcase your expertise and reach customers looking for your services.',action:'Provide a service',href:'/provider'},
- {step:'04 · PROMOTE',title:'Make your business more visible',description:'Discover VISTRAH Ads & Marketing for content and promotion.',action:'Explore Ads & Marketing',href:'/services'},
- {step:'05 · GROW',title:'More opportunities. One platform.',description:'Find services, offer expertise and explore ways to grow.',action:'Get started',href:'/services'},
+ {step:'01 · SERVICES',title:'Compare verified providers across categories',description:'Browse GST & tax compliance, civil construction, home services, healthcare, and hiring.',action:'Explore services',href:'/services'},
+ {step:'02 · NEARBY',title:'Filter providers by city, locality & PIN code',description:'Check straight-line coverage radius, service inclusions, and verified credentials.',action:'Find a provider',href:'/services'},
+ {step:'03 · SELLERS',title:'Verify and manage your business listing',description:'Register your business, submit ownership evidence, and publish fixed-price packages.',action:'Verify business',href:'/provider'},
+ {step:'04 · V ADS',title:'Target hyper-local consumers with video ads',description:'Publish 60-second product or brand demonstrations and select advertising radius.',action:'Open V Ads Studio',href:'/seller/v-ads'},
+ {step:'05 · MEDIA',title:'Plan digital, storefront & mobility campaigns',description:'Review indicative rate cards for performance ads, signage, and city LED vans.',action:'View rate card',href:'/marketing-pricing'},
 ] as const;
 export function ReferenceHeroCarousel(){
  const track=useRef<HTMLDivElement>(null);const [playing,setPlaying]=useState(true);const [active,setActive]=useState(0);

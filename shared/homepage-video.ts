@@ -1,7 +1,7 @@
 export const homepageVideoCopy={
- eyebrow:'VISTRAH SPOTLIGHT',
- title:'Discover more with VISTRAH',
- description:'Explore services for your business, home and everyday life.',
+ eyebrow:'PLATFORM OVERVIEW',
+ title:'Verified local services & business tools',
+ description:'Compare reviewed service providers, browse local video ads, and manage business listings across categories.',
  action:'Explore services',
 };
 

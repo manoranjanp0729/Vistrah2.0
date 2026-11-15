@@ -416,11 +416,11 @@ function ReelCard({reel, active, height}: {
             </View>
 
             {/* Price Details */}
-            <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
+            <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
               <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
-              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3'}}>
+              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3', fontVariant: ['tabular-nums']}}>
                 {productMeta.product_price || 'Available on request / order'}
               </Text>
             </View>
@@ -611,6 +611,7 @@ const s = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '600',
+    fontVariant: ['tabular-nums'],
     textShadowColor: 'rgba(0,0,0,0.7)',
     textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 2,
@@ -627,8 +628,9 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    minHeight: 36,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     borderRadius: 16,
     maxWidth: '85%',
   },
@@ -644,8 +646,9 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     alignSelf: 'flex-start',
+    minHeight: 36,
     paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingVertical: 8,
     borderRadius: 14,
     backgroundColor: '#e11d48',
     marginTop: 2,
@@ -654,14 +657,16 @@ const s = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 12.5,
     fontWeight: '700',
+    fontVariant: ['tabular-nums'],
   },
   exploreBrandBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
     alignSelf: 'flex-start',
+    minHeight: 36,
     paddingHorizontal: 12,
-    paddingVertical: 7,
+    paddingVertical: 8,
     borderRadius: 14,
     backgroundColor: '#503fbd',
     marginTop: 2,
@@ -676,8 +681,9 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     alignSelf: 'flex-start',
+    minHeight: 36,
     paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingVertical: 8,
     borderRadius: 14,
     backgroundColor: 'rgba(255,255,255,0.20)',
     borderWidth: 1,
@@ -713,7 +719,8 @@ const s = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '800',
-    lineHeight: 21,
+    lineHeight: 20,
+    letterSpacing: -0.24,
     textShadowColor: 'rgba(0,0,0,0.8)',
     textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 3,
@@ -721,7 +728,7 @@ const s = StyleSheet.create({
   description: {
     color: '#FFFFFF',
     fontSize: 13,
-    lineHeight: 18,
+    lineHeight: 20,
     textShadowColor: 'rgba(0,0,0,0.7)',
     textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 2,
@@ -736,7 +743,7 @@ const s = StyleSheet.create({
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 16,
-    gap: 10,
+    gap: 12,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: -3},
     shadowOpacity: 0.15,
@@ -752,17 +759,18 @@ const s = StyleSheet.create({
     marginBottom: 4,
   },
   commentHeader: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
-  commentTitle: {fontWeight: '700', fontSize: 16},
+  commentTitle: {fontWeight: '700', fontSize: 16, letterSpacing: -0.24},
   commentList: {flex: 1},
-  commentHint: {marginTop: 18, fontSize: 13},
-  comment: {marginVertical: 7, fontSize: 13.5, lineHeight: 18},
+  commentHint: {marginTop: 16, fontSize: 13},
+  comment: {marginVertical: 6, fontSize: 13.5, lineHeight: 20},
   commentInputRow: {flexDirection: 'row', alignItems: 'center', gap: 12},
   commentInput: {
     flex: 1,
+    minHeight: 44,
     borderRadius: 22,
-    paddingHorizontal: 15,
-    paddingVertical: 9,
-    fontSize: 13.5,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    fontSize: 14,
   },
   demoNote: {fontSize: 11},
 });

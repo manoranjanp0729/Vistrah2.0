@@ -7,7 +7,7 @@ import {UiText, UiElement} from '../../../components/localized-ui';
 import {SellerSignInAction} from '../../../components/seller-sign-in-action';
 import {useLanguage} from '../../../lib/language';
 import {useRef, useState, type ReactNode} from 'react';
-import {Linking,ScrollView,View,Pressable,StyleSheet,Platform,Image,} from 'react-native';
+import {Linking,ScrollView,View,Pressable,StyleSheet,Platform,Image,useWindowDimensions} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
@@ -41,8 +41,10 @@ export default function Services() {
   const optionsOffset = useRef(0);
   const isDark = mode === 'dark';
 
+  const {width} = useWindowDimensions();
+  const horizontalPadding = width >= 768 ? spacing.pagePaddingDesktop : spacing.pagePadding;
   const [cardsWidth,setCardsWidth]=useState(0);
-  const cardWidth=cardsWidth>10?(cardsWidth-10)/2:undefined;
+  const cardWidth=cardsWidth>12?(cardsWidth-12)/2:undefined;
   const seller = isSellerUser(session.user);
   const sellerLabel = !session.ready
     ? 'Checking account...'
@@ -82,7 +84,7 @@ export default function Services() {
   if (!selected) {
     return (
       <SafeAreaView edges={['left', 'right']} style={styles.page}>
-        <View style={styles.content}>
+        <View style={[styles.content, {paddingHorizontal: horizontalPadding}]}>
           <UiElement as={Heading} title={t('discovery.notFound')} />
           <Text style={styles.muted}>{t('discovery.chooseValid')}</Text>
           <UiElement as={Action} secondary label={t('catalogue.all')} onPress={() => open({})} />
@@ -114,7 +116,7 @@ export default function Services() {
     <SafeAreaView edges={['left', 'right']} style={styles.page}>
       <ScrollView
         ref={scroll}
-        contentContainerStyle={[styles.content, {gap: spacing.sectionGap}]}
+        contentContainerStyle={[styles.content, {paddingHorizontal: horizontalPadding, gap: spacing.sectionGap}]}
         keyboardShouldPersistTaps="handled"
       >
         {isRootLevel&&<EditVistrahContent slug="services"/>}
@@ -904,19 +906,19 @@ const s = StyleSheet.create({
   },
   heroTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
-    lineHeight: Platform.OS === 'android' ? 27 : 24,
+    lineHeight: Platform.OS === 'android' ? 26 : 24,
     fontWeight: '600',
-    letterSpacing: -0.3,
+    letterSpacing: -0.5,
     color: '#ffffff',
   },
   heroSubtitle: {
     fontSize: 12.5,
-    lineHeight: 18,
+    lineHeight: 19,
     color: '#d6c8ed',
   },
 
   searchWrap: {
-    marginTop: 2,
+    marginTop: 4,
   },
 
   // Section Headers
@@ -932,11 +934,12 @@ const s = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: Platform.OS === 'android' ? 18 : 16,
+    lineHeight: Platform.OS === 'android' ? 22 : 19,
     fontWeight: '600',
-    letterSpacing: -0.2,
+    letterSpacing: -0.4,
   },
 
-  flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:10,alignItems:'stretch'},
+  flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:12,alignItems:'stretch'},
   flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,flexGrow:1},
   flowGridPhoto:{width:'100%',aspectRatio:16/9,borderRadius:12,overflow:'hidden',backgroundColor:'#eeeeeed9',flexShrink:0},
   flowImage:{width:'100%',height:'100%'},
@@ -945,7 +948,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    padding: 10,
+    padding: 16,
     borderRadius: 16,
     borderWidth: 1,
     elevation: 2,
@@ -967,7 +970,7 @@ const s = StyleSheet.create({
   },
   // Level 4 Journey Card
   journeyCard: {
-    padding: 14,
+    padding: 16,
     borderRadius: 18,
     gap: 8,
     borderWidth: 1,
@@ -979,6 +982,8 @@ const s = StyleSheet.create({
   },
   journeyTitle: {
     fontSize: 15,
+    lineHeight: 18,
+    letterSpacing: -0.23,
     fontWeight: '600',
   },
   stepsRow: {
@@ -1012,13 +1017,15 @@ const s = StyleSheet.create({
   sellerOfferCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    padding: 12,
+    gap: 12,
+    padding: 16,
     borderRadius: 16,
     borderWidth: 1,
   },
   sellerOfferTitle: {
     fontSize: 13,
+    lineHeight: 16,
+    letterSpacing: -0.2,
     fontWeight: '600',
   },
   addServiceBtn: {
@@ -1028,9 +1035,10 @@ const s = StyleSheet.create({
   addServiceGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 6,
+    minHeight: 36,
     paddingHorizontal: 12,
-    paddingVertical: 9,
+    paddingVertical: 8,
   },
   addServiceText: {
     fontSize: 12,
@@ -1047,14 +1055,15 @@ const s = StyleSheet.create({
   sisterChipsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 6,
+    gap: 8,
   },
   sisterChip: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 9,
-    paddingVertical: 6,
+    gap: 6,
+    minHeight: 36,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 10,
     borderWidth: 1,
   },

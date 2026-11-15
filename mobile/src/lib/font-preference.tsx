@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import {loadAsync} from 'expo-font';
 import {useLanguage} from './language';
 import {FontLocaleContext} from './font-context';
-import {fontFace,fontPreferenceKey,isFontChoice,type FontChoice} from './font-policy';
+import {fontFace,fontOpticalScale,fontPreferenceKey,isFontChoice,type FontChoice} from './font-policy';
 import {selectableFontAssets} from './selectable-font-assets';
 import {webFontFamily} from './web-fonts';
 
@@ -29,10 +29,14 @@ export function FontPreferenceProvider({children}:{children:ReactNode}){
  const activeFont=loaded?font:'montserrat';
  useEffect(()=>{
   if(Platform.OS!=='web')return;
-  const root=document.documentElement,previous=root.style.getPropertyValue('--vistrah-font');
+  const root=document.documentElement,previous=root.style.getPropertyValue('--vistrah-font'),previousScale=root.style.getPropertyValue('--font-optical-scale');
   const family=activeFont==='montserrat'||locale!=='en'?webFontFamily:`'${fontFace('en',400,activeFont)}', 'Vistrah Kannada', 'Vistrah Devanagari', sans-serif`;
   if(family)root.style.setProperty('--vistrah-font',family);
-  return()=>{if(previous)root.style.setProperty('--vistrah-font',previous);else root.style.removeProperty('--vistrah-font');};
+  root.style.setProperty('--font-optical-scale',String(fontOpticalScale(activeFont,locale)));
+  return()=>{
+   if(previous)root.style.setProperty('--vistrah-font',previous);else root.style.removeProperty('--vistrah-font');
+   if(previousScale)root.style.setProperty('--font-optical-scale',previousScale);else root.style.removeProperty('--font-optical-scale');
+  };
  },[activeFont,locale]);
  function setFont(value:string){
   if(!isFontChoice(value)||!loaded)return;

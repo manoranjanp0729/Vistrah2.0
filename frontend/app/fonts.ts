@@ -1,4 +1,19 @@
 import localFont from 'next/font/local';
+import {
+  compensateFontSize,
+  fontChoices,
+  fontOpticalScale,
+  spatialRhythm,
+  typographyMetrics,
+} from '../../shared/fonts';
+
+export {
+  compensateFontSize,
+  fontChoices,
+  fontOpticalScale,
+  spatialRhythm,
+  typographyMetrics,
+};
 
 // Separate italic faces allow the browser to fetch them only when used.
 // next/font emits local, hashed assets and metric-adjusted fallback faces.

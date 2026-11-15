@@ -309,11 +309,11 @@ function StudioProductDetailsModal({
             </View>
 
             {/* Price Details */}
-            <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
+            <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
               <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
-              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3'}}>
+              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3', fontVariant: ['tabular-nums']}}>
                 {meta.product_price || 'Available on request / order'}
               </Text>
             </View>
@@ -550,18 +550,18 @@ function WorkspaceScreen(){
 
     {/* Clean Segmented Control Tabs */}
     <View style={{flexDirection: 'row', backgroundColor: mode === 'light' ? '#eceef3' : '#1e1c26', padding: 4, borderRadius: 14, gap: 4}}>
-      <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel={`My V Ads tab (${accountVideos.length})`} accessibilityState={{selected: studioTab === 'ads'}} onPress={()=>setStudioTab('ads')} style={({pressed})=>({flex: 1, minHeight: 40, borderRadius: 10, backgroundColor: studioTab === 'ads' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'ads' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'ads' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
+      <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel={`My V Ads tab (${accountVideos.length})`} accessibilityState={{selected: studioTab === 'ads'}} onPress={()=>setStudioTab('ads')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'ads' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'ads' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'ads' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="video" size={14} color={studioTab === 'ads' ? colors.accent : colors.muted}/>
         <Text style={{fontSize: 13, fontWeight: studioTab === 'ads' ? '700' : '500', color: studioTab === 'ads' ? colors.text : colors.muted}}><UiText value={"My V Ads"}/></Text>
         <View style={{paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, backgroundColor: studioTab === 'ads' ? (mode === 'light' ? '#e9ecef' : '#2e2b38') : (mode === 'light' ? '#dfdbe7' : '#292534')}}>
-          <Text style={{fontSize: 11, fontWeight: '700', color: studioTab === 'ads' ? colors.text : colors.muted}}>{accountVideos.length}</Text>
+          <Text style={{fontSize: 11, fontWeight: '700', fontVariant: ['tabular-nums'], color: studioTab === 'ads' ? colors.text : colors.muted}}>{accountVideos.length}</Text>
         </View>
       </UiElement>
-      <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel="Upload V Ad tab" accessibilityState={{selected: studioTab === 'upload'}} onPress={()=>setStudioTab('upload')} style={({pressed})=>({flex: 1, minHeight: 40, borderRadius: 10, backgroundColor: studioTab === 'upload' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'upload' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'upload' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
+      <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel="Upload V Ad tab" accessibilityState={{selected: studioTab === 'upload'}} onPress={()=>setStudioTab('upload')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'upload' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'upload' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'upload' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="plus-circle" size={14} color={studioTab === 'upload' ? colors.accent : colors.muted}/>
         <Text style={{fontSize: 13, fontWeight: studioTab === 'upload' ? '700' : '500', color: studioTab === 'upload' ? colors.text : colors.muted}}><UiText value={"+ Upload"}/></Text>
       </UiElement>
-      <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel="Public V Ads tab" accessibilityState={{selected: studioTab === 'public'}} onPress={()=>setStudioTab('public')} style={({pressed})=>({flex: 1, minHeight: 40, borderRadius: 10, backgroundColor: studioTab === 'public' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'public' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'public' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
+      <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel="Public V Ads tab" accessibilityState={{selected: studioTab === 'public'}} onPress={()=>setStudioTab('public')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'public' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'public' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'public' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="globe" size={14} color={studioTab === 'public' ? colors.accent : colors.muted}/>
         <Text style={{fontSize: 13, fontWeight: studioTab === 'public' ? '700' : '500', color: studioTab === 'public' ? colors.text : colors.muted}}><UiText value={"Public V Ads"}/></Text>
       </UiElement>
@@ -579,20 +579,20 @@ function WorkspaceScreen(){
     ) : !data ? (
       <Loading/>
     ) : (
-      <View style={{gap:10}}>
+      <View style={{gap:12}}>
       {/* Filter Tabs */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8, paddingVertical: 2}}>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('ALL')} style={({pressed})=>({paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: filter === 'ALL' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'ALL' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', color: filter === 'ALL' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"All ("}/>{accountVideos.length})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('ALL')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'ALL' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'ALL' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'ALL' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"All ("}/>{accountVideos.length})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('APPROVED')} style={({pressed})=>({paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: filter === 'APPROVED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'APPROVED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', color: filter === 'APPROVED' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"● Approved ("}/>{accountVideos.filter(v=>v.status==='APPROVED').length})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('APPROVED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'APPROVED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'APPROVED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'APPROVED' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"● Approved ("}/>{accountVideos.filter(v=>v.status==='APPROVED').length})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('PENDING')} style={({pressed})=>({paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: filter === 'PENDING' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'PENDING' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', color: filter === 'PENDING' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"⏳ Review ("}/>{pendingCount})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('PENDING')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'PENDING' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'PENDING' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'PENDING' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"⏳ Review ("}/>{pendingCount})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('REJECTED')} style={({pressed})=>({paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: filter === 'REJECTED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'REJECTED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', color: filter === 'REJECTED' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"⚠️ Changes ("}/>{rejectedCount})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('REJECTED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'REJECTED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'REJECTED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'REJECTED' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"⚠️ Changes ("}/>{rejectedCount})</Text>
         </Pressable>
       </ScrollView>
 
@@ -634,7 +634,7 @@ function WorkspaceScreen(){
             return (
               <>
                 <View style={{gap:6}}>
-                  <Text accessibilityRole="header" style={[styles.heading,{fontSize:20,lineHeight:26}]}>{video.title}</Text>
+                  <Text accessibilityRole="header" style={[styles.heading,{fontSize:20,lineHeight:24,letterSpacing:-0.3}]}>{video.title}</Text>
                   {Boolean(cleanDesc)&&<Text style={[styles.muted,{lineHeight:20,fontSize:13.5}]}>{cleanDesc}</Text>}
                 </View>
 
@@ -650,8 +650,9 @@ function WorkspaceScreen(){
                         meta: videoMeta,
                       })}
                       style={({pressed})=>({
+                        minHeight: 36,
                         paddingHorizontal: 12,
-                        paddingVertical: 7,
+                        paddingVertical: 8,
                         borderRadius: 14,
                         backgroundColor: '#e11d48',
                         flexDirection: 'row',
@@ -663,7 +664,7 @@ function WorkspaceScreen(){
                       accessibilityLabel="Explore Product"
                     >
                       <Feather name="shopping-bag" size={13} color="#FFFFFF"/>
-                      <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700'}}>
+                      <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700', fontVariant: ['tabular-nums']}}>
                         <UiText value="Explore Product"/>
                         {videoMeta.product_price ? ` · ${videoMeta.product_price}` : ''}
                       </Text>
@@ -673,8 +674,9 @@ function WorkspaceScreen(){
                     <UiElement as={Pressable}
                       onPress={()=>router.push({pathname:'/advertiser-profile',params:{id:video.advertiser_id || account?.id}})}
                       style={({pressed})=>({
+                        minHeight: 36,
                         paddingHorizontal: 12,
-                        paddingVertical: 7,
+                        paddingVertical: 8,
                         borderRadius: 14,
                         backgroundColor: '#503fbd',
                         flexDirection: 'row',
@@ -712,19 +714,19 @@ function WorkspaceScreen(){
           </View>}
 
           {/* Bottom Action & Metrics */}
-          <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingTop:10,borderTopWidth:1,borderColor:colors.border}}>
+          <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingTop:12,borderTopWidth:1,borderColor:colors.border}}>
             <View style={{flexDirection:'row',alignItems:'center',gap:12}}>
               <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
                 <Feather name="eye" size={13} color={colors.muted}/>
-                <Text style={{fontSize:11,fontWeight:'600',color:colors.text}}>{(video.views??0).toLocaleString()}</Text>
+                <Text style={{fontSize:11,fontWeight:'600',fontVariant:['tabular-nums'],color:colors.text}}>{(video.views??0).toLocaleString()}</Text>
               </View>
               <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
                 <Feather name="heart" size={13} color={colors.accent}/>
-                <Text style={{fontSize:11,fontWeight:'600',color:colors.text}}>{(video.likes??0).toLocaleString()}</Text>
+                <Text style={{fontSize:11,fontWeight:'600',fontVariant:['tabular-nums'],color:colors.text}}>{(video.likes??0).toLocaleString()}</Text>
               </View>
               <View style={{flexDirection:'row',alignItems:'center',gap:4}}>
                 <Feather name="message-circle" size={13} color={colors.muted}/>
-                <Text style={{fontSize:11,fontWeight:'600',color:colors.text}}>{(video.comments??0).toLocaleString()}</Text>
+                <Text style={{fontSize:11,fontWeight:'600',fontVariant:['tabular-nums'],color:colors.text}}>{(video.comments??0).toLocaleString()}</Text>
               </View>
             </View>
             {isLive&&<UiElement as={Pressable}
@@ -1116,7 +1118,7 @@ function PublicFeedView() {
               </View>
 
               <View style={{gap: 6}}>
-                <Text accessibilityRole="header" style={[styles.heading, {fontSize: 18, lineHeight: 24}]}>
+                <Text accessibilityRole="header" style={[styles.heading, {fontSize: 18, lineHeight: 22, letterSpacing: -0.27}]}>
                   {reel.title}
                 </Text>
                 {Boolean(cleanDesc) && (
@@ -1138,8 +1140,9 @@ function PublicFeedView() {
                       meta: reelMeta,
                     })}
                     style={({pressed})=>({
+                      minHeight: 36,
                       paddingHorizontal: 12,
-                      paddingVertical: 7,
+                      paddingVertical: 8,
                       borderRadius: 14,
                       backgroundColor: '#e11d48',
                       flexDirection: 'row',
@@ -1151,7 +1154,7 @@ function PublicFeedView() {
                     accessibilityLabel="Explore Product"
                   >
                     <Feather name="shopping-bag" size={13} color="#FFFFFF"/>
-                    <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700'}}>
+                    <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700', fontVariant: ['tabular-nums']}}>
                       <UiText value="Explore Product"/>
                       {reelMeta.product_price ? ` · ${reelMeta.product_price}` : ''}
                     </Text>
@@ -1161,8 +1164,9 @@ function PublicFeedView() {
                   <UiElement as={Pressable}
                     onPress={()=>router.push({pathname:'/advertiser-profile',params:{id:reel.advertiser?.id}})}
                     style={({pressed})=>({
+                      minHeight: 36,
                       paddingHorizontal: 12,
-                      paddingVertical: 7,
+                      paddingVertical: 8,
                       borderRadius: 14,
                       backgroundColor: '#503fbd',
                       flexDirection: 'row',
@@ -1197,21 +1201,21 @@ function PublicFeedView() {
                   flexDirection: 'row',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  paddingTop: 10,
+                  paddingTop: 12,
                   borderTopWidth: 1,
                   borderColor: colors.border,
                 }}
               >
-                <View style={{flexDirection: 'row', alignItems: 'center', gap: 14}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', gap: 12}}>
                   <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
                     <Feather name="heart" size={14} color={colors.accent} />
-                    <Text style={{fontSize: 12, fontWeight: '600', color: colors.text}}>
+                    <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: colors.text}}>
                       {(reel.likes_count ?? 0).toLocaleString()}
                     </Text>
                   </View>
                   <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
                     <Feather name="message-circle" size={14} color={colors.muted} />
-                    <Text style={{fontSize: 12, fontWeight: '600', color: colors.text}}>
+                    <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: colors.text}}>
                       {(reel.comments_count ?? 0).toLocaleString()}
                     </Text>
                   </View>

@@ -363,11 +363,11 @@ const s = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 9,
+    gap: 8,
     borderRadius: 16,
     borderWidth: 1,
-    paddingHorizontal: 10,
-    minHeight: 46,
+    paddingHorizontal: 12,
+    minHeight: 44,
   },
   searchIconWrap: {
     width: 28,
@@ -379,19 +379,21 @@ const s = StyleSheet.create({
   searchInputField: {
     flex: 1,
     minWidth: 0,
-    fontSize: 13.5,
-    lineHeight: 19,
+    fontSize: 14,
+    lineHeight: 20,
     paddingVertical: 8,
   },
   quickTagsScroll: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
     paddingVertical: 2,
   },
   quickTagPill: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    minHeight: 36,
+    justifyContent: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 10,
     borderWidth: 1,
   },
@@ -405,7 +407,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
-    padding: spacing.pagePadding,
+    padding: spacing.cardPaddingCompact,
     borderRadius: 20,
     borderWidth: 1,
   },
@@ -429,11 +431,13 @@ const s = StyleSheet.create({
   },
   providerTitle: {
     fontSize: Platform.OS === 'android' ? 16 : 15,
+    lineHeight: Platform.OS === 'android' ? 19 : 18,
+    letterSpacing: -0.23,
     fontWeight: '600',
   },
   providerCopy: {
     fontSize: 12,
-    lineHeight: 16,
+    lineHeight: 18,
   },
   providerBottomRow: {
     flexDirection: 'row',
@@ -441,7 +445,7 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 4,
     flexWrap: 'wrap',
-    gap: 6,
+    gap: 8,
   },
   providerOfferText: {
     fontSize: 11,
@@ -471,7 +475,6 @@ const s = StyleSheet.create({
   },
   sectionTitle: {
     ...typography.sectionHeading,
-    letterSpacing: -0.2,
   },
 
   // Area 2: Essentials Section
@@ -486,7 +489,7 @@ const s = StyleSheet.create({
     marginTop: 0,
   },
   shortcutsScrollContent: {
-    gap: 10,
+    gap: 12,
     paddingVertical: 2,
   },
   shortcutCard: {

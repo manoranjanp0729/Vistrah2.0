@@ -201,7 +201,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
           <button
             type="button"
             onClick={()=>{setOpen(false);setProductDetailsOpen(true);}}
-            style={{background:'#e11d48',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value={"Explore Product"}/>{adMeta.product_price ? ` · ${adMeta.product_price}` : ''}</span>
@@ -209,7 +209,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)}
-            style={{background:'#503fbd',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#503fbd',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value={"Explore Brand"}/></span>
@@ -217,7 +217,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         )}
         <Link
           href="/seller/v-ads?from=v-ads"
-          style={{background:'rgba(255,255,255,0.22)',color:'#fff',padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:600,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:4}}
+          style={{background:'rgba(255,255,255,0.22)',color:'#fff',minHeight:36,padding:'6px 12px',borderRadius:20,fontSize:12,fontWeight:600,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:4}}
         >
           <UiText value={"Studio"}/>
         </Link>
@@ -250,7 +250,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
 
           <div style={{padding:'12px',borderRadius:10,background:'rgba(225,29,72,0.08)',border:'1px solid rgba(225,29,72,0.3)',display:'grid',gap:2}}>
             <small style={{fontWeight:700,color:'#e11d48',textTransform:'uppercase',fontSize:10.5,letterSpacing:'0.5px'}}><UiText value={"Price Details"}/></small>
-            <div style={{fontSize:20,fontWeight:800,color:'#e11d48'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
+            <div style={{fontSize:20,fontWeight:800,color:'#e11d48',fontVariantNumeric:'tabular-nums'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
           </div>
 
           <div style={{padding:'12px',borderRadius:10,background:'rgba(22,163,74,0.08)',border:'1px solid rgba(22,163,74,0.3)',display:'grid',gap:2}}>
@@ -311,11 +311,11 @@ export function VAdsAdvertiser({id}:{id:string}) {
         <div key={product.id} className={s.panel} style={{display:'grid',gap:8}}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
             <h3 style={{margin:0,fontSize:16}}>{product.title}</h3>
-            <span style={{fontSize:16,fontWeight:800,color:'#e11d48'}}>{listingPrice(product.unit_price_paise)}</span>
+            <span style={{fontSize:16,fontWeight:800,color:'#e11d48',fontVariantNumeric:'tabular-nums'}}>{listingPrice(product.unit_price_paise)}</span>
           </div>
           {Boolean(product.description)&&<p style={{margin:0,fontSize:13,color:'var(--text-secondary)'}}>{product.description}</p>}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,flexWrap:'wrap',paddingTop:4}}>
-            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontSize:12,fontWeight:600}}>
+            <div style={{display:'flex',alignItems:'center',gap:6,color:'#16a34a',fontSize:12,fontWeight:600,fontVariantNumeric:'tabular-nums'}}>
               <Truck size={14}/>
               <span>
                 {product.delivery_fee_paise != null

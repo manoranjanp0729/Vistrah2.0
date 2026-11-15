@@ -114,7 +114,7 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
   const {draft,active,radius,busy,error,message}=state;
   return <UiSection  className="customer-location-entry" aria-label="Customer location">
     <div className="location-entry-heading"><button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}><MapPin size={18} aria-hidden="true"/><UiText value={"Choose your location"}/></button>
-      <p><UiText value={active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}/></p>
+      <p className="tabular-nums"><UiText value={active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}/></p>
     </div>
     <p className="location-entry-privacy">{googleMapsWebKey?<span>{googlePrivacy}</span>:<UiText value={"Location is temporary unless explicitly saved. GPS runs only when you choose “Use my location”. MapTiler receives coordinates for place lookup and maps. VISTRAH receives them when you search nearby providers or save a location."}/>}</p>
     <div id={id} hidden={!open}>

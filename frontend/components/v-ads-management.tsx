@@ -45,7 +45,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
    <button type="button" disabled={busy} onClick={()=>void run(async()=>{await client.deleteVideo(video.id);})}><UiText value={"Delete Ad"}/></button>
    {video.status==='REJECTED'&&video.upload_id&&video.media_status==='VALIDATED'&&<button type="button" disabled={busy} onClick={()=>void run(()=>client.release(video.upload_id!) as Promise<void>)}><UiText value={"Release private upload"}/></button>}
   </div>
-  {showAnalytics&&<div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(110px, 1fr))',gap:10,padding:12,borderRadius:10,background:'var(--surface-soft, rgba(0,0,0,0.04))',border:'1px solid var(--border)'}}>
+  {showAnalytics&&<div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(110px, 1fr))',gap:12,padding:16,borderRadius:10,background:'var(--surface-soft, rgba(0,0,0,0.04))',border:'1px solid var(--border)',fontVariantNumeric:'tabular-nums'}}>
     <div style={{textAlign:'center',padding:8,borderRadius:8,background:'var(--surface)'}}>
       <div style={{fontSize:16,fontWeight:700}}>{views.toLocaleString()}</div>
       <small style={{color:'var(--text-secondary)'}}><UiText value={"Views"}/></small>
@@ -63,7 +63,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
       <small style={{color:'var(--text-secondary)'}}><UiText value={"Engagement"}/></small>
     </div>
   </div>}
-  {showTargeting&&<div style={{display:'grid',gap:10,padding:12,borderRadius:10,background:'var(--surface-soft, rgba(0,0,0,0.04))',border:'1px solid var(--border)'}}>
+  {showTargeting&&<div style={{display:'grid',gap:12,padding:16,borderRadius:10,background:'var(--surface-soft, rgba(0,0,0,0.04))',border:'1px solid var(--border)',fontVariantNumeric:'tabular-nums'}}>
    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:6}}>
     <strong><UiText value={"Geographic Targeting"}/></strong>
     {targeting?.active_revision?<small style={{color:'#16a34a',fontWeight:600}}><UiText value={"Active Rev #"}/>{targeting.active_revision.revision} ({targeting.active_revision.radius_km} km)</small>:<small style={{color:'var(--text-secondary)'}}><UiText value={"Untargeted (shown globally)"}/></small>}

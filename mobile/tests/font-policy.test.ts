@@ -4,7 +4,7 @@ import {readFileSync,readdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import ts from 'typescript';
-import {fontFace,standardWeight,isStandardFamily,fontChoices,isFontChoice,type FontLocale} from '../src/lib/font-policy.ts';
+import {compensateFontSize,fontFace,fontOpticalScale,standardWeight,isStandardFamily,fontChoices,isFontChoice,type FontLocale} from '../src/lib/font-policy.ts';
 
 test('five selectable fonts have all static weights and keep Indian-script families',()=>{
  assert.deepEqual(fontChoices.map(font=>font.label),['Montserrat','Inter','Poppins','Nunito','DM Sans']);
@@ -50,6 +50,18 @@ test('nested weight inheritance, emphasis and explicit families are preserved',(
  assert.equal(isStandardFamily('monospace'),false);
  assert.equal(isStandardFamily(undefined),true);
  assert.equal(isStandardFamily('serif'),true);
+ assert.equal(fontOpticalScale('montserrat','en'),0.94);
+ assert.equal(fontOpticalScale('inter','en'),1);
+ assert.equal(fontOpticalScale('poppins','en'),0.95);
+ assert.equal(fontOpticalScale('nunito','en'),0.98);
+ assert.equal(fontOpticalScale('dm-sans','en'),0.99);
+ assert.equal(fontOpticalScale('montserrat','kn'),1);
+ assert.equal(fontOpticalScale('montserrat','hi'),1);
+ assert.equal(compensateFontSize(14,'montserrat','en'),13.16);
+ assert.equal(compensateFontSize(14,'poppins','en'),13.3);
+ assert.equal(compensateFontSize(14,'nunito','en'),13.72);
+ assert.equal(compensateFontSize(14,'dm-sans','en'),13.86);
+ assert.equal(compensateFontSize(14,'inter','en'),14);
 });
 test('application screens use shared Text/Input so new pages cannot bypass typography',()=>{
  const root=new URL('../src/',import.meta.url);

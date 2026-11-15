@@ -15,21 +15,22 @@ export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',
 
 // Shared text hierarchy across the phone website and native screens.
 export const typography={
- title:{fontSize:24,lineHeight:29,fontWeight:'600'},
- heading:{fontSize:18,lineHeight:23,fontWeight:'600'},
- sectionHeading:{fontSize:18,lineHeight:23,fontWeight:'600'},
- cardTitle:{fontSize:13,lineHeight:18,fontWeight:'600'},
- body:{fontSize:14,lineHeight:20,fontWeight:'400'},
+ title:{fontSize:24,lineHeight:29,letterSpacing:-0.6,fontWeight:'600'},
+ heading:{fontSize:18,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
+ sectionHeading:{fontSize:18,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
+ cardTitle:{fontSize:14,lineHeight:17,letterSpacing:-0.21,fontWeight:'600'},
+ body:{fontSize:14,lineHeight:21,fontWeight:'400'},
  supporting:{fontSize:12,lineHeight:18,fontWeight:'400'},
- label:{fontSize:10,lineHeight:14,letterSpacing:.7},
+ label:{fontSize:10,lineHeight:14,letterSpacing:.6},
  action:{fontSize:13,lineHeight:18,fontWeight:'600'},
  input:{fontSize:14},
+ tabular:{fontVariant:['tabular-nums']},
 } as const;
-// Dense rhythm: related elements 6, page/section flow 8, panel padding 12.
+// Strict 4pt/8pt spatial rhythm across mobile and phone-web surfaces.
 // Keep control sizing and measured grid geometry independent.
-export const spacing={small:4,fieldGap:8,cardGap:6,elementGap:6,regular:12,controlPadding:14,pagePadding:16,pageGap:8,sectionGap:8,sectionPadding:12,pageBottom:16} as const;
+export const spacing={small:4,fieldGap:8,cardGap:8,elementGap:8,feedGap:12,regular:12,controlPadding:12,pagePadding:16,pagePaddingDesktop:24,cardPaddingCompact:16,cardPadding:20,pageGap:12,sectionGap:24,sectionPadding:16,pageBottom:24} as const;
 export const radii={input:14,action:17,surface:20} as const;
-export const controlHeights={compact:44,standard:50,multiline:120} as const;
+export const controlHeights={pill:36,compact:44,standard:44,multiline:120} as const;
 export const layout={pageMaxWidth:900,borderWidth:1} as const;
 
 const makeStyles=(colors:Palette)=>StyleSheet.create({
@@ -37,13 +38,16 @@ const makeStyles=(colors:Palette)=>StyleSheet.create({
   content:{padding:spacing.pagePadding,paddingBottom:spacing.pageBottom,gap:spacing.pageGap,width:'100%',maxWidth:layout.pageMaxWidth,alignSelf:'center'},
   title:{...typography.title,color:colors.text},
   heading:{...typography.heading,color:colors.text},
+  cardTitle:{...typography.cardTitle,color:colors.text},
   text:{...typography.body,color:colors.text},
   muted:{...typography.supporting,color:colors.muted},
   label:{...typography.label,color:colors.muted},
-  card:{padding:spacing.pagePadding,borderRadius:radii.surface,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.border,gap:spacing.cardGap},
+  tabular:{fontVariant:['tabular-nums']},
+  card:{padding:spacing.cardPadding,borderRadius:radii.surface,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.border,gap:spacing.cardGap},
+  cardCompact:{padding:spacing.cardPaddingCompact,borderRadius:radii.surface,backgroundColor:colors.surface,borderWidth:1,borderColor:colors.border,gap:spacing.cardGap},
   row:{flexDirection:'row',alignItems:'center',gap:spacing.regular,flexWrap:'wrap'},
   grid:{flexDirection:'row',flexWrap:'wrap',gap:spacing.regular},
-  input:{backgroundColor:colors.surface,color:colors.text,borderWidth:layout.borderWidth,borderColor:colors.border,borderRadius:radii.input,padding:spacing.regular,...typography.input,minHeight:controlHeights.standard},
+  input:{backgroundColor:colors.surface,color:colors.text,borderWidth:layout.borderWidth,borderColor:colors.border,borderRadius:radii.input,paddingVertical:10,paddingHorizontal:spacing.regular,...typography.input,minHeight:controlHeights.standard},
   divider:{height:layout.borderWidth,backgroundColor:colors.border,marginVertical:spacing.small},
 });
 

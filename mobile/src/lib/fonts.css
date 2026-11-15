@@ -8,6 +8,7 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
+  size-adjust: 94%;
 }
 @font-face {
   font-family: 'Vistrah Montserrat';
@@ -15,6 +16,7 @@
   font-style: italic;
   font-weight: 100 900;
   font-display: swap;
+  size-adjust: 94%;
 }
 @font-face {
   font-family: 'Vistrah Kannada';
@@ -32,9 +34,17 @@
 }
 :root {
   --vistrah-font: 'Vistrah Montserrat', 'Vistrah Kannada', 'Vistrah Devanagari', sans-serif;
+  --font-optical-scale: 0.94;
+  --tracking-page-title: -0.025em;
+  --tracking-card-title: -0.015em;
+  --leading-heading: 1.2;
+  --leading-body: 1.5;
 }
 html, body, button, input, textarea, select {
   font-family: var(--vistrah-font);
+}
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }
 /* React Native Web's base Text/TextInput styles reset the inherited font.
  * Override only those defaults. Preserve explicit font families (especially

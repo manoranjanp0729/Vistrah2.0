@@ -307,7 +307,7 @@ function SellerWorkspace({
           </div>
         </div>
 
-        <div style={{display:'flex',flexDirection:'column',gap:16,alignItems:'center',width:'100%'}}>
+        <div style={{display:'flex',flexDirection:'column',gap:12,alignItems:'center',width:'100%'}}>
           {activeVideos.map(video=>(
             <SellerVideoCard key={video.id} video={video} data={data} refresh={refresh}/>
           ))}
@@ -605,7 +605,7 @@ function PublicAdsFeed(){
           </p>
         </div>
       ):(
-        <div style={{display:'flex',flexDirection:'column',gap:16,alignItems:'center',width:'100%'}}>
+        <div style={{display:'flex',flexDirection:'column',gap:12,alignItems:'center',width:'100%'}}>
           {reels.map(reel=><PublicAdCard key={reel.id} reel={reel}/>)}
         </div>
       )}
@@ -757,7 +757,7 @@ function PublicAdCard({reel}:{reel:Reel}){
               description: cleanDesc,
               meta: reelMeta,
             })}
-            style={{background:'#e11d48',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value="Explore Product"/>{reelMeta.product_price ? ` · ${reelMeta.product_price}` : ''}</span>
@@ -765,7 +765,7 @@ function PublicAdCard({reel}:{reel:Reel}){
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser?.id || '')}
-            style={{background:'#503fbd',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#503fbd',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -1047,7 +1047,7 @@ function SellerVideoCard({
               description: cleanDesc,
               meta: videoMeta,
             })}
-            style={{background:'#e11d48',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value="Explore Product"/>{videoMeta.product_price ? ` · ${videoMeta.product_price}` : ''}</span>
@@ -1055,7 +1055,7 @@ function SellerVideoCard({
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(video.advertiser_id || '')}
-            style={{background:'#503fbd',color:'#fff',padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#503fbd',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -1291,7 +1291,7 @@ function StudioWebProductModal({
             <small style={{fontWeight: 700, color: '#e11d48', textTransform: 'uppercase', fontSize: 10.5, letterSpacing: '0.5px'}}>
               <UiText value="Price Details"/>
             </small>
-            <div style={{fontSize: 20, fontWeight: 800, color: '#e11d48'}}>
+            <div style={{fontSize: 20, fontWeight: 800, color: '#e11d48', fontVariantNumeric: 'tabular-nums'}}>
               {meta.product_price || 'Available on enquiry / order'}
             </div>
           </div>

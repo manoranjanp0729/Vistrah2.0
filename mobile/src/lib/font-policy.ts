@@ -1,15 +1,28 @@
-export type FontLocale='en'|'kn'|'hi';
-export type FontWeight=400|500|600|700;
-export const fontChoices=[
- {id:'montserrat',label:'Montserrat',family:'Montserrat'},
- {id:'inter',label:'Inter',family:'Inter'},
- {id:'poppins',label:'Poppins',family:'Poppins'},
- {id:'nunito',label:'Nunito',family:'Nunito'},
- {id:'dm-sans',label:'DM Sans',family:'DMSans'},
-] as const;
-export type FontChoice=typeof fontChoices[number]['id'];
-export const fontPreferenceKey='vistrah.font';
-export function isFontChoice(value:unknown):value is FontChoice{return fontChoices.some(font=>font.id===value);}
+import {
+  compensateFontSize,
+  fontChoices,
+  fontOpticalScale,
+  fontPreferenceKey,
+  isFontChoice,
+  spatialRhythm,
+  typographyMetrics,
+  type FontChoice,
+  type FontLocale,
+  type FontWeight,
+} from '../../../shared/fonts.ts';
+
+export {
+  compensateFontSize,
+  fontChoices,
+  fontOpticalScale,
+  fontPreferenceKey,
+  isFontChoice,
+  spatialRhythm,
+  typographyMetrics,
+  type FontChoice,
+  type FontLocale,
+  type FontWeight,
+};
 export const fontFamilies={en:'Montserrat',kn:'NotoSansKannada',hi:'NotoSansDevanagari'} as const;
 export const weightNames={400:'Regular',500:'Medium',600:'SemiBold',700:'Bold'} as const;
 export const fontLoadingCopy={

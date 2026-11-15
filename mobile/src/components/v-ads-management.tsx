@@ -37,7 +37,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
  const likes=video.likes??0;
  const comments=video.comments??0;
  const engagementRate=views>0?(((likes+comments)/views)*100).toFixed(1)+'%':'0.0%';
- return <View style={{gap:10}}>
+ return <View style={{gap:12}}>
   <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
    <UiElement as={Action} label={showAnalytics?'Hide Analytics':'Analytics'} secondary disabled={busy} onPress={()=>setShowAnalytics(v=>!v)}/>
    <UiElement as={Action} label={showTargeting?'Hide Geo Targeting':'Geo Targeting'} secondary disabled={busy||loadingTargeting} onPress={()=>void toggleTargeting()}/>
@@ -45,7 +45,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
    <UiElement as={Action} label="Delete Ad" secondary disabled={busy} onPress={()=>void run(async()=>{await client.deleteVideo(video.id);})}/>
    {video.status==='REJECTED'&&video.upload_id&&video.media_status==='VALIDATED'&&<UiElement as={Action} label="Release private upload" secondary disabled={busy} onPress={()=>void run(async()=>{await client.release(video.upload_id!);})}/>}
   </View>
-  {showAnalytics&&<View style={[styles.card,{padding:12,borderRadius:14,gap:8,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor}]}>
+  {showAnalytics&&<View style={[styles.card,{padding:16,borderRadius:14,gap:8,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor}]}>
     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
       <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Ad Analytics & Performance"}/></Text>
       <View style={{paddingHorizontal:8,paddingVertical:3,borderRadius:8,backgroundColor:video.status==='APPROVED'?'#16a34a20':'#ca8a0420'}}>
@@ -54,28 +54,28 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
     </View>
     <View style={{flexDirection:'row',gap:8}}>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color}}>{views.toLocaleString()}</Text>
+        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,fontVariant:['tabular-nums']}}>{views.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Views"}/></Text>
       </View>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color}}>{likes.toLocaleString()}</Text>
+        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,fontVariant:['tabular-nums']}}>{likes.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Likes"}/></Text>
       </View>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color}}>{comments.toLocaleString()}</Text>
+        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,fontVariant:['tabular-nums']}}>{comments.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Comments"}/></Text>
       </View>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:'#16a34a'}}>{engagementRate}</Text>
+        <Text style={{fontSize:16,fontWeight:'700',color:'#16a34a',fontVariant:['tabular-nums']}}>{engagementRate}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Engagement"}/></Text>
       </View>
     </View>
   </View>}
-  {showTargeting&&<View style={[styles.card,{padding:12,borderRadius:14,gap:8}]}>
+  {showTargeting&&<View style={[styles.card,{padding:16,borderRadius:14,gap:8}]}>
    <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Geographic Targeting"}/></Text>
    {loadingTargeting?<Text style={styles.muted}><UiText value={"Loading targeting…"}/></Text>:<>
-    <Text style={styles.muted}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
-    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
+    <Text style={[styles.muted,styles.tabular]}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
+    {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,styles.tabular,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}
     {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:'#dc2626'}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
     {Boolean(targetingNotice)&&<Text style={styles.muted}><UiText value={targetingNotice}/></Text>}
     {targeting?.pending_revision?<Text style={styles.muted}><UiText value={"A pending targeting revision is awaiting administrator review."}/></Text>:<>
@@ -105,5 +105,5 @@ export function DiscardUpload({id,onChanged}:{id:string;onChanged:()=>void}){
 export function VAdsPerformance(){
  const {styles}=useTheme();const [data,setData]=useState<Performance|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
  async function load(page=1){setBusy(true);setError('');try{setData(await client.analytics(page));}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
- return <View style={styles.card}><UiElement as={Heading} title="V Ads performance insights"/><UiElement as={Action} label="Load / refresh performance" secondary disabled={busy} onPress={()=>void load()}/>{Boolean(error)&&<ErrorPanel error={new Error(error)}/>}{data&&<><Text style={styles.muted}>{data.view_policy}</Text><Text style={styles.muted}>{data.totals.videos} <UiText value={"videos · "}/>{data.totals.views} <UiText value={"signed-in views · "}/>{data.totals.likes} <UiText value={"likes · "}/>{data.totals.comments} <UiText value={"visible comments"}/></Text>{data.items.map(row=><Text key={row.id} style={styles.muted}>{row.title} · {row.status} · {row.views} <UiText value={"views · "}/>{row.likes} <UiText value={"likes · "}/>{row.comments} <UiText value={"comments"}/></Text>)}<UiElement as={Action} label="Previous" secondary disabled={busy||data.page===1} onPress={()=>void load(data.page-1)}/><UiElement as={Action} label="Next" secondary disabled={busy||!data.has_more} onPress={()=>void load(data.page+1)}/></>}</View>;
+ return <View style={styles.card}><UiElement as={Heading} title="V Ads performance insights"/><UiElement as={Action} label="Load / refresh performance" secondary disabled={busy} onPress={()=>void load()}/>{Boolean(error)&&<ErrorPanel error={new Error(error)}/>}{data&&<><Text style={styles.muted}>{data.view_policy}</Text><Text style={[styles.muted,styles.tabular]}>{data.totals.videos} <UiText value={"videos · "}/>{data.totals.views} <UiText value={"signed-in views · "}/>{data.totals.likes} <UiText value={"likes · "}/>{data.totals.comments} <UiText value={"visible comments"}/></Text>{data.items.map(row=><Text key={row.id} style={[styles.muted,styles.tabular]}>{row.title} · {row.status} · {row.views} <UiText value={"views · "}/>{row.likes} <UiText value={"likes · "}/>{row.comments} <UiText value={"comments"}/></Text>)}<UiElement as={Action} label="Previous" secondary disabled={busy||data.page===1} onPress={()=>void load(data.page-1)}/><UiElement as={Action} label="Next" secondary disabled={busy||!data.has_more} onPress={()=>void load(data.page+1)}/></>}</View>;
 }

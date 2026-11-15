@@ -125,7 +125,7 @@ export default function Settings() {
           <View style={[s.sectionCard,{backgroundColor:isDark?'#211f2c':'#f9fafb',borderColor:isDark?'#2e2b3c':'#eaedf0'}]}>
             <Text accessibilityRole="header" style={[s.sectionHeading,{color:colors.text}]}>{t('settings.font')}</Text>
             <Text style={[s.sectionHelp,{color:colors.muted}]}>{t('settings.fontHelp')}</Text>
-            <SettingsDropdown label={t('settings.font')} value={fonts.font} disabled={!fonts.ready} options={fontChoices.map(font=>({value:font.id,label:font.label,fontFamily:previewFont(font.id)}))} onSelect={fonts.setFont}/>
+            <SettingsDropdown label={t('settings.font')} value={fonts.font} disabled={!fonts.ready} options={fontChoices.map(font=>({value:font.id,label:font.label,fontFamily:previewFont(font.id),opticalScale:Platform.OS==='web'&&font.id==='montserrat'?1:font.opticalScale}))} onSelect={fonts.setFont}/>
             <Text style={[s.sectionHelp,{color:colors.text,fontSize:18,lineHeight:27}]}>{t('settings.fontPreview')}</Text>
             {language.locale!=='en'&&<Text style={[s.sectionHelp,{color:colors.muted}]}>{t('settings.fontLanguageHelp')}</Text>}
             {!!fonts.error&&<Text accessibilityRole="alert" style={{color:colors.error,fontSize:12}}>{t(fonts.error)}</Text>}
@@ -241,7 +241,7 @@ function SettingsDropdown({
 }: {
   label: string;
   value: string;
-  options: {value: string; label: string; color?: string; fontFamily?:string}[];
+  options: {value: string; label: string; color?: string; fontFamily?:string; opticalScale?:number}[];
   onSelect: (value: string) => void;
   disabled: boolean;
 }) {
@@ -251,7 +251,7 @@ function SettingsDropdown({
   const isDark = mode === 'dark';
 
   return (
-    <View style={{gap: 6}}>
+    <View style={{gap: 8}}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={label + ': ' + (selected?.label ?? '')}
@@ -270,7 +270,7 @@ function SettingsDropdown({
         {selected?.color && (
           <View style={[s.colorDot, {backgroundColor: selected.color}]} />
         )}
-        <Text style={[s.dropdownText, {color: colors.text,...(selected?.fontFamily?{fontFamily:selected.fontFamily,fontWeight:'normal' as const}:{})}]}>{selected?.label}</Text>
+        <Text style={[s.dropdownText, {color: colors.text,...(selected?.fontFamily?{fontFamily:selected.fontFamily,fontWeight:'normal' as const,...(selected.opticalScale&&selected.opticalScale!==1?{fontSize:Math.round(13.5*selected.opticalScale*100)/100}:{})}:{})}]}>{selected?.label}</Text>
         <Feather
           name={open ? 'chevron-up' : 'chevron-down'}
           size={18}
@@ -326,7 +326,7 @@ function SettingsDropdown({
                     {
                       color: isSelected ? colors.accent : colors.text,
                       fontWeight: isSelected ? '700' : '500',
-                      ...(option.fontFamily?{fontFamily:option.fontFamily,fontWeight:'normal' as const}:{}),
+                      ...(option.fontFamily?{fontFamily:option.fontFamily,fontWeight:'normal' as const,...(option.opticalScale&&option.opticalScale!==1?{fontSize:Math.round(13*option.opticalScale*100)/100}:{})}:{}),
                     },
                   ]}
                 >
@@ -347,7 +347,7 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   modalCard: {
     width: '100%',
@@ -363,8 +363,8 @@ const s = StyleSheet.create({
     elevation: 10,
   },
   header: {
-    paddingHorizontal: 18,
-    paddingVertical: 14,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -377,21 +377,23 @@ const s = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 19,
+    lineHeight: 23,
+    letterSpacing: -0.48,
     fontWeight: '700',
   },
   closeButton: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },
   contentContainer: {
     padding: 16,
-    gap: 12,
+    gap: 16,
   },
   sectionCard: {
-    padding: 14,
+    padding: 16,
     borderRadius: 16,
     borderWidth: 1,
     gap: 8,
@@ -404,11 +406,13 @@ const s = StyleSheet.create({
   },
   sectionHeading: {
     fontSize: 16,
+    lineHeight: 19,
+    letterSpacing: -0.24,
     fontWeight: '700',
   },
   sectionHelp: {
     fontSize: 12,
-    lineHeight: 16,
+    lineHeight: 18,
   },
   segmentContainer: {
     flexDirection: 'row',
@@ -417,8 +421,8 @@ const s = StyleSheet.create({
     borderWidth: 1,
   },
   segmentButton: {
-    minHeight: 28,
-    paddingHorizontal: 10,
+    minHeight: 36,
+    paddingHorizontal: 12,
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
@@ -434,7 +438,7 @@ const s = StyleSheet.create({
     borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
   dropdownText: {
     flex: 1,
@@ -452,12 +456,12 @@ const s = StyleSheet.create({
     overflow: 'hidden',
   },
   dropdownItem: {
-    minHeight: 42,
+    minHeight: 44,
     paddingHorizontal: 12,
     paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    gap: 8,
   },
   dropdownItemText: {
     flex: 1,

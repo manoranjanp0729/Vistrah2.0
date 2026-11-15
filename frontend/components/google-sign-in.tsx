@@ -3,7 +3,7 @@ import {UiText} from "./localized-ui";
 import {useEffect,useRef,useState} from 'react';
 import {loadGoogleIdentity} from '../../shared/google-web';
 
-const TARGET_HEIGHT=48,BASE_HEIGHT=40,SCALE=TARGET_HEIGHT/BASE_HEIGHT;
+const TARGET_HEIGHT=44,BASE_HEIGHT=40,SCALE=TARGET_HEIGHT/BASE_HEIGHT;
 
 export function GoogleSignIn({disabled,onCredential}:{disabled:boolean;onCredential:(credential:string)=>void}){
  const wrap=useRef<HTMLDivElement>(null),host=useRef<HTMLDivElement>(null),latest=useRef({disabled,onCredential}),initialized=useRef(false);

@@ -1,3 +1,9 @@
+# Typography & 4pt/8pt spatial rhythm refinement (source only) - 14 November 2026
+
+- Normalized font metrics & optical scale compensation in `shared/fonts.ts`, `mobile/src/lib/{font-policy.ts,fonts.css,font-preference.tsx}`, `mobile/src/components/typography.tsx`, `frontend/app/fonts.ts`, and `admin/app/fonts.ts` (`montserrat` `0.94x`/`94%`, `inter` `1x`, `poppins` `0.95x`, `nunito` `0.98x`, `dm-sans` `0.99x`; `1x` for `kn`/`hi`; `-0.025em` page titles, `-0.015em` card titles; `1.2` heading / `1.5` body line-heights; `tabular-nums` on prices, `km` distances, and V Ad metrics).
+- Enforced 4pt/8pt spatial rhythm across `frontend/`, `mobile/src/`, and `admin/` (`16px` mobile / `24px` desktop & admin horizontal padding, `16px`/`20px` card padding, `24px` section gaps, `12px` feed gaps, `44px` buttons/inputs, `36px` pills) with zero color, gradient, route, or UX flow changes.
+- Verification & next step: targeted `mobile/tests/font-policy.test.ts` verified; running local/AWS containers untouched. Await user review and approval before commit/push/deploy.
+
 # UI reskin revert (`882085e`) & Unified User/Seller Auth (`7d0522d`) deployed on AWS - 14 November 2026
 
 - Reverted UI reskin commits (`b3ab2b6`, `5ba6606`, `c87fe15`, `e213bf0`) to `882085e` on `origin/main` and deployed `vistrah20-web:latest`, `vistrah20-phone-web:latest`, and `vistrah20-admin:latest` onto AWS EC2 `13.235.104.68`.

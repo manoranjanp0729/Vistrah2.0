@@ -44,17 +44,17 @@ export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:bo
   const {syncIdentity}=useCustomerLocation();const router=useRouter();const next=websiteLoginDestination(nextPath,'/account');
   const [busy,setBusy]=useState(false);const [error,setError]=useState('');
   const [legalAccepted,setLegalAccepted]=useState(false),[whatsappPromotions,setWhatsappPromotions]=useState(false);
-  const [firstTimeGoogle,setFirstTimeGoogle]=useState(false),[pendingGoogleCredential,setPendingGoogleCredential]=useState('');
+  const [pendingGoogleCredential,setPendingGoogleCredential]=useState('');
   const [consentRegister,setConsentRegister]=useState(register);
-  if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);setFirstTimeGoogle(false);setPendingGoogleCredential('');}
-  const showConsentBox=register||firstTimeGoogle||Boolean(pendingGoogleCredential);
+  if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);setPendingGoogleCredential('');}
+  const consentRequiredForButton=register||Boolean(pendingGoogleCredential);
   async function submit(event:React.FormEvent<HTMLFormElement>) {
     event.preventDefault();setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}setBusy(true);const form=new FormData(event.currentTarget);
     try {const result=await api<{user:User}>(`/auth/${register?'register':'login'}`,{method:'POST',body:JSON.stringify({email:form.get('email'),password:form.get('password'),...(register?{name:form.get('name'),privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}: {})})});syncIdentity(result.user.id);notifyUserSession(result.user);const target=nextPath?next:'/account';router.push(target);router.refresh();} catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   async function submitGoogle(credential:string) {
     setError('');
-    if(showConsentBox&&!legalAccepted){setError(signupLegalCopy.required);return;}
+    if(consentRequiredForButton&&!legalAccepted){setError(signupLegalCopy.required);return;}
     setBusy(true);
     try {
       const payload=legalAccepted
@@ -66,7 +66,6 @@ export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:bo
     } catch(e){
       if(e instanceof ApiError&&e.status===428){
         setPendingGoogleCredential(credential);
-        setFirstTimeGoogle(true);
         setError('');
       }else{
         setError((e as Error).message);
@@ -74,50 +73,41 @@ export function AuthForm({register=false,nextPath}:{register?:boolean;seller?:bo
     }finally{setBusy(false);}
   }
   return <div className="auth-page"><div className="auth-form-wrap"><h2><UiText value={register?copy.auth.register:copy.auth.welcome}/></h2><p><UiText value={copy.auth.intro}/></p>{error&&<Notice error message={error}/>}
-    {showConsentBox ? (
-      <div role="region" aria-label="DPDP privacy and marketing consent" style={{display:'grid',gap:10,padding:14,marginBottom:14,borderRadius:12,border:'1px solid var(--border,rgba(15,23,42,0.1))',background:'var(--surface-soft,rgba(15,23,42,0.02))'}}>
-        {Boolean(pendingGoogleCredential)&&<p role="status" style={{margin:0,fontSize:13,fontWeight:600,lineHeight:1.45}}>
-          <UiText value={"Welcome to VISTRAH! Because this is your first Google sign-in, please review and accept our DPDP privacy disclosures below to create your account."}/>
-        </p>}
-        <label className="checkbox-label" style={{alignItems:'flex-start'}}>
-          <input type="checkbox" checked={legalAccepted} disabled={busy} onChange={event=>setLegalAccepted(event.target.checked)} aria-label={signupLegalCopy.acceptance} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/>
-          <span>
-            <UiText value={"I have read and agree to Vistrah Groups Pvt Ltd"}/>{'\u2019s '}
-            <Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link>{', '}
-            <Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', '}
-            <UiText value={"and "}/>
-            <Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Redressal Policy"}/></Link>
-          </span>
-        </label>
-        <label className="checkbox-label" style={{alignItems:'flex-start'}}>
-          <input type="checkbox" checked={whatsappPromotions} disabled={busy} onChange={event=>setWhatsappPromotions(event.target.checked)} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/>
-          <span><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah Groups Pvt Ltd."}/></span>
-        </label>
-        <small id="signup-phase-notice" style={{lineHeight:1.45,color:'var(--text-secondary,#64748b)'}}>
-          {!legalAccepted
-            ? <UiText value={"Accept the required DPDP Privacy Policy & Terms above to enable new account creation."}/>
-            : <>{signupLegalCopy.notice} <UiText value={"Legal links open in a new tab."}/></>}
-        </small>
-        {Boolean(pendingGoogleCredential)&&(
-          <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            <button type="button" className="button" disabled={busy||!legalAccepted} onClick={()=>void submitGoogle(pendingGoogleCredential)}>
-              <UiText value={busy?'Completing Google sign-in…':'Accept & Complete Google Sign-In'}/>
-            </button>
-            <button type="button" className="button secondary" disabled={busy} onClick={()=>{setPendingGoogleCredential('');setFirstTimeGoogle(false);setLegalAccepted(false);}}>
-              <UiText value={"Cancel"}/>
-            </button>
-          </div>
-        )}
-      </div>
-    ) : (
-      <div style={{marginBottom:10,fontSize:13,lineHeight:1.45,color:'var(--text-secondary,#475569)'}}>
-        <label className="checkbox-label" style={{alignItems:'flex-start',gap:8}}>
-          <input type="checkbox" checked={firstTimeGoogle} disabled={busy} onChange={event=>setFirstTimeGoogle(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:3}}/>
-          <span><UiText value={"First time on VISTRAH? Review DPDP Privacy Policy & optional marketing consent before Google sign-in"}/></span>
-        </label>
-      </div>
-    )}
-    <GoogleSignIn disabled={busy||(showConsentBox&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)}/>
+    <div role="region" aria-label="DPDP privacy and marketing consent" style={{display:'grid',gap:10,padding:14,marginBottom:14,borderRadius:12,border:'1px solid var(--border,rgba(15,23,42,0.1))',background:'var(--surface-soft,rgba(15,23,42,0.02))'}}>
+      {Boolean(pendingGoogleCredential)&&<p role="status" style={{margin:0,fontSize:13,fontWeight:600,lineHeight:1.45}}>
+        <UiText value={"Welcome to VISTRAH! Because this is your first Google sign-in, please check the DPDP privacy consent box below to complete your new account."}/>
+      </p>}
+      <label className="checkbox-label" style={{alignItems:'flex-start'}}>
+        <input type="checkbox" checked={legalAccepted} disabled={busy} onChange={event=>setLegalAccepted(event.target.checked)} aria-label={signupLegalCopy.acceptance} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/>
+        <span>
+          <UiText value={"I have read and agree to Vistrah Groups Pvt Ltd"}/>{'\u2019s '}
+          <Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link>{', '}
+          <Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', '}
+          <UiText value={"and "}/>
+          <Link href="/grievance-officer" target="_blank" rel="noopener noreferrer"><UiText value={"Grievance Redressal Policy"}/></Link>
+        </span>
+      </label>
+      <label className="checkbox-label" style={{alignItems:'flex-start'}}>
+        <input type="checkbox" checked={whatsappPromotions} disabled={busy} onChange={event=>setWhatsappPromotions(event.target.checked)} aria-describedby="signup-phase-notice" style={{flexShrink:0,padding:0,marginTop:4}}/>
+        <span><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah Groups Pvt Ltd."}/></span>
+      </label>
+      <small id="signup-phase-notice" style={{lineHeight:1.45,color:'var(--text-secondary,#64748b)'}}>
+        {!legalAccepted
+          ? <UiText value={register||pendingGoogleCredential?"Accept the required DPDP Privacy Policy & Terms above to enable new account creation.":"Required for first-time account creation (returning users with an existing account may continue directly)."}/>
+          : <>{signupLegalCopy.notice} <UiText value={"Legal links open in a new tab."}/></>}
+      </small>
+      {Boolean(pendingGoogleCredential)&&(
+        <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
+          <button type="button" className="button" disabled={busy||!legalAccepted} onClick={()=>void submitGoogle(pendingGoogleCredential)}>
+            <UiText value={busy?'Completing Google sign-in…':'Accept & Complete Google Sign-In'}/>
+          </button>
+          <button type="button" className="button secondary" disabled={busy} onClick={()=>{setPendingGoogleCredential('');setLegalAccepted(false);}}>
+            <UiText value={"Cancel"}/>
+          </button>
+        </div>
+      )}
+    </div>
+    <GoogleSignIn disabled={busy||(consentRequiredForButton&&!legalAccepted)} onCredential={credential=>void submitGoogle(credential)}/>
     <div style={{display:'flex',alignItems:'center',gap:12,margin:'12px 0',color:'var(--text-secondary,#6b7280)',fontSize:12}}><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/><span><UiText value={"or with email"}/></span><div style={{flex:1,height:1,backgroundColor:'var(--border,#e5e7eb)'}}/></div>
     <form onSubmit={submit} className="form">{register&&<label><UiText value={copy.auth.name}/><input name="name" autoComplete="name" minLength={2} maxLength={100} required/></label>}<label><UiText value={copy.auth.email}/><input type="email" name="email" autoComplete="email" maxLength={254} required/></label><HelpPair id="auth.password" className="help-field"><label><UiText value={copy.auth.password}/><input type="password" aria-label={copy.auth.password} name="password" autoComplete={register?'new-password':'current-password'} minLength={register?10:1} maxLength={128} required/>{register&&<small><UiText value={"Use at least 10 characters."}/></small>}</label></HelpPair><button className="button" type="submit" disabled={busy||(register&&!legalAccepted)}>{busy?copy.auth.wait:register?copy.auth.create:copy.auth.signIn}<ArrowUpRight size={17}/></button></form>{!register&&<p><Link className="text-link" href="/forgot-password"><UiText value={copy.auth.forgot}/></Link><ContextHelp id="auth.recovery"/></p>}<p><Link className="text-link" href={`/${register?'login':'register'}${nextPath?'?next='+encodeURIComponent(next):''}`}>{register?copy.auth.existing:copy.auth.new}<ArrowRight size={15}/></Link></p></div></div>;
 }

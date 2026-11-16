@@ -1,12 +1,31 @@
 {
+	debug
 	key_type rsa2048
+	servers {
+		protocols h1 h2
+	}
 }
 
-vistrah.in {
+http://vistrah.in, http://www.vistrah.in {
+	log
+	redir https://{host}{uri} permanent
+}
+
+vistrah.in, www.vistrah.in {
+	log
+	encode zstd gzip
+	@public_options {
+		method OPTIONS
+		not path /api/* /admin*
+	}
 	@phone {
 		header_regexp User-Agent (?i)(android|iphone|ipad|ipod|mobile)
 		not header_regexp User-Agent (?i)(bot|crawler|spider|headless|lighthouse|razorpay|curl|wget|python|java|go-http|axios|facebookexternalhit|whatsapp|slurp|mediapartners|insomnia|postman)
 		not path /robots.txt /sitemap.xml /pricing* /privacy* /terms* /grievance-officer* /refund-policy* /cancellation-policy* /shipping-policy* /contact* /about* /call-vistrah*
+	}
+	handle @public_options {
+		header Allow "GET, HEAD, OPTIONS"
+		respond 204
 	}
 	handle /app {
 		redir * /app/ permanent
@@ -23,10 +42,6 @@ vistrah.in {
 	handle {
 		reverse_proxy web:3000
 	}
-}
-
-www.vistrah.in {
-	redir https://vistrah.in{uri} permanent
 }
 
 api.vistrah.in {

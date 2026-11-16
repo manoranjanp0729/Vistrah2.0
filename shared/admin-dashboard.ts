@@ -24,8 +24,8 @@ export const adminPrimaryDestinations:readonly AdminPrimaryDestination[] = [
     href:'/admin/moderation',
     label:'V Ads & Sellers',
     eyebrow:'MODERATION & DIRECTORY',
-    description:'Review pending V Ads, geo-targeting revisions (024), seller verification, and DPDP user consent.',
-    matches:['moderation','v-ads','providers','provider-applications','provider-services','ownership-claims','publication-drafts'],
+    description:'Review pending V Ads, geo-targeting revisions (024), seller verification, DPDP user consent, and internal HR records.',
+    matches:['moderation','employees','v-ads','providers','provider-applications','provider-services','ownership-claims','publication-drafts'],
   },
   {
     slug:'pricing',
@@ -71,6 +71,7 @@ export const adminTaskGroups:AdminGroup[] = [
   ]},
   {title:'Manage',collapsed:false,items:[
     {slug:'providers',label:'Businesses & providers',description:'Manage business details and availability.'},
+    {slug:'employees',label:'Employees & HR Letters',description:'Manage internal employee records, 2026 Wage Code CTC breakdown, and print-ready A4 HR letters.'},
     {slug:'catalogue',label:'Service catalogue',description:'Manage categories and discoverable services.'},
     {slug:'homepage',label:'Homepage',description:'Edit and publish homepage content.'},
     {slug:'edit-vistrah',label:'Edit Vistrah',description:'Define sections, variations, features, and photos for all pages.'},

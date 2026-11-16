@@ -258,8 +258,14 @@ export function AdminReviewFrame({
       </main>
     );
   }
+  const section =
+    path === '/admin'
+      ? ''
+      : path.startsWith('/admin/')
+        ? (path.split('/')[2] ?? '')
+        : (path.split('/')[1] ?? '');
   return (
-    <AdminWorkspace user={user} section={path.split('/')[2] ?? ''} actions={actions}>
+    <AdminWorkspace user={user} section={section} actions={actions}>
       {children}
     </AdminWorkspace>
   );

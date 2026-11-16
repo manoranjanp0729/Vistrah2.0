@@ -369,6 +369,7 @@ function ModerationHubInner() {
         </div>
 
         <div className="editorial-sublinks">
+          <Link href="/employees">Employees & HR Letters</Link>
           <Link href="/admin/v-ads">V Ads Analytics</Link>
           <Link href="/admin/publication-drafts">Publication Drafts</Link>
           <Link href="/admin/provider-applications">Applications</Link>
@@ -640,53 +641,79 @@ function ModerationHubInner() {
             ))}
           </div>
         )
-      ) : users.length === 0 ? (
-        <div className="editorial-inbox-zero">
-          <span>No user principals match this filter.</span>
-        </div>
       ) : (
-        <div className="editorial-hairline-table" role="list">
-          <div className="editorial-table-head">
-            <span>Principal</span>
-            <span>Role</span>
-            <span>Privacy Policy</span>
-            <span>Consented At</span>
-            <span>Marketing</span>
-            <span>Action</span>
+        <>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '12px',
+              flexWrap: 'wrap',
+              padding: '10px 14px',
+              marginBottom: '12px',
+              border: '1px solid var(--border)',
+              borderRadius: '8px',
+              background: 'var(--surface)',
+            }}
+          >
+            <span style={{fontSize: '0.8125rem', color: 'var(--text-secondary)'}}>
+              <strong style={{color: 'var(--text-primary)'}}>Vistrah Groups Pvt Ltd · Internal HR:</strong>{' '}
+              Manage staff directory, 2026 Indian Labour Code CTC annexures, Appointment & Relieving PDFs.
+            </span>
+            <Link href="/employees" className="button secondary" style={{minHeight: '34px', padding: '6px 12px'}}>
+              Open Employees & HR Letters →
+            </Link>
           </div>
-          {users.map(u => (
-            <button
-              key={u.id}
-              type="button"
-              className={`editorial-grid-row ${
-                selected?.kind === 'user' && selected.id === u.id ? 'selected' : ''
-              }`}
-              onClick={() => setSelected({kind: 'user', id: u.id})}
-            >
-              <div className="editorial-cell-title">
-                <strong>{u.name}</strong>
-                <span className="tabular-nums">
-                  #{u.id} · {u.email}
-                </span>
+          {users.length === 0 ? (
+            <div className="editorial-inbox-zero">
+              <span>No user principals match this filter.</span>
+            </div>
+          ) : (
+            <div className="editorial-hairline-table" role="list">
+              <div className="editorial-table-head">
+                <span>Principal</span>
+                <span>Role</span>
+                <span>Privacy Policy</span>
+                <span>Consented At</span>
+                <span>Marketing</span>
+                <span>Action</span>
               </div>
-              <div>
-                <span className="editorial-chip">
-                  {u.deleted_at ? 'ERASED' : u.seller_enabled ? `${u.role} · SELLER` : u.role}
-                </span>
-              </div>
-              <div className="tabular-nums editorial-cell-meta">
-                {u.privacy_policy_version || 'Pre-025'}
-              </div>
-              <div className="tabular-nums editorial-cell-meta">
-                {u.privacy_consented_at ? date(u.privacy_consented_at) : '—'}
-              </div>
-              <div className="editorial-cell-meta">
-                {u.marketing_consent ? 'Opted In' : 'Standard'}
-              </div>
-              <div className="editorial-action-text">Inspect →</div>
-            </button>
-          ))}
-        </div>
+              {users.map(u => (
+                <button
+                  key={u.id}
+                  type="button"
+                  className={`editorial-grid-row ${
+                    selected?.kind === 'user' && selected.id === u.id ? 'selected' : ''
+                  }`}
+                  onClick={() => setSelected({kind: 'user', id: u.id})}
+                >
+                  <div className="editorial-cell-title">
+                    <strong>{u.name}</strong>
+                    <span className="tabular-nums">
+                      #{u.id} · {u.email}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="editorial-chip">
+                      {u.deleted_at ? 'ERASED' : u.seller_enabled ? `${u.role} · SELLER` : u.role}
+                    </span>
+                  </div>
+                  <div className="tabular-nums editorial-cell-meta">
+                    {u.privacy_policy_version || 'Pre-025'}
+                  </div>
+                  <div className="tabular-nums editorial-cell-meta">
+                    {u.privacy_consented_at ? date(u.privacy_consented_at) : '—'}
+                  </div>
+                  <div className="editorial-cell-meta">
+                    {u.marketing_consent ? 'Opted In' : 'Standard'}
+                  </div>
+                  <div className="editorial-action-text">Inspect →</div>
+                </button>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Pagination Footer */}

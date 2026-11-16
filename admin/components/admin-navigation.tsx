@@ -22,7 +22,12 @@ const navIcons = {
 } as const;
 
 export function resolvePrimaryDestination(pathname: string) {
-  const seg = pathname === '/admin' ? '' : (pathname.split('/')[2] ?? '');
+  const seg =
+    pathname === '/admin'
+      ? ''
+      : pathname.startsWith('/admin/')
+        ? (pathname.split('/')[2] ?? '')
+        : (pathname.split('/')[1] ?? '');
   return (
     adminPrimaryDestinations.find(dest => dest.matches.includes(seg)) ??
     adminPrimaryDestinations[0]

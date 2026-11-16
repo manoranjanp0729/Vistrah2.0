@@ -15,6 +15,7 @@ import {marketplaceUrl,marketplaceItemId,searchMarketplaceEntries,type resolveMa
 import {marketplacePhoto} from '../lib/marketplace-photos';
 import {PhotoCard} from './photo-card';
 import {PhotoCardRail} from './photo-card-rail';
+import {WhyVistrah} from './why-vistrah';
 import styles from './marketplace.module.css';
 
 type Resolved=NonNullable<ReturnType<typeof resolveMarketplaceSelection>>;
@@ -39,6 +40,7 @@ export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;quer
       <h1>{typeName||subcategoryName||categoryName||t('discovery.title')}</h1>
       <p><UiText value={listingType?customerListingCopy.intro:subcategory?t('discovery.subcategoryIntro'):category?t('discovery.categoryIntro'):t('discovery.intro')}/></p>
     </div>
+    <WhyVistrah variant="strip"/>
     {!listingType&&<p><Link className="button secondary" href="/commerce"><UiText value={"Browse published products & service packages"}/></Link></p>}
     {(!listingType||Boolean(query.trim()))&&<form action="/services" className={styles.search} role="search">
       <label htmlFor="marketplace-search" className="sr-only">{t('discovery.searchLabel')}</label>

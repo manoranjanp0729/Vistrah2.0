@@ -15,6 +15,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Field, Heading, ErrorPanel, Action} from '../../../components/ui';
 import {MarketplaceCategories} from '../../../components/marketplace-categories';
+import {WhyVistrah} from '../../../components/why-vistrah';
 import {
   marketplaceItemId,
   resolveMarketplaceSelection,
@@ -352,6 +353,8 @@ export default function Services() {
             </>
           )}
         </LinearGradient>
+
+        <WhyVistrah variant="strip" />
 
         {/* SEARCH BAR (Available on Root, Category, and Subcategory levels) */}
         {(!isListingTypeLevel || Boolean(needle)) && (

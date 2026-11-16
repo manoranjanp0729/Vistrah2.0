@@ -11,7 +11,6 @@ import {HomepageConnect} from '../../components/homepage-connect';
 import {connectCategorySlugs} from '../../../../shared/homepage-connect';
 import {DiscoveryGuide} from '../../components/discovery-guide';
 import {HomepagePartnerBanner} from '../../components/homepage-partner-banner';
-import {WhyVistrah} from '../../components/why-vistrah';
 import {PublishedHomepage, type Homepage} from '../../components/published-homepage';
 import {useLanguage} from '../../lib/language';
 import {servicePhotos} from '../../lib/service-photos';
@@ -294,7 +293,6 @@ export default function Discover() {
       <Page sectioned><EditVistrahContent slug="home" replace>
         {searchSection}
         <ServiceCarousel />
-        <WhyVistrah />
         <PublishedHomepage homepage={homepage.data} categories={catalogue.data} />
         <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
           <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
@@ -316,7 +314,6 @@ export default function Discover() {
     <Page sectioned><EditVistrahContent slug="home" replace>
       {searchSection}
       <ServiceCarousel />
-      <WhyVistrah />
       <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
         <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
         <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />

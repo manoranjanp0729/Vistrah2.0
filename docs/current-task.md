@@ -1,3 +1,9 @@
+# Interactive Click-to-Explain 5-Slide Hero Carousel Live - 16 November 2026
+
+- Shared 5-banner schema & copy (`shared/hero-banners.ts`) + synced widescreen artwork (`frontend/public/hero-journey/{for-users-widescreen,for-businesses-widescreen,v-ads-widescreen,agriconnect-widescreen,healthconnect-family-banner}.jpg` + `/agri-connect` web route): unified all 5 visual banners in exact order (`1. For Users`, `2. For Businesses`, `3. VISTRAH Ads & Marketing`, `4. VISTRAH AgriConnect`, `5. V HealthConnect`) with deliverables, pricing clarity (`₹0` 90-day Basic + 30-day V Ads trial, Creative & Video from `₹499–₹2,999`, Websites from `₹4,999`, Social Media retainers from `₹4,999/mo`), and direct CTAs.
+- Interactive carousel & editorial modal/sheet (`frontend/components/reference-hero-carousel.{tsx,module.css}`, `mobile/src/components/service-carousel.tsx`, `frontend/app/(public)/page.tsx`, `mobile/src/app/(tabs)/index.tsx`): added `Tap banner to see details →` control strip + direct jump pill, click-anywhere editorial modal/bottom sheet (`tabular-nums`, `1px` hairlines, `12px` radius, autoplay paused on hover/focus/open modal), and removed redundant standalone `WhyVistrah` block below the hero.
+- Verification & Zero-SSH rollout: `frontend` and `mobile` `tsc --noEmit` (`0` errors); rolling out `vistrah20-web` and `vistrah20-phone-web` (`api` & `admin` untouched) via ECR (`ap-south-1`) and `infra/aws-test/deploy-ssm.ps1` on `i-08287d636ff13ddf0`.
+
 # Compact Interactive "Why VISTRAH" Disclosure Banner Live - 16 November 2026
 
 - Refactored `shared/why-vistrah.ts`, `frontend/components/why-vistrah.{tsx,module.css}`, and `mobile/src/components/why-vistrah.tsx` into a sleek single-bar hairline banner (`~52px` desktop height, 2-line mobile wrap: **`WHY VISTRAH`** + **"Discover. Connect. Grow. — Direct verified businesses, zero broker spam & 30 days V Ads at ₹0."** + `See why` disclosure trigger with `aria-expanded`).

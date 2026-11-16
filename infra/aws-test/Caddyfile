@@ -1,5 +1,13 @@
+{
+	key_type rsa2048
+}
+
 vistrah.in {
-	@phone header_regexp User-Agent (?i)(android|iphone|ipad|ipod|mobile)
+	@phone {
+		header_regexp User-Agent (?i)(android|iphone|ipad|ipod|mobile)
+		not header_regexp User-Agent (?i)(bot|crawler|spider|headless|lighthouse|razorpay|curl|wget|python|java|go-http|axios|facebookexternalhit|whatsapp|slurp|mediapartners|insomnia|postman)
+		not path /robots.txt /sitemap.xml /pricing* /privacy* /terms* /grievance-officer* /refund-policy* /cancellation-policy* /shipping-policy* /contact* /about* /call-vistrah*
+	}
 	handle /app {
 		redir * /app/ permanent
 	}

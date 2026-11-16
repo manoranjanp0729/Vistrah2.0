@@ -12,7 +12,11 @@ export function LegalPage({document}:{document:LegalDocumentKey}){
     <UiNav aria-label="Legal documents" style={{display:'flex',flexWrap:'wrap',gap:16,marginTop:24}}>
       <Link href="/terms"><UiText value={"Terms & Conditions"}/></Link>
       <Link href="/privacy"><UiText value={"Privacy Policy"}/></Link>
+      <Link href="/refund-policy"><UiText value={"Cancellation & Refund Policy"}/></Link>
+      <Link href="/shipping-policy"><UiText value={"Service Delivery & Shipping Policy"}/></Link>
       <Link href="/grievance-officer"><UiText value={"Grievance Officer"}/></Link>
+      <Link href="/pricing"><UiText value={"Pricing"}/></Link>
+      <Link href="/contact-us"><UiText value={"Contact Us"}/></Link>
       <a href="mailto:grievance@vistrah.in">grievance@vistrah.in</a>
       <a href="mailto:info@vistrah.in">info@vistrah.in</a>
     </UiNav>

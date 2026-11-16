@@ -107,10 +107,10 @@ function buildAnnexureHtml({
       <header class="letterhead">
         <div>
           <div class="brand-mark">VISTRAH</div>
-          <div class="brand-legal">Vistrah Groups Pvt Ltd</div>
+          <div class="brand-legal">Vistrah India Pvt Limited</div>
         </div>
         <div class="letterhead-right">
-          <strong>Vistrah Groups Pvt Ltd</strong>
+          <strong>Vistrah India Pvt Limited</strong>
           <div>Bengaluru, Karnataka, India</div>
           <div>https://vistrah.in &middot; info@vistrah.in</div>
         </div>
@@ -145,11 +145,11 @@ function buildAnnexureHtml({
       </table>
       <p class="clause"><strong>Statutory Notes:</strong> (1) Basic Salary is maintained at &gt;= 50% of total remuneration in accordance with India’s Code on Wages. (2) Income Tax (TDS) applies per chosen tax regime. (3) Gratuity and social security benefits apply per the Code on Social Security.</p>
       <div class="sig-grid">
-        <div><strong>For Vistrah Groups Pvt Ltd</strong><div class="sig-space"></div><strong>${escapeHtml(signatoryName)}</strong><div>${escapeHtml(signatoryTitle)}</div></div>
+        <div><strong>For Vistrah India Pvt Limited</strong><div class="sig-space"></div><strong>${escapeHtml(signatoryName)}</strong><div>${escapeHtml(signatoryTitle)}</div></div>
         <div><strong>Acknowledged by Employee</strong><div class="sig-space"></div><strong>${escapeHtml(emp.full_name)}</strong><div>Employee ID: ${escapeHtml(emp.employee_code)}</div></div>
       </div>
       <footer class="sheet-footer">
-        <span>Vistrah Groups Pvt Ltd &middot; Confidential HR Compensation Record</span>
+        <span>Vistrah India Pvt Limited &middot; Confidential HR Compensation Record</span>
         <span>${escapeHtml(pageLabel)} &middot; ${escapeHtml(refNo)}</span>
       </footer>
     </article>
@@ -194,10 +194,10 @@ function buildPrintableHtmlDocument({
         <header class="letterhead">
           <div>
             <div class="brand-mark">VISTRAH</div>
-            <div class="brand-legal">Vistrah Groups Pvt Ltd</div>
+            <div class="brand-legal">Vistrah India Pvt Limited</div>
           </div>
           <div class="letterhead-right">
-            <strong>Vistrah Groups Pvt Ltd</strong>
+            <strong>Vistrah India Pvt Limited</strong>
             <div>Bengaluru, Karnataka, India</div>
             <div>https://vistrah.in &middot; info@vistrah.in</div>
           </div>
@@ -214,24 +214,24 @@ function buildPrintableHtmlDocument({
         </div>
         <h2 class="doc-heading">Letter of Appointment — ${escapeHtml(emp.designation)} (${escapeHtml(emp.division)})</h2>
         <p>Dear ${escapeHtml(emp.full_name)},</p>
-        <p>We are pleased to appoint you with <strong>Vistrah Groups Pvt Ltd</strong> on the terms and statutory conditions set out below:</p>
+        <p>We are pleased to appoint you with <strong>Vistrah India Pvt Limited</strong> on the terms and statutory conditions set out below:</p>
         <div class="clauses">
-          <div class="clause"><strong>01. Legal Employer &amp; Corporate Identity:</strong> Your employment is with <strong>Vistrah Groups Pvt Ltd</strong> (https://vistrah.in), headquartered in Bengaluru, Karnataka, India. Employee ID: <strong>${escapeHtml(emp.employee_code)}</strong>.</div>
+          <div class="clause"><strong>01. Legal Employer &amp; Corporate Identity:</strong> Your employment is with <strong>Vistrah India Pvt Limited</strong> (https://vistrah.in), headquartered in Bengaluru, Karnataka, India. Employee ID: <strong>${escapeHtml(emp.employee_code)}</strong>.</div>
           <div class="clause"><strong>02. Designation, Division &amp; Category:</strong> Appointed as <strong>${escapeHtml(emp.designation)}</strong> in the <strong>${escapeHtml(emp.division)}</strong> division under <strong>${escapeHtml(EMPLOYMENT_LABELS[emp.employment_type])}</strong> engagement.</div>
           <div class="clause"><strong>03. Date of Joining &amp; Work Location:</strong> Effective <strong>${escapeHtml(formatLongDate(emp.joining_date))}</strong> at <strong>${escapeHtml(emp.work_location)}</strong>, subject to lawful operational mobility within India.</div>
           <div class="clause"><strong>04. Working Hours &amp; Weekly Rest:</strong> Standard <strong>8 hours per day</strong> and <strong>48 hours per week</strong> with paid weekly rest, governed by the Karnataka Shops &amp; Commercial Establishments Act and OSH &amp; Working Conditions Code.</div>
           <div class="clause"><strong>05. Leave Policy &amp; Paid Holidays:</strong> Entitled to statutory Earned Leave (1 day per 20 days worked), Casual/Sick Leave, Maternity/Parental benefits, and Karnataka National &amp; Festival Holidays.</div>
-          <div class="clause"><strong>06. Probation &amp; Symmetrical Notice Period:</strong> ${probationText}Either party (Vistrah Groups Pvt Ltd or Employee) may terminate employment via symmetrical <strong>${escapeHtml(emp.notice_period_days)} days</strong> written notice or proportionate salary in lieu thereof.</div>
+          <div class="clause"><strong>06. Probation &amp; Symmetrical Notice Period:</strong> ${probationText}Either party (Vistrah India Pvt Limited or Employee) may terminate employment via symmetrical <strong>${escapeHtml(emp.notice_period_days)} days</strong> written notice or proportionate salary in lieu thereof.</div>
           <div class="clause"><strong>07. Two (2) Working-Day Full &amp; Final Settlement:</strong> Under the Code on Wages, upon resignation, tenure completion, or separation, all earned wages payable shall be settled within <strong>two (2) working days</strong> from your confirmed Last Working Day upon asset handover.</div>
           <div class="clause"><strong>08. Remuneration (50% Basic Wage Rule) &amp; Statutory Benefits:</strong> Annual CTC is <strong>${escapeHtml(formatInrWhole(breakdown.totalCtc.annualInr))}</strong> per annum (Annexure A), with Basic Salary &gt;= 50% of total remuneration. ${pfText}${esiText}Karnataka PT and TDS apply per law.</div>
-          <div class="clause"><strong>09. Confidentiality, DPDP Act 2023 &amp; IP Assignment:</strong> Strict confidentiality and personal data stewardship under the DPDP Act, 2023 apply. All work-product IP created during employment vests exclusively in <strong>Vistrah Groups Pvt Ltd</strong>. Jurisdiction: Bengaluru, Karnataka.</div>
+          <div class="clause"><strong>09. Confidentiality, DPDP Act 2023 &amp; IP Assignment:</strong> Strict confidentiality and personal data stewardship under the DPDP Act, 2023 apply. All work-product IP created during employment vests exclusively in <strong>Vistrah India Pvt Limited</strong>. Jurisdiction: Bengaluru, Karnataka.</div>
         </div>
         <div class="sig-grid">
-          <div><strong>For Vistrah Groups Pvt Ltd</strong><div class="sig-space"></div><strong>${escapeHtml(signatoryName)}</strong><div>${escapeHtml(signatoryTitle)}</div></div>
+          <div><strong>For Vistrah India Pvt Limited</strong><div class="sig-space"></div><strong>${escapeHtml(signatoryName)}</strong><div>${escapeHtml(signatoryTitle)}</div></div>
           <div><strong>Employee Acceptance &amp; Declaration</strong><div class="sig-space"></div><strong>${escapeHtml(emp.full_name)}</strong><div>Employee ID: ${escapeHtml(emp.employee_code)} &middot; Date: _____________</div></div>
         </div>
         <footer class="sheet-footer">
-          <span>Vistrah Groups Pvt Ltd &middot; Bengaluru, Karnataka, India</span>
+          <span>Vistrah India Pvt Limited &middot; Bengaluru, Karnataka, India</span>
           <span>Page 1 of 2 &middot; ${escapeHtml(refNo)}</span>
         </footer>
       </article>
@@ -265,10 +265,10 @@ function buildPrintableHtmlDocument({
         <header class="letterhead">
           <div>
             <div class="brand-mark">VISTRAH</div>
-            <div class="brand-legal">Vistrah Groups Pvt Ltd</div>
+            <div class="brand-legal">Vistrah India Pvt Limited</div>
           </div>
           <div class="letterhead-right">
-            <strong>Vistrah Groups Pvt Ltd</strong>
+            <strong>Vistrah India Pvt Limited</strong>
             <div>Bengaluru, Karnataka, India</div>
             <div>https://vistrah.in &middot; info@vistrah.in</div>
           </div>
@@ -294,16 +294,16 @@ function buildPrintableHtmlDocument({
           <div class="meta-cell"><span>Last Working Day</span><strong>${escapeHtml(effectiveLwd ? formatLongDate(effectiveLwd) : 'Pending Clearance Date')}</strong></div>
         </div>
         <div class="clauses">
-          <p class="clause">This is to certify that <strong>${escapeHtml(emp.full_name)}</strong> (Employee Code: <strong>${escapeHtml(emp.employee_code)}</strong>) was employed with <strong>Vistrah Groups Pvt Ltd</strong> from <strong>${escapeHtml(formatLongDate(emp.joining_date))}</strong> to <strong>${escapeHtml(effectiveLwd ? formatLongDate(effectiveLwd) : '[Last Working Day]')}</strong>, last holding the designation of <strong>${escapeHtml(emp.designation)}</strong> in the <strong>${escapeHtml(emp.division)}</strong> division at <strong>${escapeHtml(emp.work_location)}</strong>.</p>
+          <p class="clause">This is to certify that <strong>${escapeHtml(emp.full_name)}</strong> (Employee Code: <strong>${escapeHtml(emp.employee_code)}</strong>) was employed with <strong>Vistrah India Pvt Limited</strong> from <strong>${escapeHtml(formatLongDate(emp.joining_date))}</strong> to <strong>${escapeHtml(effectiveLwd ? formatLongDate(effectiveLwd) : '[Last Working Day]')}</strong>, last holding the designation of <strong>${escapeHtml(emp.designation)}</strong> in the <strong>${escapeHtml(emp.division)}</strong> division at <strong>${escapeHtml(emp.work_location)}</strong>.</p>
           <p class="clause">We confirm formal completion of handover of duties, company assets, and credentials, and certify that ${escapeHtml(emp.full_name)} stands relieved effective close of business hours on <strong>${escapeHtml(effectiveLwd ? formatLongDate(effectiveLwd) : '[Last Working Day]')}</strong>, with Full &amp; Final settlement processed under Code on Wages norms and zero pending dues.</p>
-          <p class="clause">During this tenure with <strong>Vistrah Groups Pvt Ltd</strong>, ${escapeHtml(emp.full_name)} demonstrated professionalism, sincerity, and diligence. We wish every success in future endeavours.</p>
+          <p class="clause">During this tenure with <strong>Vistrah India Pvt Limited</strong>, ${escapeHtml(emp.full_name)} demonstrated professionalism, sincerity, and diligence. We wish every success in future endeavours.</p>
         </div>
         <div class="sig-grid">
-          <div><strong>For Vistrah Groups Pvt Ltd</strong><div class="sig-space"></div><strong>${escapeHtml(signatoryName)}</strong><div>${escapeHtml(signatoryTitle)}</div></div>
-          <div><strong>Corporate Seal / Stamp</strong><div class="sig-space"></div><div>Vistrah Groups Pvt Ltd &middot; Bengaluru</div><div>Issued: ${escapeHtml(formatLongDate(issueDate))}</div></div>
+          <div><strong>For Vistrah India Pvt Limited</strong><div class="sig-space"></div><strong>${escapeHtml(signatoryName)}</strong><div>${escapeHtml(signatoryTitle)}</div></div>
+          <div><strong>Corporate Seal / Stamp</strong><div class="sig-space"></div><div>Vistrah India Pvt Limited &middot; Bengaluru</div><div>Issued: ${escapeHtml(formatLongDate(issueDate))}</div></div>
         </div>
         <footer class="sheet-footer">
-          <span>Vistrah Groups Pvt Ltd &middot; https://vistrah.in &middot; Bengaluru, Karnataka</span>
+          <span>Vistrah India Pvt Limited &middot; https://vistrah.in &middot; Bengaluru, Karnataka</span>
           <span>Page 1 of 1 &middot; ${escapeHtml(refNo)}</span>
         </footer>
       </article>
@@ -314,7 +314,7 @@ function buildPrintableHtmlDocument({
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>${escapeHtml(emp.employee_code)} — ${escapeHtml(kind.toUpperCase())} — Vistrah Groups Pvt Ltd</title>
+  <title>${escapeHtml(emp.employee_code)} — ${escapeHtml(kind.toUpperCase())} — Vistrah India Pvt Limited</title>
   <style>
     @page { size: A4 portrait; margin: 12mm 14mm; }
     * { box-sizing: border-box; }
@@ -432,7 +432,7 @@ export function AdminEmployeesTab() {
   const [issueDate, setIssueDate] = useState(todayIso());
   const [signatoryName, setSignatoryName] = useState('Authorized Signatory');
   const [signatoryTitle, setSignatoryTitle] = useState(
-    'Human Resources · Vistrah Groups Pvt Ltd',
+    'Human Resources · Vistrah India Pvt Limited',
   );
 
   const loadEmployees = useCallback(async () => {
@@ -805,7 +805,7 @@ export function AdminEmployeesTab() {
                   letterSpacing: 1,
                 }}
               >
-                VISTRAH GROUPS PVT LTD
+                Vistrah India Pvt Limited
               </Text>
             </View>
             <View style={{alignItems: 'flex-end'}}>
@@ -836,8 +836,7 @@ export function AdminEmployeesTab() {
           {letterKind === 'appointment' && (
             <View style={{gap: 6}}>
               <Text style={{color: '#1e293b', fontSize: 12, lineHeight: 18}}>
-                • Includes all 9 mandatory Indian Labour Code clauses: Legal employer Vistrah
-                Groups Pvt Ltd, Designation &amp; Division, Joining Date &amp; Location, 8h/day
+                • Includes all 9 mandatory Indian Labour Code clauses: Legal employer Vistrah India Pvt Limited, Designation &amp; Division, Joining Date &amp; Location, 8h/day
                 &amp; 48h/week Working Hours, Earned/Casual/Sick Leave,{' '}
                 {activeLetterEmp.probation_months}m Probation &amp; symmetrical{' '}
                 {activeLetterEmp.notice_period_days}-day Notice, 2-working-day F&amp;F wage
@@ -1271,7 +1270,7 @@ export function AdminEmployeesTab() {
             No employee records yet
           </Text>
           <Text style={{color: textSecondary, fontSize: 12, textAlign: 'center'}}>
-            Add internal Vistrah Groups Pvt Ltd employees to calculate 2026 Wage Code CTC breakdowns
+            Add internal Vistrah India Pvt Limited employees to calculate 2026 Wage Code CTC breakdowns
             and print A4 Appointment, Salary, and Relieving PDFs.
           </Text>
         </View>

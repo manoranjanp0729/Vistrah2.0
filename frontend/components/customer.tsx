@@ -174,7 +174,7 @@ export function AccountDataPrivacyControls({user}:{user:User}){
       <p className="eyebrow"><UiText value={"DATA PRIVACY & COMPLIANCE (DPDP ACT 2023)"}/></p>
       <h2 id="dpdp-controls-heading" style={{margin:'4px 0 8px',letterSpacing:'-0.025em'}}><UiText value={"Account Data & Privacy"}/></h2>
       <p style={{margin:0,lineHeight:1.5,color:'var(--text-secondary,#475569)'}}>
-        <UiText value={"Manage your personal and seller profile data processed by Vistrah Groups Pvt Ltd (vistrah.in). Export a machine-readable JSON archive or request account deletion and anonymization."}/>
+        <UiText value={"Manage your personal and seller profile data processed by Vistrah India Pvt Limited (vistrah.in). Export a machine-readable JSON archive or request account deletion and anonymization."}/>
       </p>
     </div>
     <small className="tabular-nums" style={{color:'var(--text-secondary,#64748b)',lineHeight:1.5}}>

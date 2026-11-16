@@ -29,7 +29,7 @@ export function SellerOnboardingCard({description="Keep your existing account an
     <View style={{flexDirection:'row',alignItems:'flex-start',gap:6}}>
       <UiElement as={Pressable} accessibilityRole="checkbox" accessibilityState={{checked:termsAccepted,disabled:busy}} disabled={busy} onPress={()=>setTermsAccepted(v=>!v)} style={{width:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><View style={{width:22,height:22,borderWidth:1,borderColor:colors.accent,borderRadius:4,alignItems:'center',justifyContent:'center'}}><Text style={{color:colors.text}}>{termsAccepted?'\u2713':''}</Text></View></UiElement>
       <Text style={[styles.text,{flex:1,minWidth:0,paddingTop:10}]}>
-        <UiText value={"I accept Vistrah Groups Pvt Ltd’s Seller "}/>
+        <UiText value={"I accept Vistrah India Pvt Limited’s Seller "}/>
         <Text accessibilityRole="link" onPress={()=>router.push('/terms')} style={{color:colors.accent,textDecorationLine:'underline'}}><UiText value={"Terms"}/></Text>{', '}
         <Text accessibilityRole="link" onPress={()=>router.push('/privacy')} style={{color:colors.accent,textDecorationLine:'underline'}}><UiText value={"Privacy Policy"}/></Text>{', & '}
         <Text accessibilityRole="link" onPress={()=>router.push('/grievance-officer')} style={{color:colors.accent,textDecorationLine:'underline'}}><UiText value={"Grievance Policy"}/></Text>

@@ -165,7 +165,7 @@ def test_admin_console_overview_moderation_and_compliance_summary(client, db):
     c_res = client.get("/admin/compliance-summary", headers=admin_headers)
     assert c_res.status_code == 200, c_res.text
     c_data = c_res.json()
-    assert c_data["dpdp"]["fiduciary"]["legal_name"] == "Vistrah Groups Pvt Ltd"
+    assert c_data["dpdp"]["fiduciary"]["legal_name"] == "Vistrah India Pvt Limited"
     assert c_data["dpdp"]["privacy_consented"] >= 2
     assert c_data["dpdp"]["export_events_count"] >= 1
     assert any(r["video_id"] == vid.id and r["radius_km"] == 5 for r in c_data["v_ads_revisions"])

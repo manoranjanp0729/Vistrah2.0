@@ -25,7 +25,7 @@ from .security import current_user, passwords
 router = APIRouter(tags=["DPDP Account Compliance"])
 
 DATA_FIDUCIARY = {
-    "legal_name": "Vistrah Groups Pvt Ltd",
+    "legal_name": "Vistrah India Pvt Limited",
     "domain": "vistrah.in",
     "contact_email": "info@vistrah.in",
     "grievance_officer_email": "grievance@vistrah.in",

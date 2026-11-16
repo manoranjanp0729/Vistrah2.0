@@ -305,7 +305,7 @@ export function EmployeesWorkspace() {
   const [issueDate, setIssueDate] = useState<string>(() => todayIso());
   const [signatoryName, setSignatoryName] = useState('Authorized Signatory');
   const [signatoryTitle, setSignatoryTitle] = useState(
-    'Human Resources · Vistrah Groups Pvt Ltd',
+    'Human Resources · Vistrah India Pvt Limited',
   );
   const [letterPfCappedOverride, setLetterPfCappedOverride] = useState<boolean | null>(null);
 
@@ -737,10 +737,10 @@ export function EmployeesWorkspace() {
                 <header className={styles.letterhead}>
                   <div>
                     <div className={styles.brandMark}>VISTRAH</div>
-                    <div className={styles.brandLegal}>Vistrah Groups Pvt Ltd</div>
+                    <div className={styles.brandLegal}>Vistrah India Pvt Limited</div>
                   </div>
                   <div className={styles.letterheadRight}>
-                    <strong>Vistrah Groups Pvt Ltd</strong>
+                    <strong>Vistrah India Pvt Limited</strong>
                     <div>Bengaluru, Karnataka, India</div>
                     <div>https://vistrah.in · info@vistrah.in</div>
                   </div>
@@ -775,7 +775,7 @@ export function EmployeesWorkspace() {
 
                 <p style={{margin: '0 0 10px'}}>Dear {emp.full_name},</p>
                 <p style={{margin: '0 0 10px'}}>
-                  We are pleased to appoint you with <strong>Vistrah Groups Pvt Ltd</strong> on the
+                  We are pleased to appoint you with <strong>Vistrah India Pvt Limited</strong> on the
                   terms and statutory conditions set out below, aligned with applicable Indian
                   labour legislation:
                 </p>
@@ -783,7 +783,7 @@ export function EmployeesWorkspace() {
                 <div className={styles.clauseList}>
                   <div className={styles.clause}>
                     <strong>01. Legal Employer &amp; Corporate Identity:</strong> Your employment is
-                    with <strong>Vistrah Groups Pvt Ltd</strong> (operating{' '}
+                    with <strong>Vistrah India Pvt Limited</strong> (operating{' '}
                     <em>https://vistrah.in</em>), having its primary corporate establishment at
                     Bengaluru, Karnataka, India. Your unique Employee Identification Code is{' '}
                     <strong className="tabular-nums">{emp.employee_code}</strong>.
@@ -834,7 +834,7 @@ export function EmployeesWorkspace() {
                     ) : (
                       <>No initial probationary period applies to this appointment. </>
                     )}
-                    Either party (Vistrah Groups Pvt Ltd or you) may terminate this employment by
+                    Either party (Vistrah India Pvt Limited or you) may terminate this employment by
                     providing a symmetrical{' '}
                     <strong className="tabular-nums">{emp.notice_period_days} days</strong> written
                     notice, or proportionate salary in lieu thereof, except in cases of proven
@@ -875,14 +875,14 @@ export function EmployeesWorkspace() {
                     records, and personal data strictly in compliance with the Digital Personal Data
                     Protection (DPDP) Act, 2023. All inventions, designs, code, creatives, and
                     materials authored during your employment are works made for hire and vest
-                    exclusively in <strong>Vistrah Groups Pvt Ltd</strong>. Disputes are subject to
+                    exclusively in <strong>Vistrah India Pvt Limited</strong>. Disputes are subject to
                     the exclusive jurisdiction of courts at Bengaluru, Karnataka.
                   </div>
                 </div>
 
                 <div className={styles.signatureGrid}>
                   <div className={styles.sigBlock}>
-                    <strong>For Vistrah Groups Pvt Ltd</strong>
+                    <strong>For Vistrah India Pvt Limited</strong>
                     <div className={styles.sigSpace} />
                     <strong>{signatoryName}</strong>
                     <span>{signatoryTitle}</span>
@@ -899,7 +899,7 @@ export function EmployeesWorkspace() {
                 </div>
 
                 <footer className={styles.sheetFooter}>
-                  <span>Vistrah Groups Pvt Ltd · Bengaluru, Karnataka, India</span>
+                  <span>Vistrah India Pvt Limited · Bengaluru, Karnataka, India</span>
                   <span>Page 1 of 2 · {refNo}</span>
                 </footer>
               </article>
@@ -946,10 +946,10 @@ export function EmployeesWorkspace() {
               <header className={styles.letterhead}>
                 <div>
                   <div className={styles.brandMark}>VISTRAH</div>
-                  <div className={styles.brandLegal}>Vistrah Groups Pvt Ltd</div>
+                  <div className={styles.brandLegal}>Vistrah India Pvt Limited</div>
                 </div>
                 <div className={styles.letterheadRight}>
-                  <strong>Vistrah Groups Pvt Ltd</strong>
+                  <strong>Vistrah India Pvt Limited</strong>
                   <div>Bengaluru, Karnataka, India</div>
                   <div>https://vistrah.in · info@vistrah.in</div>
                 </div>
@@ -1018,7 +1018,7 @@ export function EmployeesWorkspace() {
                 <p className={styles.clause} style={{margin: 0}}>
                   This is to certify that <strong>{emp.full_name}</strong> (Employee Code:{' '}
                   <strong className="tabular-nums">{emp.employee_code}</strong>) was employed with{' '}
-                  <strong>Vistrah Groups Pvt Ltd</strong> from{' '}
+                  <strong>Vistrah India Pvt Limited</strong> from{' '}
                   <strong>{formatLongDate(emp.joining_date)}</strong> to{' '}
                   <strong>
                     {effectiveLwd ? formatLongDate(effectiveLwd) : '[Last Working Day]'}
@@ -1036,12 +1036,12 @@ export function EmployeesWorkspace() {
                     {effectiveLwd ? formatLongDate(effectiveLwd) : '[Last Working Day]'}
                   </strong>
                   . Full and Final (F&amp;F) wage settlement has been processed in accordance with
-                  Vistrah Groups Pvt Ltd’s statutory clearance norms under the Code on Wages, with
+                  Vistrah India Pvt Limited’s statutory clearance norms under the Code on Wages, with
                   no pending dues owed to the company.
                 </p>
 
                 <p className={styles.clause} style={{margin: 0}}>
-                  During this tenure with <strong>Vistrah Groups Pvt Ltd</strong>, we found{' '}
+                  During this tenure with <strong>Vistrah India Pvt Limited</strong>, we found{' '}
                   {emp.full_name} to be sincere, dependable, and professional in the discharge of
                   duties. Continuing post-employment obligations regarding company confidentiality
                   and DPDP Act, 2023 personal data protection remain in effect per the Appointment
@@ -1056,7 +1056,7 @@ export function EmployeesWorkspace() {
 
               <div className={styles.signatureGrid}>
                 <div className={styles.sigBlock}>
-                  <strong>For Vistrah Groups Pvt Ltd</strong>
+                  <strong>For Vistrah India Pvt Limited</strong>
                   <div className={styles.sigSpace} />
                   <strong>{signatoryName}</strong>
                   <span>{signatoryTitle}</span>
@@ -1065,13 +1065,13 @@ export function EmployeesWorkspace() {
                 <div className={styles.sigBlock}>
                   <strong>Corporate Seal / Stamp</strong>
                   <div className={styles.sigSpace} />
-                  <span>Vistrah Groups Pvt Ltd · Bengaluru</span>
+                  <span>Vistrah India Pvt Limited · Bengaluru</span>
                   <span className="tabular-nums">Issued: {formatLongDate(issueDate)}</span>
                 </div>
               </div>
 
               <footer className={styles.sheetFooter}>
-                <span>Vistrah Groups Pvt Ltd · https://vistrah.in · Bengaluru, Karnataka</span>
+                <span>Vistrah India Pvt Limited · https://vistrah.in · Bengaluru, Karnataka</span>
                 <span>Page 1 of 1 · {refNo}</span>
               </footer>
             </article>
@@ -1126,7 +1126,7 @@ export function EmployeesWorkspace() {
               {editingId !== null ? 'Edit Employee & Payout KYC' : 'Add Internal Employee'}
             </h2>
             <p className={styles.sectionLead}>
-              Vistrah Groups Pvt Ltd · Identity, role, 2026 Wage Code CTC flags, and bank payout
+              Vistrah India Pvt Limited · Identity, role, 2026 Wage Code CTC flags, and bank payout
               details.
             </p>
 
@@ -2336,10 +2336,10 @@ function SalaryAnnexureSheet({
       <header className={styles.letterhead}>
         <div>
           <div className={styles.brandMark}>VISTRAH</div>
-          <div className={styles.brandLegal}>Vistrah Groups Pvt Ltd</div>
+          <div className={styles.brandLegal}>Vistrah India Pvt Limited</div>
         </div>
         <div className={styles.letterheadRight}>
-          <strong>Vistrah Groups Pvt Ltd</strong>
+          <strong>Vistrah India Pvt Limited</strong>
           <div>Bengaluru, Karnataka, India</div>
           <div>https://vistrah.in · info@vistrah.in</div>
         </div>
@@ -2477,7 +2477,7 @@ function SalaryAnnexureSheet({
 
       <div className={styles.signatureGrid}>
         <div className={styles.sigBlock}>
-          <strong>For Vistrah Groups Pvt Ltd</strong>
+          <strong>For Vistrah India Pvt Limited</strong>
           <div className={styles.sigSpace} />
           <strong>{signatoryName}</strong>
           <span>{signatoryTitle}</span>
@@ -2491,7 +2491,7 @@ function SalaryAnnexureSheet({
       </div>
 
       <footer className={styles.sheetFooter}>
-        <span>Vistrah Groups Pvt Ltd · Confidential HR Compensation Record</span>
+        <span>Vistrah India Pvt Limited · Confidential HR Compensation Record</span>
         <span>
           {pageLabel} · {refNo}
         </span>
@@ -2532,10 +2532,10 @@ function MonthlyPayslipSheet({
       <header className={styles.letterhead}>
         <div>
           <div className={styles.brandMark}>VISTRAH</div>
-          <div className={styles.brandLegal}>Vistrah Groups Pvt Ltd</div>
+          <div className={styles.brandLegal}>Vistrah India Pvt Limited</div>
         </div>
         <div className={styles.letterheadRight}>
-          <strong>Vistrah Groups Pvt Ltd</strong>
+          <strong>Vistrah India Pvt Limited</strong>
           <div>Bengaluru, Karnataka, India</div>
           <div>https://vistrah.in · info@vistrah.in</div>
         </div>
@@ -2682,7 +2682,7 @@ function MonthlyPayslipSheet({
 
       <div className={styles.signatureGrid}>
         <div className={styles.sigBlock}>
-          <strong>For Vistrah Groups Pvt Ltd</strong>
+          <strong>For Vistrah India Pvt Limited</strong>
           <div className={styles.sigSpace} />
           <strong>{signatoryName}</strong>
           <span>{signatoryTitle}</span>
@@ -2691,12 +2691,12 @@ function MonthlyPayslipSheet({
           <strong>Document Verification</strong>
           <div className={styles.sigSpace} />
           <span>Issued on: {formatLongDate(issueDate)}</span>
-          <span>Queries: info@vistrah.in · Vistrah Groups Pvt Ltd</span>
+          <span>Queries: info@vistrah.in · Vistrah India Pvt Limited</span>
         </div>
       </div>
 
       <footer className={styles.sheetFooter}>
-        <span>Vistrah Groups Pvt Ltd · Confidential Payroll Statement</span>
+        <span>Vistrah India Pvt Limited · Confidential Payroll Statement</span>
         <span>Page 1 of 1 · {refNo}</span>
       </footer>
     </article>

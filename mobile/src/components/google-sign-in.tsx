@@ -81,7 +81,7 @@ export function GoogleSignIn({
    <View style={{flexDirection:'row',alignItems:'flex-start',gap:6}}>
     <UiElement as={Pressable} accessibilityRole="checkbox" accessibilityLabel={signupLegalCopy.acceptance} accessibilityState={{checked:accepted,disabled}} disabled={disabled} onPress={()=>setAccepted(!accepted)} style={{width:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><View style={{width:22,height:22,borderWidth:1,borderColor:consentAlert?'#dc2626':colors.accent,borderRadius:4,alignItems:'center',justifyContent:'center'}}><Text style={{color:colors.text}}>{accepted?'\u2713':''}</Text></View></UiElement>
     <Text style={[styles.text,{flex:1,minWidth:0,paddingTop:10}]}>
-     <UiText value={"I have read and agree to Vistrah Groups Pvt Ltd"}/>{'\u2019s '}
+     <UiText value={"I have read and agree to Vistrah India Pvt Limited"}/>{'\u2019s '}
      <Text accessibilityRole="link" onPress={()=>router.push('/terms')} style={{color:colors.accent,textDecorationLine:'underline'}}><UiText value={"Terms & Conditions"}/></Text>{', '}
      <Text accessibilityRole="link" onPress={()=>router.push('/privacy')} style={{color:colors.accent,textDecorationLine:'underline'}}><UiText value={"Privacy Policy"}/></Text>{', '}
      <UiText value={"and "}/>
@@ -90,7 +90,7 @@ export function GoogleSignIn({
    </View>
    <View style={{flexDirection:'row',alignItems:'flex-start',gap:6}}>
     <UiElement as={Pressable} accessibilityRole="checkbox" accessibilityLabel={signupLegalCopy.whatsapp} accessibilityState={{checked:marketing,disabled}} disabled={disabled} onPress={()=>setMarketing(!marketing)} style={{width:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><View style={{width:22,height:22,borderWidth:1,borderColor:colors.accent,borderRadius:4,alignItems:'center',justifyContent:'center'}}><Text style={{color:colors.text}}>{marketing?'\u2713':''}</Text></View></UiElement>
-    <Text style={[styles.text,{flex:1,minWidth:0,paddingTop:10}]}><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah Groups Pvt Ltd."}/></Text>
+    <Text style={[styles.text,{flex:1,minWidth:0,paddingTop:10}]}><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah India Pvt Limited."}/></Text>
    </View>
    {consentAlert?(
     <Text accessibilityRole="alert" style={[styles.text,{color:'#dc2626',fontWeight:'600'}]}><UiText value={consentAlert}/></Text>

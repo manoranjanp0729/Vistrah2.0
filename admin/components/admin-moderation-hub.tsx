@@ -658,7 +658,7 @@ function ModerationHubInner() {
             }}
           >
             <span style={{fontSize: '0.8125rem', color: 'var(--text-secondary)'}}>
-              <strong style={{color: 'var(--text-primary)'}}>Vistrah Groups Pvt Ltd · Internal HR:</strong>{' '}
+              <strong style={{color: 'var(--text-primary)'}}>Vistrah India Pvt Limited · Internal HR:</strong>{' '}
               Manage staff directory, 2026 Indian Labour Code CTC annexures, Appointment & Relieving PDFs.
             </span>
             <Link href="/employees" className="button secondary" style={{minHeight: '34px', padding: '6px 12px'}}>

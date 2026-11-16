@@ -179,7 +179,7 @@ export function GoogleSignIn({
      style={{flexShrink:0,padding:0,marginTop:4}}
     />
     <span>
-     <UiText value={"I have read and agree to Vistrah Groups Pvt Ltd"}/>{'\u2019s '}
+     <UiText value={"I have read and agree to Vistrah India Pvt Limited"}/>{'\u2019s '}
      <Link href="/terms" target="_blank" rel="noopener noreferrer"><UiText value={"Terms & Conditions"}/></Link>{', '}
      <Link href="/privacy" target="_blank" rel="noopener noreferrer"><UiText value={"Privacy Policy"}/></Link>{', '}
      <UiText value={"and "}/>
@@ -195,7 +195,7 @@ export function GoogleSignIn({
      aria-describedby="signup-phase-notice"
      style={{flexShrink:0,padding:0,marginTop:4}}
     />
-    <span><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah Groups Pvt Ltd."}/></span>
+    <span><UiText value={"I consent to receive optional promotional offers, V Ads campaign updates, and marketplace notifications from Vistrah India Pvt Limited."}/></span>
    </label>
    {consentAlert?(
     <p role="alert" style={{margin:0,fontSize:13,fontWeight:600,lineHeight:1.45,color:'#dc2626'}}>

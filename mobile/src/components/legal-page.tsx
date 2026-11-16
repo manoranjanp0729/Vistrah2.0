@@ -9,7 +9,7 @@ import {useTheme} from '../lib/theme';
 export function LegalPage({document}:{document:LegalDocumentKey}){
   const {styles}=useTheme();const content=legalDocuments[document];
   return <Page title={content.title}>
-    <Text style={styles.muted}><UiText value={"Vistrah Groups Pvt Ltd · vistrah.in"}/></Text>
+    <Text style={styles.muted}><UiText value={"Vistrah India Pvt Limited · vistrah.in"}/></Text>
     <Text style={styles.text}>{legalDraftNotice}</Text>
     {content.sections.map(section=><View key={section.title} style={{gap:8}}><Text accessibilityRole="header" style={styles.heading}><UiText value={section.title}/></Text><Text selectable style={styles.text}>{section.text}</Text></View>)}
     {document!=='terms'&&<UiElement as={Action} secondary label="Terms & Conditions" onPress={()=>router.replace('/terms')}/>}

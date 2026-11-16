@@ -56,7 +56,7 @@ function ProfileForm({user}:{user:User}){const {copy,t}=useLanguage();const {sty
     {saved&&<Text accessibilityRole="alert" style={styles.text}><UiText value={copy.profile.saved}/></Text>}
     <View style={[styles.card,{gap:10,marginTop:16}]}>
       <Heading title="Account Data & Privacy (DPDP Act 2023)"/>
-      <Text style={styles.muted}><UiText value={"Vistrah Groups Pvt Ltd (vistrah.in) · Policy "}/>{user.privacy_policy_version||legalVersion}</Text>
+      <Text style={styles.muted}><UiText value={"Vistrah India Pvt Limited (vistrah.in) · Policy "}/>{user.privacy_policy_version||legalVersion}</Text>
       {Boolean(exportMessage)&&<Text style={styles.text}><UiText value={exportMessage}/></Text>}
       <Action label={exporting?'Preparing export…':'Download My Data'} secondary disabled={exporting||deleting} onPress={()=>void exportData()}/>
       <Action label="Privacy Policy" secondary onPress={()=>router.push('/privacy')}/>

@@ -480,7 +480,7 @@ export const MERCHANT_PRICING_FAQS=[
  },
  {
   question:'Do I receive a GST tax invoice for 18% Input Tax Credit (ITC) from Day 31?',
-  answer:'Yes. Your first 30 days of self-serve V Ads are ₹0. For paid campaigns from Day 31 onward—or any approved Studio service—applicable 18% GST is itemised separately on tax invoices issued by Vistrah Groups Pvt Ltd so GST-registered businesses can claim eligible B2B Input Tax Credit using their 15-digit GSTIN.',
+  answer:'Yes. Your first 30 days of self-serve V Ads are ₹0. For paid campaigns from Day 31 onward—or any approved Studio service—applicable 18% GST is itemised separately on tax invoices issued by Vistrah India Pvt Limited so GST-registered businesses can claim eligible B2B Input Tax Credit using their 15-digit GSTIN.',
  },
  {
   question:'How does the ₹0 90-day Free Basic Membership work alongside Free First Month V Ads?',

@@ -195,7 +195,7 @@ def test_export_and_delete_account_preserve_immutable_admin_audit_logs(client, s
 
     exported = export_res.json()
     assert exported["schema_version"] == "dpdp-2023-v1"
-    assert exported["data_fiduciary"]["legal_name"] == "Vistrah Groups Pvt Ltd"
+    assert exported["data_fiduciary"]["legal_name"] == "Vistrah India Pvt Limited"
     assert exported["data_fiduciary"]["domain"] == "vistrah.in"
     assert exported["data_fiduciary"]["acknowledgment_sla_hours"] == 24
     assert exported["data_fiduciary"]["resolution_sla_days"] == 15

@@ -1,5 +1,5 @@
 /**
- * 2026 Indian Labour Code Compensation & CTC Calculator — Vistrah Groups Pvt Ltd.
+ * 2026 Indian Labour Code Compensation & CTC Calculator — Vistrah India Pvt Limited.
  *
  * Enforces India's Code on Wages 50% Basic Wage Rule:
  * - Basic Salary >= 50% of Total Remuneration (CTC)

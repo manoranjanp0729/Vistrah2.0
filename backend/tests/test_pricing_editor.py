@@ -125,7 +125,7 @@ def test_admin_can_update_prices_promos_and_faqs_with_audit_trail(client, db):
             "section_id": "faqs",
             "item_type": "faq",
             "title": "Can multi-city enterprise brands request consolidated GST billing?",
-            "description": "Yes, Vistrah Groups Pvt Ltd supports state-wise GSTIN invoicing for multi-outlet campaigns.",
+            "description": "Yes, Vistrah India Pvt Limited supports state-wise GSTIN invoicing for multi-outlet campaigns.",
             "billing_interval": "none",
             "active": True,
         },

@@ -39,7 +39,7 @@ export default function EmployeesScreen() {
             Administrator access required
           </Text>
           <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 13}}>
-            Sign in with an authorized Vistrah Groups Pvt Ltd administrator account to manage
+            Sign in with an authorized Vistrah India Pvt Limited administrator account to manage
             internal employees and HR letters.
           </Text>
           {!user && (
@@ -65,7 +65,7 @@ export default function EmployeesScreen() {
     <Page>
       <View style={{gap: 4, marginBottom: 4}}>
         <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 11, fontWeight: '700', letterSpacing: 1.1}}>
-          VISTRAH GROUPS PVT LTD · INTERNAL HR
+          Vistrah India Pvt Limited · INTERNAL HR
         </Text>
         <Text style={{color: isDark ? '#f8fafc' : '#0f172a', fontSize: 22, fontWeight: '700'}}>
           Employees &amp; HR Letter Generator

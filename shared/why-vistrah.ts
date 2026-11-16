@@ -8,13 +8,20 @@ export type WhyVistrahPillar = {
 };
 
 export const WHY_VISTRAH_HEADER = {
+  badge: 'WHY VISTRAH',
   eyebrow: 'WHY VISTRAH • DISCOVER. CONNECT. GROW.',
+  collapsedSummary:
+    'Discover. Connect. Grow. — Direct verified businesses, zero broker spam & 30 days V Ads at ₹0.',
+  stripLine:
+    '01 Live 2–25 km availability · 02 Direct Call & WhatsApp (zero lead resale) · 03 90d Free Basic + 30d V Ads ₹0',
+  triggerCollapsed: 'See why →',
+  triggerExpanded: 'Hide',
   headline: 'Built for direct local trust—not stale maps or lead brokers.',
   subheadline:
     'Static directories show outdated phone numbers; lead portals resell your inquiry to five callers. VISTRAH pairs live hyperlocal proof with direct owner access across 13 essential sectors.',
   primaryCtaLabel: 'Explore 13 Verticals',
   primaryCtaWebHref: '/services',
-  secondaryCtaLabel: 'List Your Business Free (30 Days V Ads ₹0)',
+  secondaryCtaLabel: 'List Your Business Free — 30 Days V Ads ₹0',
   secondaryCtaWebHref: '/pricing',
   secondaryCtaMobileHref: '/marketing-pricing',
 } as const;

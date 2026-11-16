@@ -13,6 +13,9 @@
 
 export type EmploymentType = 'permanent' | 'probation' | 'fixed_term' | 'intern';
 export type EmployeeStatus = 'active' | 'relieved';
+export type BankAccountType = 'savings' | 'salary' | 'current';
+export type PaymentMode = 'NEFT' | 'IMPS' | 'UPI' | 'BANK_TRANSFER';
+export type SalaryCreditStatus = 'pending' | 'credited';
 
 export interface SalaryCalculationOptions {
   pfApplicable?: boolean;
@@ -239,4 +242,136 @@ export function formatInrWhole(amountInr: number): string {
     currency: 'INR',
     maximumFractionDigits: 0,
   }).format(Math.round(amountInr || 0));
+}
+
+export function maskBankAccount(accountNumber: string | null | undefined): string {
+  const clean = (accountNumber ?? '').trim();
+  if (!clean) return '';
+  if (clean.length <= 4) return `••••${clean}`;
+  return `••••${clean.slice(-4)}`;
+}
+
+export function formatPayMonthLabel(payMonth: string): string {
+  const match = /^(\d{4})-(\d{2})$/.exec((payMonth || '').trim());
+  if (!match) return payMonth;
+  const year = Number(match[1]);
+  const monthIdx = Number(match[2]) - 1;
+  const dt = new Date(Date.UTC(year, monthIdx, 1));
+  if (Number.isNaN(dt.getTime())) return payMonth;
+  return new Intl.DateTimeFormat('en-IN', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(dt);
+}
+
+const ONES = [
+  '',
+  'One',
+  'Two',
+  'Three',
+  'Four',
+  'Five',
+  'Six',
+  'Seven',
+  'Eight',
+  'Nine',
+  'Ten',
+  'Eleven',
+  'Twelve',
+  'Thirteen',
+  'Fourteen',
+  'Fifteen',
+  'Sixteen',
+  'Seventeen',
+  'Eighteen',
+  'Nineteen',
+];
+const TENS = [
+  '',
+  '',
+  'Twenty',
+  'Thirty',
+  'Forty',
+  'Fifty',
+  'Sixty',
+  'Seventy',
+  'Eighty',
+  'Ninety',
+];
+
+function twoDigitWords(n: number): string {
+  if (n < 20) return ONES[n];
+  const ten = Math.floor(n / 10);
+  const rem = n % 10;
+  return rem ? `${TENS[ten]} ${ONES[rem]}` : TENS[ten];
+}
+
+function threeDigitWords(n: number): string {
+  const hundred = Math.floor(n / 100);
+  const rem = n % 100;
+  if (hundred && rem) return `${ONES[hundred]} Hundred ${twoDigitWords(rem)}`;
+  if (hundred) return `${ONES[hundred]} Hundred`;
+  return twoDigitWords(rem);
+}
+
+export function numberToIndianRupeesWords(amountInr: number): string {
+  const n = Math.max(0, Math.round(amountInr || 0));
+  if (n === 0) return 'Rupees Zero Only';
+  const parts: string[] = [];
+  const crore = Math.floor(n / 10_000_000);
+  const lakh = Math.floor((n % 10_000_000) / 100_000);
+  const thousand = Math.floor((n % 100_000) / 1_000);
+  const rest = n % 1_000;
+  if (crore) parts.push(`${threeDigitWords(crore)} Crore`);
+  if (lakh) parts.push(`${twoDigitWords(lakh)} Lakh`);
+  if (thousand) parts.push(`${twoDigitWords(thousand)} Thousand`);
+  if (rest) parts.push(threeDigitWords(rest));
+  return `Rupees ${parts.join(' ')} Only`;
+}
+
+function csvCell(raw: string | number | null | undefined): string {
+  let str = String(raw ?? '').replace(/\r?\n/g, ' ').trim();
+  // Neutralize spreadsheet formula injection
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  if (/[",]/.test(str)) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+export interface BankPayoutCsvRow {
+  employeeCode: string;
+  beneficiaryName: string;
+  accountNumber: string;
+  ifsc: string;
+  bankName: string;
+  netPayableInr: number;
+  narration: string;
+}
+
+export function buildBankPayoutCsv(rows: BankPayoutCsvRow[]): string {
+  const header = [
+    'Employee Code',
+    'Beneficiary Name',
+    'Account Number',
+    'IFSC',
+    'Bank Name',
+    'Net Payable INR',
+    'Narration',
+  ].join(',');
+  const lines = rows.map(r =>
+    [
+      csvCell(r.employeeCode),
+      csvCell(r.beneficiaryName),
+      csvCell(r.accountNumber),
+      csvCell(r.ifsc),
+      csvCell(r.bankName),
+      csvCell(Math.max(0, Math.round(r.netPayableInr))),
+      csvCell(r.narration),
+    ].join(','),
+  );
+  return [header, ...lines].join('\r\n');
 }

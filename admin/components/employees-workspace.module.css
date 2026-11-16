@@ -4,6 +4,14 @@
   gap: 20px;
 }
 
+.topSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .kpiStrip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -93,7 +101,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  min-width: 250px;
+  min-width: 240px;
   flex: 1;
   max-width: 360px;
 }
@@ -105,15 +113,21 @@
   pointer-events: none;
 }
 
-.searchInput {
-  width: 100%;
+.searchInput,
+.monthInput {
   min-height: 38px;
-  padding: 7px 12px 7px 34px;
+  padding: 7px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--surface);
   color: var(--text-primary);
   font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.searchInput {
+  width: 100%;
+  padding-left: 34px;
 }
 
 .tableCard {
@@ -187,6 +201,28 @@
   color: var(--text-secondary);
 }
 
+.bankPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 7px;
+  width: fit-content;
+  font-variant-numeric: tabular-nums;
+}
+
+.bankPillMissing {
+  color: #9a3412;
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -199,12 +235,19 @@
   border: 1px solid var(--border);
   background: var(--surface-soft);
   color: var(--text-secondary);
+  width: fit-content;
 }
 
 .badgeActive {
   border-color: #b7e1cd;
   background: #ecf8f2;
   color: #14532d;
+}
+
+.badgePending {
+  border-color: #fde68a;
+  background: #fef9c3;
+  color: #854d0e;
 }
 
 .badgeRelieved {
@@ -238,6 +281,50 @@
 .docBtn:hover {
   border-color: var(--accent-editorial, #173f35);
   background: var(--surface-soft);
+}
+
+.docBtnPrimary {
+  border-color: var(--accent-editorial, #173f35);
+  background: var(--accent-editorial, #173f35);
+  color: #ffffff;
+}
+
+.docBtnPrimary:hover {
+  opacity: 0.92;
+  background: var(--accent-editorial, #173f35);
+}
+
+.inlineCreditEditor {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-soft);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  align-items: end;
+}
+
+.inlineCreditEditor label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.inlineCreditEditor input,
+.inlineCreditEditor select {
+  min-height: 34px;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .emptyState {
@@ -283,6 +370,15 @@
   font-size: 0.75rem;
   color: var(--text-secondary);
   margin: 0 0 16px;
+}
+
+.subCardHeading {
+  grid-column: 1 / -1;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin: 0 0 2px;
 }
 
 .fieldsetGrid {
@@ -624,6 +720,19 @@
   background: #ecf5f1;
   font-weight: 700;
   color: #0f172a;
+}
+
+.payslipSummaryBox {
+  border: 1.5px solid #0f172a;
+  border-radius: 6px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 12px 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .signatureGrid {

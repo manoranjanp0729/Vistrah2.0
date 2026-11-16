@@ -13,6 +13,7 @@ import {api} from '../lib/api';
 import {toPlayableUrl} from '../lib/v-ads';
 import {AdminEditVistrahTab, AdminHomepageTab, AdminMembershipsTab, AdminVistrahServicesTab} from '../components/admin-manage-tabs';
 import {AdminPricingTab} from '../components/admin-pricing-tab';
+import {AdminEmployeesTab} from '../components/admin-employees-tab';
 import {adminTaskGroups, adminSummary, type AdminOverview} from '../../../shared/admin-dashboard';
 import brandTheme from '../../../shared/brand-theme.json';
 
@@ -40,7 +41,7 @@ const adminTheme = {
   mutedDark: '#94a3b8',
 };
 
-type AdminTab = 'overview' | 'requests' | 'v-ads' | 'commerce' | 'providers' | 'pricing' | 'edit-vistrah' | 'homepage' | 'memberships' | 'vistrah-services' | 'catalogue' | 'audit';
+type AdminTab = 'overview' | 'requests' | 'v-ads' | 'commerce' | 'providers' | 'employees' | 'pricing' | 'edit-vistrah' | 'homepage' | 'memberships' | 'vistrah-services' | 'catalogue' | 'audit';
 
 type RequestItem = {
   id: number;
@@ -469,6 +470,7 @@ export default function AdminDashboard() {
     else if (slug === 'pricing') setActiveTab('pricing');
     else if (slug === 'commerce-listings' || slug === 'commerce-orders') setActiveTab('commerce');
     else if (slug === 'providers' || slug === 'provider-services') setActiveTab('providers');
+    else if (slug === 'employees') setActiveTab('employees');
     else if (slug === 'provider-applications') router.push('/provider-applications');
     else if (slug === 'ownership-claims') router.push('/seller/ownership');
     else if (slug === 'employer-jobs') router.push('/employer-jobs');
@@ -551,7 +553,7 @@ export default function AdminDashboard() {
       key: 'moderation',
       label: 'V Ads & Sellers',
       defaultTab: 'v-ads',
-      matches: ['v-ads', 'providers', 'requests', 'commerce'],
+      matches: ['v-ads', 'providers', 'employees', 'requests', 'commerce'],
       badge: (overviewResult.data?.pending_v_ads ?? 0) + (overviewResult.data?.new_requests ?? 0),
     },
     {
@@ -576,6 +578,7 @@ export default function AdminDashboard() {
     moderation: [
       {key: 'v-ads', label: 'V Ads', badge: overviewResult.data?.pending_v_ads},
       {key: 'providers', label: 'Sellers', badge: overviewResult.data?.pending_sellers},
+      {key: 'employees', label: 'Employees & HR'},
       {key: 'requests', label: 'Enquiries', badge: overviewResult.data?.new_requests},
       {key: 'commerce', label: 'Commerce'},
     ],
@@ -1681,6 +1684,11 @@ export default function AdminDashboard() {
       {/* 14. LIVE PRICING EDITOR TAB */}
       {activeTab === 'pricing' && (
         <AdminPricingTab />
+      )}
+
+      {/* 15. EMPLOYEES & HR LETTER GENERATOR TAB */}
+      {activeTab === 'employees' && (
+        <AdminEmployeesTab />
       )}
     </Page>
   );

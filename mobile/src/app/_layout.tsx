@@ -20,6 +20,7 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
   return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{header:()=> <AppHeader showBack/>,contentStyle:{backgroundColor:colors.background}}}>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="admin-dashboard" options={{title:'Admin dashboard'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="employees" options={{title:'Employees & HR Letters'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="service/[id]" options={{title:'Service details'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="service/find-jobs" options={{title:'Find Jobs'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="employer-jobs" options={{title:'Employer job postings'}}/>

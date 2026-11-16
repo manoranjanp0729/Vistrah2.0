@@ -23,6 +23,7 @@ export function websiteRoute(pathname:string,search:string,categories:Category[]
     '/account/orders':'/payments','/account/membership':'/membership','/account/settings':'/settings',
     '/account/provider-applications':'/provider-applications','/account/finds':'/finds',
     '/sandbox-checkout':'/checkout','/pricing':'/marketing-pricing',
+    '/admin/employees':'/employees',
   };
   if(aliases[path])return aliases[path];
   if(/^\/account\/finds\/[0-9a-f-]{36}$/.test(path))return path.replace('/account','');

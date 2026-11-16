@@ -369,6 +369,7 @@ function ModerationHubInner() {
         </div>
 
         <div className="editorial-sublinks">
+          <Link href="/admin/employees">Employees & HR Letters</Link>
           <Link href="/admin/v-ads">V Ads Analytics</Link>
           <Link href="/admin/publication-drafts">Publication Drafts</Link>
           <Link href="/admin/provider-applications">Applications</Link>

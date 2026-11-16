@@ -46,7 +46,10 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="request/[id]" options={{title:'Service enquiry'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="reset-password" options={{title:'Reset password'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="auth" options={{title:'Your VISTRAH account'}}/>
-    <Stack.Screen dangerouslySingular={appRouteIdentity} name="health-connect" options={{title:'VISTRAH HealthConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="for-users" options={{title:'For Users',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="for-businesses" options={{title:'For Businesses',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="ads-and-marketing" options={{title:'VISTRAH Ads & Marketing',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="health-connect" options={{title:'V HealthConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="agri-connect" options={{title:'VISTRAH AgriConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="marketing-solutions" options={{title:t('marketing.title'),headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="membership" options={{title:t('account.membership')}}/>

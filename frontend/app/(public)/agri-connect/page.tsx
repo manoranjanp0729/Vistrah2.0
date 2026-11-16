@@ -1,5 +1,11 @@
-import {redirect} from 'next/navigation';
+import type {Metadata} from 'next';
+import {HeroStoryPage} from '@/components/hero-story-page';
 
-export default function AgriConnectRedirectPage() {
-  redirect('/services?category=agriculture-and-farming');
+export const metadata: Metadata = {
+  title: 'VISTRAH AgriConnect — Stronger Farmers, Brighter Tomorrow',
+  description: 'Direct produce buyers, certified seeds & irrigation, tractor rentals, and crop advisory.',
+};
+
+export default function AgriConnectPage() {
+  return <HeroStoryPage storyKey="agri" />;
 }

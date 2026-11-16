@@ -1,10 +1,8 @@
 export type HeroBannerKey = 'users' | 'businesses' | 'ads' | 'agri' | 'health';
 
-export type HeroBannerPillar = {
-  num: '01' | '02' | '03' | '04';
-  title: string;
-  priceTag?: string;
-  detail: string;
+export type HeroStat = {
+  value: string;
+  label: string;
 };
 
 export type HeroBannerCta = {
@@ -18,12 +16,12 @@ export type HeroBannerSlide = {
   key: HeroBannerKey;
   stepNumber: '01' | '02' | '03' | '04' | '05';
   badge: string;
+  navTitle: string;
   title: string;
-  bannerSubtext: string;
+  subtitle: string;
   webImageSrc: string;
-  summary: string;
-  pillars: readonly HeroBannerPillar[];
-  pricingNote: string;
+  storyPath: string;
+  stats: readonly HeroStat[];
   primaryCta: HeroBannerCta;
   secondaryCta?: HeroBannerCta;
 };
@@ -35,36 +33,17 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     key: 'users',
     stepNumber: '01',
     badge: 'FOR USERS',
+    navTitle: 'For Users',
     title: 'Find the Right Services on VISTRAH',
-    bannerSubtext: 'Trusted service providers for every need, all in one place.',
+    subtitle: 'Direct verified business owners across 13 sectors—zero broker call spam.',
     webImageSrc: '/hero-journey/for-users-widescreen.jpg',
-    summary:
-      'Skip outdated static map pins and lead-broker portals that resell your phone number to five callers. VISTRAH connects you directly with verified local businesses across India.',
-    pillars: [
-      {
-        num: '01',
-        title: 'Direct Call & WhatsApp — Zero Broker Spam',
-        priceTag: 'DPDP Protected',
-        detail:
-          'Speak directly with verified business owners. Your contact details are never sold or auctioned to third-party lead brokers.',
-      },
-      {
-        num: '02',
-        title: '13 Essential Verticals Under One Roof',
-        priceTag: '13 Sectors',
-        detail:
-          'Compare reviewed providers across Civil & Construction, Real Estate, Legal & Tax, Automobiles, Home Care, Overseas, Healthcare, Agriculture, and Hiring.',
-      },
-      {
-        num: '03',
-        title: 'Live Hyperlocal V Ads Reels (2 km–25 km)',
-        priceTag: '2–25 km Live',
-        detail:
-          'Watch real 60-second work demonstrations and check active locality coverage before you call or request an estimate.',
-      },
+    storyPath: '/for-users',
+    stats: [
+      {value: '13+', label: 'Essential Verticals'},
+      {value: '0', label: 'Lead-Broker Resales'},
+      {value: '2–25 km', label: 'Live V Ads Reels'},
+      {value: '100%', label: 'Direct Owner Access'},
     ],
-    pricingNote:
-      'Free to browse and discover categories · DPDP Act 2023 compliant privacy controls.',
     primaryCta: {
       label: 'Explore Services',
       shortLabel: 'Explore Services',
@@ -72,8 +51,8 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
       mobileRoute: '/services',
     },
     secondaryCta: {
-      label: 'Watch Nearby V Ads',
-      shortLabel: 'V Ads',
+      label: 'Watch Live V Ads',
+      shortLabel: 'Watch V Ads',
       webHref: '/v-ads',
       mobileRoute: '/v-ads',
     },
@@ -82,36 +61,17 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     key: 'businesses',
     stepNumber: '02',
     badge: 'FOR BUSINESSES',
+    navTitle: 'For Businesses',
     title: 'Grow Your Business with VISTRAH',
-    bannerSubtext: 'Reach more customers. Get discovered. Grow faster.',
+    subtitle: '90 days free listing, 30 days V Ads at ₹0, and done-for-you digital studio.',
     webImageSrc: '/hero-journey/for-businesses-widescreen.jpg',
-    summary:
-      'Establish a verified local presence with zero upfront risk, then scale at your own pace with self-serve neighborhood V Ads or done-for-you digital studio support.',
-    pillars: [
-      {
-        num: '01',
-        title: 'Zero-Risk Onboarding & Trial',
-        priceTag: '₹0 Upfront',
-        detail:
-          'Start with 90 Days Free Basic Business Membership plus your First 30 Days of Self-Serve V Ads at ₹0—with transparent Day 31+ monthly rates and zero auto-charges.',
-      },
-      {
-        num: '02',
-        title: 'Done-For-You Creative & Website Creation',
-        priceTag: 'From ₹499 / ₹4,999',
-        detail:
-          'Need assets built for you? VISTRAH Studio crafts brand graphics & reels (from ₹499–₹2,999) and mobile-first websites with WhatsApp enquiry capture (from ₹4,999 one-time).',
-      },
-      {
-        num: '03',
-        title: 'Managed Social Media & Local Reach',
-        priceTag: 'From ₹4,999/mo',
-        detail:
-          'Publish fixed-price packages, receive direct customer enquiries, or add end-to-end Instagram, Facebook, YouTube & Google management.',
-      },
+    storyPath: '/for-businesses',
+    stats: [
+      {value: '90 Days', label: 'Free Basic Listing'},
+      {value: '₹0', label: 'First 30 Days V Ads'},
+      {value: '₹4,999', label: 'Websites Starting'},
+      {value: '0%', label: 'Lead Commission'},
     ],
-    pricingNote:
-      '₹0 due today for 90-day Basic listing & 30-day V Ads trial · Studio services quoted transparently before work begins.',
     primaryCta: {
       label: 'List Your Business Free',
       shortLabel: 'List Free',
@@ -119,7 +79,7 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
       mobileRoute: '/provider',
     },
     secondaryCta: {
-      label: 'View Pricing',
+      label: 'View Full Pricing',
       shortLabel: 'Pricing',
       webHref: '/pricing',
       mobileRoute: '/marketing-pricing',
@@ -129,45 +89,19 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     key: 'ads',
     stepNumber: '03',
     badge: 'VISTRAH ADS & MARKETING',
+    navTitle: 'Ads & Marketing',
     title: 'Advertise with VISTRAH',
-    bannerSubtext: 'Showcase your business to the right audience. More visibility. More growth.',
+    subtitle: 'Self-serve 9:16 V Ads + full-stack creative, website, and social agency.',
     webImageSrc: '/hero-journey/v-ads-widescreen.jpg',
-    summary:
-      'One transparent rate card covering self-serve hyperlocal V Ads and full-stack agency execution—with every build fee, management retainer, and media spend clearly separated.',
-    pillars: [
-      {
-        num: '01',
-        title: 'Creative & Video Production',
-        priceTag: 'From ₹499 – ₹2,999',
-        detail:
-          '9:16 commercial reels, festival & promotional posters, social graphics, and complete brand identity kits at fixed one-time package pricing.',
-      },
-      {
-        num: '02',
-        title: 'Website Creation',
-        priceTag: 'From ₹4,999 one-time',
-        detail:
-          'Mobile-first campaign landing pages (from ₹4,999) and multi-page business websites (from ₹12,999) wired for direct call & WhatsApp lead capture.',
-      },
-      {
-        num: '03',
-        title: 'Social Media Marketing',
-        priceTag: 'From ₹4,999/mo + GST',
-        detail:
-          'End-to-end Instagram, Facebook, YouTube, and Google campaign management—explicitly separating VISTRAH’s management fee from your platform ad spend.',
-      },
-      {
-        num: '04',
-        title: 'In-App V Ads (2 km – 25 km)',
-        priceTag: '₹0 First 30 Days',
-        detail:
-          'Run geo-targeted 9:16 video ads at ₹0 for Month 1, then transparent Day 31+ rates (₹4,500–₹24,000/mo + 18% GST by radius). Outdoor hoardings & LED vans quoted on request.',
-      },
+    storyPath: '/ads-and-marketing',
+    stats: [
+      {value: '₹0', label: 'Month 1 V Ads Trial'},
+      {value: '₹499+', label: 'Creatives & Reels'},
+      {value: '₹4,999+', label: 'Websites & Pages'},
+      {value: '0%', label: 'Ad-Spend Markup'},
     ],
-    pricingNote:
-      '18% GST and third-party platform media spend billed separately · Zero hidden agency markups.',
     primaryCta: {
-      label: 'View Rate Card & Packages',
+      label: 'View Live Rate Card',
       shortLabel: 'Rate Card',
       webHref: '/pricing',
       mobileRoute: '/marketing-pricing',
@@ -183,83 +117,258 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     key: 'agri',
     stepNumber: '04',
     badge: 'VISTRAH AGRICONNECT',
-    title: 'Stronger Farmers, Brighter Tomorrow with VISTRAH',
-    bannerSubtext: 'Access markets, quality inputs, expert advice and modern solutions.',
+    navTitle: 'AgriConnect',
+    title: 'Stronger Farmers, Brighter Tomorrow',
+    subtitle: 'Direct produce buyers, certified inputs, tractor rentals, and soil advisory.',
     webImageSrc: '/hero-journey/agriconnect-widescreen.jpg',
-    summary:
-      'VISTRAH AgriConnect brings verified rural & agricultural specialists onto one direct discovery network—helping farmers cut middleman delays across every crop cycle.',
-    pillars: [
-      {
-        num: '01',
-        title: 'Direct Market & Buyer Access',
-        priceTag: 'Direct Connect',
-        detail:
-          'Connect directly with verified produce buyers, cold-storage operators, transport partners, and local mandi logistics.',
-      },
-      {
-        num: '02',
-        title: 'Quality Inputs & Irrigation Support',
-        priceTag: 'Verified Suppliers',
-        detail:
-          'Locate trusted seed, fertilizer, drip-irrigation, solar pump, and greenhouse equipment suppliers serving your district.',
-      },
-      {
-        num: '03',
-        title: 'Farm Machinery Rentals & Advisory',
-        priceTag: 'On-Demand',
-        detail:
-          'Book tractors, harvesters, drone spraying, soil testing, and practical agronomy guidance with clear upfront terms.',
-      },
+    storyPath: '/agri-connect',
+    stats: [
+      {value: '9', label: 'Agri Subsectors'},
+      {value: '54', label: 'Farming Services'},
+      {value: 'Direct', label: 'Buyer & Rental Links'},
+      {value: '₹0', label: 'Farmer Discovery'},
     ],
-    pricingNote:
-      'Direct farmer-to-provider enquiry · Verify scope, availability, and rates directly with suppliers.',
     primaryCta: {
       label: 'Explore Agri Services',
       shortLabel: 'Agri Services',
-      webHref: '/agri-connect',
-      mobileRoute: '/agri-connect',
+      webHref: '/services?category=agriculture-and-farming',
+      mobileRoute: '/services?category=agriculture-and-farming',
+    },
+    secondaryCta: {
+      label: 'List Agri Business',
+      shortLabel: 'List Agri Service',
+      webHref: '/provider',
+      mobileRoute: '/provider',
     },
   },
   {
     key: 'health',
     stepNumber: '05',
     badge: 'V HEALTHCONNECT',
-    title: 'Better Health for a Brighter Tomorrow on VISTRAH',
-    bannerSubtext:
-      'Trusted healthcare services, expert care and wellness support for you and your family.',
+    navTitle: 'HealthConnect',
+    title: 'Better Health for a Brighter Tomorrow',
+    subtitle: 'Verified clinics, doorstep lab tests, pharmacies, home care, and wellness.',
     webImageSrc: '/hero-journey/healthconnect-family-banner.jpg',
-    summary:
-      'Find reviewed clinics, diagnostic labs, home nursing, and wellness specialists near your neighborhood with direct appointment and enquiry contact.',
-    pillars: [
-      {
-        num: '01',
-        title: 'Verified Doctors, Clinics & Diagnostics',
-        priceTag: 'Local Care',
-        detail:
-          'Discover specialist clinics, dental & eye care, pathology labs, imaging centers, and home sample collection near you.',
-      },
-      {
-        num: '02',
-        title: 'Pharmacies, Home Nursing & Physiotherapy',
-        priceTag: 'At-Home Support',
-        detail:
-          'Connect directly with neighborhood pharmacies, elder care attendants, post-operative nursing, and certified physiotherapists.',
-      },
-      {
-        num: '03',
-        title: 'Fitness, Nutrition & Preventive Wellness',
-        priceTag: 'Family Wellbeing',
-        detail:
-          'Explore yoga studios, strength & conditioning centers, clinical nutritionists, and holistic family wellness programs.',
-      },
+    storyPath: '/health-connect',
+    stats: [
+      {value: '10', label: 'Care Pathways'},
+      {value: '50+', label: 'Health Specialties'},
+      {value: 'At-Home', label: 'Labs & Nursing'},
+      {value: 'Direct', label: 'Clinic Appointments'},
     ],
-    pricingNote:
-      'For medical emergencies call 108 / local emergency services immediately · Verify clinical credentials directly.',
     primaryCta: {
       label: 'Explore Health Services',
       shortLabel: 'Health Services',
       webHref: '/services?category=health-fitness-and-wellness',
       mobileRoute: '/services?category=health-fitness-and-wellness',
     },
+    secondaryCta: {
+      label: 'Register Clinic / Lab',
+      shortLabel: 'Join HealthConnect',
+      webHref: '/provider',
+      mobileRoute: '/provider',
+    },
   },
 ] as const;
+
+export const USER_COMPARISON = {
+  legacyTitle: 'Static Maps & Lead Portals',
+  legacyTag: 'OLD DIRECTORY MODEL',
+  legacyRows: [
+    'Phone number sold to 4–6 competing brokers',
+    'Outdated 2021 pins & closed storefronts',
+    'Paid middleman rankings hide real specialists',
+    'Zero visual proof of actual work quality',
+  ],
+  vistrahTitle: 'VISTRAH Direct Network',
+  vistrahTag: 'VERIFIED OWNER MODEL',
+  vistrahRows: [
+    'Direct Call & WhatsApp to verified owner',
+    'DPDP 2023 privacy—zero lead resale spam',
+    'Live 9:16 V Ads Reels within 2 km–25 km',
+    'Reviewed credentials & upfront scope cards',
+  ],
+} as const;
+
+export const USER_VERTICALS = [
+  {num: '01', slug: 'home-and-everyday-services', title: 'Home Services', caption: 'Repairs, interiors, cleaning & movers', icon: 'home'},
+  {num: '02', slug: 'professional-services', title: 'Legal, Tax & Civil', caption: 'Lawyers, CAs, civil & real estate pros', icon: 'briefcase'},
+  {num: '03', slug: 'automobiles', title: 'Automobiles', caption: 'EVs, servicing, detailing & roadside help', icon: 'truck'},
+  {num: '04', slug: 'health-fitness-and-wellness', title: 'HealthConnect', caption: 'Clinics, labs, home care & fitness', icon: 'heart'},
+  {num: '05', slug: 'agriculture-and-farming', title: 'AgriConnect', caption: 'Machinery, seeds, irrigation & advisory', icon: 'sun'},
+  {num: '06', slug: 'rental-services', title: 'Rentals', caption: 'Homes, commercial spaces, tools & vehicles', icon: 'key'},
+  {num: '07', slug: 'food-and-dining', title: 'Food & Dining', caption: 'Restaurants, cafés, bakeries & catering', icon: 'coffee'},
+  {num: '08', slug: 'shopping-and-local-retail', title: 'Local Retail', caption: 'Electronics, fashion, furniture & makers', icon: 'shopping-bag'},
+  {num: '09', slug: 'education-and-skills', title: 'Education & Skills', caption: 'Tutors, IT courses, exams & coaching', icon: 'book-open'},
+  {num: '10', slug: 'jobs-and-careers', title: 'Jobs & Careers', caption: 'Local hiring, IT roles & career support', icon: 'users'},
+  {num: '11', slug: 'travel-stay-and-experiences', title: 'Travel & Overseas', caption: 'Stays, tours, transfers & visa support', icon: 'compass'},
+  {num: '12', slug: 'beauty-fashion-and-lifestyle', title: 'Beauty & Lifestyle', caption: 'Salons, spas, bridal & studio shoots', icon: 'star'},
+  {num: '13', slug: 'events-and-celebrations', title: 'Events & Pet Care', caption: 'Venues, weddings, decor & vet clinics', icon: 'calendar'},
+] as const;
+
+export const BUSINESS_TIMELINE = [
+  {
+    step: '01',
+    badge: '90 DAYS FREE',
+    price: '₹0',
+    title: 'List Free — Verified Storefront',
+    caption: 'Verify ownership once, pin your locality coverage, and receive direct customer calls.',
+    mockupTitle: 'Verified Business Card',
+    mockupPills: ['✓ Ownership Verified', 'Direct Call & WhatsApp', 'Fixed-Price Packages'],
+  },
+  {
+    step: '02',
+    badge: 'FIRST 30 DAYS ₹0',
+    price: '₹0 Month 1',
+    title: 'Launch V Ads — Hyperlocal 9:16 Reels',
+    caption: 'Broadcast 60s video proof across 2 km–25 km. Transparent Day 31+ rates, zero auto-charge.',
+    mockupTitle: 'Geo-Radius Reel Broadcast',
+    mockupPills: ['2 km · 5 km · 10 km · 25 km', '₹0 Due Today', 'Day 31+ Optional'],
+  },
+  {
+    step: '03',
+    badge: 'DONE-FOR-YOU STUDIO',
+    price: 'From ₹499 / ₹4,999',
+    title: 'Scale With Studio — Creatives, Web & Social',
+    caption: 'Add commercial reels, mobile-first websites, or managed social campaigns anytime.',
+    mockupTitle: 'VISTRAH Studio Stack',
+    mockupPills: ['Reels ₹2,999', 'Websites ₹4,999+', 'Social ₹4,999/mo'],
+  },
+] as const;
+
+export const ADS_STUDIO_PILLARS = [
+  {
+    num: '01',
+    tag: 'BRAND & VIDEO STUDIO',
+    title: 'Creative & Video Production',
+    price: 'From ₹499 – ₹2,999',
+    caption: '9:16 commercial reels, festival posters, and brand identity kits at fixed one-time rates.',
+    tiers: [
+      {label: 'Social Graphic / Banner', rate: '₹499 – ₹699'},
+      {label: 'Promotional Poster', rate: '₹799'},
+      {label: '9:16 Commercial Reel / Logo Kit', rate: '₹2,999'},
+    ],
+  },
+  {
+    num: '02',
+    tag: 'WEB ENGINEERING',
+    title: 'Website Creation & Web Apps',
+    price: 'From ₹4,999 one-time',
+    caption: 'Fast, mobile-first websites wired with instant Call, WhatsApp, and enquiry capture.',
+    tiers: [
+      {label: 'Campaign Landing Page', rate: '₹4,999'},
+      {label: 'Portfolio Showcase Site', rate: '₹7,999'},
+      {label: 'Multi-Page Business Website', rate: '₹12,999+'},
+    ],
+  },
+  {
+    num: '03',
+    tag: 'GROWTH & PERFORMANCE',
+    title: 'Social Media & Performance Marketing',
+    price: 'From ₹4,999/mo + GST',
+    caption: 'Instagram, Facebook, YouTube & Google management—fee strictly separated from ad spend.',
+    tiers: [
+      {label: 'Starter Monthly Retainer', rate: '₹4,999/mo'},
+      {label: 'Growth Multi-Channel', rate: '₹9,999/mo'},
+      {label: 'Platform Ad Spend (Meta/Google)', rate: 'At Actuals (0% Markup)'},
+    ],
+  },
+] as const;
+
+export const VADS_RATE_SNAPSHOT = [
+  {zone: '2 km Neighbourhood', month1: '₹0 (30 Days Free)', day31: '₹4,500/mo + GST', daily: '₹150/day'},
+  {zone: '5 km Ward Cluster', month1: '₹0 (30 Days Free)', day31: '₹7,500/mo + GST', daily: '₹250/day'},
+  {zone: '10 km City Corridor', month1: '₹0 (30 Days Free)', day31: '₹13,500/mo + GST', daily: '₹450/day'},
+  {zone: '25 km Metro Reach', month1: '₹0 (30 Days Free)', day31: '₹24,000/mo + GST', daily: '₹800/day'},
+] as const;
+
+export const AGRI_CARDS = [
+  {
+    num: '01',
+    badge: 'FARM → BUYER',
+    title: 'Direct Market Access',
+    caption: 'Connect directly with produce buyers, cold storage, grading teams, and transport.',
+    chips: ['Land Prep & Harvest', 'Post-Harvest Grading', 'Transport Links'],
+    subcategory: 'farming-and-agricultural-services',
+    icon: 'trending-up',
+  },
+  {
+    num: '02',
+    badge: 'CERTIFIED SUPPLY',
+    title: 'Quality Inputs & Irrigation',
+    caption: 'Source verified seeds, saplings, drip-irrigation kits, and organic compost.',
+    chips: ['Crop Seeds & Nurseries', 'Drip & Sprinklers', 'Organic Compost'],
+    subcategory: 'seeds-plants-and-nurseries',
+    icon: 'droplet',
+  },
+  {
+    num: '03',
+    badge: 'ON-DEMAND FLEET',
+    title: 'Machinery & Rentals',
+    caption: 'Book tractors, tillers, combine harvesters, and agricultural drones on clear terms.',
+    chips: ['Tractor Rental', 'Harvester Booking', 'Drone Surveying'],
+    subcategory: 'farm-equipment-and-machinery',
+    icon: 'sliders',
+  },
+  {
+    num: '04',
+    badge: 'PRECISION CARE',
+    title: 'Expert Crop Advisory',
+    caption: 'Schedule soil NPK testing, pest monitoring, nutrient plans, and dairy setup help.',
+    chips: ['Soil Lab Testing', 'Crop Pest Care', 'Dairy & Livestock'],
+    subcategory: 'soil-testing-and-crop-care',
+    icon: 'compass',
+  },
+] as const;
+
+export const HEALTH_PATHWAYS = [
+  {
+    num: '01',
+    badge: 'CLINICAL CARE',
+    title: 'Doctors & Clinics',
+    caption: 'General physicians, pediatrics, dental, eye care, orthopedic, and cardiology clinics.',
+    tag: 'Direct Clinic Call',
+    subcategory: 'doctors-and-specialists',
+    icon: 'user-check',
+  },
+  {
+    num: '02',
+    badge: 'DOORSTEP LABS',
+    title: 'Diagnostics & Imaging',
+    caption: 'Pathology blood panels, full-body checkups, X-ray/MRI centers, and home sample pickup.',
+    tag: 'Home Collection',
+    subcategory: 'diagnostic-services',
+    icon: 'activity',
+  },
+  {
+    num: '03',
+    badge: 'MEDICAL ESSENTIALS',
+    title: 'Pharmacies & Supplies',
+    caption: 'Neighborhood chemists, surgical supplies, oxygen concentrators, and mobility aids.',
+    tag: 'Verified Stockists',
+    subcategory: 'pharmacies-and-medical-supplies',
+    icon: 'plus-square',
+  },
+  {
+    num: '04',
+    badge: 'RECOVERY AT HOME',
+    title: 'Home Care & Physiotherapy',
+    caption: 'Post-operative rehabilitation, sports physio, elder care, and recovery support.',
+    tag: 'Home Visits',
+    subcategory: 'physiotherapy-and-rehabilitation',
+    icon: 'home',
+  },
+  {
+    num: '05',
+    badge: 'PREVENTIVE HEALTH',
+    title: 'Wellness, Yoga & Nutrition',
+    caption: 'Fitness studios, yoga & meditation, registered dietitians, and mental wellbeing.',
+    tag: 'Holistic Care',
+    subcategory: 'fitness-centres',
+    icon: 'heart',
+  },
+] as const;
+
+export function getHeroBannerByKey(key: HeroBannerKey): HeroBannerSlide {
+  return HERO_BANNERS.find(b => b.key === key) ?? HERO_BANNERS[0];
+}

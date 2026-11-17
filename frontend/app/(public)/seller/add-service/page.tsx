@@ -20,5 +20,11 @@ export default async function AddServicePage({
   const resolved=resolveMarketplaceSelection(selection)
     ||(legacyMarketplaceSelection(selection)?resolveMarketplaceSelection(legacyMarketplaceSelection(selection)!):null);
   if(!resolved?.category||!resolved?.subcategory)notFound();
-  redirect(selfOnboardingUrl({category:resolved.category.slug,type:resolved.subcategory.slug}));
+  redirect(
+    selfOnboardingUrl({
+      category:resolved.category.slug,
+      subcategory:resolved.subcategory.slug,
+      type:resolved.listingType?.slug??resolved.subcategory.slug,
+    }),
+  );
 }

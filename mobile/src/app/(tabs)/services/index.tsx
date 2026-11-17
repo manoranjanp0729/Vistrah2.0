@@ -6,7 +6,7 @@ import {EditVistrahContent} from '../../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../../components/localized-ui';
 import {SellerSignInAction} from '../../../components/seller-sign-in-action';
 import {useLanguage} from '../../../lib/language';
-import {useEffect, useRef, useState, type ReactNode} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Linking,ScrollView,View,Pressable,StyleSheet,Platform,Image,useWindowDimensions} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -30,7 +30,6 @@ import {isSellerUser} from '../../../lib/types';
 import {MobileNearbyServiceDiscovery} from '../../../components/nearby-service-discovery';
 import {customerListingCopy, listingEnquiryHref} from '../../../../../shared/customer-listing';
 import {officialContact} from '../../../../../shared/public-contact';
-import {serviceSelection} from '../../../../../shared/service-listing';
 import {servicesNavigationAction} from '../../../lib/marketplace-navigation';
 
 export default function Services() {
@@ -581,56 +580,45 @@ export default function Services() {
               {subcategory!.listing_types.map((type) => {
                 const itemId = marketplaceItemId(category!.slug, subcategory!.slug, type.slug);
                 return (
-                  <TypeAction
+                  <Pressable
                     key={type.slug}
-                    seller={seller}
-                    cardWidth={cardWidth}
-                    selection={{
-                      category: category!.slug,
-                      subcategory: subcategory!.slug,
-                      type: type.slug,
-                    }}
-                    title={type.title}
-                  >
-                    <Pressable
-                      accessibilityRole="button"
-                      testID={`marketplace-type-${type.slug}`}
-                      onPress={() =>
-                        router.push({
-                          pathname: '/services/nearby',
-                          params: {
-                            category: category!.slug,
-                            subcategory: subcategory!.slug,
-                            type: type.slug,
-                          },
-                        })
-                      }
-                      style={({pressed}) => [
-                        s.flowCard,
-                        s.flowGridCard,
-                        {
-                          paddingBottom:seller?56:10,
-                          backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
-                          borderColor: isDark ? '#33264c' : '#e5dbee',
-                          opacity: pressed ? 0.88 : 1,
+                    accessibilityRole="button"
+                    testID={`marketplace-type-${type.slug}`}
+                    onPress={() =>
+                      router.push({
+                        pathname: '/services/nearby',
+                        params: {
+                          category: category!.slug,
+                          subcategory: subcategory!.slug,
+                          type: type.slug,
                         },
-                      ]}
-                    >
-                      <View style={s.flowGridPhoto}>
-                        <Image
-                          source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
-                          resizeMode="cover"
-                          accessibilityLabel={nativeMarketplaceAlt(itemId) ?? type.title}
-                          style={[StyleSheet.absoluteFill,s.flowImage]}
-                        />
-                      </View>
-                      <View style={{flex: 1, minWidth: 0, gap: 4}}>
-                        <Text numberOfLines={2} style={[s.flowCardTitle, {color: colors.text}]}>
-                          {label(itemId, type.title)}
-                        </Text>
-                      </View>
-                    </Pressable>
-                  </TypeAction>
+                      })
+                    }
+                    style={({pressed}) => [
+                      s.flowCard,
+                      s.flowGridCard,
+                      {width: cardWidth ?? '48%', flexGrow: 0, flexShrink: 0, paddingBottom: 10},
+                      {
+                        backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
+                        borderColor: isDark ? '#33264c' : '#e5dbee',
+                        opacity: pressed ? 0.88 : 1,
+                      },
+                    ]}
+                  >
+                    <View style={s.flowGridPhoto}>
+                      <Image
+                        source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
+                        resizeMode="cover"
+                        accessibilityLabel={nativeMarketplaceAlt(itemId) ?? type.title}
+                        style={[StyleSheet.absoluteFill,s.flowImage]}
+                      />
+                    </View>
+                    <View style={{flex: 1, minWidth: 0, gap: 4}}>
+                      <Text numberOfLines={2} style={[s.flowCardTitle, {color: colors.text}]}>
+                        {label(itemId, type.title)}
+                      </Text>
+                    </View>
+                  </Pressable>
                 );
               })}
             </View>
@@ -724,52 +712,6 @@ export default function Services() {
         )}
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-function TypeAction({
-  cardWidth,
-  seller,
-  selection,
-  title,
-  children,
-}: {
-  cardWidth?:number;
-  seller: boolean;
-  selection: MarketplaceSelection;
-  title: string;
-  children: ReactNode;
-}) {
-  const {colors} = useTheme();
-  const selected = serviceSelection(selection);
-  return (
-    <View style={{position: 'relative',width:cardWidth??'48%'}}>
-      {children}
-      {seller && selected && (
-        <UiElement
-          as={Pressable}
-          accessibilityRole="button"
-          accessibilityLabel={'Add service: ' + title}
-          onPress={() => router.push({pathname: '/seller/onboard', params: {category: selected.category, subcategory: selected.subcategory, type: selected.type}})}
-          style={{
-            position: 'absolute',
-            right: 8,
-            bottom: 8,
-            backgroundColor: colors.surface,
-            minWidth: 40,
-            minHeight: 40,
-            borderWidth: 1,
-            borderColor: colors.border,
-            borderRadius: 12,
-            alignItems: 'center',
-            justifyContent: 'center',
-            elevation: 2,
-          }}
-        >
-          <Text style={{fontSize: 22, color: colors.accent}}>+</Text>
-        </UiElement>
-      )}
-    </View>
   );
 }
 

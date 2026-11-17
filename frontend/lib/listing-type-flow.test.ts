@@ -4,7 +4,7 @@ import {beforeEach,expect,it,vi} from 'vitest';
 const session=vi.hoisted(()=>({user:null as null|{seller_enabled:boolean}}));
 vi.mock('@/components/customer',()=>({useUser:()=>session}));
 vi.mock('@/components/language-provider',()=>({useLanguage:()=>({t:(key:string)=>key,label:(_key:string,fallback:string)=>fallback})}));
-vi.mock('@/components/commerce',()=>({ClassifiedServices:()=>React.createElement('p',null,'Approved services')}));
+vi.mock('@/components/nearby-service-discovery',()=>({NearbyServiceDiscovery:()=>React.createElement('p',null,'Nearby services')}));
 vi.mock('@/components/photo-card',()=>({PhotoCard:({href,title}:{href:string;title:string})=>React.createElement('a',{href},title)}));
 vi.mock('@/components/photo-card-rail',()=>({PhotoCardRail:({children}:{children:React.ReactNode})=>React.createElement('div',null,children)}));
 vi.mock('@/components/marketplace-categories',()=>({MarketplaceCategories:()=>null}));
@@ -24,29 +24,30 @@ const selection={category:category.slug,subcategory:sub.slug,type:type.slug};
 beforeEach(()=>{session.user=null;});
 const render=(params:Parameters<typeof resolveMarketplaceSelection>[0],query='')=>renderToStaticMarkup(React.createElement(MarketplaceBrowser,{selection:resolveMarketplaceSelection(params)!,query}));
 
-it('shows seller-only plus actions linking directly to /seller/onboard with category and type preserved',()=>{
+it('keeps subcategory and search service cards free of plus overlays while retaining detail-page onboarding',()=>{
   expect(render(selection)).not.toContain('Add service:');
   session.user={seller_enabled:false};expect(render(selection)).not.toContain('Add service:');
   session.user={seller_enabled:true};
   expect(render({})).not.toContain('Add service:');
   expect(render({category:category.slug})).not.toContain('Add service:');
-  const html=render({category:category.slug,subcategory:sub.slug});
-  expect(html.match(/aria-label="Add service:/g)?.length).toBe(sub.listing_types.length);
-  expect(addServiceUrl(selection)).toBe(`/seller/onboard?category=${category.slug}&type=${sub.slug}`);
-  expect(html).toContain(addServiceUrl(selection).replaceAll('&','&amp;'));
-  expect(render(selection)).toContain('Approved services');
-  expect(render(selection)).toContain('See available options');
-  expect(render(selection)).toContain('href="#available-options"');
-  expect(render(selection)).toContain('Email VISTRAH about this service');
-  expect(render(selection)).not.toContain('Browse published products');
-  expect(render({},type.title)).toContain('Add service:');
+  const subHtml=render({category:category.slug,subcategory:sub.slug});
+  expect(subHtml).not.toContain('Add service:');
+  expect(subHtml).not.toContain('>+<');
+  expect(render({},type.title)).not.toContain('Add service:');
+  expect(render({},type.title)).not.toContain('>+<');
+  expect(addServiceUrl(selection)).toBe(`/seller/onboard?category=${category.slug}&subcategory=${sub.slug}&type=${type.slug}`);
+  const detailHtml=render(selection);
+  expect(detailHtml).toContain('Nearby services');
+  expect(detailHtml).toContain(addServiceUrl(selection).replaceAll('&','&amp;'));
+  expect(detailHtml).toContain('Email VISTRAH about this service');
+  expect(detailHtml).not.toContain('Browse published products');
 });
 
-it('redirects legacy /seller/add-service URLs directly to /seller/onboard with category and type preserved',async()=>{
+it('redirects legacy /seller/add-service URLs directly to /seller/onboard with category, subcategory and type preserved',async()=>{
   const form=serviceListingForm(selection,type.title);
   expect(listingInput({...form,description:'A complete test service description.',price:'123.45'})).toMatchObject({kind:'SERVICE_PACKAGE',service_id:null,taxonomy_category_slug:category.slug,taxonomy_subcategory_slug:sub.slug,taxonomy_listing_type_slug:type.slug,unit_price_paise:12345});
-  expect(websiteLoginDestination(addServiceUrl(selection))).toBe(`/seller/onboard?category=${category.slug}&type=${sub.slug}`);
-  await expect(AddServicePage({searchParams:Promise.resolve(selection)})).rejects.toThrow(`REDIRECT:/seller/onboard?category=${category.slug}&type=${sub.slug}`);
+  expect(websiteLoginDestination(addServiceUrl(selection))).toBe(`/seller/onboard?category=${category.slug}&subcategory=${sub.slug}&type=${type.slug}`);
+  await expect(AddServicePage({searchParams:Promise.resolve(selection)})).rejects.toThrow(`REDIRECT:/seller/onboard?category=${category.slug}&subcategory=${sub.slug}&type=${type.slug}`);
   for(const params of [{},{...selection,type:'invalid'},{...selection,category:['invalid']}])await expect(AddServicePage({searchParams:Promise.resolve(params)})).rejects.toThrow('NOT_FOUND');
   expect(serviceSelection({category:category.slug})).toBeNull();
 });

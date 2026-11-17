@@ -3,12 +3,11 @@ import {UiText,UiElement,UiSection,UiNav,UiInput} from "./localized-ui";
 import {useLanguage} from './language-provider';
 import Link from 'next/link';
 import {customerListingCopy,listingEnquiryHref} from '../../shared/customer-listing';
-import {useState,type ReactNode} from 'react';
+import {useState} from 'react';
 import {useUser} from './customer';
 import {isSellerUser} from '@/lib/types';
 import {NearbyServiceDiscovery} from './nearby-service-discovery';
-import {addServiceUrl,serviceSelection} from '../../shared/service-listing';
-import type {MarketplaceSelection} from '../../shared/marketplace';
+import {addServiceUrl} from '../../shared/service-listing';
 import {ArrowLeft,Search} from 'lucide-react';
 import {MarketplaceCategories} from './marketplace-categories';
 import {marketplaceNearbyTypeUrl,marketplaceUrl,marketplaceItemId,searchMarketplaceEntries,type resolveMarketplaceSelection} from '../lib/marketplace-taxonomy';
@@ -56,7 +55,7 @@ export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;quer
     </form>}
     {activeQuery?<div className={styles.resultSection}><div className={styles.sectionTitle}><h2>{t('discovery.results')}</h2><Link href="/services" onClick={()=>{setLiveQuery('');setShowAllResults(false);}}>{t('discovery.clearSearch')}</Link></div>
       <p className={styles.hint}>{t('discovery.matchCount',{count:results.length,query:activeQuery})}</p>
-      <UiElement as={PhotoCardRail} discovery cardActions={seller} label={t('discovery.resultsLabel')}>{displayedResults.map(result=><TypeAction key={result.id} seller={seller} selection={result.selection} title={result.title}><PhotoCard kind="result" slug={result.id} title={label(result.id,result.title)} meta={result.level} href={result.href} photo={marketplacePhoto(result.id)}/></TypeAction>)}</UiElement>
+      <UiElement as={PhotoCardRail} discovery label={t('discovery.resultsLabel')}>{displayedResults.map(result=><PhotoCard key={result.id} kind="result" slug={result.id} title={label(result.id,result.title)} meta={result.level} href={result.href} photo={marketplacePhoto(result.id)}/>)}</UiElement>
       {results.length>displayedResults.length&&<p><button type="button" className="button secondary" onClick={()=>setShowAllResults(true)}>Show all {results.length} matches</button></p>}
       {!results.length&&<p className={styles.empty}>{t('discovery.noMatchesWeb')}</p>}
     </div>:listingType?<div className={styles.classificationNotice}>
@@ -72,7 +71,7 @@ export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;quer
       {seller&&<aside className={styles.sellerAside}><p><UiText value={"Do you offer "}/>{typeName}?</p><UiElement as={Link} className="button secondary" aria-label={'Add service: '+typeName} href={addServiceUrl({category:category!.slug,subcategory:subcategory!.slug,type:listingType.slug})}><UiText value={"+ Add your service"}/></UiElement></aside>}
       <Link href={singleType?back:marketplaceUrl({category:category!.slug,subcategory:subcategory!.slug})}><ArrowLeft size={18} aria-hidden="true"/>{singleType?t('discovery.allSubcategories',{name:categoryName}):t('discovery.backTo',{name:subcategoryName})}</Link>
     </div>:subcategory?<div><div className={styles.sectionTitle}><h2>{t('discovery.types')}</h2><span>{t('discovery.options',{count:subcategory.listing_types.length})}</span></div>
-      <UiElement as={PhotoCardRail} discovery cardActions={seller} label={t('discovery.types')}>{subcategory.listing_types.map(type=><TypeAction key={type.slug} seller={seller} selection={{category:category!.slug,subcategory:subcategory.slug,type:type.slug}} title={type.title}><PhotoCard kind="type" slug={type.slug} title={label(marketplaceItemId(category!.slug,subcategory.slug,type.slug),type.title)} meta={t('discovery.type')} href={marketplaceNearbyTypeUrl({category:category!.slug,subcategory:subcategory.slug,type:type.slug})} photo={marketplacePhoto(marketplaceItemId(category!.slug,subcategory.slug,type.slug))}/></TypeAction>)}</UiElement>
+      <UiElement as={PhotoCardRail} discovery label={t('discovery.types')}>{subcategory.listing_types.map(type=><PhotoCard key={type.slug} kind="type" slug={type.slug} title={label(marketplaceItemId(category!.slug,subcategory.slug,type.slug),type.title)} meta={t('discovery.type')} href={marketplaceNearbyTypeUrl({category:category!.slug,subcategory:subcategory.slug,type:type.slug})} photo={marketplacePhoto(marketplaceItemId(category!.slug,subcategory.slug,type.slug))}/>)}</UiElement>
       <Link href={back} className={styles.backLink}><ArrowLeft size={18} aria-hidden="true"/>{t('discovery.allSubcategories',{name:categoryName})}</Link>
     </div>:category?<div><div className={styles.sectionTitle}><h2>{t('discovery.exploreSubcategories')}</h2><span>{t('discovery.options',{count:category.subcategories.length})}</span></div>
       <UiElement as={PhotoCardRail} discovery label={t('discovery.subcategories')}>{category.subcategories.map(sub=><PhotoCard key={sub.slug} kind="subcategory" slug={sub.slug} title={label(marketplaceItemId(category!.slug,sub.slug),sub.title)} meta={sub.description??t('discovery.typeCount',{count:sub.listing_types.length})} href={marketplaceUrl({category:category.slug,subcategory:sub.slug})} photo={marketplacePhoto(marketplaceItemId(category.slug,sub.slug))}/>)}</UiElement>
@@ -80,5 +79,3 @@ export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;quer
     </div>:<MarketplaceCategories/>}
   </UiSection>;
 }
-
-function TypeAction({seller,selection,title,children}:{seller:boolean;selection:MarketplaceSelection;title:string;children:ReactNode}){const selected=serviceSelection(selection);return <div className={`${styles.typeCard} ${seller&&selected?styles.withAction:''}`}>{children}{seller&&selected&&<UiElement as={Link} className={styles.addService} href={addServiceUrl(selected)} aria-label={'Add service: '+title}>+</UiElement>}</div>;}

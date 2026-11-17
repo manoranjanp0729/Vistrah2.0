@@ -16,17 +16,21 @@ export function VistrahMobileMap({
   center,
   radiusKm,
   markers=[],
+  selectedId:controlledSelectedId,
+  hideSelectedCard=false,
   editable=false,
   centerPinMode=false,
   disabled=false,
   height=280,
   onPinChange,
   onResolvedAddress,
+  onSelectMarker,
 }:VistrahMobileMapProps){
   const {colors,styles,mode}=useTheme();
   const node=useRef<HTMLDivElement>(null);
   const controller=useRef<Awaited<ReturnType<typeof mountGoogleMap>>|null>(null);
-  const [selectedId,setSelectedId]=useState<string|number|null>(null);
+  const [internalSelectedId,setInternalSelectedId]=useState<string|number|null>(null);
+  const selectedId=controlledSelectedId!==undefined?controlledSelectedId:internalSelectedId;
   const [mapErr,setMapErr]=useState('');
 
   const safeCenter=useMemo<GooglePoint>(()=>({
@@ -34,8 +38,10 @@ export function VistrahMobileMap({
     longitude:Number.isFinite(center.longitude)&&Math.abs(center.longitude)<=180?center.longitude:77.5946,
   }),[center.latitude,center.longitude]);
 
-  const callbacks=useRef({editable,disabled,onPinChange,onResolvedAddress});
-  useEffect(()=>{callbacks.current={editable,disabled,onPinChange,onResolvedAddress};},[editable,disabled,onPinChange,onResolvedAddress]);
+  const callbacks=useRef({editable,disabled,onPinChange,onResolvedAddress,onSelectMarker});
+  useEffect(()=>{
+    callbacks.current={editable,disabled,onPinChange,onResolvedAddress,onSelectMarker};
+  },[editable,disabled,onPinChange,onResolvedAddress,onSelectMarker]);
 
   useEffect(()=>{
     if(!googleMapsEnabled||!node.current)return;
@@ -56,15 +62,42 @@ export function VistrahMobileMap({
       },
       ()=>alive,
     ).then(m=>{
-      if(alive){controller.current=m;m.update(safeCenter);}
-      else m.destroy();
+      if(alive){
+        controller.current=m;
+        m.update(safeCenter);
+        m.syncOverlays({
+          center:safeCenter,
+          radiusKm,
+          markers:markers.map(mk=>({id:mk.id,latitude:mk.latitude,longitude:mk.longitude,title:mk.title})),
+          selectedId,
+          onSelectMarker:id=>{
+            setInternalSelectedId(id);
+            callbacks.current.onSelectMarker?.(id);
+          },
+        });
+      }else m.destroy();
     }).catch(()=>{
       if(alive)setMapErr('Google Maps unavailable in this browser session.');
     });
     return()=>{alive=false;controller.current?.destroy();controller.current=null;};
   },[]);
 
-  useEffect(()=>{controller.current?.update(safeCenter);},[safeCenter.latitude,safeCenter.longitude]);
+  useEffect(()=>{
+    controller.current?.update(safeCenter);
+  },[safeCenter.latitude,safeCenter.longitude]);
+
+  useEffect(()=>{
+    controller.current?.syncOverlays({
+      center:safeCenter,
+      radiusKm,
+      markers:markers.map(mk=>({id:mk.id,latitude:mk.latitude,longitude:mk.longitude,title:mk.title})),
+      selectedId,
+      onSelectMarker:id=>{
+        setInternalSelectedId(id);
+        callbacks.current.onSelectMarker?.(id);
+      },
+    });
+  },[safeCenter.latitude,safeCenter.longitude,radiusKm,markers,selectedId]);
 
   const selectedMarker=markers.find(m=>m.id===selectedId)??null;
 
@@ -107,12 +140,15 @@ export function VistrahMobileMap({
         </View>
       )}
 
-      {markers.length>0&&(
+      {markers.length>0&&!hideSelectedCard&&(
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:6}}>
           {markers.slice(0,8).map(m=>(
             <Pressable
               key={String(m.id)}
-              onPress={()=>setSelectedId(m.id)}
+              onPress={()=>{
+                setInternalSelectedId(m.id);
+                onSelectMarker?.(m.id);
+              }}
               style={{
                 paddingHorizontal:10,
                 paddingVertical:6,
@@ -128,7 +164,7 @@ export function VistrahMobileMap({
         </View>
       )}
 
-      {selectedMarker&&(
+      {selectedMarker&&!hideSelectedCard&&(
         <View style={[styles.card,{gap:6}]}>
           <Text style={styles.heading}>{selectedMarker.title}</Text>
           {Boolean(selectedMarker.subtitle)&&<Text style={styles.muted}>{selectedMarker.subtitle}</Text>}

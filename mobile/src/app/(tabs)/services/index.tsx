@@ -27,7 +27,7 @@ import {nativeMarketplacePhoto, nativeMarketplaceAlt} from '../../../lib/marketp
 import {useTheme,spacing,typography} from '../../../lib/theme';
 import {useSession} from '../../../lib/session';
 import {isSellerUser} from '../../../lib/types';
-import {ClassifiedServices} from '../../../components/commerce-browser';
+import {MobileNearbyServiceDiscovery} from '../../../components/nearby-service-discovery';
 import {customerListingCopy, listingEnquiryHref} from '../../../../../shared/customer-listing';
 import {officialContact} from '../../../../../shared/public-contact';
 import {serviceSelection} from '../../../../../shared/service-listing';
@@ -430,54 +430,15 @@ export default function Services() {
             {!results.length && <Text style={styles.muted}>{t('discovery.noMatches')}</Text>}
           </View>
         ) : isListingTypeLevel ? (
-          /* LEVEL 4: LISTING TYPE & COMMERCE OFFERS */
+          /* LEVEL 4: NEARBY SERVICE MAP + DISTANCE-SORTED LISTINGS */
           <View onLayout={(event) => { optionsTop.current = event.nativeEvent.layout.y; }} style={{gap: 14}}>
-            {/* Visual Step Guide */}
-            <View
-              style={[
-                s.journeyCard,
-                {
-                  backgroundColor: isDark ? '#1a132a' : '#f7f4fb',
-                  borderColor: isDark ? '#322549' : '#e6daf0',
-                },
-              ]}
-            >
-              <Text style={[s.journeyEyebrow, {color: colors.accent}]}>DIRECT FULFILLMENT STEPS</Text>
-              <Text accessibilityRole="header" style={[s.journeyTitle, {color: colors.text}]}>
-                <UiText value="How it works" />
-              </Text>
-              <View style={s.stepsRow}>
-                <View style={s.stepPill}>
-                  <Text style={s.stepNum}>1</Text>
-                  <Text style={[s.stepText, {color: colors.text}]}>
-                    <UiText value="Review Offers" />
-                  </Text>
-                </View>
-                <Feather name="arrow-right" size={13} color={colors.muted} />
-                <View style={s.stepPill}>
-                  <Text style={s.stepNum}>2</Text>
-                  <Text style={[s.stepText, {color: colors.text}]}>
-                    <UiText value="Direct Contact" />
-                  </Text>
-                </View>
-                <Feather name="arrow-right" size={13} color={colors.muted} />
-                <View style={s.stepPill}>
-                  <Text style={s.stepNum}>3</Text>
-                  <Text style={[s.stepText, {color: colors.text}]}>
-                    <UiText value="Schedule" />
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* Classified Commerce Offers */}
             <View onLayout={(event) => { optionsOffset.current = event.nativeEvent.layout.y; }}>
-              <ClassifiedServices
-                selection={{
-                  category: category!.slug,
-                  subcategory: subcategory!.slug,
-                  type: listingType!.slug,
-                }}
+              <MobileNearbyServiceDiscovery
+                key={category!.slug + '/' + subcategory!.slug}
+                categorySlug={category!.slug}
+                categoryTitle={categoryName}
+                typeSlug={subcategory!.slug}
+                serviceTitle={singleType ? subcategoryName : listingTypeName}
               />
             </View>
 

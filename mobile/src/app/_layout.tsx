@@ -69,6 +69,7 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="pages/[slug]"/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/add-service"/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/onboard" options={{title:'List your business'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="services/nearby" options={{title:'Nearby services'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="v-essentials"/>
   </Stack><WebsiteRouteBridge/><StartupLoading/></View></LocationProvider></SessionProvider></SafeAreaProvider>;
 }

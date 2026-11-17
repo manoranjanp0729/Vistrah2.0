@@ -28,6 +28,10 @@ export function backFallback(pathname:string,params:Record<string,unknown>={}):s
  const service=path.match(/^\/(?:estimate|request)\/([^/]+)$/);
  if(service)return '/service/'+service[1];
  if(path.startsWith('/commerce/'))return '/commerce';
+ if(path==='/services/nearby'){
+  if(typeof params.category==='string'&&params.category)return '/services?category='+encodeURIComponent(params.category);
+  return '/services';
+ }
  if(path.startsWith('/service/')||path.startsWith('/category/'))return '/services';
  if(path==='/forgot-password'||path==='/reset-password')return '/auth';
  if(path==='/advertiser-profile')return '/v-ads';

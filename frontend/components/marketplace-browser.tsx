@@ -6,7 +6,7 @@ import {customerListingCopy,listingEnquiryHref} from '../../shared/customer-list
 import type {ReactNode} from 'react';
 import {useUser} from './customer';
 import {isSellerUser} from '@/lib/types';
-import {ClassifiedServices} from './commerce';
+import {NearbyServiceDiscovery} from './nearby-service-discovery';
 import {addServiceUrl,serviceSelection} from '../../shared/service-listing';
 import type {MarketplaceSelection} from '../../shared/marketplace';
 import {ArrowLeft,Search} from 'lucide-react';
@@ -54,8 +54,13 @@ export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;quer
       <UiElement as={PhotoCardRail} discovery cardActions={seller} label={t('discovery.resultsLabel')}>{results.map(result=><TypeAction key={result.id} seller={seller} selection={result.selection} title={result.title}><PhotoCard kind="result" slug={result.id} title={label(result.id,result.title)} meta={result.level} href={result.href} photo={marketplacePhoto(result.id)}/></TypeAction>)}</UiElement>
       {!results.length&&<p className={styles.empty}>{t('discovery.noMatchesWeb')}</p>}
     </div>:listingType?<div className={styles.classificationNotice}>
-      <div className={styles.customerIntro}><p className={styles.eyebrow}><UiText value={"Find your next step"}/></p><h2><UiText value={"Find an option that suits you"}/></h2><ol className={styles.customerSteps}>{customerListingCopy.steps.map(step=><li key={step}>{step}</li>)}</ol><a className="button" href="#available-options">{customerListingCopy.action}</a></div>
-      <ClassifiedServices key={category!.slug+'/'+subcategory!.slug+'/'+listingType.slug} selection={{category:category!.slug,subcategory:subcategory!.slug,type:listingType.slug}}/>
+      <NearbyServiceDiscovery
+        key={category!.slug+'/'+subcategory!.slug+'/'+listingType.slug}
+        categorySlug={category!.slug}
+        categoryTitle={categoryName}
+        typeSlug={subcategory!.slug}
+        serviceTitle={typeName||subcategoryName}
+      />
       <section className={styles.customerPanel}><h2>{customerListingCopy.helpTitle}</h2><p>{customerListingCopy.helpCopy}</p><a className="button secondary" href={listingEnquiryHref(typeName,categoryName+' / '+subcategoryName)}>{customerListingCopy.helpAction}</a></section>
       {seller&&<aside className={styles.sellerAside}><p><UiText value={"Do you offer "}/>{typeName}?</p><UiElement as={Link} className="button secondary" aria-label={'Add service: '+typeName} href={addServiceUrl({category:category!.slug,subcategory:subcategory!.slug,type:listingType.slug})}><UiText value={"+ Add your service"}/></UiElement></aside>}
       <Link href={singleType?back:marketplaceUrl({category:category!.slug,subcategory:subcategory!.slug})}><ArrowLeft size={18} aria-hidden="true"/>{singleType?t('discovery.allSubcategories',{name:categoryName}):t('discovery.backTo',{name:subcategoryName})}</Link>

@@ -161,17 +161,28 @@ export function VistrahMapsProvider({ children }: { children: ReactNode }) {
   return <APIProvider apiKey={googleMapsWebApiKey}>{children}</APIProvider>;
 }
 
+function zoomForRadius(radiusKm?: number): number {
+  if (!radiusKm || radiusKm <= 2) return 14;
+  if (radiusKm <= 5) return 13;
+  if (radiusKm <= 12) return 12;
+  if (radiusKm <= 30) return 11;
+  return 9;
+}
+
 function MapViewportSync({
   center,
   radiusKm,
+  focusPoint,
   padding,
 }: {
   center: Point;
   radiusKm?: number;
+  focusPoint?: Point | null;
   padding?: { top: number; right: number; bottom: number; left: number };
 }) {
   const map = useMap();
   const prev = useRef<string>('');
+  const prevRadius = useRef<number | undefined>(radiusKm);
   useEffect(() => {
     if (!map || !padding) return;
     (map as unknown as { setOptions: (opts: { padding: { top: number; right: number; bottom: number; left: number } }) => void }).setOptions({ padding });
@@ -182,7 +193,15 @@ function MapViewportSync({
     if (prev.current === key) return;
     prev.current = key;
     map.panTo({ lat: center.latitude, lng: center.longitude });
+    if (prevRadius.current !== radiusKm && typeof radiusKm === 'number') {
+      prevRadius.current = radiusKm;
+      map.setZoom(zoomForRadius(radiusKm));
+    }
   }, [map, center, radiusKm]);
+  useEffect(() => {
+    if (!map || !focusPoint || !validPoint(focusPoint)) return;
+    map.panTo({ lat: focusPoint.latitude, lng: focusPoint.longitude });
+  }, [map, focusPoint]);
   return null;
 }
 
@@ -915,6 +934,7 @@ export function VistrahMap({
             <MapViewportSync
               center={safeCenter}
               radiusKm={radiusKm}
+              focusPoint={activeMarker ? { latitude: activeMarker.latitude, longitude: activeMarker.longitude } : null}
               padding={{ top: 8, right: 8, bottom: 8, left: 8 }}
             />
 

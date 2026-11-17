@@ -34,12 +34,15 @@ export type VistrahMobileMapProps={
   center:GooglePoint;
   radiusKm?:number;
   markers?:MobileMapMarker[];
+  selectedId?:string|number|null;
+  hideSelectedCard?:boolean;
   editable?:boolean;
   centerPinMode?:boolean;
   disabled?:boolean;
   height?:number;
   onPinChange?:(point:GooglePoint)=>void;
   onResolvedAddress?:(place:ResolvedMobilePlace)=>void;
+  onSelectMarker?:(id:string|number)=>void;
 };
 
 function deltaForRadius(radiusKm?:number):number{
@@ -94,15 +97,19 @@ export function VistrahMobileMap({
   center,
   radiusKm,
   markers=[],
+  selectedId:controlledSelectedId,
+  hideSelectedCard=false,
   editable=false,
   centerPinMode=false,
   disabled=false,
   height=280,
   onPinChange,
   onResolvedAddress,
+  onSelectMarker,
 }:VistrahMobileMapProps){
   const {colors,styles,mode}=useTheme();
-  const [selectedId,setSelectedId]=useState<string|number|null>(null);
+  const [internalSelectedId,setInternalSelectedId]=useState<string|number|null>(null);
+  const selectedId=controlledSelectedId!==undefined?controlledSelectedId:internalSelectedId;
   const [resolving,setResolving]=useState(false);
   const lastProgrammaticRef=useRef<number>(0);
 
@@ -217,7 +224,10 @@ export function VistrahMobileMap({
               pinColor={marker.id===selectedId?'#d4af37':'#0f172a'}
               title={marker.title}
               description={marker.subtitle}
-              onPress={()=>setSelectedId(marker.id)}
+              onPress={()=>{
+                setInternalSelectedId(marker.id);
+                onSelectMarker?.(marker.id);
+              }}
             />
           ))}
         </MapView>
@@ -244,7 +254,7 @@ export function VistrahMobileMap({
 
       {resolving&&!centerPinMode&&<Text style={styles.muted}>Resolving address for selected pin…</Text>}
 
-      {selectedMarker&&(
+      {selectedMarker&&!hideSelectedCard&&(
         <View style={[styles.card,{gap:6}]}>
           <Text style={styles.heading}>{selectedMarker.title}</Text>
           {Boolean(selectedMarker.subtitle)&&<Text style={styles.muted}>{selectedMarker.subtitle}</Text>}

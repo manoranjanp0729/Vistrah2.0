@@ -91,6 +91,8 @@ from .admin_console_routes import router as admin_console_router, build_admin_ov
 app.include_router(admin_console_router)
 from .hr_routes import router as hr_router
 app.include_router(hr_router)
+from .marketplace_nearby_routes import router as marketplace_nearby_router
+app.include_router(marketplace_nearby_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):

@@ -30,6 +30,12 @@ variable "ssh_cidr" {
   }
 }
 
+variable "enable_ssh" {
+  description = "Keep false for Zero-SSH AWS SSM operations; set true only for emergency break-glass /32 SSH."
+  type        = bool
+  default     = false
+}
+
 provider "aws" {
   region              = "ap-south-1"
   allowed_account_ids = [var.aws_account_id]
@@ -93,6 +99,7 @@ resource "aws_security_group" "test" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ssh" {
+  count             = var.enable_ssh ? 1 : 0
   security_group_id = aws_security_group.test.id
   cidr_ipv4         = var.ssh_cidr
   ip_protocol       = "tcp"
@@ -135,8 +142,9 @@ resource "aws_instance" "test" {
     cpu_credits = "standard"
   }
   metadata_options {
-    http_endpoint = "enabled"
-    http_tokens   = "required"
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
   }
   user_data = <<-SCRIPT
     #!/bin/bash

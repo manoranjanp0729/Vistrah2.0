@@ -1,19 +1,30 @@
 {
-	debug
 	key_type rsa2048
 	servers {
 		protocols h1 h2
 	}
 }
 
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+}
+
 http://vistrah.in, http://www.vistrah.in {
-	log
 	redir https://{host}{uri} permanent
 }
 
 vistrah.in, www.vistrah.in {
-	log
+	import security_headers
 	encode zstd gzip
+	request_body {
+		max_size 10MB
+	}
 	@public_options {
 		method OPTIONS
 		not path /api/* /admin*
@@ -45,9 +56,17 @@ vistrah.in, www.vistrah.in {
 }
 
 api.vistrah.in {
+	import security_headers
+	request_body {
+		max_size 105MB
+	}
 	reverse_proxy api:8000
 }
 
 admin.vistrah.in {
+	import security_headers
+	request_body {
+		max_size 10MB
+	}
 	reverse_proxy admin:3000
 }

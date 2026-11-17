@@ -89,7 +89,20 @@ def mask_account_number(account_number: str | None) -> str | None:
     return f'••••{clean[-4:]}' if len(clean) > 4 else f'••••{clean}'
 
 
-def serialize_employee(row: HREmployee) -> dict:
+def mask_pan_number(pan_number: str | None) -> str | None:
+    if not pan_number:
+        return None
+    clean = pan_number.strip().upper()
+    if not clean:
+        return None
+    if len(clean) == 10:
+        return f'{clean[:2]}•••••{clean[-3:]}'
+    return f'••••{clean[-3:]}'
+
+
+def serialize_employee(row: HREmployee, *, include_sensitive_payout: bool = False) -> dict:
+    masked_acc = mask_account_number(row.bank_account_number)
+    masked_pan = mask_pan_number(row.pan_number)
     return {
         'id': row.id,
         'employee_code': row.employee_code,
@@ -113,18 +126,24 @@ def serialize_employee(row: HREmployee) -> dict:
         'status': row.status,
         'bank_account_holder': row.bank_account_holder,
         'bank_name': row.bank_name,
-        'bank_account_number': row.bank_account_number,
-        'masked_bank_account': mask_account_number(row.bank_account_number),
+        'bank_account_number': row.bank_account_number if include_sensitive_payout else masked_acc,
+        'masked_bank_account': masked_acc,
         'bank_ifsc': row.bank_ifsc,
         'bank_account_type': row.bank_account_type,
-        'pan_number': row.pan_number,
+        'pan_number': row.pan_number if include_sensitive_payout else masked_pan,
+        'masked_pan_number': masked_pan,
         'uan_number': row.uan_number,
         'created_at': _iso(row.created_at),
         'updated_at': _iso(row.updated_at),
     }
 
 
-def serialize_salary_credit(row: HRSalaryCredit, emp: HREmployee | None = None) -> dict:
+def serialize_salary_credit(
+    row: HRSalaryCredit,
+    emp: HREmployee | None = None,
+    *,
+    include_sensitive_payout: bool = False,
+) -> dict:
     data = {
         'id': row.id,
         'employee_id': row.employee_id,
@@ -150,7 +169,7 @@ def serialize_salary_credit(row: HRSalaryCredit, emp: HREmployee | None = None) 
             pf_capped=emp.pf_capped,
         )
         data['employee'] = {
-            **serialize_employee(emp),
+            **serialize_employee(emp, include_sensitive_payout=include_sensitive_payout),
             'basic_monthly_inr': monthly_fig['basic_inr'],
             'hra_monthly_inr': monthly_fig['hra_inr'],
             'special_monthly_inr': monthly_fig['special_allowance_inr'],
@@ -397,6 +416,7 @@ class SalaryCreditPatchPayload(Schema):
 def list_salary_credits(
     response: Response,
     pay_month: str = Query(..., min_length=7, max_length=7),
+    include_sensitive_payout: bool = Query(False),
     user: User = Depends(admin_user),
     db: Session = Depends(get_db),
 ):
@@ -412,7 +432,24 @@ def list_salary_credits(
         .order_by(HREmployee.employee_code.asc(), HRSalaryCredit.id.asc())
     ).all()
 
-    items = [serialize_salary_credit(credit, emp) for credit, emp in rows]
+    if include_sensitive_payout:
+        db.add(
+            Audit(
+                actor_id=user.id,
+                action='HR_PAYOUT_SENSITIVE_EXPORT',
+                entity='hr_salary_credit',
+                entity_id=month_clean,
+                details={'pay_month': month_clean, 'records_count': len(rows)},
+            )
+        )
+        db.commit()
+
+    items = [
+        serialize_salary_credit(
+            credit, emp, include_sensitive_payout=include_sensitive_payout
+        )
+        for credit, emp in rows
+    ]
     total_gross = sum(i['gross_earnings_inr'] for i in items)
     total_net = sum(i['net_paid_inr'] for i in items)
     credited_items = [i for i in items if i['status'] == 'credited']
@@ -521,7 +558,13 @@ def create_or_prepare_salary_credits(
             )
         )
         db.commit()
-        return list_salary_credits(response=response, pay_month=payload.pay_month, user=user, db=db)
+        return list_salary_credits(
+            response=response,
+            pay_month=payload.pay_month,
+            include_sensitive_payout=False,
+            user=user,
+            db=db,
+        )
 
     # Mode 2: Single employee upsert for (employee_id, pay_month)
     emp = db.get(HREmployee, payload.employee_id)
@@ -725,6 +768,7 @@ def list_employees(
     response: Response,
     status: Literal['all', 'active', 'relieved'] = 'all',
     q: str = Query('', max_length=160),
+    include_sensitive_payout: bool = Query(False),
     user: User = Depends(admin_user),
     db: Session = Depends(get_db),
 ):
@@ -747,6 +791,18 @@ def list_employees(
         )
 
     rows = db.scalars(stmt.order_by(HREmployee.id.desc()).limit(500)).all()
+    if include_sensitive_payout:
+        db.add(
+            Audit(
+                actor_id=user.id,
+                action='HR_EMPLOYEE_SENSITIVE_READ',
+                entity='hr_employee',
+                entity_id='list',
+                details={'records_count': len(rows)},
+            )
+        )
+        db.commit()
+
     all_counts = db.execute(
         select(HREmployee.status, func.count()).group_by(HREmployee.status)
     ).all()
@@ -761,7 +817,10 @@ def list_employees(
     )
 
     return {
-        'items': [serialize_employee(r) for r in rows],
+        'items': [
+            serialize_employee(r, include_sensitive_payout=include_sensitive_payout)
+            for r in rows
+        ],
         'summary': {
             'total': sum(counts_map.values()),
             'active': counts_map.get('active', 0),
@@ -770,6 +829,22 @@ def list_employees(
         },
         'suggested_next_code': _next_employee_code(db),
     }
+
+
+@router.get('/admin/employees/{employee_id}')
+@router.get('/api/admin/employees/{employee_id}')
+def get_employee(
+    employee_id: int,
+    response: Response,
+    include_sensitive_payout: bool = Query(False),
+    user: User = Depends(admin_user),
+    db: Session = Depends(get_db),
+):
+    response.headers['Cache-Control'] = 'private, no-store'
+    row = db.get(HREmployee, employee_id)
+    if not row:
+        raise HTTPException(404, 'Employee record not found.')
+    return serialize_employee(row, include_sensitive_payout=include_sensitive_payout)
 
 
 @router.post('/admin/employees', status_code=201)

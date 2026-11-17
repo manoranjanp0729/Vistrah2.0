@@ -387,12 +387,20 @@ export function EmployeesWorkspace() {
     setMode('form');
   }
 
-  function openEditForm(emp: EmployeeRecord) {
+  async function openEditForm(emp: EmployeeRecord) {
     setError('');
     setNotice('');
     setEditingId(emp.id);
     setForm(recordToForm(emp));
     setMode('form');
+    try {
+      const fullEmp = await api<EmployeeRecord>(
+        `/admin/employees/${emp.id}?include_sensitive_payout=true`,
+      );
+      setForm(recordToForm(fullEmp));
+    } catch (err) {
+      setError((err as Error).message);
+    }
   }
 
   function openLetter(emp: EmployeeRecord, kind: LetterKind) {
@@ -566,34 +574,46 @@ export function EmployeesWorkspace() {
     }
   }
 
-  function exportBankPayoutCsv() {
+  async function exportBankPayoutCsv() {
     setError('');
     if (credits.length === 0) {
       setError('Prepare the month payroll first so there are payout rows to export.');
       return;
     }
-    const csvRows = credits.map(c => {
-      const emp = c.employee;
-      return {
-        employeeCode: emp?.employee_code || `EMP-${c.employee_id}`,
-        beneficiaryName: emp?.bank_account_holder || emp?.full_name || '',
-        accountNumber: emp?.bank_account_number || '',
-        ifsc: emp?.bank_ifsc || '',
-        bankName: emp?.bank_name || '',
-        netPayableInr: c.net_paid_inr,
-        narration: `VISTRAH SALARY ${payMonth} ${emp?.employee_code || ''}`.trim(),
-      };
-    });
-    const csvText = buildBankPayoutCsv(csvRows);
-    const blob = new Blob([csvText], {type: 'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `vistrah-bank-payout-${payMonth}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    setBusy(true);
+    try {
+      const res = await api<SalaryCreditsListResponse>(
+        `/admin/employees/salary-credits?pay_month=${encodeURIComponent(
+          payMonth,
+        )}&include_sensitive_payout=true`,
+      );
+      const csvRows = res.items.map(c => {
+        const emp = c.employee;
+        return {
+          employeeCode: emp?.employee_code || `EMP-${c.employee_id}`,
+          beneficiaryName: emp?.bank_account_holder || emp?.full_name || '',
+          accountNumber: emp?.bank_account_number || '',
+          ifsc: emp?.bank_ifsc || '',
+          bankName: emp?.bank_name || '',
+          netPayableInr: c.net_paid_inr,
+          narration: `VISTRAH SALARY ${payMonth} ${emp?.employee_code || ''}`.trim(),
+        };
+      });
+      const csvText = buildBankPayoutCsv(csvRows);
+      const blob = new Blob([csvText], {type: 'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `vistrah-bank-payout-${payMonth}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(false);
+    }
   }
 
   // ---------------------------------------------------------------------------
@@ -1728,8 +1748,8 @@ export function EmployeesWorkspace() {
             <button
               type="button"
               className="button"
-              disabled={credits.length === 0}
-              onClick={exportBankPayoutCsv}
+              disabled={credits.length === 0 || busy}
+              onClick={() => void exportBankPayoutCsv()}
             >
               <Download size={14} />
               Export Bank Payout CSV

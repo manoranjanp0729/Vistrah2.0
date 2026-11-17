@@ -87,9 +87,19 @@ def test_admin_employees_bank_kyc_salary_credits_batch_and_utr_flow(client, db):
     emp = created.json()
     assert emp['employee_code'] == 'VST-EMP-001'
     assert emp['bank_ifsc'] == 'HDFC0001234'
-    assert emp['pan_number'] == 'ABCDE1234F'
+    assert emp['pan_number'] == 'AB•••••34F'
+    assert emp['bank_account_number'] == '••••7654'
     assert emp['masked_bank_account'] == '••••7654'
     emp_id = emp['id']
+
+    # Explicit include_sensitive_payout=true returns unmasked payout KYC for authorized export/edit
+    unmasked = client.get(
+        f'/api/admin/employees/{emp_id}?include_sensitive_payout=true',
+        headers=admin_headers,
+    )
+    assert unmasked.status_code == 200
+    assert unmasked.json()['bank_account_number'] == '50100234987654'
+    assert unmasked.json()['pan_number'] == 'ABCDE1234F'
 
     # 3. Prepare Month Payroll for 2026-11 (batch-generates pending credits for active employees)
     prepared = client.post(

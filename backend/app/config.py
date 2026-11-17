@@ -3,8 +3,14 @@ import secrets
 from pathlib import Path
 
 DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///./vistrah.db')
+_is_prod = (
+    os.getenv('ENVIRONMENT', '').strip().lower() == 'production'
+    or os.getenv('APP_ENV', '').strip().lower() == 'production'
+)
 secret = os.getenv('JWT_SECRET', '')
 if not secret:
+    if _is_prod:
+        raise RuntimeError('JWT_SECRET environment variable must be explicitly set in production')
     path = Path(os.getenv('SECRET_FILE', '.runtime-secret'))
     path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists():

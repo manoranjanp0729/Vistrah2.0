@@ -4,10 +4,18 @@ const isDevelopment=process.env.NODE_ENV==='development';
 const config: NextConfig = {
   distDir: process.env.TEST_NEXT_DIST_DIR || '.next',
   output: 'standalone',
+  productionBrowserSourceMaps: false,
   turbopack:{root:path.resolve(process.cwd(),'..')},
   poweredByHeader: false,
+  images: {
+    dangerouslyAllowSVG: false,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    remotePatterns: [],
+  },
   async headers() {
     return [{ source: '/:path*', headers: [
+      {key:'Strict-Transport-Security',value:'max-age=63072000; includeSubDomains'},
       {key:'X-Content-Type-Options',value:'nosniff'},
       {key:'X-Frame-Options',value:'DENY'},
       {key:'Referrer-Policy',value:'strict-origin-when-cross-origin'},

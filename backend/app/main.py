@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException, Request, Header, Body
 from fastapi.responses import JSONResponse
 from sqlalchemy import select, func, text, delete
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 from .database import get_db
 from .models import *
@@ -16,8 +16,16 @@ import hashlib
 import json
 import secrets
 
-app = FastAPI(title='VISTRAH API', version='1.0.0', description='Service marketplace API. All payments are sandbox simulations.')
-from .http_security import configure_http_security
+from .http_security import apply_security_headers, configure_http_security, is_production_env
+_prod_docs_off = is_production_env()
+app = FastAPI(
+    title='VISTRAH API',
+    version='1.0.0',
+    description='Service marketplace API. All payments are sandbox simulations.',
+    docs_url=None if _prod_docs_off else '/docs',
+    redoc_url=None if _prod_docs_off else '/redoc',
+    openapi_url=None if _prod_docs_off else '/openapi.json',
+)
 configure_http_security(app)
 from .workflow_routes import router as workflow_router
 app.include_router(workflow_router)
@@ -91,26 +99,41 @@ async def service_access_cache_control(request, call_next):
     return response
 
 from fastapi.exceptions import RequestValidationError
-from fastapi.exception_handlers import request_validation_exception_handler
+import logging
+
+_err_logger = logging.getLogger('vistrah.security')
 
 @app.exception_handler(RequestValidationError)
 async def validated_input_error(request, exc):
-    if request.url.path.startswith(('/auth/','/finds/','/admin/job-sources','/provider-','/admin/provider-','/seller/','/admin/catalogue-requests','/admin/ownership-','/admin/publication-','/admin/employer-jobs','/admin/homepage','/admin/commerce-listings','/admin/commerce-orders','/admin/vistrah/','/commerce/','/services/','/me/location','/requests')):
-        # Do not echo document/profile values; invalid Unicode is unsafe to echo.
-        return JSONResponse(status_code=422,content={'detail':[{'loc':error['loc'],'msg':error['msg'],'type':error['type']} for error in exc.errors()]})
-    return await request_validation_exception_handler(request, exc)
+    # Never echo raw user input (passwords, PAN, bank account numbers, or malformed bytes) in 422 responses.
+    resp = JSONResponse(
+        status_code=422,
+        content={
+            'detail': [
+                {'loc': error['loc'], 'msg': error['msg'], 'type': error['type']}
+                for error in exc.errors()
+            ]
+        },
+    )
+    apply_security_headers(resp.headers)
+    return resp
 
 @app.middleware('http')
 async def workflow_body_limit(request, call_next):
-    provider_path=request.url.path.startswith(('/provider-','/admin/provider-','/seller/','/admin/catalogue-requests','/admin/publication-','/admin/ownership-','/admin/employer-jobs','/admin/homepage','/admin/commerce-listings','/admin/commerce-orders','/admin/vistrah/','/commerce/cart','/commerce/orders'))
-    if (request.url.path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
-        limit=3000000 if provider_path and request.url.path.endswith(('/documents','/evidence')) else 128000
+    path = request.url.path
+    is_raw_video_upload = path.startswith('/v-ads/advertisers/') and path.endswith('/uploads')
+    provider_path = path.startswith(('/provider-','/admin/','/api/admin/','/seller/','/commerce/cart','/commerce/orders','/me','/auth/'))
+    if not is_raw_video_upload and (path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
+        is_large_cms = path.startswith(('/admin/edit-vistrah','/api/admin/edit-vistrah','/admin/pricing','/api/admin/pricing'))
+        limit = 3000000 if provider_path and path.endswith(('/documents','/evidence')) else (1000000 if is_large_cms else 128000)
         chunks=[]
         size=0
         async for chunk in request.stream():
             size+=len(chunk)
             if size > limit:
-                return JSONResponse(status_code=413,content={'detail':'Request exceeds the permitted upload or form size'})
+                resp = JSONResponse(status_code=413,content={'detail':'Request exceeds the permitted upload or form size'})
+                apply_security_headers(resp.headers)
+                return resp
             chunks.append(chunk)
         request._body=b''.join(chunks)
         if provider_path and request._body:
@@ -124,12 +147,30 @@ async def workflow_body_limit(request, call_next):
                     if isinstance(item,dict):stack.extend((v,depth+1) for v in item.values())
                     elif isinstance(item,list):stack.extend((v,depth+1) for v in item)
             except (ValueError,RecursionError,UnicodeError):
-                return JSONResponse(status_code=422,content={'detail':'Use valid JSON with at most 20 nesting levels'})
+                resp = JSONResponse(status_code=422,content={'detail':'Use valid JSON with at most 20 nesting levels'})
+                apply_security_headers(resp.headers)
+                return resp
     return await call_next(request)
 
 @app.exception_handler(IntegrityError)
 async def integrity_error(request, exc):
-    return JSONResponse(status_code=409, content={'detail': 'This record conflicts with an existing record or has dependencies. No change was saved.'})
+    resp = JSONResponse(status_code=409, content={'detail': 'This record conflicts with an existing record or has dependencies. No change was saved.'})
+    apply_security_headers(resp.headers)
+    return resp
+
+@app.exception_handler(SQLAlchemyError)
+async def database_error_handler(request, exc):
+    _err_logger.error('Database error on %s %s: %s', request.method, request.url.path, type(exc).__name__)
+    resp = JSONResponse(status_code=500, content={'detail': 'A database error occurred. No internal details were exposed.'})
+    apply_security_headers(resp.headers)
+    return resp
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request, exc):
+    _err_logger.error('Unhandled error on %s %s: %s', request.method, request.url.path, type(exc).__name__)
+    resp = JSONResponse(status_code=500, content={'detail': 'An unexpected server error occurred.'})
+    apply_security_headers(resp.headers)
+    return resp
 
 def audit(db, actor, action, entity, entity_id, details=None):
     db.add(Audit(actor_id=actor.id, action=action, entity=entity, entity_id=str(entity_id), details=details or {}))

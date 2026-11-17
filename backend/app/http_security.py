@@ -116,11 +116,18 @@ def _positive_int_env(name: str, default: int) -> int:
         return default
 
 
+def is_production_env() -> bool:
+    return (
+        os.getenv("ENVIRONMENT", "").strip().lower() == "production"
+        or os.getenv("APP_ENV", "").strip().lower() == "production"
+    )
+
+
 def _rate_bucket(request: Request) -> tuple[str, int] | None:
     if request.method == "OPTIONS":
         return None
     path = request.url.path
-    if path.startswith("/auth/"):
+    if path.startswith(("/auth/", "/recovery/", "/password-reset")):
         return ("auth", _positive_int_env("AUTH_RATE_LIMIT_PER_MINUTE", 60))
     if request.method == "GET" and (
         path in ("/v-ads/reels", "/jobs", "/catalogue", "/marketplace/taxonomy")
@@ -172,6 +179,10 @@ def apply_security_headers(headers) -> None:
 def configure_http_security(app: FastAPI) -> None:
     @app.middleware("http")
     async def security_headers_and_rate_limit(request: Request, call_next):
+        if is_production_env() and request.url.path in ("/docs", "/docs/oauth2-redirect", "/redoc", "/openapi.json"):
+            denied_docs = JSONResponse(status_code=404, content={"detail": "Not found"})
+            apply_security_headers(denied_docs.headers)
+            return denied_docs
         bucket_info = _rate_bucket(request)
         if bucket_info is not None:
             bucket, limit = bucket_info

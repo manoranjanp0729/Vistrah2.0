@@ -26,3 +26,16 @@ if len(secret) < 32:
 JWT_SECRET = secret
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', secret + ':sandbox-webhook')
 CATALOGUE_FILE = Path(os.getenv('CATALOGUE_FILE', str(Path(__file__).resolve().parents[2] / 'shared' / 'catalogue.json')))
+# Server-only Google Maps key (Geocoding & Places Essentials). Never expose in responses or client bundles.
+GOOGLE_MAPS_SERVER_API_KEY = (
+    os.getenv('GOOGLE_MAPS_SERVER_API_KEY', '').strip()
+    or os.getenv('GOOGLE_MAPS_GEOCODING_API_KEY', '').strip()
+)
+
+
+def get_google_maps_server_api_key() -> str:
+    return (
+        os.getenv('GOOGLE_MAPS_SERVER_API_KEY', '').strip()
+        or os.getenv('GOOGLE_MAPS_GEOCODING_API_KEY', '').strip()
+        or GOOGLE_MAPS_SERVER_API_KEY
+    )

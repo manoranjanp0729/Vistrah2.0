@@ -5,6 +5,7 @@ import {View} from 'react-native';
 import {Action,Field,ErrorPanel,Heading} from './ui';
 import {useTheme} from '../lib/theme';
 import {api} from '../lib/api';
+import {VistrahMobileMap} from './vistrah-mobile-map';
 import type {AdvertiserAccount,SellerVideo} from '../../../shared/v-ads';
 import {managementClient,parseTargetingInput,type AdTargeting,type History,type Performance} from '../../../shared/v-ads-management';
 const client=managementClient(api);
@@ -79,6 +80,23 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
     {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:'#dc2626'}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
     {Boolean(targetingNotice)&&<Text style={styles.muted}><UiText value={targetingNotice}/></Text>}
     {targeting?.pending_revision?<Text style={styles.muted}><UiText value={"A pending targeting revision is awaiting administrator review."}/></Text>:<>
+     <VistrahMobileMap
+      center={{
+       latitude:Number.isFinite(Number(lat))&&lat.trim()!==''?Number(lat):12.9716,
+       longitude:Number.isFinite(Number(lon))&&lon.trim()!==''?Number(lon):77.5946,
+      }}
+      radiusKm={Number.isFinite(Number(radiusKm))&&Number(radiusKm)>0?Number(radiusKm):10}
+      editable
+      disabled={busy}
+      onPinChange={p=>{
+       setLat(String(p.latitude));
+       setLon(String(p.longitude));
+       if(!radiusKm.trim())setRadiusKm('10');
+      }}
+      onResolvedAddress={place=>{
+       if(place.locality&&!regionsText.trim())setRegionsText(place.locality);
+      }}
+     />
      <UiElement as={Field} label="Center latitude" placeholder="e.g. 12.9716" keyboardType="numbers-and-punctuation" value={lat} onChangeText={setLat}/>
      <UiElement as={Field} label="Center longitude" placeholder="e.g. 77.5946" keyboardType="numbers-and-punctuation" value={lon} onChangeText={setLon}/>
      <UiElement as={Field} label="Radius (km)" placeholder="e.g. 15" keyboardType="decimal-pad" value={radiusKm} onChangeText={setRadiusKm}/>

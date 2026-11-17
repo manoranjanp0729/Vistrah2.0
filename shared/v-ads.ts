@@ -47,6 +47,7 @@ export type Reel = {
   distance_km?: number;
   proximity?: 'local' | 'farther';
   targeting_radius_km?: number;
+  area_coordinates?: { latitude: number; longitude: number } | null;
 };
 
 export type FeedFilter = {

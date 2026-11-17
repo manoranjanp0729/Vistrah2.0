@@ -9,6 +9,7 @@ import {api,ApiError} from '@/lib/api';
 import {destinationLink} from '@/lib/destinations';
 import {LocationMap} from './location-map';
 import {GoogleLocationPicker,googleMapsWebKey} from './google-location-picker';
+import {PlaceAutocompleteInput,VistrahMap} from './vistrah-google-maps';
 import {googlePlaces,googlePrivacy} from '../../shared/google-location';
 import {lookupGpsPlace,providerBlocker,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
 
@@ -122,7 +123,43 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
       {error&&<p className="notice error" role="alert"><UiText value={error}/>{error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}><UiText value={"Sign in"}/></Link></>}</p>}
       <p role="status"><UiText value={message}/></p>
       <button type="button" className="button secondary" onClick={()=>void state.gps()} disabled={busy}><UiText value={"Use my location"}/></button>
-      {open&&(googleMapsWebKey?<GoogleLocationPicker point={validPoint(draft)?draft:defaultMapPoint} disabled={busy} onPin={point=>state.edit({...point,source:'google',locality:'',postal_code:'',address:'',landmark:''})} onPlace={place=>state.edit({latitude:place.latitude,longitude:place.longitude,postal_code:place.postal_code,locality:place.label,source:'google',address:'',landmark:''})}/>:<LocationMap point={validPoint(draft)?draft:defaultMapPoint} onPin={point=>{if(!busy)state.edit({...point,locality:'',postal_code:'',address:'',landmark:''});}} onView={()=>{}} onSelect={()=>{}}/>)}
+      {open&&(
+        <div style={{display:'grid',gap:12,marginTop:8,marginBottom:8}}>
+          <PlaceAutocompleteInput
+            label="Search locality, landmark, or PIN code"
+            placeholder="e.g. Indiranagar, Koramangala, or 560038"
+            disabled={busy}
+            onSelectPlace={place=>state.edit({
+              latitude:place.latitude,
+              longitude:place.longitude,
+              locality:place.locality,
+              postal_code:place.postalCode,
+              address:place.formattedAddress,
+              ...(googleMapsWebKey?{source:'google' as const}:{}),
+            })}
+          />
+          <VistrahMap
+            center={validPoint(draft)?draft:defaultMapPoint}
+            radiusKm={radius}
+            editable
+            disabled={busy}
+            height={280}
+            autoReverseGeocode
+            onPinChange={point=>state.edit({
+              ...point,
+              ...(googleMapsWebKey?{source:'google' as const}:{}),
+            })}
+            onResolvedAddress={place=>state.edit({
+              latitude:place.latitude,
+              longitude:place.longitude,
+              locality:place.locality,
+              postal_code:place.postalCode,
+              address:place.formattedAddress,
+              ...(googleMapsWebKey?{source:'google' as const}:{}),
+            })}
+          />
+        </div>
+      )}
       <form className="form location-controls" onSubmit={event=>{event.preventDefault();state.confirmLocation(draft);}}>
         <div className="location-field-grid">
           <label><UiText value={"Manual address"}/><input value={draft.address} maxLength={500} disabled={busy} onChange={event=>state.edit({address:event.target.value})}/></label>

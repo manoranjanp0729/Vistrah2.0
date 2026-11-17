@@ -43,6 +43,8 @@ from .location_routes import router as location_router
 app.include_router(location_router)
 from .google_maps_routes import router as google_maps_router
 app.include_router(google_maps_router)
+from .maps_proxy_routes import router as maps_proxy_router
+app.include_router(maps_proxy_router)
 from .employer_job_routes import router as employer_job_router
 app.include_router(employer_job_router)
 from .homepage_routes import router as homepage_router
@@ -91,7 +93,7 @@ app.include_router(hr_router)
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith(('/seller/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/', '/admin/pricing', '/api/admin/pricing', '/admin/employees', '/api/admin/employees')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests', '/pricing', '/api/pricing') or (
+    if request.url.path.startswith(('/seller/', '/maps/', '/api/maps/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/', '/admin/pricing', '/api/admin/pricing', '/admin/employees', '/api/admin/employees')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests', '/pricing', '/api/pricing') or (
         request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'
@@ -122,7 +124,7 @@ async def validated_input_error(request, exc):
 async def workflow_body_limit(request, call_next):
     path = request.url.path
     is_raw_video_upload = path.startswith('/v-ads/advertisers/') and path.endswith('/uploads')
-    provider_path = path.startswith(('/provider-','/admin/','/api/admin/','/seller/','/commerce/cart','/commerce/orders','/me','/auth/'))
+    provider_path = path.startswith(('/provider-','/admin/','/api/admin/','/seller/','/commerce/cart','/commerce/orders','/me','/auth/','/maps/','/api/maps/'))
     if not is_raw_video_upload and (path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
         is_large_cms = path.startswith(('/admin/edit-vistrah','/api/admin/edit-vistrah','/admin/pricing','/api/admin/pricing'))
         limit = 3000000 if provider_path and path.endswith(('/documents','/evidence')) else (1000000 if is_large_cms else 128000)

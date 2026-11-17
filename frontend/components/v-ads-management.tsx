@@ -2,6 +2,7 @@
 import {UiText} from "./localized-ui";
 import {useRef,useState} from 'react';
 import {api} from '@/lib/api';
+import {PlaceAutocompleteInput,VistrahMap} from './vistrah-google-maps';
 import type {AdvertiserAccount,SellerVideo} from '../../shared/v-ads';
 import {managementClient,parseTargetingInput,type AdTargeting,type History,type Performance} from '../../shared/v-ads-management';
 const client=managementClient(api);
@@ -73,7 +74,52 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
     {targeting?.pending_revision&&<small style={{color:'#ca8a04',fontWeight:600}}><UiText value={"Pending review (Rev #"}/>{targeting.pending_revision.revision}): {targeting.pending_revision.latitude}, {targeting.pending_revision.longitude} · {targeting.pending_revision.radius_km} km{targeting.pending_revision.target_regions.length?` · ${targeting.pending_revision.target_regions.join(', ')}`:''}</small>}
     {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<small style={{color:'#dc2626'}}><UiText value={"Last submitted revision (#"}/>{targeting.latest_revision.revision}<UiText value={") was rejected. Submit an updated boundary below."}/></small>}
     {targetingNotice&&<p role="status"><UiText value={targetingNotice}/></p>}
-    {targeting?.pending_revision?<small><UiText value={"A pending targeting revision is awaiting administrator review before another revision can be submitted."}/></small>:<form style={{display:'grid',gap:8}} onSubmit={event=>{event.preventDefault();void run(async()=>{const payload=parseTargetingInput(lat,lon,radiusKm,regionsText);const next=await client.submitTargeting(video.id,payload);setTargeting(next);setTargetingNotice('Targeting revision submitted for administrator review.');});}}>
+    {targeting?.pending_revision?<small><UiText value={"A pending targeting revision is awaiting administrator review before another revision can be submitted."}/></small>:<form style={{display:'grid',gap:10}} onSubmit={event=>{event.preventDefault();void run(async()=>{const payload=parseTargetingInput(lat,lon,radiusKm,regionsText);const next=await client.submitTargeting(video.id,payload);setTargeting(next);setTargetingNotice('Targeting revision submitted for administrator review.');});}}>
+     <PlaceAutocompleteInput
+      label="Search target locality or business address"
+      placeholder="Search area, street, or city (e.g. Jayanagar, Bengaluru)"
+      disabled={busy}
+      preferBackendDetails
+      onSelectPlace={place=>{
+       setLat(String(Number(place.latitude.toFixed(6))));
+       setLon(String(Number(place.longitude.toFixed(6))));
+       if(!radiusKm.trim())setRadiusKm('10');
+       if(place.locality){
+        const existing=regionsText.split(',').map(s=>s.trim()).filter(Boolean);
+        if(!existing.some(r=>r.toLowerCase()===place.locality.toLowerCase())){
+         setRegionsText([...existing,place.locality].join(', '));
+        }
+       }
+      }}
+     />
+     <VistrahMap
+      center={{
+       latitude:Number.isFinite(Number(lat))&&lat.trim()!==''&&Math.abs(Number(lat))<=90?Number(lat):12.9716,
+       longitude:Number.isFinite(Number(lon))&&lon.trim()!==''&&Math.abs(Number(lon))<=180?Number(lon):77.5946,
+      }}
+      radiusKm={Number.isFinite(Number(radiusKm))&&Number(radiusKm)>0?Number(radiusKm):10}
+      editable
+      disabled={busy}
+      height={280}
+      autoReverseGeocode
+      onPinChange={point=>{
+       setLat(String(point.latitude));
+       setLon(String(point.longitude));
+       if(!radiusKm.trim())setRadiusKm('10');
+      }}
+      onResolvedAddress={place=>{
+       if(place.locality&&!regionsText.trim())setRegionsText(place.locality);
+      }}
+      ariaLabel="V Ads targeting pin picker"
+     />
+     <div style={{display:'flex',gap:6,flexWrap:'wrap',alignItems:'center'}}>
+      <small style={{color:'var(--text-secondary)'}}><UiText value={"Quick radius:"}/></small>
+      {[2,5,10,15,25].map(km=>(
+       <button key={km} type="button" className="button secondary" style={{minHeight:28,padding:'2px 8px',fontSize:12}} disabled={busy} onClick={()=>setRadiusKm(String(km))}>
+        {km} km
+       </button>
+      ))}
+     </div>
      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(130px, 1fr))',gap:8}}>
       <label><UiText value={"Center latitude"}/><input required inputMode="decimal" placeholder="e.g. 12.9716" value={lat} onChange={e=>setLat(e.target.value)}/></label>
       <label><UiText value={"Center longitude"}/><input required inputMode="decimal" placeholder="e.g. 77.5946" value={lon} onChange={e=>setLon(e.target.value)}/></label>

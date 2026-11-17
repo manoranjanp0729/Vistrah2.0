@@ -20,7 +20,7 @@ const config: NextConfig = {
       {key:'X-Frame-Options',value:'DENY'},
       {key:'Referrer-Policy',value:'strict-origin-when-cross-origin'},
       {key:'Permissions-Policy',value:'camera=(), microphone=(), geolocation=(self)'},
-      {key:'Content-Security-Policy',value:"default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style https://fonts.googleapis.com; img-src 'self' data: https://api.maptiler.com https://*.googleapis.com https://*.gstatic.com https://maps.google.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.maptiler.com https://accounts.google.com https://*.googleapis.com https://*.gstatic.com; frame-src https://accounts.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"}
+      {key:'Content-Security-Policy',value:"default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client https://maps.googleapis.com https://maps.gstatic.com; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style https://fonts.googleapis.com; img-src 'self' data: blob: https://api.maptiler.com https://*.googleapis.com https://*.gstatic.com https://maps.google.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.maptiler.com https://accounts.google.com https://*.googleapis.com https://*.gstatic.com; worker-src 'self' blob:; frame-src https://accounts.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"}
     ]},{source:'/reset-password',headers:[
       {key:'Referrer-Policy',value:'no-referrer'},
       {key:'Cache-Control',value:'no-store'}

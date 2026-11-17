@@ -6,7 +6,7 @@ import {api,ApiError} from '@/lib/api';
 import {urls} from '@/lib/urls';
 import type {ServiceContext} from '@/lib/types';
 import {LatestSearch,validPoint,type Point,type NearbyResult} from '@/lib/location';
-import {LocationMap} from './location-map';
+import {MapListViewToggle,VistrahMap,googleMapsDirectionsHref,type VistrahMapMarker} from './vistrah-google-maps';
 import {LocationChooser,useCustomerLocation,defaultMapPoint} from './customer-location';
 import {Notice} from './ui';
 import {ServiceAccessState} from './service-access';
@@ -15,6 +15,7 @@ import {HorizontalCarousel} from './horizontal-carousel';
 export function NearbyProviders({context,carousel=false}:{context:ServiceContext;carousel?:boolean}){
   const {draft,active,radius,busy,edit,confirmLocation}=useCustomerLocation();
   const [view,setView]=useState<Point>(defaultMapPoint);
+  const [viewMode,setViewMode]=useState<'list'|'map'|'split'>('split');
   const [searchState,setSearchState]=useState<{key:string;result:NearbyResult|null;error:string}|null>(null);const [selected,setSelected]=useState<number|null>(null);
   const [access,setAccess]=useState(0);const search=useRef(new LatestSearch());
   const filterKey=JSON.stringify([context.service.id,active?.latitude,active?.longitude,radius]);
@@ -30,12 +31,40 @@ export function NearbyProviders({context,carousel=false}:{context:ServiceContext
     const current=search.current;return()=>{alive=false;current.cancel();};
   },[active,radius,page,context.service.id,searchKey]);
   const items=useMemo(()=>result?[...result.nearby,...result.also_serves]:[],[result]);
+  const mapMarkers=useMemo<VistrahMapMarker[]>(()=>items.map(item=>({
+    id:item.id,
+    latitude:item.latitude,
+    longitude:item.longitude,
+    title:item.company,
+    subtitle:item.location,
+    description:item.description,
+    distanceKm:item.distance_km,
+    badge:item.verification_status==='VERIFIED'?'Verified Provider':undefined,
+    actionLabel:'View provider',
+    actionHref:urls.provider(context.category,context.subcategory,context.service,item),
+  })),[items,context.category,context.subcategory,context.service]);
   function select(id:number){setSelected(id);document.getElementById(`nearby-provider-${id}`)?.scrollIntoView({block:'nearest'});}
   if(access)return <ServiceAccessState status={access} next={urls.providers(context.category,context.subcategory,context.service)}/>;
-  return <UiSection  className="nested-section" aria-label="Nearby provider search"><h2><UiText value={"Find providers near your location"}/></h2><LocationChooser expanded/>{failure&&<Notice error message={failure}/>}
-    <LocationMap point={validPoint(draft)?draft:defaultMapPoint} items={items} selectedId={result?selected:null} onPin={point=>edit(point)} onView={setView} onSelect={select}/><button type="button" className="button secondary" disabled={busy} onClick={()=>confirmLocation({...draft,...view})}><UiText value={"Search this area"}/></button><p><UiText value={"Panning leaves results unchanged. Search this area uses the map centre; confirm locality/PIN for the new area first."}/></p>
+  return <UiSection  className="nested-section" aria-label="Nearby provider search"><div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}><h2><UiText value={"Find providers near your location"}/></h2><MapListViewToggle mode={viewMode} onChange={setViewMode}/></div><LocationChooser expanded/>{failure&&<Notice error message={failure}/>}
+    {viewMode!=='list'&&<>
+      <VistrahMap
+        center={validPoint(draft)?draft:defaultMapPoint}
+        radiusKm={radius}
+        markers={mapMarkers}
+        selectedId={result?selected:null}
+        editable
+        disabled={busy}
+        onPinChange={point=>edit(point)}
+        onViewCenterChange={setView}
+        onSelectMarker={id=>{if(typeof id==='number')select(id);}}
+      />
+      <div className="button-row" style={{marginTop:8}}>
+        <button type="button" className="button secondary" disabled={busy} onClick={()=>confirmLocation({...draft,...view})}><UiText value={"Search this area"}/></button>
+      </div>
+      <p><UiText value={"Panning leaves results unchanged. Search this area uses the map centre; confirm locality/PIN for the new area first."}/></p>
+    </>}
     {active&&<p className="tabular-nums"><UiText value={"Searching "}/>{active.locality}<UiText value={active.postal_code?` · ${active.postal_code}`:''}/><UiText value={", within "}/>{radius} <UiText value={"km. Distances are straight-line business distances, not travel distances."}/></p>}{loading&&<p role="status"><UiText value={"Searching eligible providers…"}/></p>}
-    {result&&(['nearby','also_serves'] as const).map(group=><div key={group}><h3><UiText value={group==='nearby'?'Nearby providers':'Also serves your area'}/></h3>{!result[group].length&&<p><UiText value={group==='nearby'?'No eligible covering providers within this radius.':'No farther covering providers on this page.'}/></p>}<UiElement as={ProviderResults} carousel={carousel} label={group==='nearby'?'Nearby providers':'Also serves your area'}>{result[group].map(item=><article id={`nearby-provider-${item.id}`} key={item.id} className={`provider-card${selected===item.id?' selected-provider':''}`} aria-current={selected===item.id?'true':undefined}><h4>{item.company}</h4><p className="tabular-nums">{item.location} · {item.distance_km.toFixed(2)} <UiText value={"km straight-line"}/></p>{item.description&&<p><UiText value={item.description}/></p>}<button type="button" className="text-link" onClick={()=>select(item.id)}><UiText value={"Show "}/>{item.company} <UiText value={"on map"}/></button><Link href={urls.provider(context.category,context.subcategory,context.service,item)}><UiText value={"View provider"}/></Link></article>)}</UiElement></div>)}{result&&(result.has_more_nearby||result.has_more_also_serves||page>1)&&<div className="button-row"><button disabled={page===1||loading} onClick={()=>setPaging({key:filterKey,page:page-1})}><UiText value={"Previous results"}/></button><span className="tabular-nums"><UiText value={"Page "}/>{page}</span><button disabled={(!result.has_more_nearby&&!result.has_more_also_serves)||loading} onClick={()=>setPaging({key:filterKey,page:page+1})}><UiText value={"More results"}/></button></div>}
+    {viewMode!=='map'&&result&&(['nearby','also_serves'] as const).map(group=><div key={group}><h3><UiText value={group==='nearby'?'Nearby providers':'Also serves your area'}/></h3>{!result[group].length&&<p><UiText value={group==='nearby'?'No eligible covering providers within this radius.':'No farther covering providers on this page.'}/></p>}<UiElement as={ProviderResults} carousel={carousel} label={group==='nearby'?'Nearby providers':'Also serves your area'}>{result[group].map(item=><article id={`nearby-provider-${item.id}`} key={item.id} className={`provider-card${selected===item.id?' selected-provider':''}`} aria-current={selected===item.id?'true':undefined}><h4>{item.company}</h4><p className="tabular-nums">{item.location} · {item.distance_km.toFixed(2)} <UiText value={"km straight-line"}/></p>{item.description&&<p><UiText value={item.description}/></p>}<div className="button-row"><button type="button" className="text-link" onClick={()=>{if(viewMode==='list')setViewMode('split');select(item.id);}}><UiText value={"Show "}/>{item.company} <UiText value={"on map"}/></button><Link href={urls.provider(context.category,context.subcategory,context.service,item)}><UiText value={"View provider"}/></Link><a className="text-link" href={googleMapsDirectionsHref(item.latitude,item.longitude)} target="_blank" rel="noopener noreferrer"><UiText value={"Open in Google Maps"}/></a></div></article>)}</UiElement></div>)}{result&&(result.has_more_nearby||result.has_more_also_serves||page>1)&&<div className="button-row"><button disabled={page===1||loading} onClick={()=>setPaging({key:filterKey,page:page-1})}><UiText value={"Previous results"}/></button><span className="tabular-nums"><UiText value={"Page "}/>{page}</span><button disabled={(!result.has_more_nearby&&!result.has_more_also_serves)||loading} onClick={()=>setPaging({key:filterKey,page:page+1})}><UiText value={"More results"}/></button></div>}
   </UiSection>;
 }
 

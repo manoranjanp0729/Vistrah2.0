@@ -1,12 +1,13 @@
 'use client';
 import {UiText,UiDiv,UiButton,UiSection,UiInput} from "./localized-ui";
 import Link from 'next/link';
-import {useEffect,useRef,useState,type RefObject} from 'react';
-import {Heart,Maximize,MessageCircle,Share2,Volume2,VolumeX,X,ShoppingBag,Briefcase,Truck,CheckCircle2} from 'lucide-react';
+import {useEffect,useMemo,useRef,useState,type RefObject} from 'react';
+import {Heart,Maximize,MessageCircle,Share2,Volume2,VolumeX,X,ShoppingBag,Briefcase,Truck,CheckCircle2,MapPin} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
-import {validPoint} from '@/lib/location';
+import {radii,requestGps,validPoint,type Point,type Radius} from '@/lib/location';
 import {useUser} from './customer';
 import {useOptionalCustomerLocation} from './customer-location';
+import {PlaceAutocompleteInput,VistrahMap,googleMapsDirectionsHref,type VistrahMapMarker} from './vistrah-google-maps';
 import {mediaUrl,mergeReels,sharePath,vAdsClient,parseAdDescription,type Reel,type Comment,type AdvertiserProfile,type FeedFilter} from '../../shared/v-ads';
 import {listingPrice} from '../../shared/commerce';
 import s from './v-ads.module.css';
@@ -21,13 +22,22 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
   const activeLat=activePoint?.latitude,activeLon=activePoint?.longitude,activeRadius=locationState?.radius;
   const [items,setItems]=useState<Reel[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState('');
   const [version,setVersion]=useState(0),[page,setPage]=useState(1),[more,setMore]=useState(false),[paging,setPaging]=useState(false);
+  const [displayMode,setDisplayMode]=useState<'reels'|'map'>('reels');
+  const [mapCenter,setMapCenter]=useState<Point>(()=>activePoint??{latitude:12.9716,longitude:77.5946});
+  const [mapRadius,setMapRadius]=useState<Radius>(()=>locationState?.radius??10);
+  const [mapLabel,setMapLabel]=useState<string>(()=>activePoint?.locality??'Bengaluru');
+  const [gpsBusy,setGpsBusy]=useState(false);
   const lock=useRef(false);
+  const effectiveFilterLat=displayMode==='map'?mapCenter.latitude:activeLat;
+  const effectiveFilterLon=displayMode==='map'?mapCenter.longitude:activeLon;
+  const effectiveFilterRadius=displayMode==='map'?mapRadius:activeRadius;
+  useEffect(()=>{if(activePoint){setMapCenter({latitude:activePoint.latitude,longitude:activePoint.longitude});if(activePoint.locality)setMapLabel(activePoint.locality);}},[activePoint?.latitude,activePoint?.longitude,activePoint?.locality]);
   useEffect(()=>{let alive=true;
-    const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;
+    const filter:FeedFilter|undefined=effectiveFilterLat!==undefined&&effectiveFilterLon!==undefined?{lat:effectiveFilterLat,lon:effectiveFilterLon,radius_km:effectiveFilterRadius}:undefined;
     Promise.all([filter?client.feed(1,filter):client.feed(),initialVideo?client.reel(initialVideo):Promise.resolve(null)]).then(([feed,selected])=>{
       if(alive){setItems(mergeReels(selected?[selected]:[],feed.items));setPage(1);setMore(feed.has_more);root.current?.scrollTo(0,0);}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[initialVideo,version,activeLat,activeLon,activeRadius]);
+  },[initialVideo,version,effectiveFilterLat,effectiveFilterLon,effectiveFilterRadius]);
   useEffect(()=>{
     const feed=root.current;if(!feed)return;
     const viewport=window.visualViewport;
@@ -49,14 +59,100 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
     viewport?.addEventListener('resize',fit);
     return()=>{observer.disconnect();window.removeEventListener('resize',fit);viewport?.removeEventListener('resize',fit);};
   },[loading,items.length]);
-  async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;const next=await client.feed(page+1,filter);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
-  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><Link href="/seller/v-ads?from=v-ads" className="button secondary"><UiText value={"V Ads Studio"}/></Link></div>
-    {loading?<p className={s.status} role="status"><UiText value={"Loading videos…"}/></p>:!items.length?<div className={s.status}><p role="status">{error||'No approved local video ads in this view yet.'}</p><button className="button secondary" onClick={()=>setVersion(v=>v+1)}><UiText value={"Refresh feed"}/></button></div>:<>
+  async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const filter:FeedFilter|undefined=effectiveFilterLat!==undefined&&effectiveFilterLon!==undefined?{lat:effectiveFilterLat,lon:effectiveFilterLon,radius_km:effectiveFilterRadius}:undefined;const next=await client.feed(page+1,filter);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
+  const reelMapMarkers=useMemo<VistrahMapMarker[]>(()=>items.filter(item=>item.area_coordinates&&validPoint(item.area_coordinates)).map(item=>({
+    id:item.id,
+    latitude:item.area_coordinates!.latitude,
+    longitude:item.area_coordinates!.longitude,
+    title:item.title,
+    subtitle:`@${item.advertiser.handle} · ${item.advertiser.name}`,
+    distanceKm:item.distance_km??null,
+    badge:item.proximity==='local'?'Nearby V Ad':'Regional V Ad',
+    actionLabel:'Watch Reel',
+    onAction:()=>{
+      setDisplayMode('reels');
+      setTimeout(()=>{
+        const idx=items.findIndex(r=>r.id===item.id);
+        if(idx>=0&&root.current)root.current.scrollTo({top:idx*root.current.clientHeight,behavior:'smooth'});
+      },60);
+    },
+  })),[items]);
+  async function useMyLocationOnFeed(){
+    setGpsBusy(true);setError('');
+    try{
+      const fix=await requestGps(navigator.geolocation);
+      setMapCenter(fix.point);
+      setMapLabel('Current GPS area');
+    }catch(e){setError((e as Error).message);}
+    finally{setGpsBusy(false);}
+  }
+  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}><div role="group" aria-label="V Ads view mode" style={{display:'inline-flex',padding:3,borderRadius:9,border:'1px solid var(--hairline, var(--border))',gap:2}}><button type="button" className={displayMode==='reels'?'button':'button secondary'} style={{minHeight:32,padding:'4px 10px',fontSize:12}} aria-pressed={displayMode==='reels'} onClick={()=>setDisplayMode('reels')}><UiText value={"Reels"}/></button><button type="button" className={displayMode==='map'?'button':'button secondary'} style={{minHeight:32,padding:'4px 10px',fontSize:12}} aria-pressed={displayMode==='map'} onClick={()=>setDisplayMode('map')}><MapPin size={13} aria-hidden="true"/> <UiText value={"Map View"}/></button></div><Link href="/seller/v-ads?from=v-ads" className="button secondary"><UiText value={"V Ads Studio"}/></Link></div></div>
+    {displayMode==='map'&&(
+      <section aria-label="Nearby V Ads Map" style={{display:'grid',gap:12,padding:'12px 0'}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:8,alignItems:'end'}}>
+          <PlaceAutocompleteInput
+            label="Explore hyperlocal V Ads near an area"
+            placeholder="Search neighbourhood, landmark, or city"
+            defaultValue={mapLabel}
+            onSelectPlace={place=>{
+              setMapCenter({latitude:place.latitude,longitude:place.longitude});
+              setMapLabel(place.locality||place.formattedAddress);
+            }}
+          />
+          <label style={{fontSize:12,fontWeight:600}}>
+            <UiText value={"Radius"}/>
+            <select value={mapRadius} onChange={e=>setMapRadius(Number(e.target.value) as Radius)} style={{display:'block',minHeight:42,marginTop:4,padding:'6px 10px',borderRadius:8,border:'1px solid var(--hairline, var(--border))'}}>
+              {radii.map(r=><option key={r} value={r}>{r} km</option>)}
+            </select>
+          </label>
+          <button type="button" className="button secondary" disabled={gpsBusy} onClick={()=>void useMyLocationOnFeed()} style={{minHeight:42}}>
+            <UiText value={gpsBusy?'Locating…':'Use my location'}/>
+          </button>
+        </div>
+        <VistrahMap
+          center={mapCenter}
+          radiusKm={mapRadius}
+          markers={reelMapMarkers}
+          editable
+          height={380}
+          onPinChange={point=>{setMapCenter(point);setMapLabel(`${point.latitude.toFixed(4)}, ${point.longitude.toFixed(4)}`);}}
+          ariaLabel="Nearby V Ads Google Map"
+        />
+        <div style={{display:'grid',gap:8}} className="tabular-nums">
+          <small style={{color:'var(--text-secondary)'}}>
+            Showing {reelMapMarkers.length} geo-pinned V {reelMapMarkers.length===1?'Ad':'Ads'} around <strong>{mapLabel}</strong> ({mapRadius} km radius) · {items.length} total approved ads in feed.
+          </small>
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(240px, 1fr))',gap:10}}>
+            {items.map((item,idx)=>(
+              <article key={item.id} style={{padding:12,borderRadius:10,border:'1px solid var(--hairline, var(--border))',background:'var(--surface)',display:'grid',gap:6}}>
+                <div style={{display:'flex',justifyContent:'space-between',gap:8,alignItems:'baseline'}}>
+                  <strong style={{fontSize:14}}>{item.title}</strong>
+                  {typeof item.distance_km==='number'&&<span style={{fontSize:12,fontWeight:600,color:'#0f172a'}}>{item.distance_km.toFixed(1)} km</span>}
+                </div>
+                <small style={{color:'var(--text-secondary)'}}>@{item.advertiser.handle} · {item.advertiser.name}</small>
+                <div style={{display:'flex',gap:8,flexWrap:'wrap',marginTop:4}}>
+                  <button type="button" className="button secondary" style={{minHeight:32,padding:'4px 10px',fontSize:12}} onClick={()=>{
+                    setDisplayMode('reels');
+                    setTimeout(()=>{if(root.current)root.current.scrollTo({top:idx*root.current.clientHeight,behavior:'smooth'});},60);
+                  }}><UiText value={"Watch Reel"}/></button>
+                  {item.area_coordinates&&validPoint(item.area_coordinates)&&(
+                    <a href={googleMapsDirectionsHref(item.area_coordinates.latitude,item.area_coordinates.longitude)} target="_blank" rel="noopener noreferrer" className="text-link" style={{fontSize:12,alignSelf:'center'}}>
+                      <UiText value={"Open in Google Maps"}/>
+                    </a>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+    {loading?<p className={s.status} role="status"><UiText value={"Loading videos…"}/></p>:!items.length?<div className={s.status}><p role="status">{error||'No approved local video ads in this view yet.'}</p><button className="button secondary" onClick={()=>setVersion(v=>v+1)}><UiText value={"Refresh feed"}/></button></div>:displayMode==='reels'?<>
       <UiDiv  className={s.feed} ref={root} aria-label="V Ads videos" tabIndex={0} onScroll={event=>{const node=event.currentTarget;if(!error&&node.scrollHeight-node.scrollTop-node.clientHeight<node.clientHeight*.5)void loadMore();}}>
         {items.map(item=><ReelCard key={item.id+':'+(user?.id??'guest')} reel={item} root={root} authenticated={Boolean(user)}/>)}</UiDiv>
       {Boolean(error)&&<div role="alert" className={s.error}><UiText value={error}/> <button className="button secondary" onClick={()=>void loadMore()}><UiText value={"Retry"}/></button></div>}
       {more&&<button className="button secondary" disabled={paging} onClick={()=>void loadMore()}><UiText value={paging?'Loading…':'Load more videos'}/></button>}
-    </>}
+    </>:null}
   </div>;
 }
 

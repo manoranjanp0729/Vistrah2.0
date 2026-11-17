@@ -4,6 +4,7 @@ import {Text} from './typography';
 import {Action} from './ui';
 import {googleMapsDirectionsUrl,googleMapsEnabled,googleMapsWebKey} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
+import {MobileGoogleLogoBadge} from './google-attribution';
 import {mountGoogleMap} from '../../../shared/google-map-web';
 import type {GooglePoint} from '../../../shared/google-location';
 import {reverseGeocodeMobilePoint,type MobileMapMarker,type ResolvedMobilePlace,type VistrahMobileMapProps} from './vistrah-mobile-map';
@@ -22,7 +23,7 @@ export function VistrahMobileMap({
   onPinChange,
   onResolvedAddress,
 }:VistrahMobileMapProps){
-  const {colors,styles}=useTheme();
+  const {colors,styles,mode}=useTheme();
   const node=useRef<HTMLDivElement>(null);
   const controller=useRef<Awaited<ReturnType<typeof mountGoogleMap>>|null>(null);
   const [selectedId,setSelectedId]=useState<string|number|null>(null);
@@ -92,7 +93,7 @@ export function VistrahMobileMap({
           )}
         </View>
       ):(
-        <View style={[styles.card,{minHeight:height,justifyContent:'center',gap:6}]}>
+        <View style={[styles.card,{position:'relative',minHeight:height,justifyContent:'center',paddingBottom:38,gap:6}]}>
           <Text style={styles.label}>MAP STAGE · FALLBACK</Text>
           <Text style={[styles.muted,styles.tabular]}>
             {safeCenter.latitude.toFixed(4)}° N, {safeCenter.longitude.toFixed(4)}° E{radiusKm?` · ${radiusKm} km radius`:''}
@@ -102,6 +103,7 @@ export function VistrahMobileMap({
             secondary
             onPress={()=>void Linking.openURL(googleMapsDirectionsUrl(safeCenter.latitude,safeCenter.longitude))}
           />
+          <MobileGoogleLogoBadge dark={mode==='dark'}/>
         </View>
       )}
 

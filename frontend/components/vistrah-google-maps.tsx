@@ -23,8 +23,73 @@ import {
   type QuickCityPreset,
   type SelectedLocation,
 } from '../../shared/selected-location';
+import {
+  GOOGLE_WORDMARK_PATHS,
+  GOOGLE_WORDMARK_VIEWBOX,
+  googleWordmarkDimensions,
+} from '../../shared/google-attribution';
 import { LocationMap } from './location-map';
 import s from './vistrah-google-maps.module.css';
+
+export function GoogleWordmark({
+  height = 14,
+  monochromeColor,
+  className,
+}: {
+  height?: number;
+  monochromeColor?: string;
+  className?: string;
+}) {
+  const { width, height: h } = googleWordmarkDimensions(height);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={h}
+      viewBox={GOOGLE_WORDMARK_VIEWBOX}
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label="Google"
+      className={className}
+    >
+      {GOOGLE_WORDMARK_PATHS.map((p, idx) => (
+        <path key={idx} fill={monochromeColor ?? p.color} d={p.d} />
+      ))}
+    </svg>
+  );
+}
+
+export function PoweredByGoogleAttribution({
+  lightSurface = false,
+}: {
+  lightSurface?: boolean;
+}) {
+  return (
+    <div
+      className={s.poweredByFooter}
+      aria-label="Powered by Google"
+      data-google-attribution="powered-by-google"
+    >
+      <span>Powered by</span>
+      <GoogleWordmark height={14} className={s.wordmarkColor} />
+      {!lightSurface && (
+        <GoogleWordmark height={14} monochromeColor="#FFFFFF" className={s.wordmarkMonoWhite} />
+      )}
+    </div>
+  );
+}
+
+export function GoogleMapLogoBadge() {
+  return (
+    <div
+      className={s.fallbackGoogleBadge}
+      aria-label="Google"
+      data-google-map-logo="bottom-left"
+    >
+      <GoogleWordmark height={15} />
+    </div>
+  );
+}
 
 export const googleMapsWebApiKey = (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '').trim();
 
@@ -96,9 +161,21 @@ export function VistrahMapsProvider({ children }: { children: ReactNode }) {
   return <APIProvider apiKey={googleMapsWebApiKey}>{children}</APIProvider>;
 }
 
-function MapViewportSync({ center, radiusKm }: { center: Point; radiusKm?: number }) {
+function MapViewportSync({
+  center,
+  radiusKm,
+  padding,
+}: {
+  center: Point;
+  radiusKm?: number;
+  padding?: { top: number; right: number; bottom: number; left: number };
+}) {
   const map = useMap();
   const prev = useRef<string>('');
+  useEffect(() => {
+    if (!map || !padding) return;
+    (map as unknown as { setOptions: (opts: { padding: { top: number; right: number; bottom: number; left: number } }) => void }).setOptions({ padding });
+  }, [map, padding]);
   useEffect(() => {
     if (!map || !validPoint(center)) return;
     const key = `${center.latitude.toFixed(5)}:${center.longitude.toFixed(5)}:${radiusKm ?? ''}`;
@@ -466,21 +543,24 @@ function PlaceAutocompleteInner({
         </small>
       )}
       {open && suggestions.length > 0 && (
-        <ul id={listId} role="listbox" className={s.suggestionsList}>
-          {suggestions.map(item => (
-            <li key={item.placeId} role="option" aria-selected={false}>
-              <button
-                type="button"
-                className={s.suggestionBtn}
-                onMouseDown={e => e.preventDefault()}
-                onClick={() => void selectSuggestion(item)}
-              >
-                <span className={s.suggestionMain}>{item.mainText}</span>
-                {item.secondaryText && <span className={s.suggestionSecondary}>{item.secondaryText}</span>}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className={`${s.suggestionsPopover} ${floating ? s.suggestionsPopoverLight : s.suggestionsPopoverAuto}`}>
+          <ul id={listId} role="listbox" className={s.suggestionsList}>
+            {suggestions.map(item => (
+              <li key={item.placeId} role="option" aria-selected={false}>
+                <button
+                  type="button"
+                  className={s.suggestionBtn}
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => void selectSuggestion(item)}
+                >
+                  <span className={s.suggestionMain}>{item.mainText}</span>
+                  {item.secondaryText && <span className={s.suggestionSecondary}>{item.secondaryText}</span>}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <PoweredByGoogleAttribution lightSurface={floating} />
+        </div>
       )}
     </div>
   );
@@ -604,24 +684,27 @@ export function PlaceAutocompleteInput(props: {
           )}
         </div>
         {fallbackSuggestions.length > 0 && (
-          <ul role="listbox" className={s.suggestionsList}>
-            {fallbackSuggestions.map(item => (
-              <li key={item.placeId} role="option" aria-selected={false}>
-                <button
-                  type="button"
-                  className={s.suggestionBtn}
-                  onMouseDown={e => e.preventDefault()}
-                  onClick={() => {
-                    setFallbackQuery(item.description);
-                    void tryServerLookup(item.description);
-                  }}
-                >
-                  <span className={s.suggestionMain}>{item.mainText}</span>
-                  {item.secondaryText && <span className={s.suggestionSecondary}>{item.secondaryText}</span>}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <div className={`${s.suggestionsPopover} ${props.floating ? s.suggestionsPopoverLight : s.suggestionsPopoverAuto}`}>
+            <ul role="listbox" className={s.suggestionsList}>
+              {fallbackSuggestions.map(item => (
+                <li key={item.placeId} role="option" aria-selected={false}>
+                  <button
+                    type="button"
+                    className={s.suggestionBtn}
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => {
+                      setFallbackQuery(item.description);
+                      void tryServerLookup(item.description);
+                    }}
+                  >
+                    <span className={s.suggestionMain}>{item.mainText}</span>
+                    {item.secondaryText && <span className={s.suggestionSecondary}>{item.secondaryText}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <PoweredByGoogleAttribution lightSurface={Boolean(props.floating)} />
+          </div>
         )}
         {fallbackNotice && (
           <small role="status" style={{ display: 'block', marginTop: 4, color: 'var(--text-secondary)' }}>
@@ -815,7 +898,11 @@ export function VistrahMap({
               if (c) onViewCenterChange?.({ latitude: c.lat, longitude: c.lng });
             }}
           >
-            <MapViewportSync center={safeCenter} radiusKm={radiusKm} />
+            <MapViewportSync
+              center={safeCenter}
+              radiusKm={radiusKm}
+              padding={{ top: 8, right: 8, bottom: 8, left: 8 }}
+            />
 
             {typeof radiusKm === 'number' && radiusKm > 0 && (
               <Circle
@@ -1127,7 +1214,11 @@ export function MapFirstLocationPicker({
                 }
               }}
             >
-              <MapViewportSync center={safePoint} radiusKm={value.radiusKm} />
+              <MapViewportSync
+                center={safePoint}
+                radiusKm={value.radiusKm}
+                padding={{ top: 96, right: 12, bottom: 8, left: 8 }}
+              />
               {value.radiusKm > 0 && (
                 <Circle
                   center={{ lat: safePoint.latitude, lng: safePoint.longitude }}
@@ -1159,7 +1250,7 @@ export function MapFirstLocationPicker({
             </div>
           </VistrahMapsProvider>
         ) : (
-          <div style={{ width: '100%', height: '100%' }}>
+          <div className={s.fallbackMapWrap}>
             <LocationMap
               point={safePoint}
               onPin={p => {
@@ -1168,6 +1259,7 @@ export function MapFirstLocationPicker({
               onView={() => {}}
               onSelect={() => {}}
             />
+            {value.source === 'google' && <GoogleMapLogoBadge />}
           </div>
         )}
 

@@ -1,6 +1,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {createRequire} from 'node:module';
+import {GOOGLE_WORDMARK_PATHS,GOOGLE_WORDMARK_VIEWBOX,googleWordmarkDimensions} from '../../shared/google-attribution.ts';
 const configure=createRequire(import.meta.url)('../app.config.js');
 
 test('Android map activation fails closed and configures only restricted native key',()=>{
@@ -23,4 +25,20 @@ test('Android map activation fails closed and configures only restricted native 
   if(key===undefined)delete process.env.GOOGLE_MAPS_ANDROID_API_KEY;else process.env.GOOGLE_MAPS_ANDROID_API_KEY=key;
   if(pubKey===undefined)delete process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY;else process.env.EXPO_PUBLIC_GOOGLE_MAPS_ANDROID_KEY=pubKey;
  }
+});
+
+test('Google Maps attribution assets, Powered by Google autocomplete footer, and unobstructed logo padding are enforced on mobile',()=>{
+ assert.equal(GOOGLE_WORDMARK_VIEWBOX,'0 0 74 24');
+ assert.equal(GOOGLE_WORDMARK_PATHS.length,6);
+ assert.deepEqual(googleWordmarkDimensions(24),{width:74,height:24});
+ const colorPng=readFileSync(new URL('../assets/google/google-wordmark-color.png',import.meta.url));
+ const whitePng=readFileSync(new URL('../assets/google/google-wordmark-white.png',import.meta.url));
+ assert.ok(colorPng.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])));
+ assert.ok(whitePng.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])));
+ const pickerSource=readFileSync(new URL('../src/components/map-first-location-picker.tsx',import.meta.url),'utf8');
+ assert.ok(pickerSource.includes('<MobilePoweredByGoogle'));
+ assert.ok(pickerSource.includes('bottom:38'));
+ const mapSource=readFileSync(new URL('../src/components/vistrah-mobile-map.tsx',import.meta.url),'utf8');
+ assert.ok(mapSource.includes('mapPadding='));
+ assert.ok(mapSource.includes('<MobileGoogleLogoBadge'));
 });

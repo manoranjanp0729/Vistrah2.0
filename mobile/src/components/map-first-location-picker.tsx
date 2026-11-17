@@ -7,6 +7,7 @@ import {Field} from './ui';
 import {api} from '../lib/api';
 import {googleMapsDirectionsUrl} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
+import {MobilePoweredByGoogle} from './google-attribution';
 import {VistrahMobileMap,reverseGeocodeMobilePoint} from './vistrah-mobile-map';
 import {
   CUSTOMER_SEARCH_RADII,
@@ -49,7 +50,8 @@ export function MobileMapFirstLocationPicker({
   extraFields?:ReactNode;
   secondaryActions?:ReactNode;
 }){
-  const {colors,styles}=useTheme();
+  const {colors,styles,mode:themeMode}=useTheme();
+  const isDark=themeMode==='dark';
   const {height:winHeight}=useWindowDimensions();
   const mapStageHeight=Math.min(480,Math.max(320,Math.round((winHeight||720)*0.55)));
   const radiiList=radiusOptions??(mode==='seller'?SELLER_COVERAGE_RADII:CUSTOMER_SEARCH_RADII);
@@ -337,9 +339,9 @@ export function MobileMapFirstLocationPicker({
             <View
               style={{
                 borderRadius:12,
-                backgroundColor:'#ffffff',
+                backgroundColor:isDark?'#18181b':'#ffffff',
                 borderWidth:1,
-                borderColor:'rgba(15,23,42,0.14)',
+                borderColor:isDark?'rgba(255,255,255,0.14)':'rgba(15,23,42,0.14)',
                 overflow:'hidden',
               }}
             >
@@ -347,12 +349,13 @@ export function MobileMapFirstLocationPicker({
                 <Pressable
                   key={item.place_id}
                   onPress={()=>void selectSuggestion(item)}
-                  style={{paddingHorizontal:12,paddingVertical:9,borderBottomWidth:1,borderBottomColor:'#f1f5f9'}}
+                  style={{paddingHorizontal:12,paddingVertical:9,borderBottomWidth:1,borderBottomColor:isDark?'rgba(255,255,255,0.08)':'#f1f5f9'}}
                 >
-                  <Text style={{fontSize:13,fontWeight:'700',color:'#0f172a'}}>{item.main_text}</Text>
-                  {Boolean(item.secondary_text)&&<Text style={{fontSize:11,color:'#64748b'}}>{item.secondary_text}</Text>}
+                  <Text style={{fontSize:13,fontWeight:'700',color:isDark?'#f8fafc':'#0f172a'}}>{item.main_text}</Text>
+                  {Boolean(item.secondary_text)&&<Text style={{fontSize:11,color:isDark?'#94a3b8':'#64748b'}}>{item.secondary_text}</Text>}
                 </Pressable>
               ))}
+              <MobilePoweredByGoogle dark={isDark}/>
             </View>
           )}
 
@@ -380,14 +383,14 @@ export function MobileMapFirstLocationPicker({
           </ScrollView>
         </View>
 
-        {/* Floating Use Current GPS Button */}
+        {/* Floating Use Current GPS Button — positioned above Google Maps bottom attribution strip */}
         <Pressable
           disabled={disabled||busy||gpsBusy}
           onPress={()=>void handleCurrentGps()}
           style={{
             position:'absolute',
             right:12,
-            bottom:12,
+            bottom:38,
             flexDirection:'row',
             alignItems:'center',
             gap:6,

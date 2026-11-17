@@ -6,6 +6,7 @@ import {Action} from './ui';
 import {api} from '../lib/api';
 import {googleMapsDirectionsUrl,googleMapsEnabled} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
+import {MobileGoogleLogoBadge} from './google-attribution';
 import type {GooglePoint} from '../../../shared/google-location';
 
 export type MobileMapMarker={
@@ -100,7 +101,7 @@ export function VistrahMobileMap({
   onPinChange,
   onResolvedAddress,
 }:VistrahMobileMapProps){
-  const {colors,styles}=useTheme();
+  const {colors,styles,mode}=useTheme();
   const [selectedId,setSelectedId]=useState<string|number|null>(null);
   const [resolving,setResolving]=useState(false);
   const lastProgrammaticRef=useRef<number>(0);
@@ -140,7 +141,7 @@ export function VistrahMobileMap({
 
   if(!googleMapsEnabled){
     return (
-      <View style={[styles.card,{minHeight:height,justifyContent:'center',gap:8}]}>
+      <View style={[styles.card,{position:'relative',minHeight:height,justifyContent:'center',paddingBottom:38,gap:8}]}>
         <Text style={styles.label}>MAP STAGE · INTERACTIVE FALLBACK</Text>
         <Text style={[styles.muted,styles.tabular]}>
           Center: {safeCenter.latitude.toFixed(4)}° N, {safeCenter.longitude.toFixed(4)}° E{radiusKm?` · ${radiusKm} km`:''}
@@ -153,6 +154,7 @@ export function VistrahMobileMap({
           secondary
           onPress={()=>void Linking.openURL(googleMapsDirectionsUrl(safeCenter.latitude,safeCenter.longitude))}
         />
+        <MobileGoogleLogoBadge dark={mode==='dark'}/>
       </View>
     );
   }
@@ -163,6 +165,7 @@ export function VistrahMobileMap({
         <MapView
           style={{width:'100%',height}}
           provider={PROVIDER_GOOGLE}
+          mapPadding={centerPinMode?{top:92,right:8,bottom:8,left:8}:{top:6,right:6,bottom:6,left:6}}
           region={{
             latitude:safeCenter.latitude,
             longitude:safeCenter.longitude,

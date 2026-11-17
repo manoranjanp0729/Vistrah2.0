@@ -18,7 +18,7 @@ export function loadGoogleMap(key:string):Promise<Maps>{
 }
 export async function mountGoogleMap(node:HTMLElement,key:string,point:GooglePoint,onPin:(p:GooglePoint)=>void,isCurrent=()=>true){
  const maps=await loadGoogleMap(key);if(!isCurrent())throw new Error('Map was closed.');const initial={lat:point.latitude,lng:point.longitude};
- const map=new maps.Map(node,{center:initial,zoom:13,streetViewControl:false,fullscreenControl:false,mapTypeControl:false,gestureHandling:'cooperative'});
+ const map=new maps.Map(node,{center:initial,zoom:13,streetViewControl:false,fullscreenControl:false,mapTypeControl:false,gestureHandling:'cooperative',padding:{top:8,right:8,bottom:8,left:8}});
  const marker=new maps.Circle({map,center:initial,radius:20,fillColor:'#f97316',fillOpacity:1,strokeColor:'#fff',strokeWeight:3,clickable:false});
  const listener=map.addListener('click',event=>{if(event.latLng)onPin({latitude:event.latLng.lat(),longitude:event.latLng.lng()});});
  return {update:(p:GooglePoint)=>{const centre={lat:p.latitude,lng:p.longitude};marker.setCenter(centre);map.panTo(centre);},destroy:()=>{listener.remove();marker.setMap(null);node.replaceChildren();}};

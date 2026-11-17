@@ -262,7 +262,7 @@ function PlaceAutocompleteInner({
   placeholder = 'Search area, street, landmark, or PIN code...',
   defaultValue = '',
   disabled = false,
-  preferBackendDetails = false,
+  preferBackendDetails: _preferBackendDetails = false,
   floating = false,
   onSelectPlace,
 }: {
@@ -327,6 +327,31 @@ function PlaceAutocompleteInner({
       setLoading(true);
       setStatusMsg('');
 
+      // Primary: VISTRAH cached Places API (New) proxy (/api/maps/autocomplete)
+      try {
+        const qs = new URLSearchParams({
+          q: trimmed,
+          ...(sessionStringRef.current ? { session_token: sessionStringRef.current } : {}),
+        });
+        const res = await api<{ suggestions: Array<{ place_id: string; main_text: string; secondary_text: string; description: string }> }>(
+          `/maps/autocomplete?${qs.toString()}`,
+        );
+        const rows = (res.suggestions ?? []).map(item => ({
+          placeId: item.place_id,
+          mainText: item.main_text,
+          secondaryText: item.secondary_text,
+          description: item.description,
+        }));
+        if (rows.length > 0) {
+          setSuggestions(rows);
+          setOpen(true);
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Fall through to browser JS AutocompleteService if server proxy is unreachable
+      }
+
       if (serviceRef.current && placesLib) {
         serviceRef.current.getPlacePredictions(
           {
@@ -355,29 +380,9 @@ function PlaceAutocompleteInner({
         return;
       }
 
-      // Server autocomplete fallback if browser places library has not finished initializing
-      try {
-        const qs = new URLSearchParams({
-          q: trimmed,
-          ...(sessionStringRef.current ? { session_token: sessionStringRef.current } : {}),
-        });
-        const res = await api<{ suggestions: Array<{ place_id: string; main_text: string; secondary_text: string; description: string }> }>(
-          `/maps/autocomplete?${qs.toString()}`,
-        );
-        const rows = (res.suggestions ?? []).map(item => ({
-          placeId: item.place_id,
-          mainText: item.main_text,
-          secondaryText: item.secondary_text,
-          description: item.description,
-        }));
-        setSuggestions(rows);
-        setOpen(rows.length > 0);
-      } catch {
-        setSuggestions([]);
-        setOpen(false);
-      } finally {
-        setLoading(false);
-      }
+      setSuggestions([]);
+      setOpen(false);
+      setLoading(false);
     },
     [ensureSession, placesLib],
   );
@@ -393,30 +398,28 @@ function PlaceAutocompleteInner({
     resetSession();
 
     try {
-      if (preferBackendDetails) {
-        try {
-          const qs = new URLSearchParams({
-            place_id: item.placeId,
-            ...(currentSessionStr ? { session_token: currentSessionStr } : {}),
+      try {
+        const qs = new URLSearchParams({
+          place_id: item.placeId,
+          ...(currentSessionStr ? { session_token: currentSessionStr } : {}),
+        });
+        const detail = await api<BackendPlaceDetailsResponse>(`/maps/place-details?${qs.toString()}`);
+        if (validPoint(detail)) {
+          onSelectPlace({
+            placeId: detail.place_id,
+            formattedAddress: detail.formatted_address || item.description,
+            locality: detail.locality || item.mainText,
+            city: detail.city,
+            state: detail.state,
+            postalCode: detail.postal_code,
+            latitude: detail.latitude,
+            longitude: detail.longitude,
           });
-          const detail = await api<BackendPlaceDetailsResponse>(`/maps/place-details?${qs.toString()}`);
-          if (validPoint(detail)) {
-            onSelectPlace({
-              placeId: detail.place_id,
-              formattedAddress: detail.formatted_address || item.description,
-              locality: detail.locality || item.mainText,
-              city: detail.city,
-              state: detail.state,
-              postalCode: detail.postal_code,
-              latitude: detail.latitude,
-              longitude: detail.longitude,
-            });
-            setLoading(false);
-            return;
-          }
-        } catch {
-          // Fall through to browser Places Essentials lookup if guest user or server key unset.
+          setLoading(false);
+          return;
         }
+      } catch {
+        // Fall through to browser Places Essentials or geocode fallback if server key unset.
       }
 
       if (placesLib) {
@@ -517,7 +520,7 @@ function PlaceAutocompleteInner({
             setTimeout(() => setOpen(false), 180);
           }}
         />
-        {inputValue && (
+        {inputValue ? (
           <button
             type="button"
             aria-label="Clear search"
@@ -530,6 +533,11 @@ function PlaceAutocompleteInner({
           >
             <X size={15} />
           </button>
+        ) : (
+          <span className={s.inlinePoweredBadge} aria-label="Powered by Google">
+            <span className={s.inlinePoweredText}>Powered by</span>
+            <GoogleWordmark height={13} />
+          </span>
         )}
       </div>
       {loading && !floating && (
@@ -672,6 +680,12 @@ export function PlaceAutocompleteInput(props: {
               }
             }}
           />
+          {props.floating && !fallbackQuery && (
+            <span className={s.inlinePoweredBadge} aria-label="Powered by Google">
+              <span className={s.inlinePoweredText}>Powered by</span>
+              <GoogleWordmark height={13} />
+            </span>
+          )}
           {!props.floating && (
             <button
               type="button"

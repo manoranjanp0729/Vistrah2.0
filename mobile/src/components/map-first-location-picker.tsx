@@ -7,7 +7,7 @@ import {Field} from './ui';
 import {api} from '../lib/api';
 import {googleMapsDirectionsUrl} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
-import {MobilePoweredByGoogle} from './google-attribution';
+import {MobileGoogleWordmark,MobilePoweredByGoogle} from './google-attribution';
 import {VistrahMobileMap,reverseGeocodeMobilePoint} from './vistrah-mobile-map';
 import {
   CUSTOMER_SEARCH_RADII,
@@ -328,10 +328,28 @@ export function MobileMapFirstLocationPicker({
               }}
               style={{flex:1,fontSize:14,color:'#0f172a',minHeight:34,paddingVertical:2}}
             />
-            {Boolean(searchQuery)&&(
+            {searchQuery?(
               <Pressable onPress={()=>{setSearchQuery('');setSuggestions([]);}} hitSlop={8}>
                 <Feather name="x" size={16} color="#64748b"/>
               </Pressable>
+            ):(
+              <View
+                pointerEvents="none"
+                accessible
+                accessibilityLabel="Powered by Google"
+                style={{
+                  flexDirection:'row',
+                  alignItems:'center',
+                  gap:4,
+                  paddingHorizontal:6,
+                  paddingVertical:3,
+                  borderRadius:6,
+                  backgroundColor:'rgba(15,23,42,0.04)',
+                }}
+              >
+                <Text style={{fontSize:10,fontWeight:'500',color:'#5f6368'}}>Powered by</Text>
+                <MobileGoogleWordmark height={12} dark={false}/>
+              </View>
             )}
           </View>
 

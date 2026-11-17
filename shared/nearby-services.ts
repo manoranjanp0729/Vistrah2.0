@@ -8,8 +8,11 @@ export function normalizeNearbyRadius(value?: number | null): NearbyDiscoveryRad
   return 50;
 }
 
+export type NearbyListingSource = 'vistrah' | 'google_places';
+
 export type NearbyBusinessItem = {
-  id: number;
+  source: NearbyListingSource;
+  id: number | string;
   slug: string;
   name: string;
   company: string;
@@ -28,6 +31,9 @@ export type NearbyBusinessItem = {
   phone: string;
   whatsapp: string;
   timings: string;
+  directions_url: string;
+  google_maps_uri?: string;
+  types?: string[];
 };
 
 export type NearbyServicesResponse = {
@@ -35,6 +41,7 @@ export type NearbyServicesResponse = {
   business_type: { slug: string; title: string } | null;
   radius_km: number;
   total: number;
+  has_google_places?: boolean;
   items: NearbyBusinessItem[];
 };
 
@@ -100,7 +107,14 @@ export function whatsappChatHref(
   return `https://wa.me/${digits}?text=${encodeURIComponent(greeting)}`;
 }
 
-export function googleMapsDirectionsHrefForPin(latitude: number, longitude: number): string {
+export function googleMapsDirectionsHrefForPin(
+  latitude: number,
+  longitude: number,
+  directionsUrl?: string | null,
+): string {
+  if (directionsUrl && /^https:\/\/(?:www\.)?google\.com\/maps\//.test(directionsUrl)) {
+    return directionsUrl;
+  }
   return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${latitude},${longitude}`)}`;
 }
 

@@ -45,14 +45,21 @@ AUTOCOMPLETE_FIELD_MASK = (
     "suggestions.placePrediction.structuredFormat.mainText.text,"
     "suggestions.placePrediction.structuredFormat.secondaryText.text"
 )
+# Strict Pro-tier-only field mask for Text Search (New) — never request reviews, photos, or ratings
+PLACES_TEXT_SEARCH_PRO_FIELD_MASK = (
+    "places.id,places.displayName,places.formattedAddress,"
+    "places.location,places.types,places.googleMapsUri"
+)
 
 MAX_CACHE_ENTRIES = 2048
 CACHE_TTL_SECONDS = 86400.0  # 24 hours
+PLACES_SEARCH_TTL_SECONDS = 1800.0  # 30 minutes
 PER_ACTOR_LIMIT_PER_MINUTE = 30
 GLOBAL_LIMIT_PER_HOUR = 600
 
 _cache_lock = threading.Lock()
 _cache: OrderedDict[str, tuple[float, dict[str, Any]]] = OrderedDict()
+_places_search_cache: OrderedDict[tuple[str, float, float, float], tuple[float, list[dict[str, Any]]]] = OrderedDict()
 
 _rate_lock = threading.Lock()
 _user_windows: OrderedDict[str, list[float]] = OrderedDict()
@@ -150,6 +157,7 @@ def clear_maps_proxy_state() -> None:
     """Test helper to clear cache and rate-limit state deterministically."""
     with _cache_lock:
         _cache.clear()
+        _places_search_cache.clear()
     with _rate_lock:
         _user_windows.clear()
         _global_window.clear()
@@ -383,6 +391,147 @@ def fetch_google_autocomplete(query: str, session_token: str | None, api_key: st
                     }
                 )
     return {"suggestions": items}
+
+
+def fetch_google_places_text_search(
+    text_query: str,
+    latitude: float,
+    longitude: float,
+    radius_km: float,
+    api_key: str,
+) -> list[dict[str, Any]]:
+    """Query Google Places API (New) `places:searchText` using strictly Pro-tier fields."""
+    url = "https://places.googleapis.com/v1/places:searchText"
+    clean_query = re.sub(r"\s*/\s*", ", ", text_query.strip())
+    radius_meters = min(max(float(radius_km) * 1000.0, 500.0), 50000.0)
+    payload: dict[str, Any] = {
+        "textQuery": clean_query,
+        "regionCode": "IN",
+        "maxResultCount": 15,
+        "locationBias": {
+            "circle": {
+                "center": {"latitude": float(latitude), "longitude": float(longitude)},
+                "radius": radius_meters,
+            }
+        },
+    }
+    req = UrlRequest(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        method="POST",
+        headers={
+            "X-Goog-Api-Key": api_key,
+            "X-Goog-FieldMask": PLACES_TEXT_SEARCH_PRO_FIELD_MASK,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+    )
+    with build_opener(_NoRedirect()).open(req, timeout=6) as resp:
+        raw = resp.read(262145)
+        if len(raw) > 262144:
+            raise ValueError("Upstream Places Text Search response too large")
+        data = json.loads(raw)
+
+    raw_places = data.get("places") if isinstance(data, dict) else []
+    if not isinstance(raw_places, list):
+        return []
+
+    parsed: list[dict[str, Any]] = []
+    for entry in raw_places[:20]:
+        if not isinstance(entry, dict):
+            continue
+        raw_id = str(entry.get("id") or "").strip()
+        if raw_id.startswith("places/"):
+            raw_id = raw_id[len("places/") :]
+        if not PLACE_ID_RE.match(raw_id):
+            continue
+        display_obj = entry.get("displayName")
+        name = (
+            str(display_obj.get("text") or "").strip()
+            if isinstance(display_obj, dict)
+            else str(display_obj or "").strip()
+        )
+        if not name:
+            continue
+        loc = entry.get("location") if isinstance(entry.get("location"), dict) else {}
+        try:
+            p_lat, p_lon = validate_point(loc.get("latitude"), loc.get("longitude"))
+        except ValueError:
+            continue
+        formatted_addr = str(entry.get("formattedAddress") or "").strip()[:400]
+        raw_types = entry.get("types") if isinstance(entry.get("types"), list) else []
+        types = [str(t) for t in raw_types if isinstance(t, str)][:6]
+        gmaps_uri_raw = str(entry.get("googleMapsUri") or "").strip()
+        gmaps_uri = gmaps_uri_raw if gmaps_uri_raw.startswith("https://") else ""
+        directions_url = (
+            f"https://www.google.com/maps/dir/?api=1&destination={p_lat},{p_lon}"
+            f"&destination_place_id={raw_id}"
+        )
+        parsed.append(
+            {
+                "place_id": raw_id,
+                "name": name[:150],
+                "address": formatted_addr,
+                "latitude": p_lat,
+                "longitude": p_lon,
+                "types": types,
+                "google_maps_uri": gmaps_uri,
+                "directions_url": directions_url,
+            }
+        )
+    return parsed
+
+
+def search_google_places_nearby_cached(
+    *,
+    business_type_key: str,
+    text_query: str,
+    latitude: float,
+    longitude: float,
+    radius_km: float,
+) -> list[dict[str, Any]]:
+    """Cached 30-minute hybrid fallback search keyed by `(business_type, round(lat, 2), round(lng, 2), radius_km)`."""
+    api_key = config.get_google_maps_server_api_key()
+    if not api_key:
+        return []
+
+    cache_key = (
+        business_type_key,
+        round(float(latitude), 2),
+        round(float(longitude), 2),
+        round(float(radius_km), 2),
+    )
+    now_mono = time.monotonic()
+    with _cache_lock:
+        cached = _places_search_cache.get(cache_key)
+        if cached is not None:
+            expires_at, rows = cached
+            if expires_at > now_mono:
+                _places_search_cache.move_to_end(cache_key)
+                return [dict(r) for r in rows]
+            _places_search_cache.pop(cache_key, None)
+
+    try:
+        rows = fetch_google_places_text_search(
+            text_query=text_query,
+            latitude=latitude,
+            longitude=longitude,
+            radius_km=radius_km,
+            api_key=api_key,
+        )
+    except Exception:
+        return []
+
+    with _cache_lock:
+        _places_search_cache[cache_key] = (
+            time.monotonic() + PLACES_SEARCH_TTL_SECONDS,
+            [dict(r) for r in rows],
+        )
+        _places_search_cache.move_to_end(cache_key)
+        while len(_places_search_cache) > MAX_CACHE_ENTRIES:
+            _places_search_cache.popitem(last=False)
+
+    return [dict(r) for r in rows]
 
 
 def _optional_user(

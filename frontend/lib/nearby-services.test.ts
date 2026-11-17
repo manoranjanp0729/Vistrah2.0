@@ -77,6 +77,7 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     );
     expect(html).toContain('Nearby');
     expect(html).toContain('Restaurant / Mess / Dhaba');
+    expect(html).toContain('+ List Free on VISTRAH');
     for (const r of [5, 10, 25, 50]) {
       expect(html).toContain(`${r} km`);
     }

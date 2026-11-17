@@ -1,8 +1,10 @@
-"""Public spatial discovery for the 13-category / 81-type marketplace.
+"""Public hybrid spatial discovery for the 13-category / 81-type marketplace.
 
-Read-only Haversine + bounding-box query; customer search coordinates are never
-persisted or logged. Existing membership-gated `/services/{id}/nearby` remains
-untouched.
+1. Queries local verified VISTRAH providers first (`source: "vistrah"`).
+2. Whenever fewer than 5 VISTRAH providers exist within `radius_km`, enriches the
+   response with cached Pro-tier Google Places API (New) results (`source: "google_places"`).
+Customer search coordinates are never persisted or logged. Existing membership-gated
+`/services/{id}/nearby` remains untouched.
 """
 from __future__ import annotations
 
@@ -17,6 +19,7 @@ from sqlalchemy.orm import Session
 from .business_catalogue import business_types, find_business_type
 from .database import get_db
 from .location_routes import EARTH_KM, EDGE_KM, distance_expression
+from .maps_proxy_routes import search_google_places_nearby_cached
 from .marketplace_taxonomy import legacy_map
 from .models import Category, Provider, ProviderService, Service, User
 from .provider_models import ProviderApplication
@@ -26,6 +29,7 @@ router = APIRouter(tags=["Marketplace nearby discovery"])
 
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 MAX_RESULTS = 50
+HYBRID_THRESHOLD = 5
 
 
 class MarketplaceNearbyBody(SafeModel):
@@ -38,6 +42,33 @@ class MarketplaceNearbyBody(SafeModel):
     latitude: float | None = Field(default=None, strict=True)
     longitude: float | None = Field(default=None, strict=True)
     radius_km: float = Field(default=10.0, strict=True)
+
+
+def _haversine_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    dphi = math.radians(lat2 - lat1) / 2.0
+    dlambda = math.radians(lng2 - lng1) / 2.0
+    a = (
+        math.sin(dphi) * math.sin(dphi)
+        + math.cos(math.radians(lat1))
+        * math.cos(math.radians(lat2))
+        * math.sin(dlambda)
+        * math.sin(dlambda)
+    )
+    bounded = min(1.0, max(0.0, a))
+    return 2.0 * EARTH_KM * math.asin(math.sqrt(bounded))
+
+
+def _norm_name(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", value.lower())
+
+
+def _short_locality(formatted_address: str) -> str:
+    parts = [p.strip() for p in formatted_address.split(",") if p.strip()]
+    if not parts:
+        return ""
+    if len(parts) >= 3:
+        return ", ".join(parts[-4:-2] or parts[:2])[:150]
+    return ", ".join(parts[:2])[:150]
 
 
 def _clean_slug(raw: str | None) -> str | None:
@@ -83,19 +114,16 @@ def _resolve_category_and_type(
 
     cats_by_slug = {c["slug"]: c for c in business_types()["categories"]}
 
-    # Direct current v2 lookup
     if bt_slug:
         found = find_business_type(bt_slug)
         if found:
             found_cat, found_bt = found
             if cat_slug and cat_slug != found_cat["slug"]:
-                # Allow legacy category slug paired with mapped business type
                 mapped_cat = legacy_map().get("categories", {}).get(cat_slug)
                 if mapped_cat != found_cat["slug"]:
                     raise HTTPException(422, "Business type does not belong to the selected category")
             return found_cat, found_bt
 
-        # Legacy v1 subcategory -> v2 (category, business_type) fallback
         mapped_pair = legacy_map().get("subcategories", {}).get(bt_slug)
         if mapped_pair and len(mapped_pair) == 2:
             new_cat_slug, new_bt_slug = mapped_pair
@@ -111,7 +139,6 @@ def _resolve_category_and_type(
 
         raise HTTPException(422, "Unknown business type")
 
-    # Category-only lookup
     resolved_cat = cats_by_slug.get(cat_slug or "")
     if not resolved_cat and cat_slug:
         mapped_cat_slug = legacy_map().get("categories", {}).get(cat_slug)
@@ -134,7 +161,6 @@ def _run_marketplace_nearby(
     cat_def, bt_def = _resolve_category_and_type(category_slug, type_slug)
     distance = distance_expression(lat, lng)
 
-    # Bounding-box pre-filter before exact Haversine check
     deg_lat = math.degrees(radius_km / EARTH_KM) + 0.01
     min_lat = max(-90.0, lat - deg_lat)
     max_lat = min(90.0, lat + deg_lat)
@@ -197,7 +223,6 @@ def _run_marketplace_nearby(
 
     rows = db.execute(query.order_by(distance.asc(), Provider.id.asc()).limit(MAX_RESULTS * 3)).all()
 
-    # Deduplicate by Provider.id when browsing an entire category
     deduped: list[tuple[Provider, ProviderService, Service, Category, float]] = []
     seen_provider_ids: set[int] = set()
     for provider, grant, service, category, km in rows:
@@ -208,7 +233,6 @@ def _run_marketplace_nearby(
         if len(deduped) >= MAX_RESULTS:
             break
 
-    # Batch-fetch linked ProviderApplication common metadata (whatsapp, timings)
     app_by_id: dict[str, ProviderApplication] = {}
     app_by_provider_id: dict[int, ProviderApplication] = {}
     if deduped:
@@ -225,7 +249,7 @@ def _run_marketplace_nearby(
             if app.provider_id is not None and app.provider_id not in app_by_provider_id:
                 app_by_provider_id[app.provider_id] = app
 
-    items = []
+    vistrah_items: list[dict] = []
     for provider, grant, service, category, km in deduped:
         linked_app = (
             (app_by_id.get(grant.application_id) if grant.application_id else None)
@@ -236,9 +260,12 @@ def _run_marketplace_nearby(
         explicit_whatsapp = str(common.get("whatsapp") or "").strip()
         whatsapp_clean = explicit_whatsapp or phone_clean
         timings_clean = str(common.get("timings") or "").strip()
+        p_lat = float(provider.latitude)
+        p_lng = float(provider.longitude)
 
-        items.append(
+        vistrah_items.append(
             {
+                "source": "vistrah",
                 "id": provider.id,
                 "slug": provider.slug,
                 "name": provider.company or provider.name,
@@ -250,23 +277,84 @@ def _run_marketplace_nearby(
                 "description": (grant.description or "").strip(),
                 "address": provider.address,
                 "location": provider.location,
-                "latitude": float(provider.latitude),
-                "longitude": float(provider.longitude),
+                "latitude": p_lat,
+                "longitude": p_lng,
                 "distance_km": round(km, 2),
                 "coverage_radius_km": float(grant.coverage_radius_km) if grant.coverage_radius_km is not None else None,
                 "verification_status": provider.verification_status,
                 "phone": phone_clean,
                 "whatsapp": whatsapp_clean,
                 "timings": timings_clean,
+                "directions_url": f"https://www.google.com/maps/dir/?api=1&destination={p_lat},{p_lng}",
             }
         )
+
+    google_items: list[dict] = []
+    if len(vistrah_items) < HYBRID_THRESHOLD:
+        search_title = bt_def["title"] if bt_def else cat_def["title"]
+        type_cache_key = bt_def["slug"] if bt_def else f"cat:{cat_def['slug']}"
+        raw_places = search_google_places_nearby_cached(
+            business_type_key=type_cache_key,
+            text_query=search_title,
+            latitude=lat,
+            longitude=lng,
+            radius_km=radius_km,
+        )
+        for gp in raw_places:
+            p_lat = float(gp["latitude"])
+            p_lng = float(gp["longitude"])
+            dist_km = _haversine_km(lat, lng, p_lat, p_lng)
+            if dist_km > radius_km + EDGE_KM:
+                continue
+            gp_norm = _norm_name(gp["name"])
+            if gp_norm and any(
+                _norm_name(vi["company"] or vi["name"]) == gp_norm
+                and _haversine_km(vi["latitude"], vi["longitude"], p_lat, p_lng) < 0.25
+                for vi in vistrah_items
+            ):
+                continue
+
+            addr = str(gp.get("address") or "")
+            place_id = str(gp["place_id"])
+            google_items.append(
+                {
+                    "source": "google_places",
+                    "id": f"gp_{place_id}",
+                    "slug": place_id,
+                    "name": gp["name"],
+                    "company": gp["name"],
+                    "contact_name": "",
+                    "category_slug": cat_def["slug"],
+                    "business_type": bt_def["slug"] if bt_def else cat_def["slug"],
+                    "service_title": search_title,
+                    "description": "",
+                    "address": addr,
+                    "location": _short_locality(addr),
+                    "latitude": p_lat,
+                    "longitude": p_lng,
+                    "distance_km": round(dist_km, 2),
+                    "coverage_radius_km": None,
+                    "verification_status": "GOOGLE_PLACE",
+                    "phone": "",
+                    "whatsapp": "",
+                    "timings": "",
+                    "directions_url": gp["directions_url"],
+                    "google_maps_uri": gp.get("google_maps_uri") or "",
+                    "types": gp.get("types") or [],
+                }
+            )
+        google_items.sort(key=lambda item: (item["distance_km"], str(item["id"])))
+
+    combined = (vistrah_items + google_items)[:MAX_RESULTS]
+    has_google = any(item["source"] == "google_places" for item in combined)
 
     return {
         "category": {"slug": cat_def["slug"], "title": cat_def["title"]},
         "business_type": {"slug": bt_def["slug"], "title": bt_def["title"]} if bt_def else None,
         "radius_km": radius_km,
-        "total": len(items),
-        "items": items,
+        "total": len(combined),
+        "has_google_places": has_google,
+        "items": combined,
     }
 
 

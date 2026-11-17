@@ -250,6 +250,25 @@
   border: 1px solid rgba(16, 185, 129, 0.28);
 }
 
+.nearbyPlaceBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+}
+
+:global(:root[data-theme='light']) .nearbyPlaceBadge {
+  color: #0369a1;
+  background: #f0f9ff;
+  border-color: rgba(3, 105, 161, 0.24);
+}
+
 .distanceBadge {
   flex-shrink: 0;
   padding: 4px 10px;
@@ -425,6 +444,40 @@
   color: #0f172a;
   border-color: rgba(15, 23, 42, 0.18);
   background: #ffffff;
+}
+
+.compactBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+:global(:root[data-theme='light']) .compactBanner {
+  background: #fffbeb;
+  border-color: rgba(180, 134, 11, 0.35);
+}
+
+.compactBannerText {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #f8fafc);
+}
+
+:global(:root[data-theme='light']) .compactBannerText {
+  color: #0f172a;
+}
+
+.googleFooterWrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.2));
 }
 
 .statusBox {

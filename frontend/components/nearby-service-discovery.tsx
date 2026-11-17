@@ -5,7 +5,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CheckCircle2,
   Clock,
-  ExternalLink,
   LocateFixed,
   MapPin,
   MessageCircle,
@@ -20,7 +19,6 @@ import {
   buildNearbyMarketplacePath,
   formatDistanceAway,
   googleMapsDirectionsHrefForPin,
-  googleMapsHybridSearchHref,
   normalizeNearbyRadius,
   phoneCallHref,
   whatsappChatHref,
@@ -31,7 +29,12 @@ import {
 import { selfOnboardingUrl } from '../../shared/self-onboarding';
 import { defaultMapPoint, useOptionalCustomerLocation } from './customer-location';
 import { UiText } from './localized-ui';
-import { MapListViewToggle, VistrahMap, type VistrahMapMarker } from './vistrah-google-maps';
+import {
+  MapListViewToggle,
+  PoweredByGoogleAttribution,
+  VistrahMap,
+  type VistrahMapMarker,
+} from './vistrah-google-maps';
 import s from './nearby-service-discovery.module.css';
 
 export function NearbyServiceDiscovery({
@@ -66,10 +69,11 @@ export function NearbyServiceDiscovery({
     normalizeNearbyRadius(locCtx?.radius ?? 10),
   );
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'split'>('split');
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
+    hasGooglePlaces: boolean;
     error: string;
   } | null>(null);
 
@@ -89,13 +93,18 @@ export function NearbyServiceDiscovery({
       .run(signal => api<NearbyServicesResponse>(path, { signal }))
       .then(res => {
         if (alive && res.current) {
+          const nextItems = res.value.items ?? [];
           setState({
             key: requestKey,
-            items: res.value.items ?? [],
+            items: nextItems,
+            hasGooglePlaces: Boolean(
+              res.value.has_google_places ||
+                nextItems.some(item => item.source === 'google_places'),
+            ),
             error: '',
           });
           setSelectedId(prev =>
-            prev != null && res.value.items.some(item => item.id === prev) ? prev : null,
+            prev != null && nextItems.some(item => item.id === prev) ? prev : null,
           );
         }
       })
@@ -104,6 +113,7 @@ export function NearbyServiceDiscovery({
           setState({
             key: requestKey,
             items: [],
+            hasGooglePlaces: false,
             error: (err as Error).message || 'Could not load nearby businesses.',
           });
         }
@@ -118,6 +128,7 @@ export function NearbyServiceDiscovery({
 
   const loading = state?.key !== requestKey;
   const items = state?.key === requestKey ? state.items : [];
+  const hasGooglePlaces = state?.key === requestKey ? state.hasGooglePlaces : false;
   const error = state?.key === requestKey ? state.error : '';
 
   const markers = useMemo<VistrahMapMarker[]>(
@@ -130,17 +141,21 @@ export function NearbyServiceDiscovery({
         subtitle: item.location || item.address,
         description: item.description || item.service_title,
         distanceKm: item.distance_km,
-        badge: item.verification_status === 'VERIFIED' ? 'Verified on VISTRAH' : undefined,
+        badge: item.source === 'vistrah' ? 'VISTRAH Verified' : 'Nearby Place',
         actionLabel: 'Directions',
-        actionHref: googleMapsDirectionsHrefForPin(item.latitude, item.longitude),
+        actionHref: googleMapsDirectionsHrefForPin(
+          item.latitude,
+          item.longitude,
+          item.directions_url,
+        ),
       })),
     [items],
   );
 
-  function selectListing(id: number, scrollCard = false) {
+  function selectListing(id: string | number, scrollCard = false) {
     setSelectedId(id);
     if (scrollCard && typeof document !== 'undefined') {
-      document.getElementById(`nearby-biz-card-${id}`)?.scrollIntoView({
+      document.getElementById(`nearby-biz-card-${String(id)}`)?.scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
       });
@@ -148,13 +163,6 @@ export function NearbyServiceDiscovery({
   }
 
   const onboardHref = selfOnboardingUrl({ category: categorySlug, type: typeSlug });
-  const googleMapsSearchUrl = googleMapsHybridSearchHref(
-    serviceTitle,
-    activePoint.locality,
-    activePoint.latitude,
-    activePoint.longitude,
-  );
-  const showHybridPrompt = !loading && !error && items.length < 3;
 
   return (
     <section
@@ -171,9 +179,7 @@ export function NearbyServiceDiscovery({
           <div className={s.locationPillRow}>
             <Link href="/location" className={s.locationPill} aria-label="Change active location">
               <MapPin size={14} aria-hidden="true" />
-              <span>
-                {locCtx?.detecting ? 'Locating…' : activePoint.locality}
-              </span>
+              <span>{locCtx?.detecting ? 'Locating…' : activePoint.locality}</span>
             </Link>
             {locCtx && (
               <button
@@ -208,7 +214,18 @@ export function NearbyServiceDiscovery({
         </div>
       </div>
 
-      {/* Interactive Map + Synchronized Distance-Sorted Listings */}
+      {/* Compact Non-Blocking Seller Banner */}
+      <div className={s.compactBanner} data-seller-banner="true">
+        <p className={s.compactBannerText}>
+          <UiText value="Own a" /> {serviceTitle} <UiText value="business here?" />
+        </p>
+        <Link href={onboardHref} className={s.onboardCta}>
+          <Plus size={15} aria-hidden="true" />
+          <UiText value="+ List Free on VISTRAH" />
+        </Link>
+      </div>
+
+      {/* Interactive Map + Unified Synchronized Listings */}
       <div className={viewMode === 'split' ? s.splitGrid : undefined}>
         {viewMode !== 'list' && (
           <div className={s.mapColumn}>
@@ -219,10 +236,8 @@ export function NearbyServiceDiscovery({
               selectedId={selectedId}
               height={420}
               onSelectMarker={id => {
-                if (typeof id === 'number') {
-                  if (viewMode === 'map') setViewMode('split');
-                  selectListing(id, true);
-                }
+                if (viewMode === 'map') setViewMode('split');
+                selectListing(id, true);
               }}
               ariaLabel={`Nearby ${serviceTitle} businesses around ${activePoint.locality}`}
             />
@@ -241,8 +256,8 @@ export function NearbyServiceDiscovery({
                     <UiText
                       value={
                         items.length === 1
-                          ? `verified business within ${radiusKm} km`
-                          : `verified businesses within ${radiusKm} km`
+                          ? `nearby place within ${radiusKm} km`
+                          : `nearby places within ${radiusKm} km`
                       }
                     />
                   </>
@@ -265,25 +280,37 @@ export function NearbyServiceDiscovery({
               </div>
             )}
 
+            {!loading && !error && items.length === 0 && (
+              <div className={s.statusBox}>
+                <UiText
+                  value={`No ${serviceTitle} places found within ${radiusKm} km of ${activePoint.locality}. Tap 25 km or 50 km above to search a wider radius.`}
+                />
+              </div>
+            )}
+
             {items.length > 0 && (
               <div className={s.cardsScroll}>
                 {items.map(item => {
                   const isSelected = selectedId === item.id;
-                  const callUrl = phoneCallHref(item.phone);
-                  const waUrl = whatsappChatHref(
-                    item.whatsapp || item.phone,
-                    serviceTitle,
-                    item.company || item.name,
-                  );
+                  const isVistrah = item.source === 'vistrah';
+                  const callUrl = isVistrah ? phoneCallHref(item.phone) : null;
+                  const waUrl = isVistrah
+                    ? whatsappChatHref(
+                        item.whatsapp || item.phone,
+                        serviceTitle,
+                        item.company || item.name,
+                      )
+                    : null;
                   const directionsUrl = googleMapsDirectionsHrefForPin(
                     item.latitude,
                     item.longitude,
+                    item.directions_url,
                   );
 
                   return (
                     <article
-                      id={`nearby-biz-card-${item.id}`}
-                      key={item.id}
+                      id={`nearby-biz-card-${String(item.id)}`}
+                      key={String(item.id)}
                       className={`${s.businessCard} ${isSelected ? s.businessCardSelected : ''}`}
                       aria-current={isSelected ? 'true' : undefined}
                       onClick={() => selectListing(item.id, false)}
@@ -292,10 +319,21 @@ export function NearbyServiceDiscovery({
                         <div>
                           <h3 className={s.businessName}>{item.company || item.name}</h3>
                           <div className={s.badgesRow}>
-                            {item.verification_status === 'VERIFIED' && (
+                            {isVistrah ? (
                               <span className={s.verifiedBadge}>
                                 <CheckCircle2 size={12} aria-hidden="true" />
-                                <UiText value="Verified" />
+                                <UiText
+                                  value={
+                                    item.verification_status === 'VERIFIED'
+                                      ? 'VISTRAH Verified'
+                                      : 'VISTRAH Listed'
+                                  }
+                                />
+                              </span>
+                            ) : (
+                              <span className={s.nearbyPlaceBadge}>
+                                <MapPin size={12} aria-hidden="true" />
+                                <UiText value="Nearby Place" />
                               </span>
                             )}
                             {item.timings && (
@@ -316,7 +354,7 @@ export function NearbyServiceDiscovery({
                       </div>
 
                       <p className={s.metaLine}>
-                        {item.address ? `${item.address} · ${item.location}` : item.location}
+                        {item.address || item.location}
                       </p>
 
                       {item.description && <p className={s.description}>{item.description}</p>}
@@ -355,42 +393,10 @@ export function NearbyServiceDiscovery({
               </div>
             )}
 
-            {/* Zero-Result / Hybrid Discovery State (< 3 listings) */}
-            {showHybridPrompt && (
-              <div className={s.hybridCard} data-hybrid-discovery="true">
-                <p className={s.hybridEyebrow}>
-                  <UiText value="LOCAL NETWORK EXPANDING" />
-                </p>
-                <h3 className={s.hybridTitle}>
-                  {items.length === 0 ? (
-                    <>
-                      <UiText value="No" /> {serviceTitle}{' '}
-                      <UiText value={`businesses listed within ${radiusKm} km of ${activePoint.locality} yet`} />
-                    </>
-                  ) : (
-                    <>
-                      <UiText value={`Do you run a ${serviceTitle} business near ${activePoint.locality}?`} />
-                    </>
-                  )}
-                </h3>
-                <p className={s.hybridCopy}>
-                  <UiText value="Onboard your business in 3 minutes so nearby customers can call, WhatsApp, and navigate directly to you—with 90 days free Basic membership and 30 days V Ads at ₹0." />
-                </p>
-                <div className={s.hybridActions}>
-                  <Link href={onboardHref} className={s.onboardCta}>
-                    <Plus size={16} aria-hidden="true" />
-                    <UiText value="+ Add Your Business" />
-                  </Link>
-                  <a
-                    href={googleMapsSearchUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={s.mapsFallbackLink}
-                  >
-                    <UiText value="Open in Google Maps" />
-                    <ExternalLink size={14} aria-hidden="true" />
-                  </a>
-                </div>
+            {/* Official Google Attribution Footer whenever Google Places results are shown */}
+            {hasGooglePlaces && (
+              <div className={s.googleFooterWrap}>
+                <PoweredByGoogleAttribution />
               </div>
             )}
           </div>

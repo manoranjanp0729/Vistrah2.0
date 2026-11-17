@@ -11,7 +11,7 @@ import {
   NEARBY_DISCOVERY_RADII,
   buildNearbyMarketplacePath,
   formatDistanceAway,
-  googleMapsHybridSearchHref,
+  googleMapsDirectionsHrefForPin,
   normalizeNearbyRadius,
   phoneCallHref,
   whatsappChatHref,
@@ -19,6 +19,7 @@ import {
   type NearbyDiscoveryRadius,
   type NearbyServicesResponse,
 } from '../../../shared/nearby-services';
+import { MobilePoweredByGoogle } from './google-attribution';
 import { UiText } from './localized-ui';
 import { Text } from './typography';
 import { VistrahMobileMap, type MobileMapMarker } from './vistrah-mobile-map';
@@ -69,10 +70,11 @@ export function MobileNearbyServiceDiscovery({
   const [radiusKm, setRadiusKm] = useState<NearbyDiscoveryRadius>(() =>
     normalizeNearbyRadius(locCtx?.selectedLocation?.radiusKm ?? 10),
   );
-  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
+    hasGooglePlaces: boolean;
     error: string;
   } | null>(null);
 
@@ -91,7 +93,15 @@ export function MobileNearbyServiceDiscovery({
       .then(res => {
         if (!alive) return;
         const nextItems = res.items ?? [];
-        setState({ key: requestKey, items: nextItems, error: '' });
+        setState({
+          key: requestKey,
+          items: nextItems,
+          hasGooglePlaces: Boolean(
+            res.has_google_places ||
+              nextItems.some(item => item.source === 'google_places'),
+          ),
+          error: '',
+        });
         setSelectedId(prev =>
           prev != null && nextItems.some(item => item.id === prev) ? prev : null,
         );
@@ -101,6 +111,7 @@ export function MobileNearbyServiceDiscovery({
         setState({
           key: requestKey,
           items: [],
+          hasGooglePlaces: false,
           error: (err as Error).message || 'Could not load nearby businesses.',
         });
       });
@@ -112,6 +123,7 @@ export function MobileNearbyServiceDiscovery({
 
   const loading = state?.key !== requestKey;
   const items = state?.key === requestKey ? state.items : [];
+  const hasGooglePlaces = state?.key === requestKey ? state.hasGooglePlaces : false;
   const error = state?.key === requestKey ? state.error : '';
 
   const markers = useMemo<MobileMapMarker[]>(
@@ -125,14 +137,6 @@ export function MobileNearbyServiceDiscovery({
         distanceKm: item.distance_km,
       })),
     [items],
-  );
-
-  const showHybridPrompt = !loading && !error && items.length < 3;
-  const googleMapsSearchUrl = googleMapsHybridSearchHref(
-    serviceTitle,
-    activePoint.locality,
-    activePoint.latitude,
-    activePoint.longitude,
   );
 
   return (
@@ -202,10 +206,7 @@ export function MobileNearbyServiceDiscovery({
                 accessibilityRole="radio"
                 accessibilityState={{ checked: active }}
                 onPress={() => setRadiusKm(r)}
-                style={[
-                  s.radiusChip,
-                  active && { backgroundColor: '#d4af37' },
-                ]}
+                style={[s.radiusChip, active && { backgroundColor: '#d4af37' }]}
               >
                 <Text
                   style={[
@@ -224,6 +225,36 @@ export function MobileNearbyServiceDiscovery({
         </View>
       </View>
 
+      {/* Compact Seller Onboarding Banner (Never Blocks List) */}
+      <View
+        style={[
+          s.compactBanner,
+          {
+            backgroundColor: isDark ? 'rgba(212,175,55,0.09)' : '#fffbeb',
+            borderColor: isDark ? 'rgba(212,175,55,0.42)' : 'rgba(180,134,11,0.38)',
+          },
+        ]}
+      >
+        <Text style={[s.compactBannerText, { color: colors.text }]}>
+          <UiText value="Own a " />
+          {serviceTitle}
+          <UiText value=" business here?" />
+        </Text>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() =>
+            router.push({
+              pathname: '/seller/onboard',
+              params: { category: categorySlug, type: typeSlug },
+            })
+          }
+          style={({ pressed }) => [s.primaryOnboardBtn, { opacity: pressed ? 0.88 : 1 }]}
+        >
+          <Feather name="plus" size={14} color="#0f172a" />
+          <Text style={s.primaryOnboardText}>+ List Free on VISTRAH</Text>
+        </Pressable>
+      </View>
+
       {/* Interactive Map Stage */}
       <VistrahMobileMap
         center={{ latitude: activePoint.latitude, longitude: activePoint.longitude }}
@@ -232,9 +263,7 @@ export function MobileNearbyServiceDiscovery({
         selectedId={selectedId}
         hideSelectedCard
         height={270}
-        onSelectMarker={id => {
-          if (typeof id === 'number') setSelectedId(id);
-        }}
+        onSelectMarker={id => setSelectedId(id)}
       />
 
       {/* Synchronized Business List Header */}
@@ -248,8 +277,8 @@ export function MobileNearbyServiceDiscovery({
               <UiText
                 value={
                   items.length === 1
-                    ? `verified business within ${radiusKm} km`
-                    : `verified businesses within ${radiusKm} km`
+                    ? `nearby place within ${radiusKm} km`
+                    : `nearby places within ${radiusKm} km`
                 }
               />
             </>
@@ -278,24 +307,51 @@ export function MobileNearbyServiceDiscovery({
         </View>
       )}
 
-      {/* Distance-Sorted Business Cards */}
+      {!loading && !error && items.length === 0 && (
+        <View
+          style={[
+            s.emptyNotice,
+            {
+              backgroundColor: isDark ? '#1a1429' : '#ffffff',
+              borderColor: isDark ? '#33264d' : '#e4daef',
+            },
+          ]}
+        >
+          <Text style={{ fontSize: 13, lineHeight: 19, color: colors.muted }}>
+            <UiText
+              value={`No ${serviceTitle} places found within ${radiusKm} km of ${activePoint.locality}. Tap 25 km or 50 km above to expand your search radius.`}
+            />
+          </Text>
+        </View>
+      )}
+
+      {/* Unified Distance-Sorted Cards (VISTRAH Verified first, then Google Places) */}
       {items.map(item => {
         const isSelected = selectedId === item.id;
-        const callUrl = phoneCallHref(item.phone);
-        const waUrl = whatsappChatHref(
-          item.whatsapp || item.phone,
-          serviceTitle,
-          item.company || item.name,
-        );
-        const directionsUrl = googleMapsDirectionsUrl(
-          item.latitude,
-          item.longitude,
-          item.company || item.name,
-        );
+        const isVistrah = item.source === 'vistrah';
+        const callUrl = isVistrah ? phoneCallHref(item.phone) : null;
+        const waUrl = isVistrah
+          ? whatsappChatHref(
+              item.whatsapp || item.phone,
+              serviceTitle,
+              item.company || item.name,
+            )
+          : null;
+        const directionsUrl = isVistrah
+          ? googleMapsDirectionsUrl(
+              item.latitude,
+              item.longitude,
+              item.company || item.name,
+            )
+          : googleMapsDirectionsHrefForPin(
+              item.latitude,
+              item.longitude,
+              item.directions_url,
+            );
 
         return (
           <Pressable
-            key={item.id}
+            key={String(item.id)}
             accessibilityRole="button"
             onPress={() => setSelectedId(item.id)}
             style={({ pressed }) => [
@@ -314,10 +370,40 @@ export function MobileNearbyServiceDiscovery({
                   {item.company || item.name}
                 </Text>
                 <View style={s.badgesRow}>
-                  {item.verification_status === 'VERIFIED' && (
+                  {isVistrah ? (
                     <View style={s.verifiedPill}>
                       <Feather name="check-circle" size={11} color="#10b981" />
-                      <Text style={s.verifiedText}>Verified</Text>
+                      <Text style={s.verifiedText}>
+                        {item.verification_status === 'VERIFIED'
+                          ? 'VISTRAH Verified'
+                          : 'VISTRAH Listed'}
+                      </Text>
+                    </View>
+                  ) : (
+                    <View
+                      style={[
+                        s.nearbyPlacePill,
+                        {
+                          backgroundColor: isDark ? 'rgba(56,189,248,0.14)' : '#f0f9ff',
+                          borderColor: isDark
+                            ? 'rgba(56,189,248,0.32)'
+                            : 'rgba(3,105,161,0.24)',
+                        },
+                      ]}
+                    >
+                      <Feather
+                        name="map-pin"
+                        size={11}
+                        color={isDark ? '#7dd3fc' : '#0369a1'}
+                      />
+                      <Text
+                        style={[
+                          s.nearbyPlaceText,
+                          { color: isDark ? '#7dd3fc' : '#0369a1' },
+                        ]}
+                      >
+                        Nearby Place
+                      </Text>
                     </View>
                   )}
                   {Boolean(item.timings) && (
@@ -332,7 +418,7 @@ export function MobileNearbyServiceDiscovery({
             </View>
 
             <Text style={{ fontSize: 12.5, lineHeight: 18, color: colors.muted }}>
-              {item.address ? `${item.address} · ${item.location}` : item.location}
+              {item.address || item.location}
             </Text>
 
             {Boolean(item.description) && (
@@ -341,7 +427,7 @@ export function MobileNearbyServiceDiscovery({
               </Text>
             )}
 
-            {/* Direct Call / WhatsApp / Directions Actions */}
+            {/* Direct Actions: Call + WhatsApp + Directions for VISTRAH, Directions for Nearby Places */}
             <View style={s.actionRow}>
               {Boolean(callUrl) && (
                 <Pressable
@@ -414,64 +500,17 @@ export function MobileNearbyServiceDiscovery({
         );
       })}
 
-      {/* Zero-Result / Hybrid Discovery State (< 3 listings) */}
-      {showHybridPrompt && (
+      {/* Official Google Attribution Footer whenever Google Places results are displayed */}
+      {hasGooglePlaces && (
         <View
-          style={[
-            s.hybridCard,
-            {
-              backgroundColor: isDark ? 'rgba(212,175,55,0.08)' : '#fffbeb',
-              borderColor: isDark ? 'rgba(212,175,55,0.45)' : 'rgba(180,134,11,0.45)',
-            },
-          ]}
+          style={{
+            borderRadius: 10,
+            overflow: 'hidden',
+            borderWidth: 1,
+            borderColor: isDark ? '#2e2444' : '#e2e8f0',
+          }}
         >
-          <Text style={[s.hybridEyebrow, { color: isDark ? '#d4af37' : '#92400e' }]}>
-            LOCAL NETWORK EXPANDING
-          </Text>
-          <Text style={[s.hybridTitle, { color: colors.text }]}>
-            {items.length === 0
-              ? `No ${serviceTitle} businesses listed within ${radiusKm} km of ${activePoint.locality} yet`
-              : `Do you run a ${serviceTitle} business near ${activePoint.locality}?`}
-          </Text>
-          <Text style={{ fontSize: 13, lineHeight: 19, color: colors.muted }}>
-            <UiText value="Self-onboard in 3 minutes so nearby customers can call, WhatsApp, and navigate directly to you—with 90 days free Basic membership and 30 days V Ads at ₹0." />
-          </Text>
-          <View style={s.hybridActions}>
-            <Pressable
-              accessibilityRole="button"
-              onPress={() =>
-                router.push({
-                  pathname: '/seller/onboard',
-                  params: { category: categorySlug, type: typeSlug },
-                })
-              }
-              style={({ pressed }) => [
-                s.primaryOnboardBtn,
-                { opacity: pressed ? 0.88 : 1 },
-              ]}
-            >
-              <Feather name="plus" size={15} color="#0f172a" />
-              <Text style={s.primaryOnboardText}>+ Add Your Business</Text>
-            </Pressable>
-
-            <Pressable
-              accessibilityRole="link"
-              onPress={() => void Linking.openURL(googleMapsSearchUrl)}
-              style={({ pressed }) => [
-                s.secondaryMapsBtn,
-                {
-                  backgroundColor: isDark ? '#1a1429' : '#ffffff',
-                  borderColor: isDark ? '#3a2c56' : '#cbd5e1',
-                  opacity: pressed ? 0.85 : 1,
-                },
-              ]}
-            >
-              <Text style={{ fontSize: 12.5, fontWeight: '600', color: colors.text }}>
-                Open in Google Maps
-              </Text>
-              <Feather name="external-link" size={13} color={colors.muted} />
-            </Pressable>
-          </View>
+          <MobilePoweredByGoogle dark={isDark} />
         </View>
       )}
     </View>
@@ -532,6 +571,22 @@ const s = StyleSheet.create({
     fontSize: 12.5,
     fontVariant: ['tabular-nums'],
   },
+  compactBanner: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  compactBannerText: {
+    fontSize: 13,
+    fontWeight: '600',
+    flexShrink: 1,
+  },
   listMetaRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -541,6 +596,11 @@ const s = StyleSheet.create({
   },
   errorBox: {
     padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  emptyNotice: {
+    padding: 14,
     borderRadius: 12,
     borderWidth: 1,
   },
@@ -582,6 +642,19 @@ const s = StyleSheet.create({
     fontWeight: '700',
     color: '#10b981',
   },
+  nearbyPlacePill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  nearbyPlaceText: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
   distancePill: {
     paddingHorizontal: 9,
     paddingVertical: 4,
@@ -611,51 +684,18 @@ const s = StyleSheet.create({
     minHeight: 36,
     borderRadius: 10,
   },
-  hybridCard: {
-    padding: 16,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    gap: 8,
-  },
-  hybridEyebrow: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.8,
-  },
-  hybridTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    lineHeight: 21,
-  },
-  hybridActions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    gap: 8,
-    paddingTop: 4,
-  },
   primaryOnboardBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingHorizontal: 14,
-    minHeight: 40,
-    borderRadius: 10,
-    backgroundColor: '#d4af37',
-  },
-  primaryOnboardText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#0f172a',
-  },
-  secondaryMapsBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
     paddingHorizontal: 12,
-    minHeight: 40,
-    borderRadius: 10,
-    borderWidth: 1,
+    minHeight: 34,
+    borderRadius: 9,
+    backgroundColor: '#d4af37',
+  },
+  primaryOnboardText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#0f172a',
   },
 });

@@ -1,5 +1,5 @@
 import {useEffect,useMemo,useRef,useState,type ReactNode} from 'react';
-import {Linking,Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
+import {Linking,Platform,Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
 import * as GPS from 'expo-location';
 import {Feather} from '@expo/vector-icons';
 import {Text,TextInput} from './typography';
@@ -28,6 +28,7 @@ export function MobileMapFirstLocationPicker({
   value,
   onChange,
   onConfirm,
+  onQuickCommit,
   confirmLabel='Confirm Location',
   mode='customer',
   radiusOptions,
@@ -39,6 +40,7 @@ export function MobileMapFirstLocationPicker({
   value:SelectedLocation;
   onChange:(next:SelectedLocation)=>void;
   onConfirm?:(confirmed:SelectedLocation)=>void;
+  onQuickCommit?:(committed:SelectedLocation)=>void;
   confirmLabel?:string;
   mode?:'customer'|'seller';
   radiusOptions?:readonly number[];
@@ -81,9 +83,9 @@ export function MobileMapFirstLocationPicker({
     setSearching(true);
     try{
       const token=ensureSessionToken();
+      const qs=new URLSearchParams({q:trimmed,session_token:token});
       const res=await api<{suggestions:AutocompleteSuggestion[]}>(
-        '/maps/autocomplete',
-        {method:'POST',body:JSON.stringify({query:trimmed,session_token:token})},
+        `/maps/autocomplete?${qs.toString()}`,
       );
       setSuggestions(res.suggestions??[]);
     }catch{
@@ -102,11 +104,11 @@ export function MobileMapFirstLocationPicker({
     setGpsRecovery('');
     try{
       try{
+        const qs=new URLSearchParams({place_id:item.place_id,...(usedToken?{session_token:usedToken}:{})});
         const detail=await api<{formatted_address:string;locality:string;city:string;state:string;postal_code:string;latitude:number;longitude:number}>(
-          '/maps/place-details',
-          {method:'POST',body:JSON.stringify({place_id:item.place_id,session_token:usedToken})},
+          `/maps/place-details?${qs.toString()}`,
         );
-        onChange({
+        const committed:SelectedLocation={
           ...latestRef.current,
           latitude:Number(detail.latitude.toFixed(6)),
           longitude:Number(detail.longitude.toFixed(6)),
@@ -116,7 +118,9 @@ export function MobileMapFirstLocationPicker({
           state:detail.state||'',
           pincode:detail.postal_code||latestRef.current.pincode,
           source:'google',
-        });
+        };
+        onChange(committed);
+        onQuickCommit?.(committed);
         return;
       }catch{
         // Guest fallback via /locations/geocode
@@ -127,7 +131,7 @@ export function MobileMapFirstLocationPicker({
       );
       const top=geo.items?.[0];
       if(top){
-        onChange({
+        const committed:SelectedLocation={
           ...latestRef.current,
           latitude:Number(top.latitude.toFixed(6)),
           longitude:Number(top.longitude.toFixed(6)),
@@ -137,7 +141,9 @@ export function MobileMapFirstLocationPicker({
           state:'',
           pincode:top.postal_code||latestRef.current.pincode,
           source:'google',
-        });
+        };
+        onChange(committed);
+        onQuickCommit?.(committed);
       }
     }catch{
       setGpsRecovery('Could not resolve that address. Tap a Karnataka city chip or edit PIN below.');
@@ -179,37 +185,59 @@ export function MobileMapFirstLocationPicker({
     setGpsBusy(true);
     setGpsRecovery('');
     try{
-      const permission=await GPS.requestForegroundPermissionsAsync();
-      if(permission.status!=='granted'){
-        throw new Error('denied');
-      }
-      let timer:ReturnType<typeof setTimeout>|undefined;
-      try{
-        const pos=await Promise.race([
-          GPS.getCurrentPositionAsync({accuracy:GPS.Accuracy.Balanced}),
-          new Promise<never>((_,reject)=>{
-            timer=setTimeout(()=>reject(new Error('timeout')),14000);
-          }),
-        ]);
-        const pt={
-          latitude:Number(pos.coords.latitude.toFixed(6)),
-          longitude:Number(pos.coords.longitude.toFixed(6)),
-        };
-        const resolved=await reverseGeocodeMobilePoint(pt);
-        onChange({
-          ...latestRef.current,
-          latitude:pt.latitude,
-          longitude:pt.longitude,
-          locality:resolved?.locality||'Current GPS Area',
-          formattedAddress:resolved?.formattedAddress||`GPS (~${Math.round(pos.coords.accuracy??0)}m)`,
-          city:resolved?.city||'',
-          state:resolved?.state||'',
-          pincode:resolved?.postalCode||'',
-          source:'gps',
+      let pt:{latitude:number;longitude:number}|null=null;
+      let accMeters=0;
+
+      if(Platform.OS==='web'&&typeof navigator!=='undefined'&&navigator.geolocation){
+        pt=await new Promise<{latitude:number;longitude:number}>((resolve,reject)=>{
+          navigator.geolocation.getCurrentPosition(
+            pos=>{
+              accMeters=Math.round(pos.coords.accuracy??0);
+              resolve({
+                latitude:Number(pos.coords.latitude.toFixed(6)),
+                longitude:Number(pos.coords.longitude.toFixed(6)),
+              });
+            },
+            err=>reject(err),
+            {enableHighAccuracy:false,timeout:8000,maximumAge:30000},
+          );
         });
-      }finally{
-        if(timer)clearTimeout(timer);
+      }else{
+        const permission=await GPS.requestForegroundPermissionsAsync();
+        if(permission.status!=='granted')throw new Error('denied');
+        let timer:ReturnType<typeof setTimeout>|undefined;
+        try{
+          const pos=await Promise.race([
+            GPS.getCurrentPositionAsync({accuracy:GPS.Accuracy.Balanced}),
+            new Promise<never>((_,reject)=>{
+              timer=setTimeout(()=>reject(new Error('timeout')),8000);
+            }),
+          ]);
+          accMeters=Math.round(pos.coords.accuracy??0);
+          pt={
+            latitude:Number(pos.coords.latitude.toFixed(6)),
+            longitude:Number(pos.coords.longitude.toFixed(6)),
+          };
+        }finally{
+          if(timer)clearTimeout(timer);
+        }
       }
+
+      const resolved=await reverseGeocodeMobilePoint(pt);
+      const fallbackLabel=`${pt.latitude.toFixed(3)}° N, ${pt.longitude.toFixed(3)}° E`;
+      const committed:SelectedLocation={
+        ...latestRef.current,
+        latitude:pt.latitude,
+        longitude:pt.longitude,
+        locality:resolved?.locality||fallbackLabel,
+        formattedAddress:resolved?.formattedAddress||(accMeters?`GPS (~${accMeters}m)`:fallbackLabel),
+        city:resolved?.city||'',
+        state:resolved?.state||'',
+        pincode:resolved?.postalCode||'',
+        source:'gps',
+      };
+      onChange(committed);
+      onQuickCommit?.(committed);
     }catch{
       setGpsRecovery('Location permission denied or GPS timed out. Tap a Karnataka city chip above, pan the map, or edit street / PIN below.');
       setDrawerOpen(true);
@@ -222,7 +250,9 @@ export function MobileMapFirstLocationPicker({
     if(disabled||busy)return;
     setGpsRecovery('');
     setSuggestions([]);
-    onChange(presetToSelectedLocation(preset,value.radiusKm,value.landmark));
+    const committed=presetToSelectedLocation(preset,value.radiusKm,value.landmark);
+    onChange(committed);
+    onQuickCommit?.(committed);
   }
 
   const activeCityId=useMemo(()=>{

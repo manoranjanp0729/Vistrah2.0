@@ -19,7 +19,7 @@ const management=managementClient(api);
 export function VAdsReels({initialVideo}:{initialVideo?:string}) {
   const {user}=useUser();const locationState=useOptionalCustomerLocation();const root=useRef<HTMLDivElement>(null);
   const activePoint=locationState?.active&&validPoint(locationState.active)?locationState.active:null;
-  const activeLat=activePoint?.latitude,activeLon=activePoint?.longitude,activeRadius=locationState?.radius;
+  const activeLat=activePoint?.latitude,activeLon=activePoint?.longitude,activeRadius=locationState?.radius,locRev=locationState?.locationRevision??0;
   const [items,setItems]=useState<Reel[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState('');
   const [version,setVersion]=useState(0),[page,setPage]=useState(1),[more,setMore]=useState(false),[paging,setPaging]=useState(false);
   const [displayMode,setDisplayMode]=useState<'reels'|'map'>('reels');
@@ -37,7 +37,7 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
     Promise.all([filter?client.feed(1,filter):client.feed(),initialVideo?client.reel(initialVideo):Promise.resolve(null)]).then(([feed,selected])=>{
       if(alive){setItems(mergeReels(selected?[selected]:[],feed.items));setPage(1);setMore(feed.has_more);root.current?.scrollTo(0,0);}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[initialVideo,version,effectiveFilterLat,effectiveFilterLon,effectiveFilterRadius]);
+  },[initialVideo,version,effectiveFilterLat,effectiveFilterLon,effectiveFilterRadius,locRev]);
   useEffect(()=>{
     const feed=root.current;if(!feed)return;
     const viewport=window.visualViewport;

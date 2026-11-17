@@ -13,14 +13,14 @@ import {ServiceAccessState} from './service-access';
 import {HorizontalCarousel} from './horizontal-carousel';
 
 export function NearbyProviders({context,carousel=false}:{context:ServiceContext;carousel?:boolean}){
-  const {draft,active,radius,busy,edit,confirmLocation}=useCustomerLocation();
+  const {draft,active,radius,locationRevision,busy,edit,confirmLocation}=useCustomerLocation();
   const [view,setView]=useState<Point>(defaultMapPoint);
   const [viewMode,setViewMode]=useState<'list'|'map'|'split'>('split');
   const [searchState,setSearchState]=useState<{key:string;result:NearbyResult|null;error:string}|null>(null);const [selected,setSelected]=useState<number|null>(null);
   const [access,setAccess]=useState(0);const search=useRef(new LatestSearch());
-  const filterKey=JSON.stringify([context.service.id,active?.latitude,active?.longitude,radius]);
+  const filterKey=JSON.stringify([context.service.id,active?.latitude,active?.longitude,radius,locationRevision]);
   const [paging,setPaging]=useState({key:'',page:1});const page=paging.key===filterKey?paging.page:1;
-  const searchKey=JSON.stringify([context.service.id,active?.latitude,active?.longitude,radius,page]);
+  const searchKey=JSON.stringify([context.service.id,active?.latitude,active?.longitude,radius,locationRevision,page]);
   const result=searchState?.key===searchKey?searchState.result:null;
   const loading=!!active&&searchState?.key!==searchKey;
   const failure=searchState?.key===searchKey?searchState.error:'';

@@ -1,9 +1,10 @@
 import {Text} from '../components/typography';
 import {UiText,UiElement} from "../components/localized-ui";
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
 import {View} from 'react-native';
+import {router} from 'expo-router';
 import {Page,Action,ErrorPanel} from '../components/ui';
-import {useLocation,type Location} from '../lib/location';
+import {useLocation} from '../context/LocationContext';
 import {api} from '../lib/api';
 import {useTheme} from '../lib/theme';
 import {googleMapsEnabled} from '../lib/google-maps';
@@ -15,31 +16,29 @@ import {
   type SelectedLocation,
 } from '../../../shared/selected-location';
 
-function locationToSelected(loc:Location|null):SelectedLocation{
-  if(!loc)return {...DEFAULT_SELECTED_LOCATION};
-  return {
-    latitude:loc.latitude,
-    longitude:loc.longitude,
-    formattedAddress:loc.address||loc.label||DEFAULT_SELECTED_LOCATION.formattedAddress,
-    locality:loc.label||DEFAULT_SELECTED_LOCATION.locality,
-    city:loc.label.split(',').pop()?.trim()||DEFAULT_SELECTED_LOCATION.city,
-    state:'Karnataka',
-    pincode:loc.postal_code||'',
-    landmark:loc.landmark||'',
-    radiusKm:loc.radius,
-    source:loc.source==='google'?'google':'manual',
-  };
+function dismissLocationScreen(){
+  if(router.canGoBack()){
+    router.back();
+  }else{
+    router.replace('/(tabs)');
+  }
 }
 
 export default function ChooseLocation(){
   const {styles}=useTheme();
-  const {location,setLocation}=useLocation();
-  const [selected,setSelected]=useState<SelectedLocation>(()=>locationToSelected(location));
+  const {selectedLocation,location,commitSelectedLocation,clearSelectedLocation}=useLocation();
+  const [selected,setSelected]=useState<SelectedLocation>(()=>selectedLocation??{...DEFAULT_SELECTED_LOCATION});
   const [message,setMessage]=useState('');
   const [error,setError]=useState('');
   const [busy,setBusy]=useState(false);
 
-  function confirmSelection(confirmed:SelectedLocation){
+  useEffect(()=>{
+    if(selectedLocation){
+      setSelected(selectedLocation);
+    }
+  },[selectedLocation]);
+
+  function commitAndClose(confirmed:SelectedLocation){
     setError('');
     if(confirmed.locality.trim().length<2){
       setError('Select an area on the map or enter a locality.');
@@ -49,24 +48,21 @@ export default function ChooseLocation(){
       setError('Enter a valid 6-digit PIN code or leave it blank.');
       return;
     }
-    const r=([2,5,10,25] as const).includes(confirmed.radiusKm as 2|5|10|25)?(confirmed.radiusKm as Location['radius']):5;
-    setLocation({
-      latitude:confirmed.latitude,
-      longitude:confirmed.longitude,
-      label:confirmed.locality.trim(),
-      radius:r,
-      postal_code:confirmed.pincode,
-      address:confirmed.formattedAddress,
-      landmark:confirmed.landmark,
-      ...(confirmed.source==='google'?{source:'google' as const}:{}),
-    });
-    setMessage(`Location confirmed: ${confirmed.locality.trim()}${confirmed.pincode?` (${confirmed.pincode})`:''}. Temporary unless saved to your account.`);
+    const normalized:SelectedLocation={
+      ...confirmed,
+      locality:confirmed.locality.trim(),
+      formattedAddress:(confirmed.formattedAddress||confirmed.locality).trim(),
+      pincode:confirmed.pincode.trim(),
+      landmark:confirmed.landmark.trim(),
+    };
+    commitSelectedLocation(normalized);
+    dismissLocationScreen();
   }
 
   async function persistToAccount(){
     if(!location)return;
     if(location.source==='google'){
-      setError('Google search locations stay temporary. Edit locality/PIN manually to save to your account.');
+      setError('Google search locations stay temporary in account storage; local app storage already remembers it.');
       return;
     }
     setBusy(true);
@@ -83,24 +79,24 @@ export default function ChooseLocation(){
           landmark:location.landmark??'',
         }),
       });
-      setMessage('Location saved to your account.');
+      setMessage('Location saved to your VISTRAH account.');
     }catch(e){
-      setError('Saving is unavailable. Your selection remains active temporarily. '+(e as Error).message);
+      setError('Account sync unavailable; your location remains saved on this device. '+(e as Error).message);
     }finally{
       setBusy(false);
     }
   }
 
   async function clearAll(){
-    setLocation(null);
+    clearSelectedLocation();
     setSelected({...DEFAULT_SELECTED_LOCATION});
     setBusy(true);
     setError('');
     try{
       await api('/me/location',{method:'DELETE'});
-      setMessage('Saved and temporary locations cleared.');
+      setMessage('Saved and device locations cleared.');
     }catch{
-      setMessage('Temporary location cleared.');
+      setMessage('Device location cleared.');
     }finally{
       setBusy(false);
     }
@@ -120,7 +116,8 @@ export default function ChooseLocation(){
         radiusOptions={CUSTOMER_SEARCH_RADII}
         value={selected}
         onChange={setSelected}
-        onConfirm={confirmSelection}
+        onConfirm={commitAndClose}
+        onQuickCommit={commitAndClose}
         confirmLabel="Confirm Location"
         disabled={busy}
         busy={busy}
@@ -145,7 +142,7 @@ export default function ChooseLocation(){
             <Text style={[styles.muted,{fontSize:12}]}>
               {googleMapsEnabled
                 ?googlePrivacy
-                :<UiText value={"Location stays temporary unless saved. GPS runs only when you tap Use Current GPS. Sellers receive only locality/PIN unless you explicitly supply an exact address."}/>}
+                :<UiText value={"Your selected area is saved locally so every screen and header stay in sync. Sellers receive only locality/PIN unless you explicitly supply an exact address."}/>}
             </Text>
           </View>
         }

@@ -132,10 +132,11 @@ type BackendReverseGeocodeResponse = {
 
 export async function reverseGeocodePoint(point: Point): Promise<ResolvedPlace | null> {
   try {
-    const res = await api<BackendReverseGeocodeResponse>('/maps/reverse-geocode', {
-      method: 'POST',
-      body: JSON.stringify({ latitude: point.latitude, longitude: point.longitude }),
+    const qs = new URLSearchParams({
+      lat: String(point.latitude),
+      lng: String(point.longitude),
     });
+    const res = await api<BackendReverseGeocodeResponse>(`/maps/reverse-geocode?${qs.toString()}`);
     if (validPoint(res)) {
       return {
         formattedAddress: res.formatted_address,
@@ -148,7 +149,6 @@ export async function reverseGeocodePoint(point: Point): Promise<ResolvedPlace |
       };
     }
   } catch {
-    // Fallback to public /locations/geocode if unauthenticated
     try {
       const pub = await api<{ items: Array<{ latitude: number; longitude: number; label: string; postal_code: string }> }>(
         '/locations/geocode',
@@ -280,9 +280,12 @@ function PlaceAutocompleteInner({
 
       // Server autocomplete fallback if browser places library has not finished initializing
       try {
+        const qs = new URLSearchParams({
+          q: trimmed,
+          ...(sessionStringRef.current ? { session_token: sessionStringRef.current } : {}),
+        });
         const res = await api<{ suggestions: Array<{ place_id: string; main_text: string; secondary_text: string; description: string }> }>(
-          '/maps/autocomplete',
-          { method: 'POST', body: JSON.stringify({ query: trimmed, session_token: sessionStringRef.current || undefined }) },
+          `/maps/autocomplete?${qs.toString()}`,
         );
         const rows = (res.suggestions ?? []).map(item => ({
           placeId: item.place_id,
@@ -315,10 +318,11 @@ function PlaceAutocompleteInner({
     try {
       if (preferBackendDetails) {
         try {
-          const detail = await api<BackendPlaceDetailsResponse>('/maps/place-details', {
-            method: 'POST',
-            body: JSON.stringify({ place_id: item.placeId, session_token: currentSessionStr }),
+          const qs = new URLSearchParams({
+            place_id: item.placeId,
+            ...(currentSessionStr ? { session_token: currentSessionStr } : {}),
           });
+          const detail = await api<BackendPlaceDetailsResponse>(`/maps/place-details?${qs.toString()}`);
           if (validPoint(detail)) {
             onSelectPlace({
               placeId: detail.place_id,
@@ -509,9 +513,9 @@ export function PlaceAutocompleteInput(props: {
         return;
       }
       try {
+        const qs = new URLSearchParams({ q: q.trim() });
         const res = await api<{ suggestions: Array<{ place_id: string; main_text: string; secondary_text: string; description: string }> }>(
-          '/maps/autocomplete',
-          { method: 'POST', body: JSON.stringify({ query: q.trim() }) },
+          `/maps/autocomplete?${qs.toString()}`,
         );
         setFallbackSuggestions(
           (res.suggestions ?? []).map(item => ({
@@ -907,6 +911,7 @@ export function MapFirstLocationPicker({
   value,
   onChange,
   onConfirm,
+  onQuickCommit,
   confirmLabel = 'Confirm Location',
   mode = 'customer',
   radiusOptions,
@@ -919,6 +924,7 @@ export function MapFirstLocationPicker({
   value: SelectedLocation;
   onChange: (next: SelectedLocation) => void;
   onConfirm?: (confirmed: SelectedLocation) => void;
+  onQuickCommit?: (committed: SelectedLocation) => void;
   confirmLabel?: string;
   mode?: 'customer' | 'seller';
   radiusOptions?: readonly number[];
@@ -997,7 +1003,9 @@ export function MapFirstLocationPicker({
     if (disabled || busy) return;
     setGpsRecoveryMsg('');
     programmaticPanUntilRef.current = Date.now() + 1200;
-    onChange(presetToSelectedLocation(preset, value.radiusKm, value.landmark));
+    const committed = presetToSelectedLocation(preset, value.radiusKm, value.landmark);
+    onChange(committed);
+    onQuickCommit?.(committed);
   }
 
   async function triggerCurrentGps() {
@@ -1010,17 +1018,20 @@ export function MapFirstLocationPicker({
       const resolved = await reverseGeocodePoint(fix.point);
       const roundedLat = Number(fix.point.latitude.toFixed(6));
       const roundedLon = Number(fix.point.longitude.toFixed(6));
-      onChange({
+      const fallbackLabel = `${roundedLat.toFixed(3)}° N, ${roundedLon.toFixed(3)}° E`;
+      const committed: SelectedLocation = {
         ...latestValueRef.current,
         latitude: roundedLat,
         longitude: roundedLon,
-        locality: resolved?.locality || 'Current GPS Area',
+        locality: resolved?.locality || fallbackLabel,
         formattedAddress: resolved?.formattedAddress || `GPS (${Math.round(fix.accuracy)}m accuracy)`,
         city: resolved?.city || '',
         state: resolved?.state || '',
         pincode: resolved?.postalCode || '',
         source: 'gps',
-      });
+      };
+      onChange(committed);
+      onQuickCommit?.(committed);
     } catch {
       setGpsRecoveryMsg(
         'Location permission was denied or GPS timed out. Tap a Karnataka city chip above, pan the map pin, or edit your street / PIN below.',
@@ -1052,7 +1063,7 @@ export function MapFirstLocationPicker({
               onSelectPlace={place => {
                 setGpsRecoveryMsg('');
                 programmaticPanUntilRef.current = Date.now() + 1200;
-                onChange({
+                const committed: SelectedLocation = {
                   ...latestValueRef.current,
                   latitude: Number(place.latitude.toFixed(6)),
                   longitude: Number(place.longitude.toFixed(6)),
@@ -1062,7 +1073,9 @@ export function MapFirstLocationPicker({
                   state: place.state,
                   pincode: place.postalCode || latestValueRef.current.pincode,
                   source: 'google',
-                });
+                };
+                onChange(committed);
+                onQuickCommit?.(committed);
               }}
             />
           </div>

@@ -51,9 +51,9 @@ function deltaForRadius(radiusKm?:number):number{
 
 export async function reverseGeocodeMobilePoint(point:GooglePoint):Promise<ResolvedMobilePlace|null>{
   try{
+    const qs=new URLSearchParams({lat:String(point.latitude),lng:String(point.longitude)});
     const res=await api<{formatted_address:string;locality:string;city:string;state:string;postal_code:string;latitude:number;longitude:number}>(
-      '/maps/reverse-geocode',
-      {method:'POST',body:JSON.stringify({latitude:point.latitude,longitude:point.longitude})},
+      `/maps/reverse-geocode?${qs.toString()}`,
     );
     return {
       formattedAddress:res.formatted_address,

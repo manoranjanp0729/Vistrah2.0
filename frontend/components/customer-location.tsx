@@ -1,18 +1,20 @@
 'use client';
 import {UiText,UiSection} from "./localized-ui";
 import {createContext,useCallback,useContext,useEffect,useId,useMemo,useRef,useState,type ReactNode} from 'react';
-import {usePathname} from 'next/navigation';
+import {usePathname,useRouter} from 'next/navigation';
 import Link from 'next/link';
 import {MapPin} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
 import {destinationLink} from '@/lib/destinations';
 import {googleMapsWebKey} from './google-location-picker';
-import {MapFirstLocationPicker} from './vistrah-google-maps';
+import {MapFirstLocationPicker,reverseGeocodePoint} from './vistrah-google-maps';
 import {googlePlaces,googlePrivacy} from '../../shared/google-location';
-import {DEFAULT_SELECTED_LOCATION,type SelectedLocation} from '../../shared/selected-location';
+import {DEFAULT_SELECTED_LOCATION,isValidCoordinatePair,type SelectedLocation} from '../../shared/selected-location';
 import {lookupGpsPlace,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
 
+export const WEB_LOCATION_STORAGE_KEY='vistrah.selected_location.v1';
 export const defaultMapPoint={latitude:12.9716,longitude:77.5946};
+
 const emptyLocation:CustomerLocation={
   latitude:defaultMapPoint.latitude,
   longitude:defaultMapPoint.longitude,
@@ -21,6 +23,43 @@ const emptyLocation:CustomerLocation={
   address:'Bengaluru, Karnataka',
   landmark:'',
 };
+
+function readStoredWebLocation():SelectedLocation|null{
+  if(typeof window==='undefined'||!window.localStorage)return null;
+  try{
+    const raw=window.localStorage.getItem(WEB_LOCATION_STORAGE_KEY);
+    if(!raw)return null;
+    const parsed=JSON.parse(raw) as Partial<SelectedLocation>;
+    if(typeof parsed.latitude!=='number'||typeof parsed.longitude!=='number')return null;
+    if(!isValidCoordinatePair(parsed.latitude,parsed.longitude))return null;
+    const locality=String(parsed.locality||parsed.city||'').trim();
+    if(!locality)return null;
+    return {
+      latitude:parsed.latitude,
+      longitude:parsed.longitude,
+      formattedAddress:String(parsed.formattedAddress||locality),
+      locality,
+      city:String(parsed.city||''),
+      state:String(parsed.state||'Karnataka'),
+      pincode:String(parsed.pincode||''),
+      landmark:String(parsed.landmark||''),
+      radiusKm:typeof parsed.radiusKm==='number'&&parsed.radiusKm>0?parsed.radiusKm:5,
+      source:parsed.source,
+    };
+  }catch{
+    return null;
+  }
+}
+
+function writeStoredWebLocation(sel:SelectedLocation|null){
+  if(typeof window==='undefined'||!window.localStorage)return;
+  try{
+    if(!sel)window.localStorage.removeItem(WEB_LOCATION_STORAGE_KEY);
+    else window.localStorage.setItem(WEB_LOCATION_STORAGE_KEY,JSON.stringify(sel));
+  }catch{
+    // Ignore private-mode storage quota errors.
+  }
+}
 
 function customerToSelected(loc:CustomerLocation,radiusKm:Radius):SelectedLocation{
   const hasPoint=validPoint(loc);
@@ -53,59 +92,154 @@ function selectedToCustomer(sel:SelectedLocation):CustomerLocation{
 function useLocationState(){
   const [draft,setDraft]=useState<CustomerLocation>(emptyLocation);
   const [active,setActive]=useState<CustomerLocation|null>(null);
-  const [radius,setRadius]=useState<Radius>(5);
+  const [radius,setRadiusState]=useState<Radius>(5);
+  const [detecting,setDetecting]=useState(false);
+  const [locationRevision,setLocationRevision]=useState(0);
   const [busy,setBusy]=useState(false);
   const [error,setError]=useState('');
   const [message,setMessage]=useState('');
   const edits=useRef(0),gpsGeneration=useRef(0),identity=useRef<number|null|undefined>(undefined);
-  const hasEdits=useRef(false),identityEpoch=useRef(0);
+  const hasEdits=useRef(false),identityEpoch=useRef(0),autoDetectRan=useRef(false);
   const path=usePathname();
+
+  const setRadius=useCallback((nextRadius:Radius)=>{
+    setRadiusState(nextRadius);
+    setLocationRevision(r=>r+1);
+  },[]);
 
   const syncIdentity=useCallback((id:number|null)=>{
     if(identity.current===id)return;
     identityEpoch.current++;
     if(identity.current!=null){
       edits.current++;gpsGeneration.current++;hasEdits.current=false;
-      setActive(null);setDraft(emptyLocation);setRadius(5);setMessage('');setError('');
+      setActive(null);setDraft(emptyLocation);setRadiusState(5);setMessage('');setError('');
+      writeStoredWebLocation(null);
+      setLocationRevision(r=>r+1);
     }
     identity.current=id;
   },[]);
 
+  // 1. Hydrate from localStorage + non-blocking 8s launch auto-detection when empty
+  useEffect(()=>{
+    let alive=true;
+    const stored=readStoredWebLocation();
+    if(stored){
+      const nextRadius=(radii as readonly number[]).includes(stored.radiusKm)?(stored.radiusKm as Radius):5;
+      const cust=selectedToCustomer(stored);
+      hasEdits.current=true;
+      setRadiusState(nextRadius);
+      setDraft(cust);
+      setActive(cust);
+      setLocationRevision(r=>r+1);
+      return;
+    }
+
+    if(autoDetectRan.current||typeof navigator==='undefined'||!navigator.geolocation)return;
+    autoDetectRan.current=true;
+    const bootEdits=edits.current;
+    setDetecting(true);
+
+    let settled=false;
+    const timer=setTimeout(()=>{
+      if(!settled){settled=true;if(alive)setDetecting(false);}
+    },8000);
+
+    navigator.geolocation.getCurrentPosition(
+      pos=>{
+        if(settled||!alive||edits.current!==bootEdits)return;
+        settled=true;
+        clearTimeout(timer);
+        const lat=Number(pos.coords.latitude.toFixed(6));
+        const lon=Number(pos.coords.longitude.toFixed(6));
+        if(!isValidCoordinatePair(lat,lon)){
+          setDetecting(false);
+          return;
+        }
+        void (async()=>{
+          try{
+            const resolved=await reverseGeocodePoint({latitude:lat,longitude:lon});
+            if(!alive||edits.current!==bootEdits)return;
+            const fallbackLabel=`${lat.toFixed(3)}° N, ${lon.toFixed(3)}° E`;
+            const sel:SelectedLocation={
+              latitude:lat,
+              longitude:lon,
+              locality:resolved?.locality||fallbackLabel,
+              formattedAddress:resolved?.formattedAddress||fallbackLabel,
+              city:resolved?.city||'',
+              state:resolved?.state||'Karnataka',
+              pincode:resolved?.postalCode||'',
+              landmark:'',
+              radiusKm:5,
+              source:'gps',
+            };
+            const cust=selectedToCustomer(sel);
+            setDraft(cust);
+            setActive(cust);
+            writeStoredWebLocation(sel);
+            setLocationRevision(r=>r+1);
+          }catch{
+            // Fail silently without blocking UI.
+          }finally{
+            if(alive)setDetecting(false);
+          }
+        })();
+      },
+      ()=>{
+        if(!settled){
+          settled=true;
+          clearTimeout(timer);
+          if(alive)setDetecting(false);
+        }
+      },
+      {enableHighAccuracy:false,timeout:8000,maximumAge:60000},
+    );
+
+    return()=>{alive=false;clearTimeout(timer);};
+  },[]);
+
+  // 2. Account saved location fallback when signed in and local selection is empty
   useEffect(()=>{
     let alive=true;const profileEpoch=identityEpoch.current;
     api<{id:number}>('/me').then(async user=>{
       if(!alive||profileEpoch!==identityEpoch.current)return;
       syncIdentity(user.id);
-      if(hasEdits.current)return;
+      if(hasEdits.current||readStoredWebLocation())return;
       const generation=edits.current,preferenceEpoch=identityEpoch.current;
       try{
         const {location}=await api<{location:CustomerLocation|null}>('/me/location');
         if(alive&&identityEpoch.current===preferenceEpoch&&edits.current===generation&&location&&validPoint(location)){
-          setDraft(location);setActive(location);setMessage('Using your saved account location. Changes stay temporary until saved again.');
+          setDraft(location);setActive(location);
+          writeStoredWebLocation(customerToSelected(location,radius));
+          setLocationRevision(r=>r+1);
         }
       }catch{
-        if(alive&&identityEpoch.current===preferenceEpoch&&edits.current===generation)setMessage('Saved location is unavailable. Choose a temporary location below.');
+        // Silent fallback.
       }
     }).catch(()=>{
       if(alive&&profileEpoch===identityEpoch.current)syncIdentity(null);
     });
     return()=>{alive=false;};
-  },[path,syncIdentity]);
+  },[path,syncIdentity,radius]);
 
   const edit=useCallback((values:Partial<CustomerLocation>)=>{
     hasEdits.current=true;edits.current++;gpsGeneration.current++;
     setDraft(previous=>({...previous,...values}));
   },[]);
 
-  const confirmLocation=useCallback((location:CustomerLocation)=>{
+  const confirmLocation=useCallback((location:CustomerLocation,nextRadius?:Radius)=>{
     if(!validPoint(location)||location.locality.trim().length<2||!/^([0-9]{6})?$/.test(location.postal_code)){
       setError('Select an area on the map or enter a locality (and optional 6-digit PIN).');return false;
     }
+    const appliedRadius=nextRadius??radius;
     hasEdits.current=true;edits.current++;gpsGeneration.current++;setError('');
-    setActive({...location});setDraft({...location});
-    setMessage(`Location confirmed: ${location.locality}${location.postal_code?` (${location.postal_code})`:''}. Temporary unless saved to your account.`);
+    setRadiusState(appliedRadius);
+    setActive({...location});
+    setDraft({...location});
+    writeStoredWebLocation(customerToSelected(location,appliedRadius));
+    setLocationRevision(r=>r+1);
+    setMessage(`Location set to ${location.locality}${location.postal_code?` (${location.postal_code})`:''}.`);
     return true;
-  },[]);
+  },[radius]);
 
   async function gps(){
     const generation=++gpsGeneration.current;hasEdits.current=true;edits.current++;setError('');setMessage('');setBusy(true);
@@ -116,29 +250,34 @@ function useLocationState(){
       if(!place)throw new Error('No locality found. Select a city chip or enter locality manually.');
       const chosen:CustomerLocation={...emptyLocation,...fix.point,locality:place.label,postal_code:place.postal_code,...(googleMapsWebKey?{source:'google' as const}:{})};
       setDraft(chosen);setActive(chosen);
-      setMessage(`Using ${place.label} temporarily (GPS ~${Math.round(fix.accuracy)}m).`);
+      writeStoredWebLocation(customerToSelected(chosen,radius));
+      setLocationRevision(r=>r+1);
+      setMessage(`Using ${place.label} (GPS ~${Math.round(fix.accuracy)}m).`);
     }catch(e){if(generation===gpsGeneration.current)setError((e as Error).message);}
     finally{if(generation===gpsGeneration.current)setBusy(false);}
   }
 
   async function save(){
-    if(active?.source==='google'){setError('Google search results stay temporary; edit locality/PIN manually to save permanently.');return;}
+    if(active?.source==='google'){setError('Google search results stay saved in this browser; edit locality/PIN manually to sync to account.');return;}
     if(!active)return;setBusy(true);setError('');
-    try{await api('/me/location',{method:'PUT',body:JSON.stringify(active)});setMessage('Location saved to your account.');}
-    catch(e){setError(e instanceof ApiError&&e.status===401?'Sign in to save this location. Your selection remains active for this session.':'Saving is unavailable. '+(e as Error).message);}
+    try{await api('/me/location',{method:'PUT',body:JSON.stringify(active)});setMessage('Location saved to your VISTRAH account.');}
+    catch(e){setError(e instanceof ApiError&&e.status===401?'Sign in to sync this location to your account.':'Saving is unavailable. '+(e as Error).message);}
     finally{setBusy(false);}
   }
 
   async function clear(){
-    hasEdits.current=true;edits.current++;gpsGeneration.current++;setActive(null);setDraft(emptyLocation);setBusy(true);setError('');
-    try{await api('/me/location',{method:'DELETE'});setMessage('Saved and temporary locations cleared.');}
+    hasEdits.current=true;edits.current++;gpsGeneration.current++;setActive(null);setDraft(emptyLocation);
+    writeStoredWebLocation(null);
+    setLocationRevision(r=>r+1);
+    setBusy(true);setError('');
+    try{await api('/me/location',{method:'DELETE'});setMessage('Saved and browser locations cleared.');}
     catch(e){
-      if(e instanceof ApiError&&e.status===401)setMessage('Temporary location cleared.');
-      else setError('Temporary location cleared. Saved location could not be cleared; retry Clear location.');
+      if(e instanceof ApiError&&e.status===401)setMessage('Location cleared.');
+      else setError('Browser location cleared; account location could not be cleared.');
     }finally{setBusy(false);}
   }
 
-  return {draft,active,radius,setRadius,busy,error,message,edit,confirmLocation,gps,save,clear,syncIdentity};
+  return {draft,active,radius,setRadius,detecting,locationRevision,busy,error,message,edit,confirmLocation,gps,save,clear,syncIdentity};
 }
 
 type LocationState=ReturnType<typeof useLocationState>;
@@ -153,17 +292,38 @@ export function useOptionalCustomerLocation(){
   return useContext(CustomerLocationContext);
 }
 
-export function LocationChooser({expanded=false}:{expanded?:boolean}){
-  const state=useCustomerLocation(),id=useId(),path=usePathname();
+export function LocationChooser({expanded=false,onCommitted}:{expanded?:boolean;onCommitted?:()=>void}){
+  const state=useCustomerLocation(),id=useId(),path=usePathname(),router=useRouter();
   const [open,setOpen]=useState(expanded);
   const {draft,active,radius,busy,error,message}=state;
 
-  const selectedValue=useMemo(()=>customerToSelected(draft,radius),[draft,radius]);
+  const selectedValue=useMemo(()=>customerToSelected(active??draft,radius),[active,draft,radius]);
 
   function handleSelectedChange(next:SelectedLocation){
     const nextRadius=(radii as readonly number[]).includes(next.radiusKm)?(next.radiusKm as Radius):radius;
     if(nextRadius!==radius)state.setRadius(nextRadius);
     state.edit(selectedToCustomer(next));
+  }
+
+  function commitAndDismiss(confirmed:SelectedLocation){
+    const nextRadius=(radii as readonly number[]).includes(confirmed.radiusKm)?(confirmed.radiusKm as Radius):radius;
+    const ok=state.confirmLocation(selectedToCustomer(confirmed),nextRadius);
+    if(!ok)return;
+    if(onCommitted){
+      onCommitted();
+      return;
+    }
+    if(!expanded){
+      setOpen(false);
+      return;
+    }
+    if(path==='/location'){
+      if(typeof window!=='undefined'&&window.history.length>1){
+        router.back();
+      }else{
+        router.push('/');
+      }
+    }
   }
 
   return (
@@ -172,7 +332,7 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
         <div className="location-entry-heading">
           <button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}>
             <MapPin size={18} aria-hidden="true"/>
-            <UiText value={active?`${active.locality} · ${radius} km`:'Choose your location'}/>
+            <UiText value={active?`${active.locality} · ${radius} km`:'Select Location'}/>
           </button>
           <p className="tabular-nums">
             <UiText value={active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · within ${radius} km`:'Select your area on the map for nearby service discovery.'}/>
@@ -194,11 +354,8 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
             mode="customer"
             value={selectedValue}
             onChange={handleSelectedChange}
-            onConfirm={confirmed=>{
-              const nextRadius=(radii as readonly number[]).includes(confirmed.radiusKm)?(confirmed.radiusKm as Radius):radius;
-              state.setRadius(nextRadius);
-              state.confirmLocation(selectedToCustomer(confirmed));
-            }}
+            onConfirm={commitAndDismiss}
+            onQuickCommit={commitAndDismiss}
             confirmLabel="Confirm Location"
             radiusOptions={radii}
             disabled={busy}
@@ -214,7 +371,7 @@ export function LocationChooser({expanded=false}:{expanded?:boolean}){
                   </button>
                 </div>
                 <small style={{color:'var(--text-secondary)',lineHeight:1.45}}>
-                  {googleMapsWebKey?googlePrivacy:<UiText value={"Location stays temporary unless saved. GPS runs only when you tap Use Current GPS. Sellers receive only locality/PIN unless you explicitly enter a service address."}/>}
+                  {googleMapsWebKey?googlePrivacy:<UiText value={"Your selected area is saved in this browser so every page and the header stay synchronized."}/>}
                 </small>
               </div>
             }

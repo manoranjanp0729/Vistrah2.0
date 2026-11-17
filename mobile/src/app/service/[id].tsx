@@ -1,7 +1,7 @@
 import {Text} from '../../components/typography';
 import {UiText,UiElement} from "../../components/localized-ui";
 import {useLanguage} from '../../lib/language';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
 import {ServiceBanner} from '../../components/service-banner';
 import {Pressable,View} from 'react-native';
 import {router,useLocalSearchParams} from 'expo-router';
@@ -25,14 +25,15 @@ export default function ServiceDetail(){const {copy}=useLanguage();const {colors
   </>}</Page>;
 }
 function ServiceOptions({context,tab}:{context:ServiceContext;tab:Intent}){const {copy}=useLanguage();const {colors,styles}=useTheme();
-  const {user}=useSession();const {location}=useLocation();const path=pathways.find(item=>item.id===tab)!;
+  const {user}=useSession();const {location,locationRevision}=useLocation();const path=pathways.find(item=>item.id===tab)!;
   const providers=useResource<Provider[]>(tab==='providers'?'/services/'+context.service.id+'/providers':null,user?.id??null);
   const guide=useResource<{notes:string[]}>('/services/'+context.service.id+'/member-information',user?.id??null);
   const [nearby,setNearby]=useState<{nearby:(Provider&{distance_km:number;latitude?:number;longitude?:number})[];also_serves:(Provider&{distance_km:number;latitude?:number;longitude?:number})[];has_more_nearby:boolean;has_more_also_serves:boolean}|null>(null);
   const [nearbyView,setNearbyView]=useState<'split'|'list'>('split');
   const [error,setError]=useState('');const [busy,setBusy]=useState(false);const [searched,setSearched]=useState('');
-  const searchKey=JSON.stringify({id:context.service.id,location,user:user?.id});const visibleNearby=searched===searchKey?nearby:null;
+  const searchKey=JSON.stringify({id:context.service.id,location,locationRevision,user:user?.id});const visibleNearby=searched===searchKey?nearby:null;
   async function searchNearby(){if(!location)return;setBusy(true);setError('');try{const result=await api<NonNullable<typeof nearby>>('/services/'+context.service.id+'/nearby',{method:'POST',body:JSON.stringify({latitude:location.latitude,longitude:location.longitude,radius_km:location.radius,page:1})});setNearby(result);setSearched(searchKey);}catch(e){setError(e instanceof ApiError&&[404,405].includes(e.status)?'Nearby discovery is unavailable on this API version. The member directory remains below.':(e as Error).message);}finally{setBusy(false);}}
+  useEffect(()=>{if(tab==='providers'&&location){void searchNearby();}},[tab,searchKey]);
   return <View style={{gap:24}}><View style={styles.card}><Text style={styles.heading}><UiText value={path.title}/></Text><Text style={styles.muted}>{path.copy}</Text>
     {tab==='providers'&&<>{providers.loading?<Loading/>:providers.error?<ErrorPanel error={providers.error} retry={providers.retry}/>:providers.data?.length?providers.data.map(provider=><View key={provider.id} style={{gap:8,paddingVertical:12,borderBottomWidth:1,borderBottomColor:colors.border}}><Text style={styles.text}>{provider.company||provider.name}</Text><Text style={styles.muted}>{provider.location} · {provider.verification_status}</Text>{Boolean(provider.description)&&<Text style={styles.muted}>{provider.description}</Text>}</View>):<Text style={styles.muted}><UiText value={copy.service.noProviders}/></Text>}
       <UiElement as={Action} label={location?'Search within '+location.radius+' km':'Choose location for nearby search'} disabled={busy} secondary onPress={()=>{if(location)void searchNearby();else router.push('/location');}}/>

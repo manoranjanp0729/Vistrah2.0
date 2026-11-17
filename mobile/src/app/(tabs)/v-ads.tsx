@@ -487,6 +487,7 @@ function VAdsFeed({video}:{video:string}) {
   const {user}=useSession();
   const locationCtx=useOptionalLocation();
   const activeLoc=locationCtx?.location;
+  const locRev=locationCtx?.locationRevision??0;
   const activeLat=activeLoc&&Number.isFinite(activeLoc.latitude)&&Number.isFinite(activeLoc.longitude)&&Math.abs(activeLoc.latitude)<=90&&Math.abs(activeLoc.longitude)<=180?activeLoc.latitude:undefined;
   const activeLon=activeLat!==undefined?activeLoc?.longitude:undefined;
   const activeRadius=activeLoc?.radius;
@@ -501,7 +502,7 @@ function VAdsFeed({video}:{video:string}) {
     Promise.all([filter?vAds.feed(1,filter):vAds.feed(),video?vAds.reel(video):Promise.resolve(null)]).then(([feed,selected])=>{
       if(alive){setReels(mergeReels(selected?[selected]:[],feed.items).map(playableReel));setPage(1);setHasMore(feed.has_more);setActiveIndex(0);setError('');}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[video,version,activeLat,activeLon,activeRadius]);
+  },[video,version,activeLat,activeLon,activeRadius,locRev]);
   async function loadMore(){if(paging.current||loading||!hasMore)return;paging.current=true;try{const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;const feed=await vAds.feed(page+1,filter);setReels(previous=>mergeReels(previous,feed.items).map(playableReel));setPage(feed.page);setHasMore(feed.has_more);setError('');}catch(e){setError((e as Error).message);}finally{paging.current=false;}}
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: {index: number | null}[]}) => {

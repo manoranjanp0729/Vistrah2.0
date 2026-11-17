@@ -25,12 +25,31 @@ def _auth_headers(db) -> dict[str, str]:
     return {"Authorization": f"Bearer {token}"}
 
 
-def test_maps_proxy_requires_authentication(client):
+def test_maps_proxy_supports_guest_launch_auto_detect_with_ip_rate_limit(client, monkeypatch):
     maps_proxy.clear_maps_proxy_state()
-    assert client.post("/api/maps/reverse-geocode", json={"latitude": 12.9716, "longitude": 77.5946}).status_code == 401
-    assert client.get("/api/maps/reverse-geocode?lat=12.9716&lng=77.5946").status_code == 401
-    assert client.post("/api/maps/place-details", json={"place_id": "ChIJbU60yXAWrjsR4E9-UejD3_g"}).status_code == 401
-    assert client.get("/api/maps/place-details?place_id=ChIJbU60yXAWrjsR4E9-UejD3_g").status_code == 401
+    monkeypatch.setenv("GOOGLE_MAPS_SERVER_API_KEY", "srv-guest-key")
+    monkeypatch.setenv("MAPS_PROXY_RATE_LIMIT_PER_MINUTE", "2")
+    with patch.object(
+        maps_proxy,
+        "fetch_google_reverse_geocode",
+        side_effect=lambda lat, lon, _k: {
+            "formatted_address": "Tarikere, Karnataka 577228",
+            "locality": "Tarikere, Chikkamagaluru",
+            "city": "Tarikere",
+            "state": "Karnataka",
+            "postal_code": "577228",
+            "latitude": lat,
+            "longitude": lon,
+            "address_components": [],
+        },
+    ):
+        r1 = client.get("/api/maps/reverse-geocode?lat=13.7072&lng=75.8132")
+        assert r1.status_code == 200
+        assert r1.json()["locality"] == "Tarikere, Chikkamagaluru"
+        assert client.get("/api/maps/reverse-geocode?lat=13.3161&lng=75.7720").status_code == 200
+        r3 = client.get("/api/maps/reverse-geocode?lat=12.9716&lng=77.5946")
+        assert r3.status_code == 429
+        assert r3.json()["code"] == "MAPS_RATE_LIMITED"
 
 
 def test_maps_proxy_unconfigured_key_fails_closed_without_upstream_call(client, db, monkeypatch):

@@ -19,13 +19,16 @@ from urllib.request import HTTPRedirectHandler, Request as UrlRequest, build_ope
 
 from fastapi import APIRouter, Depends, Query, Request, Response
 from fastapi.responses import JSONResponse
+from fastapi.security import HTTPAuthorizationCredentials
 from pydantic import Field, field_validator
+from sqlalchemy.orm import Session
 
 from . import config
+from .database import get_db
 from .http_security import apply_security_headers
 from .models import User
 from .schemas import Schema
-from .security import current_user
+from .security import bearer, token_session
 from .v_ads_geography import validate_point
 
 router = APIRouter(tags=["Google Maps Proxy"])
@@ -382,12 +385,38 @@ def fetch_google_autocomplete(query: str, session_token: str | None, api_key: st
     return {"suggestions": items}
 
 
+def _optional_user(
+    credentials: HTTPAuthorizationCredentials | None = Depends(bearer),
+    db: Session = Depends(get_db),
+) -> User | None:
+    if not credentials or credentials.scheme.lower() != "bearer":
+        return None
+    try:
+        user, _ = token_session(credentials.credentials, db)
+        return user
+    except Exception:
+        return None
+
+
+def _actor_key(request: Request, user: User | None) -> str:
+    if user is not None:
+        return f"user:{user.id}"
+    peer = request.client.host if request.client and request.client.host else "unknown"
+    return f"ip:{peer}"
+
+
 def _set_private_headers(response: Response) -> None:
     response.headers["Cache-Control"] = "private, no-store"
     apply_security_headers(response.headers)
 
 
-async def _handle_reverse_geocode(latitude: float, longitude: float, user: User, response: Response):
+async def _handle_reverse_geocode(
+    latitude: float,
+    longitude: float,
+    request: Request,
+    user: User | None,
+    response: Response,
+):
     _set_private_headers(response)
     cache_key = f"rev:{round(latitude, 5):.5f}:{round(longitude, 5):.5f}"
     cached = _cache_get(cache_key)
@@ -401,7 +430,7 @@ async def _handle_reverse_geocode(latitude: float, longitude: float, user: User,
             "MAPS_KEY_UNCONFIGURED",
             "Google Maps server API key is not configured. Use manual coordinates or locality.",
         )
-    if not _allow_lookup(f"user:{user.id}"):
+    if not _allow_lookup(_actor_key(request, user)):
         return _structured_error(
             429,
             "MAPS_RATE_LIMITED",
@@ -422,7 +451,13 @@ async def _handle_reverse_geocode(latitude: float, longitude: float, user: User,
     return {**result, "cached": False, "temporary_only": True}
 
 
-async def _handle_place_details(place_id: str, session_token: str | None, user: User, response: Response):
+async def _handle_place_details(
+    place_id: str,
+    session_token: str | None,
+    request: Request,
+    user: User | None,
+    response: Response,
+):
     _set_private_headers(response)
     cache_key = f"place:{place_id}"
     cached = _cache_get(cache_key)
@@ -436,7 +471,7 @@ async def _handle_place_details(place_id: str, session_token: str | None, user: 
             "MAPS_KEY_UNCONFIGURED",
             "Google Maps server API key is not configured. Use manual coordinates or locality.",
         )
-    if not _allow_lookup(f"user:{user.id}"):
+    if not _allow_lookup(_actor_key(request, user)):
         return _structured_error(
             429,
             "MAPS_RATE_LIMITED",
@@ -497,44 +532,48 @@ async def _handle_autocomplete(query: str, session_token: str | None, request: R
 @router.post("/api/maps/reverse-geocode")
 async def reverse_geocode_post(
     payload: ReverseGeocodePayload,
+    request: Request,
     response: Response,
-    user: User = Depends(current_user),
+    user: User | None = Depends(_optional_user),
 ):
-    return await _handle_reverse_geocode(payload.latitude, payload.longitude, user, response)
+    return await _handle_reverse_geocode(payload.latitude, payload.longitude, request, user, response)
 
 
 @router.get("/maps/reverse-geocode")
 @router.get("/api/maps/reverse-geocode")
 async def reverse_geocode_get(
+    request: Request,
     response: Response,
     lat: float = Query(..., description="Latitude (-90 to 90)"),
     lng: float = Query(..., description="Longitude (-180 to 180)"),
-    user: User = Depends(current_user),
+    user: User | None = Depends(_optional_user),
 ):
     validated = ReverseGeocodePayload(latitude=lat, longitude=lng)
-    return await _handle_reverse_geocode(validated.latitude, validated.longitude, user, response)
+    return await _handle_reverse_geocode(validated.latitude, validated.longitude, request, user, response)
 
 
 @router.post("/maps/place-details")
 @router.post("/api/maps/place-details")
 async def place_details_post(
     payload: PlaceDetailsPayload,
+    request: Request,
     response: Response,
-    user: User = Depends(current_user),
+    user: User | None = Depends(_optional_user),
 ):
-    return await _handle_place_details(payload.place_id, payload.session_token, user, response)
+    return await _handle_place_details(payload.place_id, payload.session_token, request, user, response)
 
 
 @router.get("/maps/place-details")
 @router.get("/api/maps/place-details")
 async def place_details_get(
+    request: Request,
     response: Response,
     place_id: str = Query(..., min_length=4, max_length=256),
     session_token: str | None = Query(default=None, max_length=128),
-    user: User = Depends(current_user),
+    user: User | None = Depends(_optional_user),
 ):
     validated = PlaceDetailsPayload(place_id=place_id, session_token=session_token)
-    return await _handle_place_details(validated.place_id, validated.session_token, user, response)
+    return await _handle_place_details(validated.place_id, validated.session_token, request, user, response)
 
 
 @router.post("/maps/autocomplete")

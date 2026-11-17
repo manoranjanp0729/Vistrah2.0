@@ -31,6 +31,7 @@ export type NearbyBusinessItem = {
   phone: string;
   whatsapp: string;
   timings: string;
+  photo_url: string | null;
   directions_url: string;
   google_maps_uri?: string;
   types?: string[];
@@ -44,6 +45,164 @@ export type NearbyServicesResponse = {
   has_google_places?: boolean;
   items: NearbyBusinessItem[];
 };
+
+export type DivisionFallbackTheme = {
+  bgDark: string;
+  bgLight: string;
+  borderDark: string;
+  borderLight: string;
+  accent: string;
+  glyph:
+    | 'utensils'
+    | 'tool'
+    | 'heart'
+    | 'leaf'
+    | 'truck'
+    | 'layers'
+    | 'scissors'
+    | 'camera'
+    | 'book'
+    | 'briefcase'
+    | 'shopping-bag'
+    | 'compass'
+    | 'cpu';
+};
+
+const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
+  'food-and-dining': {
+    bgDark: 'rgba(249, 115, 22, 0.14)',
+    bgLight: '#fff7ed',
+    borderDark: 'rgba(249, 115, 22, 0.35)',
+    borderLight: '#fed7aa',
+    accent: '#ea580c',
+    glyph: 'utensils',
+  },
+  'home-services': {
+    bgDark: 'rgba(56, 189, 248, 0.14)',
+    bgLight: '#f0f9ff',
+    borderDark: 'rgba(56, 189, 248, 0.35)',
+    borderLight: '#bae6fd',
+    accent: '#0284c7',
+    glyph: 'tool',
+  },
+  'health-and-fitness': {
+    bgDark: 'rgba(20, 184, 166, 0.14)',
+    bgLight: '#f0fdfa',
+    borderDark: 'rgba(20, 184, 166, 0.35)',
+    borderLight: '#99f6e4',
+    accent: '#0d9488',
+    glyph: 'heart',
+  },
+  'agriculture-and-farming': {
+    bgDark: 'rgba(34, 197, 94, 0.14)',
+    bgLight: '#f0fdf4',
+    borderDark: 'rgba(34, 197, 94, 0.35)',
+    borderLight: '#bbf7d0',
+    accent: '#16a34a',
+    glyph: 'leaf',
+  },
+  vehicles: {
+    bgDark: 'rgba(99, 102, 241, 0.14)',
+    bgLight: '#eef2ff',
+    borderDark: 'rgba(99, 102, 241, 0.35)',
+    borderLight: '#c7d2fe',
+    accent: '#4f46e5',
+    glyph: 'truck',
+  },
+  'construction-and-materials': {
+    bgDark: 'rgba(234, 179, 8, 0.14)',
+    bgLight: '#fefce8',
+    borderDark: 'rgba(234, 179, 8, 0.35)',
+    borderLight: '#fde047',
+    accent: '#ca8a04',
+    glyph: 'layers',
+  },
+  'beauty-and-personal-care': {
+    bgDark: 'rgba(236, 72, 153, 0.14)',
+    bgLight: '#fdf2f8',
+    borderDark: 'rgba(236, 72, 153, 0.35)',
+    borderLight: '#fbcfe8',
+    accent: '#db2777',
+    glyph: 'scissors',
+  },
+  'events-and-weddings': {
+    bgDark: 'rgba(168, 85, 247, 0.14)',
+    bgLight: '#faf5ff',
+    borderDark: 'rgba(168, 85, 247, 0.35)',
+    borderLight: '#e9d5ff',
+    accent: '#9333ea',
+    glyph: 'camera',
+  },
+  'education-and-coaching': {
+    bgDark: 'rgba(59, 130, 246, 0.14)',
+    bgLight: '#eff6ff',
+    borderDark: 'rgba(59, 130, 246, 0.35)',
+    borderLight: '#bfdbfe',
+    accent: '#2563eb',
+    glyph: 'book',
+  },
+  'professional-services': {
+    bgDark: 'rgba(148, 163, 184, 0.16)',
+    bgLight: '#f8fafc',
+    borderDark: 'rgba(148, 163, 184, 0.35)',
+    borderLight: '#cbd5e1',
+    accent: '#475569',
+    glyph: 'briefcase',
+  },
+  'shops-and-retail': {
+    bgDark: 'rgba(212, 175, 55, 0.15)',
+    bgLight: '#fffbeb',
+    borderDark: 'rgba(212, 175, 55, 0.38)',
+    borderLight: '#fde68a',
+    accent: '#b45309',
+    glyph: 'shopping-bag',
+  },
+  'travel-and-stay': {
+    bgDark: 'rgba(6, 182, 212, 0.14)',
+    bgLight: '#ecfeff',
+    borderDark: 'rgba(6, 182, 212, 0.35)',
+    borderLight: '#a5f3fc',
+    accent: '#0891b2',
+    glyph: 'compass',
+  },
+  'it-media-and-printing': {
+    bgDark: 'rgba(139, 92, 246, 0.14)',
+    bgLight: '#f5f3ff',
+    borderDark: 'rgba(139, 92, 246, 0.35)',
+    borderLight: '#ddd6fe',
+    accent: '#7c3aed',
+    glyph: 'cpu',
+  },
+};
+
+const DEFAULT_DIVISION_THEME: DivisionFallbackTheme = {
+  bgDark: 'rgba(212, 175, 55, 0.14)',
+  bgLight: '#fffbeb',
+  borderDark: 'rgba(212, 175, 55, 0.35)',
+  borderLight: '#fde68a',
+  accent: '#d4af37',
+  glyph: 'shopping-bag',
+};
+
+export function getDivisionFallbackTheme(categorySlug?: string | null): DivisionFallbackTheme {
+  if (!categorySlug) return DEFAULT_DIVISION_THEME;
+  return DIVISION_THEMES[categorySlug] ?? DEFAULT_DIVISION_THEME;
+}
+
+export function resolveListingPhotoUri(
+  photoUrl: string | null | undefined,
+  apiBase?: string,
+): string | null {
+  if (!photoUrl || typeof photoUrl !== 'string') return null;
+  const trimmed = photoUrl.trim();
+  if (!trimmed) return null;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  if (!trimmed.startsWith('/')) return null;
+  if (!apiBase || apiBase === '/api') return trimmed;
+  // Native Expo client where `apiBase` is e.g. `https://api.vistrah.in`
+  const stripped = trimmed.startsWith('/api/') ? trimmed.slice(4) : trimmed;
+  return `${apiBase.replace(/\/$/, '')}${stripped}`;
+}
 
 export function nearbyServicesUrl(params: { category: string; type?: string }): string {
   const qs = new URLSearchParams();

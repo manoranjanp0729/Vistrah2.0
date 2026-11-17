@@ -1,16 +1,29 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
+  BookOpen,
+  Briefcase,
+  Camera,
+  Car,
   CheckCircle2,
   Clock,
+  Compass,
+  Cpu,
+  HardHat,
+  HeartPulse,
   LocateFixed,
   MapPin,
   MessageCircle,
   Navigation,
   Phone,
   Plus,
+  Scissors,
+  ShoppingBag,
+  Sprout,
+  Utensils,
+  Wrench,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { LatestSearch, validPoint } from '@/lib/location';
@@ -18,10 +31,13 @@ import {
   NEARBY_DISCOVERY_RADII,
   buildNearbyMarketplacePath,
   formatDistanceAway,
+  getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   normalizeNearbyRadius,
   phoneCallHref,
+  resolveListingPhotoUri,
   whatsappChatHref,
+  type DivisionFallbackTheme,
   type NearbyBusinessItem,
   type NearbyDiscoveryRadius,
   type NearbyServicesResponse,
@@ -36,6 +52,43 @@ import {
   type VistrahMapMarker,
 } from './vistrah-google-maps';
 import s from './nearby-service-discovery.module.css';
+
+function DivisionGlyph({
+  glyph,
+  size = 24,
+}: {
+  glyph: DivisionFallbackTheme['glyph'];
+  size?: number;
+}) {
+  switch (glyph) {
+    case 'utensils':
+      return <Utensils size={size} aria-hidden="true" />;
+    case 'tool':
+      return <Wrench size={size} aria-hidden="true" />;
+    case 'heart':
+      return <HeartPulse size={size} aria-hidden="true" />;
+    case 'leaf':
+      return <Sprout size={size} aria-hidden="true" />;
+    case 'truck':
+      return <Car size={size} aria-hidden="true" />;
+    case 'layers':
+      return <HardHat size={size} aria-hidden="true" />;
+    case 'scissors':
+      return <Scissors size={size} aria-hidden="true" />;
+    case 'camera':
+      return <Camera size={size} aria-hidden="true" />;
+    case 'book':
+      return <BookOpen size={size} aria-hidden="true" />;
+    case 'briefcase':
+      return <Briefcase size={size} aria-hidden="true" />;
+    case 'compass':
+      return <Compass size={size} aria-hidden="true" />;
+    case 'cpu':
+      return <Cpu size={size} aria-hidden="true" />;
+    default:
+      return <ShoppingBag size={size} aria-hidden="true" />;
+  }
+}
 
 export function NearbyServiceDiscovery({
   categorySlug,
@@ -70,6 +123,7 @@ export function NearbyServiceDiscovery({
   );
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'split'>('split');
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
+  const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
@@ -291,9 +345,10 @@ export function NearbyServiceDiscovery({
             {items.length > 0 && (
               <div className={s.cardsScroll}>
                 {items.map(item => {
+                  const itemKey = String(item.id);
                   const isSelected = selectedId === item.id;
                   const isVistrah = item.source === 'vistrah';
-                  const callUrl = isVistrah ? phoneCallHref(item.phone) : null;
+                  const callUrl = phoneCallHref(item.phone);
                   const waUrl = isVistrah
                     ? whatsappChatHref(
                         item.whatsapp || item.phone,
@@ -306,18 +361,62 @@ export function NearbyServiceDiscovery({
                     item.longitude,
                     item.directions_url,
                   );
+                  const photoSrc = !failedPhotos[itemKey]
+                    ? resolveListingPhotoUri(item.photo_url)
+                    : null;
+                  const divTheme = getDivisionFallbackTheme(item.category_slug || categorySlug);
 
                   return (
                     <article
-                      id={`nearby-biz-card-${String(item.id)}`}
-                      key={String(item.id)}
+                      id={`nearby-biz-card-${itemKey}`}
+                      key={itemKey}
                       className={`${s.businessCard} ${isSelected ? s.businessCardSelected : ''}`}
                       aria-current={isSelected ? 'true' : undefined}
                       onClick={() => selectListing(item.id, false)}
                     >
                       <div className={s.cardTop}>
-                        <div>
-                          <h3 className={s.businessName}>{item.company || item.name}</h3>
+                        <div className={s.mediaSlot}>
+                          {photoSrc ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
+                            <img
+                              src={photoSrc}
+                              alt={`${item.company || item.name} photo`}
+                              loading="lazy"
+                              className={s.shopPhoto}
+                              onError={() =>
+                                setFailedPhotos(prev => ({ ...prev, [itemKey]: true }))
+                              }
+                            />
+                          ) : (
+                            <div
+                              className={s.fallbackTile}
+                              aria-hidden="true"
+                              style={
+                                {
+                                  '--div-bg-dark': divTheme.bgDark,
+                                  '--div-bg-light': divTheme.bgLight,
+                                  '--div-border-dark': divTheme.borderDark,
+                                  '--div-border-light': divTheme.borderLight,
+                                  '--div-accent': divTheme.accent,
+                                } as CSSProperties
+                              }
+                            >
+                              <DivisionGlyph glyph={divTheme.glyph} size={24} />
+                              <span className={s.fallbackTileLabel}>
+                                {isVistrah ? 'VISTRAH' : 'LOCAL'}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className={s.cardHeaderMain}>
+                          <div className={s.titleDistanceRow}>
+                            <h3 className={s.businessName}>{item.company || item.name}</h3>
+                            <span className={s.distanceBadge}>
+                              {formatDistanceAway(item.distance_km)}
+                            </span>
+                          </div>
+
                           <div className={s.badgesRow}>
                             {isVistrah ? (
                               <span className={s.verifiedBadge}>
@@ -347,15 +446,10 @@ export function NearbyServiceDiscovery({
                               </span>
                             )}
                           </div>
-                        </div>
-                        <span className={s.distanceBadge}>
-                          {formatDistanceAway(item.distance_km)}
-                        </span>
-                      </div>
 
-                      <p className={s.metaLine}>
-                        {item.address || item.location}
-                      </p>
+                          <p className={s.metaLine}>{item.address || item.location}</p>
+                        </div>
+                      </div>
 
                       {item.description && <p className={s.description}>{item.description}</p>}
 

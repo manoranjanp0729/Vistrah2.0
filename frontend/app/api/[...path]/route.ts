@@ -43,7 +43,8 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
       result.cookies.delete(cookie);
       if(request.cookies.get(LEGACY_SELLER_SESSION_COOKIE)) result.cookies.delete(LEGACY_SELLER_SESSION_COOKIE);
     }
-    result.headers.set('Cache-Control','no-store');
+    const isCacheablePublicPhoto=request.method==='GET'&&response.ok&&path[0]==='marketplace'&&(path[1]==='place-photo'||path[1]==='provider-photo');
+    result.headers.set('Cache-Control',isCacheablePublicPhoto?(response.headers.get('cache-control')||'public, max-age=86400'):'no-store');
     return result;
   } catch {
     const result=NextResponse.json({detail:'VISTRAH is temporarily unavailable. Please try again.'},{status:503});

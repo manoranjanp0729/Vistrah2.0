@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { api } from '../lib/api';
+import { api, getApiBase } from '../lib/api';
 import { googleMapsDirectionsUrl } from '../lib/google-maps';
 import { useOptionalLocation } from '../lib/location';
 import { useTheme } from '../lib/theme';
@@ -11,10 +11,13 @@ import {
   NEARBY_DISCOVERY_RADII,
   buildNearbyMarketplacePath,
   formatDistanceAway,
+  getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   normalizeNearbyRadius,
   phoneCallHref,
+  resolveListingPhotoUri,
   whatsappChatHref,
+  type DivisionFallbackTheme,
   type NearbyBusinessItem,
   type NearbyDiscoveryRadius,
   type NearbyServicesResponse,
@@ -30,6 +33,43 @@ const DEFAULT_MOBILE_POINT = {
   locality: 'Bengaluru',
 };
 
+function MobileDivisionGlyph({
+  glyph,
+  color,
+}: {
+  glyph: DivisionFallbackTheme['glyph'];
+  color: string;
+}) {
+  switch (glyph) {
+    case 'utensils':
+      return <Ionicons name="restaurant-outline" size={22} color={color} />;
+    case 'leaf':
+      return <Ionicons name="leaf-outline" size={22} color={color} />;
+    case 'heart':
+      return <Feather name="heart" size={21} color={color} />;
+    case 'tool':
+      return <Feather name="tool" size={21} color={color} />;
+    case 'truck':
+      return <Feather name="truck" size={21} color={color} />;
+    case 'layers':
+      return <Feather name="layers" size={21} color={color} />;
+    case 'scissors':
+      return <Feather name="scissors" size={21} color={color} />;
+    case 'camera':
+      return <Feather name="camera" size={21} color={color} />;
+    case 'book':
+      return <Feather name="book-open" size={21} color={color} />;
+    case 'briefcase':
+      return <Feather name="briefcase" size={21} color={color} />;
+    case 'compass':
+      return <Feather name="compass" size={21} color={color} />;
+    case 'cpu':
+      return <Feather name="cpu" size={21} color={color} />;
+    default:
+      return <Feather name="shopping-bag" size={21} color={color} />;
+  }
+}
+
 export function MobileNearbyServiceDiscovery({
   categorySlug,
   categoryTitle,
@@ -44,6 +84,14 @@ export function MobileNearbyServiceDiscovery({
   const { colors, mode } = useTheme();
   const isDark = mode === 'dark';
   const locCtx = useOptionalLocation();
+
+  const safeApiBase = useMemo(() => {
+    try {
+      return getApiBase();
+    } catch {
+      return '/api';
+    }
+  }, []);
 
   const activePoint = useMemo(() => {
     const sel = locCtx?.selectedLocation;
@@ -71,6 +119,7 @@ export function MobileNearbyServiceDiscovery({
     normalizeNearbyRadius(locCtx?.selectedLocation?.radiusKm ?? 10),
   );
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
+  const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
@@ -327,9 +376,10 @@ export function MobileNearbyServiceDiscovery({
 
       {/* Unified Distance-Sorted Cards (VISTRAH Verified first, then Google Places) */}
       {items.map(item => {
+        const itemKey = String(item.id);
         const isSelected = selectedId === item.id;
         const isVistrah = item.source === 'vistrah';
-        const callUrl = isVistrah ? phoneCallHref(item.phone) : null;
+        const callUrl = phoneCallHref(item.phone);
         const waUrl = isVistrah
           ? whatsappChatHref(
               item.whatsapp || item.phone,
@@ -348,10 +398,14 @@ export function MobileNearbyServiceDiscovery({
               item.longitude,
               item.directions_url,
             );
+        const photoUri = !failedPhotos[itemKey]
+          ? resolveListingPhotoUri(item.photo_url, safeApiBase)
+          : null;
+        const divTheme = getDivisionFallbackTheme(item.category_slug || categorySlug);
 
         return (
           <Pressable
-            key={String(item.id)}
+            key={itemKey}
             accessibilityRole="button"
             onPress={() => setSelectedId(item.id)}
             style={({ pressed }) => [
@@ -365,10 +419,49 @@ export function MobileNearbyServiceDiscovery({
             ]}
           >
             <View style={s.bizTopRow}>
-              <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
-                <Text style={[s.bizTitle, { color: colors.text }]}>
-                  {item.company || item.name}
-                </Text>
+              {/* Shop Photo Thumbnail or Crisp Division-Themed Fallback Icon Tile */}
+              <View style={s.photoSlot}>
+                {photoUri ? (
+                  <Image
+                    source={{ uri: photoUri }}
+                    accessibilityLabel={`${item.company || item.name} shop photo`}
+                    resizeMode="cover"
+                    onError={() =>
+                      setFailedPhotos(prev => ({ ...prev, [itemKey]: true }))
+                    }
+                    style={s.shopPhoto}
+                  />
+                ) : (
+                  <View
+                    style={[
+                      s.fallbackIconTile,
+                      {
+                        backgroundColor: isDark ? divTheme.bgDark : divTheme.bgLight,
+                        borderColor: isDark ? divTheme.borderDark : divTheme.borderLight,
+                      },
+                    ]}
+                  >
+                    <MobileDivisionGlyph glyph={divTheme.glyph} color={divTheme.accent} />
+                    <Text style={[s.fallbackLabel, { color: divTheme.accent }]}>
+                      {isVistrah ? 'VISTRAH' : 'LOCAL'}
+                    </Text>
+                  </View>
+                )}
+              </View>
+
+              <View style={{ flex: 1, minWidth: 0, gap: 5 }}>
+                <View style={s.titleDistanceRow}>
+                  <Text
+                    numberOfLines={2}
+                    style={[s.bizTitle, { color: colors.text, flex: 1 }]}
+                  >
+                    {item.company || item.name}
+                  </Text>
+                  <View style={s.distancePill}>
+                    <Text style={s.distanceText}>{formatDistanceAway(item.distance_km)}</Text>
+                  </View>
+                </View>
+
                 <View style={s.badgesRow}>
                   {isVistrah ? (
                     <View style={s.verifiedPill}>
@@ -410,16 +503,15 @@ export function MobileNearbyServiceDiscovery({
                     <Text style={{ fontSize: 11, color: colors.muted }}>{item.timings}</Text>
                   )}
                 </View>
-              </View>
 
-              <View style={s.distancePill}>
-                <Text style={s.distanceText}>{formatDistanceAway(item.distance_km)}</Text>
+                <Text
+                  numberOfLines={2}
+                  style={{ fontSize: 12, lineHeight: 17, color: colors.muted }}
+                >
+                  {item.address || item.location}
+                </Text>
               </View>
             </View>
-
-            <Text style={{ fontSize: 12.5, lineHeight: 18, color: colors.muted }}>
-              {item.address || item.location}
-            </Text>
 
             {Boolean(item.description) && (
               <Text style={{ fontSize: 13, lineHeight: 19, color: colors.text }}>
@@ -427,7 +519,7 @@ export function MobileNearbyServiceDiscovery({
               </Text>
             )}
 
-            {/* Direct Actions: Call + WhatsApp + Directions for VISTRAH, Directions for Nearby Places */}
+            {/* Direct Actions: Call (whenever phone is present) + WhatsApp (VISTRAH sellers) + Directions */}
             <View style={s.actionRow}>
               {Boolean(callUrl) && (
                 <Pressable
@@ -607,16 +699,46 @@ const s = StyleSheet.create({
   bizCard: {
     padding: 14,
     borderRadius: 14,
-    gap: 8,
+    gap: 10,
   },
   bizTopRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
+    gap: 12,
+  },
+  photoSlot: {
+    width: 74,
+    height: 74,
+    borderRadius: 11,
+    overflow: 'hidden',
+    flexShrink: 0,
+  },
+  shopPhoto: {
+    width: '100%',
+    height: '100%',
+  },
+  fallbackIconTile: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 11,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  fallbackLabel: {
+    fontSize: 9.5,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  titleDistanceRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 6,
   },
   bizTitle: {
-    fontSize: 15.5,
+    fontSize: 15,
     fontWeight: '700',
     letterSpacing: -0.2,
   },
@@ -656,15 +778,16 @@ const s = StyleSheet.create({
     fontWeight: '700',
   },
   distancePill: {
-    paddingHorizontal: 9,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
     borderRadius: 999,
     backgroundColor: '#0f172a',
     borderWidth: 1,
     borderColor: 'rgba(212,175,55,0.4)',
+    flexShrink: 0,
   },
   distanceText: {
-    fontSize: 11.5,
+    fontSize: 11,
     fontWeight: '700',
     color: '#f8e7b0',
     fontVariant: ['tabular-nums'],
@@ -673,7 +796,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
-    paddingTop: 4,
+    paddingTop: 2,
   },
   actionBtn: {
     flexDirection: 'row',

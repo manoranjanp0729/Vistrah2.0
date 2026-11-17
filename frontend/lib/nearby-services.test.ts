@@ -8,11 +8,13 @@ import {
   NEARBY_DISCOVERY_RADII,
   buildNearbyMarketplacePath,
   formatDistanceAway,
+  getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   googleMapsHybridSearchHref,
   nearbyServicesUrl,
   normalizeNearbyRadius,
   phoneCallHref,
+  resolveListingPhotoUri,
   whatsappChatHref,
 } from '../../shared/nearby-services';
 
@@ -33,7 +35,23 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     expect(formatDistanceAway(18.6)).toBe('19 km away');
 
     expect(phoneCallHref('+91 98450-11111')).toBe('tel:+919845011111');
+    expect(phoneCallHref('080 2221 9988')).toBe('tel:08022219988');
+    expect(phoneCallHref('')).toBeNull();
     expect(phoneCallHref('invalid')).toBeNull();
+
+    expect(
+      resolveListingPhotoUri('/api/marketplace/place-photo?ref=places%2FChIJ%2Fphotos%2F1'),
+    ).toBe('/api/marketplace/place-photo?ref=places%2FChIJ%2Fphotos%2F1');
+    expect(
+      resolveListingPhotoUri(
+        '/api/marketplace/place-photo?ref=places%2FChIJ%2Fphotos%2F1',
+        'https://api.vistrah.in',
+      ),
+    ).toBe('https://api.vistrah.in/marketplace/place-photo?ref=places%2FChIJ%2Fphotos%2F1');
+    expect(resolveListingPhotoUri(null)).toBeNull();
+
+    expect(getDivisionFallbackTheme('food-and-dining').glyph).toBe('utensils');
+    expect(getDivisionFallbackTheme('agriculture-and-farming').glyph).toBe('leaf');
 
     const wa = whatsappChatHref('9845011111', 'Restaurant / Mess / Dhaba', 'Sri Krishna Bhavan');
     expect(wa).toMatch(/^https:\/\/wa\.me\/919845011111\?text=/);

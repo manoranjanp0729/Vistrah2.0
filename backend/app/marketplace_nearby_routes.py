@@ -2,7 +2,9 @@
 
 1. Queries local verified VISTRAH providers first (`source: "vistrah"`).
 2. Whenever fewer than 5 VISTRAH providers exist within `radius_km`, enriches the
-   response with cached Pro-tier Google Places API (New) results (`source: "google_places"`).
+   response with cached Google Places API (New) results (`source: "google_places"`),
+   including normalized `phone` and cached `/api/marketplace/place-photo?ref=...`
+   shop photos (`Cache-Control: public, max-age=86400`).
 Customer search coordinates are never persisted or logged. Existing membership-gated
 `/services/{id}/nearby` remains untouched.
 """
@@ -18,11 +20,16 @@ from sqlalchemy.orm import Session
 
 from .business_catalogue import business_types, find_business_type
 from .database import get_db
+from .http_security import apply_security_headers
 from .location_routes import EARTH_KM, EDGE_KM, distance_expression
-from .maps_proxy_routes import search_google_places_nearby_cached
+from .maps_proxy_routes import (
+    get_cached_place_photo,
+    search_google_places_nearby_cached,
+    validate_place_photo_ref,
+)
 from .marketplace_taxonomy import legacy_map
 from .models import Category, Provider, ProviderService, Service, User
-from .provider_models import ProviderApplication
+from .provider_models import ProviderApplication, ProviderDocument
 from .provider_requirements import SafeModel
 
 router = APIRouter(tags=["Marketplace nearby discovery"])
@@ -30,6 +37,7 @@ router = APIRouter(tags=["Marketplace nearby discovery"])
 SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 MAX_RESULTS = 50
 HYBRID_THRESHOLD = 5
+PUBLIC_PHOTO_FIELDS = ("shop_photo", "business_photo", "photo")
 
 
 class MarketplaceNearbyBody(SafeModel):
@@ -69,6 +77,19 @@ def _short_locality(formatted_address: str) -> str:
     if len(parts) >= 3:
         return ", ".join(parts[-4:-2] or parts[:2])[:150]
     return ", ".join(parts[:2])[:150]
+
+
+def _safe_public_photo_url(raw_val: object) -> str | None:
+    if not isinstance(raw_val, str):
+        return None
+    cleaned = raw_val.strip()
+    if not cleaned or len(cleaned) > 500 or any(c.isspace() for c in cleaned):
+        return None
+    if cleaned.startswith("/images/") or cleaned.startswith("/api/marketplace/"):
+        return cleaned
+    if cleaned.startswith("https://"):
+        return cleaned
+    return None
 
 
 def _clean_slug(raw: str | None) -> str | None:
@@ -235,6 +256,7 @@ def _run_marketplace_nearby(
 
     app_by_id: dict[str, ProviderApplication] = {}
     app_by_provider_id: dict[int, ProviderApplication] = {}
+    public_doc_by_app_id: dict[str, str] = {}
     if deduped:
         app_ids = [grant.application_id for _, grant, _, _, _ in deduped if grant.application_id]
         provider_ids = [provider.id for provider, _, _, _, _ in deduped]
@@ -249,6 +271,20 @@ def _run_marketplace_nearby(
             if app.provider_id is not None and app.provider_id not in app_by_provider_id:
                 app_by_provider_id[app.provider_id] = app
 
+        relevant_app_ids = list({*app_by_id.keys(), *(a.id for a in app_by_provider_id.values())})
+        if relevant_app_ids:
+            for doc in db.scalars(
+                select(ProviderDocument)
+                .where(
+                    ProviderDocument.application_id.in_(relevant_app_ids),
+                    ProviderDocument.field_id.in_(PUBLIC_PHOTO_FIELDS),
+                    ProviderDocument.media_type.in_(("image/jpeg", "image/png")),
+                )
+                .order_by(ProviderDocument.created_at.desc())
+            ).all():
+                if doc.application_id not in public_doc_by_app_id:
+                    public_doc_by_app_id[doc.application_id] = f"/api/marketplace/provider-photo/{doc.id}"
+
     vistrah_items: list[dict] = []
     for provider, grant, service, category, km in deduped:
         linked_app = (
@@ -260,6 +296,10 @@ def _run_marketplace_nearby(
         explicit_whatsapp = str(common.get("whatsapp") or "").strip()
         whatsapp_clean = explicit_whatsapp or phone_clean
         timings_clean = str(common.get("timings") or "").strip()
+        photo_url = (
+            _safe_public_photo_url(common.get("photo_url") or common.get("shop_photo_url"))
+            or (public_doc_by_app_id.get(linked_app.id) if linked_app else None)
+        )
         p_lat = float(provider.latitude)
         p_lng = float(provider.longitude)
 
@@ -285,6 +325,7 @@ def _run_marketplace_nearby(
                 "phone": phone_clean,
                 "whatsapp": whatsapp_clean,
                 "timings": timings_clean,
+                "photo_url": photo_url,
                 "directions_url": f"https://www.google.com/maps/dir/?api=1&destination={p_lat},{p_lng}",
             }
         )
@@ -316,6 +357,8 @@ def _run_marketplace_nearby(
 
             addr = str(gp.get("address") or "")
             place_id = str(gp["place_id"])
+            gp_phone = str(gp.get("phone") or "").strip()
+            gp_photo_url = gp.get("photo_url") if isinstance(gp.get("photo_url"), str) else None
             google_items.append(
                 {
                     "source": "google_places",
@@ -335,9 +378,10 @@ def _run_marketplace_nearby(
                     "distance_km": round(dist_km, 2),
                     "coverage_radius_km": None,
                     "verification_status": "GOOGLE_PLACE",
-                    "phone": "",
+                    "phone": gp_phone,
                     "whatsapp": "",
                     "timings": "",
+                    "photo_url": gp_photo_url,
                     "directions_url": gp["directions_url"],
                     "google_maps_uri": gp.get("google_maps_uri") or "",
                     "types": gp.get("types") or [],
@@ -356,6 +400,67 @@ def _run_marketplace_nearby(
         "has_google_places": has_google,
         "items": combined,
     }
+
+
+def _serve_place_photo(ref: str) -> Response:
+    try:
+        valid_ref = validate_place_photo_ref(ref)
+    except ValueError:
+        raise HTTPException(422, "Invalid place photo reference") from None
+
+    cached = get_cached_place_photo(valid_ref)
+    if cached is None:
+        raise HTTPException(404, "Place photo unavailable")
+
+    raw_bytes, media_type = cached
+    resp = Response(
+        content=raw_bytes,
+        media_type=media_type,
+        headers={
+            "Cache-Control": "public, max-age=86400",
+            "Content-Security-Policy": "default-src 'none'; img-src 'self' data:; sandbox",
+        },
+    )
+    apply_security_headers(resp.headers)
+    return resp
+
+
+def _serve_public_provider_photo(doc_id: str, db: Session) -> Response:
+    if not re.fullmatch(r"[0-9a-f-]{36}", doc_id):
+        raise HTTPException(422, "Invalid photo identifier")
+    doc = db.get(ProviderDocument, doc_id)
+    if (
+        not doc
+        or doc.field_id not in PUBLIC_PHOTO_FIELDS
+        or doc.media_type not in ("image/jpeg", "image/png")
+    ):
+        raise HTTPException(404, "Photo not found")
+    app = db.get(ProviderApplication, doc.application_id)
+    provider = db.get(Provider, app.provider_id) if (app and app.provider_id) else None
+    if not provider or not provider.active or provider.verification_status != "VERIFIED":
+        raise HTTPException(404, "Photo not found")
+    resp = Response(
+        content=doc.content,
+        media_type=doc.media_type,
+        headers={
+            "Cache-Control": "public, max-age=86400",
+            "Content-Security-Policy": "default-src 'none'; img-src 'self' data:; sandbox",
+        },
+    )
+    apply_security_headers(resp.headers)
+    return resp
+
+
+@router.get("/marketplace/place-photo")
+@router.get("/api/marketplace/place-photo", include_in_schema=False)
+def get_marketplace_place_photo(ref: str = Query(..., min_length=12, max_length=600)):
+    return _serve_place_photo(ref)
+
+
+@router.get("/marketplace/provider-photo/{doc_id}")
+@router.get("/api/marketplace/provider-photo/{doc_id}", include_in_schema=False)
+def get_marketplace_provider_photo(doc_id: str, db: Session = Depends(get_db)):
+    return _serve_public_provider_photo(doc_id, db)
 
 
 @router.get("/marketplace/nearby")

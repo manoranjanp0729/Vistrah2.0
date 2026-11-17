@@ -8,13 +8,16 @@ from __future__ import annotations
 
 import asyncio
 from collections import OrderedDict
+import hashlib
 import json
 import os
+from pathlib import Path
 import re
+import tempfile
 import threading
 import time
 from typing import Any
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse
 from urllib.request import HTTPRedirectHandler, Request as UrlRequest, build_opener
 
 from fastapi import APIRouter, Depends, Query, Request, Response
@@ -35,6 +38,8 @@ router = APIRouter(tags=["Google Maps Proxy"])
 
 PLACE_ID_RE = re.compile(r"^[A-Za-z0-9_-]{4,256}$")
 SESSION_TOKEN_RE = re.compile(r"^[A-Za-z0-9_-]{8,128}$")
+PLACE_PHOTO_REF_STRUCT_RE = re.compile(r"^places/[^/]+/photos/[^/]+$")
+PLACE_PHOTO_REF_SAFE_RE = re.compile(r"^places/[A-Za-z0-9._=-]{4,256}/photos/[A-Za-z0-9._=-]{4,512}$")
 
 # Essentials-only field masks (avoids Pro/Enterprise SKU charges)
 REVERSE_GEOCODE_FIELD_MASK = "results.formattedAddress,results.location,results.addressComponents"
@@ -45,21 +50,28 @@ AUTOCOMPLETE_FIELD_MASK = (
     "suggestions.placePrediction.structuredFormat.mainText.text,"
     "suggestions.placePrediction.structuredFormat.secondaryText.text"
 )
-# Strict Pro-tier-only field mask for Text Search (New) — never request reviews, photos, or ratings
-PLACES_TEXT_SEARCH_PRO_FIELD_MASK = (
+# Nearby Places Text Search (New) field mask (maxResultCount=10 + 60-min cache for India free-quota discipline)
+PLACES_TEXT_SEARCH_FIELD_MASK = (
     "places.id,places.displayName,places.formattedAddress,"
-    "places.location,places.types,places.googleMapsUri"
+    "places.location,places.types,places.googleMapsUri,"
+    "places.nationalPhoneNumber,places.photos"
 )
 
 MAX_CACHE_ENTRIES = 2048
+MAX_PHOTO_CACHE_ENTRIES = 128
+MAX_DISK_PHOTO_FILES = 300
 CACHE_TTL_SECONDS = 86400.0  # 24 hours
-PLACES_SEARCH_TTL_SECONDS = 1800.0  # 30 minutes
+PLACE_PHOTO_TTL_SECONDS = 86400.0  # 24 hours
+PLACES_SEARCH_TTL_SECONDS = 3600.0  # 60 minutes
 PER_ACTOR_LIMIT_PER_MINUTE = 30
 GLOBAL_LIMIT_PER_HOUR = 600
+
+PHOTO_DISK_CACHE_DIR = Path(tempfile.gettempdir()) / "vistrah-place-photos"
 
 _cache_lock = threading.Lock()
 _cache: OrderedDict[str, tuple[float, dict[str, Any]]] = OrderedDict()
 _places_search_cache: OrderedDict[tuple[str, float, float, float], tuple[float, list[dict[str, Any]]]] = OrderedDict()
+_photo_mem_cache: OrderedDict[str, tuple[float, bytes, str]] = OrderedDict()
 
 _rate_lock = threading.Lock()
 _user_windows: OrderedDict[str, list[float]] = OrderedDict()
@@ -158,6 +170,12 @@ def clear_maps_proxy_state() -> None:
     with _cache_lock:
         _cache.clear()
         _places_search_cache.clear()
+        _photo_mem_cache.clear()
+        if PHOTO_DISK_CACHE_DIR.exists():
+            for child in PHOTO_DISK_CACHE_DIR.glob("*.img"):
+                child.unlink(missing_ok=True)
+            for child in PHOTO_DISK_CACHE_DIR.glob("*.meta"):
+                child.unlink(missing_ok=True)
     with _rate_lock:
         _user_windows.clear()
         _global_window.clear()
@@ -393,6 +411,68 @@ def fetch_google_autocomplete(query: str, session_token: str | None, api_key: st
     return {"suggestions": items}
 
 
+class _SafeGooglePhotoRedirect(HTTPRedirectHandler):
+    """Follows HTTPS redirects strictly to Google media CDNs without forwarding API keys."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        parsed = urlparse(newurl)
+        host = (parsed.hostname or "").lower()
+        if parsed.scheme != "https" or not (
+            host == "places.googleapis.com"
+            or host.endswith(".googleusercontent.com")
+            or host.endswith(".ggpht.com")
+        ):
+            return None
+        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if redirected is not None and host != "places.googleapis.com":
+            for hdr_key in list(redirected.headers.keys()):
+                if hdr_key.lower() == "x-goog-api-key":
+                    redirected.headers.pop(hdr_key, None)
+            for hdr_key in list(redirected.unredirected_hdrs.keys()):
+                if hdr_key.lower() == "x-goog-api-key":
+                    redirected.unredirected_hdrs.pop(hdr_key, None)
+        return redirected
+
+
+def validate_place_photo_ref(raw_ref: str | None) -> str:
+    if not raw_ref or not isinstance(raw_ref, str):
+        raise ValueError("Invalid place photo reference")
+    cleaned = raw_ref.strip()
+    if (
+        len(cleaned) > 600
+        or ".." in cleaned
+        or not PLACE_PHOTO_REF_STRUCT_RE.fullmatch(cleaned)
+        or not PLACE_PHOTO_REF_SAFE_RE.fullmatch(cleaned)
+    ):
+        raise ValueError("Invalid place photo reference")
+    return cleaned
+
+
+def _normalize_phone_for_tel(raw_phone: Any) -> str:
+    if not raw_phone or not isinstance(raw_phone, str):
+        return ""
+    trimmed = raw_phone.strip()
+    has_plus = trimmed.startswith("+")
+    digits = re.sub(r"\D", "", trimmed)
+    if not (7 <= len(digits) <= 15):
+        return ""
+    return f"+{digits}" if has_plus else digits
+
+
+def _detect_image_media_type(content: bytes) -> str | None:
+    if len(content) < 12 or len(content) > 2 * 1024 * 1024:
+        return None
+    if content.startswith(b"\xff\xd8\xff"):
+        return "image/jpeg"
+    if content.startswith(b"\x89PNG\r\n\x1a\n"):
+        return "image/png"
+    if content[:4] == b"RIFF" and content[8:12] == b"WEBP":
+        return "image/webp"
+    if content.startswith((b"GIF87a", b"GIF89a")):
+        return "image/gif"
+    return None
+
+
 def fetch_google_places_text_search(
     text_query: str,
     latitude: float,
@@ -400,14 +480,14 @@ def fetch_google_places_text_search(
     radius_km: float,
     api_key: str,
 ) -> list[dict[str, Any]]:
-    """Query Google Places API (New) `places:searchText` using strictly Pro-tier fields."""
+    """Query Google Places API (New) `places:searchText` (maxResultCount=10) with phone & photo ref."""
     url = "https://places.googleapis.com/v1/places:searchText"
     clean_query = re.sub(r"\s*/\s*", ", ", text_query.strip())
     radius_meters = min(max(float(radius_km) * 1000.0, 500.0), 50000.0)
     payload: dict[str, Any] = {
         "textQuery": clean_query,
         "regionCode": "IN",
-        "maxResultCount": 15,
+        "maxResultCount": 10,
         "locationBias": {
             "circle": {
                 "center": {"latitude": float(latitude), "longitude": float(longitude)},
@@ -421,7 +501,7 @@ def fetch_google_places_text_search(
         method="POST",
         headers={
             "X-Goog-Api-Key": api_key,
-            "X-Goog-FieldMask": PLACES_TEXT_SEARCH_PRO_FIELD_MASK,
+            "X-Goog-FieldMask": PLACES_TEXT_SEARCH_FIELD_MASK,
             "Content-Type": "application/json",
             "Accept": "application/json",
         },
@@ -437,7 +517,7 @@ def fetch_google_places_text_search(
         return []
 
     parsed: list[dict[str, Any]] = []
-    for entry in raw_places[:20]:
+    for entry in raw_places[:10]:
         if not isinstance(entry, dict):
             continue
         raw_id = str(entry.get("id") or "").strip()
@@ -463,6 +543,19 @@ def fetch_google_places_text_search(
         types = [str(t) for t in raw_types if isinstance(t, str)][:6]
         gmaps_uri_raw = str(entry.get("googleMapsUri") or "").strip()
         gmaps_uri = gmaps_uri_raw if gmaps_uri_raw.startswith("https://") else ""
+        phone = _normalize_phone_for_tel(entry.get("nationalPhoneNumber"))
+
+        photo_url: str | None = None
+        raw_photos = entry.get("photos")
+        if isinstance(raw_photos, list) and raw_photos:
+            first_photo = raw_photos[0]
+            if isinstance(first_photo, dict):
+                try:
+                    valid_ref = validate_place_photo_ref(first_photo.get("name"))
+                    photo_url = f"/api/marketplace/place-photo?{urlencode({'ref': valid_ref})}"
+                except ValueError:
+                    photo_url = None
+
         directions_url = (
             f"https://www.google.com/maps/dir/?api=1&destination={p_lat},{p_lon}"
             f"&destination_place_id={raw_id}"
@@ -474,6 +567,8 @@ def fetch_google_places_text_search(
                 "address": formatted_addr,
                 "latitude": p_lat,
                 "longitude": p_lon,
+                "phone": phone,
+                "photo_url": photo_url,
                 "types": types,
                 "google_maps_uri": gmaps_uri,
                 "directions_url": directions_url,
@@ -490,7 +585,7 @@ def search_google_places_nearby_cached(
     longitude: float,
     radius_km: float,
 ) -> list[dict[str, Any]]:
-    """Cached 30-minute hybrid fallback search keyed by `(business_type, round(lat, 2), round(lng, 2), radius_km)`."""
+    """Cached 60-minute hybrid fallback search keyed by `(business_type, round(lat, 2), round(lng, 2), radius_km)`."""
     api_key = config.get_google_maps_server_api_key()
     if not api_key:
         return []
@@ -532,6 +627,98 @@ def search_google_places_nearby_cached(
             _places_search_cache.popitem(last=False)
 
     return [dict(r) for r in rows]
+
+
+def fetch_google_place_photo_media(photo_ref: str, api_key: str) -> tuple[bytes, str]:
+    """Fetch binary shop photo (`maxWidthPx=480`) from Google Places Media API."""
+    valid_ref = validate_place_photo_ref(photo_ref)
+    url = f"https://places.googleapis.com/v1/{valid_ref}/media?maxWidthPx=480"
+    req = UrlRequest(
+        url,
+        headers={
+            "X-Goog-Api-Key": api_key,
+            "Accept": "image/jpeg,image/webp,image/png,image/*;q=0.8",
+        },
+    )
+    with build_opener(_SafeGooglePhotoRedirect()).open(req, timeout=8) as resp:
+        raw = resp.read(2 * 1024 * 1024 + 1)
+        if len(raw) > 2 * 1024 * 1024:
+            raise ValueError("Upstream place photo exceeds 2 MB")
+    media_type = _detect_image_media_type(raw)
+    if not media_type:
+        raise ValueError("Upstream place photo is not a supported image format")
+    return raw, media_type
+
+
+def get_cached_place_photo(photo_ref: str) -> tuple[bytes, str] | None:
+    """Return `(image_bytes, media_type)` cached for 24 hours in memory + disk."""
+    valid_ref = validate_place_photo_ref(photo_ref)
+    digest = hashlib.sha256(valid_ref.encode("utf-8")).hexdigest()
+    now_mono = time.monotonic()
+    now_wall = time.time()
+
+    with _cache_lock:
+        mem_hit = _photo_mem_cache.get(digest)
+        if mem_hit is not None:
+            expires_at, data_bytes, mime = mem_hit
+            if expires_at > now_mono:
+                _photo_mem_cache.move_to_end(digest)
+                return data_bytes, mime
+            _photo_mem_cache.pop(digest, None)
+
+        img_file = PHOTO_DISK_CACHE_DIR / f"{digest}.img"
+        meta_file = PHOTO_DISK_CACHE_DIR / f"{digest}.meta"
+        if img_file.exists() and meta_file.exists():
+            try:
+                if now_wall - img_file.stat().st_mtime < PLACE_PHOTO_TTL_SECONDS:
+                    raw_disk = img_file.read_bytes()
+                    mime_disk = meta_file.read_text(encoding="utf-8").strip()
+                    if _detect_image_media_type(raw_disk) == mime_disk:
+                        _photo_mem_cache[digest] = (
+                            now_mono + PLACE_PHOTO_TTL_SECONDS,
+                            raw_disk,
+                            mime_disk,
+                        )
+                        _photo_mem_cache.move_to_end(digest)
+                        return raw_disk, mime_disk
+            except OSError:
+                pass
+
+    api_key = config.get_google_maps_server_api_key()
+    if not api_key:
+        return None
+
+    try:
+        raw_bytes, media_type = fetch_google_place_photo_media(valid_ref, api_key)
+    except Exception:
+        return None
+
+    with _cache_lock:
+        _photo_mem_cache[digest] = (
+            time.monotonic() + PLACE_PHOTO_TTL_SECONDS,
+            raw_bytes,
+            media_type,
+        )
+        _photo_mem_cache.move_to_end(digest)
+        while len(_photo_mem_cache) > MAX_PHOTO_CACHE_ENTRIES:
+            _photo_mem_cache.popitem(last=False)
+
+        try:
+            PHOTO_DISK_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+            existing_imgs = sorted(
+                PHOTO_DISK_CACHE_DIR.glob("*.img"),
+                key=lambda p: p.stat().st_mtime if p.exists() else 0.0,
+            )
+            while len(existing_imgs) >= MAX_DISK_PHOTO_FILES:
+                oldest = existing_imgs.pop(0)
+                oldest.unlink(missing_ok=True)
+                (PHOTO_DISK_CACHE_DIR / f"{oldest.stem}.meta").unlink(missing_ok=True)
+            (PHOTO_DISK_CACHE_DIR / f"{digest}.img").write_bytes(raw_bytes)
+            (PHOTO_DISK_CACHE_DIR / f"{digest}.meta").write_text(media_type, encoding="utf-8")
+        except OSError:
+            pass
+
+    return raw_bytes, media_type
 
 
 def _optional_user(

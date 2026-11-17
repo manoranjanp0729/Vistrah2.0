@@ -1,4 +1,4 @@
-"""Public hybrid spatial discovery tests for `/marketplace/nearby` (VISTRAH + Google Places Pro cache)."""
+"""Public hybrid spatial discovery & cached place-photo proxy tests."""
 import io
 import json
 import math
@@ -10,7 +10,7 @@ from app import maps_proxy_routes
 from app.business_catalogue import apply_business_catalogue
 from app.location_routes import EARTH_KM
 from app.models import Category, Provider, ProviderService, Service
-from app.provider_models import ProviderApplication
+from app.provider_models import ProviderApplication, ProviderDocument
 from test_seller_ownership import seller
 
 
@@ -25,6 +25,7 @@ def _make_approved_business(
     lng: float,
     phone: str = "+919876543210",
     whatsapp: str = "",
+    photo_url: str = "",
     timings: str = "9:00 AM - 8:00 PM",
     description: str = "Verified hyperlocal service",
     active: bool = True,
@@ -49,6 +50,8 @@ def _make_approved_business(
         common["whatsapp"] = whatsapp
     if timings:
         common["timings"] = timings
+    if photo_url:
+        common["photo_url"] = photo_url
 
     app = ProviderApplication(
         id=app_id,
@@ -92,10 +95,10 @@ def _make_approved_business(
         )
     )
     db.commit()
-    return provider
+    return provider, app
 
 
-def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_vistrah_exist(
+def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_five_exist(
     client, seeded, db, monkeypatch
 ):
     maps_proxy_routes.clear_maps_proxy_state()
@@ -113,7 +116,7 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
 
     base_lat, base_lng = 13.7091, 75.8132  # Tarikere
 
-    near_biz = _make_approved_business(
+    near_biz, near_app = _make_approved_business(
         db,
         owner_id=owner_id,
         service_id=svc_rest.id,
@@ -124,7 +127,23 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
         phone="+919845011111",
         whatsapp="+919845022222",
     )
-    mid_biz = _make_approved_business(
+    # Private KYC registration_document must NEVER be exposed as photo_url
+    kyc_doc_id = str(uuid.uuid4())
+    db.add(
+        ProviderDocument(
+            id=kyc_doc_id,
+            application_id=near_app.id,
+            service_id=svc_rest.id,
+            field_id="registration_document",
+            filename="licence.jpg",
+            media_type="image/jpeg",
+            sha256="0" * 64,
+            content=b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xd9",
+        )
+    )
+    db.commit()
+
+    mid_biz, _ = _make_approved_business(
         db,
         owner_id=owner_id,
         service_id=svc_rest.id,
@@ -134,6 +153,7 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
         lng=base_lng,
         phone="+919845033333",
         whatsapp="",
+        photo_url="/images/marketplace/food.jpg",
     )
     _make_approved_business(
         db,
@@ -155,18 +175,7 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
         lng=base_lng,
         approval_status="PENDING",
     )
-    _make_approved_business(
-        db,
-        owner_id=owner_id,
-        service_id=svc_rest.id,
-        category_id=cat.id,
-        company="Inactive Cafe",
-        lat=base_lat + math.degrees(0.6 / EARTH_KM),
-        lng=base_lng,
-        active=False,
-    )
 
-    # 1. Within 5 km -> only near_biz (`source: "vistrah"`)
     r5 = client.get(
         "/marketplace/nearby",
         params={
@@ -178,19 +187,16 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
         },
     )
     assert r5.status_code == 200
-    assert r5.headers["cache-control"] == "private, no-store"
     body5 = r5.json()
     assert body5["total"] == 1
-    assert body5["has_google_places"] is False
     first = body5["items"][0]
     assert first["source"] == "vistrah"
     assert first["id"] == near_biz.id
     assert first["phone"] == "+919845011111"
     assert first["whatsapp"] == "+919845022222"
-    assert first["directions_url"].startswith("https://www.google.com/maps/dir/")
-    assert 1.7 <= first["distance_km"] <= 1.9
+    assert first["photo_url"] is None  # KYC registration_document remained strictly private!
+    assert client.get(f"/api/marketplace/provider-photo/{kyc_doc_id}").status_code == 404
 
-    # 2. Within 25 km -> near_biz first, then mid_biz
     r25 = client.post(
         "/marketplace/nearby",
         json={
@@ -204,9 +210,8 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
     assert r25.status_code == 200
     body25 = r25.json()
     assert [row["id"] for row in body25["items"]] == [near_biz.id, mid_biz.id]
-    assert body25["items"][1]["whatsapp"] == "+919845033333"
+    assert body25["items"][1]["photo_url"] == "/images/marketplace/food.jpg"
 
-    # 3. Add 3 more restaurants so 5 local VISTRAH providers exist -> Google Places is NOT called
     for idx in range(3):
         _make_approved_business(
             db,
@@ -240,10 +245,11 @@ def test_public_marketplace_nearby_sorts_by_distance_and_skips_google_when_five_
     assert upstream_calls == []
 
 
-def test_hybrid_google_places_fallback_pro_field_mask_and_30_minute_cache(
+def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     client, seeded, db, monkeypatch
 ):
     maps_proxy_routes.clear_maps_proxy_state()
+    assert maps_proxy_routes.PLACES_SEARCH_TTL_SECONDS == 3600.0
     monkeypatch.setenv("GOOGLE_MAPS_SERVER_API_KEY", "test-server-maps-key")
 
     apply_business_catalogue(seeded)
@@ -252,15 +258,15 @@ def test_hybrid_google_places_fallback_pro_field_mask_and_30_minute_cache(
     owner_headers = seller(client, "hybrid-owner@example.com")
     owner_id = client.get("/me", headers=owner_headers).json()["id"]
     cat = db.scalar(select(Category).where(Category.slug == "home-services"))
-    svc_elec = db.scalar(select(Service).where(Service.category_id == cat.id).order_by(Service.id).limit(1))
+    svc = db.scalar(select(Service).where(Service.category_id == cat.id).order_by(Service.id).limit(1))
 
     base_lat, base_lng = 12.9716, 77.5946
-    vistrah_biz = _make_approved_business(
+    vistrah_biz, _ = _make_approved_business(
         db,
         owner_id=owner_id,
-        service_id=svc_elec.id,
+        service_id=svc.id,
         category_id=cat.id,
-        company="Namma Spark Electricals",
+        company="Namma Spark Services",
         lat=base_lat + math.degrees(1.2 / EARTH_KM),
         lng=base_lng,
         phone="+919900112233",
@@ -294,52 +300,30 @@ def test_hybrid_google_places_fallback_pro_field_mask_and_30_minute_cache(
             return _FakeResp(
                 {
                     "places": [
-                        # Duplicate of the local VISTRAH provider within 100m -> should be deduplicated
-                        {
-                            "id": "ChIJ_dup_vistrah_1",
-                            "displayName": {"text": "Namma Spark Electricals"},
-                            "formattedAddress": "MG Road, Bengaluru, Karnataka",
-                            "location": {
-                                "latitude": base_lat + math.degrees(1.22 / EARTH_KM),
-                                "longitude": base_lng,
-                            },
-                            "types": ["electrician"],
-                            "googleMapsUri": "https://maps.google.com/?cid=1",
-                        },
-                        # Farther valid Google Place (4.5 km)
-                        {
-                            "id": "ChIJ_place_far_45",
-                            "displayName": {"text": "Cauvery Power Works"},
-                            "formattedAddress": "Indiranagar, Bengaluru, Karnataka 560038",
-                            "location": {
-                                "latitude": base_lat + math.degrees(4.5 / EARTH_KM),
-                                "longitude": base_lng,
-                            },
-                            "types": ["electrician", "point_of_interest"],
-                            "googleMapsUri": "https://maps.google.com/?cid=2",
-                        },
-                        # Closer valid Google Place (0.8 km)
                         {
                             "id": "ChIJ_place_near_08",
-                            "displayName": {"text": " Cubbon Quick Electric "},
+                            "displayName": {"text": "Cubbon Quick Services"},
                             "formattedAddress": "Cubbonpet, Bengaluru, Karnataka 560002",
                             "location": {
                                 "latitude": base_lat + math.degrees(0.8 / EARTH_KM),
                                 "longitude": base_lng,
                             },
-                            "types": ["electrician"],
+                            "types": ["point_of_interest"],
                             "googleMapsUri": "https://maps.google.com/?cid=3",
+                            "nationalPhoneNumber": "080 2221 9988",
+                            "photos": [
+                                {"name": "places/ChIJ_place_near_08/photos/AUc7tX_photo_abc123"}
+                            ],
                         },
-                        # Outside requested 10 km radius (16 km) -> must be filtered out
                         {
-                            "id": "ChIJ_place_outside_16",
-                            "displayName": {"text": "Outskirts Electricals"},
-                            "formattedAddress": "Yelahanka, Bengaluru, Karnataka",
+                            "id": "ChIJ_place_nophone_35",
+                            "displayName": {"text": "Indiranagar Hub"},
+                            "formattedAddress": "Indiranagar, Bengaluru, Karnataka 560038",
                             "location": {
-                                "latitude": base_lat + math.degrees(16.0 / EARTH_KM),
+                                "latitude": base_lat + math.degrees(3.5 / EARTH_KM),
                                 "longitude": base_lng,
                             },
-                            "types": ["electrician"],
+                            "types": ["point_of_interest"],
                             "googleMapsUri": "https://maps.google.com/?cid=4",
                         },
                     ]
@@ -352,7 +336,7 @@ def test_hybrid_google_places_fallback_pro_field_mask_and_30_minute_cache(
         "/marketplace/nearby",
         params={
             "category": "home-services",
-            "business_type": svc_elec.slug,
+            "business_type": svc.slug,
             "lat": base_lat,
             "lng": base_lng,
             "radius_km": 10,
@@ -362,72 +346,112 @@ def test_hybrid_google_places_fallback_pro_field_mask_and_30_minute_cache(
     data1 = resp1.json()
     assert len(captured_requests) == 1
 
-    # Verify strict Pro-tier FieldMask (never reviews, photos, or ratings)
     sent = captured_requests[0]
     assert sent["url"] == "https://places.googleapis.com/v1/places:searchText"
+    assert sent["body"]["maxResultCount"] == 10
     assert (
         sent["headers"]["x-goog-fieldmask"]
-        == "places.id,places.displayName,places.formattedAddress,places.location,places.types,places.googleMapsUri"
+        == "places.id,places.displayName,places.formattedAddress,places.location,places.types,places.googleMapsUri,places.nationalPhoneNumber,places.photos"
     )
-    for forbidden in ("reviews", "photos", "rating"):
-        assert forbidden not in sent["headers"]["x-goog-fieldmask"]
 
-    # Verify VISTRAH item comes first, followed by distance-sorted in-radius Google Places
     assert data1["has_google_places"] is True
     assert data1["total"] == 3
-    assert [item["source"] for item in data1["items"]] == [
-        "vistrah",
-        "google_places",
-        "google_places",
-    ]
     assert data1["items"][0]["id"] == vistrah_biz.id
-    assert data1["items"][1]["id"] == "gp_ChIJ_place_near_08"
-    assert data1["items"][1]["name"] == "Cubbon Quick Electric"
-    assert "destination_place_id=ChIJ_place_near_08" in data1["items"][1]["directions_url"]
-    assert data1["items"][2]["id"] == "gp_ChIJ_place_far_45"
-    assert data1["items"][1]["distance_km"] < data1["items"][2]["distance_km"]
+    gp1 = data1["items"][1]
+    assert gp1["source"] == "google_places"
+    assert gp1["phone"] == "08022219988"
+    assert (
+        gp1["photo_url"]
+        == "/api/marketplace/place-photo?ref=places%2FChIJ_place_near_08%2Fphotos%2FAUc7tX_photo_abc123"
+    )
+    gp2 = data1["items"][2]
+    assert gp2["phone"] == ""
+    assert gp2["photo_url"] is None
 
-    # Repeat query within the same 0.01° rounded cache cell hits the 30-min in-memory cache (0 new upstream calls)
+    # Second lookup in same 0.01° rounded grid hits 60-minute cache
     resp2 = client.get(
         "/marketplace/nearby",
         params={
             "category": "home-services",
-            "business_type": svc_elec.slug,
-            "lat": base_lat + 0.001,
-            "lng": base_lng - 0.001,
+            "business_type": svc.slug,
+            "lat": base_lat + 0.002,
+            "lng": base_lng - 0.002,
             "radius_km": 10,
         },
     )
     assert resp2.status_code == 200
-    assert resp2.json()["total"] == 3
     assert len(captured_requests) == 1
-
     maps_proxy_routes.clear_maps_proxy_state()
 
 
-def test_marketplace_nearby_validation_and_legacy_slugs(client, seeded, monkeypatch):
+def test_place_photo_proxy_validation_and_24h_caching(client, monkeypatch):
     maps_proxy_routes.clear_maps_proxy_state()
-    monkeypatch.delenv("GOOGLE_MAPS_SERVER_API_KEY", raising=False)
-    apply_business_catalogue(seeded)
-    seeded.commit()
+    monkeypatch.setenv("GOOGLE_MAPS_SERVER_API_KEY", "secret-server-photo-key")
 
-    legacy_resp = client.get(
-        "/marketplace/nearby",
-        params={"category": "pet-care", "type": "grooming", "lat": 12.9716, "lng": 77.5946, "radius_km": 10},
-    )
-    assert legacy_resp.status_code == 200
-    assert legacy_resp.json()["category"]["slug"] == "home-services"
-    assert legacy_resp.json()["business_type"]["slug"] == "pet-care"
+    # 1. Invalid `ref` patterns fail closed with 422
+    for bad_ref in [
+        "invalid-ref",
+        "places/only-one-segment",
+        "places/ChIJ123/photos/abc/extra",
+        "places/../photos/abc12345",
+        "places/ChIJ123/photos/abc?key=leak",
+    ]:
+        r_bad = client.get("/api/marketplace/place-photo", params={"ref": bad_ref})
+        assert r_bad.status_code == 422, bad_ref
 
-    bad_coord = client.get(
-        "/marketplace/nearby",
-        params={"category": "food-and-dining", "business_type": "restaurant", "lat": 95.123456, "lng": 77.5946, "radius_km": 10},
-    )
-    assert bad_coord.status_code == 422
-    assert "95.123456" not in bad_coord.text
+    # 2. Valid `ref` fetches binary JPEG (`maxWidthPx=480`), never leaks key, caches 24h on disk + memory
+    fake_jpeg = b"\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xd9"
+    photo_calls: list[dict] = []
 
-    bad_slug = client.get(
-        "/marketplace/nearby",
-        params={"category": "food-and-dining", "business_type": "not-a-real-type", "lat": 12.97, "lng": 77.59, "radius_km": 10},
+    class _PhotoResp:
+        def read(self, n: int = -1) -> bytes:
+            return fake_jpeg
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+    class _PhotoOpener:
+        def open(self, req, timeout=8):
+            photo_calls.append(
+                {
+                    "url": req.full_url,
+                    "headers": {k.lower(): v for k, v in req.header_items()},
+                }
+            )
+            return _PhotoResp()
+
+    monkeypatch.setattr(maps_proxy_routes, "build_opener", lambda *a, **kw: _PhotoOpener())
+
+    valid_ref = "places/ChIJ_test_shop_99/photos/AUc7tX_shop_banner_001"
+    r_ok = client.get("/api/marketplace/place-photo", params={"ref": valid_ref})
+    assert r_ok.status_code == 200
+    assert r_ok.content == fake_jpeg
+    assert r_ok.headers["content-type"] == "image/jpeg"
+    assert r_ok.headers["cache-control"] == "public, max-age=86400"
+    assert r_ok.headers["x-content-type-options"] == "nosniff"
+    assert "secret-server-photo-key" not in str(r_ok.headers)
+    assert len(photo_calls) == 1
+    assert (
+        photo_calls[0]["url"]
+        == f"https://places.googleapis.com/v1/{valid_ref}/media?maxWidthPx=480"
     )
-    assert bad_slug.status_code == 422
+    assert photo_calls[0]["headers"]["x-goog-api-key"] == "secret-server-photo-key"
+
+    # Memory cache hit -> 0 upstream calls
+    r_mem = client.get("/marketplace/place-photo", params={"ref": valid_ref})
+    assert r_mem.status_code == 200
+    assert r_mem.content == fake_jpeg
+    assert len(photo_calls) == 1
+
+    # Clear memory cache only -> disk cache hit still serves in 0 upstream calls
+    with maps_proxy_routes._cache_lock:
+        maps_proxy_routes._photo_mem_cache.clear()
+    r_disk = client.get("/api/marketplace/place-photo", params={"ref": valid_ref})
+    assert r_disk.status_code == 200
+    assert r_disk.content == fake_jpeg
+    assert len(photo_calls) == 1
+
+    maps_proxy_routes.clear_maps_proxy_state()

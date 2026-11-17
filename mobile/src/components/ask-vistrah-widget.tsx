@@ -1,20 +1,61 @@
-import { useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { createElement, useId, useRef, useState } from 'react';
+import { Image, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router, usePathname } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { api, ApiError } from '../lib/api';
 import { useTheme } from '../lib/theme';
 import { Text, TextInput } from './typography';
 import {
   ASK_VISTRAH_STARTERS,
   ASK_VISTRAH_WELCOME,
+  GEMINI_BRAND_LABEL,
+  GEMINI_SPARK_PATH,
+  GEMINI_SPARK_VIEWBOX,
   normalizeSuggestedActions,
   sanitizeChatActionHref,
   type AskVistrahHistoryItem,
   type AskVistrahMessage,
   type AskVistrahResponse,
 } from '../../../shared/ask-vistrah';
+
+const GEMINI_SPARK_PNG = require('../../assets/google/gemini-spark.png');
+
+function MobileGeminiLogo({ size = 16 }: { size?: number }) {
+  const gradId = useId();
+  if (Platform.OS === 'web') {
+    return createElement(
+      'svg',
+      {
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: size,
+        height: size,
+        viewBox: GEMINI_SPARK_VIEWBOX,
+        'aria-hidden': 'true',
+        style: { display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 },
+      },
+      createElement(
+        'defs',
+        null,
+        createElement(
+          'linearGradient',
+          { id: gradId, x1: '0%', y1: '0%', x2: '100%', y2: '100%' },
+          createElement('stop', { offset: '0%', stopColor: '#4285F4' }),
+          createElement('stop', { offset: '50%', stopColor: '#9B72CB' }),
+          createElement('stop', { offset: '100%', stopColor: '#D96570' }),
+        ),
+      ),
+      createElement('path', { d: GEMINI_SPARK_PATH, fill: `url(#${gradId})` }),
+    );
+  }
+  return (
+    <Image
+      source={GEMINI_SPARK_PNG}
+      accessibilityLabel="Google Gemini"
+      resizeMode="contain"
+      style={{ width: size, height: size }}
+    />
+  );
+}
 
 function navigateChatHref(rawHref: string, onDone: () => void) {
   const safe = sanitizeChatActionHref(rawHref);
@@ -131,11 +172,14 @@ export function MobileAskVistrahWidget() {
           <View style={s.header}>
             <View style={s.headerLeft}>
               <View style={s.sparkleBadge}>
-                <Ionicons name="sparkles" size={14} color="#d4af37" />
+                <MobileGeminiLogo size={16} />
               </View>
-              <View>
+              <View style={{ gap: 2 }}>
                 <Text style={s.headerTitle}>Ask VISTRAH</Text>
-                <Text style={s.headerSubtitle}>AI Guide · Vistrah India</Text>
+                <View style={s.poweredRow}>
+                  <MobileGeminiLogo size={10} />
+                  <Text style={s.headerSubtitle}>{GEMINI_BRAND_LABEL}</Text>
+                </View>
               </View>
             </View>
             <Pressable
@@ -316,12 +360,18 @@ export function MobileAskVistrahWidget() {
 
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={open ? 'Close Ask VISTRAH' : 'Ask VISTRAH'}
+        accessibilityLabel={open ? 'Close Ask VISTRAH' : 'Ask VISTRAH — Powered by Google Gemini'}
         onPress={() => setOpen(v => !v)}
         style={({ pressed }) => [s.launcher, { opacity: pressed ? 0.9 : 1 }]}
       >
-        <Ionicons name="sparkles" size={15} color="#d4af37" />
-        <Text style={s.launcherText}>Ask VISTRAH</Text>
+        <MobileGeminiLogo size={19} />
+        <View style={s.launcherTextCol}>
+          <Text style={s.launcherTitle}>Ask VISTRAH</Text>
+          <View style={s.poweredRow}>
+            <MobileGeminiLogo size={9.5} />
+            <Text style={s.poweredText}>{GEMINI_BRAND_LABEL}</Text>
+          </View>
+        </View>
       </Pressable>
     </View>
   );
@@ -339,10 +389,10 @@ const s = StyleSheet.create({
   launcher: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    minHeight: 44,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    gap: 9,
+    minHeight: 48,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
     borderRadius: 999,
     backgroundColor: '#0f172a',
     borderWidth: 1.5,
@@ -353,10 +403,26 @@ const s = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 12,
   },
-  launcherText: {
+  launcherTextCol: {
+    alignItems: 'flex-start',
+    gap: 1.5,
+  },
+  launcherTitle: {
     color: '#f8fafc',
     fontSize: 13,
     fontWeight: '700',
+    lineHeight: 16,
+  },
+  poweredRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  poweredText: {
+    color: '#cbd5e1',
+    fontSize: 9.5,
+    fontWeight: '500',
+    lineHeight: 12,
   },
   panel: {
     width: 340,
@@ -387,12 +453,12 @@ const s = StyleSheet.create({
     gap: 9,
   },
   sparkleBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: 'rgba(212,175,55,0.16)',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(66,133,244,0.14)',
     borderWidth: 1,
-    borderColor: 'rgba(212,175,55,0.55)',
+    borderColor: 'rgba(155,114,203,0.45)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -403,7 +469,8 @@ const s = StyleSheet.create({
   },
   headerSubtitle: {
     color: '#cbd5e1',
-    fontSize: 11,
+    fontSize: 10.5,
+    fontWeight: '500',
   },
   closeBtn: {
     width: 30,

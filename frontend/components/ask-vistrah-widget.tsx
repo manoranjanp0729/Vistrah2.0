@@ -1,11 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Send, Sparkles, X } from 'lucide-react';
+import { useEffect, useId, useRef, useState } from 'react';
+import { ArrowUpRight, Send, X } from 'lucide-react';
 import {
   ASK_VISTRAH_STARTERS,
   ASK_VISTRAH_WELCOME,
+  GEMINI_BRAND_LABEL,
+  GEMINI_SPARK_PATH,
+  GEMINI_SPARK_VIEWBOX,
   normalizeSuggestedActions,
   type AskVistrahHistoryItem,
   type AskVistrahMessage,
@@ -13,6 +16,29 @@ import {
 import s from './ask-vistrah-widget.module.css';
 
 const SESSION_KEY = 'vistrah.ask_chat.v1';
+
+function GeminiLogo({ size = 16 }: { size?: number }) {
+  const gradId = useId();
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox={GEMINI_SPARK_VIEWBOX}
+      aria-hidden="true"
+      style={{ flexShrink: 0, display: 'inline-block' }}
+    >
+      <defs>
+        <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#4285F4" />
+          <stop offset="50%" stopColor="#9B72CB" />
+          <stop offset="100%" stopColor="#D96570" />
+        </linearGradient>
+      </defs>
+      <path d={GEMINI_SPARK_PATH} fill={`url(#${gradId})`} />
+    </svg>
+  );
+}
 
 export function AskVistrahWidget() {
   const [open, setOpen] = useState(false);
@@ -143,11 +169,14 @@ export function AskVistrahWidget() {
           <header className={s.header}>
             <div className={s.headerBrand}>
               <span className={s.headerBadge} aria-hidden="true">
-                <Sparkles size={15} />
+                <GeminiLogo size={17} />
               </span>
               <div>
                 <h2 className={s.headerTitle}>Ask VISTRAH</h2>
-                <p className={s.headerSubtitle}>AI Guide · Vistrah India</p>
+                <p className={s.headerSubtitle}>
+                  <GeminiLogo size={11} />
+                  <span>{GEMINI_BRAND_LABEL}</span>
+                </p>
               </div>
             </div>
             <button
@@ -247,11 +276,17 @@ export function AskVistrahWidget() {
         type="button"
         className={s.launcher}
         aria-expanded={open}
-        aria-label={open ? 'Close Ask VISTRAH chat' : 'Open Ask VISTRAH chat'}
+        aria-label={open ? 'Close Ask VISTRAH chat' : 'Open Ask VISTRAH — Powered by Google Gemini'}
         onClick={() => setOpen(v => !v)}
       >
-        <Sparkles size={16} className={s.launcherSparkle} aria-hidden="true" />
-        <span>Ask VISTRAH</span>
+        <GeminiLogo size={20} />
+        <span className={s.launcherTextCol}>
+          <span className={s.launcherTitle}>Ask VISTRAH</span>
+          <span className={s.launcherPowered}>
+            <GeminiLogo size={10} />
+            <span>{GEMINI_BRAND_LABEL}</span>
+          </span>
+        </span>
       </button>
     </div>
   );

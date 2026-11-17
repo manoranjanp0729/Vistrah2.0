@@ -32,6 +32,11 @@ export const ASK_VISTRAH_STARTERS: readonly string[] = [
   'Find nearby services',
 ] as const;
 
+export const GEMINI_SPARK_VIEWBOX = '0 0 24 24';
+export const GEMINI_SPARK_PATH =
+  'M12 1C12 7.075 16.925 12 23 12C16.925 12 12 16.925 12 23C12 16.925 7.075 12 1 12C7.075 12 12 7.075 12 1Z';
+export const GEMINI_BRAND_LABEL = 'Powered by Google Gemini';
+
 export const ASK_VISTRAH_WELCOME: AskVistrahMessage = {
   id: 'welcome',
   role: 'assistant',

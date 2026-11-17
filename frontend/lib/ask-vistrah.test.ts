@@ -14,9 +14,11 @@ vi.mock('next/link', () => ({
 }));
 
 describe('Ask VISTRAH floating widget & action sanitizer', () => {
-  it('renders the floating Ask VISTRAH launcher cleanly', () => {
+  it('renders the floating Ask VISTRAH launcher cleanly with Powered by Google Gemini and Gemini logo', () => {
     const html = renderToStaticMarkup(createElement(AskVistrahWidget));
     expect(html).toContain('Ask VISTRAH');
+    expect(html).toContain('Powered by Google Gemini');
+    expect(html).toContain('#4285F4');
     expect(html).toContain('data-ask-vistrah="true"');
     expect(ASK_VISTRAH_STARTERS).toHaveLength(3);
   });

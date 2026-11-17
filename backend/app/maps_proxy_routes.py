@@ -54,7 +54,7 @@ AUTOCOMPLETE_FIELD_MASK = (
 PLACES_TEXT_SEARCH_FIELD_MASK = (
     "places.id,places.displayName,places.formattedAddress,"
     "places.location,places.types,places.googleMapsUri,"
-    "places.nationalPhoneNumber,places.photos"
+    "places.nationalPhoneNumber,places.photos,places.websiteUri"
 )
 
 MAX_CACHE_ENTRIES = 2048
@@ -459,6 +459,34 @@ def _normalize_phone_for_tel(raw_phone: Any) -> str:
     return f"+{digits}" if has_plus else digits
 
 
+def normalize_website_url(raw_url: Any) -> str | None:
+    if not raw_url or not isinstance(raw_url, str):
+        return None
+    trimmed = raw_url.strip()
+    if not trimmed or len(trimmed) > 500 or any(ord(ch) <= 32 for ch in trimmed):
+        return None
+    if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", trimmed):
+        if not trimmed.lower().startswith(("https://", "http://")):
+            return None
+        candidate = trimmed
+    else:
+        if trimmed.startswith("/"):
+            return None
+        candidate = f"https://{trimmed}"
+
+    parsed = urlparse(candidate)
+    if parsed.scheme.lower() not in ("http", "https"):
+        return None
+    if parsed.username or parsed.password:
+        return None
+    host = (parsed.hostname or "").strip().lower()
+    if not host or "." not in host or host == "localhost" or host.endswith(".local"):
+        return None
+    if not re.fullmatch(r"[a-z0-9.-]+", host) or ".." in host:
+        return None
+    return candidate
+
+
 def _detect_image_media_type(content: bytes) -> str | None:
     if len(content) < 12 or len(content) > 2 * 1024 * 1024:
         return None
@@ -544,6 +572,7 @@ def fetch_google_places_text_search(
         gmaps_uri_raw = str(entry.get("googleMapsUri") or "").strip()
         gmaps_uri = gmaps_uri_raw if gmaps_uri_raw.startswith("https://") else ""
         phone = _normalize_phone_for_tel(entry.get("nationalPhoneNumber"))
+        website_url = normalize_website_url(entry.get("websiteUri"))
 
         photo_url: str | None = None
         raw_photos = entry.get("photos")
@@ -569,6 +598,7 @@ def fetch_google_places_text_search(
                 "longitude": p_lon,
                 "phone": phone,
                 "photo_url": photo_url,
+                "website_url": website_url,
                 "types": types,
                 "google_maps_uri": gmaps_uri,
                 "directions_url": directions_url,

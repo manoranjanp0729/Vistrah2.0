@@ -367,6 +367,7 @@
 .actionRow {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   padding-top: 4px;
 }
@@ -385,7 +386,103 @@
   border: 1px solid var(--border-subtle, rgba(148, 163, 184, 0.28));
   color: var(--text-primary, #f8fafc);
   background: transparent;
+  cursor: pointer;
   transition: background 140ms ease, border-color 140ms ease;
+}
+
+.moreWrap {
+  position: relative;
+  margin-left: auto;
+}
+
+.moreBtn {
+  padding: 8px 11px;
+}
+
+.morePopover {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 40;
+  min-width: 230px;
+  max-width: 280px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  background: #0f172a;
+  color: #f8fafc;
+  box-shadow: 0 14px 32px rgba(2, 6, 23, 0.45);
+  display: grid;
+  gap: 6px;
+  cursor: default;
+}
+
+:global(:root[data-theme='light']) .morePopover {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: rgba(15, 23, 42, 0.16);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.16);
+}
+
+.morePopoverHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 4px 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.morePopoverTitle {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.moreCloseBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.moreCloseBtn:hover {
+  opacity: 1;
+}
+
+.moreMenuItem {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(148, 163, 184, 0.1);
+  color: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.moreMenuItem:hover:not(:disabled) {
+  background: rgba(212, 175, 55, 0.18);
+}
+
+.morePlaceholderNote {
+  margin: 0;
+  padding: 4px 6px 2px;
+  font-size: 0.74rem;
+  color: var(--text-secondary, #94a3b8);
+  line-height: 1.35;
 }
 
 :global(:root[data-theme='light']) .actionBtn {

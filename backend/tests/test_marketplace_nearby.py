@@ -26,6 +26,7 @@ def _make_approved_business(
     phone: str = "+919876543210",
     whatsapp: str = "",
     photo_url: str = "",
+    website: str = "",
     timings: str = "9:00 AM - 8:00 PM",
     description: str = "Verified hyperlocal service",
     active: bool = True,
@@ -52,6 +53,8 @@ def _make_approved_business(
         common["timings"] = timings
     if photo_url:
         common["photo_url"] = photo_url
+    if website:
+        common["website"] = website
 
     app = ProviderApplication(
         id=app_id,
@@ -154,6 +157,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
         phone="+919845033333",
         whatsapp="",
         photo_url="/images/marketplace/food.jpg",
+        website="www.malnadspice.in",
     )
     _make_approved_business(
         db,
@@ -195,6 +199,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     assert first["phone"] == "+919845011111"
     assert first["whatsapp"] == "+919845022222"
     assert first["photo_url"] is None  # KYC registration_document remained strictly private!
+    assert first["website_url"] is None
     assert client.get(f"/api/marketplace/provider-photo/{kyc_doc_id}").status_code == 404
 
     r25 = client.post(
@@ -211,6 +216,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     body25 = r25.json()
     assert [row["id"] for row in body25["items"]] == [near_biz.id, mid_biz.id]
     assert body25["items"][1]["photo_url"] == "/images/marketplace/food.jpg"
+    assert body25["items"][1]["website_url"] == "https://www.malnadspice.in"
 
     for idx in range(3):
         _make_approved_business(
@@ -311,6 +317,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
                             "types": ["point_of_interest"],
                             "googleMapsUri": "https://maps.google.com/?cid=3",
                             "nationalPhoneNumber": "080 2221 9988",
+                            "websiteUri": "https://cubbonservices.in",
                             "photos": [
                                 {"name": "places/ChIJ_place_near_08/photos/AUc7tX_photo_abc123"}
                             ],
@@ -351,7 +358,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     assert sent["body"]["maxResultCount"] == 10
     assert (
         sent["headers"]["x-goog-fieldmask"]
-        == "places.id,places.displayName,places.formattedAddress,places.location,places.types,places.googleMapsUri,places.nationalPhoneNumber,places.photos"
+        == "places.id,places.displayName,places.formattedAddress,places.location,places.types,places.googleMapsUri,places.nationalPhoneNumber,places.photos,places.websiteUri"
     )
 
     assert data1["has_google_places"] is True
@@ -360,6 +367,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     gp1 = data1["items"][1]
     assert gp1["source"] == "google_places"
     assert gp1["phone"] == "08022219988"
+    assert gp1["website_url"] == "https://cubbonservices.in"
     assert (
         gp1["photo_url"]
         == "/api/marketplace/place-photo?ref=places%2FChIJ_place_near_08%2Fphotos%2FAUc7tX_photo_abc123"
@@ -367,6 +375,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     gp2 = data1["items"][2]
     assert gp2["phone"] == ""
     assert gp2["photo_url"] is None
+    assert gp2["website_url"] is None
 
     # Second lookup in same 0.01° rounded grid hits 60-minute cache
     resp2 = client.get(

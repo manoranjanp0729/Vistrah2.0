@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -16,8 +16,10 @@ import {
   normalizeNearbyRadius,
   phoneCallHref,
   resolveListingPhotoUri,
+  websiteExternalHref,
   whatsappChatHref,
   type DivisionFallbackTheme,
+  type ListingMoreOptionItem,
   type NearbyBusinessItem,
   type NearbyDiscoveryRadius,
   type NearbyServicesResponse,
@@ -121,7 +123,23 @@ export function MobileNearbyServiceDiscovery({
     normalizeNearbyRadius(locCtx?.selectedLocation?.radiusKm ?? 10),
   );
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
+  const [activeMoreItem, setActiveMoreItem] = useState<NearbyBusinessItem | null>(null);
   const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
+
+  function getMobileMoreOptions(
+    item: NearbyBusinessItem,
+  ): Array<ListingMoreOptionItem & { onSelect: () => void }> {
+    return [
+      {
+        id: 'focus-pin',
+        label: 'Highlight pin on map',
+        onSelect: () => {
+          setSelectedId(item.id);
+          setActiveMoreItem(null);
+        },
+      },
+    ];
+  }
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
@@ -405,6 +423,7 @@ export function MobileNearbyServiceDiscovery({
               item.longitude,
               item.directions_url,
             );
+        const websiteUrl = websiteExternalHref(item.website_url);
         const photoUri = !failedPhotos[itemKey]
           ? resolveListingPhotoUri(item.photo_url, safeApiBase)
           : null;
@@ -594,10 +613,132 @@ export function MobileNearbyServiceDiscovery({
                   Directions
                 </Text>
               </Pressable>
+
+              {Boolean(websiteUrl) && (
+                <Pressable
+                  accessibilityRole="link"
+                  accessibilityLabel={`Website for ${item.company || item.name}`}
+                  onPress={() => void Linking.openURL(websiteUrl!)}
+                  style={({ pressed }) => [
+                    s.actionBtn,
+                    {
+                      backgroundColor: isDark ? '#251c38' : '#f8fafc',
+                      borderWidth: 1,
+                      borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                      opacity: pressed ? 0.85 : 1,
+                    },
+                  ]}
+                >
+                  <Feather name="globe" size={13} color={colors.text} />
+                  <Text style={{ color: colors.text, fontSize: 12.5, fontWeight: '600' }}>
+                    Website
+                  </Text>
+                </Pressable>
+              )}
+
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`More options for ${item.company || item.name}`}
+                onPress={() => setActiveMoreItem(item)}
+                style={({ pressed }) => [
+                  s.actionBtn,
+                  {
+                    marginLeft: 'auto',
+                    backgroundColor: isDark ? '#251c38' : '#f8fafc',
+                    borderWidth: 1,
+                    borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                    opacity: pressed ? 0.85 : 1,
+                  },
+                ]}
+              >
+                <Feather name="more-horizontal" size={14} color={colors.text} />
+                <Text style={{ color: colors.text, fontSize: 12.5, fontWeight: '600' }}>More</Text>
+              </Pressable>
             </View>
           </Pressable>
         );
       })}
+
+      {/* Extensible More Options Action Sheet */}
+      <Modal
+        transparent
+        visible={Boolean(activeMoreItem)}
+        animationType="fade"
+        onRequestClose={() => setActiveMoreItem(null)}
+      >
+        <Pressable style={s.sheetBackdrop} onPress={() => setActiveMoreItem(null)}>
+          <Pressable
+            style={[
+              s.sheetCard,
+              {
+                backgroundColor: isDark ? '#181426' : '#ffffff',
+                borderColor: isDark ? 'rgba(212,175,55,0.4)' : '#e2e8f0',
+              },
+            ]}
+            onPress={() => {}}
+          >
+            {activeMoreItem && (
+              <>
+                <View style={s.sheetHeader}>
+                  <Text
+                    numberOfLines={1}
+                    style={{ fontSize: 15, fontWeight: '700', color: colors.text, flex: 1 }}
+                  >
+                    {activeMoreItem.company || activeMoreItem.name}
+                  </Text>
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityLabel="Close more options"
+                    onPress={() => setActiveMoreItem(null)}
+                    hitSlop={8}
+                  >
+                    <Feather name="x" size={18} color={colors.muted} />
+                  </Pressable>
+                </View>
+
+                {getMobileMoreOptions(activeMoreItem).map(opt => (
+                  <Pressable
+                    key={opt.id}
+                    accessibilityRole="button"
+                    disabled={opt.disabled}
+                    onPress={opt.onSelect}
+                    style={({ pressed }) => [
+                      s.sheetActionRow,
+                      {
+                        backgroundColor: isDark ? '#251c38' : '#f8fafc',
+                        borderColor: isDark ? '#3d2f5a' : '#e2e8f0',
+                        opacity: pressed ? 0.85 : 1,
+                      },
+                    ]}
+                  >
+                    <Text style={{ fontSize: 13.5, fontWeight: '600', color: colors.text }}>
+                      {opt.label}
+                    </Text>
+                  </Pressable>
+                ))}
+
+                <Text style={{ fontSize: 12, color: colors.muted, paddingHorizontal: 2 }}>
+                  More quick actions coming soon.
+                </Text>
+
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={() => setActiveMoreItem(null)}
+                  style={({ pressed }) => [
+                    s.sheetCancelBtn,
+                    {
+                      borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                      opacity: pressed ? 0.85 : 1,
+                    },
+                  ]}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>Close</Text>
+                </Pressable>
+              </>
+            )}
+          </Pressable>
+        </Pressable>
+      </Modal>
 
       {/* Official Google Attribution Footer whenever Google Places results are displayed */}
       {hasGooglePlaces && (
@@ -822,6 +963,42 @@ const s = StyleSheet.create({
     minHeight: 34,
     borderRadius: 9,
     backgroundColor: '#d4af37',
+  },
+  sheetBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(2,6,23,0.55)',
+    justifyContent: 'flex-end',
+    padding: 16,
+  },
+  sheetCard: {
+    width: '100%',
+    maxWidth: 460,
+    alignSelf: 'center',
+    borderRadius: 18,
+    borderWidth: 1,
+    padding: 16,
+    gap: 10,
+  },
+  sheetHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+    paddingBottom: 4,
+  },
+  sheetActionRow: {
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  sheetCancelBtn: {
+    minHeight: 40,
+    borderRadius: 10,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
   },
   primaryOnboardText: {
     fontSize: 12,

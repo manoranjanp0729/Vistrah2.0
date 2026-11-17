@@ -15,6 +15,7 @@ import {
   normalizeNearbyRadius,
   phoneCallHref,
   resolveListingPhotoUri,
+  websiteExternalHref,
   whatsappChatHref,
 } from '../../shared/nearby-services';
 
@@ -38,6 +39,15 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     expect(phoneCallHref('080 2221 9988')).toBe('tel:08022219988');
     expect(phoneCallHref('')).toBeNull();
     expect(phoneCallHref('invalid')).toBeNull();
+
+    expect(websiteExternalHref('www.malnadclinic.in')).toBe('https://www.malnadclinic.in/');
+    expect(websiteExternalHref('https://cubbonservices.in/book')).toBe(
+      'https://cubbonservices.in/book',
+    );
+    expect(websiteExternalHref(null)).toBeNull();
+    expect(websiteExternalHref('')).toBeNull();
+    expect(websiteExternalHref('javascript:alert(1)')).toBeNull();
+    expect(websiteExternalHref('http://localhost:3000')).toBeNull();
 
     expect(
       resolveListingPhotoUri('/api/marketplace/place-photo?ref=places%2FChIJ%2Fphotos%2F1'),

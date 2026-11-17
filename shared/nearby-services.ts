@@ -32,9 +32,17 @@ export type NearbyBusinessItem = {
   whatsapp: string;
   timings: string;
   photo_url: string | null;
+  website_url?: string | null;
   directions_url: string;
   google_maps_uri?: string;
   types?: string[];
+};
+
+export type ListingMoreOptionItem = {
+  id: string;
+  label: string;
+  subtitle?: string;
+  disabled?: boolean;
 };
 
 export type NearbyServicesResponse = {
@@ -349,6 +357,31 @@ export function phoneCallHref(rawPhone: string | null | undefined): string | nul
   const digits = trimmed.replace(/\D/g, '');
   if (digits.length < 7 || digits.length > 15) return null;
   return `tel:${hasPlus ? '+' : ''}${digits}`;
+}
+
+export function websiteExternalHref(rawUrl: string | null | undefined): string | null {
+  if (!rawUrl || typeof rawUrl !== 'string') return null;
+  const trimmed = rawUrl.trim();
+  if (!trimmed || trimmed.length > 500 || /\s/.test(trimmed)) return null;
+  let candidate = trimmed;
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(trimmed)) {
+    if (!/^https?:\/\//i.test(trimmed)) return null;
+  } else {
+    if (trimmed.startsWith('/')) return null;
+    candidate = `https://${trimmed}`;
+  }
+  try {
+    const parsed = new URL(candidate);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+    if (parsed.username || parsed.password) return null;
+    const host = parsed.hostname.toLowerCase();
+    if (!host || !host.includes('.') || host === 'localhost' || host.endsWith('.local')) {
+      return null;
+    }
+    return parsed.toString();
+  } catch {
+    return null;
+  }
 }
 
 export function whatsappChatHref(

@@ -24,6 +24,7 @@ from .http_security import apply_security_headers
 from .location_routes import EARTH_KM, EDGE_KM, distance_expression
 from .maps_proxy_routes import (
     get_cached_place_photo,
+    normalize_website_url,
     search_google_places_nearby_cached,
     validate_place_photo_ref,
 )
@@ -336,6 +337,9 @@ def _run_marketplace_nearby(
             _safe_public_photo_url(common.get("photo_url") or common.get("shop_photo_url"))
             or (public_doc_by_app_id.get(linked_app.id) if linked_app else None)
         )
+        website_url = normalize_website_url(
+            common.get("website_url") or common.get("website") or provider.source_url
+        )
         p_lat = float(provider.latitude)
         p_lng = float(provider.longitude)
 
@@ -362,6 +366,7 @@ def _run_marketplace_nearby(
                 "whatsapp": whatsapp_clean,
                 "timings": timings_clean,
                 "photo_url": photo_url,
+                "website_url": website_url,
                 "directions_url": f"https://www.google.com/maps/dir/?api=1&destination={p_lat},{p_lng}",
             }
         )
@@ -407,6 +412,7 @@ def _run_marketplace_nearby(
             place_id = str(gp["place_id"])
             gp_phone = str(gp.get("phone") or "").strip()
             gp_photo_url = gp.get("photo_url") if isinstance(gp.get("photo_url"), str) else None
+            gp_website_url = normalize_website_url(gp.get("website_url"))
             google_items.append(
                 {
                     "source": "google_places",
@@ -436,6 +442,7 @@ def _run_marketplace_nearby(
                     "whatsapp": "",
                     "timings": "",
                     "photo_url": gp_photo_url,
+                    "website_url": gp_website_url,
                     "directions_url": gp["directions_url"],
                     "google_maps_uri": gp.get("google_maps_uri") or "",
                     "types": gp.get("types") or [],

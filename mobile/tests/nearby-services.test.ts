@@ -8,6 +8,7 @@ import {
   getDivisionFallbackTheme,
   phoneCallHref,
   resolveListingPhotoUri,
+  websiteExternalHref,
   whatsappChatHref,
 } from '../../shared/nearby-services.ts';
 
@@ -15,6 +16,10 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
   assert.deepEqual(NEARBY_DISCOVERY_RADII, [5, 10, 25, 50]);
   assert.equal(phoneCallHref('98450 12345'), 'tel:9845012345');
   assert.equal(phoneCallHref(''), null);
+  assert.equal(websiteExternalHref('malnadspice.in'), 'https://malnadspice.in/');
+  assert.equal(websiteExternalHref('https://vistrah.in'), 'https://vistrah.in/');
+  assert.equal(websiteExternalHref(null), null);
+  assert.equal(websiteExternalHref('javascript:void(0)'), null);
   assert.equal(
     resolveListingPhotoUri('/api/marketplace/place-photo?ref=places%2F1%2Fphotos%2F2', 'https://api.vistrah.in'),
     'https://api.vistrah.in/marketplace/place-photo?ref=places%2F1%2Fphotos%2F2',

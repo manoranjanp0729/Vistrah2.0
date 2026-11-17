@@ -11,11 +11,13 @@ import {
   Clock,
   Compass,
   Cpu,
+  Globe,
   HardHat,
   HeartPulse,
   LocateFixed,
   MapPin,
   MessageCircle,
+  MoreHorizontal,
   Navigation,
   Phone,
   Plus,
@@ -24,6 +26,7 @@ import {
   Sprout,
   Utensils,
   Wrench,
+  X,
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { LatestSearch, validPoint } from '@/lib/location';
@@ -36,8 +39,10 @@ import {
   normalizeNearbyRadius,
   phoneCallHref,
   resolveListingPhotoUri,
+  websiteExternalHref,
   whatsappChatHref,
   type DivisionFallbackTheme,
+  type ListingMoreOptionItem,
   type NearbyBusinessItem,
   type NearbyDiscoveryRadius,
   type NearbyServicesResponse,
@@ -125,7 +130,43 @@ export function NearbyServiceDiscovery({
   );
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'split'>('split');
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
+  const [openMoreKey, setOpenMoreKey] = useState<string | null>(null);
   const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
+  const moreContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!openMoreKey) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpenMoreKey(null);
+    }
+    function onPointerDown(e: PointerEvent) {
+      if (moreContainerRef.current && !moreContainerRef.current.contains(e.target as Node)) {
+        setOpenMoreKey(null);
+      }
+    }
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [openMoreKey]);
+
+  function getMoreOptionsForListing(
+    item: NearbyBusinessItem,
+  ): Array<ListingMoreOptionItem & { onSelect: () => void }> {
+    return [
+      {
+        id: 'focus-pin',
+        label: 'Highlight pin on map',
+        onSelect: () => {
+          if (viewMode === 'list') setViewMode('split');
+          selectListing(item.id, false);
+          setOpenMoreKey(null);
+        },
+      },
+    ];
+  }
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
@@ -368,6 +409,9 @@ export function NearbyServiceDiscovery({
                     item.longitude,
                     item.directions_url,
                   );
+                  const websiteUrl = websiteExternalHref(item.website_url);
+                  const isMoreOpen = openMoreKey === itemKey;
+                  const moreOptions = isMoreOpen ? getMoreOptionsForListing(item) : [];
                   const photoSrc = !failedPhotos[itemKey]
                     ? resolveListingPhotoUri(item.photo_url)
                     : null;
@@ -487,6 +531,71 @@ export function NearbyServiceDiscovery({
                           <Navigation size={14} aria-hidden="true" />
                           <UiText value="Directions" />
                         </a>
+                        {websiteUrl && (
+                          <a
+                            href={websiteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={s.actionBtn}
+                          >
+                            <Globe size={14} aria-hidden="true" />
+                            <UiText value="Website" />
+                          </a>
+                        )}
+                        <div
+                          className={s.moreWrap}
+                          ref={isMoreOpen ? moreContainerRef : undefined}
+                        >
+                          <button
+                            type="button"
+                            className={`${s.actionBtn} ${s.moreBtn}`}
+                            aria-haspopup="menu"
+                            aria-expanded={isMoreOpen}
+                            aria-label={`More options for ${item.company || item.name}`}
+                            onClick={() =>
+                              setOpenMoreKey(prev => (prev === itemKey ? null : itemKey))
+                            }
+                          >
+                            <MoreHorizontal size={15} aria-hidden="true" />
+                            <UiText value="More" />
+                          </button>
+                          {isMoreOpen && (
+                            <div
+                              className={s.morePopover}
+                              role="menu"
+                              aria-label={`More options for ${item.company || item.name}`}
+                            >
+                              <div className={s.morePopoverHeader}>
+                                <span className={s.morePopoverTitle}>
+                                  {item.company || item.name}
+                                </span>
+                                <button
+                                  type="button"
+                                  className={s.moreCloseBtn}
+                                  aria-label="Close options menu"
+                                  onClick={() => setOpenMoreKey(null)}
+                                >
+                                  <X size={13} aria-hidden="true" />
+                                </button>
+                              </div>
+                              {moreOptions.map(opt => (
+                                <button
+                                  key={opt.id}
+                                  type="button"
+                                  role="menuitem"
+                                  disabled={opt.disabled}
+                                  className={s.moreMenuItem}
+                                  onClick={opt.onSelect}
+                                >
+                                  <UiText value={opt.label} />
+                                </button>
+                              ))}
+                              <p className={s.morePlaceholderNote}>
+                                <UiText value="More quick actions coming soon." />
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </article>
                   );

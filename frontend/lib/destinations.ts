@@ -14,7 +14,7 @@ export function safeDestination(value:unknown,fallback='/account',depth=0):strin
     const admin=/^\/admin(?:\/(?:requests|providers|provider-services|catalogue|offers|payments|audit|workflows|job-sources|provider-applications|provider-requirements|ownership-claims|publication-drafts))?$/.test(path);
     const seller=path==='/seller'||path==='/seller/v-ads'||path==='/seller/add-service'||path==='/seller/onboard'||path==='/seller/new'||/^\/seller\/(?:business|commerce)\/[1-9]\d*$/.test(path);
     const commerce=/^\/commerce(?:\/(?:cart|orders|[0-9a-f-]{36}))?$/.test(path);
-    if(!service&&!account&&!admin&&!seller&&!commerce&&!['/','/services','/services/nearby','/membership','/sandbox-checkout','/provide-service','/provider','/provider/onboarding','/jobs','/call-vistrah'].includes(path)&&!/^\/jobs\/[0-9a-f-]{36}$/.test(path))return fallback;
+    if(!service&&!account&&!admin&&!seller&&!commerce&&!['/','/services','/services/nearby','/membership','/sandbox-checkout','/provide-service','/provider','/provider/onboarding','/jobs','/call-vistrah','/contact'].includes(path)&&!/^\/jobs\/[0-9a-f-]{36}$/.test(path))return fallback;
     const keys=[...url.searchParams.keys()];
     if(new Set(keys).size!==keys.length)return fallback;
     if(path==='/services'&&((url.searchParams.has('type')&&(!url.searchParams.has('category')||!url.searchParams.has('subcategory')))||(url.searchParams.has('subcategory')&&!url.searchParams.has('category'))))return fallback;
@@ -25,7 +25,9 @@ export function safeDestination(value:unknown,fallback='/account',depth=0):strin
       if((path==='/services'||path==='/services/nearby')&&['category','subcategory','type'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))continue;
       if(/^\/seller\/commerce\/[1-9]\d*$/.test(path)&&key==='focus'&&/^[0-9a-f-]{36}$/.test(v))continue;
       if(path==='/seller/add-service'&&['category','subcategory','type'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))continue;
-      if((path==='/seller/onboard'||path==='/seller/new'||path==='/provider'||path==='/provider/onboarding')&&((['category','type','subcategory'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))||(key==='business'&&/^[1-9]\d*$/.test(v))))continue;
+      if((path==='/seller/onboard'||path==='/seller/new'||path==='/provider'||path==='/provider/onboarding')&&((['category','type','subcategory'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))||(key==='business'&&v.length<=150)||(key==='locality'&&v.length<=120)||(key==='next'&&v==='v-ads')))continue;
+      if(path==='/seller/v-ads'&&['business','category','subcategory','type','locality','from','tab'].includes(key)&&v.length<=150)continue;
+      if((path==='/contact'||path==='/call-vistrah')&&['intent','business','category','subcategory','type','locality'].includes(key)&&v.length<=150)continue;
       if(service&&key==='intent'&&['enquiry','contact','recommendations','in-house'].includes(v))continue;
       if(service&&key==='tab'&&new RegExp(`^/service/${slug}/(?:${slug}/)?service/${slug}$`).test(path)&&['providers','recommendations','in-house'].includes(v))continue;
       if(['/membership','/sandbox-checkout'].includes(path)&&key==='next'&&safeDestination(v,'',depth+1)&&!/^\/(membership|sandbox-checkout)(?:\?|$)/.test(v))continue;

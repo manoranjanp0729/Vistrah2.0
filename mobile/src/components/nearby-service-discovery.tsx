@@ -9,6 +9,7 @@ import { useOptionalLocation } from '../lib/location';
 import { useTheme } from '../lib/theme';
 import {
   NEARBY_DISCOVERY_RADII,
+  buildListingMoreOptions,
   buildNearbyMarketplacePath,
   formatDistanceAway,
   getDivisionFallbackTheme,
@@ -126,19 +127,22 @@ export function MobileNearbyServiceDiscovery({
   const [activeMoreItem, setActiveMoreItem] = useState<NearbyBusinessItem | null>(null);
   const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
 
-  function getMobileMoreOptions(
-    item: NearbyBusinessItem,
-  ): Array<ListingMoreOptionItem & { onSelect: () => void }> {
-    return [
-      {
-        id: 'focus-pin',
-        label: 'Highlight pin on map',
-        onSelect: () => {
-          setSelectedId(item.id);
-          setActiveMoreItem(null);
-        },
-      },
-    ];
+  function getMobileMoreOptions(item: NearbyBusinessItem): ListingMoreOptionItem[] {
+    return buildListingMoreOptions({
+      businessName: item.company || item.name,
+      categorySlug: item.category_slug || categorySlug,
+      subcategorySlug,
+      typeSlug: item.business_type || typeSlug,
+      locality: item.location || activePoint.locality,
+    });
+  }
+
+  function openMobileMoreOption(opt: ListingMoreOptionItem) {
+    setActiveMoreItem(null);
+    router.push({
+      pathname: opt.pathname,
+      params: opt.params,
+    });
   }
   const [state, setState] = useState<{
     key: string;
@@ -700,8 +704,7 @@ export function MobileNearbyServiceDiscovery({
                   <Pressable
                     key={opt.id}
                     accessibilityRole="button"
-                    disabled={opt.disabled}
-                    onPress={opt.onSelect}
+                    onPress={() => openMobileMoreOption(opt)}
                     style={({ pressed }) => [
                       s.sheetActionRow,
                       {
@@ -714,12 +717,9 @@ export function MobileNearbyServiceDiscovery({
                     <Text style={{ fontSize: 13.5, fontWeight: '600', color: colors.text }}>
                       {opt.label}
                     </Text>
+                    <Feather name="chevron-right" size={15} color={colors.accent} />
                   </Pressable>
                 ))}
-
-                <Text style={{ fontSize: 12, color: colors.muted, paddingHorizontal: 2 }}>
-                  More quick actions coming soon.
-                </Text>
 
                 <Pressable
                   accessibilityRole="button"
@@ -987,8 +987,11 @@ const s = StyleSheet.create({
     paddingBottom: 4,
   },
   sheetActionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 14,
-    paddingVertical: 11,
+    paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1,
   },

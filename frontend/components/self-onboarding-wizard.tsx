@@ -41,17 +41,22 @@ export function SelfOnboardingWizard({
   initialSubcategory,
   initialType,
   providerId,
+  initialBusinessName,
+  initialLocality,
 }: {
   initialCategory?: string;
   initialSubcategory?: string;
   initialType?: string;
   providerId?: number;
+  initialBusinessName?: string;
+  initialLocality?: string;
 }) {
   const nextHref = selfOnboardingUrl({
     category: initialCategory,
     subcategory: initialSubcategory,
     type: initialType,
-    business: providerId,
+    business: providerId ?? initialBusinessName,
+    locality: initialLocality,
   });
   return (
     <AuthGate next={nextHref}>
@@ -63,6 +68,8 @@ export function SelfOnboardingWizard({
             initialSubcategory={initialSubcategory}
             initialType={initialType}
             providerId={providerId}
+            initialBusinessName={initialBusinessName}
+            initialLocality={initialLocality}
           />
         </div>
       )}
@@ -76,12 +83,16 @@ function WizardInner({
   initialSubcategory,
   initialType,
   providerId,
+  initialBusinessName,
+  initialLocality,
 }: {
   user: User;
   initialCategory?: string;
   initialSubcategory?: string;
   initialType?: string;
   providerId?: number;
+  initialBusinessName?: string;
+  initialLocality?: string;
 }) {
   const resolvedInitial = resolveSelfOnboardingInitialSelection({
     category: initialCategory,
@@ -99,7 +110,7 @@ function WizardInner({
     resolvedInitial.typeSlug ? [resolvedInitial.typeSlug] : [],
   );
 
-  const [businessName, setBusinessName] = useState('');
+  const [businessName, setBusinessName] = useState(initialBusinessName || '');
   const [contactName, setContactName] = useState(user.name || '');
   const [phone, setPhone] = useState(user.phone || '');
   const [sameWhatsapp, setSameWhatsapp] = useState(true);
@@ -110,7 +121,7 @@ function WizardInner({
     radiusKm: 10,
   });
   const [address, setAddress] = useState(DEFAULT_SELECTED_LOCATION.formattedAddress);
-  const [locality, setLocality] = useState(DEFAULT_SELECTED_LOCATION.locality);
+  const [locality, setLocality] = useState(initialLocality || DEFAULT_SELECTED_LOCATION.locality);
   const [pincode, setPincode] = useState(DEFAULT_SELECTED_LOCATION.pincode);
   const [timings, setTimings] = useState('');
   const [description, setDescription] = useState('');

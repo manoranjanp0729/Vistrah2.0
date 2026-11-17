@@ -222,6 +222,7 @@ export function selfOnboardingUrl(params?: {
   subcategory?: string;
   type?: string;
   business?: number | string;
+  locality?: string;
 }): string {
   if (!params) return '/seller/onboard';
   const query = new URLSearchParams();
@@ -234,8 +235,13 @@ export function selfOnboardingUrl(params?: {
   if (params.type && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.type)) {
     query.set('type', params.type);
   }
-  if (params.business !== undefined && /^[1-9]\d*$/.test(String(params.business))) {
-    query.set('business', String(params.business));
+  if (params.business !== undefined) {
+    const bizText = String(params.business).trim().slice(0, 150);
+    if (bizText) query.set('business', bizText);
+  }
+  if (params.locality) {
+    const locText = params.locality.trim().slice(0, 120);
+    if (locText) query.set('locality', locText);
   }
   const qs = query.toString();
   return qs ? `/seller/onboard?${qs}` : '/seller/onboard';

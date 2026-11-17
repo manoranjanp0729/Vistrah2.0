@@ -6,6 +6,8 @@ import { NearbyServiceDiscovery } from '../components/nearby-service-discovery';
 import { safeDestination } from './destinations';
 import {
   NEARBY_DISCOVERY_RADII,
+  buildContactPrefillMailto,
+  buildListingMoreOptions,
   buildNearbyMarketplacePath,
   formatDistanceAway,
   getDivisionFallbackTheme,
@@ -48,6 +50,45 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     expect(websiteExternalHref('')).toBeNull();
     expect(websiteExternalHref('javascript:alert(1)')).toBeNull();
     expect(websiteExternalHref('http://localhost:3000')).toBeNull();
+
+    const moreItems = buildListingMoreOptions({
+      businessName: 'Sri Krishna Clinic',
+      categorySlug: 'health-fitness-and-wellness',
+      subcategorySlug: 'hospitals-and-clinics',
+      typeSlug: 'dental-clinics',
+      locality: 'Indiranagar, Bengaluru',
+    });
+    expect(moreItems.map(i => i.label)).toEqual([
+      'Join Vistrah',
+      'Request website',
+      'Create & Upload Free Ad',
+      'Contact Vistrah',
+    ]);
+    expect(moreItems[0].href).toBe(
+      '/seller/onboard?category=health-fitness-and-wellness&type=dental-clinics&subcategory=hospitals-and-clinics&business=Sri+Krishna+Clinic&locality=Indiranagar%2C+Bengaluru',
+    );
+    expect(moreItems[1].href).toBe(
+      '/contact?intent=request-website&business=Sri+Krishna+Clinic&category=health-fitness-and-wellness&type=dental-clinics&locality=Indiranagar%2C+Bengaluru',
+    );
+    expect(moreItems[2].href).toBe(
+      '/seller/v-ads?business=Sri+Krishna+Clinic&category=health-fitness-and-wellness&type=dental-clinics&locality=Indiranagar%2C+Bengaluru',
+    );
+    expect(moreItems[3].href).toBe(
+      '/contact?business=Sri+Krishna+Clinic&category=health-fitness-and-wellness&type=dental-clinics&locality=Indiranagar%2C+Bengaluru',
+    );
+    for (const item of moreItems) {
+      expect(safeDestination(item.href)).toBe(item.href);
+    }
+
+    const mailto = buildContactPrefillMailto('support@vistrah.in', {
+      intent: 'request-website',
+      business: 'Sri Krishna Clinic',
+      category: 'health-fitness-and-wellness',
+      type: 'dental-clinics',
+      locality: 'Indiranagar',
+    });
+    expect(mailto).toMatch(/^mailto:support@vistrah\.in\?subject=/);
+    expect(decodeURIComponent(mailto)).toContain('Sri Krishna Clinic');
 
     expect(
       resolveListingPhotoUri('/api/marketplace/place-photo?ref=places%2FChIJ%2Fphotos%2F1'),

@@ -83,6 +83,8 @@ function navigateChatHref(rawHref: string, onDone: () => void) {
     router.push('/jobs');
   } else if (parsed.pathname === '/membership') {
     router.push('/membership');
+  } else if (parsed.pathname === '/contact') {
+    router.push({ pathname: '/contact', params });
   } else {
     router.push('/services');
   }

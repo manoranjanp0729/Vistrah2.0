@@ -33,13 +33,25 @@ type RegulatedDraft = {
 };
 
 export default function MobileSellerOnboardScreen() {
-  const params = useLocalSearchParams<{ category?: string; type?: string; subcategory?: string; business?: string }>();
+  const params = useLocalSearchParams<{
+    category?: string;
+    type?: string;
+    subcategory?: string;
+    business?: string;
+    locality?: string;
+  }>();
   const category = typeof params.category === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.category) ? params.category : undefined;
   const subcategory = typeof params.subcategory === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.subcategory) ? params.subcategory : undefined;
   const type = typeof params.type === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.type)
     ? params.type
     : subcategory;
-  const business = typeof params.business === 'string' && /^[1-9]\d*$/.test(params.business) ? Number(params.business) : undefined;
+  const rawBiz = typeof params.business === 'string' ? params.business.trim() : '';
+  const business = /^[1-9]\d*$/.test(rawBiz) ? Number(rawBiz) : undefined;
+  const initialBusinessName = !business && rawBiz ? rawBiz.slice(0, 150) : undefined;
+  const initialLocality =
+    typeof params.locality === 'string' && params.locality.trim()
+      ? params.locality.trim().slice(0, 120)
+      : undefined;
   const session = useSession();
 
   if (!session.ready) {
@@ -54,7 +66,15 @@ export default function MobileSellerOnboardScreen() {
       <Redirect
         href={{
           pathname: '/auth',
-          params: { next: selfOnboardingUrl({ category, subcategory, type, business }) },
+          params: {
+            next: selfOnboardingUrl({
+              category,
+              subcategory,
+              type,
+              business: business ?? initialBusinessName,
+              locality: initialLocality,
+            }),
+          },
         }}
       />
     );
@@ -67,6 +87,8 @@ export default function MobileSellerOnboardScreen() {
         initialSubcategory={subcategory}
         initialType={type}
         providerId={business}
+        initialBusinessName={initialBusinessName}
+        initialLocality={initialLocality}
       />
     </UiElement>
   );
@@ -77,11 +99,15 @@ function MobileSelfOnboardingForm({
   initialSubcategory,
   initialType,
   providerId,
+  initialBusinessName,
+  initialLocality,
 }: {
   initialCategory?: string;
   initialSubcategory?: string;
   initialType?: string;
   providerId?: number;
+  initialBusinessName?: string;
+  initialLocality?: string;
 }) {
   const session = useSession();
   const user = session.user!;
@@ -103,7 +129,7 @@ function MobileSelfOnboardingForm({
     resolved.typeSlug ? [resolved.typeSlug] : [],
   );
 
-  const [businessName, setBusinessName] = useState('');
+  const [businessName, setBusinessName] = useState(initialBusinessName || '');
   const [contactName, setContactName] = useState(user.name || '');
   const [phone, setPhone] = useState(user.phone || '');
   const [sameWhatsapp, setSameWhatsapp] = useState(true);
@@ -114,7 +140,7 @@ function MobileSelfOnboardingForm({
     radiusKm: 10,
   });
   const [address, setAddress] = useState(DEFAULT_SELECTED_LOCATION.formattedAddress);
-  const [locality, setLocality] = useState(DEFAULT_SELECTED_LOCATION.locality);
+  const [locality, setLocality] = useState(initialLocality || DEFAULT_SELECTED_LOCATION.locality);
   const [pincode, setPincode] = useState(DEFAULT_SELECTED_LOCATION.pincode);
   const [timings, setTimings] = useState('');
   const [description, setDescription] = useState('');

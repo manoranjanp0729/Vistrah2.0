@@ -38,11 +38,18 @@ export type NearbyBusinessItem = {
   types?: string[];
 };
 
+export type ListingMoreOptionId =
+  | 'join-vistrah'
+  | 'request-website'
+  | 'create-free-ad'
+  | 'contact-vistrah';
+
 export type ListingMoreOptionItem = {
-  id: string;
+  id: ListingMoreOptionId;
   label: string;
-  subtitle?: string;
-  disabled?: boolean;
+  href: string;
+  pathname: '/seller/onboard' | '/contact' | '/seller/v-ads';
+  params: Record<string, string>;
 };
 
 export type NearbyServicesResponse = {
@@ -424,4 +431,115 @@ export function googleMapsHybridSearchHref(
   const area = locality.trim() || `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
   const query = `${serviceTitle.trim()} near ${area}`;
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+export function buildListingMoreOptions(input: {
+  businessName: string;
+  categorySlug: string;
+  subcategorySlug?: string;
+  typeSlug: string;
+  locality?: string;
+}): ListingMoreOptionItem[] {
+  const business = input.businessName.trim().slice(0, 140);
+  const category = input.categorySlug.trim();
+  const subcategory = input.subcategorySlug?.trim() || '';
+  const type = input.typeSlug.trim();
+  const locality = (input.locality || '').trim().slice(0, 120);
+
+  const onboardParams: Record<string, string> = { category, type };
+  if (subcategory) onboardParams.subcategory = subcategory;
+  if (business) onboardParams.business = business;
+  if (locality) onboardParams.locality = locality;
+
+  const requestWebsiteParams: Record<string, string> = {
+    intent: 'request-website',
+    ...(business ? { business } : {}),
+    category,
+    type,
+    ...(locality ? { locality } : {}),
+  };
+
+  const freeAdParams: Record<string, string> = {
+    ...(business ? { business } : {}),
+    category,
+    type,
+    ...(locality ? { locality } : {}),
+  };
+
+  const contactParams: Record<string, string> = {
+    ...(business ? { business } : {}),
+    category,
+    type,
+    ...(locality ? { locality } : {}),
+  };
+
+  const toHref = (pathname: string, params: Record<string, string>) => {
+    const qs = new URLSearchParams(params).toString();
+    return qs ? `${pathname}?${qs}` : pathname;
+  };
+
+  return [
+    {
+      id: 'join-vistrah',
+      label: 'Join Vistrah',
+      pathname: '/seller/onboard',
+      params: onboardParams,
+      href: toHref('/seller/onboard', onboardParams),
+    },
+    {
+      id: 'request-website',
+      label: 'Request website',
+      pathname: '/contact',
+      params: requestWebsiteParams,
+      href: toHref('/contact', requestWebsiteParams),
+    },
+    {
+      id: 'create-free-ad',
+      label: 'Create & Upload Free Ad',
+      pathname: '/seller/v-ads',
+      params: freeAdParams,
+      href: toHref('/seller/v-ads', freeAdParams),
+    },
+    {
+      id: 'contact-vistrah',
+      label: 'Contact Vistrah',
+      pathname: '/contact',
+      params: contactParams,
+      href: toHref('/contact', contactParams),
+    },
+  ];
+}
+
+export function buildContactPrefillMailto(
+  supportEmail: string,
+  params: {
+    intent?: string;
+    business?: string;
+    category?: string;
+    type?: string;
+    locality?: string;
+  },
+): string {
+  const isWebsite = params.intent === 'request-website';
+  const biz = (params.business || '').trim();
+  const svc = (params.type || params.category || '').trim().replace(/-/g, ' ');
+  const loc = (params.locality || '').trim();
+
+  const subject = isWebsite
+    ? `Business Website Request${biz ? ` — ${biz}` : ''}`
+    : `VISTRAH Support Enquiry${biz ? ` — ${biz}` : ''}`;
+
+  const lines = [
+    isWebsite
+      ? 'Hello VISTRAH Team, I would like to request a business website.'
+      : 'Hello VISTRAH Team, I would like assistance regarding the following listing:',
+    '',
+    biz ? `Business Name: ${biz}` : null,
+    svc ? `Service / Category: ${svc}` : null,
+    loc ? `Locality: ${loc}` : null,
+    '',
+    'Additional details:',
+  ].filter((line): line is string => line !== null);
+
+  return `mailto:${supportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
 }

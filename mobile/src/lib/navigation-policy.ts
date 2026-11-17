@@ -41,6 +41,14 @@ export function backFallback(pathname:string,params:Record<string,unknown>={}):s
   }
   return '/services';
  }
+ if(path==='/contact'){
+  if(typeof params.category==='string'&&params.category){
+   const query=new URLSearchParams({category:params.category});
+   if(typeof params.type==='string'&&params.type)query.set('type',params.type);
+   return '/services/nearby?'+query.toString();
+  }
+  return '/services';
+ }
  if(path.startsWith('/service/')||path.startsWith('/category/'))return '/services';
  if(path==='/forgot-password'||path==='/reset-password')return '/auth';
  if(path==='/advertiser-profile')return '/v-ads';

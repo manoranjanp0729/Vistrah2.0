@@ -32,6 +32,7 @@ import { api } from '@/lib/api';
 import { LatestSearch, validPoint } from '@/lib/location';
 import {
   NEARBY_DISCOVERY_RADII,
+  buildListingMoreOptions,
   buildNearbyMarketplacePath,
   formatDistanceAway,
   getDivisionFallbackTheme,
@@ -152,20 +153,14 @@ export function NearbyServiceDiscovery({
     };
   }, [openMoreKey]);
 
-  function getMoreOptionsForListing(
-    item: NearbyBusinessItem,
-  ): Array<ListingMoreOptionItem & { onSelect: () => void }> {
-    return [
-      {
-        id: 'focus-pin',
-        label: 'Highlight pin on map',
-        onSelect: () => {
-          if (viewMode === 'list') setViewMode('split');
-          selectListing(item.id, false);
-          setOpenMoreKey(null);
-        },
-      },
-    ];
+  function getMoreOptionsForListing(item: NearbyBusinessItem): ListingMoreOptionItem[] {
+    return buildListingMoreOptions({
+      businessName: item.company || item.name,
+      categorySlug: item.category_slug || categorySlug,
+      subcategorySlug,
+      typeSlug: item.business_type || typeSlug,
+      locality: item.location || activePoint.locality,
+    });
   }
   const [state, setState] = useState<{
     key: string;
@@ -579,20 +574,16 @@ export function NearbyServiceDiscovery({
                                 </button>
                               </div>
                               {moreOptions.map(opt => (
-                                <button
+                                <Link
                                   key={opt.id}
-                                  type="button"
+                                  href={opt.href}
                                   role="menuitem"
-                                  disabled={opt.disabled}
                                   className={s.moreMenuItem}
-                                  onClick={opt.onSelect}
+                                  onClick={() => setOpenMoreKey(null)}
                                 >
                                   <UiText value={opt.label} />
-                                </button>
+                                </Link>
                               ))}
-                              <p className={s.morePlaceholderNote}>
-                                <UiText value="More quick actions coming soon." />
-                              </p>
                             </div>
                           )}
                         </div>

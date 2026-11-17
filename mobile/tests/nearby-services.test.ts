@@ -4,6 +4,7 @@ import { test } from 'node:test';
 import { backFallback } from '../src/lib/navigation-policy.ts';
 import {
   NEARBY_DISCOVERY_RADII,
+  buildListingMoreOptions,
   buildNearbyMarketplacePath,
   getDivisionFallbackTheme,
   phoneCallHref,
@@ -20,6 +21,28 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
   assert.equal(websiteExternalHref('https://vistrah.in'), 'https://vistrah.in/');
   assert.equal(websiteExternalHref(null), null);
   assert.equal(websiteExternalHref('javascript:void(0)'), null);
+
+  const more = buildListingMoreOptions({
+    businessName: 'Malnad Spice Mess',
+    categorySlug: 'food-and-dining',
+    subcategorySlug: 'restaurants-and-dining',
+    typeSlug: 'restaurants',
+    locality: 'Tarikere',
+  });
+  assert.deepEqual(
+    more.map(m => m.label),
+    ['Join Vistrah', 'Request website', 'Create & Upload Free Ad', 'Contact Vistrah'],
+  );
+  assert.equal(more[0].pathname, '/seller/onboard');
+  assert.equal(more[0].params.business, 'Malnad Spice Mess');
+  assert.equal(more[1].pathname, '/contact');
+  assert.equal(more[1].params.intent, 'request-website');
+  assert.equal(more[2].pathname, '/seller/v-ads');
+  assert.equal(more[3].pathname, '/contact');
+  assert.equal(
+    backFallback('/contact', { category: 'food-and-dining', type: 'restaurants' }),
+    '/services/nearby?category=food-and-dining&type=restaurants',
+  );
   assert.equal(
     resolveListingPhotoUri('/api/marketplace/place-photo?ref=places%2F1%2Fphotos%2F2', 'https://api.vistrah.in'),
     'https://api.vistrah.in/marketplace/place-photo?ref=places%2F1%2Fphotos%2F2',

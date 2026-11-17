@@ -643,7 +643,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   accessibilityRole="link"
                   onPress={() =>
                     openMobileDestination(
-                      `/services?category=health-and-fitness&subcategory=${path.subcategory}`,
+                      `/services?category=health-fitness-and-wellness&subcategory=${path.subcategory}`,
                     )
                   }
                   style={({pressed}) => [

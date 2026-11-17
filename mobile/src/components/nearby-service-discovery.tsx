@@ -73,11 +73,13 @@ function MobileDivisionGlyph({
 export function MobileNearbyServiceDiscovery({
   categorySlug,
   categoryTitle,
+  subcategorySlug,
   typeSlug,
   serviceTitle,
 }: {
   categorySlug: string;
   categoryTitle: string;
+  subcategorySlug?: string;
   typeSlug: string;
   serviceTitle: string;
 }) {
@@ -127,12 +129,13 @@ export function MobileNearbyServiceDiscovery({
     error: string;
   } | null>(null);
 
-  const requestKey = `${categorySlug}:${typeSlug}:${activePoint.latitude.toFixed(5)}:${activePoint.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
+  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${typeSlug}:${activePoint.latitude.toFixed(5)}:${activePoint.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
 
   useEffect(() => {
     let alive = true;
     const path = buildNearbyMarketplacePath({
       category: categorySlug,
+      subcategory: subcategorySlug,
       businessType: typeSlug,
       latitude: activePoint.latitude,
       longitude: activePoint.longitude,
@@ -168,7 +171,7 @@ export function MobileNearbyServiceDiscovery({
     return () => {
       alive = false;
     };
-  }, [categorySlug, typeSlug, activePoint.latitude, activePoint.longitude, radiusKm, requestKey]);
+  }, [categorySlug, subcategorySlug, typeSlug, activePoint.latitude, activePoint.longitude, radiusKm, requestKey]);
 
   const loading = state?.key !== requestKey;
   const items = state?.key === requestKey ? state.items : [];
@@ -294,7 +297,11 @@ export function MobileNearbyServiceDiscovery({
           onPress={() =>
             router.push({
               pathname: '/seller/onboard',
-              params: { category: categorySlug, type: typeSlug },
+              params: {
+                category: categorySlug,
+                ...(subcategorySlug ? { subcategory: subcategorySlug } : {}),
+                type: typeSlug,
+              },
             })
           }
           style={({ pressed }) => [s.primaryOnboardBtn, { opacity: pressed ? 0.88 : 1 }]}

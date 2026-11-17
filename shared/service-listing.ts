@@ -9,7 +9,11 @@ export function serviceSelection(params:MarketplaceSelection):ServiceSelection|n
 }
 export function addServiceUrl(selection:ServiceSelection){
   const resolved=resolveSelfOnboardingInitialSelection(selection);
-  return selfOnboardingUrl({category:resolved.categorySlug,type:resolved.typeSlug??selection.subcategory});
+  return selfOnboardingUrl({
+    category:resolved.categorySlug,
+    subcategory:resolved.subcategorySlug??selection.subcategory,
+    type:resolved.typeSlug??selection.type,
+  });
 }
 export function serviceListingForm(selection:ServiceSelection,title:string):ListingForm{
   return {kind:'SERVICE_PACKAGE',service_id:'',title,description:'',price:'',available:true,

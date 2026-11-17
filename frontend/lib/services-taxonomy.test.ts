@@ -10,7 +10,7 @@ vi.mock('next/navigation',()=>({
 import Services from '../app/(public)/services/page';
 import {marketplaceCategories} from './marketplace-taxonomy';
 
-it('renders only taxonomy browsing at every level without requesting the legacy catalogue and permanently redirects v1 links',async()=>{
+it('renders only taxonomy browsing at every level without requesting the legacy catalogue and permanently redirects v2 links',async()=>{
   const category=marketplaceCategories[0],subcategory=category.subcategories[0],type=subcategory.listing_types[0];
   const fetcher=vi.fn();vi.stubGlobal('fetch',fetcher);
   try{
@@ -25,7 +25,7 @@ it('renders only taxonomy browsing at every level without requesting the legacy 
       expect(html).not.toContain('published-services');
       expect(html).not.toContain('Service catalogue');
     }
-    await expect(Services({searchParams:Promise.resolve({category:'pet-care',subcategory:'grooming'})})).rejects.toThrow('REDIRECT:/services?category=home-services&subcategory=pet-care');
+    await expect(Services({searchParams:Promise.resolve({category:'home-services',subcategory:'electrician-and-plumber'})})).rejects.toThrow('REDIRECT:/services?category=home-and-everyday-services&subcategory=repairs-and-maintenance&type=plumbing');
     expect(fetcher).not.toHaveBeenCalled();
   }finally{vi.unstubAllGlobals();}
 });

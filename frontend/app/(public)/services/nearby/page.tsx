@@ -2,6 +2,7 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { MarketplaceBrowser } from '@/components/marketplace-browser';
 import {
   legacyMarketplaceSelection,
+  marketplaceCategories,
   resolveMarketplaceSelection,
   type MarketplaceSelection,
 } from '@/lib/marketplace-taxonomy';
@@ -17,11 +18,33 @@ export default async function NearbyServicesPage({
   searchParams: Promise<{ category?: string; subcategory?: string; type?: string; q?: string }>;
 }) {
   const raw = await searchParams;
-  const sub = raw.subcategory || raw.type;
+  let cat = raw.category;
+  let sub = raw.subcategory;
+  let typ = raw.type;
+
+  if (cat && !sub && typ) {
+    const matchedCat = marketplaceCategories.find(c => c.slug === cat);
+    const matchedSub =
+      matchedCat?.subcategories.find(s => s.listing_types.some(lt => lt.slug === typ)) ??
+      matchedCat?.subcategories.find(s => s.slug === typ);
+    if (matchedSub) {
+      sub = matchedSub.slug;
+      if (!matchedSub.listing_types.some(lt => lt.slug === typ)) {
+        typ = matchedSub.listing_types[0]?.slug;
+      }
+    }
+  } else if (cat && sub && !typ) {
+    const matchedCat = marketplaceCategories.find(c => c.slug === cat);
+    const matchedSub = matchedCat?.subcategories.find(s => s.slug === sub);
+    if (matchedSub && matchedSub.listing_types.length > 0) {
+      typ = matchedSub.listing_types[0].slug;
+    }
+  }
+
   const normalized: MarketplaceSelection = {
-    category: raw.category,
+    category: cat,
     subcategory: sub,
-    type: sub,
+    type: typ,
     q: raw.q,
   };
 
@@ -29,12 +52,17 @@ export default async function NearbyServicesPage({
   if (!selection || !selection.category || !selection.subcategory) {
     const legacy = legacyMarketplaceSelection({
       category: raw.category,
-      subcategory: sub,
+      subcategory: raw.subcategory || raw.type,
+      type: raw.type,
       q: raw.q,
     });
-    if (legacy?.category && legacy?.subcategory) {
+    if (legacy?.category && (legacy.type || legacy.subcategory)) {
       permanentRedirect(
-        nearbyServicesUrl({ category: legacy.category, type: legacy.subcategory }),
+        nearbyServicesUrl({
+          category: legacy.category,
+          subcategory: legacy.subcategory,
+          type: legacy.type || legacy.subcategory!,
+        }),
       );
     }
     if (selection?.category && !selection.subcategory) {

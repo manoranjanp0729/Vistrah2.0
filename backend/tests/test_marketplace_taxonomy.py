@@ -1,34 +1,50 @@
-"""Contract checks for the simplified marketplace classification (v2).
-
-Run with: python -m pytest backend/tests/test_marketplace_taxonomy.py
-"""
+"""Contract checks for the full 800+ marketplace classification (15 categories, 132 subcategories, 808 listing types)."""
 from app.marketplace_taxonomy import legacy_map, master_taxonomy, taxonomy_summary
 
 
 def test_taxonomy_complete_and_ordered():
     data = master_taxonomy()
-    assert [c["title"] for c in data["categories"]] == [
-        "Food & Dining", "Home Services", "Shops & Retail", "Beauty & Personal Care",
-        "Health & Fitness", "Vehicles", "Property & Construction", "Rentals",
-        "Travel & Stay", "Education & Training", "Events & Celebrations",
-        "Professional & Business Services", "Agriculture & Farming",
+    assert [c["slug"] for c in data["categories"]] == [
+        "food-and-dining",
+        "home-and-everyday-services",
+        "shopping-and-local-retail",
+        "beauty-fashion-and-lifestyle",
+        "automobiles",
+        "rental-services",
+        "travel-stay-and-experiences",
+        "health-fitness-and-wellness",
+        "education-and-skills",
+        "jobs-and-careers",
+        "professional-services",
+        "events-and-celebrations",
+        "pet-care",
+        "agriculture-and-farming",
+        "property-and-construction",
     ]
-    assert taxonomy_summary() == {"version": 2, "categories": 13, "subcategories": 81, "listing_types": 81}
-    all_types = set()
+    assert taxonomy_summary() == {
+        "version": 1,
+        "categories": 15,
+        "subcategories": 132,
+        "listing_types": 808,
+    }
     for category in data["categories"]:
-        assert 4 <= len(category["subcategories"]) <= 8
+        assert len(category["subcategories"]) >= 3
         for sub in category["subcategories"]:
-            # Two levels for customers: each business type carries exactly one implicit listing type.
-            assert sub["listing_types"] == [{"slug": sub["slug"], "title": sub["title"]}]
-            assert sub["slug"] not in all_types
-            all_types.add(sub["slug"])
+            assert len(sub["listing_types"]) >= 1
+            for lt in sub["listing_types"]:
+                assert lt["slug"] and lt["title"]
 
 
-def test_every_legacy_subcategory_maps_to_a_current_business_type():
-    current = {(c["slug"], s["slug"]) for c in master_taxonomy()["categories"] for s in c["subcategories"]}
+def test_every_legacy_v2_slug_maps_to_a_current_classification():
+    current_triples = {
+        (c["slug"], s["slug"], lt["slug"])
+        for c in master_taxonomy()["categories"]
+        for s in c["subcategories"]
+        for lt in s["listing_types"]
+    }
     mapping = legacy_map()["subcategories"]
-    assert len(mapping) == 126
-    assert all(tuple(target) in current for target in mapping.values())
+    assert len(mapping) == 81
+    assert all(tuple(target[:3]) in current_triples for target in mapping.values())
 
 
 def test_marketing_hub_is_not_marketplace_category():

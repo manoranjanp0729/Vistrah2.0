@@ -117,10 +117,6 @@ class SelfOnboardingSubmit(SafeModel):
 @router.get("/provider-onboarding/catalogue")
 def get_self_onboarding_catalogue(user: User = Depends(current_user)):
     source = business_types()
-    keywords_by_slug: dict[str, list[str]] = {}
-    for cat in master_taxonomy()["categories"]:
-        for sub in cat["subcategories"]:
-            keywords_by_slug[sub["slug"]] = list(sub.get("keywords", []))
     categories = []
     for cat in source["categories"]:
         categories.append({
@@ -130,10 +126,13 @@ def get_self_onboarding_catalogue(user: User = Depends(current_user)):
             "types": [
                 {
                     "slug": bt["slug"],
+                    "listing_type_slug": bt.get("listing_type_slug", bt["slug"]),
+                    "subcategory_slug": bt.get("subcategory_slug", ""),
+                    "subcategory_title": bt.get("subcategory_title", cat["title"]),
                     "title": bt["title"],
                     "description": bt["description"],
                     "regulated": bt.get("regulated"),
-                    "keywords": keywords_by_slug.get(bt["slug"], []),
+                    "keywords": list(bt.get("keywords") or []),
                 }
                 for bt in cat["types"]
             ],

@@ -535,7 +535,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
               return (
                 <Link
                   key={path.num}
-                  href={`/services?category=health-and-fitness&subcategory=${encodeURIComponent(
+                  href={`/services?category=health-fitness-and-wellness&subcategory=${encodeURIComponent(
                     path.subcategory,
                   )}`}
                   className={styles.pathwayLinkCard}

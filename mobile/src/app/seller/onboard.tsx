@@ -35,11 +35,10 @@ type RegulatedDraft = {
 export default function MobileSellerOnboardScreen() {
   const params = useLocalSearchParams<{ category?: string; type?: string; subcategory?: string; business?: string }>();
   const category = typeof params.category === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.category) ? params.category : undefined;
+  const subcategory = typeof params.subcategory === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.subcategory) ? params.subcategory : undefined;
   const type = typeof params.type === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.type)
     ? params.type
-    : typeof params.subcategory === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.subcategory)
-    ? params.subcategory
-    : undefined;
+    : subcategory;
   const business = typeof params.business === 'string' && /^[1-9]\d*$/.test(params.business) ? Number(params.business) : undefined;
   const session = useSession();
 
@@ -55,7 +54,7 @@ export default function MobileSellerOnboardScreen() {
       <Redirect
         href={{
           pathname: '/auth',
-          params: { next: selfOnboardingUrl({ category, type, business }) },
+          params: { next: selfOnboardingUrl({ category, subcategory, type, business }) },
         }}
       />
     );
@@ -65,6 +64,7 @@ export default function MobileSellerOnboardScreen() {
     <UiElement as={Page} title="List your business">
       <MobileSelfOnboardingForm
         initialCategory={category}
+        initialSubcategory={subcategory}
         initialType={type}
         providerId={business}
       />
@@ -74,10 +74,12 @@ export default function MobileSellerOnboardScreen() {
 
 function MobileSelfOnboardingForm({
   initialCategory,
+  initialSubcategory,
   initialType,
   providerId,
 }: {
   initialCategory?: string;
+  initialSubcategory?: string;
   initialType?: string;
   providerId?: number;
 }) {
@@ -86,11 +88,16 @@ function MobileSelfOnboardingForm({
   const { colors, styles } = useTheme();
   const resolved = resolveSelfOnboardingInitialSelection({
     category: initialCategory,
+    subcategory: initialSubcategory,
     type: initialType,
   });
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [activeCategory, setActiveCategory] = useState<string>(resolved.categorySlug);
+  const [activeSubcategory, setActiveSubcategory] = useState<string>(
+    resolved.subcategorySlug ?? 'all',
+  );
+  const [showAllTypes, setShowAllTypes] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(
     resolved.typeSlug ? [resolved.typeSlug] : [],
@@ -123,7 +130,16 @@ function MobileSelfOnboardingForm({
     .map((slug) => findSelfOnboardingType(slug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
   const regulatedTypes = selectedTypes.filter((bt) => Boolean(bt.regulated));
-  const visibleTypes = searchSelfOnboardingTypes(searchQuery, activeCategory);
+  const activeCatObj = SELF_ONBOARDING_CATEGORIES.find((c) => c.slug === activeCategory);
+  const visibleTypes = searchSelfOnboardingTypes(
+    searchQuery,
+    activeCategory,
+    !searchQuery.trim() && activeSubcategory !== 'all' ? activeSubcategory : undefined,
+  );
+  const cappedTypes =
+    showAllTypes || Boolean(searchQuery.trim())
+      ? visibleTypes.slice(0, 100)
+      : visibleTypes.slice(0, 48);
 
   function toggleType(slug: string) {
     setError('');
@@ -365,48 +381,122 @@ function MobileSelfOnboardingForm({
             <Feather name="search" size={16} color={colors.muted} />
             <TextInput
               value={searchQuery}
-              onChangeText={setSearchQuery}
-              placeholder="Search e.g. Restaurant, Salon, Borewell, PG, GST..."
+              onChangeText={(val) => {
+                setSearchQuery(val);
+                setShowAllTypes(false);
+              }}
+              placeholder="Search 800+ services (e.g. Plumber, Dental, Tractor, GST)..."
               placeholderTextColor={colors.muted}
               style={[styles.text, { flex: 1, minHeight: 44 }]}
             />
             {Boolean(searchQuery) && (
-              <Pressable onPress={() => setSearchQuery('')} hitSlop={8}>
+              <Pressable
+                onPress={() => {
+                  setSearchQuery('');
+                  setShowAllTypes(false);
+                }}
+                hitSlop={8}
+              >
                 <Feather name="x-circle" size={16} color={colors.muted} />
               </Pressable>
             )}
           </View>
 
           {!searchQuery.trim() && (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
-              {SELF_ONBOARDING_CATEGORIES.map((cat) => {
-                const active = cat.slug === activeCategory;
-                return (
+            <View style={{ gap: 8 }}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+                {SELF_ONBOARDING_CATEGORIES.map((cat) => {
+                  const active = cat.slug === activeCategory;
+                  return (
+                    <Pressable
+                      key={cat.slug}
+                      accessibilityRole="tab"
+                      accessibilityState={{ selected: active }}
+                      onPress={() => {
+                        setActiveCategory(cat.slug);
+                        setActiveSubcategory('all');
+                        setShowAllTypes(false);
+                      }}
+                      style={{
+                        paddingHorizontal: 14,
+                        paddingVertical: 9,
+                        borderRadius: 999,
+                        borderWidth: 1,
+                        borderColor: active ? colors.accent : colors.border,
+                        backgroundColor: active ? colors.accent : colors.surface,
+                      }}
+                    >
+                      <Text style={{ color: active ? '#ffffff' : colors.text, fontSize: 13, fontWeight: '600' }}>
+                        {cat.title}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+
+              {Boolean(activeCatObj && activeCatObj.subcategories.length > 1) && (
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 6 }}>
                   <Pressable
-                    key={cat.slug}
-                    accessibilityRole="tab"
-                    accessibilityState={{ selected: active }}
-                    onPress={() => setActiveCategory(cat.slug)}
+                    onPress={() => {
+                      setActiveSubcategory('all');
+                      setShowAllTypes(false);
+                    }}
                     style={{
-                      paddingHorizontal: 14,
-                      paddingVertical: 9,
+                      paddingHorizontal: 11,
+                      paddingVertical: 6,
                       borderRadius: 999,
                       borderWidth: 1,
-                      borderColor: active ? colors.accent : colors.border,
-                      backgroundColor: active ? colors.accent : colors.surface,
+                      borderColor: activeSubcategory === 'all' ? colors.accent : colors.border,
+                      backgroundColor: activeSubcategory === 'all' ? colors.accent : colors.surface,
                     }}
                   >
-                    <Text style={{ color: active ? '#ffffff' : colors.text, fontSize: 13, fontWeight: '600' }}>
-                      {cat.title}
+                    <Text
+                      style={{
+                        color: activeSubcategory === 'all' ? '#ffffff' : colors.text,
+                        fontSize: 12,
+                        fontWeight: '600',
+                      }}
+                    >
+                      All ({activeCatObj!.types.length})
                     </Text>
                   </Pressable>
-                );
-              })}
-            </ScrollView>
+                  {activeCatObj!.subcategories.map((sub) => {
+                    const subActive = activeSubcategory === sub.slug;
+                    return (
+                      <Pressable
+                        key={sub.slug}
+                        onPress={() => {
+                          setActiveSubcategory(sub.slug);
+                          setShowAllTypes(false);
+                        }}
+                        style={{
+                          paddingHorizontal: 11,
+                          paddingVertical: 6,
+                          borderRadius: 999,
+                          borderWidth: 1,
+                          borderColor: subActive ? colors.accent : colors.border,
+                          backgroundColor: subActive ? colors.accent : colors.surface,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color: subActive ? '#ffffff' : colors.text,
+                            fontSize: 12,
+                            fontWeight: '600',
+                          }}
+                        >
+                          {sub.title} ({sub.count})
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </ScrollView>
+              )}
+            </View>
           )}
 
           <View style={{ gap: 10 }}>
-            {visibleTypes.map((bt) => {
+            {cappedTypes.map((bt) => {
               const chosen = selectedSlugs.includes(bt.slug);
               return (
                 <Pressable
@@ -431,9 +521,9 @@ function MobileSelfOnboardingForm({
                       color={chosen ? colors.accent : colors.muted}
                     />
                   </View>
-                  {Boolean(searchQuery.trim()) && (
-                    <Text style={[styles.muted, { fontSize: 11 }]}>{bt.categoryTitle}</Text>
-                  )}
+                  <Text style={[styles.muted, { fontSize: 11 }]}>
+                    {searchQuery.trim() ? `${bt.categoryTitle} › ${bt.subcategoryTitle}` : bt.subcategoryTitle}
+                  </Text>
                   <Text style={styles.muted}>{bt.description}</Text>
                   {Boolean(bt.regulated) && (
                     <Text style={[styles.muted, { fontSize: 12 }]}>Optional licence for Verified badge</Text>
@@ -442,6 +532,15 @@ function MobileSelfOnboardingForm({
               );
             })}
           </View>
+
+          {visibleTypes.length > cappedTypes.length && (
+            <UiElement
+              as={Action}
+              secondary
+              label={`Show all ${visibleTypes.length} services`}
+              onPress={() => setShowAllTypes(true)}
+            />
+          )}
 
           <UiElement
             as={Action}

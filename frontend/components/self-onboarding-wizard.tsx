@@ -38,15 +38,18 @@ type SubmitResponse = {
 
 export function SelfOnboardingWizard({
   initialCategory,
+  initialSubcategory,
   initialType,
   providerId,
 }: {
   initialCategory?: string;
+  initialSubcategory?: string;
   initialType?: string;
   providerId?: number;
 }) {
   const nextHref = selfOnboardingUrl({
     category: initialCategory,
+    subcategory: initialSubcategory,
     type: initialType,
     business: providerId,
   });
@@ -57,6 +60,7 @@ export function SelfOnboardingWizard({
           <WizardInner
             user={user}
             initialCategory={initialCategory}
+            initialSubcategory={initialSubcategory}
             initialType={initialType}
             providerId={providerId}
           />
@@ -69,20 +73,27 @@ export function SelfOnboardingWizard({
 function WizardInner({
   user,
   initialCategory,
+  initialSubcategory,
   initialType,
   providerId,
 }: {
   user: User;
   initialCategory?: string;
+  initialSubcategory?: string;
   initialType?: string;
   providerId?: number;
 }) {
   const resolvedInitial = resolveSelfOnboardingInitialSelection({
     category: initialCategory,
+    subcategory: initialSubcategory,
     type: initialType,
   });
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [activeCategory, setActiveCategory] = useState<string>(resolvedInitial.categorySlug);
+  const [activeSubcategory, setActiveSubcategory] = useState<string>(
+    resolvedInitial.subcategorySlug ?? 'all',
+  );
+  const [showAllTypes, setShowAllTypes] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(
     resolvedInitial.typeSlug ? [resolvedInitial.typeSlug] : [],
@@ -116,7 +127,16 @@ function WizardInner({
     .map((slug) => findSelfOnboardingType(slug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
   const regulatedTypes = selectedTypes.filter((bt) => Boolean(bt.regulated));
-  const visibleTypes = searchSelfOnboardingTypes(searchQuery, activeCategory);
+  const activeCatObj = SELF_ONBOARDING_CATEGORIES.find((c) => c.slug === activeCategory);
+  const visibleTypes = searchSelfOnboardingTypes(
+    searchQuery,
+    activeCategory,
+    !searchQuery.trim() && activeSubcategory !== 'all' ? activeSubcategory : undefined,
+  );
+  const cappedTypes =
+    showAllTypes || Boolean(searchQuery.trim())
+      ? visibleTypes.slice(0, 120)
+      : visibleTypes.slice(0, 48);
 
   function toggleType(slug: string) {
     setError('');
@@ -410,12 +430,12 @@ function WizardInner({
               <UiText value="1. What does your business do?" />
             </h2>
             <p style={{ margin: 0, color: 'var(--muted, #475569)' }}>
-              <UiText value="Search directly (e.g. Restaurant, Tiffin, Salon, Borewell, PG, GST) or tap one of the 13 categories below. Pick up to 3 business types." />
+              <UiText value="Type 1–2 letters below to search 800+ services instantly (e.g. Plumber, Dental Clinic, Tractor, Tiffin, GST) or browse the 15 categories. Pick up to 3 services." />
             </p>
           </div>
 
           <label style={{ display: 'grid', gap: 6 }}>
-            <span className="sr-only">Search business types</span>
+            <span className="sr-only">Search 800+ business types</span>
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <Search
                 size={18}
@@ -425,31 +445,91 @@ function WizardInner({
               <input
                 type="search"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search any service or keyword (e.g. Borewell, Tiffin, Tailor, PG, Clinic, Tractor)..."
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowAllTypes(false);
+                }}
+                placeholder="Search 800+ services (e.g. Plumber, Dental Clinic, Tractor, South Indian Restaurant, GST)..."
                 style={{ paddingLeft: 38, width: '100%' }}
               />
             </div>
           </label>
 
           {!searchQuery.trim() && (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} role="tablist" aria-label="13 Business Categories">
-              {SELF_ONBOARDING_CATEGORIES.map((cat) => {
-                const isActive = cat.slug === activeCategory;
-                return (
+            <div style={{ display: 'grid', gap: 10 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }} role="tablist" aria-label="15 Business Categories">
+                {SELF_ONBOARDING_CATEGORIES.map((cat) => {
+                  const isActive = cat.slug === activeCategory;
+                  return (
+                    <button
+                      key={cat.slug}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => {
+                        setActiveCategory(cat.slug);
+                        setActiveSubcategory('all');
+                        setShowAllTypes(false);
+                      }}
+                      className={`catalogue-choice${isActive ? ' selected' : ''}`}
+                      style={{ padding: '8px 14px', width: 'auto' }}
+                    >
+                      <span>{cat.title}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {activeCatObj && activeCatObj.subcategories.length > 1 && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }} aria-label="Subcategory filter">
                   <button
-                    key={cat.slug}
                     type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActiveCategory(cat.slug)}
-                    className={`catalogue-choice${isActive ? ' selected' : ''}`}
-                    style={{ padding: '8px 14px', width: 'auto' }}
+                    aria-pressed={activeSubcategory === 'all'}
+                    onClick={() => {
+                      setActiveSubcategory('all');
+                      setShowAllTypes(false);
+                    }}
+                    style={{
+                      padding: '5px 11px',
+                      borderRadius: 999,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      border: activeSubcategory === 'all' ? '1.5px solid #0f172a' : '1px solid rgba(15, 23, 42, 0.16)',
+                      background: activeSubcategory === 'all' ? '#0f172a' : '#f8fafc',
+                      color: activeSubcategory === 'all' ? '#ffffff' : '#334155',
+                      cursor: 'pointer',
+                    }}
                   >
-                    <span>{cat.title}</span>
+                    All ({activeCatObj.types.length})
                   </button>
-                );
-              })}
+                  {activeCatObj.subcategories.map((sub) => {
+                    const subActive = activeSubcategory === sub.slug;
+                    return (
+                      <button
+                        key={sub.slug}
+                        type="button"
+                        aria-pressed={subActive}
+                        onClick={() => {
+                          setActiveSubcategory(sub.slug);
+                          setShowAllTypes(false);
+                        }}
+                        style={{
+                          padding: '5px 11px',
+                          borderRadius: 999,
+                          fontSize: 12,
+                          fontWeight: 600,
+                          border: subActive ? '1.5px solid #0f172a' : '1px solid rgba(15, 23, 42, 0.16)',
+                          background: subActive ? '#0f172a' : '#f8fafc',
+                          color: subActive ? '#ffffff' : '#334155',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {sub.title} ({sub.count})
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           )}
 
@@ -460,7 +540,7 @@ function WizardInner({
               gap: 12,
             }}
           >
-            {visibleTypes.map((bt) => {
+            {cappedTypes.map((bt) => {
               const chosen = selectedSlugs.includes(bt.slug);
               return (
                 <button
@@ -498,11 +578,9 @@ function WizardInner({
                       {chosen ? <Check size={14} /> : '+'}
                     </span>
                   </div>
-                  {searchQuery.trim() && (
-                    <span style={{ fontSize: 11, fontWeight: 600, color: '#64748b', textTransform: 'uppercase' }}>
-                      {bt.categoryTitle}
-                    </span>
-                  )}
+                  <span style={{ fontSize: 11, fontWeight: 600, color: '#64748b', textTransform: 'uppercase' }}>
+                    {searchQuery.trim() ? `${bt.categoryTitle} › ${bt.subcategoryTitle}` : bt.subcategoryTitle}
+                  </span>
                   <span style={{ fontSize: 13, color: '#475569', lineHeight: 1.4 }}>{bt.description}</span>
                   {bt.regulated && (
                     <span style={{ fontSize: 11, color: '#0369a1' }}>
@@ -514,9 +592,21 @@ function WizardInner({
             })}
           </div>
 
+          {visibleTypes.length > cappedTypes.length && (
+            <div>
+              <button
+                type="button"
+                className="button secondary"
+                onClick={() => setShowAllTypes(true)}
+              >
+                Show all {visibleTypes.length} services
+              </button>
+            </div>
+          )}
+
           {!visibleTypes.length && (
             <p style={{ color: '#64748b' }}>
-              No matching business type found for &ldquo;{searchQuery}&rdquo;. Clear search to browse all 13 categories.
+              No matching business type found for &ldquo;{searchQuery}&rdquo;. Clear search to browse all 15 categories.
             </p>
           )}
 

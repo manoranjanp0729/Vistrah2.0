@@ -10,11 +10,11 @@ const legacy=JSON.parse(readFileSync(new URL('../../shared/marketplace-legacy-ma
 const imagery=JSON.parse(readFileSync(new URL('../../shared/marketplace-imagery.json',import.meta.url),'utf8'));
 const marketplace=createMarketplace(taxonomy,legacy);
 
-test('preserves simplified 2-level hierarchy (13 categories -> 81 business types) and legacy redirects',()=>{
-  assert.deepEqual(marketplace.taxonomyCounts,{categories:13,subcategories:81,listingTypes:81});
+test('preserves full 800+ hierarchy (15 categories -> 132 subcategories -> 808 service types) and legacy redirects',()=>{
+  assert.deepEqual(marketplace.taxonomyCounts,{categories:15,subcategories:132,listingTypes:808});
   for(const category of marketplace.marketplaceCategories){
     for(const subcategory of category.subcategories){
-      assert.equal(marketplace.resolveMarketplaceSelection({category:category.slug,subcategory:subcategory.slug})?.listingType?.slug,subcategory.slug);
+      assert.equal(marketplace.resolveMarketplaceSelection({category:category.slug,subcategory:subcategory.slug})?.subcategory?.slug,subcategory.slug);
       for(const type of subcategory.listing_types){
         const selection={category:category.slug,subcategory:subcategory.slug,type:type.slug};
         assert.equal(marketplace.resolveMarketplaceSelection(selection)?.listingType?.slug,type.slug);
@@ -22,14 +22,15 @@ test('preserves simplified 2-level hierarchy (13 categories -> 81 business types
       }
     }
   }
-  assert.equal(marketplace.resolveMarketplaceSelection({category:'food-and-dining',subcategory:'cleaning'}),null);
-  assert.deepEqual(marketplace.legacyMarketplaceSelection({category:'pet-care',subcategory:'grooming'}),{
-    category:'home-services',
-    subcategory:'pet-care',
+  assert.equal(marketplace.resolveMarketplaceSelection({category:'food-and-dining',subcategory:'plumbers'}),null);
+  assert.deepEqual(marketplace.legacyMarketplaceSelection({category:'home-services',subcategory:'electrician-and-plumber'}),{
+    category:'home-and-everyday-services',
+    subcategory:'repairs-and-maintenance',
+    type:'plumbing',
   });
 });
 
-test('bundles the exact website image bytes across all curated assets and maps every v2 item to a valid photo',()=>{
+test('bundles the exact website image bytes across all curated assets and maps every item to a valid photo',()=>{
   for(const photo of Object.values(imagery.assets) as {src:string;sha256:string}[]){
     const web=readFileSync(new URL('../../frontend/public'+photo.src,import.meta.url));
     const native=readFileSync(new URL('../assets/marketplace/'+photo.src.split('/').at(-1),import.meta.url));
@@ -53,29 +54,29 @@ test('bundles the exact website image bytes across all curated assets and maps e
   }
 });
 
-test('uses one two-row rail contract without losing the 13th category card',()=>{
+test('uses one two-row rail contract without losing the 15th category card',()=>{
   const columns=twoRowColumns(marketplace.marketplaceCategories);
-  assert.equal(columns.length,7);
+  assert.equal(columns.length,8);
   assert.equal(columns.at(-1)?.length,1);
   assert.deepEqual(columns.flat(),marketplace.marketplaceCategories);
   assert.deepEqual(photoCardDesign,{width:148,height:168,imageHeight:86,imageInset:7,radius:16,imageRadius:11,gap:12,titleSize:13,titleLineHeight:18,titleLines:2,rows:2});
 });
 
-test('search links to the right business type via preserved keywords, never to a legacy /service/ route',()=>{
+test('search links to /services/nearby for specific service types, never to a legacy /service/ route',()=>{
   const result=marketplace.searchMarketplaceEntries('  DOG WALKING  ');
   assert.ok(result.length>=1);
-  assert.equal((result[0].selection as {subcategory?:string}).subcategory,'pet-care');
+  assert.equal(result[0].selection.type,'dog-walking');
+  assert.ok(result[0].href.startsWith('/services/nearby?'));
   assert.ok(!result[0].href.includes('/service/'));
   const source=readFileSync(new URL('../src/app/(tabs)/services/index.tsx',import.meta.url),'utf8');
   assert.ok(!source.includes('/marketplace/taxonomy'));
   assert.ok(source.includes('legacyMarketplaceSelection'));
 });
 
-test('agriculture exposes 6 business types with valid photos and preserves tractor rental keyword search',()=>{
-  const category=taxonomy.categories.at(-1);
-  assert.equal(category.slug,'agriculture-and-farming');
-  assert.equal(category.order,13);
-  assert.equal(category.subcategories.length,6);
+test('agriculture exposes 9 subcategories with valid photos and preserves tractor rental search',()=>{
+  const category=taxonomy.categories.find((c:{slug:string})=>c.slug==='agriculture-and-farming');
+  assert.ok(category);
+  assert.equal(category.subcategories.length,9);
   for(const sub of category.subcategories){
     assert.ok(imagery.items[marketplaceItemId(category.slug,sub.slug)].photo);
   }

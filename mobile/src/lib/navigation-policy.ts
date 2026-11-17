@@ -13,7 +13,12 @@ export function backFallback(pathname:string,params:Record<string,unknown>={}):s
  if(path.startsWith('/seller/')||path==='/seller'){
   if(path==='/seller/onboard'&&typeof params.category==='string'){
    const query=new URLSearchParams({category:params.category});
-   if(typeof params.type==='string')query.set('subcategory',params.type);
+   if(typeof params.subcategory==='string'&&params.subcategory){
+    query.set('subcategory',params.subcategory);
+    if(typeof params.type==='string'&&params.type)query.set('type',params.type);
+   }else if(typeof params.type==='string'&&params.type){
+    query.set('subcategory',params.type);
+   }
    return '/services?'+query.toString();
   }
   if(path==='/seller/add-service'){
@@ -29,7 +34,11 @@ export function backFallback(pathname:string,params:Record<string,unknown>={}):s
  if(service)return '/service/'+service[1];
  if(path.startsWith('/commerce/'))return '/commerce';
  if(path==='/services/nearby'){
-  if(typeof params.category==='string'&&params.category)return '/services?category='+encodeURIComponent(params.category);
+  if(typeof params.category==='string'&&params.category){
+   const query=new URLSearchParams({category:params.category});
+   if(typeof params.subcategory==='string'&&params.subcategory)query.set('subcategory',params.subcategory);
+   return '/services?'+query.toString();
+  }
   return '/services';
  }
  if(path.startsWith('/service/')||path.startsWith('/category/'))return '/services';

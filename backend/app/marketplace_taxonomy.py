@@ -1,9 +1,7 @@
-"""Read-only master taxonomy metadata (v2: 13 categories -> business types).
+"""Read-only master taxonomy metadata (15 categories -> 132 subcategories -> 808 listing types).
 
-Older v1 slugs (14 categories / 126 subcategories / 749 listing types) are still
-accepted on read through shared/marketplace-legacy-map.json, so bookmarked links
-and listings created before the simplification keep resolving to the matching
-business type. Stored rows are only rewritten by app.business_catalogue.
+Simplified v2 slugs and bookmarks remain accepted on read through
+`shared/marketplace-legacy-map.json` so existing links keep resolving cleanly.
 """
 import json
 from functools import lru_cache
@@ -26,7 +24,13 @@ def master_taxonomy():
 @lru_cache(maxsize=1)
 def legacy_map():
     if not LEGACY_MAP_FILE.exists():
-        return {"categories": {}, "subcategories": {}, "catalogue_services": {}, "retained_catalogue_categories": []}
+        return {
+            "categories": {},
+            "subcategories": {},
+            "triples": {},
+            "catalogue_services": {},
+            "retained_catalogue_categories": [],
+        }
     return json.loads(LEGACY_MAP_FILE.read_text(encoding="utf-8"))
 
 
@@ -36,7 +40,9 @@ def taxonomy_summary():
         "version": data["version"],
         "categories": len(data["categories"]),
         "subcategories": sum(len(c["subcategories"]) for c in data["categories"]),
-        "listing_types": sum(len(s["listing_types"]) for c in data["categories"] for s in c["subcategories"]),
+        "listing_types": sum(
+            len(s["listing_types"]) for c in data["categories"] for s in c["subcategories"]
+        ),
     }
 
 
@@ -58,18 +64,20 @@ def _resolve_current(category_slug: str, subcategory_slug: str, listing_type_slu
 
 
 def canonical_selection(category_slug: str, subcategory_slug: str, listing_type_slug: str):
-    """Return the current (category, business type, listing type) slugs for a current or v1 selection."""
+    """Return the current `(category, subcategory, listing_type)` slugs for a current or v2 selection."""
     if _resolve_current(category_slug, subcategory_slug, listing_type_slug):
         return category_slug, subcategory_slug, listing_type_slug
-    mapped = legacy_map().get("subcategories", {}).get(subcategory_slug)
-    if mapped and len(mapped) == 2 and legacy_map().get("categories", {}).get(category_slug):
-        new_category, business_type = mapped
-        if _resolve_current(new_category, business_type, business_type):
-            return new_category, business_type, business_type
+    mapped = legacy_map().get("subcategories", {}).get(subcategory_slug) or legacy_map().get(
+        "subcategories", {}
+    ).get(listing_type_slug)
+    if mapped and len(mapped) >= 3:
+        new_cat, new_sub, new_lt = mapped[0], mapped[1], mapped[2]
+        if _resolve_current(new_cat, new_sub, new_lt):
+            return new_cat, new_sub, new_lt
     return None
 
 
 def resolve_selection(category_slug: str, subcategory_slug: str, listing_type_slug: str):
-    """Resolve a complete selection, translating v1 slugs without touching stored rows."""
+    """Resolve a complete selection, translating legacy slugs without touching stored rows."""
     canonical = canonical_selection(category_slug, subcategory_slug, listing_type_slug)
     return _resolve_current(*canonical) if canonical else None

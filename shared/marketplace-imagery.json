@@ -8218,689 +8218,269 @@
       "photo": "agriculture-farm-record-keeping-support",
       "subject": "Farm record keeping support"
     },
-    "subcategory/food-and-dining/restaurant": {
-      "photo": "catalogue-first25-food-and-dining--restaurants-and-dining",
-      "subject": "Restaurant"
-    },
-    "type/food-and-dining/restaurant/restaurant": {
-      "photo": "catalogue-first25-food-and-dining--restaurants-and-dining",
-      "subject": "Restaurant"
-    },
-    "subcategory/food-and-dining/cafe-and-bakery": {
-      "photo": "catalogue-batch2-food-and-dining--caf-s-and-beverages",
-      "subject": "Café & Bakery"
-    },
-    "type/food-and-dining/cafe-and-bakery/cafe-and-bakery": {
-      "photo": "catalogue-batch2-food-and-dining--caf-s-and-beverages",
-      "subject": "Café & Bakery"
-    },
-    "subcategory/food-and-dining/sweets-and-snacks": {
-      "photo": "cake",
-      "subject": "Sweets & Snacks"
-    },
-    "type/food-and-dining/sweets-and-snacks/sweets-and-snacks": {
-      "photo": "cake",
-      "subject": "Sweets & Snacks"
-    },
-    "subcategory/food-and-dining/catering": {
-      "photo": "chef",
-      "subject": "Catering"
-    },
-    "type/food-and-dining/catering/catering": {
-      "photo": "chef",
-      "subject": "Catering"
-    },
-    "subcategory/food-and-dining/home-food-and-tiffin": {
-      "photo": "pizza",
-      "subject": "Home Food & Tiffin"
-    },
-    "type/food-and-dining/home-food-and-tiffin/home-food-and-tiffin": {
-      "photo": "pizza",
-      "subject": "Home Food & Tiffin"
-    },
-    "subcategory/food-and-dining/cloud-kitchen-and-delivery": {
-      "photo": "catalogue-batch2-food-and-dining--food-delivery-and-takeaway",
-      "subject": "Cloud Kitchen & Delivery"
-    },
-    "type/food-and-dining/cloud-kitchen-and-delivery/cloud-kitchen-and-delivery": {
-      "photo": "catalogue-batch2-food-and-dining--food-delivery-and-takeaway",
-      "subject": "Cloud Kitchen & Delivery"
-    },
-    "category/home-services": {
-      "photo": "home-and-everyday-services",
-      "subject": "Home Services"
-    },
-    "subcategory/home-services/cleaning": {
-      "photo": "catalogue-first25-home-and-everyday-services--cleaning-services",
-      "subject": "Cleaning"
-    },
-    "type/home-services/cleaning/cleaning": {
-      "photo": "catalogue-first25-home-and-everyday-services--cleaning-services",
-      "subject": "Cleaning"
-    },
-    "subcategory/home-services/electrician-and-plumber": {
-      "photo": "catalogue-first25-home-and-everyday-services--repairs-and-maintenance",
-      "subject": "Electrician & Plumber"
-    },
-    "type/home-services/electrician-and-plumber/electrician-and-plumber": {
-      "photo": "catalogue-first25-home-and-everyday-services--repairs-and-maintenance",
-      "subject": "Electrician & Plumber"
-    },
-    "subcategory/home-services/appliance-repair": {
-      "photo": "catalogue-batch2-home-and-everyday-services--appliance-services",
-      "subject": "Appliance Repair"
-    },
-    "type/home-services/appliance-repair/appliance-repair": {
-      "photo": "catalogue-batch2-home-and-everyday-services--appliance-services",
-      "subject": "Appliance Repair"
-    },
-    "subcategory/home-services/painting-and-interiors": {
-      "photo": "interior",
-      "subject": "Painting & Interiors"
-    },
-    "type/home-services/painting-and-interiors/painting-and-interiors": {
-      "photo": "interior",
-      "subject": "Painting & Interiors"
-    },
-    "subcategory/home-services/pest-control": {
-      "photo": "pest",
-      "subject": "Pest Control"
-    },
-    "type/home-services/pest-control/pest-control": {
-      "photo": "pest",
-      "subject": "Pest Control"
-    },
-    "subcategory/home-services/packers-and-movers": {
-      "photo": "moving",
-      "subject": "Packers & Movers"
-    },
-    "type/home-services/packers-and-movers/packers-and-movers": {
-      "photo": "moving",
-      "subject": "Packers & Movers"
-    },
-    "subcategory/home-services/domestic-help": {
-      "photo": "cleaning",
-      "subject": "Domestic Help"
-    },
-    "type/home-services/domestic-help/domestic-help": {
-      "photo": "cleaning",
-      "subject": "Domestic Help"
-    },
-    "subcategory/home-services/pet-care": {
-      "photo": "catalogue-batch2-pet-care--grooming",
-      "subject": "Pet Care"
-    },
-    "type/home-services/pet-care/pet-care": {
-      "photo": "catalogue-batch2-pet-care--grooming",
-      "subject": "Pet Care"
-    },
-    "category/shops-and-retail": {
-      "photo": "shopping-and-local-retail",
-      "subject": "Shops & Retail"
-    },
-    "subcategory/shops-and-retail/grocery-and-daily-needs": {
-      "photo": "catalogue-first25-shopping-and-local-retail--grocery-and-daily-needs",
-      "subject": "Grocery & Daily Needs"
-    },
-    "type/shops-and-retail/grocery-and-daily-needs/grocery-and-daily-needs": {
-      "photo": "catalogue-first25-shopping-and-local-retail--grocery-and-daily-needs",
-      "subject": "Grocery & Daily Needs"
-    },
-    "subcategory/shops-and-retail/mobiles-and-electronics": {
-      "photo": "catalogue-first25-shopping-and-local-retail--electronics",
-      "subject": "Mobiles & Electronics"
-    },
-    "type/shops-and-retail/mobiles-and-electronics/mobiles-and-electronics": {
-      "photo": "catalogue-first25-shopping-and-local-retail--electronics",
-      "subject": "Mobiles & Electronics"
-    },
-    "subcategory/shops-and-retail/clothing-and-footwear": {
-      "photo": "catalogue-batch2-shopping-and-local-retail--fashion-and-clothing",
-      "subject": "Clothing & Footwear"
-    },
-    "type/shops-and-retail/clothing-and-footwear/clothing-and-footwear": {
-      "photo": "catalogue-batch2-shopping-and-local-retail--fashion-and-clothing",
-      "subject": "Clothing & Footwear"
-    },
-    "subcategory/shops-and-retail/furniture-and-home-decor": {
-      "photo": "home-purchase",
-      "subject": "Furniture & Home Décor"
-    },
-    "type/shops-and-retail/furniture-and-home-decor/furniture-and-home-decor": {
-      "photo": "home-purchase",
-      "subject": "Furniture & Home Décor"
-    },
-    "subcategory/shops-and-retail/gifts-books-and-stationery": {
-      "photo": "books",
-      "subject": "Gifts, Books & Stationery"
-    },
-    "type/shops-and-retail/gifts-books-and-stationery/gifts-books-and-stationery": {
-      "photo": "books",
-      "subject": "Gifts, Books & Stationery"
-    },
-    "subcategory/shops-and-retail/hardware-and-tools": {
-      "photo": "construction-equipment",
-      "subject": "Hardware & Tools"
-    },
-    "type/shops-and-retail/hardware-and-tools/hardware-and-tools": {
-      "photo": "construction-equipment",
-      "subject": "Hardware & Tools"
-    },
-    "subcategory/shops-and-retail/local-makers-and-wholesalers": {
-      "photo": "printing",
-      "subject": "Local Makers & Wholesalers"
-    },
-    "type/shops-and-retail/local-makers-and-wholesalers/local-makers-and-wholesalers": {
-      "photo": "printing",
-      "subject": "Local Makers & Wholesalers"
-    },
-    "category/beauty-and-personal-care": {
-      "photo": "beauty-fashion-and-lifestyle",
-      "subject": "Beauty & Personal Care"
-    },
-    "subcategory/beauty-and-personal-care/salon-and-barber": {
-      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--salons-and-haircare",
-      "subject": "Salon & Barber"
-    },
-    "type/beauty-and-personal-care/salon-and-barber/salon-and-barber": {
-      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--salons-and-haircare",
-      "subject": "Salon & Barber"
-    },
-    "subcategory/beauty-and-personal-care/beauty-parlour-and-makeup": {
-      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--beauty-and-skincare",
-      "subject": "Beauty Parlour & Makeup"
-    },
-    "type/beauty-and-personal-care/beauty-parlour-and-makeup/beauty-parlour-and-makeup": {
-      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--beauty-and-skincare",
-      "subject": "Beauty Parlour & Makeup"
-    },
-    "subcategory/beauty-and-personal-care/spa-and-massage": {
-      "photo": "catalogue-batch2-beauty-fashion-and-lifestyle--spa-and-relaxation",
-      "subject": "Spa & Massage"
-    },
-    "type/beauty-and-personal-care/spa-and-massage/spa-and-massage": {
-      "photo": "catalogue-batch2-beauty-fashion-and-lifestyle--spa-and-relaxation",
-      "subject": "Spa & Massage"
-    },
-    "subcategory/beauty-and-personal-care/tailoring-and-boutique": {
-      "photo": "clothes",
-      "subject": "Tailoring & Boutique"
-    },
-    "type/beauty-and-personal-care/tailoring-and-boutique/tailoring-and-boutique": {
-      "photo": "clothes",
-      "subject": "Tailoring & Boutique"
-    },
-    "subcategory/beauty-and-personal-care/jewellery-and-accessories": {
-      "photo": "jewellery",
-      "subject": "Jewellery & Accessories"
-    },
-    "type/beauty-and-personal-care/jewellery-and-accessories/jewellery-and-accessories": {
-      "photo": "jewellery",
-      "subject": "Jewellery & Accessories"
-    },
-    "subcategory/beauty-and-personal-care/tattoo-and-body-art": {
-      "photo": "tattoo",
-      "subject": "Tattoo & Body Art"
-    },
-    "type/beauty-and-personal-care/tattoo-and-body-art/tattoo-and-body-art": {
-      "photo": "tattoo",
-      "subject": "Tattoo & Body Art"
-    },
-    "category/health-and-fitness": {
-      "photo": "health-fitness-and-wellness",
-      "subject": "Health & Fitness"
-    },
-    "subcategory/health-and-fitness/clinic-and-doctor": {
-      "photo": "catalogue-first25-health-fitness-and-wellness--doctors-and-specialists",
-      "subject": "Clinic & Doctor"
-    },
-    "type/health-and-fitness/clinic-and-doctor/clinic-and-doctor": {
-      "photo": "catalogue-first25-health-fitness-and-wellness--doctors-and-specialists",
-      "subject": "Clinic & Doctor"
-    },
-    "subcategory/health-and-fitness/hospital": {
-      "photo": "catalogue-first25-health-fitness-and-wellness--hospitals-and-clinics",
-      "subject": "Hospital"
-    },
-    "type/health-and-fitness/hospital/hospital": {
-      "photo": "catalogue-first25-health-fitness-and-wellness--hospitals-and-clinics",
-      "subject": "Hospital"
-    },
-    "subcategory/health-and-fitness/diagnostic-lab": {
-      "photo": "catalogue-batch2-health-fitness-and-wellness--diagnostic-services",
-      "subject": "Diagnostic Lab"
-    },
-    "type/health-and-fitness/diagnostic-lab/diagnostic-lab": {
-      "photo": "catalogue-batch2-health-fitness-and-wellness--diagnostic-services",
-      "subject": "Diagnostic Lab"
-    },
-    "subcategory/health-and-fitness/pharmacy": {
-      "photo": "lab",
-      "subject": "Pharmacy"
-    },
-    "type/health-and-fitness/pharmacy/pharmacy": {
-      "photo": "lab",
-      "subject": "Pharmacy"
-    },
-    "subcategory/health-and-fitness/gym-and-yoga": {
-      "photo": "gym",
-      "subject": "Gym & Yoga"
-    },
-    "type/health-and-fitness/gym-and-yoga/gym-and-yoga": {
-      "photo": "gym",
-      "subject": "Gym & Yoga"
-    },
-    "subcategory/health-and-fitness/physiotherapy": {
-      "photo": "physio",
-      "subject": "Physiotherapy"
-    },
-    "type/health-and-fitness/physiotherapy/physiotherapy": {
-      "photo": "physio",
-      "subject": "Physiotherapy"
-    },
-    "subcategory/health-and-fitness/diet-and-counselling": {
-      "photo": "tea",
-      "subject": "Diet & Counselling"
-    },
-    "type/health-and-fitness/diet-and-counselling/diet-and-counselling": {
-      "photo": "tea",
-      "subject": "Diet & Counselling"
-    },
-    "subcategory/health-and-fitness/veterinary-clinic": {
-      "photo": "catalogue-first25-pet-care--veterinary-services",
-      "subject": "Veterinary Clinic"
-    },
-    "type/health-and-fitness/veterinary-clinic/veterinary-clinic": {
-      "photo": "catalogue-first25-pet-care--veterinary-services",
-      "subject": "Veterinary Clinic"
-    },
-    "category/vehicles": {
-      "photo": "automobiles",
-      "subject": "Vehicles"
-    },
-    "subcategory/vehicles/car-and-bike-sales": {
-      "photo": "catalogue-first25-automobiles--new-vehicles",
-      "subject": "Car & Bike Sales"
-    },
-    "type/vehicles/car-and-bike-sales/car-and-bike-sales": {
-      "photo": "catalogue-first25-automobiles--new-vehicles",
-      "subject": "Car & Bike Sales"
-    },
-    "subcategory/vehicles/service-and-repair": {
-      "photo": "mechanic",
-      "subject": "Service & Repair"
-    },
-    "type/vehicles/service-and-repair/service-and-repair": {
-      "photo": "mechanic",
-      "subject": "Service & Repair"
-    },
-    "subcategory/vehicles/car-wash-and-detailing": {
-      "photo": "car-wash",
-      "subject": "Car Wash & Detailing"
-    },
-    "type/vehicles/car-wash-and-detailing/car-wash-and-detailing": {
-      "photo": "car-wash",
-      "subject": "Car Wash & Detailing"
-    },
-    "subcategory/vehicles/spare-parts-and-accessories": {
-      "photo": "automobile-engine-parts",
-      "subject": "Spare Parts & Accessories"
-    },
-    "type/vehicles/spare-parts-and-accessories/spare-parts-and-accessories": {
-      "photo": "automobile-engine-parts",
-      "subject": "Spare Parts & Accessories"
-    },
-    "subcategory/vehicles/driving-school": {
-      "photo": "automobile-driving",
-      "subject": "Driving School"
-    },
-    "type/vehicles/driving-school/driving-school": {
-      "photo": "automobile-driving",
-      "subject": "Driving School"
-    },
-    "subcategory/vehicles/towing-and-roadside-help": {
-      "photo": "automobile-towing",
-      "subject": "Towing & Roadside Help"
-    },
-    "type/vehicles/towing-and-roadside-help/towing-and-roadside-help": {
-      "photo": "automobile-towing",
-      "subject": "Towing & Roadside Help"
-    },
     "category/property-and-construction": {
-      "photo": "construction-equipment",
-      "subject": "Property & Construction"
-    },
-    "subcategory/property-and-construction/property-buy-sell": {
-      "photo": "property-appraisal",
-      "subject": "Property Buy/Sell (Agents & Builders)"
-    },
-    "type/property-and-construction/property-buy-sell/property-buy-sell": {
-      "photo": "property-appraisal",
-      "subject": "Property Buy/Sell (Agents & Builders)"
-    },
-    "subcategory/property-and-construction/house-pg-and-room-rentals": {
-      "photo": "catalogue-first25-rental-services--residential-property-rentals",
-      "subject": "House, PG & Room Rentals"
-    },
-    "type/property-and-construction/house-pg-and-room-rentals/house-pg-and-room-rentals": {
-      "photo": "catalogue-first25-rental-services--residential-property-rentals",
-      "subject": "House, PG & Room Rentals"
-    },
-    "subcategory/property-and-construction/shop-and-office-space": {
       "photo": "commercial-building",
-      "subject": "Shop & Office Space"
+      "subject": "Property, Real Estate & Construction"
     },
-    "type/property-and-construction/shop-and-office-space/shop-and-office-space": {
+    "subcategory/property-and-construction/residential-and-commercial-real-estate": {
       "photo": "commercial-building",
-      "subject": "Shop & Office Space"
+      "subject": "Residential & Commercial Real Estate"
     },
-    "subcategory/property-and-construction/contractors-and-civil-work": {
-      "photo": "engineering-team",
-      "subject": "Contractors & Civil Work"
+    "type/property-and-construction/residential-and-commercial-real-estate/apartment-sales-and-resale": {
+      "photo": "commercial-building",
+      "subject": "Apartment Sales & Resale"
     },
-    "type/property-and-construction/contractors-and-civil-work/contractors-and-civil-work": {
-      "photo": "engineering-team",
-      "subject": "Contractors & Civil Work"
+    "type/property-and-construction/residential-and-commercial-real-estate/independent-house-and-villa-sales": {
+      "photo": "home-and-everyday-services",
+      "subject": "Independent House & Villa Sales"
     },
-    "subcategory/property-and-construction/architect-and-interior-designer": {
+    "type/property-and-construction/residential-and-commercial-real-estate/residential-plots-and-layouts": {
+      "photo": "garden",
+      "subject": "Residential Plots & Layouts"
+    },
+    "type/property-and-construction/residential-and-commercial-real-estate/commercial-office-and-shop-spaces": {
+      "photo": "commercial-building",
+      "subject": "Commercial Office & Shop Spaces"
+    },
+    "type/property-and-construction/residential-and-commercial-real-estate/industrial-sheds-and-warehouses": {
+      "photo": "truck",
+      "subject": "Industrial Sheds & Warehouses"
+    },
+    "type/property-and-construction/residential-and-commercial-real-estate/farmland-and-agricultural-plots": {
+      "photo": "agriculture-farm-land-preparation",
+      "subject": "Farmland & Agricultural Plots"
+    },
+    "type/property-and-construction/residential-and-commercial-real-estate/paying-guest-and-hostel-rentals": {
       "photo": "interior",
-      "subject": "Architect & Interior Designer"
+      "subject": "Paying Guest & Hostel Spaces"
     },
-    "type/property-and-construction/architect-and-interior-designer/architect-and-interior-designer": {
+    "type/property-and-construction/residential-and-commercial-real-estate/flatmate-and-co-living-spaces": {
       "photo": "interior",
-      "subject": "Architect & Interior Designer"
+      "subject": "Flatmate & Co-Living Spaces"
     },
-    "subcategory/property-and-construction/building-materials": {
-      "photo": "air-conditioning",
-      "subject": "Building Materials"
+    "type/property-and-construction/residential-and-commercial-real-estate/real-estate-agents-and-advisors": {
+      "photo": "accountant-consultation",
+      "subject": "Real Estate Agents & Advisors"
     },
-    "type/property-and-construction/building-materials/building-materials": {
-      "photo": "air-conditioning",
-      "subject": "Building Materials"
+    "type/property-and-construction/residential-and-commercial-real-estate/rera-builders-and-developers": {
+      "photo": "architecture",
+      "subject": "RERA Builders & Developers"
     },
-    "category/rentals": {
-      "photo": "construction-equipment",
-      "subject": "Rentals"
+    "subcategory/property-and-construction/property-management-and-valuation": {
+      "photo": "accountant-consultation",
+      "subject": "Property Management & Valuation"
     },
-    "subcategory/rentals/vehicle-rental": {
-      "photo": "catalogue-first25-rental-services--vehicle-rentals",
-      "subject": "Vehicle Rental"
+    "type/property-and-construction/property-management-and-valuation/property-management-and-tenant-care": {
+      "photo": "home-maintenance",
+      "subject": "Property Management & Tenant Care"
     },
-    "type/rentals/vehicle-rental/vehicle-rental": {
-      "photo": "catalogue-first25-rental-services--vehicle-rentals",
-      "subject": "Vehicle Rental"
+    "type/property-and-construction/property-management-and-valuation/rental-agreement-and-lease-drafting": {
+      "photo": "accountant-consultation",
+      "subject": "Rental Agreement & Lease Drafting"
     },
-    "subcategory/rentals/equipment-and-tools-rental": {
-      "photo": "site-contractors",
-      "subject": "Equipment & Tools Rental"
+    "type/property-and-construction/property-management-and-valuation/property-valuation-and-appraisal": {
+      "photo": "architecture",
+      "subject": "Property Valuation & Appraisal"
     },
-    "type/rentals/equipment-and-tools-rental/equipment-and-tools-rental": {
-      "photo": "site-contractors",
-      "subject": "Equipment & Tools Rental"
+    "type/property-and-construction/property-management-and-valuation/khata-transfer-and-property-tax": {
+      "photo": "accountant-consultation",
+      "subject": "Khata Transfer & Property Tax Support"
     },
-    "subcategory/rentals/furniture-and-appliance-rental": {
-      "photo": "catalogue-batch2-rental-services--furniture-rentals",
-      "subject": "Furniture & Appliance Rental"
+    "type/property-and-construction/property-management-and-valuation/land-conversion-and-revenue-records": {
+      "photo": "garden",
+      "subject": "Land Conversion & Revenue Records"
     },
-    "type/rentals/furniture-and-appliance-rental/furniture-and-appliance-rental": {
-      "photo": "catalogue-batch2-rental-services--furniture-rentals",
-      "subject": "Furniture & Appliance Rental"
+    "type/property-and-construction/property-management-and-valuation/encumbrance-and-title-verification": {
+      "photo": "accountant-consultation",
+      "subject": "Encumbrance & Title Verification"
     },
-    "subcategory/rentals/event-and-party-items": {
-      "photo": "celebration",
-      "subject": "Event & Party Items"
+    "type/property-and-construction/property-management-and-valuation/housing-society-and-rwa-management": {
+      "photo": "commercial-building",
+      "subject": "Housing Society & RWA Management"
     },
-    "type/rentals/event-and-party-items/event-and-party-items": {
-      "photo": "celebration",
-      "subject": "Event & Party Items"
+    "type/property-and-construction/property-management-and-valuation/commercial-facility-management": {
+      "photo": "commercial-building",
+      "subject": "Commercial Facility Management"
     },
-    "subcategory/rentals/costume-and-outfit-rental": {
-      "photo": "wedding",
-      "subject": "Costume & Outfit Rental"
+    "type/property-and-construction/property-management-and-valuation/nri-property-caretaking": {
+      "photo": "home-and-everyday-services",
+      "subject": "NRI Property Caretaking"
     },
-    "type/rentals/costume-and-outfit-rental/costume-and-outfit-rental": {
-      "photo": "wedding",
-      "subject": "Costume & Outfit Rental"
+    "subcategory/property-and-construction/architecture-and-civil-engineering": {
+      "photo": "architecture",
+      "subject": "Architecture & Civil Engineering"
     },
-    "category/travel-and-stay": {
-      "photo": "travel-stay-and-experiences",
-      "subject": "Travel & Stay"
+    "type/property-and-construction/architecture-and-civil-engineering/residential-architects": {
+      "photo": "architecture",
+      "subject": "Residential Architects"
     },
-    "subcategory/travel-and-stay/hotel-and-homestay": {
-      "photo": "catalogue-first25-travel-stay-and-experiences--hotels-and-accommodation",
-      "subject": "Hotel & Homestay"
+    "type/property-and-construction/architecture-and-civil-engineering/commercial-and-industrial-architects": {
+      "photo": "commercial-building",
+      "subject": "Commercial & Industrial Architects"
     },
-    "type/travel-and-stay/hotel-and-homestay/hotel-and-homestay": {
-      "photo": "catalogue-first25-travel-stay-and-experiences--hotels-and-accommodation",
-      "subject": "Hotel & Homestay"
+    "type/property-and-construction/architecture-and-civil-engineering/structural-engineering-consultants": {
+      "photo": "architecture",
+      "subject": "Structural Engineering Consultants"
     },
-    "subcategory/travel-and-stay/travel-agent-and-tours": {
-      "photo": "catalogue-first25-travel-stay-and-experiences--travel-planning",
-      "subject": "Travel Agent & Tours"
+    "type/property-and-construction/architecture-and-civil-engineering/civil-engineering-and-site-supervision": {
+      "photo": "home-maintenance",
+      "subject": "Civil Engineering & Site Supervision"
     },
-    "type/travel-and-stay/travel-agent-and-tours/travel-agent-and-tours": {
-      "photo": "catalogue-first25-travel-stay-and-experiences--travel-planning",
-      "subject": "Travel Agent & Tours"
+    "type/property-and-construction/architecture-and-civil-engineering/land-surveying-and-total-station": {
+      "photo": "agriculture-farm-land-preparation",
+      "subject": "Land Surveying & Total Station Mapping"
     },
-    "subcategory/travel-and-stay/taxi-and-transport": {
-      "photo": "catalogue-batch2-travel-stay-and-experiences--transport-and-transfers",
-      "subject": "Taxi & Transport"
+    "type/property-and-construction/architecture-and-civil-engineering/soil-testing-and-geotechnical": {
+      "photo": "agriculture-farm-soil-improvement",
+      "subject": "Soil Testing & Geotechnical Investigation"
     },
-    "type/travel-and-stay/taxi-and-transport/taxi-and-transport": {
-      "photo": "catalogue-batch2-travel-stay-and-experiences--transport-and-transfers",
-      "subject": "Taxi & Transport"
+    "type/property-and-construction/architecture-and-civil-engineering/building-plan-sanction-and-approvals": {
+      "photo": "accountant-consultation",
+      "subject": "Building Plan Sanction & Approvals"
     },
-    "subcategory/travel-and-stay/adventure-and-activities": {
-      "photo": "outdoor",
-      "subject": "Adventure & Activities"
+    "type/property-and-construction/architecture-and-civil-engineering/estimation-boq-and-quantity-surveying": {
+      "photo": "architecture",
+      "subject": "Estimation, BOQ & Quantity Surveying"
     },
-    "type/travel-and-stay/adventure-and-activities/adventure-and-activities": {
-      "photo": "outdoor",
-      "subject": "Adventure & Activities"
+    "type/property-and-construction/architecture-and-civil-engineering/vastu-and-space-planning": {
+      "photo": "interior",
+      "subject": "Vastu & Space Planning Consultants"
     },
-    "category/education-and-training": {
-      "photo": "education-and-skills",
-      "subject": "Education & Training"
+    "type/property-and-construction/architecture-and-civil-engineering/green-building-and-solar-rooftop-design": {
+      "photo": "electrical",
+      "subject": "Green Building & Solar Rooftop Design"
     },
-    "subcategory/education-and-training/school-and-college": {
-      "photo": "catalogue-first25-education-and-skills--schools-and-academic-education",
-      "subject": "School & College"
+    "subcategory/property-and-construction/building-contractors-and-turnkey": {
+      "photo": "home-maintenance",
+      "subject": "Building Contractors & Turnkey Construction"
     },
-    "type/education-and-training/school-and-college/school-and-college": {
-      "photo": "catalogue-first25-education-and-skills--schools-and-academic-education",
-      "subject": "School & College"
+    "type/property-and-construction/building-contractors-and-turnkey/turnkey-home-construction-contractors": {
+      "photo": "home-and-everyday-services",
+      "subject": "Turnkey Home Construction Contractors"
     },
-    "subcategory/education-and-training/tuition-and-coaching": {
-      "photo": "catalogue-first25-education-and-skills--tutors-and-coaching",
-      "subject": "Tuition & Coaching"
+    "type/property-and-construction/building-contractors-and-turnkey/commercial-building-contractors": {
+      "photo": "commercial-building",
+      "subject": "Commercial Building Contractors"
     },
-    "type/education-and-training/tuition-and-coaching/tuition-and-coaching": {
-      "photo": "catalogue-first25-education-and-skills--tutors-and-coaching",
-      "subject": "Tuition & Coaching"
+    "type/property-and-construction/building-contractors-and-turnkey/rcc-masonry-and-brickwork-contractors": {
+      "photo": "home-maintenance",
+      "subject": "RCC, Masonry & Brickwork Contractors"
     },
-    "subcategory/education-and-training/skill-and-vocational-training": {
-      "photo": "carpentry",
-      "subject": "Skill & Vocational Training"
-    },
-    "type/education-and-training/skill-and-vocational-training/skill-and-vocational-training": {
-      "photo": "carpentry",
-      "subject": "Skill & Vocational Training"
-    },
-    "subcategory/education-and-training/language-classes": {
-      "photo": "collaboration",
-      "subject": "Language Classes"
-    },
-    "type/education-and-training/language-classes/language-classes": {
-      "photo": "collaboration",
-      "subject": "Language Classes"
-    },
-    "subcategory/education-and-training/music-dance-and-arts": {
+    "type/property-and-construction/building-contractors-and-turnkey/renovation-and-structural-repair": {
       "photo": "wall-painting",
-      "subject": "Music, Dance & Arts"
+      "subject": "Renovation, Remodelling & Structural Repair"
     },
-    "type/education-and-training/music-dance-and-arts/music-dance-and-arts": {
+    "type/property-and-construction/building-contractors-and-turnkey/waterproofing-and-terrace-sealing": {
+      "photo": "home-maintenance",
+      "subject": "Waterproofing & Terrace Sealing"
+    },
+    "type/property-and-construction/building-contractors-and-turnkey/borewell-drilling-and-flushing": {
+      "photo": "agriculture-farm-irrigation-pump-repair",
+      "subject": "Borewell Drilling & Flushing"
+    },
+    "type/property-and-construction/building-contractors-and-turnkey/earthmoving-excavation-and-jcb": {
+      "photo": "truck",
+      "subject": "Earthmoving, Excavation & JCB Contractors"
+    },
+    "type/property-and-construction/building-contractors-and-turnkey/compound-wall-precast-and-fencing": {
+      "photo": "agriculture-farm-boundary-maintenance",
+      "subject": "Compound Wall, Precast & Fencing"
+    },
+    "type/property-and-construction/building-contractors-and-turnkey/roofing-truss-and-fabrication-works": {
+      "photo": "home-maintenance",
+      "subject": "Roofing, Truss & Fabrication Works"
+    },
+    "type/property-and-construction/building-contractors-and-turnkey/road-paver-block-and-drainage-works": {
+      "photo": "agriculture-farm-drainage-clearing",
+      "subject": "Road, Paver Block & Drainage Works"
+    },
+    "subcategory/property-and-construction/interiors-and-woodwork-execution": {
+      "photo": "interior",
+      "subject": "Interiors & Modular Woodwork"
+    },
+    "type/property-and-construction/interiors-and-woodwork-execution/full-home-interior-designers": {
+      "photo": "interior",
+      "subject": "Full-Home Interior Designers"
+    },
+    "type/property-and-construction/interiors-and-woodwork-execution/modular-kitchen-manufacturers": {
+      "photo": "interior",
+      "subject": "Modular Kitchen Manufacturers"
+    },
+    "type/property-and-construction/interiors-and-woodwork-execution/wardrobe-and-custom-carpentry": {
+      "photo": "home-maintenance",
+      "subject": "Wardrobe & Custom Carpentry"
+    },
+    "type/property-and-construction/interiors-and-woodwork-execution/false-ceiling-pop-and-gypsum": {
       "photo": "wall-painting",
-      "subject": "Music, Dance & Arts"
+      "subject": "False Ceiling, POP & Gypsum Works"
     },
-    "subcategory/education-and-training/exam-preparation": {
-      "photo": "application-desk",
-      "subject": "Exam Preparation"
+    "type/property-and-construction/interiors-and-woodwork-execution/tiles-marble-and-granite-laying": {
+      "photo": "interior",
+      "subject": "Tiles, Marble & Granite Laying"
     },
-    "type/education-and-training/exam-preparation/exam-preparation": {
-      "photo": "application-desk",
-      "subject": "Exam Preparation"
+    "type/property-and-construction/interiors-and-woodwork-execution/texture-painting-putty-and-polishing": {
+      "photo": "wall-painting",
+      "subject": "Texture Painting, Putty & Polishing"
     },
-    "subcategory/events-and-celebrations/venue-and-function-hall": {
-      "photo": "catalogue-first25-events-and-celebrations--venues",
-      "subject": "Venue & Function Hall"
+    "type/property-and-construction/interiors-and-woodwork-execution/upvc-aluminium-windows-and-glass": {
+      "photo": "commercial-building",
+      "subject": "UPVC, Aluminium Windows & Toughened Glass"
     },
-    "type/events-and-celebrations/venue-and-function-hall/venue-and-function-hall": {
-      "photo": "catalogue-first25-events-and-celebrations--venues",
-      "subject": "Venue & Function Hall"
+    "type/property-and-construction/interiors-and-woodwork-execution/electrical-wiring-and-smart-automation": {
+      "photo": "electrical",
+      "subject": "Electrical Wiring & Smart Automation"
     },
-    "subcategory/events-and-celebrations/decorator": {
-      "photo": "restaurant",
-      "subject": "Decorator"
+    "type/property-and-construction/interiors-and-woodwork-execution/plumbing-sanitary-and-solar-heaters": {
+      "photo": "home-maintenance",
+      "subject": "Plumbing, Sanitary & Solar Water Heaters"
     },
-    "type/events-and-celebrations/decorator/decorator": {
-      "photo": "restaurant",
-      "subject": "Decorator"
+    "type/property-and-construction/interiors-and-woodwork-execution/iron-grills-gates-and-ss-railings": {
+      "photo": "home-maintenance",
+      "subject": "Iron Grills, Gates & SS Railings"
     },
-    "subcategory/events-and-celebrations/photographer-and-videographer": {
-      "photo": "media-production",
-      "subject": "Photographer & Videographer"
+    "subcategory/property-and-construction/construction-materials-and-supplies": {
+      "photo": "truck",
+      "subject": "Construction Materials & Supplies"
     },
-    "type/events-and-celebrations/photographer-and-videographer/photographer-and-videographer": {
-      "photo": "media-production",
-      "subject": "Photographer & Videographer"
+    "type/property-and-construction/construction-materials-and-supplies/cement-and-ready-mix-concrete": {
+      "photo": "truck",
+      "subject": "Cement & Ready-Mix Concrete Suppliers"
     },
-    "subcategory/events-and-celebrations/event-planner": {
-      "photo": "planning",
-      "subject": "Event Planner"
+    "type/property-and-construction/construction-materials-and-supplies/tmt-steel-bars-and-structural-metal": {
+      "photo": "commercial-building",
+      "subject": "TMT Steel Bars & Structural Metal"
     },
-    "type/events-and-celebrations/event-planner/event-planner": {
-      "photo": "planning",
-      "subject": "Event Planner"
+    "type/property-and-construction/construction-materials-and-supplies/bricks-solid-blocks-and-aac-blocks": {
+      "photo": "home-maintenance",
+      "subject": "Bricks, Solid Blocks & AAC Blocks"
     },
-    "subcategory/events-and-celebrations/dj-music-and-entertainment": {
-      "photo": "digital-analytics",
-      "subject": "DJ, Music & Entertainment"
+    "type/property-and-construction/construction-materials-and-supplies/m-sand-p-sand-and-aggregates": {
+      "photo": "truck",
+      "subject": "M-Sand, P-Sand & Jelly Aggregates"
     },
-    "type/events-and-celebrations/dj-music-and-entertainment/dj-music-and-entertainment": {
-      "photo": "digital-analytics",
-      "subject": "DJ, Music & Entertainment"
+    "type/property-and-construction/construction-materials-and-supplies/tiles-sanitaryware-and-bath-fittings": {
+      "photo": "interior",
+      "subject": "Tiles, Sanitaryware & Bath Fittings"
     },
-    "subcategory/events-and-celebrations/tent-sound-and-lighting": {
-      "photo": "accountant-consultation",
-      "subject": "Tent, Sound & Lighting"
+    "type/property-and-construction/construction-materials-and-supplies/plywood-laminates-and-timber-dealers": {
+      "photo": "shopping-and-local-retail",
+      "subject": "Plywood, Laminates & Timber Dealers"
     },
-    "type/events-and-celebrations/tent-sound-and-lighting/tent-sound-and-lighting": {
-      "photo": "accountant-consultation",
-      "subject": "Tent, Sound & Lighting"
+    "type/property-and-construction/construction-materials-and-supplies/paints-and-construction-chemicals": {
+      "photo": "wall-painting",
+      "subject": "Paints, Waterproofing & Construction Chemicals"
     },
-    "category/professional-and-business-services": {
-      "photo": "professional-advice",
-      "subject": "Professional & Business Services"
+    "type/property-and-construction/construction-materials-and-supplies/electrical-cables-switches-and-lighting": {
+      "photo": "electrical",
+      "subject": "Electrical Cables, Switches & Lighting Wholesale"
     },
-    "subcategory/professional-and-business-services/legal-advocate": {
-      "photo": "catalogue-first25-professional-services--legal-services",
-      "subject": "Legal / Advocate"
+    "type/property-and-construction/construction-materials-and-supplies/plumbing-pipes-tanks-and-pumps": {
+      "photo": "agriculture-farm-irrigation-pump-repair",
+      "subject": "Plumbing Pipes, Tanks & Submersible Pumps"
     },
-    "type/professional-and-business-services/legal-advocate/legal-advocate": {
-      "photo": "catalogue-first25-professional-services--legal-services",
-      "subject": "Legal / Advocate"
-    },
-    "subcategory/professional-and-business-services/tax-gst-and-accounting": {
-      "photo": "accountant-consultation",
-      "subject": "Tax, GST & Accounting"
-    },
-    "type/professional-and-business-services/tax-gst-and-accounting/tax-gst-and-accounting": {
-      "photo": "accountant-consultation",
-      "subject": "Tax, GST & Accounting"
-    },
-    "subcategory/professional-and-business-services/marketing-and-design": {
-      "photo": "marketing",
-      "subject": "Marketing & Design"
-    },
-    "type/professional-and-business-services/marketing-and-design/marketing-and-design": {
-      "photo": "marketing",
-      "subject": "Marketing & Design"
-    },
-    "subcategory/professional-and-business-services/it-and-software": {
-      "photo": "technology",
-      "subject": "IT & Software"
-    },
-    "type/professional-and-business-services/it-and-software/it-and-software": {
-      "photo": "technology",
-      "subject": "IT & Software"
-    },
-    "subcategory/professional-and-business-services/insurance-and-finance": {
-      "photo": "property-sale",
-      "subject": "Insurance & Finance"
-    },
-    "type/professional-and-business-services/insurance-and-finance/insurance-and-finance": {
-      "photo": "property-sale",
-      "subject": "Insurance & Finance"
-    },
-    "subcategory/professional-and-business-services/printing-and-documentation": {
-      "photo": "documents",
-      "subject": "Printing & Documentation"
-    },
-    "type/professional-and-business-services/printing-and-documentation/printing-and-documentation": {
-      "photo": "documents",
-      "subject": "Printing & Documentation"
-    },
-    "subcategory/professional-and-business-services/recruitment-and-staffing": {
-      "photo": "interview",
-      "subject": "Recruitment & Staffing"
-    },
-    "type/professional-and-business-services/recruitment-and-staffing/recruitment-and-staffing": {
-      "photo": "interview",
-      "subject": "Recruitment & Staffing"
-    },
-    "type/agriculture-and-farming/farm-equipment-and-machinery/farm-equipment-and-machinery": {
-      "photo": "agriculture-subcategory-farm-equipment-and-machinery",
-      "subject": "Farm Equipment & Machinery"
-    },
-    "subcategory/agriculture-and-farming/seeds-fertiliser-and-nursery": {
-      "photo": "agriculture-subcategory-seeds-plants-and-nurseries",
-      "subject": "Seeds, Fertiliser & Nursery"
-    },
-    "type/agriculture-and-farming/seeds-fertiliser-and-nursery/seeds-fertiliser-and-nursery": {
-      "photo": "agriculture-subcategory-seeds-plants-and-nurseries",
-      "subject": "Seeds, Fertiliser & Nursery"
-    },
-    "subcategory/agriculture-and-farming/irrigation-and-borewell": {
-      "photo": "agriculture-subcategory-irrigation-and-water-management",
-      "subject": "Irrigation & Borewell"
-    },
-    "type/agriculture-and-farming/irrigation-and-borewell/irrigation-and-borewell": {
-      "photo": "agriculture-subcategory-irrigation-and-water-management",
-      "subject": "Irrigation & Borewell"
-    },
-    "subcategory/agriculture-and-farming/farm-labour-and-services": {
-      "photo": "agriculture-subcategory-farming-and-agricultural-services",
-      "subject": "Farm Labour & Services"
-    },
-    "type/agriculture-and-farming/farm-labour-and-services/farm-labour-and-services": {
-      "photo": "agriculture-subcategory-farming-and-agricultural-services",
-      "subject": "Farm Labour & Services"
-    },
-    "subcategory/agriculture-and-farming/dairy-and-livestock": {
-      "photo": "agriculture-subcategory-livestock-and-dairy-farming",
-      "subject": "Dairy & Livestock"
-    },
-    "type/agriculture-and-farming/dairy-and-livestock/dairy-and-livestock": {
-      "photo": "agriculture-subcategory-livestock-and-dairy-farming",
-      "subject": "Dairy & Livestock"
-    },
-    "subcategory/agriculture-and-farming/agri-produce-sellers": {
-      "photo": "airplane",
-      "subject": "Agri Produce Sellers"
-    },
-    "type/agriculture-and-farming/agri-produce-sellers/agri-produce-sellers": {
-      "photo": "airplane",
-      "subject": "Agri Produce Sellers"
+    "type/property-and-construction/construction-materials-and-supplies/scaffolding-centering-and-shuttering": {
+      "photo": "home-maintenance",
+      "subject": "Scaffolding, Centering & Shuttering Supply"
     }
   }
 }

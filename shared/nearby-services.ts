@@ -85,7 +85,31 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     accent: '#0284c7',
     glyph: 'tool',
   },
+  'home-and-everyday-services': {
+    bgDark: 'rgba(56, 189, 248, 0.14)',
+    bgLight: '#f0f9ff',
+    borderDark: 'rgba(56, 189, 248, 0.35)',
+    borderLight: '#bae6fd',
+    accent: '#0284c7',
+    glyph: 'tool',
+  },
   'health-and-fitness': {
+    bgDark: 'rgba(20, 184, 166, 0.14)',
+    bgLight: '#f0fdfa',
+    borderDark: 'rgba(20, 184, 166, 0.35)',
+    borderLight: '#99f6e4',
+    accent: '#0d9488',
+    glyph: 'heart',
+  },
+  'health-fitness-and-wellness': {
+    bgDark: 'rgba(20, 184, 166, 0.14)',
+    bgLight: '#f0fdfa',
+    borderDark: 'rgba(20, 184, 166, 0.35)',
+    borderLight: '#99f6e4',
+    accent: '#0d9488',
+    glyph: 'heart',
+  },
+  'pet-care': {
     bgDark: 'rgba(20, 184, 166, 0.14)',
     bgLight: '#f0fdfa',
     borderDark: 'rgba(20, 184, 166, 0.35)',
@@ -109,6 +133,30 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     accent: '#4f46e5',
     glyph: 'truck',
   },
+  automobiles: {
+    bgDark: 'rgba(99, 102, 241, 0.14)',
+    bgLight: '#eef2ff',
+    borderDark: 'rgba(99, 102, 241, 0.35)',
+    borderLight: '#c7d2fe',
+    accent: '#4f46e5',
+    glyph: 'truck',
+  },
+  'rental-services': {
+    bgDark: 'rgba(99, 102, 241, 0.14)',
+    bgLight: '#eef2ff',
+    borderDark: 'rgba(99, 102, 241, 0.35)',
+    borderLight: '#c7d2fe',
+    accent: '#4f46e5',
+    glyph: 'truck',
+  },
+  'property-and-construction': {
+    bgDark: 'rgba(234, 179, 8, 0.14)',
+    bgLight: '#fefce8',
+    borderDark: 'rgba(234, 179, 8, 0.35)',
+    borderLight: '#fde047',
+    accent: '#ca8a04',
+    glyph: 'layers',
+  },
   'construction-and-materials': {
     bgDark: 'rgba(234, 179, 8, 0.14)',
     bgLight: '#fefce8',
@@ -125,6 +173,22 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     accent: '#db2777',
     glyph: 'scissors',
   },
+  'beauty-fashion-and-lifestyle': {
+    bgDark: 'rgba(236, 72, 153, 0.14)',
+    bgLight: '#fdf2f8',
+    borderDark: 'rgba(236, 72, 153, 0.35)',
+    borderLight: '#fbcfe8',
+    accent: '#db2777',
+    glyph: 'scissors',
+  },
+  'events-and-celebrations': {
+    bgDark: 'rgba(168, 85, 247, 0.14)',
+    bgLight: '#faf5ff',
+    borderDark: 'rgba(168, 85, 247, 0.35)',
+    borderLight: '#e9d5ff',
+    accent: '#9333ea',
+    glyph: 'camera',
+  },
   'events-and-weddings': {
     bgDark: 'rgba(168, 85, 247, 0.14)',
     bgLight: '#faf5ff',
@@ -132,6 +196,14 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     borderLight: '#e9d5ff',
     accent: '#9333ea',
     glyph: 'camera',
+  },
+  'education-and-skills': {
+    bgDark: 'rgba(59, 130, 246, 0.14)',
+    bgLight: '#eff6ff',
+    borderDark: 'rgba(59, 130, 246, 0.35)',
+    borderLight: '#bfdbfe',
+    accent: '#2563eb',
+    glyph: 'book',
   },
   'education-and-coaching': {
     bgDark: 'rgba(59, 130, 246, 0.14)',
@@ -141,6 +213,14 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     accent: '#2563eb',
     glyph: 'book',
   },
+  'jobs-and-careers': {
+    bgDark: 'rgba(148, 163, 184, 0.16)',
+    bgLight: '#f8fafc',
+    borderDark: 'rgba(148, 163, 184, 0.35)',
+    borderLight: '#cbd5e1',
+    accent: '#475569',
+    glyph: 'briefcase',
+  },
   'professional-services': {
     bgDark: 'rgba(148, 163, 184, 0.16)',
     bgLight: '#f8fafc',
@@ -149,6 +229,14 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     accent: '#475569',
     glyph: 'briefcase',
   },
+  'shopping-and-local-retail': {
+    bgDark: 'rgba(212, 175, 55, 0.15)',
+    bgLight: '#fffbeb',
+    borderDark: 'rgba(212, 175, 55, 0.38)',
+    borderLight: '#fde68a',
+    accent: '#b45309',
+    glyph: 'shopping-bag',
+  },
   'shops-and-retail': {
     bgDark: 'rgba(212, 175, 55, 0.15)',
     bgLight: '#fffbeb',
@@ -156,6 +244,14 @@ const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
     borderLight: '#fde68a',
     accent: '#b45309',
     glyph: 'shopping-bag',
+  },
+  'travel-stay-and-experiences': {
+    bgDark: 'rgba(6, 182, 212, 0.14)',
+    bgLight: '#ecfeff',
+    borderDark: 'rgba(6, 182, 212, 0.35)',
+    borderLight: '#a5f3fc',
+    accent: '#0891b2',
+    glyph: 'compass',
   },
   'travel-and-stay': {
     bgDark: 'rgba(6, 182, 212, 0.14)',
@@ -204,15 +300,21 @@ export function resolveListingPhotoUri(
   return `${apiBase.replace(/\/$/, '')}${stripped}`;
 }
 
-export function nearbyServicesUrl(params: { category: string; type?: string }): string {
+export function nearbyServicesUrl(params: {
+  category: string;
+  subcategory?: string;
+  type?: string;
+}): string {
   const qs = new URLSearchParams();
   if (params.category) qs.set('category', params.category);
+  if (params.subcategory) qs.set('subcategory', params.subcategory);
   if (params.type) qs.set('type', params.type);
   return `/services/nearby${qs.size ? `?${qs.toString()}` : ''}`;
 }
 
 export function buildNearbyMarketplacePath(params: {
   category: string;
+  subcategory?: string;
   businessType?: string;
   latitude: number;
   longitude: number;
@@ -224,6 +326,9 @@ export function buildNearbyMarketplacePath(params: {
     lng: params.longitude.toFixed(6),
     radius_km: String(params.radiusKm),
   });
+  if (params.subcategory) {
+    qs.set('subcategory', params.subcategory);
+  }
   if (params.businessType) {
     qs.set('business_type', params.businessType);
   }

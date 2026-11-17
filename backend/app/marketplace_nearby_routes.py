@@ -27,8 +27,8 @@ from .maps_proxy_routes import (
     search_google_places_nearby_cached,
     validate_place_photo_ref,
 )
-from .marketplace_taxonomy import legacy_map
-from .models import Category, Provider, ProviderService, Service, User
+from .marketplace_taxonomy import legacy_map, master_taxonomy
+from .models import Category, Provider, ProviderService, Service, Subcategory, User
 from .provider_models import ProviderApplication, ProviderDocument
 from .provider_requirements import SafeModel
 
@@ -126,60 +126,92 @@ def _validate_coordinates(
 
 def _resolve_category_and_type(
     category_slug: str | None,
+    subcategory_slug: str | None,
     type_slug: str | None,
-) -> tuple[dict, dict | None]:
+) -> tuple[dict, dict | None, dict | None]:
     cat_slug = _clean_slug(category_slug)
+    sub_slug = _clean_slug(subcategory_slug)
     bt_slug = _clean_slug(type_slug)
-    if not cat_slug and not bt_slug:
-        raise HTTPException(422, "Select a category or business type")
+    if not cat_slug and not sub_slug and not bt_slug:
+        raise HTTPException(422, "Select a category, subcategory, or business type")
 
     cats_by_slug = {c["slug"]: c for c in business_types()["categories"]}
+    tax_cats_by_slug = {c["slug"]: c for c in master_taxonomy()["categories"]}
+    lm = legacy_map()
 
+    # 1. Resolve specific business / listing type if supplied
     if bt_slug:
-        found = find_business_type(bt_slug)
+        found = find_business_type(
+            bt_slug,
+            category_slug=cat_slug,
+            subcategory_slug=sub_slug,
+        )
         if found:
             found_cat, found_bt = found
             if cat_slug and cat_slug != found_cat["slug"]:
-                mapped_cat = legacy_map().get("categories", {}).get(cat_slug)
+                mapped_cat = lm.get("categories", {}).get(cat_slug)
                 if mapped_cat != found_cat["slug"]:
                     raise HTTPException(422, "Business type does not belong to the selected category")
-            return found_cat, found_bt
-
-        mapped_pair = legacy_map().get("subcategories", {}).get(bt_slug)
-        if mapped_pair and len(mapped_pair) == 2:
-            new_cat_slug, new_bt_slug = mapped_pair
-            if cat_slug:
-                allowed_cat = cats_by_slug.get(cat_slug) or cats_by_slug.get(
-                    legacy_map().get("categories", {}).get(cat_slug, "")
+            sub_meta = None
+            tax_cat = tax_cats_by_slug.get(found_cat["slug"])
+            if tax_cat and found_bt.get("subcategory_slug"):
+                sub_meta = next(
+                    (s for s in tax_cat["subcategories"] if s["slug"] == found_bt["subcategory_slug"]),
+                    None,
                 )
-                if not allowed_cat or allowed_cat["slug"] != new_cat_slug:
-                    raise HTTPException(422, "Select a valid category and business type")
-            found_legacy = find_business_type(new_bt_slug)
-            if found_legacy:
-                return found_legacy
+            return found_cat, sub_meta, found_bt
+
+        # Maybe `bt_slug` was actually a subcategory slug (e.g. `?category=...&type=<subcategory>`)
+        eff_cat_slug = lm.get("categories", {}).get(cat_slug or "", cat_slug or "")
+        for t_cat in master_taxonomy()["categories"]:
+            if eff_cat_slug and t_cat["slug"] != eff_cat_slug:
+                continue
+            for t_sub in t_cat["subcategories"]:
+                if t_sub["slug"] == bt_slug:
+                    return cats_by_slug[t_cat["slug"]], t_sub, None
 
         raise HTTPException(422, "Unknown business type")
 
+    # 2. Subcategory-level lookup (`category` + `subcategory`, no `type`)
+    if sub_slug:
+        eff_cat_slug = lm.get("categories", {}).get(cat_slug or "", cat_slug or "")
+        for t_cat in master_taxonomy()["categories"]:
+            if eff_cat_slug and t_cat["slug"] != eff_cat_slug:
+                continue
+            for t_sub in t_cat["subcategories"]:
+                if t_sub["slug"] == sub_slug:
+                    return cats_by_slug[t_cat["slug"]], t_sub, None
+
+        mapped_v2 = lm.get("subcategories", {}).get(sub_slug)
+        if mapped_v2 and len(mapped_v2) >= 4:
+            found_v2 = find_business_type(mapped_v2[3])
+            if found_v2:
+                return found_v2[0], None, found_v2[1]
+
+        raise HTTPException(422, "Unknown subcategory")
+
+    # 3. Category-only lookup
     resolved_cat = cats_by_slug.get(cat_slug or "")
     if not resolved_cat and cat_slug:
-        mapped_cat_slug = legacy_map().get("categories", {}).get(cat_slug)
+        mapped_cat_slug = lm.get("categories", {}).get(cat_slug)
         if mapped_cat_slug:
             resolved_cat = cats_by_slug.get(mapped_cat_slug)
     if not resolved_cat:
         raise HTTPException(422, "Unknown category")
-    return resolved_cat, None
+    return resolved_cat, None, None
 
 
 def _run_marketplace_nearby(
     db: Session,
     *,
     category_slug: str | None,
+    subcategory_slug: str | None = None,
     type_slug: str | None,
     lat: float,
     lng: float,
     radius_km: float,
 ) -> dict:
-    cat_def, bt_def = _resolve_category_and_type(category_slug, type_slug)
+    cat_def, sub_def, bt_def = _resolve_category_and_type(category_slug, subcategory_slug, type_slug)
     distance = distance_expression(lat, lng)
 
     deg_lat = math.degrees(radius_km / EARTH_KM) + 0.01
@@ -241,6 +273,10 @@ def _run_marketplace_nearby(
 
     if bt_def is not None:
         query = query.where(Service.slug == bt_def["slug"])
+    elif sub_def is not None:
+        query = query.outerjoin(Subcategory, Subcategory.id == Service.subcategory_id).where(
+            Subcategory.slug == sub_def["slug"]
+        )
 
     rows = db.execute(query.order_by(distance.asc(), Provider.id.asc()).limit(MAX_RESULTS * 3)).all()
 
@@ -332,8 +368,20 @@ def _run_marketplace_nearby(
 
     google_items: list[dict] = []
     if len(vistrah_items) < HYBRID_THRESHOLD:
-        search_title = bt_def["title"] if bt_def else cat_def["title"]
-        type_cache_key = bt_def["slug"] if bt_def else f"cat:{cat_def['slug']}"
+        search_title = (
+            bt_def["title"]
+            if bt_def
+            else sub_def["title"]
+            if sub_def
+            else cat_def["title"]
+        )
+        type_cache_key = (
+            bt_def["slug"]
+            if bt_def
+            else f"sub:{cat_def['slug']}/{sub_def['slug']}"
+            if sub_def
+            else f"cat:{cat_def['slug']}"
+        )
         raw_places = search_google_places_nearby_cached(
             business_type_key=type_cache_key,
             text_query=search_title,
@@ -368,7 +416,13 @@ def _run_marketplace_nearby(
                     "company": gp["name"],
                     "contact_name": "",
                     "category_slug": cat_def["slug"],
-                    "business_type": bt_def["slug"] if bt_def else cat_def["slug"],
+                    "business_type": (
+                        bt_def["slug"]
+                        if bt_def
+                        else sub_def["slug"]
+                        if sub_def
+                        else cat_def["slug"]
+                    ),
                     "service_title": search_title,
                     "description": "",
                     "address": addr,
@@ -394,7 +448,14 @@ def _run_marketplace_nearby(
 
     return {
         "category": {"slug": cat_def["slug"], "title": cat_def["title"]},
-        "business_type": {"slug": bt_def["slug"], "title": bt_def["title"]} if bt_def else None,
+        "subcategory": {"slug": sub_def["slug"], "title": sub_def["title"]} if sub_def else None,
+        "business_type": (
+            {"slug": bt_def["slug"], "title": bt_def["title"]}
+            if bt_def
+            else {"slug": sub_def["slug"], "title": sub_def["title"]}
+            if sub_def
+            else None
+        ),
         "radius_km": radius_km,
         "total": len(combined),
         "has_google_places": has_google,
@@ -483,10 +544,11 @@ def get_marketplace_nearby(
         lng if lng is not None else longitude,
         radius_km,
     )
-    resolved_type = business_type or type or subcategory
+    resolved_type = business_type or type
     return _run_marketplace_nearby(
         db,
         category_slug=category,
+        subcategory_slug=subcategory,
         type_slug=resolved_type,
         lat=resolved_lat,
         lng=resolved_lng,
@@ -506,10 +568,11 @@ def post_marketplace_nearby(
         data.lng if data.lng is not None else data.longitude,
         data.radius_km,
     )
-    resolved_type = data.business_type or data.type or data.subcategory
+    resolved_type = data.business_type or data.type
     return _run_marketplace_nearby(
         db,
         category_slug=data.category,
+        subcategory_slug=data.subcategory,
         type_slug=resolved_type,
         lat=resolved_lat,
         lng=resolved_lng,

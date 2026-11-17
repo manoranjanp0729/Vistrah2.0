@@ -70,6 +70,7 @@ export default function Services() {
 
   const scope = JSON.stringify(params);
   const [draft, setDraft] = useState<{scope: string; value: string} | null>(null);
+  const [showAllResults, setShowAllResults] = useState(false);
   const query = draft?.scope === scope ? draft.value : params.q ?? '';
   const selected = resolveMarketplaceSelection(params);
   const needle = query.trim();
@@ -103,8 +104,9 @@ export default function Services() {
 
   const {category, subcategory, listingType} = selected;
   // Business types carry one implicit listing type, so the business type screen is the results screen.
-  const singleType = Boolean(subcategory && listingType && listingType.slug === subcategory.slug);
+  const singleType = Boolean(subcategory && listingType && subcategory.listing_types.length === 1 && listingType.slug === subcategory.slug);
   const results = searchMarketplaceEntries(query);
+  const displayedResults = showAllResults ? results : results.slice(0, 60);
 
   const categoryName = category ? label(marketplaceItemId(category.slug), category.title) : '';
   const subcategoryName =
@@ -378,7 +380,7 @@ export default function Services() {
                   : t('discovery.searchPlaceholder')
               }
               value={query}
-              onChangeText={(value) => setDraft({scope, value})}
+              onChangeText={(value) => { setShowAllResults(false); setDraft({scope, value}); }}
             />
           </View>
         )}
@@ -390,14 +392,28 @@ export default function Services() {
               as={Heading}
               title={t('discovery.results')}
               action={t('common.clear')}
-              onPress={() => setDraft({scope, value: ''})}
+              onPress={() => { setShowAllResults(false); setDraft({scope, value: ''}); }}
             />
             <View style={{gap: 10}}>
-              {results.map((result) => (
+              {displayedResults.map((result) => (
                 <Pressable
                   key={result.id}
                   accessibilityRole="button"
-                  onPress={() => open(result.selection)}
+                  onPress={() => {
+                    if (result.selection.category && result.selection.subcategory && result.selection.type) {
+                      setDraft(null);
+                      router.push({
+                        pathname: '/services/nearby',
+                        params: {
+                          category: result.selection.category,
+                          subcategory: result.selection.subcategory,
+                          type: result.selection.type,
+                        },
+                      });
+                    } else {
+                      open(result.selection);
+                    }
+                  }}
                   style={({pressed}) => [
                     s.flowCard,
                     {
@@ -427,6 +443,14 @@ export default function Services() {
                 </Pressable>
               ))}
             </View>
+            {results.length > displayedResults.length && (
+              <UiElement
+                as={Action}
+                secondary
+                label={`Show all ${results.length} matches`}
+                onPress={() => setShowAllResults(true)}
+              />
+            )}
             {!results.length && <Text style={styles.muted}>{t('discovery.noMatches')}</Text>}
           </View>
         ) : isListingTypeLevel ? (
@@ -434,10 +458,11 @@ export default function Services() {
           <View onLayout={(event) => { optionsTop.current = event.nativeEvent.layout.y; }} style={{gap: 14}}>
             <View onLayout={(event) => { optionsOffset.current = event.nativeEvent.layout.y; }}>
               <MobileNearbyServiceDiscovery
-                key={category!.slug + '/' + subcategory!.slug}
+                key={category!.slug + '/' + subcategory!.slug + '/' + listingType!.slug}
                 categorySlug={category!.slug}
                 categoryTitle={categoryName}
-                typeSlug={subcategory!.slug}
+                subcategorySlug={subcategory!.slug}
+                typeSlug={listingType!.slug}
                 serviceTitle={singleType ? subcategoryName : listingTypeName}
               />
             </View>
@@ -475,7 +500,8 @@ export default function Services() {
                       pathname: '/seller/onboard',
                       params: {
                         category: category!.slug,
-                        type: subcategory!.slug,
+                        subcategory: subcategory!.slug,
+                        type: listingType!.slug,
                       },
                     })
                   }
@@ -570,10 +596,13 @@ export default function Services() {
                       accessibilityRole="button"
                       testID={`marketplace-type-${type.slug}`}
                       onPress={() =>
-                        open({
-                          category: category!.slug,
-                          subcategory: subcategory!.slug,
-                          type: type.slug,
+                        router.push({
+                          pathname: '/services/nearby',
+                          params: {
+                            category: category!.slug,
+                            subcategory: subcategory!.slug,
+                            type: type.slug,
+                          },
                         })
                       }
                       style={({pressed}) => [
@@ -721,7 +750,7 @@ function TypeAction({
           as={Pressable}
           accessibilityRole="button"
           accessibilityLabel={'Add service: ' + title}
-          onPress={() => router.push({pathname: '/seller/onboard', params: {category: selected.category, type: selected.subcategory}})}
+          onPress={() => router.push({pathname: '/seller/onboard', params: {category: selected.category, subcategory: selected.subcategory, type: selected.type}})}
           style={{
             position: 'absolute',
             right: 8,

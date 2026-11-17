@@ -3,11 +3,14 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {expect,it,vi} from 'vitest';
 vi.mock('@/components/seller-auth',()=>({SellerEntry:()=>React.createElement('div',null,'Seller entry')}));
 vi.mock('@/components/marketplace-browser',()=>({MarketplaceBrowser:({selection}:{selection:{category?:{title:string};subcategory?:{title:string};listingType?:{title:string}}})=>React.createElement('div',null,selection.listingType?.title??selection.subcategory?.title??selection.category?.title??'Categories')}));
-vi.mock('next/navigation',()=>({notFound:()=>{throw new Error('NOT_FOUND');}}));
+vi.mock('next/navigation',()=>({
+  notFound:()=>{throw new Error('NOT_FOUND');},
+  permanentRedirect:(url:string)=>{throw new Error('REDIRECT:'+url);},
+}));
 import Services from '../app/(public)/services/page';
 import {marketplaceCategories} from './marketplace-taxonomy';
 
-it('renders only taxonomy browsing at every level without requesting the legacy catalogue',async()=>{
+it('renders only taxonomy browsing at every level without requesting the legacy catalogue and permanently redirects v1 links',async()=>{
   const category=marketplaceCategories[0],subcategory=category.subcategories[0],type=subcategory.listing_types[0];
   const fetcher=vi.fn();vi.stubGlobal('fetch',fetcher);
   try{
@@ -22,6 +25,7 @@ it('renders only taxonomy browsing at every level without requesting the legacy 
       expect(html).not.toContain('published-services');
       expect(html).not.toContain('Service catalogue');
     }
+    await expect(Services({searchParams:Promise.resolve({category:'pet-care',subcategory:'grooming'})})).rejects.toThrow('REDIRECT:/services?category=home-services&subcategory=pet-care');
     expect(fetcher).not.toHaveBeenCalled();
   }finally{vi.unstubAllGlobals();}
 });

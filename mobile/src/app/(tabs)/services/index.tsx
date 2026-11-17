@@ -6,7 +6,7 @@ import {EditVistrahContent} from '../../../components/edit-vistrah-content';
 import {UiText, UiElement} from '../../../components/localized-ui';
 import {SellerSignInAction} from '../../../components/seller-sign-in-action';
 import {useLanguage} from '../../../lib/language';
-import {useRef, useState, type ReactNode} from 'react';
+import {useEffect, useRef, useState, type ReactNode} from 'react';
 import {Linking,ScrollView,View,Pressable,StyleSheet,Platform,Image,useWindowDimensions} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -17,6 +17,7 @@ import {Field, Heading, ErrorPanel, Action} from '../../../components/ui';
 import {MarketplaceCategories} from '../../../components/marketplace-categories';
 import {WhyVistrah} from '../../../components/why-vistrah';
 import {
+  legacyMarketplaceSelection,
   marketplaceItemId,
   resolveMarketplaceSelection,
   searchMarketplaceEntries,
@@ -72,6 +73,12 @@ export default function Services() {
   const query = draft?.scope === scope ? draft.value : params.q ?? '';
   const selected = resolveMarketplaceSelection(params);
   const needle = query.trim();
+  // Older links (pre-simplification categories) move to the matching business type.
+  const legacySelection = selected ? null : legacyMarketplaceSelection(params);
+  useEffect(() => {
+    if (legacySelection) router.replace({pathname: '/services', params: legacySelection});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scope]);
 
   const open = (selection: MarketplaceSelection) => {
     setDraft(null);
@@ -95,6 +102,8 @@ export default function Services() {
   }
 
   const {category, subcategory, listingType} = selected;
+  // Business types carry one implicit listing type, so the business type screen is the results screen.
+  const singleType = Boolean(subcategory && listingType && listingType.slug === subcategory.slug);
   const results = searchMarketplaceEntries(query);
 
   const categoryName = category ? label(marketplaceItemId(category.slug), category.title) : '';
@@ -152,9 +161,9 @@ export default function Services() {
               accessibilityRole="button"
               accessibilityLabel="Go back one level"
               onPress={() => {
-                if (isListingTypeLevel) {
+                if (isListingTypeLevel && !singleType) {
                   open({category: category!.slug, subcategory: subcategory!.slug});
-                } else if (isSubcategoryLevel) {
+                } else if (isSubcategoryLevel || singleType) {
                   open({category: category!.slug});
                 } else {
                   open({});
@@ -205,18 +214,18 @@ export default function Services() {
                   <Feather name="chevron-right" size={12} color={colors.muted} />
                   <Pressable
                     onPress={() =>
-                      listingType
+                      listingType && !singleType
                         ? open({category: category!.slug, subcategory: subcategory!.slug})
                         : null
                     }
-                    style={[s.crumbItem, isSubcategoryLevel && s.crumbActiveItem]}
+                    style={[s.crumbItem, (isSubcategoryLevel || singleType) && s.crumbActiveItem]}
                   >
                     <Text
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: isSubcategoryLevel ? (isDark ? '#fff' : '#1f1338') : colors.accent},
-                        isSubcategoryLevel && s.crumbActiveText,
+                        {color: isSubcategoryLevel || singleType ? (isDark ? '#fff' : '#1f1338') : colors.accent},
+                        (isSubcategoryLevel || singleType) && s.crumbActiveText,
                       ]}
                     >
                       {subcategoryName}
@@ -225,7 +234,7 @@ export default function Services() {
                 </>
               )}
 
-              {Boolean(listingType) && (
+              {Boolean(listingType) && !singleType && (
                 <>
                   <Feather name="chevron-right" size={12} color={colors.muted} />
                   <View style={[s.crumbItem, s.crumbActiveItem]}>
@@ -317,7 +326,7 @@ export default function Services() {
                 </LinearGradient>
                 <View style={s.heroPill}>
                   <Text style={[s.heroPillText,{color:banner.muted}]}>
-                    {subcategory!.listing_types.length} <UiText value="Service Types" />
+                    {singleType ? <UiText value="Business type" /> : <>{subcategory!.listing_types.length} <UiText value="Service Types" /></>}
                   </Text>
                 </View>
               </View>
@@ -525,8 +534,8 @@ export default function Services() {
               </View>
             )}
 
-            {/* Sister Listing Types Flow Rail */}
-            <View style={{gap: 8, marginTop: 4}}>
+            {/* Sister Listing Types Flow Rail (only when a business type has several options) */}
+            {!singleType && <View style={{gap: 8, marginTop: 4}}>
               <Text style={[s.sectionSubtitleLabel, {color: colors.muted}]}>
                 <UiText value="Other options in " />
                 {subcategoryName}
@@ -565,14 +574,14 @@ export default function Services() {
                     </Pressable>
                   ))}
               </View>
-            </View>
+            </View>}
           </View>
         ) : isSubcategoryLevel ? (
           /* LEVEL 3: SUBCATEGORY SELECTED -> LISTING TYPES LIST */
           <View style={{gap: 12}}>
             <View style={s.sectionHeader}>
               <View style={{flex: 1, minWidth: 0}}>
-                <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 3 OF 3</Text>
+                <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 3</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
                   {t('discovery.types')}
                 </Text>
@@ -649,7 +658,7 @@ export default function Services() {
           <View style={{gap: 12}}>
             <View style={s.sectionHeader}>
               <View style={{flex: 1, minWidth: 0}}>
-                <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 2 OF 3</Text>
+                <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 2 OF 2</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
                   {t('discovery.exploreSubcategories')}
                 </Text>
@@ -691,6 +700,11 @@ export default function Services() {
                       <Text numberOfLines={2} style={[s.flowCardTitle, {color: colors.text}]}>
                         {label(itemId, sub.title)}
                       </Text>
+                      {Boolean(sub.description) && (
+                        <Text numberOfLines={2} style={{fontSize: 11, lineHeight: 15, color: colors.muted}}>
+                          {sub.description}
+                        </Text>
+                      )}
                     </View>
                   </Pressable>
                 );

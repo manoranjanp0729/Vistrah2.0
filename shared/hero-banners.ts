@@ -159,8 +159,8 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     primaryCta: {
       label: 'Explore Health Services',
       shortLabel: 'Health Services',
-      webHref: '/services?category=health-fitness-and-wellness',
-      mobileRoute: '/services?category=health-fitness-and-wellness',
+      webHref: '/services?category=health-and-fitness',
+      mobileRoute: '/services?category=health-and-fitness',
     },
     secondaryCta: {
       label: 'Register Clinic / Lab',
@@ -191,19 +191,19 @@ export const USER_COMPARISON = {
 } as const;
 
 export const USER_VERTICALS = [
-  {num: '01', slug: 'home-and-everyday-services', title: 'Home Services', caption: 'Repairs, interiors, cleaning & movers', icon: 'home'},
-  {num: '02', slug: 'professional-services', title: 'Legal, Tax & Civil', caption: 'Lawyers, CAs, civil & real estate pros', icon: 'briefcase'},
-  {num: '03', slug: 'automobiles', title: 'Automobiles', caption: 'EVs, servicing, detailing & roadside help', icon: 'truck'},
-  {num: '04', slug: 'health-fitness-and-wellness', title: 'HealthConnect', caption: 'Clinics, labs, home care & fitness', icon: 'heart'},
-  {num: '05', slug: 'agriculture-and-farming', title: 'AgriConnect', caption: 'Machinery, seeds, irrigation & advisory', icon: 'sun'},
-  {num: '06', slug: 'rental-services', title: 'Rentals', caption: 'Homes, commercial spaces, tools & vehicles', icon: 'key'},
-  {num: '07', slug: 'food-and-dining', title: 'Food & Dining', caption: 'Restaurants, cafés, bakeries & catering', icon: 'coffee'},
-  {num: '08', slug: 'shopping-and-local-retail', title: 'Local Retail', caption: 'Electronics, fashion, furniture & makers', icon: 'shopping-bag'},
-  {num: '09', slug: 'education-and-skills', title: 'Education & Skills', caption: 'Tutors, IT courses, exams & coaching', icon: 'book-open'},
-  {num: '10', slug: 'jobs-and-careers', title: 'Jobs & Careers', caption: 'Local hiring, IT roles & career support', icon: 'users'},
-  {num: '11', slug: 'travel-stay-and-experiences', title: 'Travel & Overseas', caption: 'Stays, tours, transfers & visa support', icon: 'compass'},
-  {num: '12', slug: 'beauty-fashion-and-lifestyle', title: 'Beauty & Lifestyle', caption: 'Salons, spas, bridal & studio shoots', icon: 'star'},
-  {num: '13', slug: 'events-and-celebrations', title: 'Events & Pet Care', caption: 'Venues, weddings, decor & vet clinics', icon: 'calendar'},
+  {num: '01', slug: 'food-and-dining', title: 'Food & Dining', caption: 'Restaurants, cafés, sweets, catering & tiffin', icon: 'coffee'},
+  {num: '02', slug: 'home-services', title: 'Home Services', caption: 'Cleaning, repairs, appliances, painting & movers', icon: 'home'},
+  {num: '03', slug: 'shops-and-retail', title: 'Shops & Retail', caption: 'Grocery, mobiles, clothing, furniture & hardware', icon: 'shopping-bag'},
+  {num: '04', slug: 'beauty-and-personal-care', title: 'Beauty & Personal Care', caption: 'Salons, parlours, spas, tailoring & jewellery', icon: 'star'},
+  {num: '05', slug: 'health-and-fitness', title: 'HealthConnect', caption: 'Clinics, hospitals, labs, pharmacy & gyms', icon: 'heart'},
+  {num: '06', slug: 'vehicles', title: 'Vehicles', caption: 'Sales, servicing, car wash, parts & towing', icon: 'truck'},
+  {num: '07', slug: 'property-and-construction', title: 'Property & Construction', caption: 'Buy, sell, rent, contractors & architects', icon: 'briefcase'},
+  {num: '08', slug: 'rentals', title: 'Rentals', caption: 'Vehicles, equipment, furniture & party items', icon: 'key'},
+  {num: '09', slug: 'travel-and-stay', title: 'Travel & Stay', caption: 'Hotels, homestays, tours & taxis', icon: 'compass'},
+  {num: '10', slug: 'education-and-training', title: 'Education & Training', caption: 'Schools, tuition, skills, languages & arts', icon: 'book-open'},
+  {num: '11', slug: 'events-and-celebrations', title: 'Events & Celebrations', caption: 'Venues, decorators, photographers & DJs', icon: 'calendar'},
+  {num: '12', slug: 'professional-and-business-services', title: 'Professional Services', caption: 'Legal, tax & GST, marketing, IT & recruitment', icon: 'users'},
+  {num: '13', slug: 'agriculture-and-farming', title: 'AgriConnect', caption: 'Machinery, seeds, irrigation, labour & dairy', icon: 'sun'},
 ] as const;
 
 export const BUSINESS_TIMELINE = [
@@ -289,7 +289,7 @@ export const AGRI_CARDS = [
     title: 'Direct Market Access',
     caption: 'Connect directly with produce buyers, cold storage, grading teams, and transport.',
     chips: ['Land Prep & Harvest', 'Post-Harvest Grading', 'Transport Links'],
-    subcategory: 'farming-and-agricultural-services',
+    subcategory: 'farm-labour-and-services',
     icon: 'trending-up',
   },
   {
@@ -298,7 +298,7 @@ export const AGRI_CARDS = [
     title: 'Quality Inputs & Irrigation',
     caption: 'Source verified seeds, saplings, drip-irrigation kits, and organic compost.',
     chips: ['Crop Seeds & Nurseries', 'Drip & Sprinklers', 'Organic Compost'],
-    subcategory: 'seeds-plants-and-nurseries',
+    subcategory: 'seeds-fertiliser-and-nursery',
     icon: 'droplet',
   },
   {
@@ -316,7 +316,7 @@ export const AGRI_CARDS = [
     title: 'Expert Crop Advisory',
     caption: 'Schedule soil NPK testing, pest monitoring, nutrient plans, and dairy setup help.',
     chips: ['Soil Lab Testing', 'Crop Pest Care', 'Dairy & Livestock'],
-    subcategory: 'soil-testing-and-crop-care',
+    subcategory: 'seeds-fertiliser-and-nursery',
     icon: 'compass',
   },
 ] as const;
@@ -328,7 +328,7 @@ export const HEALTH_PATHWAYS = [
     title: 'Doctors & Clinics',
     caption: 'General physicians, pediatrics, dental, eye care, orthopedic, and cardiology clinics.',
     tag: 'Direct Clinic Call',
-    subcategory: 'doctors-and-specialists',
+    subcategory: 'clinic-and-doctor',
     icon: 'user-check',
   },
   {
@@ -337,7 +337,7 @@ export const HEALTH_PATHWAYS = [
     title: 'Diagnostics & Imaging',
     caption: 'Pathology blood panels, full-body checkups, X-ray/MRI centers, and home sample pickup.',
     tag: 'Home Collection',
-    subcategory: 'diagnostic-services',
+    subcategory: 'diagnostic-lab',
     icon: 'activity',
   },
   {
@@ -346,7 +346,7 @@ export const HEALTH_PATHWAYS = [
     title: 'Pharmacies & Supplies',
     caption: 'Neighborhood chemists, surgical supplies, oxygen concentrators, and mobility aids.',
     tag: 'Verified Stockists',
-    subcategory: 'pharmacies-and-medical-supplies',
+    subcategory: 'pharmacy',
     icon: 'plus-square',
   },
   {
@@ -355,7 +355,7 @@ export const HEALTH_PATHWAYS = [
     title: 'Home Care & Physiotherapy',
     caption: 'Post-operative rehabilitation, sports physio, elder care, and recovery support.',
     tag: 'Home Visits',
-    subcategory: 'physiotherapy-and-rehabilitation',
+    subcategory: 'physiotherapy',
     icon: 'home',
   },
   {
@@ -364,7 +364,7 @@ export const HEALTH_PATHWAYS = [
     title: 'Wellness, Yoga & Nutrition',
     caption: 'Fitness studios, yoga & meditation, registered dietitians, and mental wellbeing.',
     tag: 'Holistic Care',
-    subcategory: 'fitness-centres',
+    subcategory: 'gym-and-yoga',
     icon: 'heart',
   },
 ] as const;

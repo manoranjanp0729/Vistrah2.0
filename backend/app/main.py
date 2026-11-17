@@ -33,6 +33,8 @@ from .discovery_routes import router as discovery_router
 app.include_router(discovery_router)
 from .provider_routes import router as provider_router, eligible_query
 app.include_router(provider_router)
+from .self_onboarding_routes import router as self_onboarding_router
+app.include_router(self_onboarding_router)
 from .recovery import router as recovery_router
 app.include_router(recovery_router)
 from .seller_routes import router as seller_router
@@ -93,7 +95,7 @@ app.include_router(hr_router)
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith(('/seller/', '/maps/', '/api/maps/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/', '/admin/pricing', '/api/admin/pricing', '/admin/employees', '/api/admin/employees')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests', '/pricing', '/api/pricing') or (
+    if request.url.path.startswith(('/seller/', '/provider-onboarding/', '/maps/', '/api/maps/', '/admin/catalogue-requests', '/admin/ownership-claims', '/admin/publication-drafts', '/admin/employer-jobs', '/admin/homepage', '/admin/commerce-listings', '/admin/commerce-orders', '/admin/vistrah/', '/commerce/cart', '/commerce/orders', '/commerce/service-packages', '/commerce/listings', '/me/location', '/membership/', '/me/business-membership', '/admin/business-memberships', '/admin/marketing-requests', '/marketing-pricing/', '/admin/marketing-pricing/', '/admin/pricing', '/api/admin/pricing', '/admin/employees', '/api/admin/employees')) or request.url.path in ('/me', '/me/membership', '/membership/offers', '/requests', '/pricing', '/api/pricing') or (
         request.url.path.startswith('/services/') and ('/providers' in request.url.path or request.url.path.endswith(('/member-information','/nearby')))
     ):
         response.headers['Cache-Control'] = 'private, no-store'
@@ -127,7 +129,7 @@ async def workflow_body_limit(request, call_next):
     provider_path = path.startswith(('/provider-','/admin/','/api/admin/','/seller/','/commerce/cart','/commerce/orders','/me','/auth/','/maps/','/api/maps/'))
     if not is_raw_video_upload and (path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
         is_large_cms = path.startswith(('/admin/edit-vistrah','/api/admin/edit-vistrah','/admin/pricing','/api/admin/pricing'))
-        limit = 3000000 if provider_path and path.endswith(('/documents','/evidence')) else (1000000 if is_large_cms else 128000)
+        limit = 3000000 if provider_path and (path.endswith(('/documents','/evidence')) or path.startswith('/provider-onboarding/')) else (1000000 if is_large_cms else 128000)
         chunks=[]
         size=0
         async for chunk in request.stream():

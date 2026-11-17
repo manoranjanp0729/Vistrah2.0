@@ -23,16 +23,16 @@ const decorativeHeartbeat: [number, number][] = [
 
 const agriQuickTags = [
   {title: 'Farm Equipment', slug: 'farm-equipment-and-machinery', icon: 'tool'},
-  {title: 'Seeds & Crops', slug: 'seeds-plants-and-nurseries', icon: 'feather'},
-  {title: 'Soil & Crop Care', slug: 'soil-testing-and-crop-care', icon: 'activity'},
-  {title: 'Farm Labour', slug: 'agricultural-labour-and-farm-maintenance', icon: 'users'},
+  {title: 'Seeds & Crops', slug: 'seeds-fertiliser-and-nursery', icon: 'feather'},
+  {title: 'Soil & Crop Care', slug: 'seeds-fertiliser-and-nursery', icon: 'activity'},
+  {title: 'Farm Labour', slug: 'farm-labour-and-services', icon: 'users'},
 ] as const;
 
 const healthQuickTags = [
-  {title: 'Doctors & Clinics', slug: 'doctors-and-specialists', icon: 'user-check'},
-  {title: 'Hospitals & Care', slug: 'hospitals-and-clinics', icon: 'plus-square'},
-  {title: 'Diagnostics & Labs', slug: 'diagnostic-services', icon: 'activity'},
-  {title: 'Fitness & Centres', slug: 'fitness-centres', icon: 'sun'},
+  {title: 'Doctors & Clinics', slug: 'clinic-and-doctor', icon: 'user-check'},
+  {title: 'Hospitals & Care', slug: 'hospital', icon: 'plus-square'},
+  {title: 'Diagnostics & Labs', slug: 'diagnostic-lab', icon: 'activity'},
+  {title: 'Fitness & Centres', slug: 'gym-and-yoga', icon: 'sun'},
 ] as const;
 
 const popularServices = [
@@ -51,7 +51,7 @@ const popularServices = [
     title: 'Soil & Crop Health',
     meta: 'Testing & fertilization',
     category: 'agriculture-and-farming',
-    subcategory: 'soil-testing-and-crop-care',
+    subcategory: 'seeds-fertiliser-and-nursery',
     icon: 'layers' as const,
     accent: '#315f33',
     bg: '#f1f8ed',
@@ -60,8 +60,8 @@ const popularServices = [
     key: 'doctor',
     title: 'Specialist Doctors',
     meta: 'Clinics & consultations',
-    category: 'health-fitness-and-wellness',
-    subcategory: 'doctors-and-specialists',
+    category: 'health-and-fitness',
+    subcategory: 'clinic-and-doctor',
     icon: 'user' as const,
     accent: '#1f6f8b',
     bg: '#ecf6fa',
@@ -70,8 +70,8 @@ const popularServices = [
     key: 'diagnostics',
     title: 'Diagnostic Labs',
     meta: 'Blood tests & screening',
-    category: 'health-fitness-and-wellness',
-    subcategory: 'diagnostic-services',
+    category: 'health-and-fitness',
+    subcategory: 'diagnostic-lab',
     icon: 'activity' as const,
     accent: '#19537a',
     bg: '#eaf2f8',
@@ -407,7 +407,7 @@ export default function VistrahEssentials() {
               onPress={() =>
                 router.push({
                   pathname: '/services',
-                  params: {category: 'health-fitness-and-wellness', subcategory: tag.slug},
+                  params: {category: 'health-and-fitness', subcategory: tag.slug},
                 })
               }
               style={({pressed}) => [s.healthTag, {opacity: pressed ? 0.8 : 1}]}

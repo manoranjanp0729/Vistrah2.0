@@ -1,0 +1,200 @@
+{
+  "version": 2,
+  "note": "Source of truth for VISTRAH's simplified 13-category / business-type taxonomy. Regenerate derived files with scripts/build-business-types.py. Legacy slugs are kept only to map older listings, links and onboarding records.",
+  "categories": [
+    {
+      "slug": "food-and-dining",
+      "title": "Food & Dining",
+      "description": "Restaurants, cafés, sweets, catering and home food.",
+      "photo_from": "category/food-and-dining",
+      "types": [
+        {"slug": "restaurant", "title": "Restaurant", "description": "Dine-in restaurants, dhabas and family dining.", "legacy_subcategories": ["restaurants-and-dining"], "regulated": "fssai"},
+        {"slug": "cafe-and-bakery", "title": "Café & Bakery", "description": "Cafés, tea and juice shops, bakeries.", "legacy_subcategories": ["caf-s-and-beverages"], "regulated": "fssai"},
+        {"slug": "sweets-and-snacks", "title": "Sweets & Snacks", "description": "Sweet shops, chaat, street food and quick bites.", "legacy_subcategories": ["sweets-and-desserts", "quick-bites-and-street-food"], "regulated": "fssai"},
+        {"slug": "catering", "title": "Catering", "description": "Event catering and bulk food orders.", "legacy_subcategories": ["catering-and-bulk-orders"], "regulated": "fssai"},
+        {"slug": "home-food-and-tiffin", "title": "Home Food & Tiffin", "description": "Home-cooked meals and tiffin services.", "legacy_subcategories": ["home-cooked-food"], "regulated": "fssai"},
+        {"slug": "cloud-kitchen-and-delivery", "title": "Cloud Kitchen & Delivery", "description": "Delivery-only kitchens and takeaway.", "legacy_subcategories": ["food-delivery-and-takeaway"], "regulated": "fssai"}
+      ]
+    },
+    {
+      "slug": "home-services",
+      "title": "Home Services",
+      "description": "Cleaning, repairs, appliances, painting, pest control and more.",
+      "photo_from": "category/home-and-everyday-services",
+      "types": [
+        {"slug": "cleaning", "title": "Cleaning", "description": "Home, office and deep cleaning, laundry.", "legacy_subcategories": ["cleaning-services", "laundry-and-care"], "legacy_services": ["local-professional-services/home-services"]},
+        {"slug": "electrician-and-plumber", "title": "Electrician & Plumber", "description": "Electrical, plumbing, repairs and installation.", "legacy_subcategories": ["repairs-and-maintenance", "home-installation"], "legacy_services": ["local-professional-services/electrical-services", "local-professional-services/plumbing-services"]},
+        {"slug": "appliance-repair", "title": "Appliance Repair", "description": "AC, fridge, washing machine and appliance service.", "legacy_subcategories": ["appliance-services"], "legacy_services": ["local-professional-services/ac-service-repair"]},
+        {"slug": "painting-and-interiors", "title": "Painting & Interiors", "description": "Painting, waterproofing, carpentry and home improvement.", "legacy_subcategories": ["home-improvement"], "legacy_services": ["local-professional-services/interior-design"]},
+        {"slug": "pest-control", "title": "Pest Control", "description": "Termite, mosquito and general pest control.", "legacy_subcategories": ["pest-control"], "legacy_services": ["local-professional-services/pest-control"]},
+        {"slug": "packers-and-movers", "title": "Packers & Movers", "description": "Home and office shifting.", "legacy_subcategories": ["moving-and-relocation"]},
+        {"slug": "domestic-help", "title": "Domestic Help", "description": "Maids, cooks, caretakers and gardeners.", "legacy_subcategories": ["domestic-help", "gardening-and-outdoor-care"]},
+        {"slug": "pet-care", "title": "Pet Care", "description": "Pet grooming, boarding, training, sitting and supplies.", "legacy_subcategories": ["grooming", "boarding-and-daycare", "training", "pet-walking-and-sitting", "pet-supplies", "pet-adoption-and-welfare"]}
+      ]
+    },
+    {
+      "slug": "shops-and-retail",
+      "title": "Shops & Retail",
+      "description": "Local shops for groceries, electronics, clothing, furniture and more.",
+      "photo_from": "category/shopping-and-local-retail",
+      "types": [
+        {"slug": "grocery-and-daily-needs", "title": "Grocery & Daily Needs", "description": "Kirana, supermarkets, fruits and vegetables.", "legacy_subcategories": ["grocery-and-daily-needs", "grocery-and-food-essentials", "shopping-deals"]},
+        {"slug": "mobiles-and-electronics", "title": "Mobiles & Electronics", "description": "Mobile phones, computers and electronics.", "legacy_subcategories": ["electronics"]},
+        {"slug": "clothing-and-footwear", "title": "Clothing & Footwear", "description": "Clothing, sarees, footwear and fashion stores.", "legacy_subcategories": ["fashion-and-clothing"]},
+        {"slug": "furniture-and-home-decor", "title": "Furniture & Home Décor", "description": "Furniture, furnishings and home décor.", "legacy_subcategories": ["home-and-furniture"]},
+        {"slug": "gifts-books-and-stationery", "title": "Gifts, Books & Stationery", "description": "Gift shops, books, stationery and specialty stores.", "legacy_subcategories": ["books-gifts-and-stationery", "specialty-stores"]},
+        {"slug": "hardware-and-tools", "title": "Hardware & Tools", "description": "Hardware, paints, sanitary and tools.", "photo_hint": "Tools"},
+        {"slug": "local-makers-and-wholesalers", "title": "Local Makers & Wholesalers", "description": "Local manufacturers, artisans and wholesale sellers.", "legacy_subcategories": ["local-manufacturers-and-sellers"]}
+      ]
+    },
+    {
+      "slug": "beauty-and-personal-care",
+      "title": "Beauty & Personal Care",
+      "description": "Salons, parlours, spas, tailoring and jewellery.",
+      "photo_from": "category/beauty-fashion-and-lifestyle",
+      "types": [
+        {"slug": "salon-and-barber", "title": "Salon & Barber", "description": "Haircuts, styling and grooming.", "legacy_subcategories": ["salons-and-haircare"]},
+        {"slug": "beauty-parlour-and-makeup", "title": "Beauty Parlour & Makeup", "description": "Skincare, bridal and party makeup.", "legacy_subcategories": ["beauty-and-skincare", "makeup-and-styling"]},
+        {"slug": "spa-and-massage", "title": "Spa & Massage", "description": "Spa, massage and relaxation.", "legacy_subcategories": ["spa-and-relaxation"]},
+        {"slug": "tailoring-and-boutique", "title": "Tailoring & Boutique", "description": "Tailors, boutiques and alterations.", "legacy_subcategories": ["fashion-services"]},
+        {"slug": "jewellery-and-accessories", "title": "Jewellery & Accessories", "description": "Jewellers, watches and accessories.", "legacy_subcategories": ["jewellery-and-accessories"]},
+        {"slug": "tattoo-and-body-art", "title": "Tattoo & Body Art", "description": "Tattoo, piercing and mehendi artists.", "legacy_subcategories": ["tattoos-and-body-art"]}
+      ]
+    },
+    {
+      "slug": "health-and-fitness",
+      "title": "Health & Fitness",
+      "description": "Doctors, hospitals, labs, pharmacies, gyms and wellbeing.",
+      "photo_from": "category/health-fitness-and-wellness",
+      "types": [
+        {"slug": "clinic-and-doctor", "title": "Clinic & Doctor", "description": "Doctors, specialists and clinics.", "legacy_subcategories": ["doctors-and-specialists"], "regulated": "medical"},
+        {"slug": "hospital", "title": "Hospital", "description": "Hospitals and nursing homes.", "legacy_subcategories": ["hospitals-and-clinics"], "regulated": "medical"},
+        {"slug": "diagnostic-lab", "title": "Diagnostic Lab", "description": "Blood tests, scans and diagnostics.", "legacy_subcategories": ["diagnostic-services"], "regulated": "medical"},
+        {"slug": "pharmacy", "title": "Pharmacy", "description": "Medical stores and health products.", "legacy_subcategories": ["pharmacies-and-medical-supplies", "health-and-personal-care-products"], "regulated": "pharmacy"},
+        {"slug": "gym-and-yoga", "title": "Gym & Yoga", "description": "Gyms, yoga, sports coaching and fitness.", "legacy_subcategories": ["fitness-centres", "yoga-and-mind-body-fitness", "sports-coaching-and-facilities"]},
+        {"slug": "physiotherapy", "title": "Physiotherapy", "description": "Physiotherapy and rehabilitation.", "legacy_subcategories": ["physiotherapy-and-rehabilitation"], "regulated": "medical"},
+        {"slug": "diet-and-counselling", "title": "Diet & Counselling", "description": "Nutritionists, counsellors and mental wellbeing.", "legacy_subcategories": ["nutrition-and-diet", "mental-wellbeing"]},
+        {"slug": "veterinary-clinic", "title": "Veterinary Clinic", "description": "Vets and animal hospitals.", "legacy_subcategories": ["veterinary-services"], "regulated": "veterinary"}
+      ]
+    },
+    {
+      "slug": "vehicles",
+      "title": "Vehicles",
+      "description": "Buy, service, wash and repair cars, bikes and commercial vehicles.",
+      "photo_from": "category/automobiles",
+      "types": [
+        {"slug": "car-and-bike-sales", "title": "Car & Bike Sales", "description": "New and used vehicles, dealers and showrooms.", "legacy_subcategories": ["new-vehicles", "used-vehicles", "vehicle-dealers-and-showrooms"]},
+        {"slug": "service-and-repair", "title": "Service & Repair", "description": "Garages, mechanics and fleet servicing.", "legacy_subcategories": ["vehicle-servicing-and-repairs", "commercial-and-fleet-services"]},
+        {"slug": "car-wash-and-detailing", "title": "Car Wash & Detailing", "description": "Washing, polishing and detailing.", "legacy_subcategories": ["car-care-and-detailing"]},
+        {"slug": "spare-parts-and-accessories", "title": "Spare Parts & Accessories", "description": "Spare parts, tyres, batteries and accessories.", "legacy_subcategories": ["spare-parts-and-accessories"]},
+        {"slug": "driving-school", "title": "Driving School", "description": "Driving lessons and licence assistance.", "legacy_subcategories": ["driving-and-vehicle-documentation"]},
+        {"slug": "towing-and-roadside-help", "title": "Towing & Roadside Help", "description": "Towing, breakdown and roadside assistance.", "legacy_subcategories": ["roadside-assistance"]}
+      ]
+    },
+    {
+      "slug": "property-and-construction",
+      "title": "Property & Construction",
+      "description": "Buy, sell or rent property, and builders, contractors and architects.",
+      "photo_from": "category/rental-services",
+      "types": [
+        {"slug": "property-buy-sell", "title": "Property Buy/Sell (Agents & Builders)", "description": "Real-estate agents, builders and property advisers.", "legacy_subcategories": ["real-estate-professionals"], "legacy_services": ["real-estate/property-search", "real-estate/property-verification", "real-estate/property-valuation", "real-estate/buy-property", "real-estate/sell-property"], "regulated": "rera"},
+        {"slug": "house-pg-and-room-rentals", "title": "House, PG & Room Rentals", "description": "Houses, flats, PGs and hostels for rent.", "legacy_subcategories": ["residential-property-rentals"], "legacy_services": ["real-estate/rental-assistance"]},
+        {"slug": "shop-and-office-space", "title": "Shop & Office Space", "description": "Shops, offices, godowns and commercial space.", "legacy_subcategories": ["commercial-property-rentals"]},
+        {"slug": "contractors-and-civil-work", "title": "Contractors & Civil Work", "description": "Building construction, civil engineering and contractors.", "legacy_subcategories": ["engineering-and-technical-consultancy"], "legacy_services": ["civil-construction/residential-construction", "civil-construction/commercial-construction", "civil-construction/civil-engineering", "civil-construction/estimation-boq", "civil-construction/tenders", "civil-construction/contracts-documentation", "civil-construction/contractors-subcontractors", "civil-construction/inspection-verification", "civil-construction/outdoor-lifestyle-design/retractable-roofing", "civil-construction/outdoor-lifestyle-design/bioclimatic-pergolas", "civil-construction/outdoor-lifestyle-design/glass-systems", "civil-construction/outdoor-lifestyle-design/outdoor-structures"]},
+        {"slug": "architect-and-interior-designer", "title": "Architect & Interior Designer", "description": "Architects, planners and interior designers.", "legacy_services": ["civil-construction/architecture-design"], "photo_hint": "Interior"},
+        {"slug": "building-materials", "title": "Building Materials", "description": "Cement, steel, tiles, sand and building supplies.", "legacy_services": ["civil-construction/equipment-materials"], "photo_hint": "Construction"}
+      ]
+    },
+    {
+      "slug": "rentals",
+      "title": "Rentals",
+      "description": "Rent vehicles, equipment, furniture, party items and outfits.",
+      "photo_from": "category/rental-services",
+      "types": [
+        {"slug": "vehicle-rental", "title": "Vehicle Rental", "description": "Self-drive cars, bikes and vehicle hire.", "legacy_subcategories": ["vehicle-rentals"]},
+        {"slug": "equipment-and-tools-rental", "title": "Equipment & Tools Rental", "description": "Construction, industrial, sports and travel equipment.", "legacy_subcategories": ["tools-and-construction-equipment", "business-and-industrial-rentals", "travel-and-adventure-equipment", "sports-and-recreation-rentals", "other-rentals"]},
+        {"slug": "furniture-and-appliance-rental", "title": "Furniture & Appliance Rental", "description": "Furniture, appliances and electronics on rent.", "legacy_subcategories": ["furniture-rentals", "home-appliance-rentals", "electronics-and-gadget-rentals"]},
+        {"slug": "event-and-party-items", "title": "Event & Party Items", "description": "Chairs, tents, decor and party items on rent.", "legacy_subcategories": ["event-and-party-rentals"]},
+        {"slug": "costume-and-outfit-rental", "title": "Costume & Outfit Rental", "description": "Wedding wear, costumes and occasion outfits.", "legacy_subcategories": ["fashion-and-occasion-rentals"]}
+      ]
+    },
+    {
+      "slug": "travel-and-stay",
+      "title": "Travel & Stay",
+      "description": "Hotels, homestays, tours, taxis and activities.",
+      "photo_from": "category/travel-stay-and-experiences",
+      "types": [
+        {"slug": "hotel-and-homestay", "title": "Hotel & Homestay", "description": "Hotels, lodges, resorts and homestays.", "legacy_subcategories": ["hotels-and-accommodation"]},
+        {"slug": "travel-agent-and-tours", "title": "Travel Agent & Tours", "description": "Tour packages, guides and travel booking.", "legacy_subcategories": ["travel-planning", "tours-and-guided-experiences", "travel-assistance"]},
+        {"slug": "taxi-and-transport", "title": "Taxi & Transport", "description": "Taxis, tempo travellers and transfers.", "legacy_subcategories": ["transport-and-transfers"]},
+        {"slug": "adventure-and-activities", "title": "Adventure & Activities", "description": "Trekking, adventure sports and attractions.", "legacy_subcategories": ["adventure-activities", "attractions-and-entertainment"]}
+      ]
+    },
+    {
+      "slug": "education-and-training",
+      "title": "Education & Training",
+      "description": "Schools, tuition, skill training, languages and arts.",
+      "photo_from": "category/education-and-skills",
+      "types": [
+        {"slug": "school-and-college", "title": "School & College", "description": "Schools, colleges and pre-schools.", "legacy_subcategories": ["schools-and-academic-education"]},
+        {"slug": "tuition-and-coaching", "title": "Tuition & Coaching", "description": "Home tutors, tuition centres and online classes.", "legacy_subcategories": ["tutors-and-coaching", "online-learning"]},
+        {"slug": "skill-and-vocational-training", "title": "Skill & Vocational Training", "description": "Computer, trade and professional courses.", "legacy_subcategories": ["vocational-training", "professional-courses", "career-development"]},
+        {"slug": "language-classes", "title": "Language Classes", "description": "English, Kannada, Hindi and foreign languages.", "legacy_subcategories": ["language-learning"]},
+        {"slug": "music-dance-and-arts", "title": "Music, Dance & Arts", "description": "Music, dance, drawing and creative classes.", "legacy_subcategories": ["creative-skills"]},
+        {"slug": "exam-preparation", "title": "Exam Preparation", "description": "Competitive exam and certification coaching.", "legacy_subcategories": ["certifications-and-exam-preparation"]}
+      ]
+    },
+    {
+      "slug": "events-and-celebrations",
+      "title": "Events & Celebrations",
+      "description": "Venues, decorators, photographers, planners and entertainment.",
+      "photo_from": "category/events-and-celebrations",
+      "types": [
+        {"slug": "venue-and-function-hall", "title": "Venue & Function Hall", "description": "Kalyana mantapas, halls, lawns and banquets.", "legacy_subcategories": ["venues"]},
+        {"slug": "decorator", "title": "Decorator", "description": "Wedding, birthday and event decoration.", "legacy_subcategories": ["decorations-and-equipment", "weddings", "birthday-and-private-parties"]},
+        {"slug": "photographer-and-videographer", "title": "Photographer & Videographer", "description": "Wedding, event and portfolio photography.", "legacy_subcategories": ["photography-and-personal-portfolios"]},
+        {"slug": "event-planner", "title": "Event Planner", "description": "Wedding, corporate and private event planning.", "legacy_subcategories": ["event-planning-services", "corporate-events"], "legacy_services": ["marketing/events-promotions"]},
+        {"slug": "dj-music-and-entertainment", "title": "DJ, Music & Entertainment", "description": "DJs, bands, anchors and performers.", "legacy_subcategories": ["event-professionals", "tickets-and-experiences"]},
+        {"slug": "tent-sound-and-lighting", "title": "Tent, Sound & Lighting", "description": "Shamiana, sound systems, lighting and generators.", "photo_hint": "Sound"}
+      ]
+    },
+    {
+      "slug": "professional-and-business-services",
+      "title": "Professional & Business Services",
+      "description": "Legal, tax, marketing, IT, finance, documentation and recruitment.",
+      "photo_from": "category/professional-services",
+      "types": [
+        {"slug": "legal-advocate", "title": "Legal / Advocate", "description": "Advocates, notaries and legal advisers.", "legacy_subcategories": ["legal-services"], "regulated": "legal"},
+        {"slug": "tax-gst-and-accounting", "title": "Tax, GST & Accounting", "description": "CA, GST, income tax, bookkeeping and business registration.", "legacy_subcategories": ["accounting-and-taxation", "business-consulting"], "legacy_services": ["tax-compliance/income-tax-return-filing", "tax-compliance/gst-registration", "tax-compliance/gst-filing", "tax-compliance/business-registration", "tax-compliance/tds-compliance", "tax-compliance/tax-consultation", "business-services/business-setup", "business-services/business-consultation", "business-services/vendor-assistance", "business-services/business-process-support", "local-professional-services/professional-consultation"], "regulated": "tax"},
+        {"slug": "marketing-and-design", "title": "Marketing & Design", "description": "Digital marketing, branding, signage, printing ads and design.", "legacy_subcategories": ["marketing-and-branding", "design-and-creative-services"], "legacy_services": ["marketing/digital-marketing", "marketing/outdoor-advertising", "marketing/led-digital-displays", "marketing/signage-branding", "marketing/print-advertising", "marketing/media-advertising", "marketing/marketing-consultation", "business-services/market-research"]},
+        {"slug": "it-and-software", "title": "IT & Software", "description": "Websites, apps, cloud and IT support.", "legacy_subcategories": ["it-and-technology-services"], "legacy_services": ["it-technology/website-development", "it-technology/mobile-app-development", "it-technology/cloud-services", "it-technology/devops-services", "it-technology/it-support", "it-technology/software-consultation"]},
+        {"slug": "insurance-and-finance", "title": "Insurance & Finance", "description": "Insurance agents, loans and financial advisers.", "legacy_subcategories": ["financial-services", "vehicle-insurance-and-finance"]},
+        {"slug": "printing-and-documentation", "title": "Printing & Documentation", "description": "Printing, xerox, typing and document services.", "legacy_subcategories": ["documentation-and-administrative-services"], "legacy_services": ["business-services/documentation-services"]},
+        {"slug": "recruitment-and-staffing", "title": "Recruitment & Staffing", "description": "Placement agencies, staffing and hiring support.", "legacy_subcategories": ["recruitment-services", "jobs-by-industry", "jobs-by-employment-type", "jobs-by-experience", "government-and-public-sector", "gig-and-freelance-work", "employer-profiles", "career-support"]}
+      ]
+    },
+    {
+      "slug": "agriculture-and-farming",
+      "title": "Agriculture & Farming",
+      "description": "Farm equipment, seeds, irrigation, labour, dairy and produce.",
+      "photo_from": "category/agriculture-and-farming",
+      "types": [
+        {"slug": "farm-equipment-and-machinery", "title": "Farm Equipment & Machinery", "description": "Tractors, harvesters, sprayers and agri technology.", "legacy_subcategories": ["farm-equipment-and-machinery", "agricultural-consulting-and-technology"]},
+        {"slug": "seeds-fertiliser-and-nursery", "title": "Seeds, Fertiliser & Nursery", "description": "Seeds, fertilisers, nurseries, soil testing and organic inputs.", "legacy_subcategories": ["seeds-plants-and-nurseries", "soil-testing-and-crop-care", "organic-and-sustainable-farming"]},
+        {"slug": "irrigation-and-borewell", "title": "Irrigation & Borewell", "description": "Drip, sprinkler, pumps and borewell services.", "legacy_subcategories": ["irrigation-and-water-management"]},
+        {"slug": "farm-labour-and-services", "title": "Farm Labour & Services", "description": "Ploughing, harvesting, farm labour and maintenance.", "legacy_subcategories": ["farming-and-agricultural-services", "agricultural-labour-and-farm-maintenance"]},
+        {"slug": "dairy-and-livestock", "title": "Dairy & Livestock", "description": "Dairy, poultry, goats and livestock care.", "legacy_subcategories": ["livestock-and-dairy-farming"]},
+        {"slug": "agri-produce-sellers", "title": "Agri Produce Sellers", "description": "Farmers and traders selling fruits, vegetables, grains and coffee.", "photo_hint": "Organic"}
+      ]
+    }
+  ],
+  "regulations": {
+    "fssai": {"label": "FSSAI licence or registration number", "document": "FSSAI certificate"},
+    "medical": {"label": "Medical / clinic registration number", "document": "Registration certificate"},
+    "pharmacy": {"label": "Drug licence number", "document": "Drug licence"},
+    "veterinary": {"label": "Veterinary registration number", "document": "Registration certificate"},
+    "rera": {"label": "RERA agent / project registration number", "document": "RERA certificate"},
+    "legal": {"label": "Bar Council enrolment number", "document": "Enrolment certificate"},
+    "tax": {"label": "ICAI membership or GST practitioner number", "document": "Membership certificate"}
+  }
+}

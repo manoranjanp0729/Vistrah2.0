@@ -101,10 +101,10 @@ export default function Discover() {
       >
         {[
           {label: '🚜 Farm & Agriculture', category: 'agriculture-and-farming'},
-          {label: '🏠 Home Care', category: 'home-and-everyday-services'},
-          {label: '🩺 Healthcare', category: 'health-fitness-and-wellness'},
-          {label: '🛍️ Shopping', category: 'shopping-and-local-retail'},
-          {label: '🚗 Automobiles', category: 'automobiles'},
+          {label: '🏠 Home Care', category: 'home-services'},
+          {label: '🩺 Healthcare', category: 'health-and-fitness'},
+          {label: '🛍️ Shopping', category: 'shops-and-retail'},
+          {label: '🚗 Automobiles', category: 'vehicles'},
         ].map((tag) => (
           <Pressable
             key={tag.category}

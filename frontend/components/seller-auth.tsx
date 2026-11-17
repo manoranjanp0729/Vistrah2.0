@@ -53,7 +53,8 @@ export function SellerOnboardingPrompt({nextPath,onEnabled}:{nextPath?:string;on
       <label className="checkbox-label" style={{alignItems:'flex-start'}}><input type="checkbox" checked={marketingConsent} disabled={busy} onChange={event=>setMarketingConsent(event.target.checked)} style={{flexShrink:0,padding:0,marginTop:4}}/><span>{sellerLegalCopy.marketing}</span></label>
     </div>
     <div className="replica-actions">
-      <button type="button" className="button" disabled={busy||!termsAccepted} onClick={()=>void enable()}><UiText value={busy?'Enabling seller access…':'Complete seller onboarding'}/></button>
+      <Link className="button" href="/seller/onboard"><UiText value={"List your business (3-step self-onboarding)"}/></Link>
+      <button type="button" className="button secondary" disabled={busy||!termsAccepted} onClick={()=>void enable()}><UiText value={busy?'Enabling seller access…':'Complete seller onboarding'}/></button>
       <Link className="button secondary" href="/provide-service"><UiText value={"Register business"}/></Link>
     </div>
   </div>;

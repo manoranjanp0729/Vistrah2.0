@@ -1,4 +1,5 @@
 import taxonomy from '../../shared/marketplace-taxonomy.json';
-import {createMarketplace} from '../../shared/marketplace';
-export {marketplaceUrl,marketplaceCategoryUrl,marketplaceItemId,type MarketplaceSelection} from '../../shared/marketplace';
-export const {marketplaceCategories,taxonomyCounts,resolveMarketplaceSelection,searchMarketplace,searchMarketplaceEntries}=createMarketplace(taxonomy);
+import legacy from '../../shared/marketplace-legacy-map.json';
+import {createMarketplace,type MarketplaceLegacyMap} from '../../shared/marketplace';
+export {marketplaceUrl,marketplaceCategoryUrl,marketplaceItemId,isSingleTypeSubcategory,type MarketplaceSelection} from '../../shared/marketplace';
+export const {marketplaceCategories,taxonomyCounts,resolveMarketplaceSelection,legacyMarketplaceSelection,searchMarketplace,searchMarketplaceEntries}=createMarketplace(taxonomy,legacy as MarketplaceLegacyMap);

@@ -8,5 +8,7 @@ export default async function AddServicePage({searchParams}:{searchParams:Promis
   const selection=serviceSelection({category:typeof params.category==='string'?params.category:undefined,subcategory:typeof params.subcategory==='string'?params.subcategory:undefined,type:typeof params.type==='string'?params.type:undefined});
   const resolved=selection&&resolveMarketplaceSelection(selection);
   if(!selection||!resolved?.listingType)notFound();
-  return <AddService selection={selection} title={resolved.listingType.title} pathLabel={[resolved.category!.title,resolved.subcategory!.title,resolved.listingType.title].join(' / ')}/>;
+  const canonical={category:resolved.category!.slug,subcategory:resolved.subcategory!.slug,type:resolved.listingType.slug};
+  const labelParts=resolved.subcategory!.slug===resolved.listingType.slug?[resolved.category!.title,resolved.subcategory!.title]:[resolved.category!.title,resolved.subcategory!.title,resolved.listingType.title];
+  return <AddService selection={canonical} title={resolved.listingType.title} pathLabel={labelParts.join(' / ')}/>;
 }

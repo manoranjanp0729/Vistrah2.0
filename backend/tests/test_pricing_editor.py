@@ -27,27 +27,31 @@ def test_public_pricing_returns_seeded_sections_promo_tiers_pillars_and_faqs(cli
 
     assert body["currency"] == "INR"
     assert body["promo"]["id"] == "v_ads_promo"
-    assert body["promo"]["title"] == "Launch V Ads Free for Your First Month"
+    assert body["promo"]["title"] == "List Your Business & Upload V Ads — 100% Free Forever"
     assert body["promo"]["promo_enabled"] is True
-    assert body["promo"]["free_trial_days"] == 30
+    assert body["promo"]["free_trial_days"] == 0
 
-    assert len(body["v_ads_tiers"]) == 4
+    assert len(body["v_ads_tiers"]) == 5
     assert [t["id"] for t in body["v_ads_tiers"]] == [
         "v-ads-2km",
         "v-ads-5km",
         "v-ads-10km",
         "v-ads-25km",
+        "v-ads-50km",
     ]
-    assert body["v_ads_tiers"][1]["price_paise"] == 25000
-    assert body["v_ads_tiers"][1]["monthly_price_paise"] == 750000
-    assert body["v_ads_tiers"][1]["free_trial_enabled"] is True
-    assert body["v_ads_tiers"][1]["free_trial_days"] == 30
+    for tier in body["v_ads_tiers"]:
+        assert tier["price_paise"] == 0
+        assert tier["monthly_price_paise"] == 0
+        assert tier["free_trial_enabled"] is True
+        assert tier["free_trial_days"] == 0
+        assert "Free Forever" in tier["promo_badge"]
 
     assert len(body["pillars"]) == 4
-    assert len(body["services"]) == 34
+    assert len(body["services"]) == 35
+    assert any(s["id"] == "business-workflow-automation" for s in body["services"])
     assert len(body["packages"]) == 4
     assert len(body["faqs"]) == 5
-    assert body["faqs"][0]["question"] == "How does the Free First Month of V Ads work?"
+    assert "100% free for any radius" in body["faqs"][0]["question"]
 
 
 def test_admin_pricing_endpoints_enforce_authentication_and_admin_role(client, db):
@@ -80,7 +84,7 @@ def test_admin_can_update_prices_promos_and_faqs_with_audit_trail(client, db):
 
     admin_view = client.get("/api/admin/pricing", headers=admin_headers)
     assert admin_view.status_code == 200, admin_view.text
-    assert len(admin_view.json()["items"]) == 47
+    assert len(admin_view.json()["items"]) == 49
 
     # 1. Update Studio service price + deliverables
     update_item = client.put(

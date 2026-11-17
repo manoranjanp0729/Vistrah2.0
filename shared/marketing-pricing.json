@@ -608,6 +608,37 @@
       "studio_related": false
     },
     {
+      "id": "business-workflow-automation",
+      "name": "Business Workflow Automation",
+      "category_ids": [
+        "websites",
+        "digital"
+      ],
+      "starting_price_paise": null,
+      "billing": "one-time",
+      "description": "Custom lead routing, appointment reminders, WhatsApp/CRM handoffs, and operational workflow automation tailored to your business.",
+      "deliverables": [
+        "Operations and enquiry workflow audit",
+        "Automated lead capture, routing or reminder setup",
+        "Integration testing and staff handover",
+        "Scoped quotation aligned to your tools and volume"
+      ],
+      "addons": [
+        "CRM and billing integration",
+        "Custom dashboard reporting",
+        "Ongoing maintenance"
+      ],
+      "exclusions": [
+        "Taxes and third-party charges are not included.",
+        "Final scope and commercial approval are required.",
+        "Third-party API, WhatsApp BSP, cloud and SaaS subscription fees are separate."
+      ],
+      "delivery_note": null,
+      "enabled": true,
+      "pricing_state": "PROPOSED",
+      "studio_related": false
+    },
+    {
       "id": "social-graphic",
       "name": "Social Graphic",
       "category_ids": [

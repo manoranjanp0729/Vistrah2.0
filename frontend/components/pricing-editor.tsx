@@ -488,7 +488,7 @@ export function PricingEditor() {
                   })
                 }
               />
-              Enable V Ads Free First Month Promo (₹0 upfront)
+              Enable Free Forever Banner (₹0 Listing &amp; Any-Radius V Ads)
             </label>
             <label className={styles.checkboxInline}>
               <input
@@ -708,10 +708,10 @@ export function PricingEditor() {
                   <p className={styles.eyebrow}>
                     SELF-SERVE SPATIAL &amp; REELS TIERS
                   </p>
-                  <h2>V Ads Radius Tiers &amp; Day 31+ Rates</h2>
+                  <h2>V Ads Radius Coverage (₹0 / Free Forever)</h2>
                   <p>
-                    Configure daily INR rates, Month 2+ standard 30-day rates,
-                    free-trial badges, and estimated daily local reach.
+                    Configure radius coverage previews (₹0 forever on VISTRAH),
+                    badges, and estimated local reach.
                   </p>
                 </div>
               </div>
@@ -844,7 +844,7 @@ export function PricingEditor() {
                         </label>
                         <label>
                           {isVAds
-                            ? "Day 31+ Daily Rate (INR)"
+                            ? "Platform Rate (INR · 0 = Free Forever)"
                             : "Starting Price (INR)"}
                           <input
                             type="number"
@@ -882,7 +882,7 @@ export function PricingEditor() {
                         {isVAds && (
                           <>
                             <label>
-                              Month 2+ Standard 30-Day Rate (INR)
+                              30-Day Rate (INR · 0 = Free Forever)
                               <input
                                 type="number"
                                 min={0}
@@ -1041,7 +1041,7 @@ export function PricingEditor() {
                                   })
                                 }
                               />
-                              Include in Free First Month Promo
+                              Mark as ₹0 Free Forever on VISTRAH
                             </label>
                           )}
                         </div>

@@ -214,18 +214,21 @@ def _catalogue_grounding() -> tuple[str, list[dict[str, str]]]:
         f"- Marketplace Taxonomy: {len(categories)} major divisions covering {total_types}+ service & business types:\n  "
         + "\n  ".join(division_lines)
         + "\n"
-        "- In-App Nearby Service Discovery (`/services/nearby`): Clicking any service type opens an interactive map + distance-sorted nearby businesses (`5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, `WhatsApp` (for VISTRAH Verified businesses), and `Directions`.\n"
-        "- Free 3-Step Seller Self-Onboarding (`/seller/onboard`): Any shop, professional, or service provider can list in ~3 minutes: "
-        "(1) Search & pick up to 3 business types from 800+ services, "
+        "- In-App Nearby Service Discovery (`/services/nearby`): Clicking any service type opens an interactive map + distance-sorted nearby businesses (`5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, conditional `Website`, `Directions`, and a `More` menu.\n"
+        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 808+ service types is 100% FREE forever with 0% lead commission. In ~3 minutes: "
+        "(1) Search & pick up to 3 business types from 808+ services, "
         "(2) Enter shop name, phone/WhatsApp, drop map pin + coverage radius (`5/10/25/50 km`), with optional licence upload ONLY for regulated professions (doctors, pharmacies, food/FSSAI, legal/CA), "
         "(3) Accept terms & submit.\n"
-        "- V Ads Hyperlocal Reels (`/v-ads` & `/marketing-pricing`): Short vertical video ads targeted by locality/GPS radius and service category so local businesses reach nearby customers.\n\n"
+        "- 100% Free Self-Serve V Ads for ANY Radius (`/seller/v-ads` & `/v-ads` — ₹0 / Free Forever): Creating and uploading hyperlocal 9:16 V Ads Reels and targeting ANY geographic radius (`2 km`, `5 km`, `10 km`, `25 km`, `50 km+`, or custom radius) inside VISTRAH is 100% FREE forever (`₹0`), subject only to standard admin quality moderation.\n"
+        "- Paid VISTRAH Services (`/pricing` & `/marketing-pricing`): Paid pricing applies ONLY to optional done-for-you agency and business tech solutions:\n"
+        "  1. VISTRAH Ads & Marketing Studio: Custom commercial video ad production (Reels, Shorts, brand films from ₹2,999), graphic/brochure design (from ₹499), managed Meta/Google/social marketing retainers (from ₹4,999/month + external ad spend at actuals), outdoor hoardings, and transit branding.\n"
+        "  2. Website & Digital Setup (VISTRAH Tech / Automation): Custom business website design & launch (landing pages from ₹4,999, business websites from ₹12,999+, or request via `/contact?intent=request-website`) and custom business workflow automation.\n\n"
         "OUTPUT FORMAT (STRICT JSON ONLY):\n"
         'Return a JSON object with exact keys: {"reply": "<concise helpful answer>", "suggestedActions": [{"label": "<short button text>", "href": "<valid internal path>"}]}.\n'
         "Allowed `href` patterns ONLY: `/services`, `/services?category=<cat_slug>`, "
         "`/services/nearby?category=<cat_slug>&subcategory=<sub_slug>&type=<lt_slug>`, "
         "`/seller/onboard`, `/seller/onboard?category=<cat_slug>&subcategory=<sub_slug>&type=<slug>`, "
-        "`/v-ads`, `/marketing-pricing`, `/location`, `/agri-connect`, `/health-connect`, `/jobs`, `/contact`.\n"
+        "`/seller/v-ads`, `/v-ads`, `/pricing`, `/marketing-pricing`, `/contact`, `/contact?intent=request-website`, `/location`, `/agri-connect`, `/health-connect`, `/jobs`.\n"
         "Include 1 to 3 relevant `suggestedActions`."
     )
     return base_prompt, search_index
@@ -347,21 +350,34 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
     lower = message.lower()
     matches = _match_relevant_services(message, limit=3)
 
+    if any(k in lower for k in ("price", "pricing", "cost", "fee", "charge", "free", "request website", "build website", "website development", "automation")):
+        return {
+            "reply": (
+                "Listing your business across all 808+ service types (`/seller/onboard`) and creating/uploading V Ads for **any target radius** inside VISTRAH (`/seller/v-ads`) are **100% Free Forever (₹0)**! "
+                "Paid pricing applies only if you hire **VISTRAH Ads & Marketing Studio** (done-for-you commercial Reels shoots, graphic/brochure design, Meta/Google marketing) or **VISTRAH Tech** for custom business websites and workflow automation."
+            ),
+            "suggestedActions": [
+                {"label": "View Pricing", "href": "/pricing"},
+                {"label": "Upload Free V Ad", "href": "/seller/v-ads"},
+                {"label": "Request Website", "href": "/contact?intent=request-website"},
+            ],
+        }
+
     if any(k in lower for k in ("list my business", "onboard", "become a seller", "register shop", "add my business", "add service")):
-        actions: list[dict[str, str]] = [{"label": "Start 3-Step Onboarding", "href": "/seller/onboard"}]
+        actions: list[dict[str, str]] = [{"label": "List Business Free", "href": "/seller/onboard"}]
         if matches:
             top = matches[0]
             actions.insert(
                 0,
                 {"label": f"List {top['title']}", "href": _onboard_href(top)},
             )
-        actions.append({"label": "Explore V Ads", "href": "/v-ads"})
+        actions.append({"label": "Upload Free V Ad", "href": "/seller/v-ads"})
         return {
             "reply": (
-                "You can list your business for free on VISTRAH in ~3 minutes at `/seller/onboard`: "
-                "(1) Search and select up to 3 services from our 800+ catalogue, "
-                "(2) Add your business name, phone/WhatsApp, and drop your map pin + coverage radius (`5–50 km`), "
-                "(3) Accept terms and submit (optional licence upload is only shown for regulated professions)."
+                "Listing your business on VISTRAH is **100% Free Forever (₹0)** across 808+ services (and uploading V Ads for any radius is ₹0 too). Start in ~3 minutes at `/seller/onboard`: "
+                "(1) Pick up to 3 services, "
+                "(2) Add your business name, phone/WhatsApp, and map pin + coverage radius (`5–50 km`), "
+                "(3) Accept terms and submit."
             ),
             "suggestedActions": actions[:3],
         }
@@ -371,26 +387,26 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
         names = ", ".join(c["title"] for c in cats[:8])
         return {
             "reply": (
-                f"Vistrah India organizes 800+ hyperlocal services across {len(cats)} major divisions — including {names}, "
-                "Agriculture & Farming, Pet Care, and Property & Construction. Tap any service to view nearby providers on an interactive map with shop photos, Call, and Directions."
+                f"Vistrah India organizes 808+ hyperlocal services across {len(cats)} major divisions — including {names}, "
+                "Agriculture & Farming, Pet Care, and Property & Construction. Tap any service to view nearby providers on an interactive map with shop photos, Call, Website, and Directions."
             ),
             "suggestedActions": [
                 {"label": "Browse All Divisions", "href": "/services"},
                 {"label": "AgriConnect", "href": "/agri-connect"},
-                {"label": "List Your Business", "href": "/seller/onboard"},
+                {"label": "List Business Free", "href": "/seller/onboard"},
             ],
         }
 
     if any(k in lower for k in ("v ads", "v-ads", "video ad", "promote", "marketing", "boost")):
         return {
             "reply": (
-                "V Ads lets local businesses publish short hyperlocal video reels targeted by customer locality, GPS radius, and service category. "
-                "You can watch live local reels on `/v-ads` or review transparent promotional plans on `/marketing-pricing`."
+                "Creating and uploading self-serve **V Ads** for **any target radius** inside VISTRAH is **100% Free Forever (₹0)** at `/seller/v-ads` (going live right after admin moderation). "
+                "If you want done-for-you commercial video shoots, graphic design, Meta/Google campaigns, or custom websites & automation, explore paid Studio & Tech packages on `/pricing`."
             ),
             "suggestedActions": [
+                {"label": "Create & Upload Free Ad", "href": "/seller/v-ads"},
                 {"label": "Watch V Ads", "href": "/v-ads"},
-                {"label": "V Ads Plans", "href": "/marketing-pricing"},
-                {"label": "List Your Business", "href": "/seller/onboard"},
+                {"label": "Studio & Tech Pricing", "href": "/pricing"},
             ],
         }
 

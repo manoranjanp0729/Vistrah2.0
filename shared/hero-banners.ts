@@ -63,12 +63,12 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     badge: 'FOR BUSINESSES',
     navTitle: 'For Businesses',
     title: 'Grow Your Business with VISTRAH',
-    subtitle: '90 days free listing, 30 days V Ads at ₹0, and done-for-you digital studio.',
+    subtitle: '₹0 free business listing, ₹0 any-radius V Ads forever, plus done-for-you Studio, Web & Automation.',
     webImageSrc: '/hero-journey/for-businesses-widescreen.jpg',
     storyPath: '/for-businesses',
     stats: [
-      {value: '90 Days', label: 'Free Basic Listing'},
-      {value: '₹0', label: 'First 30 Days V Ads'},
+      {value: '₹0', label: 'Free Business Listing'},
+      {value: '₹0', label: 'Any-Radius V Ads'},
       {value: '₹4,999', label: 'Websites Starting'},
       {value: '0%', label: 'Lead Commission'},
     ],
@@ -91,13 +91,13 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     badge: 'VISTRAH ADS & MARKETING',
     navTitle: 'Ads & Marketing',
     title: 'Advertise with VISTRAH',
-    subtitle: 'Self-serve 9:16 V Ads + full-stack creative, website, and social agency.',
+    subtitle: 'Free self-serve V Ads for any radius + paid creative studio, website & automation team.',
     webImageSrc: '/hero-journey/v-ads-widescreen.jpg',
     storyPath: '/ads-and-marketing',
     stats: [
-      {value: '₹0', label: 'Month 1 V Ads Trial'},
+      {value: '₹0', label: 'Any-Radius V Ads'},
       {value: '₹499+', label: 'Creatives & Reels'},
-      {value: '₹4,999+', label: 'Websites & Pages'},
+      {value: '₹4,999+', label: 'Websites & Tech'},
       {value: '0%', label: 'Ad-Spend Markup'},
     ],
     primaryCta: {
@@ -211,30 +211,30 @@ export const USER_VERTICALS = [
 export const BUSINESS_TIMELINE = [
   {
     step: '01',
-    badge: '90 DAYS FREE',
+    badge: 'FREE FOREVER',
     price: '₹0',
-    title: 'List Free — Verified Storefront',
-    caption: 'Verify ownership once, pin your locality coverage, and receive direct customer calls.',
+    title: 'List Free — 808+ Service Types',
+    caption: 'Pick your services, pin your shop location, and receive direct customer calls & directions at ₹0.',
     mockupTitle: 'Verified Business Card',
-    mockupPills: ['✓ Ownership Verified', 'Direct Call & WhatsApp', 'Fixed-Price Packages'],
+    mockupPills: ['✓ Free Forever', 'Direct Call & Website', '808+ Service Types'],
   },
   {
     step: '02',
-    badge: 'FIRST 30 DAYS ₹0',
-    price: '₹0 Month 1',
-    title: 'Launch V Ads — Hyperlocal 9:16 Reels',
-    caption: 'Broadcast 60s video proof across 2 km–25 km. Transparent Day 31+ rates, zero auto-charge.',
+    badge: 'FREE ANY RADIUS',
+    price: '₹0 Forever',
+    title: 'Create & Upload Free V Ads',
+    caption: 'Publish 9:16 hyperlocal video ads for any target radius inside VISTRAH at ₹0 forever.',
     mockupTitle: 'Geo-Radius Reel Broadcast',
-    mockupPills: ['2 km · 5 km · 10 km · 25 km', '₹0 Due Today', 'Day 31+ Optional'],
+    mockupPills: ['Free for Any Radius', '2 km · 10 km · 25 km · 50 km+', '₹0 Forever'],
   },
   {
     step: '03',
-    badge: 'DONE-FOR-YOU STUDIO',
+    badge: 'PAID STUDIO & TECH',
     price: 'From ₹499 / ₹4,999',
-    title: 'Scale With Studio — Creatives, Web & Social',
-    caption: 'Add commercial reels, mobile-first websites, or managed social campaigns anytime.',
-    mockupTitle: 'VISTRAH Studio Stack',
-    mockupPills: ['Reels ₹2,999', 'Websites ₹4,999+', 'Social ₹4,999/mo'],
+    title: 'Scale With Studio, Website & Automation',
+    caption: 'Hire VISTRAH for commercial ad shoots, Meta/Google marketing, custom websites, or business automation.',
+    mockupTitle: 'VISTRAH Studio & Tech Stack',
+    mockupPills: ['Reels ₹2,999', 'Websites ₹4,999+', 'Workflow Automation'],
   },
 ] as const;
 
@@ -244,23 +244,23 @@ export const ADS_STUDIO_PILLARS = [
     tag: 'BRAND & VIDEO STUDIO',
     title: 'Creative & Video Production',
     price: 'From ₹499 – ₹2,999',
-    caption: '9:16 commercial reels, festival posters, and brand identity kits at fixed one-time rates.',
+    caption: '9:16 commercial reels, festival posters, brochure graphics, and brand identity kits at fixed one-time rates.',
     tiers: [
       {label: 'Social Graphic / Banner', rate: '₹499 – ₹699'},
-      {label: 'Promotional Poster', rate: '₹799'},
+      {label: 'Promotional Poster / Brochure', rate: '₹799'},
       {label: '9:16 Commercial Reel / Logo Kit', rate: '₹2,999'},
     ],
   },
   {
     num: '02',
-    tag: 'WEB ENGINEERING',
-    title: 'Website Creation & Web Apps',
+    tag: 'VISTRAH TECH & AUTOMATION',
+    title: 'Website Design & Business Automation',
     price: 'From ₹4,999 one-time',
-    caption: 'Fast, mobile-first websites wired with instant Call, WhatsApp, and enquiry capture.',
+    caption: 'Custom mobile-first websites with Call & WhatsApp capture plus business workflow automation.',
     tiers: [
       {label: 'Campaign Landing Page', rate: '₹4,999'},
-      {label: 'Portfolio Showcase Site', rate: '₹7,999'},
-      {label: 'Multi-Page Business Website', rate: '₹12,999+'},
+      {label: 'Business Website', rate: '₹12,999+'},
+      {label: 'Business Workflow Automation', rate: 'Custom Quote'},
     ],
   },
   {
@@ -278,10 +278,10 @@ export const ADS_STUDIO_PILLARS = [
 ] as const;
 
 export const VADS_RATE_SNAPSHOT = [
-  {zone: '2 km Neighbourhood', month1: '₹0 (30 Days Free)', day31: '₹4,500/mo + GST', daily: '₹150/day'},
-  {zone: '5 km Ward Cluster', month1: '₹0 (30 Days Free)', day31: '₹7,500/mo + GST', daily: '₹250/day'},
-  {zone: '10 km City Corridor', month1: '₹0 (30 Days Free)', day31: '₹13,500/mo + GST', daily: '₹450/day'},
-  {zone: '25 km Metro Reach', month1: '₹0 (30 Days Free)', day31: '₹24,000/mo + GST', daily: '₹800/day'},
+  {zone: '2 km Neighbourhood', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
+  {zone: '5 km Ward Cluster', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
+  {zone: '10 km City Corridor', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
+  {zone: '25 km – 50 km+ Reach', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
 ] as const;
 
 export const AGRI_CARDS = [

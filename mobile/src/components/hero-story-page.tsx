@@ -524,7 +524,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 <View style={{flex: 1, gap: 4}}>
                   <Text style={[s.eyebrow, {color: '#10b981'}]}>SELF-SERVE HYPERLOCAL V ADS</Text>
                   <Text accessibilityRole="header" style={[s.sectionTitle, {color: textPrimary}]}>
-                    First 30 Days at ₹0 — Every Radius Tier
+                    ₹0 / Free Forever — Free for Any Radius on VISTRAH
                   </Text>
                 </View>
                 <Pressable
@@ -535,7 +535,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     {backgroundColor: accentColor, borderColor: accentColor, opacity: pressed ? 0.85 : 1},
                   ]}
                 >
-                  <Text style={[s.primaryBtnText, {color: '#ffffff'}]}>Interactive Estimator</Text>
+                  <Text style={[s.primaryBtnText, {color: '#ffffff'}]}>Studio &amp; Tech Pricing</Text>
                   <Feather name="arrow-right" size={14} color="#ffffff" />
                 </Pressable>
               </View>
@@ -560,7 +560,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                       {row.month1}
                     </Text>
                     <Text style={{fontSize: 11, color: textSecondary, fontVariant: ['tabular-nums']}}>
-                      Day 31+: {row.day31}
+                      {row.day31}
                     </Text>
                   </View>
                 ))}

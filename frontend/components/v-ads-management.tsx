@@ -67,8 +67,8 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
   </div>}
   {showTargeting&&<div style={{display:'grid',gap:12,padding:'16px 0',borderTop:'1px solid var(--hairline, var(--border))',borderBottom:'1px solid var(--hairline, var(--border))',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>
    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:6}}>
-    <strong><UiText value={"Select Advertising Radius & Locality"}/></strong>
-    {targeting?.active_revision?<small style={{color:'#16a34a',fontWeight:600}}><UiText value={"Active Rev #"}/>{targeting.active_revision.revision} ({targeting.active_revision.radius_km} km)</small>:<small style={{color:'var(--text-secondary)'}}><UiText value={"Pan-region delivery"}/></small>}
+    <strong><UiText value={"Select Advertising Radius & Locality — Free for any radius on VISTRAH"}/></strong>
+    {targeting?.active_revision?<small style={{color:'#16a34a',fontWeight:600}}><UiText value={"Active Rev #"}/>{targeting.active_revision.revision} ({targeting.active_revision.radius_km} km · ₹0)</small>:<small style={{color:'var(--text-secondary)'}}><UiText value={"Pan-region delivery · ₹0 Free Forever"}/></small>}
    </div>
    {loadingTargeting?<p role="status"><UiText value={"Loading targeting…"}/></p>:<>
     {targeting?.active_revision&&<small><UiText value={"Approved coverage: "}/>{targeting.active_revision.latitude}, {targeting.active_revision.longitude} · {targeting.active_revision.radius_km} km{targeting.active_revision.target_regions.length?` · ${targeting.active_revision.target_regions.join(', ')}`:''}</small>}

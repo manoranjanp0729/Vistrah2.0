@@ -147,13 +147,13 @@ function SellerWorkspace({
     <header style={{paddingBottom: 16, borderBottom: '1px solid var(--hairline, var(--border))', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap'}}>
       <div>
         <div style={{fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-secondary)'}}>
-          <UiText value="ADVERTISER & CREATOR WORKSPACE"/>
+          <UiText value="ADVERTISER & CREATOR WORKSPACE · ₹0 / FREE FOREVER"/>
         </div>
         <h1 style={{margin: '4px 0 4px', fontSize: 26, fontWeight: 600, letterSpacing: '-0.025em', lineHeight: 1.2, color: 'var(--text-primary)'}}>
           <UiText value="V Ads Studio"/>
         </h1>
         <p style={{margin: 0, fontSize: 14, lineHeight: 1.5, color: 'var(--text-secondary)'}}>
-          <UiText value="Publish local video ads, configure advertising radius, and monitor verified views."/>
+          <UiText value="Free for any radius on VISTRAH — publish hyperlocal video ads, configure any target radius at ₹0, and monitor verified views."/>
         </p>
       </div>
     </header>
@@ -387,8 +387,8 @@ function SellerWorkspace({
               <Video size={18}/>
             </div>
             <div>
-              <h2 style={{margin:0,fontSize:17}}><UiText value={"Submit Local Video Ad"}/></h2>
-              <small><UiText value={"MP4 (H.264/AAC) · Up to 60s · Max 100 MB · Reviewed prior to feed publication"}/></small>
+              <h2 style={{margin:0,fontSize:17}}><UiText value={"Submit Local Video Ad — Free for Any Radius on VISTRAH"}/></h2>
+              <small><UiText value={"₹0 / Free Forever · MP4 (H.264/AAC) · Up to 60s · Max 100 MB · Reviewed prior to feed publication"}/></small>
             </div>
           </div>
           <label>

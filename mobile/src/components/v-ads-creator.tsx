@@ -260,7 +260,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               <UiText value="Marketing Ad Video Creator" />
             </Text>
             <Text style={[styles.muted, { fontSize: 12 }]}>
-              <UiText value="Choose a template, add your photos & copy, and generate an MP4 video ad." />
+              <UiText value="Free for any radius on VISTRAH — choose a template, add photos & copy, and generate an MP4 V Ad at ₹0." />
             </Text>
           </View>
         </View>

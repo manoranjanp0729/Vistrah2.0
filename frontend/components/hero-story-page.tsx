@@ -272,7 +272,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
               </h2>
             </div>
             <p className={styles.sectionCaption}>
-              Zero upfront risk · Zero auto-charge on Day 31.
+              ₹0 / Free Forever for Business Listings &amp; Any-Radius V Ads.
             </p>
           </div>
 
@@ -433,16 +433,16 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
               <div>
                 <p className={styles.eyebrow}>SELF-SERVE HYPERLOCAL V ADS</p>
                 <h2 id="vads-free-heading" className={styles.sectionTitle}>
-                  First 30 Days at ₹0 — Across Every Radius Tier
+                  ₹0 / Free Forever — Free for Any Radius on VISTRAH
                 </h2>
               </div>
               <div className={styles.ctaGroup}>
                 <Link href="/seller/v-ads" className={styles.primaryBtn}>
-                  <span>Launch Free Month</span>
+                  <span>Create &amp; Upload Free Ad</span>
                   <ArrowRight size={15} aria-hidden="true" />
                 </Link>
                 <Link href="/pricing" className={styles.secondaryBtn}>
-                  <span>Interactive Estimator</span>
+                  <span>View Studio &amp; Tech Pricing</span>
                 </Link>
               </div>
             </div>
@@ -452,7 +452,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 <div key={row.zone} className={styles.rateCell}>
                   <span className={styles.rateZone}>{row.zone}</span>
                   <strong className={styles.rateFree}>{row.month1}</strong>
-                  <span className={styles.rateAfter}>Day 31+: {row.day31}</span>
+                  <span className={styles.rateAfter}>{row.day31}</span>
                 </div>
               ))}
             </div>

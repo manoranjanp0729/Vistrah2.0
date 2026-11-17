@@ -37,14 +37,12 @@ import {
   quotePayload,
   marketingPricingClient,
   pricingHref,
-  VADS_DURATION_OPTIONS,
   defaultHydratedPricing,
   hydrateLivePricing,
   computeTierBoostEstimate,
   serviceFeeClarity,
   PRICING_COMPARISON_ROWS,
   type PricingIntent,
-  type VAdsDurationDays,
   type QuoteDraft,
   type MarketingQuote,
   type PricingCapabilities,
@@ -98,7 +96,6 @@ export function MarketingPricing({
   // Buyer-intent state on the overview rate card
   const [intent, setIntent] = useState<PricingIntent>("boosts");
   const [selectedTierId, setSelectedTierId] = useState<string>("v-ads-5km");
-  const [durationDays, setDurationDays] = useState<VAdsDurationDays>(7);
 
   // Studio search / filter state
   const [query, setQuery] = useState("");
@@ -206,7 +203,7 @@ export function MarketingPricing({
   const items = searchPricing(catalogue, query, category, billing);
   const selectedTier =
     vAdsTiers.find((t) => t.id === selectedTierId) ?? vAdsTiers[0];
-  const boostEstimate = computeTierBoostEstimate(selectedTier, durationDays);
+  const boostEstimate = computeTierBoostEstimate(selectedTier, 30);
   const feeLabel = (svc: (typeof catalogue.services)[number]) =>
     serviceFeeLabels[svc.id] ?? serviceFeeClarity(svc);
   const ServiceIcon =
@@ -672,10 +669,7 @@ export function MarketingPricing({
         <header className={styles.hero}>
           <div>
             <p className={styles.eyebrow}>
-              VISTRAH ADS &amp; MARKETING
-              {promo.promoEnabled
-                ? ` · FIRST ${promo.freeTrialDays} DAYS FREE`
-                : ""}
+              VISTRAH PRICING · ₹0 / FREE FOREVER PLATFORM
             </p>
             <h1>{promo.headline}</h1>
             <p>{promo.subheadline}</p>
@@ -684,24 +678,27 @@ export function MarketingPricing({
                 {promo.primaryCta}
                 <ArrowUpRight size={16} />
               </Link>
+              <Link href={promo.secondaryCtaHref} className={styles.secondary}>
+                {promo.secondaryCtaLabel}
+              </Link>
               <button
                 type="button"
                 className={styles.secondary}
                 onClick={() =>
                   openCustomMediaPlan(
-                    pillars[0]?.defaultServiceId ?? "digital-campaign",
+                    pillars[0]?.defaultServiceId ?? "promotional-reel",
                     pillars[0]?.defaultBrief,
                   )
                 }
               >
-                Explore Studio &amp; Custom Quotes
+                Explore Paid Studio &amp; Website Quotes
               </button>
             </div>
             <p className={styles.heroMicrocopy}>{promo.microcopy}</p>
           </div>
           <aside
             className={styles.heroAside}
-            aria-label="First 30 Days Free V Ads Offer"
+            aria-label="Free Forever Business Listing and Any-Radius V Ads"
           >
             <span>{promo.anchorBadge}</span>
             <div className={styles.freePriceRow}>
@@ -735,7 +732,7 @@ export function MarketingPricing({
             ref={workspaceRef}
             className={styles.intentBar}
             role="tablist"
-            aria-label="Choose advertising model"
+            aria-label="Choose VISTRAH pricing track"
           >
             <button
               type="button"
@@ -749,10 +746,11 @@ export function MarketingPricing({
               onClick={() => setIntent("boosts")}
             >
               <span className={styles.intentTitle}>
-                1. Self-Serve V Ads — First Month Free
+                1. Free Forever Platform — ₹0
               </span>
               <span className={styles.intentMeta}>
-                ₹0 for Days 1–30 · Then standard 2–25 km rates from Day 31
+                808+ business listings + Creating &amp; uploading V Ads for ANY
+                radius inside VISTRAH
               </span>
             </button>
             <button
@@ -767,12 +765,13 @@ export function MarketingPricing({
               onClick={() => setIntent("studio")}
             >
               <span className={styles.intentTitle}>
-                2. VISTRAH Ads &amp; Marketing Studio — Quoted Services
+                2. VISTRAH Ads &amp; Marketing + Website &amp; Automation
               </span>
               <span className={styles.intentMeta}>
-                Agency retainers, creative/video, hoardings &amp; mobility ·{" "}
-                {catalogue.services.filter((s) => s.enabled).length} services
-                (billed separately)
+                Done-for-you ad shoots, Meta/Google campaigns, custom websites
+                &amp; workflow automation ·{" "}
+                {catalogue.services.filter((s) => s.enabled).length} paid
+                options
               </span>
             </button>
           </div>
@@ -787,20 +786,23 @@ export function MarketingPricing({
               <div className={styles.sectionHeading}>
                 <div>
                   <p className={styles.eyebrow}>
-                    SELF-SERVE SPATIAL &amp; 9:16 REELS · ₹0 FOR FIRST 30 DAYS
+                    ₹0 / FREE FOREVER · ZERO PER-RADIUS FEES · ZERO COMMISSION
                   </p>
-                  <h2>V Ads Plans &amp; Month 2+ Rate Estimator</h2>
+                  <h2>
+                    Free Business Listing &amp; Free V Ads for Any Radius on
+                    VISTRAH
+                  </h2>
                 </div>
                 <span className={styles.countBadge}>
-                  ₹0 Month 1 · Zero lock-in · 18% GST from Day 31
+                  ₹0 / Free Forever · Any Radius
                 </span>
               </div>
               <div className={styles.estimatorGrid}>
                 <div className={styles.estimatorControls}>
                   <div className={styles.controlGroup}>
                     <span className={styles.controlLabel}>
-                      Select Target Radius — ₹0 for Month 1, Standard Rate From
-                      Day 31
+                      Preview Target Radius — Free for Any Radius on VISTRAH
+                      (₹0 Forever)
                     </span>
                     <div
                       className={styles.optionGrid}
@@ -819,59 +821,14 @@ export function MarketingPricing({
                             }
                             onClick={() => setSelectedTierId(tier.id)}
                           >
-                            {tier.freeTrialEnabled && tier.promoBadge && (
-                              <span className={styles.optionFreeBadge}>
-                                {tier.promoBadge}
-                              </span>
-                            )}
+                            <span className={styles.optionFreeBadge}>
+                              {tier.promoBadge || "₹0 Free Forever"}
+                            </span>
                             <span className={styles.optionValue}>
                               {tier.label}
                             </span>
                             <span className={styles.optionSub}>
-                              {tier.freeTrialEnabled
-                                ? `Then ${formatPricingMoney(tier.monthlyPaise)}/mo + GST from Day ${tier.freeTrialDays + 1}`
-                                : `${formatPricingMoney(tier.monthlyPaise)}/mo + GST`}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className={styles.controlGroup}>
-                    <span className={styles.controlLabel}>
-                      {selectedTier.freeTrialEnabled
-                        ? `Preview Optional Post-Trial Window (From Day ${selectedTier.freeTrialDays + 1} Onward)`
-                        : "Select Campaign Duration"}
-                    </span>
-                    <div
-                      className={styles.optionGrid}
-                      role="group"
-                      aria-label="Campaign duration in days"
-                    >
-                      {VADS_DURATION_OPTIONS.map((days) => {
-                        const active = durationDays === days;
-                        return (
-                          <button
-                            key={days}
-                            type="button"
-                            aria-pressed={active}
-                            className={
-                              active ? styles.optionBtnActive : styles.optionBtn
-                            }
-                            onClick={() => setDurationDays(days)}
-                          >
-                            <span className={styles.optionValue}>
-                              {days === 30 ? "30 days (Monthly)" : `${days} days`}
-                            </span>
-                            <span className={styles.optionSub}>
-                              {selectedTier.freeTrialEnabled
-                                ? `Day ${selectedTier.freeTrialDays + 1}+: `
-                                : ""}
-                              {formatPricingMoney(
-                                selectedTier.dailyPaise * days,
-                              )}{" "}
-                              + GST
+                              ₹0 / Free Forever · {tier.zoneLabel}
                             </span>
                           </button>
                         );
@@ -880,102 +837,80 @@ export function MarketingPricing({
                   </div>
 
                   <ul className={styles.boostHighlights}>
-                    {selectedTier.deliverables.length ? (
-                      selectedTier.deliverables.map((line) => (
-                        <li key={line}>
-                          <Check size={16} />
-                          <span>{line}</span>
-                        </li>
-                      ))
-                    ) : (
-                      <li>
-                        <Check size={16} />
-                        <span>
-                          <strong>
-                            ₹0 — First {boostEstimate.freeTrialDays || 30} Days
-                            Free ({selectedTier.label}):
-                          </strong>{" "}
-                          Run moderated 9:16 Reels and spatial discovery across
-                          your {boostEstimate.zoneLabel.toLowerCase()}.
-                        </span>
-                      </li>
-                    )}
+                    <li>
+                      <Check size={16} />
+                      <span>
+                        <strong>
+                          ₹0 / Free Forever — Business Listing (808+ Service
+                          Types):
+                        </strong>{" "}
+                        List in ~3 minutes with shop map pin, direct Call,
+                        Website, and Directions.
+                      </span>
+                    </li>
+                    <li>
+                      <Check size={16} />
+                      <span>
+                        <strong>
+                          ₹0 / Free Forever — Creating &amp; Uploading V Ads
+                          (Any Radius):
+                        </strong>{" "}
+                        Publish hyperlocal 9:16 Reels across{" "}
+                        {selectedTier.label} ({selectedTier.zoneLabel.toLowerCase()}
+                        ) or any custom radius inside VISTRAH at ₹0.
+                      </span>
+                    </li>
+                    <li>
+                      <Check size={16} />
+                      <span>
+                        <strong>Need Done-For-You Creative, Website, or Automation?</strong>{" "}
+                        Explore paid VISTRAH Ads &amp; Marketing Studio and
+                        Website / Workflow Automation packages anytime.
+                      </span>
+                    </li>
                   </ul>
                 </div>
 
                 <div className={styles.ledgerPanel}>
                   <div>
-                    <p className={styles.eyebrow}>TRANSPARENT RATE LEDGER</p>
-                    {boostEstimate.freeTrialEnabled && (
-                      <div className={styles.ledgerFreeBanner}>
-                        <div>
-                          <strong>
-                            ₹0 — First {boostEstimate.freeTrialDays} Days Free
-                          </strong>
-                          <span>
-                            Due today for Month 1 ({selectedTier.label} ·{" "}
-                            {boostEstimate.firstMonthReachFormatted} est.{" "}
-                            {boostEstimate.freeTrialDays}-day views)
-                          </span>
-                        </div>
-                        <strong>₹0</strong>
+                    <p className={styles.eyebrow}>
+                      SELF-SERVE PLATFORM SUMMARY
+                    </p>
+                    <div className={styles.ledgerFreeBanner}>
+                      <div>
+                        <strong>₹0 / Free Forever</strong>
+                        <span>
+                          Free for any radius on VISTRAH ({selectedTier.label} ·{" "}
+                          {boostEstimate.reachFormatted} est. monthly local
+                          views)
+                        </span>
                       </div>
-                    )}
+                      <strong>₹0</strong>
+                    </div>
 
                     <div className={styles.ledgerSubhead}>
-                      {boostEstimate.freeTrialEnabled
-                        ? `Standard Rate From Day ${boostEstimate.freeTrialDays + 1} (Only If You Continue)`
-                        : "Standard Self-Serve V Ads Rate"}
+                      What You Pay Inside VISTRAH Self-Serve
                     </div>
                     <div className={styles.ledgerRows}>
                       <div className={styles.ledgerRow}>
+                        <span>Business listing (808+ service types)</span>
+                        <strong>₹0 / Free Forever</strong>
+                      </div>
+                      <div className={styles.ledgerRow}>
                         <span>
-                          Monthly plan ({selectedTier.label} ·{" "}
-                          {selectedTier.gstLabel})
+                          Creating &amp; uploading V Ads ({selectedTier.label}{" "}
+                          or any radius)
                         </span>
-                        <strong>
-                          {boostEstimate.freeTrialEnabled
-                            ? "₹0 Month 1, then "
-                            : ""}
-                          {formatPricingMoney(boostEstimate.monthlyPaise)}/mo +
-                          GST
-                        </strong>
+                        <strong>₹0 / Free Forever</strong>
                       </div>
                       <div className={styles.ledgerRow}>
-                        <span>Selected window ({durationDays} days)</span>
-                        <strong>
-                          {formatPricingMoney(boostEstimate.subtotalPaise)}
-                        </strong>
-                      </div>
-                      <div className={styles.ledgerRow}>
-                        <span>GST (18% · GSTIN ITC eligible)</span>
-                        <strong>
-                          {formatPricingMoney(boostEstimate.gstPaise)}
-                        </strong>
+                        <span>Customer call &amp; lead commission</span>
+                        <strong>0% (Direct to you)</strong>
                       </div>
                       <div className={styles.ledgerTotalRow}>
-                        <span>
-                          {boostEstimate.freeTrialEnabled
-                            ? `Due today (Days 1–${boostEstimate.freeTrialDays})`
-                            : "Due today"}
-                        </span>
-                        <strong>
-                          {formatPricingMoney(boostEstimate.dueTodayPaise)}
-                        </strong>
+                        <span>Due today &amp; every month</span>
+                        <strong>₹0</strong>
                       </div>
-                      {boostEstimate.freeTrialEnabled && (
-                        <div className={styles.ledgerRow}>
-                          <span>
-                            Optional Day {boostEstimate.freeTrialDays + 1}+
-                            total ({durationDays} days incl. GST)
-                          </span>
-                          <strong>
-                            {formatPricingMoney(
-                              boostEstimate.totalWithGstPaise,
-                            )}
-                          </strong>
-                        </div>
-                      )}
                     </div>
                   </div>
 
@@ -985,19 +920,91 @@ export function MarketingPricing({
                       <ArrowUpRight size={16} />
                     </Link>
                     <Link
-                      href={pricingHref("promotional-reel")}
+                      href={promo.secondaryCtaHref}
                       className={styles.secondary}
                     >
-                      Need Studio Reel production? From ₹2,999 (quoted
-                      separately)
+                      {promo.secondaryCtaLabel} (808+ Services)
                       <ChevronRight size={15} />
                     </Link>
+                    <button
+                      type="button"
+                      className={styles.secondary}
+                      onClick={() => setIntent("studio")}
+                    >
+                      Need Ad Production, Marketing, Website or Automation? View
+                      Paid Plans
+                      <ChevronRight size={15} />
+                    </button>
                     <p className={styles.ledgerNote}>
-                      {promo.microcopy}. Video uploads and geo-radius targeting
-                      are configured in V Ads Seller Studio and require
-                      moderation approval before publication; reach is
-                      indicative and not guaranteed.
+                      {promo.microcopy}. V Ads uploads and geo-radius targeting
+                      are 100% free on VISTRAH and go live after standard
+                      quality moderation review.
                     </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: 16,
+                  marginTop: 20,
+                }}
+              >
+                <div className={styles.panel}>
+                  <p className={styles.eyebrow}>PAID AGENCY TRACK 01</p>
+                  <h3>VISTRAH Ads &amp; Marketing Studio</h3>
+                  <p>
+                    Custom commercial video ad production (Reels, Shorts, brand
+                    films), graphic &amp; brochure design, and managed
+                    Meta/Google/social/outdoor marketing campaigns.
+                  </p>
+                  <div className={styles.actions}>
+                    <button
+                      type="button"
+                      className={styles.primary}
+                      onClick={() =>
+                        openCustomMediaPlan(
+                          "promotional-reel",
+                          "Looking for custom commercial video ad production, graphic/brochure design, or managed Meta/Google marketing: ",
+                        )
+                      }
+                    >
+                      View Studio Rates &amp; Request Quote
+                      <ChevronRight size={15} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.panel}>
+                  <p className={styles.eyebrow}>PAID TECH TRACK 02</p>
+                  <h3>
+                    Website &amp; Digital Setup (VISTRAH Tech / Automation)
+                  </h3>
+                  <p>
+                    Custom business website design &amp; launch (mobile-first
+                    with Call &amp; WhatsApp capture) and custom business
+                    workflow automation.
+                  </p>
+                  <div className={styles.actions}>
+                    <button
+                      type="button"
+                      className={styles.primary}
+                      onClick={() => {
+                        setCategory("websites");
+                        setIntent("studio");
+                      }}
+                    >
+                      Explore Website &amp; Automation Plans
+                      <ChevronRight size={15} />
+                    </button>
+                    <Link
+                      href="/contact?intent=request-website"
+                      className={styles.secondary}
+                    >
+                      Request Website
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -1217,9 +1224,10 @@ export function MarketingPricing({
           <section className={styles.section} aria-labelledby="track-compare">
             <div className={styles.sectionHeading}>
               <div>
-                <p className={styles.eyebrow}>CHOOSE THE RIGHT GROWTH STAGE</p>
+                <p className={styles.eyebrow}>FREE PLATFORM VS. PAID SOLUTIONS</p>
                 <h2 id="track-compare">
-                  Compare Free Listing, V Ads Boosts &amp; Studio
+                  Compare ₹0 Business Listing, Free Any-Radius V Ads &amp; Paid
+                  Studio / Tech Services
                 </h2>
               </div>
               <button
@@ -1238,10 +1246,12 @@ export function MarketingPricing({
                 <thead>
                   <tr>
                     <th scope="col">Dimension</th>
-                    <th scope="col">₹0 Verified Listing (90 Days Free)</th>
-                    <th scope="col">Self-Serve V Ads (First Month Free)</th>
+                    <th scope="col">₹0 Business Listing (Free Forever)</th>
                     <th scope="col">
-                      VISTRAH Ads &amp; Marketing Studio (Quoted)
+                      Self-Serve V Ads (₹0 · Free for Any Radius)
+                    </th>
+                    <th scope="col">
+                      Paid Studio, Websites &amp; Automation (Quoted)
                     </th>
                   </tr>
                 </thead>

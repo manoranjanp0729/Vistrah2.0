@@ -465,13 +465,13 @@ function WorkspaceScreen(){
         </View>
         <View style={{flex: 1, gap: 2}}>
           <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: '#f0e6ff', textTransform: 'uppercase'}}>
-            <UiText value="CREATOR STUDIO"/>
+            <UiText value="CREATOR STUDIO · ₹0 FREE FOREVER"/>
           </Text>
           <Text style={{fontSize: 17, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2}}>
             <UiText value="V Ads Studio"/>
           </Text>
           <Text numberOfLines={1} style={{fontSize: 12, color: '#eadaff', fontWeight: '500'}}>
-            <UiText value="Create, promote & track your video ads"/>
+            <UiText value="Free for any radius on VISTRAH · Create & track ads"/>
           </Text>
         </View>
       </LinearGradient>

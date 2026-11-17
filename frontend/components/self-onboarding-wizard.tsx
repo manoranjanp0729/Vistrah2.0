@@ -332,13 +332,13 @@ function WizardInner({
     <div className="provider-onboarding" style={{ display: 'grid', gap: 20 }}>
       <div>
         <p className="eyebrow">
-          <UiText value="SELF-ONBOARD YOUR BUSINESS · ~3 MINUTES" />
+          <UiText value="₹0 / FREE FOREVER · SELF-ONBOARD IN ~3 MINUTES" />
         </p>
         <h1>
-          <UiText value="List your business on VISTRAH" />
+          <UiText value="List your business free on VISTRAH" />
         </h1>
         <p style={{ color: 'var(--muted, #475569)', maxWidth: 680 }}>
-          <UiText value="Pick what your business does in two taps, pin your location, and submit for quick review. No complex paperwork — licences are optional and only requested for regulated professions." />
+          <UiText value="Listing your business across 808+ service types and uploading V Ads (free for any radius on VISTRAH) cost ₹0 forever. Pick what your business does, pin your location, and submit — optional licences are only shown for regulated professions." />
         </p>
       </div>
 

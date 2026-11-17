@@ -275,11 +275,11 @@ export function AdminPricingTab() {
           }}
         >
           <Text style={{fontSize: 11, fontWeight: '700', letterSpacing: 1, color: textSecondary}}>
-            HERO & FREE FIRST MONTH PROMO
+            HERO & FREE FOREVER PLATFORM BANNER
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
             <Text style={{fontSize: 13, fontWeight: '600', color: textPrimary}}>
-              Enable ₹0 First Month Promo
+              Enable ₹0 Free Forever Banner
             </Text>
             <Switch
               value={promoSec.promo_enabled}
@@ -426,7 +426,7 @@ export function AdminPricingTab() {
                         </View>
                         {item.item_type === 'v_ads_tier' && (
                           <View style={{flex: 1, gap: 4}}>
-                            <Text style={{fontSize: 11, color: textSecondary}}>Month 2+ (INR)</Text>
+                            <Text style={{fontSize: 11, color: textSecondary}}>30-Day (INR)</Text>
                             <TextInput
                               value={monthlyInputs[item.id] ?? ''}
                               keyboardType="numeric"

@@ -20,7 +20,9 @@ def _catalogue_path() -> Path:
     raise FileNotFoundError('shared/marketing-pricing.json not found')
 
 
-def _default_fee_clarity(category_ids: list[str]) -> str:
+def _default_fee_clarity(category_ids: list[str], service_id: str = '') -> str:
+    if service_id == 'business-workflow-automation':
+        return 'Custom automation scope · Third-party API & SaaS fees separate'
     primary = category_ids[0] if category_ids else ''
     if primary == 'websites':
         return 'One-time build · Domain, hosting & gateway fees separate'
@@ -37,9 +39,9 @@ def _default_fee_clarity(category_ids: list[str]) -> str:
 
 def _pillar_section_for_categories(category_ids: list[str]) -> str:
     cats = set(category_ids)
-    if cats & {'websites', 'digital', 'social', 'search', 'influencer'}:
+    if cats & {'websites', 'digital', 'social', 'search'}:
         return 'pillar_digital'
-    if cats & {'branding', 'video'}:
+    if cats & {'branding', 'video', 'influencer'}:
         return 'pillar_creative'
     if cats & {'mobility'}:
         return 'pillar_mobility'
@@ -54,29 +56,27 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
         {
             'id': 'v_ads_promo',
             'tab_group': 'v_ads',
-            'step_label': 'PROMO',
-            'title': 'Launch V Ads Free for Your First Month',
-            'subtitle': 'Run hyperlocal V Ads across your neighborhood at ₹0 for the first 30 days. Experience real customer inquiries before paying a rupee.',
-            'fee_note': '₹0 due today • No upfront payment required • Transparent monthly rates from Day 31',
+            'step_label': 'FREE FOREVER',
+            'title': 'List Your Business & Upload V Ads — 100% Free Forever',
+            'subtitle': 'List your business across all 808+ service types and publish hyperlocal V Ads for any target radius inside VISTRAH at ₹0 forever. Pay only when you hire VISTRAH Ads & Marketing Studio or request custom Website & Automation solutions.',
+            'fee_note': '₹0 / Free Forever for Business Listings (808+ services) & Self-Serve V Ads (any radius on VISTRAH) • Zero commission',
             'promo_enabled': True,
-            'free_trial_days': 30,
-            'promo_badge': 'FIRST 30 DAYS FREE · SELF-SERVE V ADS',
-            'cta_label': 'Start Free First Month',
+            'free_trial_days': 0,
+            'promo_badge': '₹0 / FREE FOREVER · LISTING & ANY-RADIUS V ADS',
+            'cta_label': 'Create & Upload Free V Ad',
             'cta_href': '/seller/v-ads',
             'meta': {
                 'anchor_price_label': '₹0',
-                'anchor_title': 'First 30 Days Free on V Ads',
+                'anchor_title': 'Free Forever: Business Listing + Any-Radius V Ads',
                 'anchor_summary': (
-                    'Verified businesses get 30 days of hyperlocal V Ads visibility at ₹0 (zero auto-charge from Day 31), '
-                    'alongside 90 days of Basic Business Membership at ₹0 for eligible new service providers. '
-                    'Studio agency & outdoor services are quoted separately.'
+                    'List your business across 808+ service types and create & upload V Ads for any target radius on VISTRAH at ₹0 forever. '
+                    'Done-for-you VISTRAH Ads & Marketing Studio and Website / Business Automation services are quoted transparently below.'
                 ),
-                'secondary_cta_label': 'Register Business Free',
-                'secondary_cta_href': '/provide-service',
+                'secondary_cta_label': 'List Business Free',
+                'secondary_cta_href': '/seller/onboard',
                 'studio_boundary': (
-                    'The First 30 Days Free offer applies exclusively to self-serve spatial & 9:16 Reels V Ads. '
-                    'VISTRAH Ads & Marketing Studio retainers, creative/video production, outdoor signage, '
-                    'and mobility billboards are scoped and billed separately.'
+                    'Business listings across all 808+ service types and self-serve V Ads creation/upload for any target radius inside VISTRAH are 100% Free Forever (₹0). '
+                    'Paid pricing applies strictly to optional done-for-you VISTRAH Ads & Marketing Studio campaigns/production and VISTRAH Tech Website & Business Automation solutions.'
                 ),
                 'duration_options': [3, 7, 15, 30],
                 'catalogue_notice': raw.get('notice', ''),
@@ -88,35 +88,11 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
             'updated_at': ts,
         },
         {
-            'id': 'pillar_digital',
-            'tab_group': 'digital',
-            'step_label': '01',
-            'title': 'Digital Marketing & Web',
-            'subtitle': 'Business websites, e-commerce stores, Social Media Management, Local & Standard SEO, Google/Meta Ads, WhatsApp & Email campaigns.',
-            'fee_note': 'Agency / build fee · Paid Google & Meta ad spend billed separately at actuals',
-            'promo_enabled': False,
-            'free_trial_days': 0,
-            'promo_badge': '',
-            'cta_label': 'Request Custom Media Plan',
-            'cta_href': '#custom-media-plan',
-            'meta': {
-                'pillar_key': 'digital',
-                'category_ids': ['websites', 'digital', 'social', 'search', 'influencer'],
-                'default_service_id': 'digital-campaign',
-                'default_brief': 'Looking for a custom digital marketing & performance plan (target city, monthly ad spend cap, and lead goals): ',
-            },
-            'sort_order': 2,
-            'active': True,
-            'revision': 1,
-            'updated_by': None,
-            'updated_at': ts,
-        },
-        {
             'id': 'pillar_creative',
             'tab_group': 'creative',
-            'step_label': '02',
-            'title': 'Branding, Creative & Video Production',
-            'subtitle': 'Social media graphics, promotional posters, brand identity kits, 9:16 Promotional Reels, AI Video Ads, and UGC/studio video shoots.',
+            'step_label': '01',
+            'title': 'VISTRAH Ads & Marketing Studio',
+            'subtitle': 'Custom commercial video ad production (Reels, Shorts, brand films), graphic & brochure/poster design, brand identity kits, and creator campaigns.',
             'fee_note': 'Creative production fee · On-site shoots, talent, travel & music licensing scoped separately',
             'promo_enabled': False,
             'free_trial_days': 0,
@@ -125,9 +101,33 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
             'cta_href': '#custom-media-plan',
             'meta': {
                 'pillar_key': 'creative',
-                'category_ids': ['branding', 'video'],
+                'category_ids': ['branding', 'video', 'influencer'],
                 'default_service_id': 'promotional-reel',
-                'default_brief': 'Looking for branding, campaign creatives, or 9:16 V Ads video production (deliverables, language, and timeline): ',
+                'default_brief': 'Looking for custom commercial video ad production, graphic/brochure design, or brand creatives (deliverables, language, and timeline): ',
+            },
+            'sort_order': 2,
+            'active': True,
+            'revision': 1,
+            'updated_by': None,
+            'updated_at': ts,
+        },
+        {
+            'id': 'pillar_digital',
+            'tab_group': 'digital',
+            'step_label': '02',
+            'title': 'Website & Digital Setup (VISTRAH Tech / Automation)',
+            'subtitle': 'Custom business website design & launch, booking/e-commerce portals, business workflow automation, WhatsApp setup, SEO, and managed Meta/Google/social marketing campaigns.',
+            'fee_note': 'One-time build or monthly agency fee · Domain, cloud & Meta/Google ad spend billed separately at actuals',
+            'promo_enabled': False,
+            'free_trial_days': 0,
+            'promo_badge': '',
+            'cta_label': 'Request Custom Media Plan',
+            'cta_href': '#custom-media-plan',
+            'meta': {
+                'pillar_key': 'digital',
+                'category_ids': ['websites', 'digital', 'social', 'search'],
+                'default_service_id': 'business-website',
+                'default_brief': 'Looking for custom business website development, business workflow automation, or managed Meta/Google/social campaigns (city, goals, and timeline): ',
             },
             'sort_order': 3,
             'active': True,
@@ -207,8 +207,8 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
             'tab_group': 'faqs',
             'step_label': 'FAQ',
             'title': 'Frequently asked questions',
-            'subtitle': 'Billing, 18% GST Input Tax Credit, First-Month-Free V Ads rules, and Studio media quotations.',
-            'fee_note': 'BILLING, GST & CAMPAIGN RULES',
+            'subtitle': '₹0 / Free Forever business listings & any-radius V Ads, Studio quotations, Website & Automation builds, and 18% GST Input Tax Credit.',
+            'fee_note': 'FREE PLATFORM, STUDIO & GST RULES',
             'promo_enabled': False,
             'free_trial_days': 0,
             'promo_badge': '',
@@ -225,12 +225,13 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
 
     items: list[dict] = []
 
-    # 1. Self-Serve V Ads Radius Tiers (First 30 Days Free -> Day 31+ standard rates)
+    # 1. Self-Serve V Ads Radius Tiers — ₹0 / Free Forever for ANY radius on VISTRAH
     v_ads_tiers = [
-        (1, 'v-ads-2km', 2, '2 km', 'Neighbourhood catchment', 15000, 450000, 900, 1800),
-        (2, 'v-ads-5km', 5, '5 km', 'Ward & locality cluster', 25000, 750000, 2200, 4500),
-        (3, 'v-ads-10km', 10, '10 km', 'Multi-zone corridor', 45000, 1350000, 5000, 9800),
-        (4, 'v-ads-25km', 25, '25 km', 'City-wide metro reach', 80000, 2400000, 12000, 24000),
+        (1, 'v-ads-2km', 2, '2 km', 'Neighbourhood catchment', 0, 0, 900, 1800),
+        (2, 'v-ads-5km', 5, '5 km', 'Ward & locality cluster', 0, 0, 2200, 4500),
+        (3, 'v-ads-10km', 10, '10 km', 'Multi-zone corridor', 0, 0, 5000, 9800),
+        (4, 'v-ads-25km', 25, '25 km', 'City-wide metro reach', 0, 0, 12000, 24000),
+        (5, 'v-ads-50km', 50, '50 km+', 'District & regional reach', 0, 0, 20000, 45000),
     ]
     for order, item_id, km, label, zone, daily_paise, monthly_paise, r_min, r_max in v_ads_tiers:
         items.append(
@@ -240,18 +241,18 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
                 'item_type': 'v_ads_tier',
                 'title': label,
                 'subtitle': zone,
-                'description': f'Self-serve spatial feed & 9:16 V Ads Reels within {km} km of your verified business pin.',
+                'description': f'Free for any radius on VISTRAH — 9:16 V Ads Reels & nearby discovery within {label} of your verified pin.',
                 'price_paise': daily_paise,
                 'monthly_price_paise': monthly_paise,
-                'billing_interval': 'day',
-                'gst_label': '₹0 Month 1 · +18% GST from Day 31',
+                'billing_interval': 'none',
+                'gst_label': '₹0 / Free Forever · Any radius on VISTRAH',
                 'free_trial_enabled': True,
-                'free_trial_days': 30,
-                'promo_badge': '₹0 First 30 Days',
+                'free_trial_days': 0,
+                'promo_badge': '₹0 Free Forever',
                 'deliverables': [
-                    f'₹0 — First 30 Days Free ({km} km {zone.lower()})',
-                    'Spatial Feed + V Ads 9:16 Reels placement',
-                    'Live views, likes & inquiries in Seller Studio; zero auto-charge on Day 31',
+                    f'₹0 / Free Forever — Free for any radius on VISTRAH ({label} {zone.lower()})',
+                    'Free business listing across 808+ service types + 9:16 V Ads Reels placement',
+                    'Direct Call, Website, Directions & live engagement metrics in Seller Studio',
                 ],
                 'meta': {
                     'radius_km': km,
@@ -266,23 +267,24 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
             }
         )
 
-    # 2. All 34 Studio Agency Services from shared/marketing-pricing.json
+    # 2. All Studio Agency & Website/Automation Services from shared/marketing-pricing.json
     for idx, svc in enumerate(raw.get('services', []), start=1):
         cat_ids = list(svc.get('category_ids', []))
         price_paise = svc.get('starting_price_paise')
         billing = 'quote' if price_paise is None else svc.get('billing', 'one-time')
+        fee_clarity = _default_fee_clarity(cat_ids, svc.get('id', ''))
         items.append(
             {
                 'id': svc['id'],
                 'section_id': _pillar_section_for_categories(cat_ids),
                 'item_type': 'studio_service',
                 'title': svc['name'],
-                'subtitle': _default_fee_clarity(cat_ids),
+                'subtitle': fee_clarity,
                 'description': svc.get('description', ''),
                 'price_paise': price_paise,
                 'monthly_price_paise': price_paise if svc.get('billing') == 'month' else None,
                 'billing_interval': billing,
-                'gst_label': _default_fee_clarity(cat_ids),
+                'gst_label': fee_clarity,
                 'free_trial_enabled': False,
                 'free_trial_days': 0,
                 'promo_badge': '',
@@ -333,32 +335,32 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
             }
         )
 
-    # 4. Pricing FAQs (led by #1 Free First Month of V Ads)
+    # 4. Pricing FAQs (₹0 / Free Forever Listings & Any-Radius V Ads + Paid Studio/Website/Automation)
     faqs = [
         (
             'faq-1',
-            'How does the Free First Month of V Ads work?',
-            'Verified businesses on VISTRAH receive their first 30 days of self-serve spatial V Ads and 9:16 Reels visibility at ₹0—with ₹0 due today and zero automatic billing lock-in. Configure your neighborhood km radius, publish moderated Reels, and track live reach, views, and customer inquiries inside V Ads Seller Studio. Standard transparent rates (plus 18% GST) apply only from Day 31 onward if you choose to continue. VISTRAH Ads & Marketing Studio agency retainers, creative shoots, outdoor hoardings, and mobility billboards are quoted separately.',
+            'Are business listings and uploading V Ads really 100% free for any radius?',
+            'Yes! Listing your business across all 808+ service types on VISTRAH (/seller/onboard) and creating/uploading self-serve V Ads for ANY target radius inside VISTRAH (/seller/v-ads) are ₹0 / Free Forever—with zero per-radius charges and zero lead commissions. All V Ads go through standard quality moderation before appearing live.',
         ),
         (
             'faq-2',
-            'Do I receive a GST tax invoice for 18% Input Tax Credit (ITC) from Day 31?',
-            'Yes. Your first 30 days of self-serve V Ads are ₹0. For paid campaigns from Day 31 onward—or any approved Studio service—applicable 18% GST is itemised separately on tax invoices issued by Vistrah India Pvt Limited so GST-registered businesses can claim eligible B2B Input Tax Credit using their 15-digit GSTIN.',
+            'What services are paid on VISTRAH?',
+            'Paid pricing applies only when you hire our done-for-you teams: (1) VISTRAH Ads & Marketing Studio for custom commercial video production (Reels, Shorts, brand films), graphic/brochure design, managed Meta/Google/social campaigns, outdoor hoardings, and transit branding; and (2) Website & Digital Setup (VISTRAH Tech / Automation) for custom business website design & launch and business workflow automation.',
         ),
         (
             'faq-3',
-            'How does the ₹0 90-day Free Basic Membership work alongside Free First Month V Ads?',
-            'Eligible new service providers get 90 days of Basic Business Membership at ₹0 (₹149/month afterward, no automatic renewal), which includes your verified business profile, spatial directory presence, 5 job-posting credits, and V Ads Seller Studio access—where you can immediately activate your ₹0 first 30 days of V Ads.',
+            'How do I request a custom business website or workflow automation?',
+            'Select any Website Design & Development or Business Workflow Automation option on /pricing to request an itemised INR quote, or tap "Request website" from any listing card (/contact?intent=request-website) so our VISTRAH Tech team can scope your domain, design, WhatsApp enquiry flow, and automation setup.',
         ),
         (
             'faq-4',
-            'Can I pause, adjust my km radius, or stop before Day 31?',
-            'Yes. In V Ads Seller Studio (/seller/v-ads), you can submit updated geo-pin and radius revisions (2 km to 25 km) or withdraw an active video anytime during or after your free 30-day period. Nothing is billed automatically when Day 30 ends.',
+            'Can I change my V Ads target radius anytime without paying extra?',
+            'Yes. Inside V Ads Studio (/seller/v-ads), you can configure or update your geographic pin and target radius—whether 2 km neighbourhood reach, 10 km city corridor, 25 km metro reach, or wider—at ₹0 forever. Updated targeting revisions go live right after admin moderation review.',
         ),
         (
             'faq-5',
-            'Does the Free First Month apply to VISTRAH Ads & Marketing Studio, websites, or hoardings?',
-            'No. The ₹0 First 30 Days offer applies strictly to self-serve V Ads on the VISTRAH platform. Managed agency retainers (from ₹4,999/month, excluding Google/Meta ad spend), website builds, video production, roadside hoardings, and auto/bus transit branding require separate custom quotations.',
+            'Do paid Studio, Website, and Automation projects include GST tax invoices?',
+            'Yes. For any approved paid VISTRAH Ads & Marketing Studio campaign, creative shoot, custom website build, or workflow automation project, Vistrah India Pvt Limited issues an itemised INR tax invoice with 18% GST separated so GST-registered businesses can claim eligible B2B Input Tax Credit (ITC) using their 15-digit GSTIN.',
         ),
     ]
     for idx, (faq_id, question, answer) in enumerate(faqs, start=1):
@@ -409,3 +411,68 @@ def ensure_pricing_seeded(db: Session) -> bool:
         db.add(PricingItem(**item))
     db.commit()
     return True
+
+
+def sync_free_v_ads_pricing(db: Session) -> dict[str, int]:
+    """Idempotently sync canonical Free-Forever V Ads, Studio pillars, Website/Automation & FAQs into DB."""
+    if not pricing_tables_ready(db):
+        return {'sections_upserted': 0, 'items_upserted': 0}
+    sections, items = build_pricing_seed_data()
+    ts = now()
+    sec_count = 0
+    for s in sections:
+        existing_sec = db.get(PricingSection, s['id'])
+        if existing_sec is None:
+            db.add(PricingSection(**s))
+        else:
+            existing_sec.tab_group = s['tab_group']
+            existing_sec.step_label = s['step_label']
+            existing_sec.title = s['title']
+            existing_sec.subtitle = s['subtitle']
+            existing_sec.fee_note = s['fee_note']
+            existing_sec.promo_enabled = s['promo_enabled']
+            existing_sec.free_trial_days = s['free_trial_days']
+            existing_sec.promo_badge = s['promo_badge']
+            existing_sec.cta_label = s['cta_label']
+            existing_sec.cta_href = s['cta_href']
+            existing_sec.meta = s['meta']
+            existing_sec.sort_order = s['sort_order']
+            existing_sec.updated_at = ts
+        sec_count += 1
+    db.flush()
+
+    item_count = 0
+    for item in items:
+        existing_item = db.get(PricingItem, item['id'])
+        if existing_item is None:
+            db.add(PricingItem(**item))
+            item_count += 1
+        elif item['item_type'] in ('v_ads_tier', 'faq') or item['id'] == 'business-workflow-automation':
+            existing_item.section_id = item['section_id']
+            existing_item.title = item['title']
+            existing_item.subtitle = item['subtitle']
+            existing_item.description = item['description']
+            existing_item.price_paise = item['price_paise']
+            existing_item.monthly_price_paise = item['monthly_price_paise']
+            existing_item.billing_interval = item['billing_interval']
+            existing_item.gst_label = item['gst_label']
+            existing_item.free_trial_enabled = item['free_trial_enabled']
+            existing_item.free_trial_days = item['free_trial_days']
+            existing_item.promo_badge = item['promo_badge']
+            existing_item.deliverables = item['deliverables']
+            existing_item.meta = item['meta']
+            existing_item.sort_order = item['sort_order']
+            existing_item.updated_at = ts
+            item_count += 1
+        else:
+            existing_item.section_id = item['section_id']
+    db.commit()
+    return {'sections_upserted': sec_count, 'items_upserted': item_count}
+
+
+if __name__ == '__main__':
+    from .database import SessionLocal
+
+    with SessionLocal() as session:
+        summary = sync_free_v_ads_pricing(session)
+        print(json.dumps(summary))

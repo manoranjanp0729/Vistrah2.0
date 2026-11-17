@@ -63,11 +63,11 @@ class PricingTests(unittest.TestCase):
 
     def test_catalogue_and_quote_only_prices_are_public_proposals(self):
         data=self.client.get('/marketing-pricing/catalogue').json()
-        self.assertEqual(len(data['categories']),11);self.assertEqual(len(data['services']),34)
+        self.assertEqual(len(data['categories']),11);self.assertEqual(len(data['services']),35)
         self.assertEqual(len(data['packages']),4)
         for service in data['services']:
             self.assertEqual(set(service),set(routes.PUBLIC_FIELDS));self.assertEqual(service['pricing_state'],'PROPOSED')
-            if service['category_ids'][0] in ('outdoor','mobility','screens','cinema','influencer'):self.assertIsNone(service['starting_price_paise'])
+            if service['category_ids'][0] in ('outdoor','mobility','screens','cinema','influencer') or service['id']=='business-workflow-automation':self.assertIsNone(service['starting_price_paise'])
 
     def test_missing_tables_fail_truthfully_without_migration(self):
         MarketingPricingQuote.__table__.drop(self.engine)

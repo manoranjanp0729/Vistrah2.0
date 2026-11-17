@@ -100,6 +100,8 @@ def test_chat_gemini_grounded_reply_sanitizes_actions_and_hides_api_key(client, 
     assert "Vistrah India Pvt Limited" in sys_prompt
     assert "/seller/onboard" in sys_prompt
     assert "/services/nearby" in sys_prompt
+    assert "Free Forever" in sys_prompt
+    assert "any geographic radius" in sys_prompt.lower()
     assert "dental clinics" in sys_prompt.lower()
 
 
@@ -138,11 +140,14 @@ def test_chat_fallback_when_key_missing_and_per_ip_rate_limit(client, monkeypatc
     assert r3.json()["code"] == "CHAT_RATE_LIMITED"
     assert len(r3.json()["suggestedActions"]) >= 1
 
-    # Different visitor IP is unaffected
+    # Different visitor IP is unaffected — verify pricing / free V Ads fallback grounding
     r_other = client.post(
         "/api/chat",
         headers={"X-Forwarded-For": "198.51.100.77"},
-        json={"message": "Explore divisions"},
+        json={"message": "What is the pricing to list my business and upload V Ads?"},
     )
     assert r_other.status_code == 200
+    b_other = r_other.json()
+    assert "100% Free Forever" in b_other["reply"]
+    assert any(a["href"] == "/pricing" for a in b_other["suggestedActions"])
     chat_routes.clear_chat_rate_limits()

@@ -317,7 +317,7 @@ function MobileSelfOnboardingForm({
   return (
     <View style={{ gap: 14 }}>
       <Text style={styles.muted}>
-        <UiText value="Pick what your business does in two taps, pin your location, and submit in ~3 minutes. Licences are optional and only requested for regulated professions." />
+        <UiText value="₹0 / Free Forever: List your business across 808+ service types and upload V Ads (free for any radius on VISTRAH) in ~3 minutes. Licences are optional and only requested for regulated professions." />
       </Text>
 
       {/* 3-Step Pills */}

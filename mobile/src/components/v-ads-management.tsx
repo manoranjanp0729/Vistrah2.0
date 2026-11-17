@@ -74,7 +74,7 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
     </View>
   </View>}
   {showTargeting&&<View style={[styles.card,{padding:16,borderRadius:14,gap:8}]}>
-   <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Geographic Targeting"}/></Text>
+   <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Geographic Targeting — Free for any radius on VISTRAH"}/></Text>
    {loadingTargeting?<Text style={styles.muted}><UiText value={"Loading targeting…"}/></Text>:<>
     <Text style={[styles.muted,styles.tabular]}>{targeting?.active_revision?`Active Rev #${targeting.active_revision.revision}: ${targeting.active_revision.latitude}, ${targeting.active_revision.longitude} · ${targeting.active_revision.radius_km} km${targeting.active_revision.target_regions.length?' · '+targeting.active_revision.target_regions.join(', '):''}`:'Untargeted (shown globally)'}</Text>
     {Boolean(targeting?.pending_revision)&&<Text style={[styles.muted,styles.tabular,{color:'#ca8a04'}]}>Pending Rev #{targeting!.pending_revision!.revision}: {targeting!.pending_revision!.latitude}, {targeting!.pending_revision!.longitude} · {targeting!.pending_revision!.radius_km} km</Text>}

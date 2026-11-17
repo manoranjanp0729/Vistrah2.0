@@ -18,14 +18,12 @@ import {
  quotePayload,
  marketingPricingClient,
  pricingHref,
- VADS_DURATION_OPTIONS,
  defaultHydratedPricing,
  hydrateLivePricing,
  computeTierBoostEstimate,
  serviceFeeClarity,
  PRICING_COMPARISON_ROWS,
  type PricingIntent,
- type VAdsDurationDays,
  type QuoteDraft,
  type MarketingQuote,
  type PricingCapabilities,
@@ -51,7 +49,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
  const {catalogue,promo,vAdsTiers,pillars,faqs,serviceFeeLabels}=hydrated;
  const [live,setLive]=useState(false),[notice,setNotice]=useState(''),[cap,setCap]=useState<PricingCapabilities|null>(null);
  const [intent,setIntent]=useState<PricingIntent>('boosts');
- const [selectedTierId,setSelectedTierId]=useState<string>('v-ads-5km'),[durationDays,setDurationDays]=useState<VAdsDurationDays>(7);
+ const [selectedTierId,setSelectedTierId]=useState<string>('v-ads-5km');
  const [query,setQuery]=useState(''),[category,setCategory]=useState(''),[billing,setBilling]=useState('all'),[compare,setCompare]=useState(false),[requestOpen,setRequestOpen]=useState(false);
  const [openFaq,setOpenFaq]=useState<number|null>(0);
  const defaultPlanServiceId=serviceId??'digital-campaign';
@@ -62,7 +60,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
  const items=searchPricing(catalogue,query,category,billing),selectedCategory=catalogue.categories.find(c=>c.id===category);
  const selectedTier=vAdsTiers.find(t=>t.id===selectedTierId)??vAdsTiers[0];
- const boostEstimate=computeTierBoostEstimate(selectedTier,durationDays);
+ const boostEstimate=computeTierBoostEstimate(selectedTier,30);
  const feeLabel=(svc:typeof catalogue.services[number])=>serviceFeeLabels[svc.id]??serviceFeeClarity(svc);
 
  function selectCategory(id:string){setCategory(id);setBilling('all');setQuery('');setCategoryOpen(false);}
@@ -179,9 +177,9 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
     </>
    ):(
     <>
-     {/* Editorial Hero: Free First Month V Ads */}
+     {/* Editorial Hero: ₹0 / Free Forever Platform */}
      <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:12}}>
-      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH ADS &amp; MARKETING{promo.promoEnabled?` · FIRST ${promo.freeTrialDays} DAYS FREE`:''}</Text>
+      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH PRICING · ₹0 / FREE FOREVER PLATFORM</Text>
       <Text accessibilityRole="header" style={[styles.title,{fontSize:24,lineHeight:29,letterSpacing:-0.6}]}>
        {promo.headline}
       </Text>
@@ -190,7 +188,8 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
       </Text>
       <View style={{gap:8,marginTop:2}}>
        <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
-       <Action secondary label="Explore Studio & Custom Quotes" onPress={()=>openCustomPlan(pillars[0]?.defaultServiceId??'digital-campaign',pillars[0]?.defaultBrief)}/>
+       <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/seller/onboard')}/>
+       <Action secondary label="Explore Paid Studio & Website Quotes" onPress={()=>openCustomPlan(pillars[0]?.defaultServiceId??'promotional-reel',pillars[0]?.defaultBrief)}/>
        <Text style={[styles.muted,styles.tabular,{fontSize:12,marginTop:2}]}>{promo.microcopy}</Text>
       </View>
 
@@ -203,7 +202,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        <Text style={styles.muted}>{promo.anchorSummary}</Text>
        <View style={{gap:8,marginTop:4}}>
         <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/seller/onboard')}/>
-        <Action secondary label="Membership Rules" onPress={()=>router.push('/membership')}/>
+        <Action secondary label="Request Website" onPress={()=>router.push('/contact?intent=request-website' as never)}/>
        </View>
       </View>
      </View>
@@ -227,8 +226,8 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         gap:2,
        }}
       >
-       <Text style={{color:intent==='boosts'?colors.text:colors.muted,fontWeight:'600',fontSize:13}}>Self-Serve V Ads</Text>
-       <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>₹0 First 30 Days · 2–25 km</Text>
+       <Text style={{color:intent==='boosts'?colors.text:colors.muted,fontWeight:'600',fontSize:13}}>Free Forever Platform</Text>
+       <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>₹0 Listing &amp; Any-Radius V Ads</Text>
       </Pressable>
       <Pressable
        accessibilityRole="tab"
@@ -245,20 +244,20 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         gap:2,
        }}
       >
-       <Text style={{color:intent==='studio'?colors.text:colors.muted,fontWeight:'600',fontSize:13}}>Ads &amp; Studio (Quoted)</Text>
-       <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>4 Pillars · Billed separately</Text>
+       <Text style={{color:intent==='studio'?colors.text:colors.muted,fontWeight:'600',fontSize:13}}>Studio, Web &amp; Tech</Text>
+       <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>Paid Ads, Websites &amp; Automation</Text>
       </Pressable>
      </View>
 
      {intent==='boosts'?(
       <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:16}}>
        <View style={{gap:4}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>SELF-SERVE SPATIAL &amp; REELS · ₹0 FOR FIRST 30 DAYS</Text>
-        <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>V Ads Plans &amp; Month 2+ Rate Estimator</Text>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>₹0 / FREE FOREVER · ZERO PER-RADIUS FEES</Text>
+        <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Free Business Listing &amp; Free V Ads for Any Radius</Text>
        </View>
 
        <View style={{gap:8}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>TARGET RADIUS — ₹0 MONTH 1, STANDARD RATE FROM DAY 31</Text>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PREVIEW TARGET RADIUS — FREE FOR ANY RADIUS ON VISTRAH</Text>
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
          {vAdsTiers.map(tier=>{
           const active=selectedTier.id===tier.id;
@@ -280,40 +279,9 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
              gap:2,
             }}
            >
-            {tier.freeTrialEnabled&&Boolean(tier.promoBadge)&&<Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:11}]}>{tier.promoBadge.toUpperCase()}</Text>}
+            <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:11}]}>{(tier.promoBadge||'₹0 Free Forever').toUpperCase()}</Text>
             <Text style={[styles.tabular,{color:colors.text,fontWeight:'700',fontSize:15}]}>{tier.label}</Text>
-            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>{tier.freeTrialEnabled?`Then ${formatPricingMoney(tier.monthlyPaise)}/mo + GST`:`${formatPricingMoney(tier.monthlyPaise)}/mo + GST`}</Text>
-           </Pressable>
-          );
-         })}
-        </View>
-       </View>
-
-       <View style={{gap:8}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{selectedTier.freeTrialEnabled?`PREVIEW OPTIONAL POST-TRIAL WINDOW (FROM DAY ${selectedTier.freeTrialDays+1})`:'CAMPAIGN DURATION'}</Text>
-        <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
-         {VADS_DURATION_OPTIONS.map(days=>{
-          const active=durationDays===days;
-          return (
-           <Pressable
-            key={days}
-            accessibilityRole="button"
-            accessibilityState={{selected:active}}
-            onPress={()=>setDurationDays(days)}
-            style={{
-             width:'48%',
-             flexGrow:1,
-             minHeight:54,
-             padding:10,
-             borderRadius:8,
-             borderWidth:1,
-             borderColor:active?colors.accent:colors.border,
-             backgroundColor:active?colors.soft:colors.surface,
-             gap:2,
-            }}
-           >
-            <Text style={[styles.tabular,{color:colors.text,fontWeight:'700',fontSize:14}]}>{days===30?'30 days (Monthly)':`${days} days`}</Text>
-            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>{selectedTier.freeTrialEnabled?`Day ${selectedTier.freeTrialDays+1}+: `:''}{formatPricingMoney(selectedTier.dailyPaise*days)} + GST</Text>
+            <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>₹0 / Free Forever · {tier.zoneLabel}</Text>
            </Pressable>
           );
          })}
@@ -322,39 +290,41 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
        {/* Hairline Ledger Readout */}
        <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:2}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,marginBottom:4}]}>TRANSPARENT RATE LEDGER</Text>
-        {boostEstimate.freeTrialEnabled&&(
-         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingVertical:10,borderBottomWidth:1,borderColor:colors.border}}>
-          <View style={{flex:1,gap:2}}>
-           <Text style={{color:colors.text,fontWeight:'700',fontSize:15}}>₹0 — First {boostEstimate.freeTrialDays} Days Free</Text>
-           <Text style={[styles.muted,styles.tabular,{fontSize:11}]}>{selectedTier.label} · {boostEstimate.firstMonthReachFormatted} est. {boostEstimate.freeTrialDays}-day views</Text>
-          </View>
-          <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:26,letterSpacing:-0.55}]}>₹0</Text>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,marginBottom:4}]}>SELF-SERVE PLATFORM SUMMARY</Text>
+        <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingVertical:10,borderBottomWidth:1,borderColor:colors.border}}>
+         <View style={{flex:1,gap:2}}>
+          <Text style={{color:colors.text,fontWeight:'700',fontSize:15}}>₹0 / Free Forever</Text>
+          <Text style={[styles.muted,styles.tabular,{fontSize:11}]}>Free for any radius on VISTRAH ({selectedTier.label} · {boostEstimate.reachFormatted} est. monthly views)</Text>
          </View>
-        )}
+         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:26,letterSpacing:-0.55}]}>₹0</Text>
+        </View>
 
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,paddingTop:10,paddingBottom:4}]}>{boostEstimate.freeTrialEnabled?`STANDARD RATE FROM DAY ${boostEstimate.freeTrialDays+1} (IF YOU CONTINUE)`:'STANDARD RATE'}</Text>
         {[
-         [`Monthly plan (${selectedTier.label})`,`${boostEstimate.freeTrialEnabled?'₹0 Mo 1, then ':''}${formatPricingMoney(boostEstimate.monthlyPaise)}/mo + GST`],
-         [`Selected window (${durationDays} days)`,formatPricingMoney(boostEstimate.subtotalPaise)],
-         ['GST (18% · GSTIN ITC)',formatPricingMoney(boostEstimate.gstPaise)],
-         [`Total (${durationDays}d incl. GST)`,formatPricingMoney(boostEstimate.totalWithGstPaise)],
+         ['Business listing (808+ service types)','₹0 / Free Forever'],
+         [`Self-serve V Ads (${selectedTier.label} or any radius)`,'₹0 / Free Forever'],
+         ['Customer call & lead commission','0% (Direct to you)'],
         ].map(([k,v])=>(
          <View key={k} style={{flexDirection:'row',justifyContent:'space-between',gap:12,paddingVertical:8,borderBottomWidth:1,borderColor:colors.border}}>
-          <Text style={styles.muted}>{k}</Text>
+          <Text style={[styles.muted,{flex:1}]}>{k}</Text>
           <Text style={[styles.tabular,{color:colors.text,fontWeight:'600',fontSize:13,flexShrink:0}]}>{v}</Text>
          </View>
         ))}
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingTop:10}}>
-         <Text style={{color:colors.text,fontWeight:'600',fontSize:14}}>{boostEstimate.freeTrialEnabled?`Due today (Days 1–${boostEstimate.freeTrialDays})`:'Due today'}</Text>
-         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:22,letterSpacing:-0.45}]}>{formatPricingMoney(boostEstimate.dueTodayPaise)}</Text>
+         <Text style={{color:colors.text,fontWeight:'600',fontSize:14}}>Due today &amp; every month</Text>
+         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:22,letterSpacing:-0.45}]}>₹0</Text>
         </View>
        </View>
 
        <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
-       <Action secondary label="Need Studio Reel production? From ₹2,999" onPress={()=>router.push(pricingHref('promotional-reel') as never)}/>
+       <Action secondary label="List Your Business Free (808+ Services)" onPress={()=>router.push('/seller/onboard')}/>
+       <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:8}}>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PAID AGENCY &amp; TECH SOLUTIONS</Text>
+        <Text style={[styles.heading,{fontSize:16}]}>VISTRAH Ads &amp; Marketing Studio + Website &amp; Automation</Text>
+        <Text style={styles.muted}>Hire VISTRAH for custom commercial video shoots (Reels, Shorts, brand films), graphic/brochure design, managed Meta/Google/social campaigns, custom business websites, and workflow automation.</Text>
+        <Action secondary label="Explore Studio, Website & Automation Plans" onPress={()=>setIntent('studio')}/>
+       </View>
        <Text style={[styles.muted,{fontSize:11}]}>
-        {promo.microcopy}. Video uploads and geo-radius targeting are configured in V Ads Seller Studio and require moderation approval before going live; reach is estimated and not guaranteed.
+        {promo.microcopy}. Video uploads and geo-radius targeting are 100% free on VISTRAH and go live after standard moderation approval.
        </Text>
       </View>
      ):(
@@ -643,15 +613,15 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
     <>
      {/* Hairline Track Comparison */}
      <View style={{borderTopWidth:1,borderColor:colors.border,paddingTop:16,gap:8}}>
-      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>CHOOSE THE RIGHT GROWTH STAGE</Text>
-      <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Compare Free Listing, V Ads &amp; Studio</Text>
+      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>FREE PLATFORM VS. PAID SOLUTIONS</Text>
+      <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Compare ₹0 Business Listing, Free V Ads &amp; Paid Studio / Tech</Text>
       <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
        {PRICING_COMPARISON_ROWS.map(row=>(
         <View key={row.criteria} style={{paddingVertical:12,borderBottomWidth:1,borderColor:colors.border,gap:4}}>
          <Text style={{color:colors.text,fontWeight:'700',fontSize:13}}>{row.criteria}</Text>
-         <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>₹0 Free Listing: </Text>{row.free}</Text>
-         <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>Self-Serve V Ads (Mo 1 Free): </Text>{row.boosts}</Text>
-         <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>Ads &amp; Studio (Quoted): </Text>{row.studio}</Text>
+         <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>₹0 Business Listing (Free Forever): </Text>{row.free}</Text>
+         <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>Self-Serve V Ads (Free Any Radius): </Text>{row.boosts}</Text>
+         <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>Studio, Website &amp; Automation: </Text>{row.studio}</Text>
         </View>
        ))}
       </View>

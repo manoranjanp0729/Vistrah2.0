@@ -14,6 +14,7 @@ import {SessionProvider} from '../lib/session';
 import {LocationProvider} from '../lib/location';
 import {ThemeProvider,useTheme} from '../lib/theme';
 import {WebsiteRouteBridge} from '../components/website-route-bridge';
+import {MobileAskVistrahWidget} from '../components/ask-vistrah-widget';
 if(Platform.OS!=='web')void SplashScreen.preventAutoHideAsync().catch(()=>{});
 export default function RootLayout(){return <ThemeProvider><LanguageProvider><BundledFonts><FontPreferenceProvider><ThemedRoot/></FontPreferenceProvider></BundledFonts></LanguageProvider></ThemeProvider>;}
 function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTheme();const {t}=useLanguage();
@@ -71,5 +72,5 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/onboard" options={{title:'List your business'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="services/nearby" options={{title:'Nearby services'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="v-essentials"/>
-  </Stack><WebsiteRouteBridge/><StartupLoading/></View></LocationProvider></SessionProvider></SafeAreaProvider>;
+  </Stack><MobileAskVistrahWidget/><WebsiteRouteBridge/><StartupLoading/></View></LocationProvider></SessionProvider></SafeAreaProvider>;
 }

@@ -39,3 +39,10 @@ def get_google_maps_server_api_key() -> str:
         or os.getenv('GOOGLE_MAPS_GEOCODING_API_KEY', '').strip()
         or GOOGLE_MAPS_SERVER_API_KEY
     )
+
+
+def get_gemini_api_key() -> str:
+    return (
+        os.getenv('GEMINI_API_KEY', '').strip()
+        or os.getenv('VISTRAH_GEMINI_API_KEY', '').strip()
+    )

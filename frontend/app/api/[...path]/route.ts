@@ -17,6 +17,8 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
   if(token) headers.Authorization=`Bearer ${token}`;
   const signature=request.headers.get('x-signature');
   if(signature) headers['x-signature']=signature;
+  const xff=request.headers.get('x-forwarded-for');
+  if(xff) headers['x-forwarded-for']=xff;
   try {
     const body=mutation?await request.text():undefined;
     const providerPath=path[0].startsWith('provider-')||(path[0]==='admin'&&path[1]?.startsWith('provider-'));

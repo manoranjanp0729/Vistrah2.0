@@ -93,6 +93,8 @@ from .hr_routes import router as hr_router
 app.include_router(hr_router)
 from .marketplace_nearby_routes import router as marketplace_nearby_router
 app.include_router(marketplace_nearby_router)
+from .chat_routes import router as chat_router
+app.include_router(chat_router)
 
 @app.middleware('http')
 async def service_access_cache_control(request, call_next):
@@ -128,7 +130,7 @@ async def validated_input_error(request, exc):
 async def workflow_body_limit(request, call_next):
     path = request.url.path
     is_raw_video_upload = path.startswith('/v-ads/advertisers/') and path.endswith('/uploads')
-    provider_path = path.startswith(('/provider-','/admin/','/api/admin/','/seller/','/commerce/cart','/commerce/orders','/me','/auth/','/maps/','/api/maps/'))
+    provider_path = path.startswith(('/provider-','/admin/','/api/admin/','/seller/','/commerce/cart','/commerce/orders','/me','/auth/','/maps/','/api/maps/','/chat','/api/chat'))
     if not is_raw_video_upload and (path.startswith('/finds/') or provider_path) and request.method in ('POST','PUT','PATCH'):
         is_large_cms = path.startswith(('/admin/edit-vistrah','/api/admin/edit-vistrah','/admin/pricing','/api/admin/pricing'))
         limit = 3000000 if provider_path and (path.endswith(('/documents','/evidence')) or path.startswith('/provider-onboarding/')) else (1000000 if is_large_cms else 128000)

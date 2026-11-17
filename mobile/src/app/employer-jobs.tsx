@@ -23,7 +23,7 @@ export default function EmployerJobs(){
 function EmployerManager({userId}:{userId:number}){
   const {styles}=useTheme();const businesses=useResource<Business[]>('/seller/businesses',userId);const [selected,setSelected]=useState<number|null>(null);
   const provider=businesses.data?.find(item=>item.id===selected)??businesses.data?.[0];
-  return <>{businesses.loading?<Loading/>:businesses.error?<ErrorPanel error={businesses.error} retry={businesses.retry}/>:!businesses.data?.length?<><Text style={styles.muted}><UiText value={"Add your employer business and complete ownership review before posting jobs."}/></Text><UiElement as={Action} label="Add employer business" onPress={()=>router.push('/provider-applications/new')}/></>:<>
+  return <>{businesses.loading?<Loading/>:businesses.error?<ErrorPanel error={businesses.error} retry={businesses.retry}/>:!businesses.data?.length?<><Text style={styles.muted}><UiText value={"Add your employer business and complete ownership review before posting jobs."}/></Text><UiElement as={Action} label="Add employer business" onPress={()=>router.push('/seller/onboard')}/></>:<>
     <Text style={styles.label}><UiText value={"CHOOSE YOUR EMPLOYER BUSINESS"}/></Text>{businesses.data.map(item=><Action key={item.id} label={(provider?.id===item.id?'✓ ':'')+(item.company||item.name)} secondary={provider?.id!==item.id} onPress={()=>setSelected(item.id)}/>)}
     {provider&&<BusinessJobs key={provider.id} provider={provider} userId={userId}/>}
   </>}</>;

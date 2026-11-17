@@ -40,15 +40,14 @@ export function SellerOnboardingCard({description="Keep your existing account an
       <Text style={[styles.text,{flex:1,minWidth:0,paddingTop:10}]}>{sellerLegalCopy.marketing}</Text>
     </View>
     <UiElement as={Action} label="List your business (3 easy steps)" disabled={busy} onPress={()=>router.push('/seller/onboard')}/>
-    <UiElement as={Action} label={busy?'Enabling…':'Complete seller onboarding'} secondary disabled={busy||!termsAccepted} onPress={()=>void enable()}/>
-    <UiElement as={Action} label="Register business" secondary disabled={busy} onPress={()=>router.push('/provider-applications/new')}/>
+    <UiElement as={Action} label={busy?'Enabling…':'Enable V Ads / Employer access only'} secondary disabled={busy||!termsAccepted} onPress={()=>void enable()}/>
   </View>;
 }
 export function SellerGate({children,nextPath}:{children:ReactNode;nextPath?:string}){
   const session=useSession();const pathname=usePathname();
-  const target=nextPath||(pathname?.startsWith('/seller')?pathname:'/seller');
+  const target=nextPath||(pathname?.startsWith('/seller')&&pathname!=='/seller'?pathname:'/seller/onboard');
   if(!session.ready)return <Loading/>;
   if(!session.user)return <Redirect href={{pathname:'/auth',params:{next:target}}}/>;
-  if(!isSellerUser(session.user))return <SellerOnboardingCard/>;
+  if(!isSellerUser(session.user))return <Redirect href={target.startsWith('/seller/onboard')?(target as '/seller/onboard'):'/seller/onboard'}/>;
   return <View key={session.user.id} style={{gap:16}}>{children}</View>;
 }

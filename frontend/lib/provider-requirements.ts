@@ -20,4 +20,4 @@ export const editable=(status:string)=>['DRAFT','CHANGES_REQUESTED'].includes(st
 export function visibleAnswers(fields:RequirementField[],answers:Answers){
   const active:Answers={};for(const field of fields)if(matches(field.visible_if,active)&&answers[field.id]!==undefined)active[field.id]=answers[field.id];return active;
 }
-export const onboardingUrl=(categoryId:number)=>`/provide-service?category=${categoryId}`;
+export const onboardingUrl=(categorySlug?:string|number)=>typeof categorySlug==='string'&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(categorySlug)?`/seller/onboard?category=${categorySlug}`:'/seller/onboard';

@@ -202,7 +202,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        </View>
        <Text style={styles.muted}>{promo.anchorSummary}</Text>
        <View style={{gap:8,marginTop:4}}>
-        <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/provider')}/>
+        <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/seller/onboard')}/>
         <Action secondary label="Membership Rules" onPress={()=>router.push('/membership')}/>
        </View>
       </View>

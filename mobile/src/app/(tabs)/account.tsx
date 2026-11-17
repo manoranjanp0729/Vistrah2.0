@@ -143,8 +143,8 @@ export default function Account(){const {colors,styles}=useTheme();const banner=
    <UiElement as={Row} label={copy.nav.location} icon="map-pin" onPress={()=>router.push('/location')}/>
    <UiElement as={Row} label={t('settings.title')} icon="settings" onPress={()=>router.push('/settings')}/>
   </UiElement>
-  <UiElement as={Section} title="Seller & Business Tools" subtitle={seller?"Manage your businesses, listings, and V Ads":session.user?"Complete seller onboarding or register your business":"Sign in once to access customer and seller tools"}>
-   {<><Row label={copy.account.seller} icon="grid" onPress={()=>router.push('/seller')}/><UiElement as={Row} label="V Ads Studio" icon="video" onPress={()=>router.push('/seller/v-ads')}/><UiElement as={Row} label="+ Add services" icon="plus-circle" onPress={()=>router.push('/services')}/></>}
+  <UiElement as={Section} title="Seller & Business Tools" subtitle={seller?"Manage your businesses, listings, and V Ads":session.user?"List your business in 3 easy steps":"Sign in once to access customer and seller tools"}>
+   {<>{seller?<Row label={copy.account.seller} icon="grid" onPress={()=>router.push('/seller')}/>:null}<UiElement as={Row} label={seller?"+ List your business":"List your business"} icon="plus-circle" onPress={()=>router.push('/seller/onboard')}/><UiElement as={Row} label="V Ads Studio" icon="video" onPress={()=>router.push('/seller/v-ads')}/></>}
    <UiElement as={Row} label={t('account.jobs')} icon="briefcase" onPress={()=>router.push('/employer-jobs')}/>
   </UiElement>
   {session.user?.role==='ADMIN'&&<UiElement as={Section} title="Administration" subtitle="Platform operations, approvals and oversight"><Row label={copy.account.admin} icon="shield" onPress={()=>router.push('/admin-dashboard')}/></UiElement>}

@@ -75,8 +75,8 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     primaryCta: {
       label: 'List Your Business Free',
       shortLabel: 'List Free',
-      webHref: '/provider',
-      mobileRoute: '/provider',
+      webHref: '/seller/onboard',
+      mobileRoute: '/seller/onboard',
     },
     secondaryCta: {
       label: 'View Full Pricing',
@@ -137,8 +137,8 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     secondaryCta: {
       label: 'List Agri Business',
       shortLabel: 'List Agri Service',
-      webHref: '/provider',
-      mobileRoute: '/provider',
+      webHref: '/seller/onboard?category=agriculture-and-farming',
+      mobileRoute: '/seller/onboard?category=agriculture-and-farming',
     },
   },
   {
@@ -165,8 +165,8 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     secondaryCta: {
       label: 'Register Clinic / Lab',
       shortLabel: 'Join HealthConnect',
-      webHref: '/provider',
-      mobileRoute: '/provider',
+      webHref: '/seller/onboard?category=health-and-fitness',
+      mobileRoute: '/seller/onboard?category=health-and-fitness',
     },
   },
 ] as const;

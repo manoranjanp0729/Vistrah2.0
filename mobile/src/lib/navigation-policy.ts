@@ -11,6 +11,11 @@ export function backFallback(pathname:string,params:Record<string,unknown>={}):s
  if(/^\/marketing-pricing\/.+/.test(path))return '/marketing-pricing';
  if(path==='/marketing-pricing'||path.startsWith('/marketing-services/'))return '/marketing-solutions';
  if(path.startsWith('/seller/')||path==='/seller'){
+  if(path==='/seller/onboard'&&typeof params.category==='string'){
+   const query=new URLSearchParams({category:params.category});
+   if(typeof params.type==='string')query.set('subcategory',params.type);
+   return '/services?'+query.toString();
+  }
   if(path==='/seller/add-service'){
    const query=new URLSearchParams();
    for(const key of ['category','subcategory','type'])if(typeof params[key]==='string')query.set(key,params[key] as string);

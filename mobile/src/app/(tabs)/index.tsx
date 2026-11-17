@@ -132,7 +132,7 @@ export default function Discover() {
       as={Pressable}
       accessibilityRole="link"
       accessibilityLabel={[t('home.providerTitle'), t('home.providerOffer'), t('home.membershipPlans')].join('. ')}
-      onPress={() => router.push('/membership')}
+      onPress={() => router.push('/seller/onboard')}
       style={({pressed}) => [
         s.elevatedProviderCard,
         {

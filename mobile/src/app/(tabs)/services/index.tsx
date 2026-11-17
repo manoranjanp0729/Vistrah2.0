@@ -53,12 +53,12 @@ export default function Services() {
     : seller
     ? `Welcome, ${session.user!.name}`
     : session.user
-    ? 'Complete seller onboarding'
+    ? 'List your business'
     : 'Sign in to offer services';
   const openSeller = () =>
     session.user
-      ? router.push('/seller')
-      : router.push({pathname: '/auth', params: {next: '/services'}});
+      ? router.push('/seller/onboard')
+      : router.push({pathname: '/auth', params: {next: '/seller/onboard'}});
 
   const raw = useLocalSearchParams<{category?: string; subcategory?: string; type?: string; q?: string}>();
   const params: MarketplaceSelection = {
@@ -511,11 +511,10 @@ export default function Services() {
                   accessibilityRole="button"
                   onPress={() =>
                     router.push({
-                      pathname: '/seller/add-service',
+                      pathname: '/seller/onboard',
                       params: {
                         category: category!.slug,
-                        subcategory: subcategory!.slug,
-                        type: listingType!.slug,
+                        type: subcategory!.slug,
                       },
                     })
                   }
@@ -761,7 +760,7 @@ function TypeAction({
           as={Pressable}
           accessibilityRole="button"
           accessibilityLabel={'Add service: ' + title}
-          onPress={() => router.push({pathname: '/seller/add-service', params: selected})}
+          onPress={() => router.push({pathname: '/seller/onboard', params: {category: selected.category, type: selected.subcategory}})}
           style={{
             position: 'absolute',
             right: 8,

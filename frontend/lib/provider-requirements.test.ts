@@ -1,7 +1,7 @@
 import {describe,it,expect} from 'vitest';
 import {matches,visibleAnswers,editable,onboardingUrl,type RequirementField} from './provider-requirements';
 describe('provider requirements presentation',()=>{
-  it('uses real category IDs in the entry journey',()=>{expect(onboardingUrl(42)).toBe('/provide-service?category=42');});
+  it('routes onboarding entry links directly to 3-step self-onboarding',()=>{expect(onboardingUrl(42)).toBe('/seller/onboard');expect(onboardingUrl('food-and-dining')).toBe('/seller/onboard?category=food-and-dining');});
   it('requires a real boolean and supports selected-value conditions',()=>{
     expect(matches({field:'licensed',operator:'equals',value:true},{licensed:true})).toBe(true);
     expect(matches({field:'licensed',operator:'equals',value:true},{licensed:'true'})).toBe(false);

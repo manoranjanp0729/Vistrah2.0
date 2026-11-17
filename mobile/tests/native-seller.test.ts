@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {authEndpoint,sellerReturnDestination} from '../src/lib/seller-auth.ts';
+import {authEndpoint,resolvePostAuthSellerReturn,sellerReturnDestination} from '../src/lib/seller-auth.ts';
 import {matches,visibleAnswers,preparedAnswers,type RequirementField} from '../src/lib/provider-requirements.ts';
 import {evidenceMeta,evidenceLimit} from '../src/lib/evidence-validation.ts';
 import {resetToken} from '../src/lib/reset-token.ts';
@@ -15,14 +15,19 @@ test('customer, seller, and employer authentication share the single unified aut
   assert.equal(authEndpoint(true,false),'/auth/register');
 });
 
-test('unified auth return destination permits safe seller, V Ads, and service paths',()=>{
+test('unified auth return destination permits safe seller, V Ads, and service paths and normalizes legacy onboarding paths to /seller/onboard',()=>{
   assert.equal(sellerReturnDestination(true,'/services'),'/services');
   assert.equal(sellerReturnDestination(true,'/seller'),'/seller');
+  assert.equal(sellerReturnDestination(true,'/seller/onboard'),'/seller/onboard');
+  assert.equal(sellerReturnDestination(true,'/seller/onboard?category=food-and-dining&type=restaurant'),'/seller/onboard?category=food-and-dining&type=restaurant');
   assert.equal(sellerReturnDestination(true,'/seller/v-ads'),'/seller/v-ads');
   assert.equal(sellerReturnDestination(true,'/seller/business/7'),'/seller/business/7');
   assert.equal(sellerReturnDestination(false,'/services'),null);
-  assert.equal(sellerReturnDestination(true,'/provider-applications/new'),'/provider-applications/new');
+  assert.equal(sellerReturnDestination(true,'/provider-applications/new'),'/seller/onboard');
+  assert.equal(sellerReturnDestination(true,'/provider'),'/seller/onboard');
   assert.equal(sellerReturnDestination(false,'/provider-applications/new'),null);
+  assert.equal(resolvePostAuthSellerReturn('/seller',{seller_enabled:false}),'/seller/onboard');
+  assert.equal(resolvePostAuthSellerReturn('/seller',{seller_enabled:true}),'/seller');
   for(const next of [undefined,'/admin','https://example.test','//example.test','/provider-applications/new?business=1'])assert.equal(sellerReturnDestination(true,next),null);
 });
 test('hidden conditional answers cannot activate dependent required questions',()=>{
@@ -64,9 +69,9 @@ test('only the guarded admin dashboard can open the independent admin website',(
   assert.match(helper,/EXPO_PUBLIC_ADMIN_URL/);assert.doesNotMatch(helper,/Authorization|access_token/);
 });
 
-test('listing type selection survives seller sign-in without accepting unsafe return paths',()=>{
+test('listing type selection survives seller sign-in and resolves directly to /seller/onboard without accepting unsafe return paths',()=>{
  const next='/seller/add-service?category=home&subcategory=repairs&type=plumbing';
- assert.equal(sellerReturnDestination(true,next),next);
+ assert.equal(sellerReturnDestination(true,next),'/seller/onboard?category=home&type=repairs');
  assert.equal(sellerReturnDestination(false,next),null);
  for(const path of [next+'&next=//example.test',next+'&type=other',next+'?evil=true',next+'#fragment','/seller/add-service?category=home&subcategory=repairs'])assert.equal(sellerReturnDestination(true,path),null);
 });

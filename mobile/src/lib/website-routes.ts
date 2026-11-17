@@ -13,12 +13,22 @@ export function websiteRoute(pathname:string,search:string,categories:Category[]
   const path=pathname.replace(/^\/app(?=\/|$)/,'')||'/';
   const query=new URLSearchParams(search);
   const sellerNext=sellerReturnDestination(true,query.get('next'));
-  if((path==='/seller/login'||path==='/seller/register')&&sellerNext?.startsWith('/seller/add-service?'))return '/auth?'+(path==='/seller/register'?'register=1&':'')+'next='+encodeURIComponent(sellerNext);
+  if((path==='/seller/login'||path==='/seller/register')&&sellerNext?.startsWith('/seller/onboard'))return '/auth?'+(path==='/seller/register'?'register=1&':'')+'next='+encodeURIComponent(sellerNext);
   if((path==='/seller/login'||path==='/seller/register')&&query.get('next')==='/services')return '/auth?'+(path==='/seller/register'?'register=1&':'')+'next=%2Fservices';
-  if((path==='/seller/login'||path==='/seller/register')&&query.get('next')==='/provide-service')return '/auth?'+(path==='/seller/register'?'register=1&':'')+'next=%2Fprovider-applications%2Fnew';
+  if((path==='/seller/login'||path==='/seller/register')&&query.get('next')==='/provide-service')return '/auth?'+(path==='/seller/register'?'register=1&':'')+'next=%2Fseller%2Fonboard';
+  if(path==='/provider'||path==='/provider/onboarding'||path==='/seller/new'){
+    const out=new URLSearchParams();
+    for(const key of ['category','type','business']){
+      const val=query.get(key)||(key==='type'?query.get('subcategory'):null);
+      if(!val)continue;
+      if(key==='business'&&/^[1-9]\d*$/.test(val))out.set('business',val);
+      else if(key!=='business'&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(val)&&val.length<=100)out.set(key,val);
+    }
+    return '/seller/onboard'+(out.size?'?'+out.toString():'');
+  }
   const aliases:Record<string,string>={
     '/login':'/auth','/register':'/auth?register=1',
-    '/seller/login':'/auth?next=%2Fseller','/seller/register':'/auth?register=1&next=%2Fseller',
+    '/seller/login':'/auth?next=%2Fseller%2Fonboard','/seller/register':'/auth?register=1&next=%2Fseller%2Fonboard',
     '/account/profile':'/profile','/account/requests':'/my-requests','/account/payments':'/payments',
     '/account/orders':'/payments','/account/membership':'/membership','/account/settings':'/settings',
     '/account/provider-applications':'/provider-applications','/account/finds':'/finds',
@@ -31,8 +41,13 @@ export function websiteRoute(pathname:string,search:string,categories:Category[]
     const id=query.get('application');
     if(id&&/^[0-9a-f-]{36}$/.test(id))return '/provider-applications/'+id;
     const selection=new URLSearchParams();
-    for(const key of ['business','category','service']){const value=query.get(key);if(value&&/^[1-9]\d*$/.test(value))selection.set(key,value);}
-    return '/provider-applications/new'+(selection.size?'?'+selection.toString():'');
+    const business=query.get('business');
+    if(business&&/^[1-9]\d*$/.test(business))selection.set('business',business);
+    for(const key of ['category','type']){
+      const val=query.get(key);
+      if(val&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(val)&&!/^\d+$/.test(val)&&val.length<=100)selection.set(key,val);
+    }
+    return '/seller/onboard'+(selection.size?'?'+selection.toString():'');
   }
   if(!path.startsWith('/service/')||/^\/service\/(\d+|find-jobs)$/.test(path))return null;
   const parts=path.split('/').filter(Boolean);

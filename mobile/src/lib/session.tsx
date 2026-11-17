@@ -28,7 +28,7 @@ const removeToken=async()=>{
 };
 type GoogleAuthPayload={credential?:string;access_token?:string;privacy_policy_version?:string;marketing_consent?:boolean;require_consent_for_new?:boolean};
 type SignupConsent={privacy_policy_version?:string;marketing_consent?:boolean};
-type Session={user:User|null;ready:boolean;error:string;signIn:(email:string,password:string,name?:string,seller?:boolean,consent?:SignupConsent)=>Promise<void>;signInWithGoogle:(payload:GoogleAuthPayload,seller?:boolean)=>Promise<void>;signOut:()=>Promise<void>;retry:()=>void;refresh:()=>Promise<void>};
+type Session={user:User|null;ready:boolean;error:string;signIn:(email:string,password:string,name?:string,seller?:boolean,consent?:SignupConsent)=>Promise<User|undefined>;signInWithGoogle:(payload:GoogleAuthPayload,seller?:boolean)=>Promise<User|undefined>;signOut:()=>Promise<void>;retry:()=>void;refresh:()=>Promise<void>};
 const Context=createContext<Session|null>(null);
 export function SessionProvider({children}:{children:ReactNode}) {
   const session=useStoredSession();
@@ -63,6 +63,7 @@ function useStoredSession():Session {
     if(!usesBrowserCookies&&!result.access_token)throw new Error('Sign-in could not be completed. Please try again.');
     if(result.access_token&&!usesBrowserCookies)await storeToken(result.access_token);
     setToken(usesBrowserCookies?null:result.access_token!);setUser(result.user);setError('');
+    return result.user;
   }
   async function signInWithGoogle(payload:GoogleAuthPayload,_seller=false){
     generation.current++;const serial=generation.current;
@@ -71,6 +72,7 @@ function useStoredSession():Session {
     if(!usesBrowserCookies&&!result.access_token)throw new Error('Sign-in could not be completed. Please try again.');
     if(result.access_token&&!usesBrowserCookies)await storeToken(result.access_token);
     setToken(usesBrowserCookies?null:result.access_token!);setUser(result.user);setError('');
+    return result.user;
   }
   async function signOut(){
     generation.current++;let revocationError:Error|null=null;

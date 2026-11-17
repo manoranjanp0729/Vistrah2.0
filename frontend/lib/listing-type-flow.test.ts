@@ -8,19 +8,23 @@ vi.mock('@/components/commerce',()=>({ClassifiedServices:()=>React.createElement
 vi.mock('@/components/photo-card',()=>({PhotoCard:({href,title}:{href:string;title:string})=>React.createElement('a',{href},title)}));
 vi.mock('@/components/photo-card-rail',()=>({PhotoCardRail:({children}:{children:React.ReactNode})=>React.createElement('div',null,children)}));
 vi.mock('@/components/marketplace-categories',()=>({MarketplaceCategories:()=>null}));
-vi.mock('@/components/add-service',()=>({AddService:()=>null}));
-vi.mock('next/navigation',()=>({notFound:()=>{throw new Error('NOT_FOUND');}}));
+vi.mock('next/navigation',()=>({
+  notFound:()=>{throw new Error('NOT_FOUND');},
+  redirect:(path:string)=>{throw new Error('REDIRECT:'+path);},
+}));
 import {MarketplaceBrowser} from '../components/marketplace-browser';
 import AddServicePage from '../app/(public)/seller/add-service/page';
 import {marketplaceCategories,resolveMarketplaceSelection} from './marketplace-taxonomy';
 import {addServiceUrl,serviceSelection,serviceListingForm,businessInput,emptyBusiness} from '../../shared/service-listing';
 import {listingInput} from '../../shared/commerce';
 import {websiteLoginDestination} from './login-destination';
+
 const category=marketplaceCategories[0],sub=category.subcategories[0],type=sub.listing_types[0];
 const selection={category:category.slug,subcategory:sub.slug,type:type.slug};
 beforeEach(()=>{session.user=null;});
 const render=(params:Parameters<typeof resolveMarketplaceSelection>[0],query='')=>renderToStaticMarkup(React.createElement(MarketplaceBrowser,{selection:resolveMarketplaceSelection(params)!,query}));
-it('shows seller-only plus actions on Listing Types, never categories or subcategories',()=>{
+
+it('shows seller-only plus actions linking directly to /seller/onboard with category and type preserved',()=>{
   expect(render(selection)).not.toContain('Add service:');
   session.user={seller_enabled:false};expect(render(selection)).not.toContain('Add service:');
   session.user={seller_enabled:true};
@@ -28,6 +32,7 @@ it('shows seller-only plus actions on Listing Types, never categories or subcate
   expect(render({category:category.slug})).not.toContain('Add service:');
   const html=render({category:category.slug,subcategory:sub.slug});
   expect(html.match(/aria-label="Add service:/g)?.length).toBe(sub.listing_types.length);
+  expect(addServiceUrl(selection)).toBe(`/seller/onboard?category=${category.slug}&type=${sub.slug}`);
   expect(html).toContain(addServiceUrl(selection).replaceAll('&','&amp;'));
   expect(render(selection)).toContain('Approved services');
   expect(render(selection)).toContain('See available options');
@@ -36,14 +41,16 @@ it('shows seller-only plus actions on Listing Types, never categories or subcate
   expect(render(selection)).not.toContain('Browse published products');
   expect(render({},type.title)).toContain('Add service:');
 });
-it('carries the exact classification into draft creation and seller authentication',async()=>{
+
+it('redirects legacy /seller/add-service URLs directly to /seller/onboard with category and type preserved',async()=>{
   const form=serviceListingForm(selection,type.title);
   expect(listingInput({...form,description:'A complete test service description.',price:'123.45'})).toMatchObject({kind:'SERVICE_PACKAGE',service_id:null,taxonomy_category_slug:category.slug,taxonomy_subcategory_slug:sub.slug,taxonomy_listing_type_slug:type.slug,unit_price_paise:12345});
-  expect(websiteLoginDestination(addServiceUrl(selection))).toBe(addServiceUrl(selection));
-  expect((await AddServicePage({searchParams:Promise.resolve(selection)})).props.selection).toEqual(selection);
+  expect(websiteLoginDestination(addServiceUrl(selection))).toBe(`/seller/onboard?category=${category.slug}&type=${sub.slug}`);
+  await expect(AddServicePage({searchParams:Promise.resolve(selection)})).rejects.toThrow(`REDIRECT:/seller/onboard?category=${category.slug}&type=${sub.slug}`);
   for(const params of [{},{...selection,type:'invalid'},{...selection,category:['invalid']}])await expect(AddServicePage({searchParams:Promise.resolve(params)})).rejects.toThrow('NOT_FOUND');
   expect(serviceSelection({category:category.slug})).toBeNull();
 });
+
 it('requires business contact details before submitting a new business',()=>{
   expect(()=>businessInput(emptyBusiness())).toThrow();
   expect(businessInput({name:' Seller ',company:' Business ',phone:'+91 9000000000',address:' Test address ',location:' Bengaluru '})).toMatchObject({name:'Seller',company:'Business',location:'Bengaluru'});

@@ -193,7 +193,7 @@ function SellerWorkspace({
           </div>
           <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
             <button type="button" disabled={enabling} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
-            <Link href="/provide-service" className="button secondary"><UiText value="Register business"/></Link>
+            <Link href="/seller/onboard" className="button secondary"><UiText value="Register business"/></Link>
           </div>
         </div>
       )
@@ -270,7 +270,7 @@ function SellerWorkspace({
         </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           <button type="button" disabled={enabling||!termsAccepted} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
-          <Link href="/provide-service" className="button secondary"><UiText value={"Register business"}/></Link>
+          <Link href="/seller/onboard" className="button secondary"><UiText value={"Register business"}/></Link>
         </div>
       </div>
     ) : loading ? (
@@ -347,7 +347,7 @@ function SellerWorkspace({
         </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           <button type="button" disabled={enabling||!termsAccepted} onClick={()=>void activate()}><UiText value={enabling?'Enabling…':'Complete seller onboarding'}/></button>
-          <Link href="/provide-service" className="button secondary"><UiText value={"Register business"}/></Link>
+          <Link href="/seller/onboard" className="button secondary"><UiText value={"Register business"}/></Link>
         </div>
       </div>
     ) : loading ? (

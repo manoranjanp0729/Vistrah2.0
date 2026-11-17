@@ -73,4 +73,6 @@ test('direct links have logical Back fallbacks across the app',()=>{
  ];
  for(const [path,parent] of cases)assert.equal(backFallback(path),parent,path);
  assert.equal(backFallback('/seller/add-service',{category:'pet-care',subcategory:'dog-care',type:'dog-walking'}),'/services?category=pet-care&subcategory=dog-care&type=dog-walking');
+ assert.equal(backFallback('/seller/onboard',{category:'food-and-dining',type:'restaurant'}),'/services?category=food-and-dining&subcategory=restaurant');
+ assert.equal(backFallback('/seller/onboard'),'/seller');
 });

@@ -20,18 +20,20 @@ import SellerBusinessPage from '../app/(public)/seller/business/[id]/page';
 import SellerListingsPage from '../app/(public)/seller/commerce/[id]/page';
 import {websiteLoginDestination} from './login-destination';
 beforeEach(()=>{session.user=null;session.loading=false;session.error='';});
-it('connects the seller dashboard to applications, assigned enquiries and public offers',()=>{
+it('connects the seller dashboard to /seller/onboard, applications, assigned enquiries and public offers',()=>{
   session.user={seller_enabled:true,isSeller:true};
   const html=renderToStaticMarkup(React.createElement(SellerDashboard));
-  for(const href of ['/services','/seller/v-ads','/account/provider-applications','/account/provider-applications#assigned-leads','/commerce','/app/employer-jobs'])expect(html).toContain('href="'+href+'"');
+  for(const href of ['/seller/onboard','/services','/seller/v-ads','/account/provider-applications','/account/provider-applications#assigned-leads','/commerce','/app/employer-jobs'])expect(html).toContain('href="'+href+'"');
   expect(html).not.toContain('Private listing editor');
   expect(html).toContain('Loading your businesses');
 });
-it('redirects unauthenticated visits to unified login and shows seller onboarding for signed-in non-sellers without exposing private editors',()=>{
+it('redirects unauthenticated visits to unified login and routes signed-in non-sellers on /seller directly to /seller/onboard without exposing private editors',()=>{
   expect(()=>renderToStaticMarkup(React.createElement(()=>SellerDashboard({businessId:7})))).toThrow('REDIRECT:/login?next=%2Fseller%2Fbusiness%2F7');
+  expect(()=>renderToStaticMarkup(React.createElement(()=>SellerDashboard()))).toThrow('REDIRECT:/login?next=%2Fseller%2Fonboard');
   session.user={seller_enabled:false,isSeller:false};
+  expect(()=>renderToStaticMarkup(React.createElement(()=>SellerDashboard()))).toThrow('REDIRECT:/seller/onboard');
   const html=renderToStaticMarkup(React.createElement(()=>SellerDashboard({businessId:7})));
-  expect(html).toContain('Complete Seller Onboarding / Register Business');
+  expect(html).toContain('href="/seller/onboard"');
   expect(html).not.toContain('Private publication editor');
   expect(websiteLoginDestination('/seller/business/7')).toBe('/seller/business/7');
 });

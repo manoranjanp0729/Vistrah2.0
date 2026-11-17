@@ -197,7 +197,7 @@ export function DiscoveryGuide() {
           {/* Action Button */}
           <Pressable
             accessibilityRole="button"
-            onPress={() => router.push(journey === 'customer' ? '/services' : '/provider')}
+            onPress={() => router.push(journey === 'customer' ? '/services' : '/seller/onboard')}
             style={({pressed}) => [{borderRadius: 16, overflow: 'hidden', opacity: pressed ? 0.9 : 1}]}
           >
             <LinearGradient

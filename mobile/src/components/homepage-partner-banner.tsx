@@ -104,7 +104,7 @@ export function HomepagePartnerBanner() {
 
       {/* White actions remain distinct from the colourful banner. */}
       <View style={{gap:8,marginTop:4}}>
-        <Action onColor label={copy.home.provider} onPress={()=>router.push('/provider')}/>
+        <Action onColor label={copy.home.provider} onPress={()=>router.push('/seller/onboard')}/>
         <Action onColor label="Explore Partner Membership Plans" onPress={()=>router.push('/membership')}/>
       </View>
 

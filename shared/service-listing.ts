@@ -1,12 +1,16 @@
 import type {ListingForm} from './commerce';
 import type {MarketplaceSelection} from './marketplace';
+import {resolveSelfOnboardingInitialSelection,selfOnboardingUrl} from './self-onboarding';
 
 export type ServiceSelection={category:string;subcategory:string;type:string};
 export function serviceSelection(params:MarketplaceSelection):ServiceSelection|null{
   const {category,subcategory,type}=params;
   return [category,subcategory,type].every(value=>typeof value==='string'&&value.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value))?{category:category!,subcategory:subcategory!,type:type!}:null;
 }
-export function addServiceUrl(selection:ServiceSelection){return '/seller/add-service?'+new URLSearchParams(selection).toString();}
+export function addServiceUrl(selection:ServiceSelection){
+  const resolved=resolveSelfOnboardingInitialSelection(selection);
+  return selfOnboardingUrl({category:resolved.categorySlug,type:resolved.typeSlug??selection.subcategory});
+}
 export function serviceListingForm(selection:ServiceSelection,title:string):ListingForm{
   return {kind:'SERVICE_PACKAGE',service_id:'',title,description:'',price:'',available:true,
     taxonomy_category_slug:selection.category,taxonomy_subcategory_slug:selection.subcategory,taxonomy_listing_type_slug:selection.type};

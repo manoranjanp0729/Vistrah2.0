@@ -8,7 +8,7 @@ import {Redirect,router,useLocalSearchParams} from 'expo-router';
 import {Action,ErrorPanel,Field,Page,Loading} from '../components/ui';
 import {useSession} from '../lib/session';
 import {useTheme} from '../lib/theme';
-import {sellerReturnDestination} from '../lib/seller-auth';
+import {resolvePostAuthSellerReturn} from '../lib/seller-auth';
 import {GoogleSignIn,type GoogleAuthGrant} from '../components/google-sign-in';
 
 export default function Auth(){const {copy,t}=useLanguage();const {styles,colors}=useTheme();
@@ -18,15 +18,15 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
   const [consentRegister,setConsentRegister]=useState(register);
   if(consentRegister!==register){setConsentRegister(register);setLegalAccepted(false);setWhatsappPromotions(false);}
 
-  function finishNavigation(){
+  function finishNavigation(signedInUser?:{seller_enabled?:boolean}|null){
     setPassword('');
-    const next=sellerReturnDestination(true,params.next);
+    const next=resolvePostAuthSellerReturn(params.next,signedInUser??user);
     if(next)router.dismissTo(next);else if(router.canGoBack())router.back();else router.replace('/account');
   }
 
   async function submit(){
     setError('');if(register&&!legalAccepted){setError(signupLegalCopy.required);return;}if(!email.trim()||!password||(register&&(name.trim().length<2||password.length<10))){setError(register?t('validation.authRegister'):t('validation.authSignIn'));return;}
-    setBusy(true);try{await signIn(email.trim(),password,register?name.trim():undefined,false,register?{privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}:undefined);finishNavigation();}catch(e){setError((e as Error).message);}finally{setBusy(false);}
+    setBusy(true);try{const signedIn=await signIn(email.trim(),password,register?name.trim():undefined,false,register?{privacy_policy_version:legalVersion,marketing_consent:whatsappPromotions}:undefined);finishNavigation(signedIn);}catch(e){setError((e as Error).message);}finally{setBusy(false);}
   }
   async function submitGoogle(credential:string,grant?:GoogleAuthGrant){
     setError('');if(!legalAccepted){setError(signupLegalCopy.required);return;}
@@ -34,14 +34,14 @@ export default function Auth(){const {copy,t}=useLanguage();const {styles,colors
       const payload=grant?.accessToken
         ? {access_token:grant.accessToken,privacy_policy_version:grant.privacyPolicyVersion||legalVersion,marketing_consent:grant.marketingConsent??whatsappPromotions}
         : {credential:grant?.credential||credential,privacy_policy_version:grant?.privacyPolicyVersion||legalVersion,marketing_consent:grant?.marketingConsent??whatsappPromotions};
-      await signInWithGoogle(payload);
-      finishNavigation();
+      const signedIn=await signInWithGoogle(payload);
+      finishNavigation(signedIn);
     }catch(e){
       setError((e as Error).message);
     }finally{setBusy(false);}
   }
   if(!ready)return <Page><Loading/></Page>;
-  if(user&&!busy)return <Redirect href={sellerReturnDestination(true,params.next)??'/account'}/>;
+  if(user&&!busy)return <Redirect href={resolvePostAuthSellerReturn(params.next,user)??'/account'}/>;
   return <UiElement as={Page} title={register?copy.auth.register:copy.auth.welcome}><View style={{width:'100%',maxWidth:400,alignSelf:'center',gap:12}}><Text style={styles.muted}><UiText value={copy.auth.intro}/></Text>{Boolean(error)&&<ErrorPanel error={error}/>}
     <GoogleSignIn
       disabled={busy}

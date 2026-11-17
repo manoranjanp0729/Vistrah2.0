@@ -22,8 +22,8 @@ export const WHY_VISTRAH_HEADER = {
   primaryCtaLabel: 'Explore 13 Verticals',
   primaryCtaWebHref: '/services',
   secondaryCtaLabel: 'List Your Business Free — 30 Days V Ads ₹0',
-  secondaryCtaWebHref: '/pricing',
-  secondaryCtaMobileHref: '/marketing-pricing',
+  secondaryCtaWebHref: '/seller/onboard',
+  secondaryCtaMobileHref: '/seller/onboard',
 } as const;
 
 export const WHY_VISTRAH_PILLARS: readonly WhyVistrahPillar[] = [

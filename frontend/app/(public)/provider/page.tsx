@@ -1,5 +1,15 @@
-import {UiText} from "../../../components/localized-ui";
-import Link from 'next/link';
-import copy from '@/lib/interface-copy.json';
-export default function Provider(){return <div className="container page replica-page"><h1><UiText value={copy.provider.title}/></h1><p><UiText value={copy.provider.subtitle}/></p><p><UiText value={copy.provider.intro}/></p><div className="panel"><h2><UiText value={copy.provider.business}/></h2><p><UiText value={copy.provider.businessCopy}/></p><div className="replica-actions"><Link href="/provide-service"><UiText value={"Register business"}/></Link><Link href="/seller"><UiText value={"Seller onboarding & dashboard"}/></Link></div></div><div className="replica-actions"><Link href="/provide-service"><UiText value={copy.provider.application}/></Link><Link href="/seller"><UiText value={copy.provider.dashboard}/></Link><Link href="/app/employer-jobs"><UiText value={"Employer job postings"}/></Link></div></div>;}
+import {redirect} from 'next/navigation';
+import {resolveSelfOnboardingInitialSelection,selfOnboardingUrl} from '../../../../shared/self-onboarding';
 
+export default async function ProviderRedirectPage({
+  searchParams,
+}:{
+  searchParams:Promise<Record<string,string|string[]|undefined>>;
+}){
+  const params=await searchParams;
+  const cat=typeof params.category==='string'?params.category:undefined;
+  const type=typeof params.type==='string'?params.type:typeof params.subcategory==='string'?params.subcategory:undefined;
+  const business=typeof params.business==='string'&&/^[1-9]\d*$/.test(params.business)?params.business:undefined;
+  const resolved=cat||type?resolveSelfOnboardingInitialSelection({category:cat,type}):undefined;
+  redirect(selfOnboardingUrl({category:resolved?.categorySlug,type:resolved?.typeSlug,business}));
+}

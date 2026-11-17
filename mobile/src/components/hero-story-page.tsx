@@ -43,6 +43,14 @@ function openMobileDestination(dest: string) {
     router.push({pathname: '/services', params: {category, subcategory}});
     return;
   }
+  if (dest.startsWith('/seller/onboard?')) {
+    const queryStr = dest.split('?')[1] ?? '';
+    const params = new URLSearchParams(queryStr);
+    const category = params.get('category') ?? undefined;
+    const type = params.get('type') ?? undefined;
+    router.push({pathname: '/seller/onboard', params: {category, type}});
+    return;
+  }
   router.push(dest as Href);
 }
 

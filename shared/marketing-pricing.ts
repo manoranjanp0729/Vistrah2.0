@@ -324,7 +324,7 @@ export const FREE_LISTING_ANCHOR={
  summary:'Verified businesses get 30 days of hyperlocal V Ads visibility at ₹0 (zero auto-charge from Day 31), alongside 90 days of Basic Business Membership at ₹0 for eligible new service providers. Studio agency & outdoor services are quoted separately.',
  primaryHref:'/seller/v-ads',
  primaryLabel:'Start Free First Month',
- secondaryHref:'/provide-service',
+ secondaryHref:'/seller/onboard',
  secondaryLabel:'Register Business Free',
 } as const;
 

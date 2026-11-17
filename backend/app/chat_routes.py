@@ -27,8 +27,8 @@ logger = logging.getLogger("vistrah.chat")
 router = APIRouter(tags=["Ask VISTRAH Chat"])
 
 GEMINI_MODELS: tuple[str, ...] = (
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
 )
 GEMINI_TIMEOUT_SECONDS = 9.0
 CHAT_WINDOW_SECONDS = 60.0

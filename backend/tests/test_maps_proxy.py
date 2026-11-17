@@ -48,7 +48,14 @@ def test_maps_proxy_unconfigured_key_fails_closed_without_upstream_call(client, 
         )
         assert res.status_code == 503
         assert res.headers.get("cache-control") == "private, no-store"
+        err_body = res.json()
+        assert err_body.get("code") == "MAPS_KEY_UNCONFIGURED"
+        assert err_body.get("fallback") is True
         rev_mock.assert_not_called()
+
+    auto_unconf = client.post("/api/maps/autocomplete", json={"query": "Indiranagar"})
+    assert auto_unconf.status_code == 503
+    assert auto_unconf.json().get("code") == "MAPS_KEY_UNCONFIGURED"
 
 
 def test_reverse_geocode_uses_essentials_field_mask_and_zero_cost_cache(client, db, monkeypatch):
@@ -196,3 +203,52 @@ def test_maps_proxy_rate_limit_enforced(client, db, monkeypatch):
         assert client.post("/api/maps/reverse-geocode", headers=headers, json={"latitude": 12.92, "longitude": 77.52}).status_code == 200
         limited = client.post("/api/maps/reverse-geocode", headers=headers, json={"latitude": 12.93, "longitude": 77.53})
         assert limited.status_code == 429
+        assert limited.json().get("code") == "MAPS_RATE_LIMITED"
+
+
+def test_autocomplete_uses_essentials_mask_and_caches(client, monkeypatch):
+    maps_proxy.clear_maps_proxy_state()
+    monkeypatch.setenv("GOOGLE_MAPS_SERVER_API_KEY", "srv-secret-auto-key")
+
+    upstream_auto = json.dumps(
+        {
+            "suggestions": [
+                {
+                    "placePrediction": {
+                        "placeId": "ChIJbU60yXAWrjsR4E9-UejD3_g",
+                        "text": {"text": "Indiranagar, Bengaluru, Karnataka, India"},
+                        "structuredFormat": {
+                            "mainText": {"text": "Indiranagar"},
+                            "secondaryText": {"text": "Bengaluru, Karnataka, India"},
+                        },
+                    }
+                }
+            ]
+        }
+    ).encode("utf-8")
+
+    fake_http_resp = MagicMock()
+    fake_http_resp.__enter__.return_value.read.return_value = upstream_auto
+    opener = Mock()
+    opener.open.return_value = fake_http_resp
+
+    with patch.object(maps_proxy, "build_opener", return_value=opener):
+        r1 = client.post(
+            "/api/maps/autocomplete",
+            json={"query": "Indiranagar", "session_token": "vst_auto_123456789"},
+        )
+        assert r1.status_code == 200
+        b1 = r1.json()
+        assert b1["cached"] is False
+        assert len(b1["suggestions"]) == 1
+        assert b1["suggestions"][0]["main_text"] == "Indiranagar"
+        assert "srv-secret-auto-key" not in r1.text
+
+        sent_req = opener.open.call_args.args[0]
+        assert sent_req.get_header("X-goog-api-key") == "srv-secret-auto-key"
+        assert "placePrediction" in sent_req.get_header("X-goog-fieldmask")
+
+        r2 = client.get("/api/maps/autocomplete?q=indiranagar")
+        assert r2.status_code == 200
+        assert r2.json()["cached"] is True
+        assert opener.open.call_count == 1

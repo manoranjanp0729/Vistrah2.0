@@ -5,7 +5,8 @@ import {View} from 'react-native';
 import {Action,Field,ErrorPanel,Heading} from './ui';
 import {useTheme} from '../lib/theme';
 import {api} from '../lib/api';
-import {VistrahMobileMap} from './vistrah-mobile-map';
+import {MobileMapFirstLocationPicker} from './map-first-location-picker';
+import {SELLER_COVERAGE_RADII,type SelectedLocation} from '../../../shared/selected-location';
 import type {AdvertiserAccount,SellerVideo} from '../../../shared/v-ads';
 import {managementClient,parseTargetingInput,type AdTargeting,type History,type Performance} from '../../../shared/v-ads-management';
 const client=managementClient(api);
@@ -80,29 +81,44 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
     {targeting?.latest_revision?.status==='REJECTED'&&!targeting.pending_revision&&<Text style={[styles.muted,{color:'#dc2626'}]}>Last submitted revision (#{targeting.latest_revision.revision}) was rejected.</Text>}
     {Boolean(targetingNotice)&&<Text style={styles.muted}><UiText value={targetingNotice}/></Text>}
     {targeting?.pending_revision?<Text style={styles.muted}><UiText value={"A pending targeting revision is awaiting administrator review."}/></Text>:<>
-     <VistrahMobileMap
-      center={{
+     <MobileMapFirstLocationPicker
+      mode="seller"
+      radiusOptions={SELLER_COVERAGE_RADII}
+      disabled={busy}
+      busy={busy}
+      value={{
        latitude:Number.isFinite(Number(lat))&&lat.trim()!==''?Number(lat):12.9716,
        longitude:Number.isFinite(Number(lon))&&lon.trim()!==''?Number(lon):77.5946,
+       formattedAddress:regionsText||'Bengaluru, Karnataka',
+       locality:regionsText.split(',')[0]?.trim()||'Bengaluru',
+       city:'Bengaluru',
+       state:'Karnataka',
+       pincode:'',
+       landmark:'',
+       radiusKm:Number.isFinite(Number(radiusKm))&&Number(radiusKm)>0?Number(radiusKm):10,
+      } satisfies SelectedLocation}
+      onChange={next=>{
+       setLat(String(next.latitude));
+       setLon(String(next.longitude));
+       setRadiusKm(String(next.radiusKm));
+       if(next.locality&&!regionsText.trim())setRegionsText(next.locality);
       }}
-      radiusKm={Number.isFinite(Number(radiusKm))&&Number(radiusKm)>0?Number(radiusKm):10}
-      editable
-      disabled={busy}
-      onPinChange={p=>{
-       setLat(String(p.latitude));
-       setLon(String(p.longitude));
-       if(!radiusKm.trim())setRadiusKm('10');
+      onConfirm={confirmed=>{
+       void run(async()=>{
+        const payload=parseTargetingInput(String(confirmed.latitude),String(confirmed.longitude),String(confirmed.radiusKm),regionsText);
+        const next=await client.submitTargeting(video.id,payload);
+        setTargeting(next);
+        setTargetingNotice('Targeting revision submitted for administrator review.');
+       });
       }}
-      onResolvedAddress={place=>{
-       if(place.locality&&!regionsText.trim())setRegionsText(place.locality);
-      }}
+      confirmLabel="Confirm & Submit Geo Targeting"
+      extraFields={
+       <View style={{gap:6}}>
+        <UiElement as={Field} label="Target regions (optional, comma-separated)" placeholder="e.g. Bengaluru, Tarikere, Chikkamagaluru" maxLength={1000} value={regionsText} onChangeText={setRegionsText}/>
+        <Text style={styles.muted}><UiText value={"New targeting revisions remain inactive until approved by an independent administrator."}/></Text>
+       </View>
+      }
      />
-     <UiElement as={Field} label="Center latitude" placeholder="e.g. 12.9716" keyboardType="numbers-and-punctuation" value={lat} onChangeText={setLat}/>
-     <UiElement as={Field} label="Center longitude" placeholder="e.g. 77.5946" keyboardType="numbers-and-punctuation" value={lon} onChangeText={setLon}/>
-     <UiElement as={Field} label="Radius (km)" placeholder="e.g. 15" keyboardType="decimal-pad" value={radiusKm} onChangeText={setRadiusKm}/>
-     <UiElement as={Field} label="Target regions (optional, comma-separated)" placeholder="e.g. Bengaluru, Mysuru" maxLength={1000} value={regionsText} onChangeText={setRegionsText}/>
-     <Text style={styles.muted}><UiText value={"New targeting revisions remain inactive until approved by an independent administrator."}/></Text>
-     <UiElement as={Action} label="Submit targeting for review" disabled={busy||!lat.trim()||!lon.trim()||!radiusKm.trim()} onPress={()=>void run(async()=>{const payload=parseTargetingInput(lat,lon,radiusKm,regionsText);const next=await client.submitTargeting(video.id,payload);setTargeting(next);setTargetingNotice('Targeting revision submitted for administrator review.');})}/>
     </>}
    </>}
   </View>}

@@ -1,8 +1,8 @@
-"""Authenticated, rate-limited, cached Google Maps reverse-geocoding & Place Details proxy.
+"""Authenticated/rate-limited, cached Google Maps autocomplete, Place Details & reverse-geocoding proxy.
 
 Uses GOOGLE_MAPS_SERVER_API_KEY strictly server-side with minimal Essentials SKU field masks
 (`formattedAddress`, `location`, `addressComponents`) and an in-memory bounded LRU+TTL cache
-so repeat coordinate or place lookups cost 0 upstream API calls.
+so repeat coordinate, query, or place lookups cost 0 upstream API calls.
 """
 from __future__ import annotations
 
@@ -17,7 +17,8 @@ from typing import Any
 from urllib.parse import urlencode
 from urllib.request import HTTPRedirectHandler, Request as UrlRequest, build_opener
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Response
+from fastapi import APIRouter, Depends, Query, Request, Response
+from fastapi.responses import JSONResponse
 from pydantic import Field, field_validator
 
 from . import config
@@ -35,10 +36,16 @@ SESSION_TOKEN_RE = re.compile(r"^[A-Za-z0-9_-]{8,128}$")
 # Essentials-only field masks (avoids Pro/Enterprise SKU charges)
 REVERSE_GEOCODE_FIELD_MASK = "results.formattedAddress,results.location,results.addressComponents"
 PLACE_DETAILS_FIELD_MASK = "formattedAddress,location,addressComponents"
+AUTOCOMPLETE_FIELD_MASK = (
+    "suggestions.placePrediction.placeId,"
+    "suggestions.placePrediction.text.text,"
+    "suggestions.placePrediction.structuredFormat.mainText.text,"
+    "suggestions.placePrediction.structuredFormat.secondaryText.text"
+)
 
 MAX_CACHE_ENTRIES = 2048
 CACHE_TTL_SECONDS = 86400.0  # 24 hours
-PER_USER_LIMIT_PER_MINUTE = 30
+PER_ACTOR_LIMIT_PER_MINUTE = 30
 GLOBAL_LIMIT_PER_HOUR = 600
 
 _cache_lock = threading.Lock()
@@ -107,6 +114,35 @@ class PlaceDetailsPayload(Schema):
         return cleaned
 
 
+class AutocompletePayload(Schema):
+    query: str = Field(min_length=2, max_length=200)
+    session_token: str | None = Field(default=None, max_length=128)
+
+    @field_validator("query", mode="before")
+    @classmethod
+    def _check_query(cls, value: Any) -> str:
+        if not isinstance(value, str):
+            raise ValueError("query must be a string")
+        cleaned = " ".join(value.strip().split())
+        if len(cleaned) < 2 or len(cleaned) > 200:
+            raise ValueError("query must be 2 to 200 characters")
+        return cleaned
+
+    @field_validator("session_token", mode="before")
+    @classmethod
+    def _check_session_token(cls, value: Any) -> str | None:
+        if value is None:
+            return None
+        if not isinstance(value, str):
+            raise ValueError("session_token must be a string")
+        cleaned = value.strip()
+        if not cleaned:
+            return None
+        if not SESSION_TOKEN_RE.match(cleaned):
+            raise ValueError("Invalid session_token format")
+        return cleaned
+
+
 def clear_maps_proxy_state() -> None:
     """Test helper to clear cache and rate-limit state deterministically."""
     with _cache_lock:
@@ -130,8 +166,8 @@ def _cache_get(key: str) -> dict[str, Any] | None:
         return dict(payload)
 
 
-def _cache_set(key: str, payload: dict[str, Any]) -> None:
-    expires_at = time.monotonic() + CACHE_TTL_SECONDS
+def _cache_set(key: str, payload: dict[str, Any], ttl: float = CACHE_TTL_SECONDS) -> None:
+    expires_at = time.monotonic() + ttl
     with _cache_lock:
         _cache[key] = (expires_at, dict(payload))
         _cache.move_to_end(key)
@@ -140,7 +176,10 @@ def _cache_set(key: str, payload: dict[str, Any]) -> None:
 
 
 def _allow_lookup(actor_key: str) -> bool:
-    per_min = int(os.getenv("MAPS_PROXY_RATE_LIMIT_PER_MINUTE", str(PER_USER_LIMIT_PER_MINUTE)) or PER_USER_LIMIT_PER_MINUTE)
+    per_min = int(
+        os.getenv("MAPS_PROXY_RATE_LIMIT_PER_MINUTE", str(PER_ACTOR_LIMIT_PER_MINUTE))
+        or PER_ACTOR_LIMIT_PER_MINUTE
+    )
     now_mono = time.monotonic()
     with _rate_lock:
         _global_window[:] = [t for t in _global_window if now_mono - t < 3600.0]
@@ -153,6 +192,20 @@ def _allow_lookup(actor_key: str) -> bool:
         while len(_user_windows) > 2048:
             _user_windows.popitem(last=False)
         return True
+
+
+def _structured_error(status_code: int, code: str, detail: str) -> JSONResponse:
+    resp = JSONResponse(
+        status_code=status_code,
+        content={
+            "code": code,
+            "detail": detail,
+            "fallback": True,
+        },
+        headers={"Cache-Control": "private, no-store"},
+    )
+    apply_security_headers(resp.headers)
+    return resp
 
 
 def _normalize_components(raw_components: Any) -> tuple[list[dict[str, Any]], dict[str, str]]:
@@ -278,14 +331,55 @@ def fetch_google_place_details(place_id: str, session_token: str | None, api_key
     }
 
 
-def _require_server_key() -> str:
-    key = config.get_google_maps_server_api_key()
-    if not key:
-        raise HTTPException(
-            status_code=503,
-            detail="Google Maps server API key is not configured. Use manual coordinates or locality.",
-        )
-    return key
+def fetch_google_autocomplete(query: str, session_token: str | None, api_key: str) -> dict[str, Any]:
+    url = "https://places.googleapis.com/v1/places:autocomplete"
+    payload: dict[str, Any] = {
+        "input": query,
+        "includedRegionCodes": ["in"],
+    }
+    if session_token:
+        payload["sessionToken"] = session_token
+    req = UrlRequest(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        method="POST",
+        headers={
+            "X-Goog-Api-Key": api_key,
+            "X-Goog-FieldMask": AUTOCOMPLETE_FIELD_MASK,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+    )
+    with build_opener(_NoRedirect()).open(req, timeout=8) as resp:
+        raw = resp.read(131073)
+        if len(raw) > 131072:
+            raise ValueError("Upstream autocomplete response too large")
+        data = json.loads(raw)
+
+    suggestions = data.get("suggestions") if isinstance(data, dict) else []
+    items: list[dict[str, str]] = []
+    if isinstance(suggestions, list):
+        for entry in suggestions[:6]:
+            pred = entry.get("placePrediction") if isinstance(entry, dict) else None
+            if not isinstance(pred, dict):
+                continue
+            place_id = str(pred.get("placeId") or "").strip()
+            if not PLACE_ID_RE.match(place_id):
+                continue
+            full_text = str((pred.get("text") or {}).get("text") or "").strip()
+            struct = pred.get("structuredFormat") if isinstance(pred.get("structuredFormat"), dict) else {}
+            main_text = str((struct.get("mainText") or {}).get("text") or full_text).strip()
+            sec_text = str((struct.get("secondaryText") or {}).get("text") or "").strip()
+            if main_text:
+                items.append(
+                    {
+                        "place_id": place_id,
+                        "main_text": main_text[:160],
+                        "secondary_text": sec_text[:200],
+                        "description": (full_text or main_text)[:300],
+                    }
+                )
+    return {"suggestions": items}
 
 
 def _set_private_headers(response: Response) -> None:
@@ -293,50 +387,109 @@ def _set_private_headers(response: Response) -> None:
     apply_security_headers(response.headers)
 
 
-async def _handle_reverse_geocode(latitude: float, longitude: float, user: User, response: Response) -> dict[str, Any]:
+async def _handle_reverse_geocode(latitude: float, longitude: float, user: User, response: Response):
     _set_private_headers(response)
     cache_key = f"rev:{round(latitude, 5):.5f}:{round(longitude, 5):.5f}"
     cached = _cache_get(cache_key)
     if cached is not None:
         return {**cached, "cached": True, "temporary_only": True}
 
-    api_key = _require_server_key()
+    api_key = config.get_google_maps_server_api_key()
+    if not api_key:
+        return _structured_error(
+            503,
+            "MAPS_KEY_UNCONFIGURED",
+            "Google Maps server API key is not configured. Use manual coordinates or locality.",
+        )
     if not _allow_lookup(f"user:{user.id}"):
-        raise HTTPException(status_code=429, detail="Map lookup rate limit reached. Try again shortly or enter coordinates manually.")
+        return _structured_error(
+            429,
+            "MAPS_RATE_LIMITED",
+            "Map lookup rate limit reached. Try again shortly or enter coordinates manually.",
+        )
 
     try:
         async with _upstream_slots:
             result = await asyncio.to_thread(fetch_google_reverse_geocode, latitude, longitude, api_key)
-    except HTTPException:
-        raise
     except Exception:
-        raise HTTPException(status_code=503, detail="Reverse geocoding is temporarily unavailable. Enter locality manually.") from None
+        return _structured_error(
+            503,
+            "MAPS_UPSTREAM_UNAVAILABLE",
+            "Reverse geocoding is temporarily unavailable. Enter locality manually.",
+        )
 
     _cache_set(cache_key, result)
     return {**result, "cached": False, "temporary_only": True}
 
 
-async def _handle_place_details(place_id: str, session_token: str | None, user: User, response: Response) -> dict[str, Any]:
+async def _handle_place_details(place_id: str, session_token: str | None, user: User, response: Response):
     _set_private_headers(response)
     cache_key = f"place:{place_id}"
-    # Note: if a session_token is present and not yet cached, calling Google terminates the billing session cleanly.
     cached = _cache_get(cache_key)
     if cached is not None:
         return {**cached, "cached": True, "temporary_only": True}
 
-    api_key = _require_server_key()
+    api_key = config.get_google_maps_server_api_key()
+    if not api_key:
+        return _structured_error(
+            503,
+            "MAPS_KEY_UNCONFIGURED",
+            "Google Maps server API key is not configured. Use manual coordinates or locality.",
+        )
     if not _allow_lookup(f"user:{user.id}"):
-        raise HTTPException(status_code=429, detail="Place lookup rate limit reached. Try again shortly or enter coordinates manually.")
+        return _structured_error(
+            429,
+            "MAPS_RATE_LIMITED",
+            "Place lookup rate limit reached. Try again shortly or enter coordinates manually.",
+        )
 
     try:
         async with _upstream_slots:
             result = await asyncio.to_thread(fetch_google_place_details, place_id, session_token, api_key)
-    except HTTPException:
-        raise
     except Exception:
-        raise HTTPException(status_code=503, detail="Place details lookup is temporarily unavailable. Enter locality manually.") from None
+        return _structured_error(
+            503,
+            "MAPS_UPSTREAM_UNAVAILABLE",
+            "Place details lookup is temporarily unavailable. Enter locality manually.",
+        )
 
     _cache_set(cache_key, result)
+    return {**result, "cached": False, "temporary_only": True}
+
+
+async def _handle_autocomplete(query: str, session_token: str | None, request: Request, response: Response):
+    _set_private_headers(response)
+    cache_key = f"auto:{query.casefold()}"
+    cached = _cache_get(cache_key)
+    if cached is not None:
+        return {**cached, "cached": True, "temporary_only": True}
+
+    api_key = config.get_google_maps_server_api_key()
+    if not api_key:
+        return _structured_error(
+            503,
+            "MAPS_KEY_UNCONFIGURED",
+            "Google Maps server API key is not configured. Use city chips or manual entry.",
+        )
+    peer = request.client.host if request.client and request.client.host else "unknown"
+    if not _allow_lookup(f"ip:{peer}"):
+        return _structured_error(
+            429,
+            "MAPS_RATE_LIMITED",
+            "Autocomplete rate limit reached. Select a city chip or enter locality manually.",
+        )
+
+    try:
+        async with _upstream_slots:
+            result = await asyncio.to_thread(fetch_google_autocomplete, query, session_token, api_key)
+    except Exception:
+        return _structured_error(
+            503,
+            "MAPS_UPSTREAM_UNAVAILABLE",
+            "Place autocomplete is temporarily unavailable. Select a city chip or enter locality manually.",
+        )
+
+    _cache_set(cache_key, result, ttl=3600.0)
     return {**result, "cached": False, "temporary_only": True}
 
 
@@ -382,3 +535,25 @@ async def place_details_get(
 ):
     validated = PlaceDetailsPayload(place_id=place_id, session_token=session_token)
     return await _handle_place_details(validated.place_id, validated.session_token, user, response)
+
+
+@router.post("/maps/autocomplete")
+@router.post("/api/maps/autocomplete")
+async def autocomplete_post(
+    payload: AutocompletePayload,
+    request: Request,
+    response: Response,
+):
+    return await _handle_autocomplete(payload.query, payload.session_token, request, response)
+
+
+@router.get("/maps/autocomplete")
+@router.get("/api/maps/autocomplete")
+async def autocomplete_get(
+    request: Request,
+    response: Response,
+    q: str = Query(..., min_length=2, max_length=200),
+    session_token: str | None = Query(default=None, max_length=128),
+):
+    validated = AutocompletePayload(query=q, session_token=session_token)
+    return await _handle_autocomplete(validated.query, validated.session_token, request, response)

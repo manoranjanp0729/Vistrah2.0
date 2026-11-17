@@ -12,9 +12,17 @@ import {
 } from '@vis.gl/react-google-maps';
 import Link from 'next/link';
 import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
-import { ExternalLink, LocateFixed, MapPin, Search } from 'lucide-react';
+import { ChevronDown, ChevronUp, ExternalLink, LocateFixed, MapPin, Navigation, Search, X } from 'lucide-react';
 import { api } from '@/lib/api';
-import { validPoint, type NearbyProvider, type Point } from '@/lib/location';
+import { requestGps, validPoint, type NearbyProvider, type Point } from '@/lib/location';
+import {
+  CUSTOMER_SEARCH_RADII,
+  KARNATAKA_QUICK_CITIES,
+  SELLER_COVERAGE_RADII,
+  presetToSelectedLocation,
+  type QuickCityPreset,
+  type SelectedLocation,
+} from '../../shared/selected-location';
 import { LocationMap } from './location-map';
 import s from './vistrah-google-maps.module.css';
 
@@ -140,7 +148,27 @@ export async function reverseGeocodePoint(point: Point): Promise<ResolvedPlace |
       };
     }
   } catch {
-    // Graceful fallback when unauthenticated or server key unset.
+    // Fallback to public /locations/geocode if unauthenticated
+    try {
+      const pub = await api<{ items: Array<{ latitude: number; longitude: number; label: string; postal_code: string }> }>(
+        '/locations/geocode',
+        { method: 'POST', body: JSON.stringify({ latitude: point.latitude, longitude: point.longitude }) },
+      );
+      const top = pub.items?.[0];
+      if (top && validPoint(top)) {
+        return {
+          formattedAddress: top.label,
+          locality: top.label,
+          city: top.label.split(',').pop()?.trim() || '',
+          state: '',
+          postalCode: top.postal_code || '',
+          latitude: point.latitude,
+          longitude: point.longitude,
+        };
+      }
+    } catch {
+      // Graceful silent fallback when offline or unconfigured.
+    }
   }
   return null;
 }
@@ -153,11 +181,12 @@ type SuggestionItem = {
 };
 
 function PlaceAutocompleteInner({
-  label = 'Search locality, landmark, or address',
-  placeholder = 'e.g. Indiranagar, Bengaluru or 560038',
+  label,
+  placeholder = 'Search area, street, landmark, or PIN code...',
   defaultValue = '',
   disabled = false,
   preferBackendDetails = false,
+  floating = false,
   onSelectPlace,
 }: {
   label?: string;
@@ -165,6 +194,7 @@ function PlaceAutocompleteInner({
   defaultValue?: string;
   disabled?: boolean;
   preferBackendDetails?: boolean;
+  floating?: boolean;
   onSelectPlace: (place: ResolvedPlace) => void;
 }) {
   const placesLib = useMapsLibrary('places');
@@ -175,7 +205,6 @@ function PlaceAutocompleteInner({
   const [loading, setLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
 
-  // Session token groups all keystrokes + final Place Details lookup into ONE billed session.
   const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
   const sessionStringRef = useRef<string>('');
   const serviceRef = useRef<google.maps.places.AutocompleteService | null>(null);
@@ -210,9 +239,9 @@ function PlaceAutocompleteInner({
   }, []);
 
   const fetchPredictions = useCallback(
-    (query: string) => {
+    async (query: string) => {
       const trimmed = query.trim();
-      if (trimmed.length < 2 || !serviceRef.current || !placesLib) {
+      if (trimmed.length < 2) {
         setSuggestions([]);
         setOpen(false);
         return;
@@ -220,30 +249,55 @@ function PlaceAutocompleteInner({
       ensureSession();
       setLoading(true);
       setStatusMsg('');
-      serviceRef.current.getPlacePredictions(
-        {
-          input: trimmed,
-          sessionToken: sessionTokenRef.current ?? undefined,
-          componentRestrictions: { country: 'in' },
-        },
-        (predictions, status) => {
-          setLoading(false);
-          if (status !== placesLib.PlacesServiceStatus.OK || !predictions?.length) {
-            setSuggestions([]);
-            setOpen(false);
-            return;
-          }
-          setSuggestions(
-            predictions.slice(0, 6).map(p => ({
-              placeId: p.place_id,
-              mainText: p.structured_formatting?.main_text || p.description,
-              secondaryText: p.structured_formatting?.secondary_text || '',
-              description: p.description,
-            })),
-          );
-          setOpen(true);
-        },
-      );
+
+      if (serviceRef.current && placesLib) {
+        serviceRef.current.getPlacePredictions(
+          {
+            input: trimmed,
+            sessionToken: sessionTokenRef.current ?? undefined,
+            componentRestrictions: { country: 'in' },
+          },
+          (predictions, status) => {
+            setLoading(false);
+            if (status !== placesLib.PlacesServiceStatus.OK || !predictions?.length) {
+              setSuggestions([]);
+              setOpen(false);
+              return;
+            }
+            setSuggestions(
+              predictions.slice(0, 6).map(p => ({
+                placeId: p.place_id,
+                mainText: p.structured_formatting?.main_text || p.description,
+                secondaryText: p.structured_formatting?.secondary_text || '',
+                description: p.description,
+              })),
+            );
+            setOpen(true);
+          },
+        );
+        return;
+      }
+
+      // Server autocomplete fallback if browser places library has not finished initializing
+      try {
+        const res = await api<{ suggestions: Array<{ place_id: string; main_text: string; secondary_text: string; description: string }> }>(
+          '/maps/autocomplete',
+          { method: 'POST', body: JSON.stringify({ query: trimmed, session_token: sessionStringRef.current || undefined }) },
+        );
+        const rows = (res.suggestions ?? []).map(item => ({
+          placeId: item.place_id,
+          mainText: item.main_text,
+          secondaryText: item.secondary_text,
+          description: item.description,
+        }));
+        setSuggestions(rows);
+        setOpen(rows.length > 0);
+      } catch {
+        setSuggestions([]);
+        setOpen(false);
+      } finally {
+        setLoading(false);
+      }
     },
     [ensureSession, placesLib],
   );
@@ -280,7 +334,7 @@ function PlaceAutocompleteInner({
             return;
           }
         } catch {
-          // Fall through to browser Places Essentials lookup if server key unset or guest user.
+          // Fall through to browser Places Essentials lookup if guest user or server key unset.
         }
       }
 
@@ -295,7 +349,6 @@ function PlaceAutocompleteInner({
               {
                 placeId: item.placeId,
                 sessionToken: currentJsToken,
-                // Essentials-only fields
                 fields: ['formatted_address', 'geometry.location', 'address_components'],
               },
               (place, status) => {
@@ -320,10 +373,30 @@ function PlaceAutocompleteInner({
               },
             );
           });
+          return;
         }
       }
+
+      // Final geocode fallback by description
+      const fallback = await api<{ items: Array<{ latitude: number; longitude: number; label: string; postal_code: string }> }>(
+        '/locations/geocode',
+        { method: 'POST', body: JSON.stringify({ query: item.description }) },
+      );
+      const hit = fallback.items?.[0];
+      if (hit && validPoint(hit)) {
+        onSelectPlace({
+          placeId: item.placeId,
+          formattedAddress: item.description,
+          locality: hit.label || item.mainText,
+          city: hit.label.split(',').pop()?.trim() || '',
+          state: '',
+          postalCode: hit.postal_code || '',
+          latitude: hit.latitude,
+          longitude: hit.longitude,
+        });
+      }
     } catch {
-      setStatusMsg('Could not resolve coordinates for that place. Drag the pin or enter coordinates manually.');
+      setStatusMsg('Could not resolve coordinates for that place. Pan the map pin or select a city chip.');
     } finally {
       setLoading(false);
     }
@@ -331,16 +404,18 @@ function PlaceAutocompleteInner({
 
   return (
     <div className={s.autocompleteWrap}>
-      {label && (
+      {label && !floating && (
         <label htmlFor={`${listId}-input`} style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
           {label}
         </label>
       )}
-      <div className={s.autocompleteInputRow}>
+      <div className={floating ? s.floatingSearchInner : s.autocompleteInputRow}>
+        {floating && <Search size={16} color="#475569" aria-hidden="true" />}
         <input
           id={`${listId}-input`}
           type="search"
-          className={s.autocompleteInput}
+          aria-label={label || 'Search area, street, landmark, or PIN code'}
+          className={floating ? s.floatingSearchInput : s.autocompleteInput}
           placeholder={placeholder}
           value={inputValue}
           disabled={disabled}
@@ -353,14 +428,30 @@ function PlaceAutocompleteInner({
             const next = event.target.value;
             setInputValue(next);
             if (debounceRef.current) clearTimeout(debounceRef.current);
-            debounceRef.current = setTimeout(() => fetchPredictions(next), 280);
+            debounceRef.current = setTimeout(() => {
+              void fetchPredictions(next);
+            }, 260);
           }}
           onBlur={() => {
             setTimeout(() => setOpen(false), 180);
           }}
         />
+        {inputValue && (
+          <button
+            type="button"
+            aria-label="Clear search"
+            onClick={() => {
+              setInputValue('');
+              setSuggestions([]);
+              setOpen(false);
+            }}
+            style={{ border: 0, background: 'transparent', cursor: 'pointer', padding: 4, display: 'inline-flex', color: '#64748b' }}
+          >
+            <X size={15} />
+          </button>
+        )}
       </div>
-      {loading && (
+      {loading && !floating && (
         <small role="status" style={{ display: 'block', marginTop: 4, color: 'var(--text-secondary)' }}>
           Looking up places…
         </small>
@@ -392,7 +483,7 @@ function PlaceAutocompleteInner({
 }
 
 /**
- * Session-based Google Places Autocomplete input with graceful local-dev fallback
+ * Session-based Google Places Autocomplete input with graceful server/manual fallback
  * when `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` is unset.
  */
 export function PlaceAutocompleteInput(props: {
@@ -401,22 +492,49 @@ export function PlaceAutocompleteInput(props: {
   defaultValue?: string;
   disabled?: boolean;
   preferBackendDetails?: boolean;
+  floating?: boolean;
   onSelectPlace: (place: ResolvedPlace) => void;
 }) {
   const fallbackId = useId();
   const [fallbackQuery, setFallbackQuery] = useState(props.defaultValue ?? '');
+  const [fallbackSuggestions, setFallbackSuggestions] = useState<SuggestionItem[]>([]);
   const [fallbackBusy, setFallbackBusy] = useState(false);
   const [fallbackNotice, setFallbackNotice] = useState('');
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   if (!googleMapsWebApiKey) {
-    async function tryServerLookup() {
-      if (fallbackQuery.trim().length < 2) return;
+    async function fetchServerAutocomplete(q: string) {
+      if (q.trim().length < 2) {
+        setFallbackSuggestions([]);
+        return;
+      }
+      try {
+        const res = await api<{ suggestions: Array<{ place_id: string; main_text: string; secondary_text: string; description: string }> }>(
+          '/maps/autocomplete',
+          { method: 'POST', body: JSON.stringify({ query: q.trim() }) },
+        );
+        setFallbackSuggestions(
+          (res.suggestions ?? []).map(item => ({
+            placeId: item.place_id,
+            mainText: item.main_text,
+            secondaryText: item.secondary_text,
+            description: item.description,
+          })),
+        );
+      } catch {
+        setFallbackSuggestions([]);
+      }
+    }
+
+    async function tryServerLookup(queryText: string) {
+      if (queryText.trim().length < 2) return;
       setFallbackBusy(true);
       setFallbackNotice('');
+      setFallbackSuggestions([]);
       try {
         const res = await api<{ items: Array<{ latitude: number; longitude: number; label: string; postal_code: string }> }>(
           '/locations/geocode',
-          { method: 'POST', body: JSON.stringify({ query: fallbackQuery.trim() }) },
+          { method: 'POST', body: JSON.stringify({ query: queryText.trim() }) },
         );
         const first = res.items?.[0];
         if (first && validPoint(first)) {
@@ -429,12 +547,12 @@ export function PlaceAutocompleteInput(props: {
             latitude: first.latitude,
             longitude: first.longitude,
           });
-          setFallbackNotice(`Selected ${first.label}.`);
+          setFallbackNotice('');
         } else {
-          setFallbackNotice('No match found. Click or drag the map pin or enter coordinates below.');
+          setFallbackNotice('No match found. Tap a city chip or pan the map pin.');
         }
       } catch {
-        setFallbackNotice('Google Places key not set in local dev — click/drag the map pin or enter coordinates manually.');
+        setFallbackNotice('Tap a city chip above, adjust the map pin, or edit street/PIN below.');
       } finally {
         setFallbackBusy(false);
       }
@@ -442,36 +560,65 @@ export function PlaceAutocompleteInput(props: {
 
     return (
       <div className={s.autocompleteWrap}>
-        {props.label && (
+        {props.label && !props.floating && (
           <label htmlFor={fallbackId} style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 4 }}>
             {props.label}
           </label>
         )}
-        <div className={s.autocompleteInputRow}>
+        <div className={props.floating ? s.floatingSearchInner : s.autocompleteInputRow}>
+          {props.floating && <Search size={16} color="#475569" aria-hidden="true" />}
           <input
             id={fallbackId}
             type="search"
-            className={s.autocompleteInput}
-            placeholder={props.placeholder ?? 'Enter locality or area (manual fallback active)'}
+            aria-label={props.label || 'Search area, street, landmark, or PIN code'}
+            className={props.floating ? s.floatingSearchInput : s.autocompleteInput}
+            placeholder={props.placeholder ?? 'Search area, street, landmark, or PIN code...'}
             value={fallbackQuery}
             disabled={props.disabled || fallbackBusy}
-            onChange={e => setFallbackQuery(e.target.value)}
+            onChange={e => {
+              const v = e.target.value;
+              setFallbackQuery(v);
+              if (debounceRef.current) clearTimeout(debounceRef.current);
+              debounceRef.current = setTimeout(() => void fetchServerAutocomplete(v), 280);
+            }}
             onKeyDown={e => {
               if (e.key === 'Enter') {
                 e.preventDefault();
-                void tryServerLookup();
+                void tryServerLookup(fallbackQuery);
               }
             }}
           />
-          <button
-            type="button"
-            className="button secondary"
-            disabled={props.disabled || fallbackBusy || fallbackQuery.trim().length < 2}
-            onClick={() => void tryServerLookup()}
-          >
-            <Search size={15} aria-hidden="true" /> Search
-          </button>
+          {!props.floating && (
+            <button
+              type="button"
+              className="button secondary"
+              disabled={props.disabled || fallbackBusy || fallbackQuery.trim().length < 2}
+              onClick={() => void tryServerLookup(fallbackQuery)}
+            >
+              <Search size={15} aria-hidden="true" /> Search
+            </button>
+          )}
         </div>
+        {fallbackSuggestions.length > 0 && (
+          <ul role="listbox" className={s.suggestionsList}>
+            {fallbackSuggestions.map(item => (
+              <li key={item.placeId} role="option" aria-selected={false}>
+                <button
+                  type="button"
+                  className={s.suggestionBtn}
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => {
+                    setFallbackQuery(item.description);
+                    void tryServerLookup(item.description);
+                  }}
+                >
+                  <span className={s.suggestionMain}>{item.mainText}</span>
+                  {item.secondaryText && <span className={s.suggestionSecondary}>{item.secondaryText}</span>}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
         {fallbackNotice && (
           <small role="status" style={{ display: 'block', marginTop: 4, color: 'var(--text-secondary)' }}>
             {fallbackNotice}
@@ -565,7 +712,6 @@ export function VistrahMap({
     return 9;
   }, [radiusKm]);
 
-  // Graceful local-dev fallback when NEXT_PUBLIC_GOOGLE_MAPS_API_KEY is unset
   if (!googleMapsWebApiKey) {
     const legacyItems: NearbyProvider[] = markers
       .filter((m): m is VistrahMapMarker & { id: number } => typeof m.id === 'number')
@@ -587,7 +733,7 @@ export function VistrahMap({
         <div className={s.fallbackBanner}>
           <span>
             <MapPin size={14} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} aria-hidden="true" />
-            Interactive fallback map active (<code>NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> unset in this environment).
+            Interactive fallback map active.
           </span>
           <a
             href={googleMapsDirectionsHref(safeCenter.latitude, safeCenter.longitude)}
@@ -611,35 +757,6 @@ export function VistrahMap({
             onSelectMarker?.(id);
           }}
         />
-        {activeMarker && (
-          <div className={s.mapToolbar}>
-            <div>
-              <strong>{activeMarker.title}</strong>
-              {activeMarker.subtitle ? ` · ${activeMarker.subtitle}` : ''}
-              {typeof activeMarker.distanceKm === 'number' ? ` · ${activeMarker.distanceKm.toFixed(2)} km` : ''}
-            </div>
-            <div className={s.infoActions} style={{ marginTop: 0 }}>
-              {activeMarker.actionHref && (
-                <Link href={activeMarker.actionHref} className={s.infoPrimaryBtn}>
-                  {activeMarker.actionLabel || 'View details'}
-                </Link>
-              )}
-              {activeMarker.onAction && (
-                <button type="button" className={s.infoPrimaryBtn} onClick={activeMarker.onAction}>
-                  {activeMarker.actionLabel || 'Open'}
-                </button>
-              )}
-              <a
-                href={googleMapsDirectionsHref(activeMarker.latitude, activeMarker.longitude)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={s.infoSecondaryLink}
-              >
-                Open in Google Maps <ExternalLink size={12} aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        )}
       </div>
     );
   }
@@ -663,26 +780,6 @@ export function VistrahMap({
             {reverseBusy && <span role="status">Resolving pin address…</span>}
           </div>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-            {editable && onResolvedAddress && (
-              <button
-                type="button"
-                className={s.infoSecondaryLink}
-                disabled={disabled || reverseBusy}
-                onClick={() => {
-                  void (async () => {
-                    setReverseBusy(true);
-                    try {
-                      const resolved = await reverseGeocodePoint(safeCenter);
-                      if (resolved) onResolvedAddress(resolved);
-                    } finally {
-                      setReverseBusy(false);
-                    }
-                  })();
-                }}
-              >
-                <LocateFixed size={12} aria-hidden="true" /> Resolve pin address
-              </button>
-            )}
             <a
               href={googleMapsDirectionsHref(safeCenter.latitude, safeCenter.longitude)}
               target="_blank"
@@ -798,6 +895,439 @@ export function VistrahMap({
         </div>
       </div>
     </VistrahMapsProvider>
+  );
+}
+
+/**
+ * Modern Map-First Pin-Drop + Floating Search + Quick Karnataka City Chips + Bottom Confirmation Card.
+ * Maintains a single canonical `SelectedLocation` state so map pans, search, GPS, and manual edits
+ * never drift out of sync.
+ */
+export function MapFirstLocationPicker({
+  value,
+  onChange,
+  onConfirm,
+  confirmLabel = 'Confirm Location',
+  mode = 'customer',
+  radiusOptions,
+  disabled = false,
+  busy = false,
+  preferBackendDetails = false,
+  extraFields,
+  secondaryActions,
+}: {
+  value: SelectedLocation;
+  onChange: (next: SelectedLocation) => void;
+  onConfirm?: (confirmed: SelectedLocation) => void;
+  confirmLabel?: string;
+  mode?: 'customer' | 'seller';
+  radiusOptions?: readonly number[];
+  disabled?: boolean;
+  busy?: boolean;
+  preferBackendDetails?: boolean;
+  extraFields?: ReactNode;
+  secondaryActions?: ReactNode;
+}) {
+  const radiiList = radiusOptions ?? (mode === 'seller' ? SELLER_COVERAGE_RADII : CUSTOMER_SEARCH_RADII);
+  const safePoint: Point = validPoint(value) ? { latitude: value.latitude, longitude: value.longitude } : DEFAULT_INDIA_CENTER;
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [gpsBusy, setGpsBusy] = useState(false);
+  const [resolvingPin, setResolvingPin] = useState(false);
+  const [gpsRecoveryMsg, setGpsRecoveryMsg] = useState('');
+
+  const programmaticPanUntilRef = useRef<number>(0);
+  const pendingIdleCenterRef = useRef<Point | null>(null);
+  const latestValueRef = useRef(value);
+  useEffect(() => {
+    latestValueRef.current = value;
+  }, [value]);
+
+  const defaultZoom = useMemo(() => {
+    const r = value.radiusKm;
+    if (!r || r <= 2) return 14;
+    if (r <= 5) return 13;
+    if (r <= 12) return 12;
+    if (r <= 30) return 11;
+    return 10;
+  }, [value.radiusKm]);
+
+  const applyPointAndResolve = useCallback(
+    async (point: Point, sourceKind: SelectedLocation['source'] = 'google') => {
+      const roundedLat = Number(point.latitude.toFixed(6));
+      const roundedLon = Number(point.longitude.toFixed(6));
+      const cur = latestValueRef.current;
+      if (Math.abs(cur.latitude - roundedLat) < 0.00004 && Math.abs(cur.longitude - roundedLon) < 0.00004) {
+        return;
+      }
+      setResolvingPin(true);
+      try {
+        const resolved = await reverseGeocodePoint({ latitude: roundedLat, longitude: roundedLon });
+        const latest = latestValueRef.current;
+        if (resolved) {
+          onChange({
+            ...latest,
+            latitude: roundedLat,
+            longitude: roundedLon,
+            locality: resolved.locality || latest.locality || 'Pinned location',
+            formattedAddress: resolved.formattedAddress || resolved.locality || latest.formattedAddress,
+            city: resolved.city || latest.city,
+            state: resolved.state || latest.state,
+            pincode: resolved.postalCode || latest.pincode,
+            source: sourceKind,
+          });
+        } else {
+          onChange({
+            ...latest,
+            latitude: roundedLat,
+            longitude: roundedLon,
+            locality: latest.locality || `${roundedLat.toFixed(4)}, ${roundedLon.toFixed(4)}`,
+            formattedAddress: latest.formattedAddress || `Pinned at ${roundedLat.toFixed(4)}, ${roundedLon.toFixed(4)}`,
+            source: sourceKind,
+          });
+        }
+      } finally {
+        setResolvingPin(false);
+      }
+    },
+    [onChange],
+  );
+
+  function selectQuickCity(preset: QuickCityPreset) {
+    if (disabled || busy) return;
+    setGpsRecoveryMsg('');
+    programmaticPanUntilRef.current = Date.now() + 1200;
+    onChange(presetToSelectedLocation(preset, value.radiusKm, value.landmark));
+  }
+
+  async function triggerCurrentGps() {
+    if (disabled || busy || gpsBusy) return;
+    setGpsBusy(true);
+    setGpsRecoveryMsg('');
+    try {
+      const fix = await requestGps(typeof navigator !== 'undefined' ? navigator.geolocation : undefined);
+      programmaticPanUntilRef.current = Date.now() + 1400;
+      const resolved = await reverseGeocodePoint(fix.point);
+      const roundedLat = Number(fix.point.latitude.toFixed(6));
+      const roundedLon = Number(fix.point.longitude.toFixed(6));
+      onChange({
+        ...latestValueRef.current,
+        latitude: roundedLat,
+        longitude: roundedLon,
+        locality: resolved?.locality || 'Current GPS Area',
+        formattedAddress: resolved?.formattedAddress || `GPS (${Math.round(fix.accuracy)}m accuracy)`,
+        city: resolved?.city || '',
+        state: resolved?.state || '',
+        pincode: resolved?.postalCode || '',
+        source: 'gps',
+      });
+    } catch {
+      setGpsRecoveryMsg(
+        'Location permission was denied or GPS timed out. Tap a Karnataka city chip above, pan the map pin, or edit your street / PIN below.',
+      );
+      setDrawerOpen(true);
+    } finally {
+      setGpsBusy(false);
+    }
+  }
+
+  const activeCityId = useMemo(() => {
+    const hit = KARNATAKA_QUICK_CITIES.find(
+      c => Math.abs(c.latitude - safePoint.latitude) < 0.03 && Math.abs(c.longitude - safePoint.longitude) < 0.03,
+    );
+    return hit?.id ?? '';
+  }, [safePoint.latitude, safePoint.longitude]);
+
+  return (
+    <div className={s.stageCard}>
+      <div className={s.stageMapViewport}>
+        {/* Floating Top Search + Quick-Select Karnataka City Chips */}
+        <div className={s.floatingTopBar}>
+          <div className={s.floatingSearchBox}>
+            <PlaceAutocompleteInput
+              floating
+              placeholder="Search area, street, landmark, or PIN code..."
+              disabled={disabled || busy}
+              preferBackendDetails={preferBackendDetails}
+              onSelectPlace={place => {
+                setGpsRecoveryMsg('');
+                programmaticPanUntilRef.current = Date.now() + 1200;
+                onChange({
+                  ...latestValueRef.current,
+                  latitude: Number(place.latitude.toFixed(6)),
+                  longitude: Number(place.longitude.toFixed(6)),
+                  locality: place.locality || place.city || 'Selected area',
+                  formattedAddress: place.formattedAddress || place.locality,
+                  city: place.city,
+                  state: place.state,
+                  pincode: place.postalCode || latestValueRef.current.pincode,
+                  source: 'google',
+                });
+              }}
+            />
+          </div>
+
+          <div className={s.cityChipRail} role="group" aria-label="Quick select Karnataka cities">
+            {KARNATAKA_QUICK_CITIES.map(city => (
+              <button
+                key={city.id}
+                type="button"
+                disabled={disabled || busy}
+                className={`${s.cityChip} ${activeCityId === city.id ? s.cityChipActive : ''}`}
+                onClick={() => selectQuickCity(city)}
+              >
+                {city.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Map Canvas or Graceful Fallback */}
+        {googleMapsWebApiKey ? (
+          <VistrahMapsProvider>
+            <GoogleMapCanvas
+              style={{ width: '100%', height: '100%' }}
+              defaultCenter={{ lat: safePoint.latitude, lng: safePoint.longitude }}
+              defaultZoom={defaultZoom}
+              gestureHandling="greedy"
+              streetViewControl={false}
+              mapTypeControl={false}
+              fullscreenControl={false}
+              clickableIcons={false}
+              onClick={event => {
+                if (disabled || busy) return;
+                const ll = event.detail?.latLng;
+                if (ll) {
+                  programmaticPanUntilRef.current = Date.now() + 900;
+                  void applyPointAndResolve({ latitude: ll.lat, longitude: ll.lng }, 'google');
+                }
+              }}
+              onCameraChanged={event => {
+                const c = event.detail?.center;
+                if (c) pendingIdleCenterRef.current = { latitude: c.lat, longitude: c.lng };
+              }}
+              onIdle={() => {
+                if (disabled || busy || Date.now() < programmaticPanUntilRef.current) return;
+                const nextCenter = pendingIdleCenterRef.current;
+                if (nextCenter) {
+                  void applyPointAndResolve(nextCenter, 'google');
+                }
+              }}
+            >
+              <MapViewportSync center={safePoint} radiusKm={value.radiusKm} />
+              {value.radiusKm > 0 && (
+                <Circle
+                  center={{ lat: safePoint.latitude, lng: safePoint.longitude }}
+                  radius={value.radiusKm * 1000}
+                  strokeColor="#0f172a"
+                  strokeOpacity={0.6}
+                  strokeWeight={1.5}
+                  fillColor="#d4af37"
+                  fillOpacity={0.13}
+                  clickable={false}
+                />
+              )}
+            </GoogleMapCanvas>
+
+            {/* Center-Locked VISTRAH Navy & Gold Pin */}
+            <div className={s.centerPinOverlay} aria-hidden="true">
+              <span className={s.centerPinTooltip}>
+                {resolvingPin ? 'Locating pin…' : mode === 'seller' ? 'Move map to place business pin' : 'Move map to adjust pin'}
+              </span>
+              <svg width="40" height="48" viewBox="0 0 36 44">
+                <path
+                  d="M18 2C9.716 2 3 8.716 3 17c0 10.75 15 25 15 25s15-14.25 15-25c0-8.284-6.716-15-15-15z"
+                  fill="#0f172a"
+                  stroke="#d4af37"
+                  strokeWidth="2.5"
+                />
+                <circle cx="18" cy="17" r="6" fill="#d4af37" />
+              </svg>
+            </div>
+          </VistrahMapsProvider>
+        ) : (
+          <div style={{ width: '100%', height: '100%' }}>
+            <LocationMap
+              point={safePoint}
+              onPin={p => {
+                if (!disabled && !busy) void applyPointAndResolve(p, 'manual');
+              }}
+              onView={() => {}}
+              onSelect={() => {}}
+            />
+          </div>
+        )}
+
+        {/* Floating Use Current GPS Button */}
+        <button
+          type="button"
+          className={s.floatingGpsBtn}
+          disabled={disabled || busy || gpsBusy}
+          onClick={() => void triggerCurrentGps()}
+        >
+          <Navigation size={15} aria-hidden="true" />
+          {gpsBusy ? 'Detecting GPS…' : 'Use Current GPS'}
+        </button>
+      </div>
+
+      {/* Bottom Confirmation Card */}
+      <div className={s.bottomCard}>
+        {gpsRecoveryMsg && (
+          <div role="alert" className={s.recoveryAlert}>
+            {gpsRecoveryMsg}
+          </div>
+        )}
+
+        <div className={s.resolvedRow}>
+          <div className={s.resolvedMain}>
+            <span className={s.pinIconBadge} aria-hidden="true">
+              <MapPin size={18} />
+            </span>
+            <div>
+              <h3 className={s.resolvedTitle}>
+                {resolvingPin ? 'Updating locality…' : value.locality || 'Select your area on the map'}
+              </h3>
+              <p className={s.resolvedAddress}>
+                {value.formattedAddress || 'Pan the map, search an address, or tap a city chip above.'}
+              </p>
+              <div className={s.metaPills}>
+                {value.pincode && <span className={s.metaPill}>PIN {value.pincode}</span>}
+                <span className={s.metaPill}>{value.radiusKm} km {mode === 'seller' ? 'coverage' : 'radius'}</span>
+                <span className={s.metaPill}>
+                  {safePoint.latitude.toFixed(4)}° N, {safePoint.longitude.toFixed(4)}° E
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <a
+            href={googleMapsDirectionsHref(safePoint.latitude, safePoint.longitude)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.infoSecondaryLink}
+          >
+            Open in Google Maps <ExternalLink size={12} aria-hidden="true" />
+          </a>
+        </div>
+
+        {/* Segmented Radius Selector */}
+        <div className={s.radiusRow}>
+          <span className={s.radiusLabel}>
+            {mode === 'seller' ? 'Service / Ad Coverage Radius' : 'Nearby Search Radius'}
+          </span>
+          <div className={s.segmentedGroup} role="group" aria-label="Coverage radius">
+            {radiiList.map(km => (
+              <button
+                key={km}
+                type="button"
+                disabled={disabled || busy}
+                aria-pressed={value.radiusKm === km}
+                className={`${s.segmentBtn} ${value.radiusKm === km ? s.segmentBtnActive : ''}`}
+                onClick={() => onChange({ ...value, radiusKm: km })}
+              >
+                {km} km
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Collapsible Manual Street / Landmark / PIN Override Drawer */}
+        <button
+          type="button"
+          className={s.drawerToggleBtn}
+          aria-expanded={drawerOpen}
+          onClick={() => setDrawerOpen(o => !o)}
+        >
+          <LocateFixed size={14} aria-hidden="true" />
+          Edit street / landmark / PIN
+          {drawerOpen ? <ChevronUp size={15} aria-hidden="true" /> : <ChevronDown size={15} aria-hidden="true" />}
+        </button>
+
+        {drawerOpen && (
+          <div className={s.drawerGrid}>
+            <label className={s.drawerField}>
+              Locality / Area *
+              <input
+                value={value.locality}
+                maxLength={150}
+                disabled={disabled || busy}
+                placeholder="e.g. Indiranagar, Tarikere"
+                onChange={e =>
+                  onChange({
+                    ...value,
+                    locality: e.target.value,
+                    source: value.source === 'google' ? 'google' : 'manual',
+                  })
+                }
+              />
+            </label>
+            <label className={s.drawerField}>
+              6-Digit PIN Code
+              <input
+                value={value.pincode}
+                maxLength={6}
+                inputMode="numeric"
+                pattern="[0-9]{6}"
+                disabled={disabled || busy}
+                placeholder="e.g. 560038"
+                onChange={e =>
+                  onChange({
+                    ...value,
+                    pincode: e.target.value.replace(/\D/g, '').slice(0, 6),
+                  })
+                }
+              />
+            </label>
+            <label className={s.drawerField}>
+              Street / Building / Door No.
+              <input
+                value={value.formattedAddress}
+                maxLength={500}
+                disabled={disabled || busy}
+                placeholder="Optional building or street details"
+                onChange={e =>
+                  onChange({
+                    ...value,
+                    formattedAddress: e.target.value,
+                  })
+                }
+              />
+            </label>
+            <label className={s.drawerField}>
+              Landmark
+              <input
+                value={value.landmark}
+                maxLength={200}
+                disabled={disabled || busy}
+                placeholder="e.g. Near Metro Station"
+                onChange={e =>
+                  onChange({
+                    ...value,
+                    landmark: e.target.value,
+                  })
+                }
+              />
+            </label>
+          </div>
+        )}
+
+        {extraFields}
+
+        {onConfirm && (
+          <button
+            type="button"
+            className={s.confirmPrimaryCta}
+            disabled={disabled || busy || value.locality.trim().length < 2}
+            onClick={() => onConfirm(value)}
+          >
+            <MapPin size={17} aria-hidden="true" />
+            {busy ? 'Saving…' : confirmLabel}
+          </button>
+        )}
+
+        {secondaryActions}
+      </div>
+    </div>
   );
 }
 

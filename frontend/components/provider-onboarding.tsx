@@ -7,7 +7,8 @@ import {Plus,Minus} from 'lucide-react';
 import {sellerServiceSelection} from '../../shared/seller-service-selection';
 import {AuthGate} from './customer';
 import {RequirementForm,downloadEvidence} from './provider-forms';
-import {PlaceAutocompleteInput,VistrahMap} from './vistrah-google-maps';
+import {MapFirstLocationPicker} from './vistrah-google-maps';
+import {DEFAULT_SELECTED_LOCATION,SELLER_COVERAGE_RADII,type SelectedLocation} from '../../shared/selected-location';
 import {Notice,Status,EmptyState,ButtonLink} from './ui';
 import {api,ApiError,date} from '@/lib/api';
 import {editable,onboardingUrl,type Answers,type ProviderApplication,type ApplicationSummary,type FieldError} from '@/lib/provider-requirements';
@@ -26,7 +27,7 @@ function OnboardingInner({categories,categoryId,applicationId,providerId,service
   const [batchApps,setBatchApps]=useState<ProviderApplication[]>([]);const [appIndex,setAppIndex]=useState(0);
   const [step,setStep]=useState(0);const [busy,setBusy]=useState(false);const [error,setError]=useState('');const [errors,setErrors]=useState<FieldError[]>([]);const [message,setMessage]=useState('');const [dirty,setDirty]=useState(false);const [ack,setAck]=useState(false);
   const [proposalKind,setProposalKind]=useState<CatalogueRequestKind>('SERVICE');const [proposalTitle,setProposalTitle]=useState('');const [proposalDescription,setProposalDescription]=useState('');
-  const [onboardingPin,setOnboardingPin]=useState<{latitude:number;longitude:number;radiusKm:number}>({latitude:12.9716,longitude:77.5946,radiusKm:10});
+  const [onboardingLoc,setOnboardingLoc]=useState<SelectedLocation>({...DEFAULT_SELECTED_LOCATION,radiusKm:10});
   const accept=useCallback((data:ProviderApplication)=>{setApp(data);setSelected(data.category_id);setSubcategory(null);setCommon(data.common);setAnswers(Object.fromEntries(data.services.map(s=>[s.service_id,s.answers])));setDirty(false);},[]);
   useEffect(()=>{let alive=true;if(applicationId)api<ProviderApplication>(`/provider-applications/${applicationId}`).then(data=>{if(alive){accept(data);setStep(editable(data.status)?1:3);}}).catch(e=>{if(alive)setError(e.message);});return()=>{alive=false;};},[applicationId,accept]);
   useEffect(()=>{if(!dirty)return;const warn=(event:BeforeUnloadEvent)=>event.preventDefault();window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[dirty]);
@@ -122,58 +123,38 @@ function OnboardingInner({categories,categoryId,applicationId,providerId,service
       {canEdit&&<section className="catalogue-selection"><h2><UiText value={"Services in this application"}/></h2><p><UiText value={"Add or remove services before submitting. Each service keeps its own requirements and review decision."}/></p>{app.services.map(service=><div className="catalogue-selection-item" key={service.service_id}><span>{service.title}</span><UiButton  type="button" className="icon-button" aria-label={`Remove ${service.title}`} disabled={busy||app.status!=='DRAFT'||app.services.length===1} onClick={()=>changeServices(app.services.filter(item=>item.service_id!==service.service_id).map(item=>item.service_id))}><Minus size={20}/></UiButton></div>)}{app.status==='DRAFT'&&<div className="catalogue-choice-grid">{allCategoryServices.filter(service=>!app.services.some(item=>item.service_id===service.id)).map(service=><button type="button" key={service.id} className="catalogue-choice" disabled={busy} onClick={()=>changeServices([...app.services.map(item=>item.service_id),service.id])}><span>{service.title}</span><span className="catalogue-choice-plus" aria-hidden="true"><Plus size={20}/></span></button>)}</div>}</section>}
       {step===1&&<><h2><UiText value={"Common business information"}/></h2>{commonFrozen&&<p className="notice"><UiText value={"Approved services freeze shared business details. Ask the reviewer to reopen those services before changing them."}/></p>}
         <section className="provider-section" style={{display:'grid',gap:12,marginBottom:16}}>
-          <h3><UiText value={"Pin your business location on Google Maps"}/></h3>
-          <p><UiText value={"Search your shop or office address, or drag the gold pin to auto-fill address and locality fields below."}/></p>
-          <PlaceAutocompleteInput
-            label="Search business address or locality"
-            placeholder="e.g. MG Road, Bengaluru or 560001"
+          <h3><UiText value={"Pin your business location"}/></h3>
+          <p><UiText value={"Search your business address, tap a Karnataka city chip, or pan the map pin to auto-fill your address and locality below."}/></p>
+          <MapFirstLocationPicker
+            mode="seller"
+            radiusOptions={SELLER_COVERAGE_RADII}
+            value={onboardingLoc}
             disabled={!canEdit||busy||commonFrozen}
+            busy={busy}
             preferBackendDetails
-            onSelectPlace={place=>{
-              setOnboardingPin(prev=>({...prev,latitude:Number(place.latitude.toFixed(6)),longitude:Number(place.longitude.toFixed(6))}));
+            onChange={next=>{
+              setOnboardingLoc(next);
               if(canEdit&&!commonFrozen){
                 setCommon(prev=>{
-                  const next={...prev};
+                  const updated={...prev};
                   const fieldIds=new Set((app.common_configuration?.sections??[]).flatMap(sec=>sec.fields.map(f=>f.id)));
-                  if(fieldIds.has('address')&&place.formattedAddress)next.address=place.formattedAddress;
-                  if(fieldIds.has('business_address')&&place.formattedAddress)next.business_address=place.formattedAddress;
-                  if(fieldIds.has('location')&&place.locality)next.location=place.locality;
-                  if(fieldIds.has('city')&&(place.city||place.locality))next.city=place.city||place.locality;
-                  if(fieldIds.has('postal_code')&&place.postalCode)next.postal_code=place.postalCode;
-                  if(fieldIds.has('pincode')&&place.postalCode)next.pincode=place.postalCode;
-                  return next;
+                  if(fieldIds.has('address')&&next.formattedAddress)updated.address=next.formattedAddress;
+                  if(fieldIds.has('business_address')&&next.formattedAddress)updated.business_address=next.formattedAddress;
+                  if(fieldIds.has('location')&&next.locality)updated.location=next.locality;
+                  if(fieldIds.has('city')&&(next.city||next.locality))updated.city=next.city||next.locality;
+                  if(fieldIds.has('postal_code')&&next.pincode)updated.postal_code=next.pincode;
+                  if(fieldIds.has('pincode')&&next.pincode)updated.pincode=next.pincode;
+                  return updated;
                 });
                 setDirty(true);
               }
             }}
-          />
-          <VistrahMap
-            center={{latitude:onboardingPin.latitude,longitude:onboardingPin.longitude}}
-            radiusKm={onboardingPin.radiusKm}
-            editable={Boolean(canEdit&&!commonFrozen)}
-            disabled={!canEdit||busy||commonFrozen}
-            height={280}
-            autoReverseGeocode
-            onPinChange={point=>setOnboardingPin(prev=>({...prev,...point}))}
-            onResolvedAddress={place=>{
-              if(canEdit&&!commonFrozen){
-                setCommon(prev=>{
-                  const next={...prev};
-                  const fieldIds=new Set((app.common_configuration?.sections??[]).flatMap(sec=>sec.fields.map(f=>f.id)));
-                  if(fieldIds.has('address')&&!next.address&&place.formattedAddress)next.address=place.formattedAddress;
-                  if(fieldIds.has('location')&&!next.location&&place.locality)next.location=place.locality;
-                  return next;
-                });
-                setDirty(true);
-              }
+            onConfirm={confirmed=>{
+              setOnboardingLoc(confirmed);
+              setMessage(`Pinned ${confirmed.locality} (${confirmed.radiusKm} km coverage). Review business details below and save draft.`);
             }}
-            ariaLabel="Onboarding business location picker"
+            confirmLabel="Confirm Business Location"
           />
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(150px, 1fr))',gap:8}} className="tabular-nums">
-            <label><UiText value={"Pinned latitude"}/><input type="number" step="any" value={onboardingPin.latitude} disabled={!canEdit||busy||commonFrozen} onChange={e=>setOnboardingPin(p=>({...p,latitude:Number(e.target.value)||0}))}/></label>
-            <label><UiText value={"Pinned longitude"}/><input type="number" step="any" value={onboardingPin.longitude} disabled={!canEdit||busy||commonFrozen} onChange={e=>setOnboardingPin(p=>({...p,longitude:Number(e.target.value)||0}))}/></label>
-            <label><UiText value={"Service coverage preview (km)"}/><input type="number" min={1} max={500} value={onboardingPin.radiusKm} disabled={!canEdit||busy||commonFrozen} onChange={e=>setOnboardingPin(p=>({...p,radiusKm:Math.max(1,Number(e.target.value)||10)}))}/></label>
-          </div>
         </section>
         <RequirementForm configuration={app.common_configuration} answers={common} onChange={value=>{setCommon(value);setDirty(true);}} disabled={!canEdit||busy||commonFrozen} errors={errors} prefix="common."/></>}
       {step===2&&app.services.map(s=>{const update=s.required_requirements??s.latest_requirements;return <section className="provider-service-form" key={s.service_id}><div className="row-between"><h2>{s.title}</h2><Status context="service" value={s.status}/></div><p><UiText value={"Requirements version "}/>{s.requirements.version} <UiText value={"· effective "}/>{date(s.requirements.effective_at)}</p>{update&&update.id!==s.requirement_id&&<details className="notice"><summary><UiText value={"Version "}/>{update.version} <UiText value={"is available"}/><UiText value={s.required_requirement_id?' and required by your reviewer':''}/></summary><p>{update.change_note}</p><RequirementForm configuration={update.configuration} answers={{}} onChange={()=>{}} disabled/><HelpPair id="provider.adopt"><button className="button secondary" disabled={busy||!editable(s.status)} onClick={()=>adopt(s.service_id,update!.id)}><UiText value={"Adopt version "}/>{update.version}</button></HelpPair></details>}<RequirementForm configuration={s.requirements.configuration} answers={answers[s.service_id]??{}} onChange={value=>{setAnswers(previous=>({...previous,[s.service_id]:value}));setDirty(true);}} disabled={!canEdit||!editable(s.status)||busy} errors={errors} prefix={`${s.service_id}.`} onUpload={(field,file)=>upload(s.service_id,field,file)}/></section>;})}

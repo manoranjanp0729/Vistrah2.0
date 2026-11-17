@@ -1,23 +1,57 @@
 'use client';
 import {UiText,UiSection} from "./localized-ui";
-
-import {createContext,useCallback,useContext,useEffect,useId,useRef,useState,type ReactNode} from 'react';
+import {createContext,useCallback,useContext,useEffect,useId,useMemo,useRef,useState,type ReactNode} from 'react';
 import {usePathname} from 'next/navigation';
 import Link from 'next/link';
 import {MapPin} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
 import {destinationLink} from '@/lib/destinations';
-import {LocationMap} from './location-map';
-import {GoogleLocationPicker,googleMapsWebKey} from './google-location-picker';
-import {PlaceAutocompleteInput,VistrahMap} from './vistrah-google-maps';
+import {googleMapsWebKey} from './google-location-picker';
+import {MapFirstLocationPicker} from './vistrah-google-maps';
 import {googlePlaces,googlePrivacy} from '../../shared/google-location';
-import {lookupGpsPlace,providerBlocker,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
+import {DEFAULT_SELECTED_LOCATION,type SelectedLocation} from '../../shared/selected-location';
+import {lookupGpsPlace,radii,requestGps,validPoint,type CustomerLocation,type Radius} from '@/lib/location';
 
-export const defaultMapPoint={latitude:20.5937,longitude:78.9629};
-const emptyLocation:CustomerLocation={latitude:NaN,longitude:NaN,locality:'',postal_code:'',address:'',landmark:''};
+export const defaultMapPoint={latitude:12.9716,longitude:77.5946};
+const emptyLocation:CustomerLocation={
+  latitude:defaultMapPoint.latitude,
+  longitude:defaultMapPoint.longitude,
+  locality:'Bengaluru',
+  postal_code:'',
+  address:'Bengaluru, Karnataka',
+  landmark:'',
+};
+
+function customerToSelected(loc:CustomerLocation,radiusKm:Radius):SelectedLocation{
+  const hasPoint=validPoint(loc);
+  return {
+    latitude:hasPoint?loc.latitude:DEFAULT_SELECTED_LOCATION.latitude,
+    longitude:hasPoint?loc.longitude:DEFAULT_SELECTED_LOCATION.longitude,
+    formattedAddress:loc.address||loc.locality||DEFAULT_SELECTED_LOCATION.formattedAddress,
+    locality:loc.locality||DEFAULT_SELECTED_LOCATION.locality,
+    city:loc.locality.split(',').pop()?.trim()||DEFAULT_SELECTED_LOCATION.city,
+    state:'Karnataka',
+    pincode:loc.postal_code||'',
+    landmark:loc.landmark||'',
+    radiusKm,
+    source:loc.source==='google'?'google':'manual',
+  };
+}
+
+function selectedToCustomer(sel:SelectedLocation):CustomerLocation{
+  return {
+    latitude:sel.latitude,
+    longitude:sel.longitude,
+    locality:sel.locality.trim(),
+    postal_code:sel.pincode.trim(),
+    address:sel.formattedAddress.trim(),
+    landmark:sel.landmark.trim(),
+    ...(sel.source==='google'?{source:'google' as const}:{}),
+  };
+}
 
 function useLocationState(){
-  const [draft,setDraft]=useState(emptyLocation);
+  const [draft,setDraft]=useState<CustomerLocation>(emptyLocation);
   const [active,setActive]=useState<CustomerLocation|null>(null);
   const [radius,setRadius]=useState<Radius>(5);
   const [busy,setBusy]=useState(false);
@@ -26,6 +60,7 @@ function useLocationState(){
   const edits=useRef(0),gpsGeneration=useRef(0),identity=useRef<number|null|undefined>(undefined);
   const hasEdits=useRef(false),identityEpoch=useRef(0);
   const path=usePathname();
+
   const syncIdentity=useCallback((id:number|null)=>{
     if(identity.current===id)return;
     identityEpoch.current++;
@@ -36,8 +71,6 @@ function useLocationState(){
     identity.current=id;
   },[]);
 
-  // Preference data belongs only to the current account. Anonymous selections
-  // can survive sign-in; an account change or sign-out clears private state.
   useEffect(()=>{
     let alive=true;const profileEpoch=identityEpoch.current;
     api<{id:number}>('/me').then(async user=>{
@@ -48,10 +81,10 @@ function useLocationState(){
       try{
         const {location}=await api<{location:CustomerLocation|null}>('/me/location');
         if(alive&&identityEpoch.current===preferenceEpoch&&edits.current===generation&&location&&validPoint(location)){
-          setDraft(location);setActive(location);setMessage('Using your explicitly saved location. Changes stay temporary until saved again.');
+          setDraft(location);setActive(location);setMessage('Using your saved account location. Changes stay temporary until saved again.');
         }
       }catch{
-        if(alive&&identityEpoch.current===preferenceEpoch&&edits.current===generation)setMessage('Saved location is unavailable. You can still choose a temporary location.');
+        if(alive&&identityEpoch.current===preferenceEpoch&&edits.current===generation)setMessage('Saved location is unavailable. Choose a temporary location below.');
       }
     }).catch(()=>{
       if(alive&&profileEpoch===identityEpoch.current)syncIdentity(null);
@@ -59,41 +92,52 @@ function useLocationState(){
     return()=>{alive=false;};
   },[path,syncIdentity]);
 
-  function edit(values:Partial<CustomerLocation>){hasEdits.current=true;edits.current++;gpsGeneration.current++;setDraft(previous=>({...previous,...values}));}
+  const edit=useCallback((values:Partial<CustomerLocation>)=>{
+    hasEdits.current=true;edits.current++;gpsGeneration.current++;
+    setDraft(previous=>({...previous,...values}));
+  },[]);
+
   const confirmLocation=useCallback((location:CustomerLocation)=>{
     if(!validPoint(location)||location.locality.trim().length<2||!/^([0-9]{6})?$/.test(location.postal_code)){
-      setError('Enter a valid locality, optional six-digit PIN and coordinates.');return false;
+      setError('Select an area on the map or enter a locality (and optional 6-digit PIN).');return false;
     }
-    hasEdits.current=true;edits.current++;gpsGeneration.current++;setError('');setActive({...location});setDraft({...location});
-    setMessage('Location is temporary unless you choose Save this location.');return true;
+    hasEdits.current=true;edits.current++;gpsGeneration.current++;setError('');
+    setActive({...location});setDraft({...location});
+    setMessage(`Location confirmed: ${location.locality}${location.postal_code?` (${location.postal_code})`:''}. Temporary unless saved to your account.`);
+    return true;
   },[]);
+
   async function gps(){
     const generation=++gpsGeneration.current;hasEdits.current=true;edits.current++;setError('');setMessage('');setBusy(true);
     try{
       const fix=await requestGps(navigator.geolocation);if(generation!==gpsGeneration.current)return;
       setDraft({...emptyLocation,...fix.point});setActive(null);
       const place=googleMapsWebKey?(await googlePlaces(api,fix.point))[0]:await lookupGpsPlace(fix.point);if(generation!==gpsGeneration.current)return;
-      if(!place)throw new Error('No locality found. Enter it manually.');
-      const chosen:CustomerLocation={...emptyLocation,...fix.point,locality:place.label,postal_code:place.postal_code,...(googleMapsWebKey?{source:'google' as const}:{})};setDraft(chosen);setActive(chosen);
-      setMessage(`Using ${place.label} temporarily. GPS accuracy: approximately ${Math.round(fix.accuracy)} metres.${fix.accuracy>100?' This position may be inaccurate; adjust the pin.':''} Save this location only if you want it remembered.`);
+      if(!place)throw new Error('No locality found. Select a city chip or enter locality manually.');
+      const chosen:CustomerLocation={...emptyLocation,...fix.point,locality:place.label,postal_code:place.postal_code,...(googleMapsWebKey?{source:'google' as const}:{})};
+      setDraft(chosen);setActive(chosen);
+      setMessage(`Using ${place.label} temporarily (GPS ~${Math.round(fix.accuracy)}m).`);
     }catch(e){if(generation===gpsGeneration.current)setError((e as Error).message);}
     finally{if(generation===gpsGeneration.current)setBusy(false);}
   }
+
   async function save(){
-    if(active?.source==='google'){setError('Google search locations are temporary. Enter your own coordinates and locality to save a location.');return;}
+    if(active?.source==='google'){setError('Google search results stay temporary; edit locality/PIN manually to save permanently.');return;}
     if(!active)return;setBusy(true);setError('');
-    try{await api('/me/location',{method:'PUT',body:JSON.stringify(active)});setMessage('Location saved to your account. You can change it or clear it.');}
-    catch(e){setError(e instanceof ApiError&&e.status===401?'Sign in to save this location. Your selection remains temporary.':'Saving is unavailable. Your selection remains temporary. '+(e as Error).message);}
+    try{await api('/me/location',{method:'PUT',body:JSON.stringify(active)});setMessage('Location saved to your account.');}
+    catch(e){setError(e instanceof ApiError&&e.status===401?'Sign in to save this location. Your selection remains active for this session.':'Saving is unavailable. '+(e as Error).message);}
     finally{setBusy(false);}
   }
+
   async function clear(){
     hasEdits.current=true;edits.current++;gpsGeneration.current++;setActive(null);setDraft(emptyLocation);setBusy(true);setError('');
-    try{await api('/me/location',{method:'DELETE'});setMessage('Saved and temporary locations cleared. Past enquiry addresses are retained.');}
+    try{await api('/me/location',{method:'DELETE'});setMessage('Saved and temporary locations cleared.');}
     catch(e){
       if(e instanceof ApiError&&e.status===401)setMessage('Temporary location cleared.');
-      else setError('Temporary location cleared. Saved location could not be cleared; retry Clear location. '+(e as Error).message);
+      else setError('Temporary location cleared. Saved location could not be cleared; retry Clear location.');
     }finally{setBusy(false);}
   }
+
   return {draft,active,radius,setRadius,busy,error,message,edit,confirmLocation,gps,save,clear,syncIdentity};
 }
 
@@ -109,72 +153,74 @@ export function useOptionalCustomerLocation(){
   return useContext(CustomerLocationContext);
 }
 
-/** Public preference controls only: no provider requests, maps, pins or enquiries. */
 export function LocationChooser({expanded=false}:{expanded?:boolean}){
-  const state=useCustomerLocation(),id=useId(),path=usePathname();const [open,setOpen]=useState(expanded);
+  const state=useCustomerLocation(),id=useId(),path=usePathname();
+  const [open,setOpen]=useState(expanded);
   const {draft,active,radius,busy,error,message}=state;
-  return <UiSection  className="customer-location-entry" aria-label="Customer location">
-    <div className="location-entry-heading"><button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}><MapPin size={18} aria-hidden="true"/><UiText value={"Choose your location"}/></button>
-      <p className="tabular-nums"><UiText value={active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · ${radius} km`:'Choose an area for nearby service discovery.'}/></p>
-    </div>
-    <p className="location-entry-privacy">{googleMapsWebKey?<span>{googlePrivacy}</span>:<UiText value={"Location is temporary unless explicitly saved. GPS runs only when you choose “Use my location”. MapTiler receives coordinates for place lookup and maps. VISTRAH receives them when you search nearby providers or save a location."}/>}</p>
-    <div id={id} hidden={!open}>
-      <p>{googleMapsWebKey?googlePrivacy:providerBlocker}</p>
-      {error&&<p className="notice error" role="alert"><UiText value={error}/>{error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}><UiText value={"Sign in"}/></Link></>}</p>}
-      <p role="status"><UiText value={message}/></p>
-      <button type="button" className="button secondary" onClick={()=>void state.gps()} disabled={busy}><UiText value={"Use my location"}/></button>
-      {open&&(
-        <div style={{display:'grid',gap:12,marginTop:8,marginBottom:8}}>
-          <PlaceAutocompleteInput
-            label="Search locality, landmark, or PIN code"
-            placeholder="e.g. Indiranagar, Koramangala, or 560038"
-            disabled={busy}
-            onSelectPlace={place=>state.edit({
-              latitude:place.latitude,
-              longitude:place.longitude,
-              locality:place.locality,
-              postal_code:place.postalCode,
-              address:place.formattedAddress,
-              ...(googleMapsWebKey?{source:'google' as const}:{}),
-            })}
-          />
-          <VistrahMap
-            center={validPoint(draft)?draft:defaultMapPoint}
-            radiusKm={radius}
-            editable
-            disabled={busy}
-            height={280}
-            autoReverseGeocode
-            onPinChange={point=>state.edit({
-              ...point,
-              ...(googleMapsWebKey?{source:'google' as const}:{}),
-            })}
-            onResolvedAddress={place=>state.edit({
-              latitude:place.latitude,
-              longitude:place.longitude,
-              locality:place.locality,
-              postal_code:place.postalCode,
-              address:place.formattedAddress,
-              ...(googleMapsWebKey?{source:'google' as const}:{}),
-            })}
-          />
+
+  const selectedValue=useMemo(()=>customerToSelected(draft,radius),[draft,radius]);
+
+  function handleSelectedChange(next:SelectedLocation){
+    const nextRadius=(radii as readonly number[]).includes(next.radiusKm)?(next.radiusKm as Radius):radius;
+    if(nextRadius!==radius)state.setRadius(nextRadius);
+    state.edit(selectedToCustomer(next));
+  }
+
+  return (
+    <UiSection className="customer-location-entry" aria-label="Customer location">
+      {!expanded&&(
+        <div className="location-entry-heading">
+          <button type="button" className="button secondary" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(value=>!value)}>
+            <MapPin size={18} aria-hidden="true"/>
+            <UiText value={active?`${active.locality} · ${radius} km`:'Choose your location'}/>
+          </button>
+          <p className="tabular-nums">
+            <UiText value={active?`${active.locality}${active.postal_code?' · '+active.postal_code:''} · within ${radius} km`:'Select your area on the map for nearby service discovery.'}/>
+          </p>
         </div>
       )}
-      <form className="form location-controls" onSubmit={event=>{event.preventDefault();state.confirmLocation(draft);}}>
-        <div className="location-field-grid">
-          <label><UiText value={"Manual address"}/><input value={draft.address} maxLength={500} disabled={busy} onChange={event=>state.edit({address:event.target.value})}/></label>
-          <label><UiText value={"Locality"}/><input value={draft.locality} minLength={2} maxLength={150} required disabled={busy} onChange={event=>state.edit({locality:event.target.value})}/></label>
-          <label><UiText value={"PIN code"}/><input value={draft.postal_code} pattern="[0-9]{6}" maxLength={6} disabled={busy} onChange={event=>state.edit({postal_code:event.target.value})}/></label>
-          <label><UiText value={"Landmark"}/><input value={draft.landmark} maxLength={200} disabled={busy} onChange={event=>state.edit({landmark:event.target.value})}/></label>
-          <label><UiText value={"Search latitude"}/><input type="number" step="any" min={-90} max={90} value={Number.isFinite(draft.latitude)?draft.latitude:''} disabled={busy} onChange={event=>state.edit({latitude:event.target.value===''?NaN:Number(event.target.value)})} required/></label>
-          <label><UiText value={"Search longitude"}/><input type="number" step="any" min={-180} max={180} value={Number.isFinite(draft.longitude)?draft.longitude:''} disabled={busy} onChange={event=>state.edit({longitude:event.target.value===''?NaN:Number(event.target.value)})} required/></label>
-        </div>
-        <button className="button" disabled={busy}><UiText value={"Use this location"}/></button>
-        <label htmlFor={id+'-radius'}><UiText value={"Search radius"}/></label><select id={id+'-radius'} value={radius} disabled={busy} onChange={event=>state.setRadius(Number(event.target.value) as Radius)}>{radii.map(value=><option key={value} value={value}>{value} <UiText value={"km"}/></option>)}</select>
-      </form>
-      <div className="button-row"><button type="button" className="button secondary" disabled={!active||busy||active.source==='google'} onClick={()=>void state.save()}><UiText value={"Save this location"}/></button><button type="button" className="button secondary" disabled={busy} onClick={()=>void state.clear()}><UiText value={"Clear location"}/></button></div>
-      <p><UiText value={"Sellers receive only locality/PIN for enquiries unless you explicitly supply an exact address for that request. Your search point is never copied into an enquiry."}/></p>
-    </div>
-  </UiSection>;
-}
 
+      <div id={id} hidden={!open}>
+        {error&&(
+          <p className="notice error" role="alert">
+            <UiText value={error}/>
+            {error.startsWith('Sign in')&&<> <Link href={destinationLink('/login',path)}><UiText value={"Sign in"}/></Link></>}
+          </p>
+        )}
+        {message&&<p className="notice" role="status"><UiText value={message}/></p>}
+
+        {open&&(
+          <MapFirstLocationPicker
+            mode="customer"
+            value={selectedValue}
+            onChange={handleSelectedChange}
+            onConfirm={confirmed=>{
+              const nextRadius=(radii as readonly number[]).includes(confirmed.radiusKm)?(confirmed.radiusKm as Radius):radius;
+              state.setRadius(nextRadius);
+              state.confirmLocation(selectedToCustomer(confirmed));
+            }}
+            confirmLabel="Confirm Location"
+            radiusOptions={radii}
+            disabled={busy}
+            busy={busy}
+            secondaryActions={
+              <div style={{display:'grid',gap:8}}>
+                <div className="button-row">
+                  <button type="button" className="button secondary" disabled={!active||busy||active.source==='google'} onClick={()=>void state.save()}>
+                    <UiText value={"Save to account"}/>
+                  </button>
+                  <button type="button" className="button secondary" disabled={busy} onClick={()=>void state.clear()}>
+                    <UiText value={"Clear location"}/>
+                  </button>
+                </div>
+                <small style={{color:'var(--text-secondary)',lineHeight:1.45}}>
+                  {googleMapsWebKey?googlePrivacy:<UiText value={"Location stays temporary unless saved. GPS runs only when you tap Use Current GPS. Sellers receive only locality/PIN unless you explicitly enter a service address."}/>}
+                </small>
+              </div>
+            }
+          />
+        )}
+      </div>
+    </UiSection>
+  );
+}

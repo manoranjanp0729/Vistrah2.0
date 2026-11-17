@@ -1,4 +1,4 @@
-import {useMemo,useState} from 'react';
+import {useMemo,useRef,useState} from 'react';
 import {Linking,Pressable,View} from 'react-native';
 import MapView,{Circle,Marker,PROVIDER_GOOGLE} from 'react-native-maps';
 import {Text} from './typography';
@@ -22,6 +22,8 @@ export type MobileMapMarker={
 export type ResolvedMobilePlace={
   formattedAddress:string;
   locality:string;
+  city?:string;
+  state?:string;
   postalCode:string;
   latitude:number;
   longitude:number;
@@ -32,6 +34,7 @@ export type VistrahMobileMapProps={
   radiusKm?:number;
   markers?:MobileMapMarker[];
   editable?:boolean;
+  centerPinMode?:boolean;
   disabled?:boolean;
   height?:number;
   onPinChange?:(point:GooglePoint)=>void;
@@ -46,11 +49,52 @@ function deltaForRadius(radiusKm?:number):number{
   return 0.9;
 }
 
+export async function reverseGeocodeMobilePoint(point:GooglePoint):Promise<ResolvedMobilePlace|null>{
+  try{
+    const res=await api<{formatted_address:string;locality:string;city:string;state:string;postal_code:string;latitude:number;longitude:number}>(
+      '/maps/reverse-geocode',
+      {method:'POST',body:JSON.stringify({latitude:point.latitude,longitude:point.longitude})},
+    );
+    return {
+      formattedAddress:res.formatted_address,
+      locality:res.locality,
+      city:res.city,
+      state:res.state,
+      postalCode:res.postal_code,
+      latitude:res.latitude,
+      longitude:res.longitude,
+    };
+  }catch{
+    try{
+      const pub=await api<{items:Array<{latitude:number;longitude:number;label:string;postal_code:string}>}>(
+        '/locations/geocode',
+        {method:'POST',body:JSON.stringify({latitude:point.latitude,longitude:point.longitude})},
+      );
+      const top=pub.items?.[0];
+      if(top){
+        return {
+          formattedAddress:top.label,
+          locality:top.label,
+          city:top.label.split(',').pop()?.trim()||'',
+          state:'',
+          postalCode:top.postal_code||'',
+          latitude:point.latitude,
+          longitude:point.longitude,
+        };
+      }
+    }catch{
+      // Silent fallback when offline or unconfigured.
+    }
+  }
+  return null;
+}
+
 export function VistrahMobileMap({
   center,
   radiusKm,
   markers=[],
   editable=false,
+  centerPinMode=false,
   disabled=false,
   height=280,
   onPinChange,
@@ -59,6 +103,7 @@ export function VistrahMobileMap({
   const {colors,styles}=useTheme();
   const [selectedId,setSelectedId]=useState<string|number|null>(null);
   const [resolving,setResolving]=useState(false);
+  const lastProgrammaticRef=useRef<number>(0);
 
   const safeCenter=useMemo<GooglePoint>(()=>({
     latitude:Number.isFinite(center.latitude)&&Math.abs(center.latitude)<=90?center.latitude:12.9716,
@@ -72,19 +117,8 @@ export function VistrahMobileMap({
     if(!onResolvedAddress)return;
     setResolving(true);
     try{
-      const res=await api<{formatted_address:string;locality:string;postal_code:string;latitude:number;longitude:number}>(
-        '/maps/reverse-geocode',
-        {method:'POST',body:JSON.stringify({latitude:point.latitude,longitude:point.longitude})},
-      );
-      onResolvedAddress({
-        formattedAddress:res.formatted_address,
-        locality:res.locality,
-        postalCode:res.postal_code,
-        latitude:res.latitude,
-        longitude:res.longitude,
-      });
-    }catch{
-      // Silent fallback when server key unset or offline.
+      const resolved=await reverseGeocodeMobilePoint(point);
+      if(resolved)onResolvedAddress(resolved);
     }finally{
       setResolving(false);
     }
@@ -96,19 +130,23 @@ export function VistrahMobileMap({
       latitude:Number(point.latitude.toFixed(6)),
       longitude:Number(point.longitude.toFixed(6)),
     };
+    if(Math.abs(rounded.latitude-safeCenter.latitude)<0.00005&&Math.abs(rounded.longitude-safeCenter.longitude)<0.00005){
+      return;
+    }
+    lastProgrammaticRef.current=Date.now()+600;
     onPinChange?.(rounded);
     void resolvePinAddress(rounded);
   }
 
   if(!googleMapsEnabled){
     return (
-      <View style={[styles.card,{gap:8}]}>
-        <Text style={styles.label}>MAP PREVIEW · MANUAL FALLBACK</Text>
+      <View style={[styles.card,{minHeight:height,justifyContent:'center',gap:8}]}>
+        <Text style={styles.label}>MAP STAGE · INTERACTIVE FALLBACK</Text>
         <Text style={[styles.muted,styles.tabular]}>
-          Center: {safeCenter.latitude.toFixed(5)}, {safeCenter.longitude.toFixed(5)}{radiusKm?` · ${radiusKm} km radius`:''}
+          Center: {safeCenter.latitude.toFixed(4)}° N, {safeCenter.longitude.toFixed(4)}° E{radiusKm?` · ${radiusKm} km`:''}
         </Text>
         <Text style={styles.muted}>
-          Google Maps Android key is not active in this local dev build. Coordinate inputs and spatial search remain active.
+          Tap a Karnataka city chip above, use GPS, or edit street/PIN below.
         </Text>
         <Action
           label="Open in Google Maps"
@@ -121,7 +159,7 @@ export function VistrahMobileMap({
 
   return (
     <View style={{gap:8}}>
-      <View style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border}}>
+      <View style={{position:'relative',borderRadius:centerPinMode?0:12,overflow:'hidden',borderWidth:centerPinMode?0:1,borderColor:colors.border}}>
         <MapView
           style={{width:'100%',height}}
           provider={PROVIDER_GOOGLE}
@@ -139,6 +177,11 @@ export function VistrahMobileMap({
               updatePin(event.nativeEvent.coordinate);
             }
           }}
+          onRegionChangeComplete={region=>{
+            if(centerPinMode&&editable&&!disabled&&Date.now()>lastProgrammaticRef.current){
+              updatePin({latitude:region.latitude,longitude:region.longitude});
+            }
+          }}
         >
           {typeof radiusKm==='number'&&radiusKm>0&&(
             <Circle
@@ -146,21 +189,23 @@ export function VistrahMobileMap({
               radius={radiusKm*1000}
               strokeColor="rgba(15, 23, 42, 0.65)"
               strokeWidth={1.5}
-              fillColor="rgba(212, 175, 55, 0.16)"
+              fillColor="rgba(212, 175, 55, 0.15)"
             />
           )}
 
-          <Marker
-            coordinate={safeCenter}
-            pinColor="#d4af37"
-            title={editable?'Drag or tap map to set pin':'Selected location'}
-            draggable={editable&&!disabled}
-            onDragEnd={event=>{
-              if(editable&&!disabled){
-                updatePin(event.nativeEvent.coordinate);
-              }
-            }}
-          />
+          {!centerPinMode&&(
+            <Marker
+              coordinate={safeCenter}
+              pinColor="#d4af37"
+              title={editable?'Drag or tap map to set pin':'Selected location'}
+              draggable={editable&&!disabled}
+              onDragEnd={event=>{
+                if(editable&&!disabled){
+                  updatePin(event.nativeEvent.coordinate);
+                }
+              }}
+            />
+          )}
 
           {markers.map(marker=>(
             <Marker
@@ -173,9 +218,28 @@ export function VistrahMobileMap({
             />
           ))}
         </MapView>
+
+        {centerPinMode&&(
+          <View
+            pointerEvents="none"
+            style={{
+              position:'absolute',
+              top:'50%',
+              left:'50%',
+              marginLeft:-14,
+              marginTop:-34,
+              alignItems:'center',
+            }}
+          >
+            <View style={{width:28,height:28,borderRadius:14,backgroundColor:'#0f172a',borderWidth:3,borderColor:'#d4af37',alignItems:'center',justifyContent:'center'}}>
+              <View style={{width:8,height:8,borderRadius:4,backgroundColor:'#d4af37'}}/>
+            </View>
+            <View style={{width:3,height:10,backgroundColor:'#0f172a'}}/>
+          </View>
+        )}
       </View>
 
-      {resolving&&<Text style={styles.muted}>Resolving address for selected pin…</Text>}
+      {resolving&&!centerPinMode&&<Text style={styles.muted}>Resolving address for selected pin…</Text>}
 
       {selectedMarker&&(
         <View style={[styles.card,{gap:6}]}>

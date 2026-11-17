@@ -2,13 +2,13 @@ import {createElement,useEffect,useMemo,useRef,useState} from 'react';
 import {Linking,Pressable,View} from 'react-native';
 import {Text} from './typography';
 import {Action} from './ui';
-import {api} from '../lib/api';
 import {googleMapsDirectionsUrl,googleMapsEnabled,googleMapsWebKey} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
 import {mountGoogleMap} from '../../../shared/google-map-web';
 import type {GooglePoint} from '../../../shared/google-location';
-import type {MobileMapMarker,ResolvedMobilePlace,VistrahMobileMapProps} from './vistrah-mobile-map';
+import {reverseGeocodeMobilePoint,type MobileMapMarker,type ResolvedMobilePlace,type VistrahMobileMapProps} from './vistrah-mobile-map';
 
+export {reverseGeocodeMobilePoint};
 export type {MobileMapMarker,ResolvedMobilePlace,VistrahMobileMapProps};
 
 export function VistrahMobileMap({
@@ -16,6 +16,7 @@ export function VistrahMobileMap({
   radiusKm,
   markers=[],
   editable=false,
+  centerPinMode=false,
   disabled=false,
   height=280,
   onPinChange,
@@ -47,18 +48,9 @@ export function VistrahMobileMap({
         const rounded={latitude:Number(p.latitude.toFixed(6)),longitude:Number(p.longitude.toFixed(6))};
         callbacks.current.onPinChange?.(rounded);
         if(callbacks.current.onResolvedAddress){
-          void api<{formatted_address:string;locality:string;postal_code:string;latitude:number;longitude:number}>(
-            '/maps/reverse-geocode',
-            {method:'POST',body:JSON.stringify(rounded)},
-          ).then(res=>{
-            callbacks.current.onResolvedAddress?.({
-              formattedAddress:res.formatted_address,
-              locality:res.locality,
-              postalCode:res.postal_code,
-              latitude:res.latitude,
-              longitude:res.longitude,
-            });
-          }).catch(()=>{});
+          void reverseGeocodeMobilePoint(rounded).then(res=>{
+            if(res)callbacks.current.onResolvedAddress?.(res);
+          });
         }
       },
       ()=>alive,
@@ -78,14 +70,32 @@ export function VistrahMobileMap({
   return (
     <View style={{gap:8}}>
       {googleMapsEnabled&&!mapErr?(
-        <View style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border}}>
+        <View style={{position:'relative',borderRadius:centerPinMode?0:12,overflow:'hidden',borderWidth:centerPinMode?0:1,borderColor:colors.border}}>
           {createElement('div',{ref:node,style:{width:'100%',height},'aria-label':'VISTRAH Google Map'})}
+          {centerPinMode&&(
+            <View
+              pointerEvents="none"
+              style={{
+                position:'absolute',
+                top:'50%',
+                left:'50%',
+                marginLeft:-14,
+                marginTop:-34,
+                alignItems:'center',
+              }}
+            >
+              <View style={{width:28,height:28,borderRadius:14,backgroundColor:'#0f172a',borderWidth:3,borderColor:'#d4af37',alignItems:'center',justifyContent:'center'}}>
+                <View style={{width:8,height:8,borderRadius:4,backgroundColor:'#d4af37'}}/>
+              </View>
+              <View style={{width:3,height:10,backgroundColor:'#0f172a'}}/>
+            </View>
+          )}
         </View>
       ):(
-        <View style={[styles.card,{gap:6}]}>
-          <Text style={styles.label}>MAP PREVIEW · FALLBACK</Text>
+        <View style={[styles.card,{minHeight:height,justifyContent:'center',gap:6}]}>
+          <Text style={styles.label}>MAP STAGE · FALLBACK</Text>
           <Text style={[styles.muted,styles.tabular]}>
-            {safeCenter.latitude.toFixed(5)}, {safeCenter.longitude.toFixed(5)}{radiusKm?` · ${radiusKm} km radius`:''}
+            {safeCenter.latitude.toFixed(4)}° N, {safeCenter.longitude.toFixed(4)}° E{radiusKm?` · ${radiusKm} km radius`:''}
           </Text>
           <Action
             label="Open in Google Maps"

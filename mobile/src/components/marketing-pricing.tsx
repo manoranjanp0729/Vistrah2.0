@@ -44,14 +44,14 @@ const fields:[keyof QuoteDraft,string][]=[
 ];
 
 const PRICING_IMAGES={
- heroFree:require('../../../assets/ads-marketing/free-forever-hero.jpg'),
- creative:require('../../../assets/ads-marketing/branding-creative.webp'),
- video:require('../../../assets/ads-marketing/video-content-production.webp'),
- digital:require('../../../assets/ads-marketing/website-automation.jpg'),
- performance:require('../../../assets/ads-marketing/performance-marketing.webp'),
- social:require('../../../assets/ads-marketing/social-media-management.webp'),
- outdoor:require('../../../assets/ads-marketing/outdoor-signage.jpg'),
- mobility:require('../../../assets/ads-marketing/mobility-billboard.jpg'),
+ heroFree:require('../../assets/ads-marketing/free-forever-hero.jpg'),
+ creative:require('../../assets/ads-marketing/branding-creative.webp'),
+ video:require('../../assets/ads-marketing/video-content-production.webp'),
+ digital:require('../../assets/ads-marketing/website-automation.jpg'),
+ performance:require('../../assets/ads-marketing/performance-marketing.webp'),
+ social:require('../../assets/ads-marketing/social-media-management.webp'),
+ outdoor:require('../../assets/ads-marketing/outdoor-signage.jpg'),
+ mobility:require('../../assets/ads-marketing/mobility-billboard.jpg'),
 } as const;
 
 function mobileDetailImage(categoryId?:string){

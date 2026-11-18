@@ -2,6 +2,7 @@
 import {UiText,UiElement,UiSection,UiNav,UiInput} from "./localized-ui";
 import {useLanguage} from './language-provider';
 import Link from 'next/link';
+import Image from 'next/image';
 import {customerListingCopy,listingEnquiryHref} from '../../shared/customer-listing';
 import {useState} from 'react';
 import {useUser} from './customer';
@@ -42,7 +43,9 @@ export function MarketplaceBrowser({selection,query=''}:{selection:Resolved;quer
       {subcategory&&<li>{listingType&&!singleType?<Link href={marketplaceUrl({category:category!.slug,subcategory:subcategory.slug})}>{subcategoryName}</Link>:<span aria-current="page">{subcategoryName}</span>}</li>}
       {listingType&&!singleType&&<li><span aria-current="page">{typeName}</span></li>}
     </ol></UiNav>
-    <div className={styles.discoveryHeading}><p className={styles.eyebrow}>{t('discovery.marketplace')}</p>
+    <div className={`${styles.discoveryHeading} ${category?styles.illustratedHeading:''}`}>
+      {category&&<Image className={styles.categoryHeroArt} src={`/images/category-heroes/${category.slug}.webp`} alt="" fill sizes="100vw" priority/>}
+      <p className={styles.eyebrow}>{t('discovery.marketplace')}</p>
       <h1>{typeName||subcategoryName||categoryName||t('discovery.title')}</h1>
       <p><UiText value={listingType?customerListingCopy.intro:subcategory?t('discovery.subcategoryIntro'):category?t('discovery.categoryIntro'):t('discovery.intro')}/></p>
     </div>

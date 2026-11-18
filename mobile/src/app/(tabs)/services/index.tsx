@@ -1,5 +1,6 @@
 import {croppedPhoto} from '../../../lib/photo-crop';
 import {BannerGeometry} from '../../../components/banner-geometry';
+import {categoryHeroImages} from '../../../lib/category-hero-images';
 import {useBannerTheme} from '../../../lib/banner-theme';
 import {Text} from '../../../components/typography';
 import {EditVistrahContent} from '../../../components/edit-vistrah-content';
@@ -258,13 +259,14 @@ export default function Services() {
 
         {/* PROGRESSIVE CONTEXTUAL HERO BANNER */}
         <LinearGradient
-          colors={banner.gradient}
+          colors={category ? ['#233d34','#172c26'] : banner.gradient}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
           style={s.hero}
         >
-          <BannerGeometry/>
-          <View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow}]} />
+          {!category&&<BannerGeometry/>}
+          {!category&&<View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow}]} />}
+          {category&&<View pointerEvents="none" style={StyleSheet.absoluteFill}><Image source={categoryHeroImages[category.slug]} resizeMode="cover" accessible={false} style={{width:'100%',height:'100%',opacity:0.35}}/></View>}
 
           {isRootLevel ? (
             <>

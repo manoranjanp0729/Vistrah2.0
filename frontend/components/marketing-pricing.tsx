@@ -77,6 +77,63 @@ const fields: [keyof QuoteDraft, string, string][] = [
   ["budget", "Budget in INR (optional)", "text"],
 ];
 
+const PILLAR_VISUALS: Record<string, { src: string; alt: string }> = {
+  creative: {
+    src: "/images/ads-marketing/branding-creative.webp",
+    alt: "VISTRAH Ads & Marketing creative and video production studio",
+  },
+  digital: {
+    src: "/images/ads-marketing/website-automation.jpg",
+    alt: "Custom business website design and workflow automation setup",
+  },
+  outdoor: {
+    src: "/images/ads-marketing/outdoor-signage.jpg",
+    alt: "High-visibility outdoor hoardings, signage, and DOOH displays",
+  },
+  mobility: {
+    src: "/images/ads-marketing/mobility-billboard.jpg",
+    alt: "Mobility transit and fleet billboard advertising",
+  },
+};
+
+function detailVisualForCategory(categoryId?: string): {
+  src: string;
+  alt: string;
+} {
+  if (categoryId === "websites") {
+    return PILLAR_VISUALS.digital;
+  }
+  if (categoryId === "video") {
+    return {
+      src: "/images/ads-marketing/video-content-production.webp",
+      alt: "Commercial video and 9:16 Reels production shoot",
+    };
+  }
+  if (categoryId === "branding") {
+    return PILLAR_VISUALS.creative;
+  }
+  if (categoryId === "social" || categoryId === "influencer") {
+    return {
+      src: "/images/ads-marketing/social-media-management.webp",
+      alt: "Social media and creator marketing campaign planning",
+    };
+  }
+  if (categoryId === "mobility") {
+    return PILLAR_VISUALS.mobility;
+  }
+  if (
+    categoryId === "outdoor" ||
+    categoryId === "screens" ||
+    categoryId === "cinema"
+  ) {
+    return PILLAR_VISUALS.outdoor;
+  }
+  return {
+    src: "/images/ads-marketing/performance-marketing.webp",
+    alt: "Performance marketing, search, and digital growth strategy",
+  };
+}
+
 export function MarketingPricing({
   serviceId,
   initialPackage = "",
@@ -654,6 +711,16 @@ export function MarketingPricing({
             </div>
           </div>
           <div className={styles.heroAside}>
+            <div className={styles.heroVisualWrap}>
+              <img
+                src={detailVisualForCategory(detailService.category_ids[0]).src}
+                alt={detailVisualForCategory(detailService.category_ids[0]).alt}
+                className={styles.heroVisualImg}
+              />
+              <span className={styles.visualPillOverlay}>
+                {detailService.category_ids[0]?.toUpperCase() ?? "STUDIO"}
+              </span>
+            </div>
             <span>INDICATIVE STARTING PRICE</span>
             <strong>{servicePrice(detailService)}</strong>
             <p>{feeLabel(detailService)}</p>
@@ -700,6 +767,16 @@ export function MarketingPricing({
             className={styles.heroAside}
             aria-label="Free Forever Business Listing and Any-Radius V Ads"
           >
+            <div className={styles.heroVisualWrap}>
+              <img
+                src="/images/ads-marketing/free-forever-hero.jpg"
+                alt="Local business owner showcasing free map listing and any-radius V Ads reel on VISTRAH"
+                className={styles.heroVisualImg}
+              />
+              <span className={styles.visualPillOverlay}>
+                ₹0 / FREE FOREVER · ANY RADIUS
+              </span>
+            </div>
             <span>{promo.anchorBadge}</span>
             <div className={styles.freePriceRow}>
               <span className={styles.freeZero}>{promo.anchorPriceLabel}</span>
@@ -944,69 +1021,90 @@ export function MarketingPricing({
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                  gap: 16,
-                  marginTop: 20,
-                }}
-              >
-                <div className={styles.panel}>
-                  <p className={styles.eyebrow}>PAID AGENCY TRACK 01</p>
-                  <h3>VISTRAH Ads &amp; Marketing Studio</h3>
-                  <p>
-                    Custom commercial video ad production (Reels, Shorts, brand
-                    films), graphic &amp; brochure design, and managed
-                    Meta/Google/social/outdoor marketing campaigns.
-                  </p>
-                  <div className={styles.actions}>
-                    <button
-                      type="button"
-                      className={styles.primary}
-                      onClick={() =>
-                        openCustomMediaPlan(
-                          "promotional-reel",
-                          "Looking for custom commercial video ad production, graphic/brochure design, or managed Meta/Google marketing: ",
-                        )
-                      }
-                    >
-                      View Studio Rates &amp; Request Quote
-                      <ChevronRight size={15} />
-                    </button>
+              <div className={styles.showcaseGrid}>
+                <article className={styles.showcaseCard}>
+                  <div className={styles.showcaseVisual}>
+                    <img
+                      src="/images/ads-marketing/video-content-production.webp"
+                      alt="VISTRAH Ads & Marketing commercial video shoot and brand studio"
+                      loading="lazy"
+                    />
+                    <span className={styles.visualPillOverlay}>
+                      CREATIVES ₹499+ · REELS ₹2,999
+                    </span>
                   </div>
-                </div>
+                  <div className={styles.showcaseBody}>
+                    <div>
+                      <p className={styles.eyebrow}>PAID AGENCY TRACK 01</p>
+                      <h3>VISTRAH Ads &amp; Marketing Studio</h3>
+                      <p>
+                        Custom commercial video ad production (Reels, Shorts,
+                        brand films), graphic &amp; brochure design, and managed
+                        Meta/Google/social/outdoor marketing campaigns.
+                      </p>
+                    </div>
+                    <div className={styles.actions}>
+                      <button
+                        type="button"
+                        className={styles.primary}
+                        onClick={() =>
+                          openCustomMediaPlan(
+                            "promotional-reel",
+                            "Looking for custom commercial video ad production, graphic/brochure design, or managed Meta/Google marketing: ",
+                          )
+                        }
+                      >
+                        View Studio Rates &amp; Request Quote
+                        <ChevronRight size={15} />
+                      </button>
+                    </div>
+                  </div>
+                </article>
 
-                <div className={styles.panel}>
-                  <p className={styles.eyebrow}>PAID TECH TRACK 02</p>
-                  <h3>
-                    Website &amp; Digital Setup (VISTRAH Tech / Automation)
-                  </h3>
-                  <p>
-                    Custom business website design &amp; launch (mobile-first
-                    with Call &amp; WhatsApp capture) and custom business
-                    workflow automation.
-                  </p>
-                  <div className={styles.actions}>
-                    <button
-                      type="button"
-                      className={styles.primary}
-                      onClick={() => {
-                        setCategory("websites");
-                        setIntent("studio");
-                      }}
-                    >
-                      Explore Website &amp; Automation Plans
-                      <ChevronRight size={15} />
-                    </button>
-                    <Link
-                      href="/contact?intent=request-website"
-                      className={styles.secondary}
-                    >
-                      Request Website
-                    </Link>
+                <article className={styles.showcaseCard}>
+                  <div className={styles.showcaseVisual}>
+                    <img
+                      src="/images/ads-marketing/website-automation.jpg"
+                      alt="Custom business website design and workflow automation on VISTRAH Tech"
+                      loading="lazy"
+                    />
+                    <span className={styles.visualPillOverlay}>
+                      WEBSITES ₹4,999+ · WORKFLOW AUTOMATION
+                    </span>
                   </div>
-                </div>
+                  <div className={styles.showcaseBody}>
+                    <div>
+                      <p className={styles.eyebrow}>PAID TECH TRACK 02</p>
+                      <h3>
+                        Website &amp; Digital Setup (VISTRAH Tech / Automation)
+                      </h3>
+                      <p>
+                        Custom business website design &amp; launch
+                        (mobile-first with Call &amp; WhatsApp capture) and
+                        custom business workflow automation.
+                      </p>
+                    </div>
+                    <div className={styles.actions}>
+                      <button
+                        type="button"
+                        className={styles.primary}
+                        onClick={() => {
+                          setCategory("websites");
+                          setIntent("studio");
+                        }}
+                      >
+                        Explore Website &amp; Automation Plans
+                        <ChevronRight size={15} />
+                      </button>
+                      <Link
+                        href="/contact?intent=request-website"
+                        className={styles.secondary}
+                      >
+                        Request Website
+                      </Link>
+                    </div>
+                  </div>
+                </article>
               </div>
             </section>
           ) : (
@@ -1098,29 +1196,44 @@ export function MarketingPricing({
                   return (
                     <div key={pillar.id} className={styles.pillarBlock}>
                       <div className={styles.pillarHeader}>
-                        <div className={styles.pillarMeta}>
-                          <span className={styles.pillarStep}>
-                            PILLAR {pillar.step}
-                          </span>
-                          <h3>{pillar.title}</h3>
-                          <p>{pillar.subtitle}</p>
-                          <span className={styles.feeRule}>
-                            {pillar.feeNote}
-                          </span>
+                        <div className={styles.pillarVisual}>
+                          <img
+                            src={
+                              (PILLAR_VISUALS[pillar.id] ?? PILLAR_VISUALS.creative)
+                                .src
+                            }
+                            alt={
+                              (PILLAR_VISUALS[pillar.id] ?? PILLAR_VISUALS.creative)
+                                .alt
+                            }
+                            loading="lazy"
+                          />
                         </div>
-                        <button
-                          type="button"
-                          className={styles.secondary}
-                          onClick={() =>
-                            openCustomMediaPlan(
-                              pillar.defaultServiceId,
-                              pillar.defaultBrief,
-                            )
-                          }
-                        >
-                          Request Custom Media Plan
-                          <ChevronRight size={15} />
-                        </button>
+                        <div className={styles.pillarHeaderContent}>
+                          <div className={styles.pillarMeta}>
+                            <span className={styles.pillarStep}>
+                              PILLAR {pillar.step}
+                            </span>
+                            <h3>{pillar.title}</h3>
+                            <p>{pillar.subtitle}</p>
+                            <span className={styles.feeRule}>
+                              {pillar.feeNote}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            className={styles.secondary}
+                            onClick={() =>
+                              openCustomMediaPlan(
+                                pillar.defaultServiceId,
+                                pillar.defaultBrief,
+                              )
+                            }
+                          >
+                            Request Custom Media Plan
+                            <ChevronRight size={15} />
+                          </button>
+                        </div>
                       </div>
 
                       <div className={styles.services}>

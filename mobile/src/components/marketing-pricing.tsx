@@ -1,6 +1,6 @@
 import {Text} from './typography';
 import {useEffect,useRef,useState} from 'react';
-import {View,Pressable,Modal,ScrollView} from 'react-native';
+import {View,Pressable,Modal,ScrollView,Image} from 'react-native';
 import {router} from 'expo-router';
 import {Feather} from '@expo/vector-icons';
 import {Page,Action,Field} from './ui';
@@ -42,6 +42,27 @@ const fields:[keyof QuoteDraft,string][]=[
  ['quantity','Quantity'],
  ['budget','Budget in INR (optional)'],
 ];
+
+const PRICING_IMAGES={
+ heroFree:require('../../../assets/ads-marketing/free-forever-hero.jpg'),
+ creative:require('../../../assets/ads-marketing/branding-creative.webp'),
+ video:require('../../../assets/ads-marketing/video-content-production.webp'),
+ digital:require('../../../assets/ads-marketing/website-automation.jpg'),
+ performance:require('../../../assets/ads-marketing/performance-marketing.webp'),
+ social:require('../../../assets/ads-marketing/social-media-management.webp'),
+ outdoor:require('../../../assets/ads-marketing/outdoor-signage.jpg'),
+ mobility:require('../../../assets/ads-marketing/mobility-billboard.jpg'),
+} as const;
+
+function mobileDetailImage(categoryId?:string){
+ if(categoryId==='websites')return PRICING_IMAGES.digital;
+ if(categoryId==='video')return PRICING_IMAGES.video;
+ if(categoryId==='branding')return PRICING_IMAGES.creative;
+ if(categoryId==='social'||categoryId==='influencer')return PRICING_IMAGES.social;
+ if(categoryId==='mobility')return PRICING_IMAGES.mobility;
+ if(categoryId==='outdoor'||categoryId==='screens'||categoryId==='cinema')return PRICING_IMAGES.outdoor;
+ return PRICING_IMAGES.performance;
+}
 
 export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:string;initialPackage?:string}){
  const {styles,colors}=useTheme(),{user}=useSession(false);
@@ -165,44 +186,55 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
    {detailService?(
     <>
-     <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:8}}>
-      <Feather name={(catalogue.categories.find(c=>c.id===detailService.category_ids[0])?.icon??'briefcase') as React.ComponentProps<typeof Feather>['name']} size={24} color={colors.accent}/>
-      <Text style={[styles.heading,styles.tabular,{fontSize:22,letterSpacing:-0.55}]}>{servicePrice(detailService)}</Text>
-      <Text style={{color:colors.text,fontSize:13,fontWeight:'600'}}>{feeLabel(detailService)}</Text>
-      <Text style={styles.muted}>{detailService.description}</Text>
-      <Text style={styles.muted}>{catalogue.notice}</Text>
-      {Boolean(notice)&&<Text accessibilityRole="alert" style={styles.muted}>{notice}</Text>}
+     <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+      <Image source={mobileDetailImage(detailService.category_ids[0])} accessibilityLabel={detailService.name} resizeMode="cover" style={{width:'100%',height:190}}/>
+      <View style={{padding:16,gap:8}}>
+       <Feather name={(catalogue.categories.find(c=>c.id===detailService.category_ids[0])?.icon??'briefcase') as React.ComponentProps<typeof Feather>['name']} size={22} color={colors.accent}/>
+       <Text style={[styles.heading,styles.tabular,{fontSize:22,letterSpacing:-0.55}]}>{servicePrice(detailService)}</Text>
+       <Text style={{color:colors.text,fontSize:13,fontWeight:'600'}}>{feeLabel(detailService)}</Text>
+       <Text style={styles.muted}>{detailService.description}</Text>
+       <Text style={styles.muted}>{catalogue.notice}</Text>
+       {Boolean(notice)&&<Text accessibilityRole="alert" style={styles.muted}>{notice}</Text>}
+      </View>
      </View>
      <Action secondary label={compare?'Hide package comparison':'Compare marketing packages'} onPress={()=>setCompare(v=>!v)}/>
     </>
    ):(
     <>
      {/* Editorial Hero: ₹0 / Free Forever Platform */}
-     <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:12}}>
-      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH PRICING · ₹0 / FREE FOREVER PLATFORM</Text>
-      <Text accessibilityRole="header" style={[styles.title,{fontSize:24,lineHeight:29,letterSpacing:-0.6}]}>
-       {promo.headline}
-      </Text>
-      <Text style={styles.muted}>
-       {promo.subheadline}
-      </Text>
-      <View style={{gap:8,marginTop:2}}>
-       <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
-       <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/seller/onboard')}/>
-       <Action secondary label="Explore Paid Studio & Website Quotes" onPress={()=>openCustomPlan(pillars[0]?.defaultServiceId??'promotional-reel',pillars[0]?.defaultBrief)}/>
-       <Text style={[styles.muted,styles.tabular,{fontSize:12,marginTop:2}]}>{promo.microcopy}</Text>
-      </View>
-
-      <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:8}}>
-       <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{promo.anchorBadge}</Text>
-       <View style={{flexDirection:'row',alignItems:'baseline',gap:8,flexWrap:'wrap'}}>
-        <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'700',color:colors.accent,letterSpacing:-0.6}]}>{promo.anchorPriceLabel}</Text>
-        <Text style={[styles.heading,{fontSize:16}]}>{promo.anchorTitle}</Text>
+     <View style={{borderRadius:18,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+      <View style={{position:'relative'}}>
+       <Image source={PRICING_IMAGES.heroFree} accessibilityLabel="Free Forever Business Listing and Any-Radius V Ads on VISTRAH" resizeMode="cover" style={{width:'100%',height:200}}/>
+       <View style={{position:'absolute',left:12,bottom:12,paddingHorizontal:10,paddingVertical:5,borderRadius:999,backgroundColor:'rgba(15,23,42,0.82)'}}>
+        <Text style={{color:'#ffffff',fontSize:10,fontWeight:'700',letterSpacing:0.7}}>₹0 / FREE FOREVER · ANY RADIUS</Text>
        </View>
-       <Text style={styles.muted}>{promo.anchorSummary}</Text>
-       <View style={{gap:8,marginTop:4}}>
+      </View>
+      <View style={{padding:16,gap:12}}>
+       <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH PRICING · ₹0 / FREE FOREVER PLATFORM</Text>
+       <Text accessibilityRole="header" style={[styles.title,{fontSize:24,lineHeight:29,letterSpacing:-0.6}]}>
+        {promo.headline}
+       </Text>
+       <Text style={styles.muted}>
+        {promo.subheadline}
+       </Text>
+       <View style={{gap:8,marginTop:2}}>
+        <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
         <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/seller/onboard')}/>
-        <Action secondary label="Request Website" onPress={()=>router.push('/contact?intent=request-website' as never)}/>
+        <Action secondary label="Explore Paid Studio & Website Quotes" onPress={()=>openCustomPlan(pillars[0]?.defaultServiceId??'promotional-reel',pillars[0]?.defaultBrief)}/>
+        <Text style={[styles.muted,styles.tabular,{fontSize:12,marginTop:2}]}>{promo.microcopy}</Text>
+       </View>
+
+       <View style={{padding:14,borderRadius:14,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:8}}>
+        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{promo.anchorBadge}</Text>
+        <View style={{flexDirection:'row',alignItems:'baseline',gap:8,flexWrap:'wrap'}}>
+         <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'700',color:colors.accent,letterSpacing:-0.6}]}>{promo.anchorPriceLabel}</Text>
+         <Text style={[styles.heading,{fontSize:16}]}>{promo.anchorTitle}</Text>
+        </View>
+        <Text style={styles.muted}>{promo.anchorSummary}</Text>
+        <View style={{gap:8,marginTop:4}}>
+         <Action secondary label={promo.secondaryCtaLabel} onPress={()=>router.push('/seller/onboard')}/>
+         <Action secondary label="Request Website" onPress={()=>router.push('/contact?intent=request-website' as never)}/>
+        </View>
        </View>
       </View>
      </View>
@@ -317,12 +349,37 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
        <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
        <Action secondary label="List Your Business Free (808+ Services)" onPress={()=>router.push('/seller/onboard')}/>
-       <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:8}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PAID AGENCY &amp; TECH SOLUTIONS</Text>
-        <Text style={[styles.heading,{fontSize:16}]}>VISTRAH Ads &amp; Marketing Studio + Website &amp; Automation</Text>
-        <Text style={styles.muted}>Hire VISTRAH for custom commercial video shoots (Reels, Shorts, brand films), graphic/brochure design, managed Meta/Google/social campaigns, custom business websites, and workflow automation.</Text>
-        <Action secondary label="Explore Studio, Website & Automation Plans" onPress={()=>setIntent('studio')}/>
+
+       <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+        <View style={{position:'relative'}}>
+         <Image source={PRICING_IMAGES.video} accessibilityLabel="VISTRAH Ads and Marketing Studio commercial video shoot" resizeMode="cover" style={{width:'100%',height:165}}/>
+         <View style={{position:'absolute',left:10,bottom:10,paddingHorizontal:10,paddingVertical:4,borderRadius:999,backgroundColor:'rgba(15,23,42,0.82)'}}>
+          <Text style={{color:'#ffffff',fontSize:10,fontWeight:'700',letterSpacing:0.6}}>CREATIVES ₹499+ · REELS ₹2,999</Text>
+         </View>
+        </View>
+        <View style={{padding:14,gap:8}}>
+         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PAID AGENCY TRACK 01</Text>
+         <Text style={[styles.heading,{fontSize:16}]}>VISTRAH Ads &amp; Marketing Studio</Text>
+         <Text style={styles.muted}>Custom commercial video shoots (Reels, Shorts, brand films), graphic/brochure design, and managed Meta/Google/social/outdoor campaigns.</Text>
+         <Action secondary label="View Studio Rates & Request Quote" onPress={()=>openCustomPlan('promotional-reel','Looking for custom commercial video ad production, graphic/brochure design, or managed Meta/Google marketing: ')}/>
+        </View>
        </View>
+
+       <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+        <View style={{position:'relative'}}>
+         <Image source={PRICING_IMAGES.digital} accessibilityLabel="Custom business website design and workflow automation" resizeMode="cover" style={{width:'100%',height:165}}/>
+         <View style={{position:'absolute',left:10,bottom:10,paddingHorizontal:10,paddingVertical:4,borderRadius:999,backgroundColor:'rgba(15,23,42,0.82)'}}>
+          <Text style={{color:'#ffffff',fontSize:10,fontWeight:'700',letterSpacing:0.6}}>WEBSITES ₹4,999+ · WORKFLOW AUTOMATION</Text>
+         </View>
+        </View>
+        <View style={{padding:14,gap:8}}>
+         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PAID TECH TRACK 02</Text>
+         <Text style={[styles.heading,{fontSize:16}]}>Website &amp; Digital Setup (VISTRAH Tech / Automation)</Text>
+         <Text style={styles.muted}>Custom mobile-first business website design &amp; launch (with Call &amp; WhatsApp capture) and custom business workflow automation.</Text>
+         <Action secondary label="Explore Website & Automation Plans" onPress={()=>{setCategory('websites');setIntent('studio');}}/>
+        </View>
+       </View>
+
        <Text style={[styles.muted,{fontSize:11}]}>
         {promo.microcopy}. Video uploads and geo-radius targeting are 100% free on VISTRAH and go live after standard moderation approval.
        </Text>
@@ -408,31 +465,35 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        {pillars.map(pillar=>{
         const pillarItems=items.filter(item=>item.category_ids.some(cid=>pillar.categoryIds.includes(cid)));
         if(!pillarItems.length)return null;
+        const pillarImg=PRICING_IMAGES[pillar.id as keyof typeof PRICING_IMAGES]??PRICING_IMAGES.creative;
         return (
-         <View key={pillar.id} style={{borderTopWidth:1,borderColor:colors.border,paddingTop:14,gap:8}}>
-          <Text style={[styles.label,styles.tabular,{color:colors.accent,fontWeight:'700',letterSpacing:0.8}]}>PILLAR {pillar.step}</Text>
-          <Text style={[styles.heading,{fontSize:18,letterSpacing:-0.45}]}>{pillar.title}</Text>
-          <Text style={styles.muted}>{pillar.subtitle}</Text>
-          <Text style={{color:colors.text,fontSize:12,fontWeight:'600'}}>{pillar.feeNote}</Text>
-          <Action secondary label="Request Custom Media Plan" onPress={()=>openCustomPlan(pillar.defaultServiceId,pillar.defaultBrief)}/>
+         <View key={pillar.id} style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+          <Image source={pillarImg} accessibilityLabel={pillar.title} resizeMode="cover" style={{width:'100%',height:165}}/>
+          <View style={{padding:14,gap:8}}>
+           <Text style={[styles.label,styles.tabular,{color:colors.accent,fontWeight:'700',letterSpacing:0.8}]}>PILLAR {pillar.step}</Text>
+           <Text style={[styles.heading,{fontSize:18,letterSpacing:-0.45}]}>{pillar.title}</Text>
+           <Text style={styles.muted}>{pillar.subtitle}</Text>
+           <Text style={{color:colors.text,fontSize:12,fontWeight:'600'}}>{pillar.feeNote}</Text>
+           <Action secondary label="Request Custom Media Plan" onPress={()=>openCustomPlan(pillar.defaultServiceId,pillar.defaultBrief)}/>
 
-          <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
-           {pillarItems.map(item=>(
-            <Pressable
-             key={item.id}
-             accessibilityRole="link"
-             onPress={()=>router.push(pricingHref(item.id) as never)}
-             style={{paddingVertical:14,borderBottomWidth:1,borderColor:colors.border,gap:4}}
-            >
-             <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'space-between',gap:8}}>
-              <Text style={[styles.heading,{flex:1,fontSize:16}]}>{item.name}</Text>
-              <Feather name="arrow-up-right" size={17} color={colors.accent}/>
-             </View>
-             <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:16}]}>{servicePrice(item)}</Text>
-             <Text style={[styles.muted,{fontSize:12}]}>{feeLabel(item)}</Text>
-             <Text numberOfLines={2} style={styles.muted}>Deliverables: {item.deliverables.slice(0,3).join(' · ')}</Text>
-            </Pressable>
-           ))}
+           <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
+            {pillarItems.map(item=>(
+             <Pressable
+              key={item.id}
+              accessibilityRole="link"
+              onPress={()=>router.push(pricingHref(item.id) as never)}
+              style={{paddingVertical:14,borderBottomWidth:1,borderColor:colors.border,gap:4}}
+             >
+              <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'space-between',gap:8}}>
+               <Text style={[styles.heading,{flex:1,fontSize:16}]}>{item.name}</Text>
+               <Feather name="arrow-up-right" size={17} color={colors.accent}/>
+              </View>
+              <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:16}]}>{servicePrice(item)}</Text>
+              <Text style={[styles.muted,{fontSize:12}]}>{feeLabel(item)}</Text>
+              <Text numberOfLines={2} style={styles.muted}>Deliverables: {item.deliverables.slice(0,3).join(' · ')}</Text>
+             </Pressable>
+            ))}
+           </View>
           </View>
          </View>
         );

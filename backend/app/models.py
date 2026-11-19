@@ -108,6 +108,11 @@ class Provider(Base):
     location: Mapped[str] = mapped_column(String(150))
     latitude: Mapped[float | None] = mapped_column(Float, nullable=True)
     longitude: Mapped[float | None] = mapped_column(Float, nullable=True)
+    google_place_id: Mapped[str | None] = mapped_column(String(160), nullable=True, index=True)
+    website_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    instagram_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    facebook_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    source_place_snapshot: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     source_url: Mapped[str] = mapped_column(Text, default='')
     provenance: Mapped[str] = mapped_column(Text)
     verification_status: Mapped[str] = mapped_column(String(20), default='PENDING')
@@ -234,3 +239,4 @@ class ServiceInformation(Base):
     notes: Mapped[list] = mapped_column(JSON, default=list)
 
 from .pricing_models import PricingSection, PricingItem  # noqa: E402,F401
+from .marketing_audit_models import MarketingAuditLead, WebsiteRequest  # noqa: E402,F401

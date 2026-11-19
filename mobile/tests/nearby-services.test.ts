@@ -23,8 +23,10 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
   assert.equal(websiteExternalHref('javascript:void(0)'), null);
 
   const more = buildListingMoreOptions({
+    listingId: 'gp_ChIJ_tarikere_01',
+    placeId: 'ChIJ_tarikere_01',
     businessName: 'Malnad Spice Mess',
-    categorySlug: 'food-and-dining',
+    categorySlug: 'hospitality-restaurants-and-cafes',
     subcategorySlug: 'restaurants-and-dining',
     typeSlug: 'restaurants',
     locality: 'Tarikere',
@@ -34,11 +36,49 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
     ['Join Vistrah', 'Request website', 'Create & Upload Free Ad', 'Contact Vistrah'],
   );
   assert.equal(more[0].pathname, '/seller/onboard');
+  assert.equal(more[0].params.place_id, 'ChIJ_tarikere_01');
   assert.equal(more[0].params.business, 'Malnad Spice Mess');
   assert.equal(more[1].pathname, '/contact');
   assert.equal(more[1].params.intent, 'request-website');
   assert.equal(more[2].pathname, '/seller/v-ads');
   assert.equal(more[3].pathname, '/contact');
+
+  const ownerMore = buildListingMoreOptions({
+    listingId: 91,
+    ownerUserId: 12,
+    viewerUserId: 12,
+    viewerRole: 'USER',
+    businessName: 'Malnad Spice Mess',
+    categorySlug: 'hospitality-restaurants-and-cafes',
+    typeSlug: 'restaurants',
+  });
+  assert.equal(ownerMore[0].label, 'My Business Growth & Audit');
+  assert.equal(ownerMore[0].pathname, '/business/[id]');
+  assert.deepEqual(ownerMore[0].params, { id: '91' });
+
+  const adminMore = buildListingMoreOptions({
+    listingId: 'gp_ChIJ_tarikere_01',
+    placeId: 'ChIJ_tarikere_01',
+    viewerUserId: 1,
+    viewerRole: 'ADMIN',
+    businessName: 'Malnad Spice Mess',
+    categorySlug: 'hospitality-restaurants-and-cafes',
+    typeSlug: 'restaurants',
+  });
+  assert.deepEqual(
+    adminMore.map(m => m.label),
+    [
+      'Open Business Audit & Strategy',
+      'Join Vistrah',
+      'Request website',
+      'Create & Upload Free Ad',
+      'Contact Vistrah',
+    ],
+  );
+  assert.equal(
+    adminMore[0].href,
+    '/business/gp_ChIJ_tarikere_01?name=Malnad+Spice+Mess&sector=hospitality-restaurants-and-cafes&service_type=restaurants',
+  );
   assert.equal(
     backFallback('/contact', { category: 'food-and-dining', type: 'restaurants' }),
     '/services/nearby?category=food-and-dining&type=restaurants',

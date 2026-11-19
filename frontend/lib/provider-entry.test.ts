@@ -14,9 +14,9 @@ it('redirects blank and legacy onboarding entries directly to /seller/onboard wi
   await expect(ProvideService({searchParams:Promise.resolve({})})).rejects.toThrow('REDIRECT:/seller/onboard');
   await expect(ProvideService({searchParams:Promise.resolve({category:'invalid'})})).rejects.toThrow('REDIRECT:/seller/onboard');
   await expect(ProvideService({searchParams:Promise.resolve({business:'7'})})).rejects.toThrow('REDIRECT:/seller/onboard?business=7');
-  await expect(ProvideService({searchParams:Promise.resolve({category:'food-and-dining',type:'restaurant'})})).rejects.toThrow('REDIRECT:/seller/onboard?category=food-and-dining&type=restaurant');
+  await expect(ProvideService({searchParams:Promise.resolve({category:'food-and-dining',type:'restaurant'})})).rejects.toThrow('REDIRECT:/seller/onboard?category=hospitality-restaurants-and-cafes&type=restaurants');
   await expect(ProviderPage({searchParams:Promise.resolve({})})).rejects.toThrow('REDIRECT:/seller/onboard');
-  await expect(ProviderOnboardingRedirectPage({searchParams:Promise.resolve({category:'vehicles',type:'driving-school'})})).rejects.toThrow('REDIRECT:/seller/onboard?category=vehicles&type=driving-school');
+  await expect(ProviderOnboardingRedirectPage({searchParams:Promise.resolve({category:'vehicles',type:'driving-school'})})).rejects.toThrow('REDIRECT:/seller/onboard?category=automobiles-and-garages&type=driving-schools');
   await expect(SellerNewRedirectPage({searchParams:Promise.resolve({business:'3'})})).rejects.toThrow('REDIRECT:/seller/onboard?business=3');
   expect(mocks.catalogue).not.toHaveBeenCalled();
 });

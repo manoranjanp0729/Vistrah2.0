@@ -218,6 +218,7 @@ export function resolveSelfOnboardingInitialSelection(params: {
 }
 
 export function selfOnboardingUrl(params?: {
+  place_id?: string | null;
   category?: string;
   subcategory?: string;
   type?: string;
@@ -226,6 +227,9 @@ export function selfOnboardingUrl(params?: {
 }): string {
   if (!params) return '/seller/onboard';
   const query = new URLSearchParams();
+  if (params.place_id && /^[A-Za-z0-9_-]{1,160}$/.test(params.place_id.trim())) {
+    query.set('place_id', params.place_id.trim());
+  }
   if (params.category && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.category)) {
     query.set('category', params.category);
   }

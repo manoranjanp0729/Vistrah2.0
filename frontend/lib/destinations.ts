@@ -11,10 +11,11 @@ export function safeDestination(value:unknown,fallback='/account',depth=0):strin
     const slug='[a-z0-9]+(?:-[a-z0-9]+)*';
     const service=new RegExp(`^/service/${slug}(?:/${slug}){0,5}$`).test(path);
     const account=/^\/account(?:\/(?:profile|membership|orders|requests|payments|provider-applications|finds(?:\/[0-9a-f-]{36})?))?$/.test(path);
-    const admin=/^\/admin(?:\/(?:requests|providers|provider-services|catalogue|offers|payments|audit|workflows|job-sources|provider-applications|provider-requirements|ownership-claims|publication-drafts))?$/.test(path);
+    const admin=/^\/admin(?:\/(?:business-audit(?:\/[A-Za-z0-9_-]{1,120})?|requests|providers|provider-services|catalogue|offers|payments|audit|workflows|job-sources|provider-applications|provider-requirements|ownership-claims|publication-drafts))?$/.test(path);
     const seller=path==='/seller'||path==='/seller/v-ads'||path==='/seller/add-service'||path==='/seller/onboard'||path==='/seller/new'||/^\/seller\/(?:business|commerce)\/[1-9]\d*$/.test(path);
+    const businessAudit=/^\/business\/[A-Za-z0-9_-]{1,120}$/.test(path);
     const commerce=/^\/commerce(?:\/(?:cart|orders|[0-9a-f-]{36}))?$/.test(path);
-    if(!service&&!account&&!admin&&!seller&&!commerce&&!['/','/services','/services/nearby','/membership','/sandbox-checkout','/provide-service','/provider','/provider/onboarding','/jobs','/call-vistrah','/contact'].includes(path)&&!/^\/jobs\/[0-9a-f-]{36}$/.test(path))return fallback;
+    if(!service&&!account&&!admin&&!seller&&!businessAudit&&!commerce&&!['/','/services','/services/nearby','/membership','/sandbox-checkout','/provide-service','/provider','/provider/onboarding','/jobs','/call-vistrah','/contact'].includes(path)&&!/^\/jobs\/[0-9a-f-]{36}$/.test(path))return fallback;
     const keys=[...url.searchParams.keys()];
     if(new Set(keys).size!==keys.length)return fallback;
     if(path==='/services'&&((url.searchParams.has('type')&&(!url.searchParams.has('category')||!url.searchParams.has('subcategory')))||(url.searchParams.has('subcategory')&&!url.searchParams.has('category'))))return fallback;
@@ -23,10 +24,12 @@ export function safeDestination(value:unknown,fallback='/account',depth=0):strin
     for(const key of keys) {
       const v=url.searchParams.get(key)!;
       if((path==='/services'||path==='/services/nearby')&&['category','subcategory','type'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))continue;
+      if(path==='/services/nearby'&&['business','locality'].includes(key)&&v.length<=150)continue;
       if(/^\/seller\/commerce\/[1-9]\d*$/.test(path)&&key==='focus'&&/^[0-9a-f-]{36}$/.test(v))continue;
       if(path==='/seller/add-service'&&['category','subcategory','type'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))continue;
-      if((path==='/seller/onboard'||path==='/seller/new'||path==='/provider'||path==='/provider/onboarding')&&((['category','type','subcategory'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))||(key==='business'&&v.length<=150)||(key==='locality'&&v.length<=120)||(key==='next'&&v==='v-ads')))continue;
+      if((path==='/seller/onboard'||path==='/seller/new'||path==='/provider'||path==='/provider/onboarding')&&((['category','type','subcategory'].includes(key)&&v.length<=100&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v))||(key==='place_id'&&v.length<=160&&/^[A-Za-z0-9_-]+$/.test(v))||(key==='business'&&v.length<=150)||(key==='locality'&&v.length<=120)||(key==='next'&&v==='v-ads')))continue;
       if(path==='/seller/v-ads'&&['business','category','subcategory','type','locality','from','tab'].includes(key)&&v.length<=150)continue;
+      if((businessAudit||/^\/admin\/business-audit\/[A-Za-z0-9_-]{1,120}$/.test(path))&&['name','sector','service_type','city','address','phone','website_url','photo_url'].includes(key)&&v.length<=300)continue;
       if((path==='/contact'||path==='/call-vistrah')&&['intent','business','category','subcategory','type','locality'].includes(key)&&v.length<=150)continue;
       if(service&&key==='intent'&&['enquiry','contact','recommendations','in-house'].includes(v))continue;
       if(service&&key==='tab'&&new RegExp(`^/service/${slug}/(?:${slug}/)?service/${slug}$`).test(path)&&['providers','recommendations','in-house'].includes(v))continue;

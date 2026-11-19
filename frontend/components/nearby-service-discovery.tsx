@@ -22,6 +22,7 @@ import {
   Phone,
   Plus,
   Scissors,
+  Search,
   ShoppingBag,
   Sprout,
   Utensils,
@@ -30,6 +31,8 @@ import {
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { LatestSearch, validPoint } from '@/lib/location';
+import { searchMarketplaceEntries } from '@/lib/marketplace-taxonomy';
+import { FLAGSHIP_SECTORS } from '../../shared/flagship-sectors';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
@@ -37,6 +40,7 @@ import {
   formatDistanceAway,
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
+  nearbyServicesUrl,
   normalizeNearbyRadius,
   phoneCallHref,
   resolveListingPhotoUri,
@@ -49,6 +53,7 @@ import {
   type NearbyServicesResponse,
 } from '../../shared/nearby-services';
 import { selfOnboardingUrl } from '../../shared/self-onboarding';
+import { useUser } from './customer';
 import { defaultMapPoint, useOptionalCustomerLocation } from './customer-location';
 import { UiText } from './localized-ui';
 import {
@@ -110,6 +115,15 @@ export function NearbyServiceDiscovery({
   serviceTitle: string;
 }) {
   const locCtx = useOptionalCustomerLocation();
+  const { user: currentUser } = useUser();
+  const [sectorQuery, setSectorQuery] = useState('');
+  const quickServiceHits = useMemo(
+    () =>
+      sectorQuery.trim()
+        ? searchMarketplaceEntries(sectorQuery).filter(entry => Boolean(entry.selection.type)).slice(0, 8)
+        : [],
+    [sectorQuery],
+  );
   const activePoint = useMemo(() => {
     const src = locCtx?.active ?? locCtx?.draft;
     if (src && validPoint(src)) {
@@ -155,11 +169,18 @@ export function NearbyServiceDiscovery({
 
   function getMoreOptionsForListing(item: NearbyBusinessItem): ListingMoreOptionItem[] {
     return buildListingMoreOptions({
+      listingId: item.id,
+      placeId: item.place_id ?? (item.source === 'google_places' ? item.slug : null),
+      ownerUserId: item.owner_user_id ?? null,
+      viewerUserId: currentUser?.id ?? null,
+      viewerRole: currentUser?.role ?? null,
       businessName: item.company || item.name,
       categorySlug: item.category_slug || categorySlug,
       subcategorySlug,
       typeSlug: item.business_type || typeSlug,
       locality: item.location || activePoint.locality,
+      phone: item.phone,
+      websiteUrl: item.website_url,
     });
   }
   const [state, setState] = useState<{
@@ -267,6 +288,68 @@ export function NearbyServiceDiscovery({
       aria-label={`Nearby ${serviceTitle} map and listings`}
       data-nearby-service={typeSlug}
     >
+      {/* 10 Unified Sectors Filter Pills + Fast Child Service Search */}
+      <div className={s.sectorFilterBar} aria-label="10 Unified Sectors filter">
+        <div className={s.sectorSearchWrap}>
+          <div className={s.sectorSearchBox}>
+            <Search size={15} aria-hidden="true" />
+            <input
+              type="search"
+              value={sectorQuery}
+              onChange={e => setSectorQuery(e.target.value)}
+              placeholder="Search child service types across 10 sectors (e.g. dental, architect, study abroad)…"
+              aria-label="Search child service types"
+              className={s.sectorSearchInput}
+            />
+            {sectorQuery && (
+              <button
+                type="button"
+                className={s.sectorSearchClear}
+                aria-label="Clear service search"
+                onClick={() => setSectorQuery('')}
+              >
+                <X size={14} aria-hidden="true" />
+              </button>
+            )}
+          </div>
+          {quickServiceHits.length > 0 && (
+            <div className={s.sectorSearchResults} role="listbox" aria-label="Matching service types">
+              {quickServiceHits.map(hit => (
+                <Link
+                  key={hit.id}
+                  href={hit.href}
+                  className={s.sectorSearchHit}
+                  onClick={() => setSectorQuery('')}
+                >
+                  <span>{hit.title}</span>
+                  <span className={s.sectorSearchPath}>{hit.path}</span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <nav className={s.sectorPillsRail} aria-label="VISTRAH 10 Unified Sectors">
+          {FLAGSHIP_SECTORS.map(sector => {
+            const isActiveSector = sector.slug === categorySlug;
+            return (
+              <Link
+                key={sector.slug}
+                href={nearbyServicesUrl({
+                  category: sector.slug,
+                  subcategory: sector.defaultSubcategorySlug,
+                  type: sector.defaultTypeSlug,
+                })}
+                aria-current={isActiveSector ? 'true' : undefined}
+                className={`${s.sectorPill} ${isActiveSector ? s.sectorPillActive : ''}`}
+              >
+                <UiText value={sector.title} />
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
       {/* Top Location + Radius Control Bar */}
       <div className={s.toolbar}>
         <div className={s.toolbarTitleGroup}>

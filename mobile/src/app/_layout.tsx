@@ -35,6 +35,7 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/v-ads" options={{title:'V Ads Studio'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="advertiser-profile" options={{title:'Advertiser profile'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/business/[id]" options={{title:'Business details & listings'}}/>
+    <Stack.Screen dangerouslySingular={appRouteIdentity} name="business/[id]" options={{title:'Business Growth & Audit'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/ownership" options={{title:'Business ownership'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/leads" options={{title:'Assigned enquiries'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="provider-applications/index" options={{title:'Business applications'}}/>

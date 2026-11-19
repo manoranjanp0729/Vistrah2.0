@@ -6,6 +6,7 @@ import {
   resolveMarketplaceSelection,
   type MarketplaceSelection,
 } from '@/lib/marketplace-taxonomy';
+import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../../../../shared/flagship-sectors';
 import { nearbyServicesUrl } from '../../../../../shared/nearby-services';
 import styles from '@/components/marketplace.module.css';
 
@@ -18,11 +19,24 @@ export default async function NearbyServicesPage({
   searchParams: Promise<{ category?: string; subcategory?: string; type?: string; q?: string }>;
 }) {
   const raw = await searchParams;
-  let cat = raw.category;
+  let cat = raw.category || FLAGSHIP_SECTORS[0].slug;
   let sub = raw.subcategory;
   let typ = raw.type;
 
-  if (cat && !sub && typ) {
+  if (cat && !sub && !typ) {
+    const flagship = getFlagshipSector(cat);
+    if (flagship) {
+      sub = flagship.defaultSubcategorySlug;
+      typ = flagship.defaultTypeSlug;
+    } else {
+      const matchedCat = marketplaceCategories.find(c => c.slug === cat);
+      const firstSub = matchedCat?.subcategories[0];
+      if (firstSub) {
+        sub = firstSub.slug;
+        typ = firstSub.listing_types[0]?.slug;
+      }
+    }
+  } else if (cat && !sub && typ) {
     const matchedCat = marketplaceCategories.find(c => c.slug === cat);
     const matchedSub =
       matchedCat?.subcategories.find(s => s.listing_types.some(lt => lt.slug === typ)) ??

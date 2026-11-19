@@ -23,9 +23,9 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
     const body=mutation?await request.text():undefined;
     const providerPath=path[0].startsWith('provider-')||(path[0]==='admin'&&path[1]?.startsWith('provider-'));
     const claimEvidence=path[0]==='seller'&&path[1]==='ownership-claims'&&path.at(-1)==='evidence';
-    const extendedBody=providerPath||['finds','seller','requests','employer-jobs'].includes(path[0]);
+    const extendedBody=providerPath||['finds','seller','requests','employer-jobs','marketing-audit','website-requests'].includes(path[0]);
     const isEditVistrah=path[0]==='admin'&&(path[1]==='edit-vistrah'||path[1]==='pricing');
-    const limit=providerPath&&(path.at(-1)==='documents'||path.at(-1)==='evidence'||path[0]==='provider-onboarding')||claimEvidence?3000000:isEditVistrah?1000000:extendedBody?128000:20000;
+    const limit=providerPath&&(path.at(-1)==='documents'||path.at(-1)==='evidence'||path[0]==='provider-onboarding')||(path[0]==='seller'&&path[1]==='onboard')||claimEvidence?3000000:isEditVistrah?1000000:extendedBody?128000:20000;
     if(body&&new TextEncoder().encode(body).length>limit) return NextResponse.json({detail:'Request too large'},{status:413});
     const response=await fetch(`${API_URL}/${path.map(encodeURIComponent).join('/')}${request.nextUrl.search}`,{method:request.method,headers,body,cache:'no-store',signal:AbortSignal.timeout(15000)});
     const isAuth=path[0]==='auth'&&((path.length===2&&['register','login','google'].includes(path[1]))||(path.length===3&&path[1]==='seller'&&['register','login','google'].includes(path[2])));

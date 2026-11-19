@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Image, Linking, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Linking, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { api, getApiBase } from '../lib/api';
 import { googleMapsDirectionsUrl } from '../lib/google-maps';
 import { useOptionalLocation } from '../lib/location';
+import { searchMarketplaceEntries } from '../lib/marketplace';
+import { useSession } from '../lib/session';
 import { useTheme } from '../lib/theme';
+import { FLAGSHIP_SECTORS } from '../../../shared/flagship-sectors';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
@@ -27,7 +30,7 @@ import {
 } from '../../../shared/nearby-services';
 import { MobilePoweredByGoogle } from './google-attribution';
 import { UiText } from './localized-ui';
-import { Text } from './typography';
+import { Text, TextInput } from './typography';
 import { VistrahMobileMap, type MobileMapMarker } from './vistrah-mobile-map';
 
 const DEFAULT_MOBILE_POINT = {
@@ -89,6 +92,16 @@ export function MobileNearbyServiceDiscovery({
   const { colors, mode } = useTheme();
   const isDark = mode === 'dark';
   const locCtx = useOptionalLocation();
+  const session = useSession(false);
+  const currentUser = session.user;
+  const [sectorQuery, setSectorQuery] = useState('');
+  const quickServiceHits = useMemo(
+    () =>
+      sectorQuery.trim()
+        ? searchMarketplaceEntries(sectorQuery).filter(entry => Boolean(entry.selection.type)).slice(0, 6)
+        : [],
+    [sectorQuery],
+  );
 
   const safeApiBase = useMemo(() => {
     try {
@@ -129,11 +142,18 @@ export function MobileNearbyServiceDiscovery({
 
   function getMobileMoreOptions(item: NearbyBusinessItem): ListingMoreOptionItem[] {
     return buildListingMoreOptions({
+      listingId: item.id,
+      placeId: item.place_id ?? (item.source === 'google_places' ? item.slug : null),
+      ownerUserId: item.owner_user_id ?? null,
+      viewerUserId: currentUser?.id ?? null,
+      viewerRole: currentUser?.role ?? null,
       businessName: item.company || item.name,
       categorySlug: item.category_slug || categorySlug,
       subcategorySlug,
       typeSlug: item.business_type || typeSlug,
       locality: item.location || activePoint.locality,
+      phone: item.phone,
+      websiteUrl: item.website_url,
     });
   }
 
@@ -215,6 +235,144 @@ export function MobileNearbyServiceDiscovery({
 
   return (
     <View style={s.container}>
+      {/* 10 Unified Sectors Filter Pills + Fast Child Service Search */}
+      <View
+        style={[
+          s.controlCard,
+          {
+            backgroundColor: isDark ? '#181426' : '#ffffff',
+            borderColor: isDark ? '#32264b' : '#e2d8ef',
+            gap: 10,
+          },
+        ]}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            paddingHorizontal: 10,
+            minHeight: 38,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: isDark ? '#32264b' : '#cbd5e1',
+            backgroundColor: isDark ? '#0f172a' : '#f8fafc',
+          }}
+        >
+          <Feather name="search" size={14} color={colors.muted} />
+          <TextInput
+            value={sectorQuery}
+            onChangeText={setSectorQuery}
+            placeholder="Search child services across 10 sectors…"
+            placeholderTextColor={colors.muted}
+            accessibilityLabel="Search child service types"
+            style={{ flex: 1, fontSize: 13, color: colors.text, paddingVertical: 6 }}
+          />
+          {Boolean(sectorQuery.trim()) && (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Clear service search"
+              onPress={() => setSectorQuery('')}
+              hitSlop={8}
+            >
+              <Feather name="x-circle" size={15} color={colors.muted} />
+            </Pressable>
+          )}
+        </View>
+
+        {quickServiceHits.length > 0 && (
+          <View
+            style={{
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: isDark ? '#32264b' : '#e2e8f0',
+              backgroundColor: isDark ? '#0f172a' : '#f8fafc',
+              overflow: 'hidden',
+            }}
+          >
+            {quickServiceHits.map(hit => (
+              <Pressable
+                key={hit.id}
+                accessibilityRole="button"
+                onPress={() => {
+                  setSectorQuery('');
+                  router.push({
+                    pathname: '/services/nearby',
+                    params: {
+                      category: hit.selection.category!,
+                      ...(hit.selection.subcategory
+                        ? { subcategory: hit.selection.subcategory }
+                        : {}),
+                      ...(hit.selection.type ? { type: hit.selection.type } : {}),
+                    },
+                  });
+                }}
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 9,
+                  borderBottomWidth: 1,
+                  borderBottomColor: isDark ? '#1e293b' : '#e2e8f0',
+                }}
+              >
+                <Text style={{ fontSize: 13, fontWeight: '600', color: colors.text }}>
+                  {hit.title}
+                </Text>
+                <Text style={{ fontSize: 11, color: colors.muted }}>{hit.path}</Text>
+              </Pressable>
+            ))}
+          </View>
+        )}
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: 8, paddingVertical: 2 }}
+        >
+          {FLAGSHIP_SECTORS.map(sector => {
+            const active = sector.slug === categorySlug;
+            return (
+              <Pressable
+                key={sector.slug}
+                accessibilityRole="button"
+                accessibilityState={{ selected: active }}
+                onPress={() =>
+                  router.push({
+                    pathname: '/services/nearby',
+                    params: {
+                      category: sector.slug,
+                      subcategory: sector.defaultSubcategorySlug,
+                      type: sector.defaultTypeSlug,
+                    },
+                  })
+                }
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 7,
+                  borderRadius: 999,
+                  borderWidth: 1,
+                  backgroundColor: active ? '#0f172a' : isDark ? '#241c36' : '#f8fafc',
+                  borderColor: active
+                    ? 'rgba(212,175,55,0.75)'
+                    : isDark
+                      ? '#382a53'
+                      : '#cbd5e1',
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: '700',
+                    color: active ? '#f8e7b0' : colors.text,
+                  }}
+                >
+                  {sector.title}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+      </View>
+
       {/* Header Bar: Nearby Title + Active Location Pill + Segmented Radius Filter */}
       <View
         style={[

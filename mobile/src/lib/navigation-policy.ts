@@ -28,6 +28,7 @@ export function backFallback(pathname:string,params:Record<string,unknown>={}):s
   }
   return path==='/seller'?'/account':'/seller';
  }
+ if(path.startsWith('/business/'))return '/services';
  if(path.startsWith('/provider-applications/'))return '/provider-applications';
  if(path.startsWith('/finds/'))return '/finds';
  const service=path.match(/^\/(?:estimate|request)\/([^/]+)$/);

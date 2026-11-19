@@ -25,7 +25,7 @@ it('renders only taxonomy browsing at every level without requesting the legacy 
       expect(html).not.toContain('published-services');
       expect(html).not.toContain('Service catalogue');
     }
-    await expect(Services({searchParams:Promise.resolve({category:'home-services',subcategory:'electrician-and-plumber'})})).rejects.toThrow('REDIRECT:/services?category=home-and-everyday-services&subcategory=repairs-and-maintenance&type=plumbing');
+    await expect(Services({searchParams:Promise.resolve({category:'home-services',subcategory:'electrician-and-plumber'})})).rejects.toThrow('REDIRECT:/services?category=interior-design-and-exteriors&subcategory=repairs-and-maintenance&type=plumbing');
     expect(fetcher).not.toHaveBeenCalled();
   }finally{vi.unstubAllGlobals();}
 });

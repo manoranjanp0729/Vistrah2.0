@@ -100,11 +100,12 @@ export default function Discover() {
         contentContainerStyle={s.quickTagsScroll}
       >
         {[
-          {label: '🚜 Farm & Agriculture', category: 'agriculture-and-farming'},
-          {label: '🏠 Home Care', category: 'home-and-everyday-services'},
-          {label: '🩺 Healthcare', category: 'health-fitness-and-wellness'},
-          {label: '🛍️ Shopping', category: 'shopping-and-local-retail'},
-          {label: '🚗 Automobiles', category: 'automobiles'},
+          {label: '🏢 Real Estate', category: 'real-estate-and-property'},
+          {label: '🏠 Interiors', category: 'interior-design-and-exteriors'},
+          {label: '🏗️ Civil & Contractors', category: 'civil-construction-and-contractors'},
+          {label: '🩺 HealthConnect', category: 'healthconnect-and-clinics'},
+          {label: '🍽️ Dining & Stays', category: 'hospitality-restaurants-and-cafes'},
+          {label: '🚗 Automobiles', category: 'automobiles-and-garages'},
         ].map((tag) => (
           <Pressable
             key={tag.category}

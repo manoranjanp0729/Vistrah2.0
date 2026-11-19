@@ -17,6 +17,7 @@ import {api} from '../../lib/api';
 import {vAds, toPlayableUrl} from '../../lib/v-ads';
 import brandTheme from '../../../../shared/brand-theme.json';
 import {pickAndUploadVideo} from '../../lib/v-ads-upload';
+import {deriveFreeVAdPrefillFromParams} from '../../../../shared/business-audit';
 import {studioVideoLive,type Workspace,type Reel,type AdMetadata,type AdType,parseAdDescription,type AdProductMeta} from '../../../../shared/v-ads';
 import {AdvertiserManagement,VideoManagement,DiscardUpload} from '../../components/v-ads-management';
 import {VAdsCreator} from '../../components/v-ads-creator';
@@ -381,22 +382,30 @@ function WorkspaceScreen(){
   const surface=mode==='light'?brandTheme.headerLight:brandTheme.headerDark;
   const brandGradient=[brandTheme.gradient[0],brandTheme.gradient[1],brandTheme.gradient[2]] as const;
   const resource=useResource<Workspace>('/v-ads/me',isSeller?(user?.id??null):null);
-  const params=useLocalSearchParams<{from?:string;tab?:string}>();
+  const params=useLocalSearchParams<{from?:string;tab?:string;business?:string;category?:string;type?:string;locality?:string}>();
+  const prefill=deriveFreeVAdPrefillFromParams({
+    business:typeof params.business==='string'?params.business:undefined,
+    category:typeof params.category==='string'?params.category:undefined,
+    type:typeof params.type==='string'?params.type:undefined,
+    locality:typeof params.locality==='string'?params.locality:undefined,
+  });
+  const wantsUploadTab=params.tab==='upload'||prefill.hasPrefill;
   const publicBrowse=params.from==='v-ads'||params.tab==='public';
-  const initialTab=publicBrowse||!isSeller?'public':'ads';
+  const initialTab=publicBrowse||!isSeller?'public':wantsUploadTab?'upload':'ads';
   const [studioTab,setStudioTab]=useState<'ads'|'create'|'upload'|'public'>(initialTab);
   useEffect(()=>{
     if(publicBrowse)setStudioTab('public');
+    else if(isSeller&&wantsUploadTab)setStudioTab('upload');
     else if(isSeller)setStudioTab(current=>current==='public'?'ads':current);
     else if(!user)setStudioTab('public');
-  },[publicBrowse,isSeller,user]);
-  const [title,setTitle]=useState(''),[videoDescription,setVideoDescription]=useState(''),[uploadId,setUploadId]=useState('');
-  const [adType,setAdType]=useState<AdType>('PRODUCT');
+  },[publicBrowse,isSeller,user,wantsUploadTab]);
+  const [title,setTitle]=useState(prefill.title),[videoDescription,setVideoDescription]=useState(prefill.videoDescription),[uploadId,setUploadId]=useState('');
+  const [adType,setAdType]=useState<AdType>(prefill.hasPrefill?prefill.adType:'PRODUCT');
   const [productName,setProductName]=useState('');
   const [productPrice,setProductPrice]=useState('');
   const [deliveryInfo,setDeliveryInfo]=useState('');
   const [productId,setProductId]=useState('');
-  const [productsAvailable,setProductsAvailable]=useState('');
+  const [productsAvailable,setProductsAvailable]=useState(prefill.productsAvailable);
   const [selectedProductDetails, setSelectedProductDetails] = useState<{
     title: string;
     channelName: string;

@@ -27,9 +27,14 @@ export default async function SellerOnboardPage({
     typeof params.locality === 'string' && params.locality.trim()
       ? params.locality.trim().slice(0, 120)
       : undefined;
+  const initialPlaceId =
+    typeof params.place_id === 'string' && /^[A-Za-z0-9_-]{1,160}$/.test(params.place_id.trim())
+      ? params.place_id.trim()
+      : undefined;
 
   return (
     <SelfOnboardingWizard
+      initialPlaceId={initialPlaceId}
       initialCategory={category}
       initialSubcategory={subcategory}
       initialType={type}

@@ -466,11 +466,19 @@ def review(id:str,service_id:int,data:Decision,user:User=Depends(admin_user),db:
         if provider and provider.verification_status in ('INACTIVE','REJECTED'):raise HTTPException(409,'Provider-level suspension or rejection must be resolved before approving another service')
         if not provider:
             lat=app.common.get('latitude');lng=app.common.get('longitude')
-            provider=Provider(owner_user_id=app.user_id,slug='provider-'+str(uuid.uuid4()),name=app.common['contact_name'],company=app.common['legal_name'],email=app.common['email'],phone=app.common['phone'],address=app.common['address'],location=app.common['location'],latitude=float(lat) if type(lat) in (int,float) else None,longitude=float(lng) if type(lng) in (int,float) else None,provenance='Authenticated provider application '+app.id,verification_status='VERIFIED',verification_evidence='Manual review recorded in provider application history',active=True)
+            provider=Provider(owner_user_id=app.user_id,slug='provider-'+str(uuid.uuid4()),name=app.common['contact_name'],company=app.common['legal_name'],email=app.common['email'],phone=app.common['phone'],address=app.common['address'],location=app.common['location'],latitude=float(lat) if type(lat) in (int,float) else None,longitude=float(lng) if type(lng) in (int,float) else None,google_place_id=app.common.get('place_id') or None,website_url=app.common.get('website_url') or None,instagram_url=app.common.get('instagram_url') or None,facebook_url=app.common.get('facebook_url') or None,provenance='Authenticated provider application '+app.id,verification_status='VERIFIED',verification_evidence='Manual review recorded in provider application history',active=True)
             db.add(provider);db.flush()
             applicant=db.get(User,app.user_id);applicant.seller_enabled=True
             from .v_ads_account_routes import ensure_seller_v_ads_account
             ensure_seller_v_ads_account(db,applicant)
+        elif provider.verification_status=='PENDING' and app.provider_id==provider.id and provider.owner_user_id==app.user_id:
+            provider.verification_status='VERIFIED';provider.active=True;provider.verification_evidence='Manual review recorded in provider application history'
+            if not provider.google_place_id and app.common.get('place_id'):provider.google_place_id=app.common['place_id']
+            if not provider.website_url and app.common.get('website_url'):provider.website_url=app.common['website_url']
+            if not provider.instagram_url and app.common.get('instagram_url'):provider.instagram_url=app.common['instagram_url']
+            if not provider.facebook_url and app.common.get('facebook_url'):provider.facebook_url=app.common['facebook_url']
+            if provider.latitude is None and provider.longitude is None and type(app.common.get('latitude')) in (int,float) and type(app.common.get('longitude')) in (int,float):
+                provider.latitude=float(app.common['latitude']);provider.longitude=float(app.common['longitude'])
         elif provider.verification_status!='VERIFIED':raise HTTPException(409,'Provider-level verification must be completed first')
         elif provider.latitude is None and provider.longitude is None and type(app.common.get('latitude')) in (int,float) and type(app.common.get('longitude')) in (int,float):
             provider.latitude=float(app.common['latitude']);provider.longitude=float(app.common['longitude'])

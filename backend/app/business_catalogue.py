@@ -1,15 +1,15 @@
-"""Full 800+ business & service catalogue (15 categories -> 132 subcategories -> 808 types).
+"""Unified 10-Sector business & service catalogue (10 sectors -> 133 subcategories -> 814 types).
 
 `apply_business_catalogue` is idempotent and safe to re-run. It:
-  1. upserts all 15 categories, 132 subcategories, and 808 service types from
+  1. upserts all 10 Unified Sectors, 133 subcategories, and 814 service types from
      `shared/business-types.json` into PostgreSQL `categories`, `subcategories`,
      and `services`;
   2. publishes a concise self-onboarding form for every service (licence fields
      remain optional and are only shown on regulated business types);
   3. with `retire_legacy=True`, carries existing `ProviderService` and
-     `CommerceListing` records over from v0 (`catalogue.json`) and v2 (81-type)
-     services onto their mapped canonical 808-type service with zero data loss,
-     while keeping `jobs-careers` active for the Find Jobs feature.
+     `CommerceListing` records over from v0 (`catalogue.json`), v2 (81-type),
+     and v3 (15-category) services onto their mapped canonical 10-Sector service
+     with zero data loss, while keeping `jobs-careers` active for Find Jobs.
 
 Never run against the normal database as routine verification. Live usage:
     python -m app.business_catalogue --dry-run   # report only, rolls back
@@ -39,14 +39,14 @@ from .provider_models import ProviderRequirement
 from .provider_requirements import Requirements
 
 SOURCE_FILE = Path(__file__).resolve().parents[2] / "shared" / "business-types.json"
-BOOTSTRAP_KEY = "business-catalogue-v3-808"
+BOOTSTRAP_KEY = "business-catalogue-v4-10sectors"
 MAX_INCLUDES = 5
 
 
 @lru_cache(maxsize=1)
 def business_types() -> dict:
     data = json.loads(SOURCE_FILE.read_text(encoding="utf-8"))
-    assert len(data["categories"]) == 15
+    assert len(data["categories"]) == 10
     assert sum(len(c["types"]) for c in data["categories"]) >= 800
     return data
 

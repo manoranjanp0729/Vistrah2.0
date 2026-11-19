@@ -113,7 +113,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     owner_headers = seller(client, "nearby-owner@example.com")
     owner_id = client.get("/me", headers=owner_headers).json()["id"]
 
-    cat = db.scalar(select(Category).where(Category.slug == "food-and-dining"))
+    cat = db.scalar(select(Category).where(Category.slug == "hospitality-restaurants-and-cafes"))
     svc_rest = db.scalar(select(Service).where(Service.category_id == cat.id, Service.slug == "restaurants"))
     svc_other = db.scalar(select(Service).where(Service.category_id == cat.id, Service.slug != "restaurants").limit(1))
 
@@ -196,6 +196,9 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     first = body5["items"][0]
     assert first["source"] == "vistrah"
     assert first["id"] == near_biz.id
+    assert first["owner_user_id"] == owner_id
+    assert first["place_id"] is None
+    assert first["category_slug"] == "hospitality-restaurants-and-cafes"
     assert first["phone"] == "+919845011111"
     assert first["whatsapp"] == "+919845022222"
     assert first["photo_url"] is None  # KYC registration_document remained strictly private!
@@ -263,7 +266,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
 
     owner_headers = seller(client, "hybrid-owner@example.com")
     owner_id = client.get("/me", headers=owner_headers).json()["id"]
-    cat = db.scalar(select(Category).where(Category.slug == "home-and-everyday-services"))
+    cat = db.scalar(select(Category).where(Category.slug == "interior-design-and-exteriors"))
     svc = db.scalar(select(Service).where(Service.category_id == cat.id).order_by(Service.id).limit(1))
 
     base_lat, base_lng = 12.9716, 77.5946
@@ -364,8 +367,11 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     assert data1["has_google_places"] is True
     assert data1["total"] == 3
     assert data1["items"][0]["id"] == vistrah_biz.id
+    assert data1["items"][0]["owner_user_id"] == owner_id
     gp1 = data1["items"][1]
     assert gp1["source"] == "google_places"
+    assert gp1["owner_user_id"] is None
+    assert gp1["place_id"] == "ChIJ_place_near_08"
     assert gp1["phone"] == "08022219988"
     assert gp1["website_url"] == "https://cubbonservices.in"
     assert (

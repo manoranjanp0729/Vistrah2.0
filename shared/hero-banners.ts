@@ -35,13 +35,13 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     badge: 'FOR USERS',
     navTitle: 'For Users',
     title: 'Find the Right Services on VISTRAH',
-    subtitle: 'Direct verified business owners across 13 sectors—zero broker call spam.',
+    subtitle: 'Direct verified business owners across 10 unified sectors—zero broker call spam.',
     webImageSrc: '/hero-journey/for-users-widescreen.jpg',
     storyPath: '/for-users',
     stats: [
-      {value: '13+', label: 'Essential Verticals'},
+      {value: '10', label: 'Unified Sectors'},
       {value: '0', label: 'Lead-Broker Resales'},
-      {value: '2–25 km', label: 'Live V Ads Reels'},
+      {value: 'Any km', label: 'Free V Ads Reels'},
       {value: '100%', label: 'Direct Owner Access'},
     ],
     primaryCta: {
@@ -131,14 +131,14 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     primaryCta: {
       label: 'Explore Agri Services',
       shortLabel: 'Agri Services',
-      webHref: '/services?category=agriculture-and-farming',
-      mobileRoute: '/services?category=agriculture-and-farming',
+      webHref: '/services?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
+      mobileRoute: '/services?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
     },
     secondaryCta: {
       label: 'List Agri Business',
       shortLabel: 'List Agri Service',
-      webHref: '/seller/onboard?category=agriculture-and-farming',
-      mobileRoute: '/seller/onboard?category=agriculture-and-farming',
+      webHref: '/seller/onboard?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
+      mobileRoute: '/seller/onboard?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
     },
   },
   {
@@ -151,7 +151,7 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     webImageSrc: '/hero-journey/healthconnect-family-banner.jpg',
     storyPath: '/health-connect',
     stats: [
-      {value: '10', label: 'Care Pathways'},
+      {value: '10+', label: 'Care Pathways'},
       {value: '50+', label: 'Health Specialties'},
       {value: 'At-Home', label: 'Labs & Nursing'},
       {value: 'Direct', label: 'Clinic Appointments'},
@@ -159,14 +159,14 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     primaryCta: {
       label: 'Explore Health Services',
       shortLabel: 'Health Services',
-      webHref: '/services?category=health-fitness-and-wellness',
-      mobileRoute: '/services?category=health-fitness-and-wellness',
+      webHref: '/services?category=healthconnect-and-clinics',
+      mobileRoute: '/services?category=healthconnect-and-clinics',
     },
     secondaryCta: {
       label: 'Register Clinic / Lab',
       shortLabel: 'Join HealthConnect',
-      webHref: '/seller/onboard?category=health-fitness-and-wellness',
-      mobileRoute: '/seller/onboard?category=health-fitness-and-wellness',
+      webHref: '/seller/onboard?category=healthconnect-and-clinics',
+      mobileRoute: '/seller/onboard?category=healthconnect-and-clinics',
     },
   },
 ] as const;
@@ -191,21 +191,16 @@ export const USER_COMPARISON = {
 } as const;
 
 export const USER_VERTICALS = [
-  {num: '01', slug: 'home-and-everyday-services', title: 'Home Services', caption: 'Repairs, interiors, cleaning & movers', icon: 'home'},
-  {num: '02', slug: 'professional-services', title: 'Legal, Tax & Consulting', caption: 'Lawyers, CAs, marketing & IT pros', icon: 'briefcase'},
-  {num: '03', slug: 'automobiles', title: 'Automobiles', caption: 'EVs, servicing, detailing & roadside help', icon: 'truck'},
-  {num: '04', slug: 'health-fitness-and-wellness', title: 'HealthConnect', caption: 'Clinics, labs, home care & fitness', icon: 'heart'},
-  {num: '05', slug: 'agriculture-and-farming', title: 'AgriConnect', caption: 'Machinery, seeds, irrigation & advisory', icon: 'sun'},
-  {num: '06', slug: 'rental-services', title: 'Rentals', caption: 'Vehicles, tools, appliances & event gear', icon: 'key'},
-  {num: '07', slug: 'food-and-dining', title: 'Food & Dining', caption: 'Restaurants, cafés, bakeries & catering', icon: 'coffee'},
-  {num: '08', slug: 'shopping-and-local-retail', title: 'Local Retail', caption: 'Electronics, fashion, furniture & makers', icon: 'shopping-bag'},
-  {num: '09', slug: 'education-and-skills', title: 'Education & Skills', caption: 'Tutors, IT courses, exams & coaching', icon: 'book-open'},
-  {num: '10', slug: 'jobs-and-careers', title: 'Jobs & Careers', caption: 'Local hiring, IT roles & career support', icon: 'users'},
-  {num: '11', slug: 'travel-stay-and-experiences', title: 'Travel & Stay', caption: 'Stays, tours, transfers & experiences', icon: 'compass'},
-  {num: '12', slug: 'beauty-fashion-and-lifestyle', title: 'Beauty & Lifestyle', caption: 'Salons, spas, bridal & studio shoots', icon: 'star'},
-  {num: '13', slug: 'events-and-celebrations', title: 'Events & Celebrations', caption: 'Venues, weddings, decor & planners', icon: 'calendar'},
-  {num: '14', slug: 'pet-care', title: 'Pet Care', caption: 'Vet clinics, grooming, boarding & supplies', icon: 'heart'},
-  {num: '15', slug: 'property-and-construction', title: 'Property & Construction', caption: 'Real estate, plots, contractors & materials', icon: 'briefcase'},
+  {num: '01', slug: 'real-estate-and-property', title: 'Real Estate & Property', caption: 'Plots, apartments, commercial leasing & valuation', icon: 'briefcase'},
+  {num: '02', slug: 'interior-design-and-exteriors', title: 'Interior Design & Exteriors', caption: 'Modular kitchens, facades, painting & home care', icon: 'home'},
+  {num: '03', slug: 'civil-construction-and-contractors', title: 'Civil Construction & Contractors', caption: 'Architects, turnkey builders, materials & borewell', icon: 'sun'},
+  {num: '04', slug: 'healthconnect-and-clinics', title: 'HealthConnect & Clinics', caption: 'Hospitals, labs, pharmacies, physio & vet care', icon: 'heart'},
+  {num: '05', slug: 'hospitality-restaurants-and-cafes', title: 'Hospitality, Restaurants & Cafés', caption: 'Restaurants, cafés, catering, stays & tours', icon: 'coffee'},
+  {num: '06', slug: 'salons-bridal-and-wellness', title: 'Salons, Bridal & Wellness', caption: 'Salons, bridal makeup, spas, boutiques & jewellery', icon: 'star'},
+  {num: '07', slug: 'events-weddings-and-media', title: 'Events, Weddings & Media', caption: 'Venues, wedding planners, film shoots & branding', icon: 'calendar'},
+  {num: '08', slug: 'automobiles-and-garages', title: 'Automobiles & Garages', caption: 'Garages, EV care, detailing, tyres & roadside help', icon: 'truck'},
+  {num: '09', slug: 'legal-tax-and-business-compliance', title: 'Legal, Tax & Business Compliance', caption: 'CAs, GST, advocates, company setup & IT advisory', icon: 'briefcase'},
+  {num: '10', slug: 'overseas-education-and-skill-academies', title: 'Overseas, Education & Skill Academies', caption: 'Study abroad, visas, IELTS, coaching & placement', icon: 'book-open'},
 ] as const;
 
 export const BUSINESS_TIMELINE = [

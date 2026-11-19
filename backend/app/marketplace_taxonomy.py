@@ -1,4 +1,4 @@
-"""Read-only master taxonomy metadata (15 categories -> 132 subcategories -> 808 listing types).
+"""Read-only master taxonomy metadata (10 Unified Sectors -> 133 subcategories -> 814 listing types).
 
 Simplified v2 slugs and bookmarks remain accepted on read through
 `shared/marketplace-legacy-map.json` so existing links keep resolving cleanly.
@@ -64,9 +64,16 @@ def _resolve_current(category_slug: str, subcategory_slug: str, listing_type_slu
 
 
 def canonical_selection(category_slug: str, subcategory_slug: str, listing_type_slug: str):
-    """Return the current `(category, subcategory, listing_type)` slugs for a current or v2 selection."""
+    """Return the current `(category, subcategory, listing_type)` slugs for a current, v3, or v2 selection."""
     if _resolve_current(category_slug, subcategory_slug, listing_type_slug):
         return category_slug, subcategory_slug, listing_type_slug
+    current_cats = {c["slug"] for c in master_taxonomy()["categories"]}
+    if category_slug not in current_cats:
+        for cat in master_taxonomy()["categories"]:
+            for sub in cat["subcategories"]:
+                if sub["slug"] == subcategory_slug:
+                    if any(lt["slug"] == listing_type_slug for lt in sub["listing_types"]):
+                        return cat["slug"], sub["slug"], listing_type_slug
     mapped = legacy_map().get("subcategories", {}).get(subcategory_slug) or legacy_map().get(
         "subcategories", {}
     ).get(listing_type_slug)

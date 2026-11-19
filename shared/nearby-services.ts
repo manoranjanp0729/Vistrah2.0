@@ -14,6 +14,8 @@ export type NearbyBusinessItem = {
   source: NearbyListingSource;
   id: number | string;
   slug: string;
+  owner_user_id?: number | null;
+  place_id?: string | null;
   name: string;
   company: string;
   contact_name: string;
@@ -39,6 +41,8 @@ export type NearbyBusinessItem = {
 };
 
 export type ListingMoreOptionId =
+  | 'my-business-growth'
+  | 'admin-business-audit'
   | 'join-vistrah'
   | 'request-website'
   | 'create-free-ad'
@@ -48,7 +52,7 @@ export type ListingMoreOptionItem = {
   id: ListingMoreOptionId;
   label: string;
   href: string;
-  pathname: '/seller/onboard' | '/contact' | '/seller/v-ads';
+  pathname: '/seller/onboard' | '/contact' | '/seller/v-ads' | '/business/[id]';
   params: Record<string, string>;
 };
 
@@ -84,6 +88,86 @@ export type DivisionFallbackTheme = {
 };
 
 const DIVISION_THEMES: Record<string, DivisionFallbackTheme> = {
+  'real-estate-and-property': {
+    bgDark: 'rgba(212, 175, 55, 0.16)',
+    bgLight: '#fefce8',
+    borderDark: 'rgba(212, 175, 55, 0.38)',
+    borderLight: '#fde68a',
+    accent: '#b45309',
+    glyph: 'layers',
+  },
+  'interior-design-and-exteriors': {
+    bgDark: 'rgba(56, 189, 248, 0.14)',
+    bgLight: '#f0f9ff',
+    borderDark: 'rgba(56, 189, 248, 0.35)',
+    borderLight: '#bae6fd',
+    accent: '#0284c7',
+    glyph: 'tool',
+  },
+  'civil-construction-and-contractors': {
+    bgDark: 'rgba(34, 197, 94, 0.14)',
+    bgLight: '#f0fdf4',
+    borderDark: 'rgba(34, 197, 94, 0.35)',
+    borderLight: '#bbf7d0',
+    accent: '#16a34a',
+    glyph: 'layers',
+  },
+  'healthconnect-and-clinics': {
+    bgDark: 'rgba(20, 184, 166, 0.14)',
+    bgLight: '#f0fdfa',
+    borderDark: 'rgba(20, 184, 166, 0.35)',
+    borderLight: '#99f6e4',
+    accent: '#0d9488',
+    glyph: 'heart',
+  },
+  'hospitality-restaurants-and-cafes': {
+    bgDark: 'rgba(249, 115, 22, 0.14)',
+    bgLight: '#fff7ed',
+    borderDark: 'rgba(249, 115, 22, 0.35)',
+    borderLight: '#fed7aa',
+    accent: '#ea580c',
+    glyph: 'utensils',
+  },
+  'salons-bridal-and-wellness': {
+    bgDark: 'rgba(236, 72, 153, 0.14)',
+    bgLight: '#fdf2f8',
+    borderDark: 'rgba(236, 72, 153, 0.35)',
+    borderLight: '#fbcfe8',
+    accent: '#db2777',
+    glyph: 'scissors',
+  },
+  'events-weddings-and-media': {
+    bgDark: 'rgba(168, 85, 247, 0.14)',
+    bgLight: '#faf5ff',
+    borderDark: 'rgba(168, 85, 247, 0.35)',
+    borderLight: '#e9d5ff',
+    accent: '#7e22ce',
+    glyph: 'camera',
+  },
+  'automobiles-and-garages': {
+    bgDark: 'rgba(99, 102, 241, 0.14)',
+    bgLight: '#eef2ff',
+    borderDark: 'rgba(99, 102, 241, 0.35)',
+    borderLight: '#c7d2fe',
+    accent: '#4f46e5',
+    glyph: 'truck',
+  },
+  'legal-tax-and-business-compliance': {
+    bgDark: 'rgba(14, 165, 233, 0.14)',
+    bgLight: '#f0f9ff',
+    borderDark: 'rgba(14, 165, 233, 0.35)',
+    borderLight: '#bae6fd',
+    accent: '#0369a1',
+    glyph: 'briefcase',
+  },
+  'overseas-education-and-skill-academies': {
+    bgDark: 'rgba(59, 130, 246, 0.14)',
+    bgLight: '#eff6ff',
+    borderDark: 'rgba(59, 130, 246, 0.35)',
+    borderLight: '#bfdbfe',
+    accent: '#2563eb',
+    glyph: 'book',
+  },
   'food-and-dining': {
     bgDark: 'rgba(249, 115, 22, 0.14)',
     bgLight: '#fff7ed',
@@ -434,20 +518,34 @@ export function googleMapsHybridSearchHref(
 }
 
 export function buildListingMoreOptions(input: {
+  listingId?: number | string | null;
+  placeId?: string | null;
+  ownerUserId?: number | null;
+  viewerUserId?: number | null;
+  viewerRole?: string | null;
   businessName: string;
   categorySlug: string;
   subcategorySlug?: string;
   typeSlug: string;
   locality?: string;
+  phone?: string | null;
+  websiteUrl?: string | null;
 }): ListingMoreOptionItem[] {
   const business = input.businessName.trim().slice(0, 140);
   const category = input.categorySlug.trim();
   const subcategory = input.subcategorySlug?.trim() || '';
   const type = input.typeSlug.trim();
   const locality = (input.locality || '').trim().slice(0, 120);
+  const placeId =
+    typeof input.placeId === 'string' && /^[A-Za-z0-9_-]{1,160}$/.test(input.placeId.trim())
+      ? input.placeId.trim()
+      : '';
 
-  const onboardParams: Record<string, string> = { category, type };
+  const onboardParams: Record<string, string> = {};
+  if (placeId) onboardParams.place_id = placeId;
+  onboardParams.category = category;
   if (subcategory) onboardParams.subcategory = subcategory;
+  onboardParams.type = type;
   if (business) onboardParams.business = business;
   if (locality) onboardParams.locality = locality;
 
@@ -478,7 +576,7 @@ export function buildListingMoreOptions(input: {
     return qs ? `${pathname}?${qs}` : pathname;
   };
 
-  return [
+  const standardItems: ListingMoreOptionItem[] = [
     {
       id: 'join-vistrah',
       label: 'Join Vistrah',
@@ -508,6 +606,71 @@ export function buildListingMoreOptions(input: {
       href: toHref('/contact', contactParams),
     },
   ];
+
+  const cleanListingId =
+    input.listingId != null && /^[A-Za-z0-9_-]{1,120}$/.test(String(input.listingId).trim())
+      ? String(input.listingId).trim()
+      : '';
+  const isOwner =
+    input.viewerUserId != null &&
+    input.ownerUserId != null &&
+    Number(input.viewerUserId) === Number(input.ownerUserId);
+  const isAdmin = String(input.viewerRole || '').toUpperCase() === 'ADMIN';
+
+  if (isOwner && cleanListingId) {
+    return [
+      {
+        id: 'my-business-growth',
+        label: 'My Business Growth & Audit',
+        pathname: '/business/[id]',
+        params: { id: cleanListingId },
+        href: `/business/${encodeURIComponent(cleanListingId)}`,
+      },
+      ...standardItems.filter(item => item.id !== 'join-vistrah'),
+    ];
+  }
+
+  if (isAdmin && cleanListingId) {
+    const auditParams: Record<string, string> = { id: cleanListingId };
+    const queryForHref = new URLSearchParams();
+    if (business) {
+      auditParams.name = business;
+      queryForHref.set('name', business);
+    }
+    if (category) {
+      auditParams.sector = category;
+      queryForHref.set('sector', category);
+    }
+    if (type) {
+      auditParams.service_type = type;
+      queryForHref.set('service_type', type);
+    }
+    if (locality) {
+      auditParams.city = locality;
+      queryForHref.set('city', locality);
+    }
+    if (input.phone && input.phone.trim()) {
+      auditParams.phone = input.phone.trim().slice(0, 30);
+      queryForHref.set('phone', auditParams.phone);
+    }
+    if (input.websiteUrl && input.websiteUrl.trim()) {
+      auditParams.website_url = input.websiteUrl.trim().slice(0, 260);
+      queryForHref.set('website_url', auditParams.website_url);
+    }
+    const qs = queryForHref.toString();
+    return [
+      {
+        id: 'admin-business-audit',
+        label: 'Open Business Audit & Strategy',
+        pathname: '/business/[id]',
+        params: auditParams,
+        href: `/business/${encodeURIComponent(cleanListingId)}${qs ? `?${qs}` : ''}`,
+      },
+      ...standardItems,
+    ];
+  }
+
+  return standardItems;
 }
 
 export function buildContactPrefillMailto(

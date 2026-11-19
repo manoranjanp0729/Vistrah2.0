@@ -266,7 +266,7 @@ export default function Services() {
         >
           {!category&&<BannerGeometry/>}
           {!category&&<View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow}]} />}
-          {category&&<View pointerEvents="none" style={StyleSheet.absoluteFill}><Image source={categoryHeroImages[category.slug]} resizeMode="cover" accessible={false} style={{width:'100%',height:'100%',opacity:0.35}}/></View>}
+          {category&&<View pointerEvents="none" style={StyleSheet.absoluteFill}><Image source={categoryHeroImages[category.slug]} resizeMode="cover" accessible={false} style={{width:'100%',height:'100%'}}/></View>}
 
           {isRootLevel ? (
             <>
@@ -285,10 +285,10 @@ export default function Services() {
                   <Text style={[s.heroPillText,{color:banner.muted}]}>Verified Providers</Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={s.heroTitle}>
+              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
                 {t('discovery.title')}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
                 <UiText value="Browse and connect with verified local professionals, equipment rentals, and specialized services across India." />
               </Text>
             </>
@@ -309,10 +309,10 @@ export default function Services() {
                   </Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={s.heroTitle}>
+              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
                 {categoryName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
                 <UiText value="Select a specialized subcategory below to view dedicated providers and services." />
               </Text>
             </>
@@ -333,10 +333,10 @@ export default function Services() {
                   </Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={s.heroTitle}>
+              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
                 {subcategoryName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
                 <UiText value="Choose an exact service listing type to browse offers, get quotations, and contact verified specialists." />
               </Text>
             </>
@@ -356,10 +356,10 @@ export default function Services() {
                   <Text style={[s.heroPillText,{color:banner.muted}]}>Direct Listings</Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={s.heroTitle}>
+              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
                 {listingTypeName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
                 <UiText value="Review available packages, verify provider details, and submit direct enquiries." />
               </Text>
             </>
@@ -853,6 +853,11 @@ const s = StyleSheet.create({
     fontSize: 11,
     fontWeight: '600',
     color: '#e4d8f5',
+  },
+  heroTextSurface: {
+    backgroundColor: '#172c26',
+    alignSelf: 'flex-start',
+    borderRadius: 4,
   },
   heroTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,

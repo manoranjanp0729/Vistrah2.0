@@ -5,7 +5,9 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
   const {path}=await params;
   if(path.some(p=>!p||p==='..'||p.includes('/')||p.includes('\\'))) return NextResponse.json({detail:'Invalid path'},{status:400});
   const endpoint=path.join('/');
-  if(path[0]!=='admin'&&!['auth/login','auth/logout','me','health','catalogue'].includes(endpoint))return NextResponse.json({detail:'Not available in VISTRAH Admin'},{status:404});
+  const auditAdminPath=['marketing-audit','business-profile','website-requests'].includes(path[0]);
+  const placePhotoPath=path[0]==='marketplace'&&(path[1]==='place-photo'||path[1]==='provider-photo');
+  if(path[0]!=='admin'&&!auditAdminPath&&!placePhotoPath&&!['auth/login','auth/logout','me','health','catalogue'].includes(endpoint))return NextResponse.json({detail:'Not available in VISTRAH Admin'},{status:404});
   const mutation=!['GET','HEAD'].includes(request.method);
   if(mutation) {
     const origin=request.headers.get('origin');
@@ -18,7 +20,7 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
   const signature=request.headers.get('x-signature');
   if(signature) headers['x-signature']=signature;
   try {
-    if(path[0]==='admin'||endpoint==='catalogue'){
+    if(path[0]==='admin'||auditAdminPath||endpoint==='catalogue'){
       if(!token)return NextResponse.json({detail:'Administrator sign-in required'},{status:401});
       const identity=await fetch(API_URL+'/me',{headers:{Authorization:`Bearer ${token}`},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
       if(!identity.ok)return NextResponse.json({detail:'Administrator sign-in required'},{status:identity.status===401?401:503});
@@ -28,7 +30,7 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
     const providerPath=path[0].startsWith('provider-')||(path[0]==='admin'&&path[1]?.startsWith('provider-'));
     const claimEvidence=path[0]==='seller'&&path[1]==='ownership-claims'&&path.at(-1)==='evidence';
     const isEditVistrah=path[0]==='admin'&&(path[1]==='edit-vistrah'||path[1]==='pricing');
-    const limit=providerPath&&(path.at(-1)==='documents'||path.at(-1)==='evidence')||claimEvidence?3000000:isEditVistrah?1000000:providerPath||path[0]==='finds'?128000:20000;
+    const limit=providerPath&&(path.at(-1)==='documents'||path.at(-1)==='evidence')||claimEvidence?3000000:isEditVistrah?1000000:providerPath||auditAdminPath||path[0]==='finds'?128000:20000;
     if(body&&new TextEncoder().encode(body).length>limit) return NextResponse.json({detail:'Request too large'},{status:413});
     const response=await fetch(`${API_URL}/${path.map(encodeURIComponent).join('/')}${request.nextUrl.search}`,{method:request.method,headers,body,cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
     const isAuth=path[0]==='auth'&&((path.length===2&&['register','login'].includes(path[1]))||(path.length===3&&path[1]==='seller'&&['register','login'].includes(path[2])));

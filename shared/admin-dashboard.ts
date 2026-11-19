@@ -20,6 +20,14 @@ export const adminPrimaryDestinations:readonly AdminPrimaryDestination[] = [
     matches:[''],
   },
   {
+    slug:'business-audit',
+    href:'/admin/business-audit',
+    label:'Data & Audit CRM',
+    eyebrow:'MULTI-FILTER PROSPECTING & 7-PILLAR AUDIT',
+    description:'Explore VISTRAH & Google Places businesses across all 10 sectors, filter missing digital pillars, launch 7-pillar live quotes, and track saved leads.',
+    matches:['business-audit'],
+  },
+  {
     slug:'moderation',
     href:'/admin/moderation',
     label:'V Ads & Sellers',
@@ -56,6 +64,7 @@ export const adminPrimaryDestinations:readonly AdminPrimaryDestination[] = [
 // Shared task order for the independent admin website and native overview.
 export const adminTaskGroups:AdminGroup[] = [
   {title:'Daily work',collapsed:false,items:[
+    {slug:'business-audit',label:'Data Collection & Business Audit',description:'Multi-filter 10-sector business explorer, 7-pillar growth audit, and saved lead pipeline.'},
     {slug:'moderation',label:'V Ads & Sellers',description:'Review V Ads, spatial revisions, sellers, and user consent.'},
     {slug:'requests',label:'Enquiries & estimates',description:'Review customer requests and move work forward.'},
     {slug:'commerce-orders',label:'Purchase orders',description:'Track purchases and fulfilment.'},

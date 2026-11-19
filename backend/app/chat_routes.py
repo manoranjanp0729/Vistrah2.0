@@ -211,18 +211,18 @@ def _catalogue_grounding() -> tuple[str, list[dict[str, str]]]:
         "Always be warm, concise (2 to 4 short sentences or compact bullet points), accurate, and India-focused.\n"
         "Never invent phone numbers, prices, external links, or unverified claims.\n\n"
         "GROUNDED VISTRAH PLATFORM FACTS:\n"
-        f"- Marketplace Taxonomy: {len(categories)} major divisions covering {total_types}+ service & business types:\n  "
+        f"- Marketplace Taxonomy: {len(categories)} unified sectors covering {total_types}+ service & business types:\n  "
         + "\n  ".join(division_lines)
         + "\n"
-        "- In-App Nearby Service Discovery (`/services/nearby`): Clicking any service type opens an interactive map + distance-sorted nearby businesses (`5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, conditional `Website`, `Directions`, and a `More` menu.\n"
-        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 808+ service types is 100% FREE forever with 0% lead commission. In ~3 minutes: "
-        "(1) Search & pick up to 3 business types from 808+ services, "
-        "(2) Enter shop name, phone/WhatsApp, drop map pin + coverage radius (`5/10/25/50 km`), with optional licence upload ONLY for regulated professions (doctors, pharmacies, food/FSSAI, legal/CA), "
+        "- In-App Nearby Service Discovery (`/services/nearby`): 10-sector filter pills + fast keyword search across all child service types, interactive map + distance-sorted nearby businesses (`5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, conditional `Website`, `Directions`, and role-aware `More Options`.\n"
+        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 10 unified sectors (800+ service types) is 100% FREE forever with 0% lead commission. In ~3 minutes: "
+        "(1) Search & pick up to 3 business types across VISTRAH's 10 unified sectors, "
+        "(2) Enter shop name, phone/WhatsApp, drop map pin + coverage radius (`5/10/25/50 km`), with optional licence upload ONLY for regulated professions (doctors, pharmacies, food/FSSAI, legal/CA, RERA), "
         "(3) Accept terms & submit.\n"
         "- 100% Free Self-Serve V Ads for ANY Radius (`/seller/v-ads` & `/v-ads` — ₹0 / Free Forever): Creating and uploading hyperlocal 9:16 V Ads Reels and targeting ANY geographic radius (`2 km`, `5 km`, `10 km`, `25 km`, `50 km+`, or custom radius) inside VISTRAH is 100% FREE forever (`₹0`), subject only to standard admin quality moderation.\n"
-        "- Paid VISTRAH Services (`/pricing` & `/marketing-pricing`): Paid pricing applies ONLY to optional done-for-you agency and business tech solutions:\n"
+        "- Paid VISTRAH Services (`/pricing` & `/marketing-pricing`): Paid pricing applies STRICTLY to optional done-for-you agency and custom digital solutions:\n"
         "  1. VISTRAH Ads & Marketing Studio: Custom commercial video ad production (Reels, Shorts, brand films from ₹2,999), graphic/brochure design (from ₹499), managed Meta/Google/social marketing retainers (from ₹4,999/month + external ad spend at actuals), outdoor hoardings, and transit branding.\n"
-        "  2. Website & Digital Setup (VISTRAH Tech / Automation): Custom business website design & launch (landing pages from ₹4,999, business websites from ₹12,999+, or request via `/contact?intent=request-website`) and custom business workflow automation.\n\n"
+        "  2. Website & Digital Solutions (VISTRAH Tech / Automation): Custom business website design & launch (landing pages from ₹4,999, business websites from ₹12,999+, or request via `/contact?intent=request-website`) and custom business workflow automation.\n\n"
         "OUTPUT FORMAT (STRICT JSON ONLY):\n"
         'Return a JSON object with exact keys: {"reply": "<concise helpful answer>", "suggestedActions": [{"label": "<short button text>", "href": "<valid internal path>"}]}.\n'
         "Allowed `href` patterns ONLY: `/services`, `/services?category=<cat_slug>`, "
@@ -382,17 +382,17 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
             "suggestedActions": actions[:3],
         }
 
-    if any(k in lower for k in ("division", "categories", "13 division", "15 division", "what services", "explore")):
+    if any(k in lower for k in ("division", "sector", "categories", "10 sector", "13 division", "15 division", "what services", "explore")):
         cats = business_types().get("categories", [])
-        names = ", ".join(c["title"] for c in cats[:8])
+        names = ", ".join(c["title"] for c in cats)
         return {
             "reply": (
-                f"Vistrah India organizes 808+ hyperlocal services across {len(cats)} major divisions — including {names}, "
-                "Agriculture & Farming, Pet Care, and Property & Construction. Tap any service to view nearby providers on an interactive map with shop photos, Call, Website, and Directions."
+                f"Vistrah India organizes 800+ hyperlocal services across {len(cats)} unified sectors: {names}. "
+                "Tap any sector or search child services to view nearby businesses on an interactive map with shop photos, Call, Website, Directions, and role-aware More Options."
             ),
             "suggestedActions": [
-                {"label": "Browse All Divisions", "href": "/services"},
-                {"label": "AgriConnect", "href": "/agri-connect"},
+                {"label": "Browse 10 Sectors", "href": "/services"},
+                {"label": "Nearby Services", "href": "/services/nearby?category=real-estate-and-property"},
                 {"label": "List Business Free", "href": "/seller/onboard"},
             ],
         }

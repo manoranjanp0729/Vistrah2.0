@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {Activity,Globe,IndianRupee,LayoutDashboard,ShieldCheck} from 'lucide-react';
+import {Activity,Globe,IndianRupee,LayoutDashboard,Search,ShieldCheck} from 'lucide-react';
 import {adminPrimaryDestinations,adminTaskGroups} from '../../shared/admin-dashboard';
 
 export const adminGroups = adminTaskGroups.map(group => ({
@@ -15,6 +15,7 @@ export const adminGroups = adminTaskGroups.map(group => ({
 
 const navIcons = {
   '': LayoutDashboard,
+  'business-audit': Search,
   moderation: ShieldCheck,
   pricing: IndianRupee,
   homepage: Globe,

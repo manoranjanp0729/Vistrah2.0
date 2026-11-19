@@ -18,7 +18,7 @@ describe('Homepage Connect features',()=>{
  });
  it('excludes the dedicated categories only when explicitly requested by the homepage',()=>{
   const home=render(createElement(MarketplaceCategories,{compact:true,exclude:connectCategorySlugs}));const all=render(createElement(MarketplaceCategories));
-  expect(home.match(/data-marketplace-category=/g)).toHaveLength(12);expect(all.match(/data-marketplace-category=/g)).toHaveLength(14);
+  expect(home.match(/data-marketplace-category=/g)).toHaveLength(8);expect(all.match(/data-marketplace-category=/g)).toHaveLength(10);
   for(const slug of connectCategorySlugs){expect(home).not.toContain(`data-marketplace-category="${slug}"`);expect(all).toContain(`data-marketplace-category="${slug}"`);}
  });
 });

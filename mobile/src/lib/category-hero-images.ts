@@ -1,7 +1,17 @@
 import type {ImageSourcePropType} from 'react-native';
 
-// Bundled category artwork shared by native and phone-web service heroes.
+// Bundled category artwork shared by native and phone-web service heroes (10 Unified Sectors + legacy aliases).
 export const categoryHeroImages: Record<string, ImageSourcePropType> = {
+  'real-estate-and-property': require('../../assets/category-heroes/real-estate-and-property.webp'),
+  'interior-design-and-exteriors': require('../../assets/category-heroes/interior-design-and-exteriors.webp'),
+  'civil-construction-and-contractors': require('../../assets/category-heroes/civil-construction-and-contractors.webp'),
+  'healthconnect-and-clinics': require('../../assets/category-heroes/healthconnect-and-clinics.webp'),
+  'hospitality-restaurants-and-cafes': require('../../assets/category-heroes/hospitality-restaurants-and-cafes.webp'),
+  'salons-bridal-and-wellness': require('../../assets/category-heroes/salons-bridal-and-wellness.webp'),
+  'events-weddings-and-media': require('../../assets/category-heroes/events-weddings-and-media.webp'),
+  'automobiles-and-garages': require('../../assets/category-heroes/automobiles-and-garages.webp'),
+  'legal-tax-and-business-compliance': require('../../assets/category-heroes/legal-tax-and-business-compliance.webp'),
+  'overseas-education-and-skill-academies': require('../../assets/category-heroes/overseas-education-and-skill-academies.webp'),
   'food-and-dining': require('../../assets/category-heroes/food-and-dining.webp'),
   'home-and-everyday-services': require('../../assets/category-heroes/home-and-everyday-services.webp'),
   'shopping-and-local-retail': require('../../assets/category-heroes/shopping-and-local-retail.webp'),

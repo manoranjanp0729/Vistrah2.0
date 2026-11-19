@@ -13,6 +13,7 @@ import {
   marketplaceItemId,
   resolveMarketplaceSelection,
 } from '../../lib/marketplace';
+import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../../../shared/flagship-sectors';
 import { spacing, useTheme } from '../../lib/theme';
 
 export default function NearbyServicesScreen() {
@@ -22,11 +23,27 @@ export default function NearbyServicesScreen() {
   const horizontalPadding = width >= 768 ? spacing.pagePaddingDesktop : spacing.pagePadding;
 
   const raw = useLocalSearchParams<{ category?: string; subcategory?: string; type?: string }>();
-  const cat = typeof raw.category === 'string' && raw.category ? raw.category : undefined;
+  const cat =
+    typeof raw.category === 'string' && raw.category
+      ? raw.category
+      : FLAGSHIP_SECTORS[0].slug;
   let sub = typeof raw.subcategory === 'string' && raw.subcategory ? raw.subcategory : undefined;
   let typ = typeof raw.type === 'string' && raw.type ? raw.type : undefined;
 
-  if (cat && !sub && typ) {
+  if (cat && !sub && !typ) {
+    const flagship = getFlagshipSector(cat);
+    if (flagship) {
+      sub = flagship.defaultSubcategorySlug;
+      typ = flagship.defaultTypeSlug;
+    } else {
+      const matchedCat = marketplaceCategories.find(c => c.slug === cat);
+      const firstSub = matchedCat?.subcategories[0];
+      if (firstSub) {
+        sub = firstSub.slug;
+        typ = firstSub.listing_types[0]?.slug;
+      }
+    }
+  } else if (cat && !sub && typ) {
     const matchedCat = marketplaceCategories.find(c => c.slug === cat);
     const matchedSub =
       matchedCat?.subcategories.find(s => s.listing_types.some(lt => lt.slug === typ)) ??

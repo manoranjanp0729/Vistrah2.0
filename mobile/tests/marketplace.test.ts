@@ -10,8 +10,8 @@ const legacy=JSON.parse(readFileSync(new URL('../../shared/marketplace-legacy-ma
 const imagery=JSON.parse(readFileSync(new URL('../../shared/marketplace-imagery.json',import.meta.url),'utf8'));
 const marketplace=createMarketplace(taxonomy,legacy);
 
-test('preserves full 800+ hierarchy (15 categories -> 132 subcategories -> 808 service types) and legacy redirects',()=>{
-  assert.deepEqual(marketplace.taxonomyCounts,{categories:15,subcategories:132,listingTypes:808});
+test('preserves Unified 10-Sector hierarchy (10 sectors -> 133 subcategories -> 814 service types) and legacy redirects',()=>{
+  assert.deepEqual(marketplace.taxonomyCounts,{categories:10,subcategories:133,listingTypes:814});
   for(const category of marketplace.marketplaceCategories){
     for(const subcategory of category.subcategories){
       assert.equal(marketplace.resolveMarketplaceSelection({category:category.slug,subcategory:subcategory.slug})?.subcategory?.slug,subcategory.slug);
@@ -22,9 +22,9 @@ test('preserves full 800+ hierarchy (15 categories -> 132 subcategories -> 808 s
       }
     }
   }
-  assert.equal(marketplace.resolveMarketplaceSelection({category:'food-and-dining',subcategory:'plumbers'}),null);
+  assert.equal(marketplace.resolveMarketplaceSelection({category:'hospitality-restaurants-and-cafes',subcategory:'plumbers'}),null);
   assert.deepEqual(marketplace.legacyMarketplaceSelection({category:'home-services',subcategory:'electrician-and-plumber'}),{
-    category:'home-and-everyday-services',
+    category:'interior-design-and-exteriors',
     subcategory:'repairs-and-maintenance',
     type:'plumbing',
   });
@@ -54,10 +54,10 @@ test('bundles the exact website image bytes across all curated assets and maps e
   }
 });
 
-test('uses one two-row rail contract without losing the 15th category card',()=>{
+test('uses one two-row rail contract across all 10 unified sector cards',()=>{
   const columns=twoRowColumns(marketplace.marketplaceCategories);
-  assert.equal(columns.length,8);
-  assert.equal(columns.at(-1)?.length,1);
+  assert.equal(columns.length,5);
+  assert.equal(columns.at(-1)?.length,2);
   assert.deepEqual(columns.flat(),marketplace.marketplaceCategories);
   assert.deepEqual(photoCardDesign,{width:148,height:168,imageHeight:86,imageInset:7,radius:16,imageRadius:11,gap:12,titleSize:13,titleLineHeight:18,titleLines:2,rows:2});
 });
@@ -73,10 +73,10 @@ test('search links to /services/nearby for specific service types, never to a le
   assert.ok(source.includes('legacyMarketplaceSelection'));
 });
 
-test('agriculture exposes 9 subcategories with valid photos and preserves tractor rental search',()=>{
-  const category=taxonomy.categories.find((c:{slug:string})=>c.slug==='agriculture-and-farming');
+test('civil construction & rural sector preserves all agriculture subcategories and tractor rental search',()=>{
+  const category=taxonomy.categories.find((c:{slug:string})=>c.slug==='civil-construction-and-contractors');
   assert.ok(category);
-  assert.equal(category.subcategories.length,9);
+  assert.equal(category.subcategories.length,16);
   for(const sub of category.subcategories){
     assert.ok(imagery.items[marketplaceItemId(category.slug,sub.slug)].photo);
   }

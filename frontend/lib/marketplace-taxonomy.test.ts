@@ -32,9 +32,9 @@ import type {Category} from './types';
 
 vi.mock('next/link',()=>({default:({children,href,...props}:React.ComponentProps<'a'>)=>createElement('a',{href,...props},children)}));
 
-describe('Full 800+ marketplace discovery (15 categories -> 132 subcategories -> 808 service types)',()=>{
-  it('exposes 15 categories, 132 subcategories, and 808 listing types linked directly to /services/nearby',()=>{
-    expect(taxonomyCounts).toEqual({categories:15,subcategories:132,listingTypes:808});
+describe('Unified 10-Sector marketplace discovery (10 sectors -> 133 subcategories -> 814 service types)',()=>{
+  it('exposes 10 sectors, 133 subcategories, and 814 listing types linked directly to /services/nearby',()=>{
+    expect(taxonomyCounts).toEqual({categories:10,subcategories:133,listingTypes:814});
     let subs=0;
     let types=0;
     for(const category of marketplaceCategories){
@@ -51,18 +51,18 @@ describe('Full 800+ marketplace discovery (15 categories -> 132 subcategories ->
         }
       }
     }
-    expect(subs).toBe(132);
-    expect(types).toBe(808);
+    expect(subs).toBe(133);
+    expect(types).toBe(814);
 
-    const food=marketplaceCategories.find(c=>c.slug==='food-and-dining')!;
+    const food=marketplaceCategories.find(c=>c.slug==='hospitality-restaurants-and-cafes')!;
     const dining=food.subcategories.find(s=>s.slug==='restaurants-and-dining')!;
     const subHtml=renderToStaticMarkup(createElement(MarketplaceBrowser,{selection:{category:food,subcategory:dining,listingType:undefined}}));
-    expect(subHtml).toContain(marketplaceNearbyTypeUrl({category:'food-and-dining',subcategory:'restaurants-and-dining',type:'restaurants'}).replaceAll('&','&amp;'));
+    expect(subHtml).toContain(marketplaceNearbyTypeUrl({category:'hospitality-restaurants-and-cafes',subcategory:'restaurants-and-dining',type:'restaurants'}).replaceAll('&','&amp;'));
   });
 
-  it('links all 15 category cards to valid category selections',()=>{
+  it('links all 10 sector cards to valid category selections',()=>{
     const html=renderToStaticMarkup(createElement(MarketplaceCategories));
-    expect(html.match(/data-marketplace-category=/g)).toHaveLength(15);
+    expect(html.match(/data-marketplace-category=/g)).toHaveLength(10);
     for(const category of marketplaceCategories){
       expect(html).toContain(`href="${marketplaceCategoryUrl(category.slug).replaceAll('&','&amp;')}"`);
       expect(resolveMarketplaceSelection({category:category.slug})?.category).toBe(category);
@@ -83,9 +83,9 @@ describe('Full 800+ marketplace discovery (15 categories -> 132 subcategories ->
     }
   });
 
-  it('searches across all 808 service types in 1-2 keystrokes and resolves legacy v2 bookmarks',()=>{
-    expect(searchMarketplace('  PET CARE  ').map(c=>c.slug)).toContain('pet-care');
-    expect(searchMarketplace('Veterinary').map(c=>c.slug)).toContain('pet-care');
+  it('searches across all 814 service types in 1-2 keystrokes and resolves legacy v3 and v2 bookmarks',()=>{
+    expect(searchMarketplace('  VETERINARY  ').map(c=>c.slug)).toContain('healthconnect-and-clinics');
+    expect(searchMarketplace('Study Abroad').map(c=>c.slug)).toContain('overseas-education-and-skill-academies');
     const dogWalking=searchMarketplaceEntries('  DOG WALKING  ');
     expect(dogWalking.length).toBeGreaterThanOrEqual(1);
     expect(dogWalking[0].href).toContain('/services/nearby?');
@@ -93,20 +93,25 @@ describe('Full 800+ marketplace discovery (15 categories -> 132 subcategories ->
     expect(searchMarketplaceEntries('no-such-classification')).toEqual([]);
 
     expect(legacyMarketplaceSelection({category:'home-services',subcategory:'electrician-and-plumber'})).toEqual({
-      category:'home-and-everyday-services',
+      category:'interior-design-and-exteriors',
       subcategory:'repairs-and-maintenance',
       type:'plumbing',
     });
+    expect(legacyMarketplaceSelection({category:'food-and-dining',subcategory:'restaurants-and-dining',type:'restaurants'})).toEqual({
+      category:'hospitality-restaurants-and-cafes',
+      subcategory:'restaurants-and-dining',
+      type:'restaurants',
+    });
     expect(legacyMarketplaceSelection({category:'vehicles'})).toEqual({
-      category:'automobiles',
+      category:'automobiles-and-garages',
     });
   });
 
   it('rejects unknown or cross-category selections',()=>{
     expect(resolveMarketplaceSelection({category:'unknown'})).toBeNull();
     expect(resolveMarketplaceSelection({subcategory:'restaurants-and-dining'})).toBeNull();
-    expect(resolveMarketplaceSelection({category:'food-and-dining',subcategory:'plumbers'})).toBeNull();
-    expect(resolveMarketplaceSelection({category:'home-and-everyday-services',subcategory:'plumbers',type:'restaurants'})).toBeNull();
+    expect(resolveMarketplaceSelection({category:'hospitality-restaurants-and-cafes',subcategory:'plumbers'})).toBeNull();
+    expect(resolveMarketplaceSelection({category:'interior-design-and-exteriors',subcategory:'repairs-and-maintenance',type:'restaurants'})).toBeNull();
   });
 
   it('renders breadcrumb and back link on listing-type pages without /request links',()=>{
@@ -138,25 +143,25 @@ describe('Full 800+ marketplace discovery (15 categories -> 132 subcategories ->
   });
 });
 
-describe('Agriculture & Farming and Property & Construction',()=>{
+describe('Civil Construction, Agriculture & Real Estate sectors',()=>{
   it('exposes full listing types and preserves keyword search like tractor rental',()=>{
-    const agriculture=marketplaceCategories.find(c=>c.slug==='agriculture-and-farming')!;
-    expect(agriculture.subcategories).toHaveLength(9);
+    const civil=marketplaceCategories.find(c=>c.slug==='civil-construction-and-contractors')!;
+    expect(civil.subcategories).toHaveLength(16);
     const tractorHit=searchMarketplaceEntries('tractor rental')[0];
-    expect(tractorHit.selection.category).toBe(agriculture.slug);
+    expect(tractorHit.selection.category).toBe(civil.slug);
     expect(tractorHit.href).toContain('/services/nearby?');
-    const subcategory=agriculture.subcategories[0],listingType=subcategory.listing_types[0];
-    const html=renderToStaticMarkup(createElement(MarketplaceBrowser,{selection:{category:agriculture,subcategory,listingType}}));
+    const subcategory=civil.subcategories[0],listingType=subcategory.listing_types[0];
+    const html=renderToStaticMarkup(createElement(MarketplaceBrowser,{selection:{category:civil,subcategory,listingType}}));
     expect(html).not.toContain('Photograph unavailable');
     expect(html).not.toContain('/request');
   });
 });
 
-describe('clean homepage categories & 800+ self-onboarding picker',()=>{
-  it('removes explanatory counts and instructions only in compact mode while preserving all 15 cards',()=>{
+describe('clean homepage categories & 10-sector self-onboarding picker',()=>{
+  it('removes explanatory counts and instructions only in compact mode while preserving all 10 sector cards',()=>{
     const compact=renderToStaticMarkup(createElement(MarketplaceCategories,{compact:true}));
-    expect(compact.match(/data-marketplace-category=/g)).toHaveLength(15);
-    expect(compact).not.toContain('15 categories');
+    expect(compact.match(/data-marketplace-category=/g)).toHaveLength(10);
+    expect(compact).not.toContain('10 categories');
     expect(compact).not.toContain('subcategories');
     expect(compact).not.toContain('Swipe or use arrows');
     for(const category of marketplaceCategories){
@@ -164,23 +169,24 @@ describe('clean homepage categories & 800+ self-onboarding picker',()=>{
       expect(compact).toContain(marketplaceCategoryUrl(category.slug));
     }
     const discovery=renderToStaticMarkup(createElement(MarketplaceCategories));
-    expect(discovery).toContain('15');
-    expect(discovery).toContain('808');
+    expect(discovery).toContain('10');
+    expect(discovery).toContain('814');
     expect(discovery).toContain('Swipe or use arrows');
     expect(discovery).toContain('subcategories');
   });
 
-  it('shares the exact 15 categories and 808 searchable service types with 3-step self-onboarding',()=>{
-    expect(SELF_ONBOARDING_CATEGORIES).toHaveLength(15);
-    expect(ALL_SELF_ONBOARDING_TYPES).toHaveLength(808);
+  it('shares the exact 10 sectors and 814 searchable service types with 3-step self-onboarding',()=>{
+    expect(SELF_ONBOARDING_CATEGORIES).toHaveLength(10);
+    expect(ALL_SELF_ONBOARDING_TYPES).toHaveLength(814);
     expect(searchSelfOnboardingTypes('pl')[0].title.toLowerCase()).toContain('pl');
     expect(searchSelfOnboardingTypes('borewell').some(t=>t.slug.includes('borewell'))).toBe(true);
+    expect(searchSelfOnboardingTypes('study abroad').some(t=>t.slug==='study-abroad-consultants')).toBe(true);
     expect(resolveSelfOnboardingInitialSelection({
       category:'food-and-dining',
       subcategory:'restaurants-and-dining',
       type:'family-restaurants',
     })).toEqual({
-      categorySlug:'food-and-dining',
+      categorySlug:'hospitality-restaurants-and-cafes',
       subcategorySlug:'restaurants-and-dining',
       typeSlug:'family-restaurants',
     });

@@ -8,6 +8,7 @@ import {api,ApiError} from '@/lib/api';
 import {isSellerUser,type User} from '@/lib/types';
 import {notifyUserSession,useUser} from './customer';
 import {legalVersion,sellerLegalCopy} from '../../shared/legal';
+import {deriveFreeVAdPrefillFromParams} from '../../shared/business-audit';
 import {vAdsClient,validateVideoFile,studioVideoLive,mediaUrl,mergeReels,parseAdDescription,type Workspace,type Reel,type SellerVideo,type AdMetadata,type AdType,type AdProductMeta} from '../../shared/v-ads';
 import s from './v-ads.module.css';
 import {AdvertiserManagement,VideoManagement,DiscardUpload} from './v-ads-management';
@@ -58,21 +59,30 @@ function SellerWorkspace({
   const searchParams=useSearchParams();
   const fromParam=searchParams?.get('from');
   const tabParam=searchParams?.get('tab');
+  const prefill=deriveFreeVAdPrefillFromParams({
+    business:searchParams?.get('business'),
+    category:searchParams?.get('category'),
+    type:searchParams?.get('type'),
+    locality:searchParams?.get('locality'),
+  });
+  const wantsUploadTab=tabParam==='upload'||prefill.hasPrefill;
   const isSeller=isSellerUser(user)||enabled;
   const publicBrowse=fromParam==='v-ads'||tabParam==='public';
   if(!authLoading&&!user&&!publicBrowse){
     redirect('/login?next=%2Fseller%2Fv-ads');
   }
-  const initialTab=publicBrowse||!isSeller?'public':'ads';
+  const initialTab=publicBrowse||!isSeller?'public':wantsUploadTab?'upload':'ads';
   const [studioTab,setStudioTab]=useState<'ads'|'upload'|'public'>(initialTab);
 
   useEffect(()=>{
     if(publicBrowse){
       setStudioTab('public');
+    }else if(isSeller&&wantsUploadTab){
+      setStudioTab('upload');
     }else if(isSeller){
       setStudioTab(current=>current==='public'?'ads':current);
     }
-  },[publicBrowse,isSeller]);
+  },[publicBrowse,isSeller,wantsUploadTab]);
 
   const [data,setData]=useState<Workspace|null>(null);
   const [loading,setLoading]=useState(isSeller);
@@ -80,14 +90,14 @@ function SellerWorkspace({
   const [message,setMessage]=useState('');
   const [accountId,setAccountId]=useState('');
   const [uploadId,setUploadId]=useState('');
-  const [adType,setAdType]=useState<AdType>('PRODUCT');
+  const [adType,setAdType]=useState<AdType>(prefill.hasPrefill?prefill.adType:'PRODUCT');
   const [productName,setProductName]=useState('');
   const [productPrice,setProductPrice]=useState('');
   const [deliveryInfo,setDeliveryInfo]=useState('');
   const [productId,setProductId]=useState('');
-  const [productsAvailable,setProductsAvailable]=useState('');
-  const [title,setTitle]=useState('');
-  const [videoDescription,setVideoDescription]=useState('');
+  const [productsAvailable,setProductsAvailable]=useState(prefill.productsAvailable);
+  const [title,setTitle]=useState(prefill.title);
+  const [videoDescription,setVideoDescription]=useState(prefill.videoDescription);
   const [filter,setFilter]=useState<'ALL'|'APPROVED'|'PENDING'|'REJECTED'>('ALL');
   const [busy,setBusy]=useState(false);
   const working=useRef(false);

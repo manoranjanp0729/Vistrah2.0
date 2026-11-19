@@ -102,11 +102,34 @@ export function createMarketplace(
     return { category, subcategory, listingType };
   }
 
-  /** Maps simplified v2 bookmarks onto the full 800+ taxonomy. */
+  /** Maps legacy v3 (15-category) and v2 (13-category / 81-type) bookmarks onto the 10-Sector taxonomy. */
   function legacyMarketplaceSelection(
     selection: MarketplaceSelection,
   ): MarketplaceSelection | null {
     if (!legacy || resolveMarketplaceSelection(selection)) return null;
+    const isCurrentCategory = selection.category
+      ? marketplaceCategories.some(c => c.slug === selection.category)
+      : false;
+    if (isCurrentCategory) return null;
+
+    if (selection.subcategory) {
+      const ownerCat = marketplaceCategories.find(c =>
+        c.subcategories.some(s => s.slug === selection.subcategory),
+      );
+      if (ownerCat) {
+        const subObj = ownerCat.subcategories.find(s => s.slug === selection.subcategory)!;
+        const matchedType = selection.type
+          ? subObj.listing_types.find(lt => lt.slug === selection.type)?.slug
+          : undefined;
+        return {
+          category: ownerCat.slug,
+          subcategory: subObj.slug,
+          ...(matchedType ? { type: matchedType } : {}),
+          ...(selection.q ? { q: selection.q } : {}),
+        };
+      }
+    }
+
     const subKey = selection.subcategory || selection.type;
     const mapped = subKey ? legacy.subcategories[subKey] : undefined;
     if (mapped && mapped.length >= 3) {

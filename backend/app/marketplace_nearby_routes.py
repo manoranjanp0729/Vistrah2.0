@@ -213,6 +213,11 @@ def _run_marketplace_nearby(
     radius_km: float,
 ) -> dict:
     cat_def, sub_def, bt_def = _resolve_category_and_type(category_slug, subcategory_slug, type_slug)
+    lm_cats = legacy_map().get("categories", {})
+    acceptable_cat_slugs = {
+        cat_def["slug"],
+        *(old_slug for old_slug, mapped in lm_cats.items() if mapped == cat_def["slug"]),
+    }
     distance = distance_expression(lat, lng)
 
     deg_lat = math.degrees(radius_km / EARTH_KM) + 0.01
@@ -240,7 +245,7 @@ def _run_marketplace_nearby(
             ProviderService.approval_status == "APPROVED",
             Service.active.is_(True),
             Category.active.is_(True),
-            Category.slug == cat_def["slug"],
+            Category.slug.in_(acceptable_cat_slugs),
             or_(
                 Provider.owner_user_id.is_(None),
                 and_(User.deleted_at.is_(None), User.seller_enabled.is_(True)),
@@ -338,7 +343,10 @@ def _run_marketplace_nearby(
             or (public_doc_by_app_id.get(linked_app.id) if linked_app else None)
         )
         website_url = normalize_website_url(
-            common.get("website_url") or common.get("website") or provider.source_url
+            provider.website_url
+            or common.get("website_url")
+            or common.get("website")
+            or provider.source_url
         )
         p_lat = float(provider.latitude)
         p_lng = float(provider.longitude)
@@ -348,10 +356,12 @@ def _run_marketplace_nearby(
                 "source": "vistrah",
                 "id": provider.id,
                 "slug": provider.slug,
+                "owner_user_id": provider.owner_user_id,
+                "place_id": (provider.google_place_id or str(common.get("place_id") or "").strip()) or None,
                 "name": provider.company or provider.name,
                 "company": provider.company,
                 "contact_name": provider.name,
-                "category_slug": category.slug,
+                "category_slug": cat_def["slug"],
                 "business_type": service.slug,
                 "service_title": service.title,
                 "description": (grant.description or "").strip(),
@@ -418,6 +428,8 @@ def _run_marketplace_nearby(
                     "source": "google_places",
                     "id": f"gp_{place_id}",
                     "slug": place_id,
+                    "owner_user_id": None,
+                    "place_id": place_id,
                     "name": gp["name"],
                     "company": gp["name"],
                     "contact_name": "",

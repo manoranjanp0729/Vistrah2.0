@@ -31,13 +31,13 @@ def _service(db, category_slug, slug):
     return db.scalar(select(Service).where(Service.category_id == category.id, Service.slug == slug))
 
 
-def test_creates_15_categories_132_subcategories_808_services_and_retires_legacy_onboarding(client, seeded, db):
+def test_creates_10_sectors_133_subcategories_814_services_and_retires_legacy_onboarding(client, seeded, db):
     summary = apply_business_catalogue(seeded)
     seeded.commit()
-    assert summary['categories_created'] == 15
-    assert summary['subcategories_created'] == 132
-    assert summary['services_created'] == 808
-    assert summary['requirements_published'] == 808
+    assert summary['categories_created'] == 10
+    assert summary['subcategories_created'] == 133
+    assert summary['services_created'] == 814
+    assert summary['requirements_published'] == 814
     assert summary['legacy_categories_retired'] >= 7
 
     catalogue = client.get('/catalogue').json()
@@ -48,14 +48,14 @@ def test_creates_15_categories_132_subcategories_808_services_and_retires_legacy
     for category in catalogue:
         if category['slug'] == 'jobs-careers':
             continue
-        assert len(category['subcategories']) >= 3
+        assert len(category['subcategories']) >= 5
         cat_count = len(category['services']) + sum(len(sc['services']) for sc in category['subcategories'])
-        assert cat_count >= 15
+        assert cat_count >= 25
         total_non_job_services += cat_count
-    assert total_non_job_services == 808
+    assert total_non_job_services == 814
     # Legacy rows are kept (inactive), never deleted.
     assert db.scalar(select(Category).where(Category.slug == 'tax-compliance')).active is False
-    assert db.query(Subcategory).filter(Subcategory.active.is_(True)).count() >= 132
+    assert db.query(Subcategory).filter(Subcategory.active.is_(True)).count() >= 133
 
 
 def test_simplified_forms_ask_documents_only_for_regulated_types(seeded, db):
@@ -147,7 +147,7 @@ def test_existing_provider_listing_and_commerce_listing_carry_over(seeded, db):
     assert summary['provider_listings_carried_over'] >= 1
     assert summary['commerce_listings_remapped'] == 1
 
-    target = _service(db, 'professional-services', 'chartered-accountants')
+    target = _service(db, 'legal-tax-and-business-compliance', 'chartered-accountants')
     carried = db.get(ProviderService, (provider.id, target.id))
     assert carried is not None and carried.approval_status == 'APPROVED' and carried.coverage_radius_km == 10
     assert db.get(ProviderService, (provider.id, gst.id)) is not None  # history preserved
@@ -155,7 +155,7 @@ def test_existing_provider_listing_and_commerce_listing_carry_over(seeded, db):
         listing.taxonomy_category_slug,
         listing.taxonomy_subcategory_slug,
         listing.taxonomy_listing_type_slug,
-    ) == ('food-and-dining', 'restaurants-and-dining', 'restaurants')
+    ) == ('hospitality-restaurants-and-cafes', 'restaurants-and-dining', 'restaurants')
 
 
 def test_three_step_self_onboarding_for_a_simple_business(client, seeded, db):
@@ -169,7 +169,7 @@ def test_three_step_self_onboarding_for_a_simple_business(client, seeded, db):
     db.add(user)
     db.commit()
     headers = {'Authorization': 'Bearer ' + issue_token(db, user)}
-    food = next(c for c in client.get('/catalogue').json() if c['slug'] == 'food-and-dining')
+    food = next(c for c in client.get('/catalogue').json() if c['slug'] == 'hospitality-restaurants-and-cafes')
     all_food_services = [
         *food['services'],
         *(s for sc in food['subcategories'] for s in sc['services']),
@@ -202,14 +202,14 @@ def test_three_step_self_onboarding_for_a_simple_business(client, seeded, db):
     assert submitted.json()['status'] == 'SUBMITTED'
 
 
-def test_legacy_marketplace_selection_resolves_to_800_taxonomy():
+def test_legacy_marketplace_selection_resolves_to_10_sector_taxonomy():
     assert canonical_selection('health-and-fitness', 'clinic-and-doctor', 'clinic-and-doctor') == (
-        'health-fitness-and-wellness',
+        'healthconnect-and-clinics',
         'doctors-and-specialists',
         'general-practitioners',
     )
     assert resolve_selection('food-and-dining', 'restaurant', 'restaurant')['listing_type']['slug'] == 'restaurants'
-    assert resolve_selection('vehicles', 'driving-school', 'driving-school')['category']['slug'] == 'automobiles'
+    assert resolve_selection('vehicles', 'driving-school', 'driving-school')['category']['slug'] == 'automobiles-and-garages'
     assert resolve_selection('unknown', 'nothing', 'none') is None
 
 
@@ -233,8 +233,8 @@ def test_unified_self_onboarding_submit_with_map_pin_optional_regulated_doc_and_
     cat_res = client.get('/provider-onboarding/catalogue', headers=user_headers)
     assert cat_res.status_code == 200
     cat_body = cat_res.json()
-    assert len(cat_body['categories']) == 15
-    assert sum(len(c['types']) for c in cat_body['categories']) == 808
+    assert len(cat_body['categories']) == 10
+    assert sum(len(c['types']) for c in cat_body['categories']) == 814
     assert cat_body['max_business_types'] == 3
 
     # Reject > 3 business types

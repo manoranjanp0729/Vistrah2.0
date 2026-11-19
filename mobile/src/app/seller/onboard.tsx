@@ -34,12 +34,17 @@ type RegulatedDraft = {
 
 export default function MobileSellerOnboardScreen() {
   const params = useLocalSearchParams<{
+    place_id?: string;
     category?: string;
     type?: string;
     subcategory?: string;
     business?: string;
     locality?: string;
   }>();
+  const initialPlaceId =
+    typeof params.place_id === 'string' && /^[A-Za-z0-9_-]{1,160}$/.test(params.place_id.trim())
+      ? params.place_id.trim()
+      : undefined;
   const category = typeof params.category === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.category) ? params.category : undefined;
   const subcategory = typeof params.subcategory === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.subcategory) ? params.subcategory : undefined;
   const type = typeof params.type === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(params.type)
@@ -68,6 +73,7 @@ export default function MobileSellerOnboardScreen() {
           pathname: '/auth',
           params: {
             next: selfOnboardingUrl({
+              place_id: initialPlaceId,
               category,
               subcategory,
               type,
@@ -83,6 +89,7 @@ export default function MobileSellerOnboardScreen() {
   return (
     <UiElement as={Page} title="List your business">
       <MobileSelfOnboardingForm
+        initialPlaceId={initialPlaceId}
         initialCategory={category}
         initialSubcategory={subcategory}
         initialType={type}
@@ -95,6 +102,7 @@ export default function MobileSellerOnboardScreen() {
 }
 
 function MobileSelfOnboardingForm({
+  initialPlaceId,
   initialCategory,
   initialSubcategory,
   initialType,
@@ -102,6 +110,7 @@ function MobileSelfOnboardingForm({
   initialBusinessName,
   initialLocality,
 }: {
+  initialPlaceId?: string;
   initialCategory?: string;
   initialSubcategory?: string;
   initialType?: string;
@@ -277,6 +286,7 @@ function MobileSelfOnboardingForm({
           privacy_policy_version: legalVersion,
           marketing_consent: marketingConsent,
           ...(providerId ? { provider_id: providerId } : {}),
+          ...(initialPlaceId ? { place_id: initialPlaceId } : {}),
         }),
       });
       await session.refresh();

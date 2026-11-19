@@ -37,6 +37,7 @@ type SubmitResponse = {
 };
 
 export function SelfOnboardingWizard({
+  initialPlaceId,
   initialCategory,
   initialSubcategory,
   initialType,
@@ -44,6 +45,7 @@ export function SelfOnboardingWizard({
   initialBusinessName,
   initialLocality,
 }: {
+  initialPlaceId?: string;
   initialCategory?: string;
   initialSubcategory?: string;
   initialType?: string;
@@ -52,6 +54,7 @@ export function SelfOnboardingWizard({
   initialLocality?: string;
 }) {
   const nextHref = selfOnboardingUrl({
+    place_id: initialPlaceId,
     category: initialCategory,
     subcategory: initialSubcategory,
     type: initialType,
@@ -64,6 +67,7 @@ export function SelfOnboardingWizard({
         <div className="container page">
           <WizardInner
             user={user}
+            initialPlaceId={initialPlaceId}
             initialCategory={initialCategory}
             initialSubcategory={initialSubcategory}
             initialType={initialType}
@@ -79,6 +83,7 @@ export function SelfOnboardingWizard({
 
 function WizardInner({
   user,
+  initialPlaceId,
   initialCategory,
   initialSubcategory,
   initialType,
@@ -87,6 +92,7 @@ function WizardInner({
   initialLocality,
 }: {
   user: User;
+  initialPlaceId?: string;
   initialCategory?: string;
   initialSubcategory?: string;
   initialType?: string;
@@ -280,6 +286,7 @@ function WizardInner({
           privacy_policy_version: legalVersion,
           marketing_consent: marketingConsent,
           ...(providerId ? { provider_id: providerId } : {}),
+          ...(initialPlaceId ? { place_id: initialPlaceId } : {}),
         }),
       });
       notifyUserSession?.(response.user);
@@ -338,7 +345,7 @@ function WizardInner({
           <UiText value="List your business free on VISTRAH" />
         </h1>
         <p style={{ color: 'var(--muted, #475569)', maxWidth: 680 }}>
-          <UiText value="Listing your business across 808+ service types and uploading V Ads (free for any radius on VISTRAH) cost ₹0 forever. Pick what your business does, pin your location, and submit — optional licences are only shown for regulated professions." />
+          <UiText value="Listing your business across VISTRAH's 10 unified sectors (800+ service types) and uploading V Ads (free for any radius on VISTRAH) cost ₹0 forever. Pick your sector & service types, pin your location, and submit — optional licences are only shown for regulated professions." />
         </p>
       </div>
 

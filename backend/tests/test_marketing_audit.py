@@ -33,45 +33,50 @@ def _make_user_headers(db, email: str, *, role: str = "CUSTOMER", seller_enabled
 
 
 def test_seven_pillar_catalog_ten_sector_blueprints_and_deterministic_scoring():
-    # 1. Verify exact 7-pillar = 7-product matrix totaling 100 points
+    # 1. Verify exact 7-pillar = 7-product matrix totaling 100 points (5 main services + 2 other perks)
     assert len(AUDIT_PILLARS) == 7
     assert sum(p["max_points"] for p in AUDIT_PILLARS) == 100
     expected_pillars = [
-        ("vistrah_presence", 20, 0, "free_forever", "₹0 — Free Forever"),
-        ("dedicated_website", 20, 4999, "one_time", "₹4,999 One-Time"),
-        ("hyperlocal_v_ads", 15, 0, "free_forever", "₹0 — Free Forever"),
-        ("social_media_reach", 15, 4999, "monthly", "₹4,999 / month"),
-        ("paid_ad_campaigns", 10, 3999, "monthly", "₹3,999 / month"),
-        ("visual_brand_media", 10, 2999, "one_time", "₹2,999 One-Time"),
-        ("google_local_seo", 10, 2499, "one_time", "₹2,499 One-Time"),
+        ("dedicated_website", "main_service", 20, 4999, "one_time", "₹4,999 One-Time"),
+        ("social_media_reach", "main_service", 15, 4999, "monthly", "₹4,999 / month"),
+        ("paid_ad_campaigns", "main_service", 10, 3999, "monthly", "₹3,999 / month"),
+        ("visual_brand_media", "main_service", 10, 2999, "one_time", "₹2,999 One-Time"),
+        ("google_local_seo", "main_service", 10, 2499, "one_time", "₹2,499 One-Time"),
+        ("vistrah_presence", "other_perk", 20, 0, "free_forever", "₹0 — Free Forever"),
+        ("hyperlocal_v_ads", "other_perk", 15, 0, "free_forever", "₹0 — Free Forever"),
     ]
     assert [
-        (p["id"], p["max_points"], p["unit_price_inr"], p["billing_type"], p["billing_label"])
+        (
+            p["id"],
+            p["group"],
+            p["max_points"],
+            p["unit_price_inr"],
+            p["billing_type"],
+            p["billing_label"],
+        )
         for p in AUDIT_PILLARS
     ] == expected_pillars
 
-    # 2. Verify all 10 Flagship Sector Website Pattern Blueprints & Growth Strategies
+    # 2. Verify all 10 Final Main Categories, Website Previews & 3-Step Growth Plans
     assert len(FLAGSHIP_SECTORS) == 10
-    expected_patterns = [
-        ("real-estate-and-property", "Property Photos, Plot Details & Site Visit Website"),
-        ("interior-design-and-exteriors", "Room Photo Gallery & Home Budget Estimate Website"),
-        ("civil-construction-and-contractors", "Completed Buildings & Construction Rate Website"),
-        ("healthconnect-and-clinics", "Doctor Profile, Timings & Appointment Website"),
-        ("hospitality-restaurants-and-cafes", "Photo Menu, Table Booking & Direct Order Website"),
-        ("salons-bridal-and-wellness", "Makeover Photos, Price List & Slot Booking Website"),
-        ("events-weddings-and-media", "Event Highlight Videos, Packages & Date Check Website"),
-        ("automobiles-and-garages", "Vehicle Service Rates, Detailing & Pickup Booking Website"),
-        ("legal-tax-and-business-compliance", "Tax, Legal Services & Consultation Booking Website"),
-        ("overseas-education-and-skill-academies", "Courses, Student Results & Free Counseling Website"),
+    expected_categories = [
+        ("restaurants-and-dining", "Restaurants & Dining"),
+        ("hotels-and-stay", "Hotels & Stay"),
+        ("vehicle-rentals", "Vehicle Rentals"),
+        ("event-management", "Event Management"),
+        ("hospitals-and-labs", "Hospitals and Labs"),
+        ("education-and-skills", "Education & Skills"),
+        ("salons-and-beauty-parlour", "Salons & Beauty Parlour"),
+        ("civil-and-construction", "Civil & Construction"),
+        ("fuel-and-charging-stations", "Fuel & Charging Stations"),
+        ("vibe-finder", "Vibe Finder"),
     ]
-    assert [
-        (s["slug"], s["website_pattern"]["pattern_title"]) for s in FLAGSHIP_SECTORS
-    ] == expected_patterns
+    assert [(s["slug"], s["title"]) for s in FLAGSHIP_SECTORS] == expected_categories
     for sector in FLAGSHIP_SECTORS:
         assert len(sector["website_pattern"]["key_sections"]) >= 3
         assert sector["website_pattern"]["conversion_cta"]
         assert len(sector["vertical_strategy"]["funnel_steps"]) >= 3
-        assert len(sector["vertical_strategy"]["recommended_pillar_ids"]) >= 4
+        assert len(sector["vertical_strategy"]["recommended_pillar_ids"]) >= 3
 
     # 3. Verify baseline scoring & gap detection for an unclaimed Google Place with photo + local SEO only
     audit = calculate_business_audit_score(
@@ -199,8 +204,8 @@ def test_google_place_claim_onboarding_and_strict_role_gated_business_profile(
         f"/api/business-profile/gp_{unclaimed_place_id}",
         params={
             "name": "Sri Krishna Dental Studio",
-            "sector": "healthconnect-and-clinics",
-            "service_type": "dental-clinics",
+            "sector": "hospitals-and-labs",
+            "service_type": "clinics",
             "city": "Indiranagar, Bengaluru",
             "phone": "08025251234",
         },
@@ -210,9 +215,8 @@ def test_google_place_claim_onboarding_and_strict_role_gated_business_profile(
     unclaimed_body = admin_unclaimed.json()
     assert unclaimed_body["business"]["is_claimed"] is False
     assert unclaimed_body["business"]["google_place_id"] == unclaimed_place_id
-    assert (
+    assert "Care Services, Timings & Appointment Enquiries" in (
         unclaimed_body["flagship_sector"]["website_pattern"]["pattern_title"]
-        == "Doctor Profile, Timings & Appointment Website"
     )
     assert "unclaimed_vistrah" in unclaimed_body["audit"]["gap_codes"]
     assert "missing_website" in unclaimed_body["audit"]["gap_codes"]
@@ -222,7 +226,7 @@ def test_google_place_claim_onboarding_and_strict_role_gated_business_profile(
         "/api/seller/onboard",
         headers=seller_a_headers,
         json={
-            "business_types": ["dental-clinics"],
+            "business_types": ["clinics"],
             "business_name": "Sri Krishna Dental Studio",
             "contact_name": "Dr. Kavitha Rao",
             "phone": "+91 9845012345",
@@ -252,7 +256,7 @@ def test_google_place_claim_onboarding_and_strict_role_gated_business_profile(
         "/api/seller/onboard",
         headers=seller_b_headers,
         json={
-            "business_types": ["dental-clinics"],
+            "business_types": ["clinics"],
             "business_name": "Impersonated Clinic",
             "contact_name": "Seller B",
             "phone": "+91 9845099999",
@@ -396,7 +400,7 @@ def test_admin_explore_lead_crm_and_website_requests_role_enforcement(
     exp_res = client.get(
         "/api/marketing-audit/explore",
         params={
-            "sector": "interior-design-and-exteriors",
+            "sector": "civil-and-construction",
             "city": "Tarikere",
             "source": "google",
             "missing": "missing_website,unclaimed_vistrah,score_below_50",
@@ -417,14 +421,14 @@ def test_admin_explore_lead_crm_and_website_requests_role_enforcement(
             "business_id": "gp_ChIJ_prospect_noweb",
             "google_place_id": "ChIJ_prospect_noweb",
             "business_name": "Apex Timber & Interiors",
-            "sector_slug": "interior-design-and-exteriors",
-            "service_type": "full-home-interior-designers",
+            "sector_slug": "civil-and-construction",
+            "service_type": "residential",
             "city": "Tarikere",
             "phone": "08261222333",
             "ticked_pillar_ids": ["vistrah_presence", "dedicated_website", "social_media_reach"],
             "gst_included": True,
             "lead_status": "audit_shared",
-            "notes": "Shared room cost estimator demo on WhatsApp.",
+            "notes": "Shared sample website demo on WhatsApp.",
         },
     )
     assert lead_created.status_code == 201, lead_created.text
@@ -460,14 +464,14 @@ def test_admin_explore_lead_crm_and_website_requests_role_enforcement(
         json={
             "business_id": str(owned_prov.id),
             "business_name": owned_prov.company,
-            "sector_slug": "interior-design-and-exteriors",
+            "sector_slug": "civil-and-construction",
             "city": "Tarikere",
-            "notes": "Need Visual Lookbook & 2BHK/3BHK Estimator.",
+            "notes": "Need Residential & Commercial Portfolio Website.",
         },
     )
     assert own_web_req.status_code == 201, own_web_req.text
     assert (
-        own_web_req.json()["request"]["pattern_id"] == "visual-lookbook-room-estimator"
+        own_web_req.json()["request"]["pattern_id"] == "civil-and-construction-website"
     )
 
     # Rival seller CANNOT request a website against Seller's claimed business
@@ -478,7 +482,7 @@ def test_admin_explore_lead_crm_and_website_requests_role_enforcement(
             json={
                 "business_id": str(owned_prov.id),
                 "business_name": owned_prov.company,
-                "sector_slug": "interior-design-and-exteriors",
+                "sector_slug": "civil-and-construction",
             },
         ).status_code
         == 403
@@ -491,7 +495,7 @@ def test_admin_explore_lead_crm_and_website_requests_role_enforcement(
         json={
             "business_id": "gp_ChIJ_prospect_noweb",
             "business_name": "Apex Timber & Interiors",
-            "sector_slug": "interior-design-and-exteriors",
+            "sector_slug": "civil-and-construction",
             "phone": "08261222333",
             "city": "Tarikere",
         },

@@ -1,0 +1,430 @@
+{
+  "assets": {
+    "automobiles": {
+      "src": "/images/marketplace/automobiles.webp",
+      "alt": "A blue sedan parked beside a green lawn",
+      "position": "50% 50%",
+      "width": 960,
+      "height": 540,
+      "bytes": 89156,
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "source": "https://www.pexels.com/photo/blue-bmw-sedan-near-green-lawn-grass-170811/",
+      "downloadUrl": "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "photographer": "Mike Bird",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-14"
+    },
+    "beauty-fashion-and-lifestyle": {
+      "src": "/images/marketplace/beauty-fashion-and-lifestyle.webp",
+      "alt": "A stylist working with a client in a modern hair salon",
+      "position": "50% 50%",
+      "width": 960,
+      "height": 1440,
+      "bytes": 74926,
+      "sha256": "55f32388151024cfbee1e0e731084e7c9c672252dfdb7844d176aa94cd850aa5",
+      "source": "https://www.pexels.com/photo/woman-getting-a-haircut-3992873/",
+      "downloadUrl": "https://images.pexels.com/photos/3992873/pexels-photo-3992873.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "photographer": "cottonbro studio",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-14"
+    },
+    "commercial-building": {
+      "key": "commercial-building",
+      "source": "https://www.pexels.com/photo/excavator-at-construction-site-20296265/",
+      "alt": "An excavator preparing a foundation pit at a construction site",
+      "position": "50% 50%",
+      "fit": "cover",
+      "photographer": "Robert So",
+      "downloadUrl": "https://images.pexels.com/photos/20296265/pexels-photo-20296265.jpeg?cs=srgb&dl=pexels-robertkso-20296265.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/excavator-at-construction-site-20296265/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "332b6e4576571f4eca24a2600521462e3b58777a396f80d538791b98daf0be99",
+      "downloadedAt": "2026-10-09T13:13:03.676617+00:00",
+      "src": "/images/photos/commercial-building.webp",
+      "width": 1440,
+      "height": 960,
+      "sourceWidth": 6000,
+      "sourceHeight": 4000,
+      "bytes": 256964,
+      "sha256": "cfbac7ab648cd57754a016f87ec11d8a8cbc6f2101803da295ebf49729f09310",
+      "crop": "Subject-preserving crop; cover unless a portrait needs containment."
+    },
+    "construction-equipment": {
+      "key": "construction-equipment",
+      "source": "https://www.pexels.com/photo/excavator-on-a-construction-site-in-front-of-a-building-9322525/",
+      "alt": "A backhoe loader beside a building undergoing construction",
+      "position": "50% 100%",
+      "fit": "cover",
+      "photographer": "Kaan Durmuş",
+      "downloadUrl": "https://images.pexels.com/photos/9322525/pexels-photo-9322525.jpeg?cs=srgb&dl=pexels-kaandurmus-9322525.jpg&fm=jpg",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/excavator-on-a-construction-site-in-front-of-a-building-9322525/",
+      "evidence": "Official photo page provides a free download and links to the Pexels licence.",
+      "originalSha256": "d9c513aca2e8f83fe8471e03f175c3a51a28c3d13e595054541226a51ada726b",
+      "downloadedAt": "2026-10-09T13:13:07.175104+00:00",
+      "src": "/images/photos/construction-equipment.webp",
+      "width": 1200,
+      "height": 1600,
+      "sourceWidth": 3000,
+      "sourceHeight": 4000,
+      "bytes": 227892,
+      "sha256": "2eccadacb36ccd00e605834270cd9a8aac679c75d76bed1b30ffc0ef40c831e4",
+      "crop": "Lower crop keeps the backhoe loader and construction equipment visible."
+    },
+    "education-and-skills": {
+      "src": "/images/marketplace/education-and-skills.webp",
+      "alt": "Children reading and learning together in a classroom",
+      "position": "50% 50%",
+      "width": 960,
+      "height": 640,
+      "bytes": 42658,
+      "sha256": "08da69ce6cee2be046836f2ae5dcd5b1a3410c4b5df30919cfe8ce42190ec4eb",
+      "source": "https://www.pexels.com/photo/kids-studying-in-the-classroom-8923877/",
+      "downloadUrl": "https://images.pexels.com/photos/8923877/pexels-photo-8923877.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "photographer": "Mikhail Nilov",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-14"
+    },
+    "events": {
+      "key": "events",
+      "source": "https://www.pexels.com/photo/engaged-audience-in-conference-hall-38786014/",
+      "photographer": "Caleb Oquendo",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-09",
+      "verificationUrl": "https://www.pexels.com/photo/engaged-audience-in-conference-hall-38786014/",
+      "downloadUrl": "https://images.pexels.com/photos/38786014/pexels-photo-38786014.jpeg?auto=compress&cs=tinysrgb&w=1600",
+      "src": "/images/photos/events.webp",
+      "width": 1067,
+      "height": 1600,
+      "sourceWidth": 1600,
+      "sourceHeight": 2400,
+      "bytes": 55416,
+      "sha256": "14e074e86e56dacc1cf9ce8a49e38ed7cc8052058a9eb20a8ca3ce99247d307c",
+      "alt": "Audience members listening to a conference presentation",
+      "position": "50% 75%",
+      "fit": "cover",
+      "crop": "Portrait source: lower focal position retains the foreground attendee and seated audience."
+    },
+    "food-and-dining": {
+      "src": "/images/marketplace/food-and-dining.webp",
+      "alt": "A colourful meal with fresh vegetables arranged on a dining table",
+      "position": "50% 50%",
+      "width": 960,
+      "height": 640,
+      "bytes": 106330,
+      "sha256": "714eff1d18fdd4959a149f38f988c449030c5e9e66f557cdca2cbb5625a506e1",
+      "source": "https://www.pexels.com/photo/flat-lay-photography-of-vegetable-salad-on-plate-1640777/",
+      "downloadUrl": "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "photographer": "Ella Olsson",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-14"
+    },
+    "health-fitness-and-wellness": {
+      "src": "/images/marketplace/health-fitness-and-wellness.webp",
+      "alt": "A woman practising yoga in a sunlit indoor space",
+      "position": "50% 50%",
+      "width": 960,
+      "height": 640,
+      "bytes": 45630,
+      "sha256": "87f0f7198e477a13eb15b7dfb5ac7521744733ffb04d41392243349ec196178b",
+      "source": "https://www.pexels.com/photo/woman-in-activewear-doing-yoga-7663034/",
+      "downloadUrl": "https://images.pexels.com/photos/7663034/pexels-photo-7663034.jpeg?auto=compress&cs=tinysrgb&w=1000",
+      "photographer": "Anastasia Shuraeva",
+      "licence": "Pexels License",
+      "licenceUrl": "https://www.pexels.com/license/",
+      "licenceVerified": "2026-10-14"
+    }
+  },
+  "items": {
+    "category/restaurants-and-dining": {
+      "photo": "food-and-dining",
+      "subject": "Restaurants & Dining"
+    },
+    "subcategory/restaurants-and-dining/restaurant": {
+      "photo": "food-and-dining",
+      "subject": "Restaurant"
+    },
+    "type/restaurants-and-dining/restaurant/restaurant": {
+      "photo": "food-and-dining",
+      "subject": "Restaurant"
+    },
+    "subcategory/restaurants-and-dining/cafes": {
+      "photo": "food-and-dining",
+      "subject": "Cafes"
+    },
+    "type/restaurants-and-dining/cafes/cafes": {
+      "photo": "food-and-dining",
+      "subject": "Cafes"
+    },
+    "subcategory/restaurants-and-dining/pubs": {
+      "photo": "food-and-dining",
+      "subject": "Pubs"
+    },
+    "type/restaurants-and-dining/pubs/pubs": {
+      "photo": "food-and-dining",
+      "subject": "Pubs"
+    },
+    "subcategory/restaurants-and-dining/street-food": {
+      "photo": "food-and-dining",
+      "subject": "Street Food"
+    },
+    "type/restaurants-and-dining/street-food/street-food": {
+      "photo": "food-and-dining",
+      "subject": "Street Food"
+    },
+    "category/hotels-and-stay": {
+      "photo": "commercial-building",
+      "subject": "Hotels & Stay"
+    },
+    "subcategory/hotels-and-stay/hotels": {
+      "photo": "commercial-building",
+      "subject": "Hotels"
+    },
+    "type/hotels-and-stay/hotels/hotels": {
+      "photo": "commercial-building",
+      "subject": "Hotels"
+    },
+    "subcategory/hotels-and-stay/homestays": {
+      "photo": "commercial-building",
+      "subject": "Homestays"
+    },
+    "type/hotels-and-stay/homestays/homestays": {
+      "photo": "commercial-building",
+      "subject": "Homestays"
+    },
+    "subcategory/hotels-and-stay/resorts": {
+      "photo": "commercial-building",
+      "subject": "Resorts"
+    },
+    "type/hotels-and-stay/resorts/resorts": {
+      "photo": "commercial-building",
+      "subject": "Resorts"
+    },
+    "category/vehicle-rentals": {
+      "photo": "automobiles",
+      "subject": "Vehicle Rentals"
+    },
+    "subcategory/vehicle-rentals/cars": {
+      "photo": "automobiles",
+      "subject": "Cars"
+    },
+    "type/vehicle-rentals/cars/cars": {
+      "photo": "automobiles",
+      "subject": "Cars"
+    },
+    "subcategory/vehicle-rentals/bikes": {
+      "photo": "automobiles",
+      "subject": "Bikes"
+    },
+    "type/vehicle-rentals/bikes/bikes": {
+      "photo": "automobiles",
+      "subject": "Bikes"
+    },
+    "category/event-management": {
+      "photo": "events",
+      "subject": "Event Management"
+    },
+    "subcategory/event-management/wedding": {
+      "photo": "events",
+      "subject": "Wedding"
+    },
+    "type/event-management/wedding/wedding": {
+      "photo": "events",
+      "subject": "Wedding"
+    },
+    "subcategory/event-management/birthday": {
+      "photo": "events",
+      "subject": "Birthday"
+    },
+    "type/event-management/birthday/birthday": {
+      "photo": "events",
+      "subject": "Birthday"
+    },
+    "category/hospitals-and-labs": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Hospitals and Labs"
+    },
+    "subcategory/hospitals-and-labs/hospitals": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Hospitals"
+    },
+    "type/hospitals-and-labs/hospitals/hospitals": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Hospitals"
+    },
+    "subcategory/hospitals-and-labs/clinics": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Clinics"
+    },
+    "type/hospitals-and-labs/clinics/clinics": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Clinics"
+    },
+    "subcategory/hospitals-and-labs/laboratory": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Laboratory"
+    },
+    "type/hospitals-and-labs/laboratory/laboratory": {
+      "photo": "health-fitness-and-wellness",
+      "subject": "Laboratory"
+    },
+    "category/education-and-skills": {
+      "photo": "education-and-skills",
+      "subject": "Education & Skills"
+    },
+    "subcategory/education-and-skills/schools": {
+      "photo": "education-and-skills",
+      "subject": "Schools"
+    },
+    "type/education-and-skills/schools/schools": {
+      "photo": "education-and-skills",
+      "subject": "Schools"
+    },
+    "subcategory/education-and-skills/colleges": {
+      "photo": "education-and-skills",
+      "subject": "Colleges"
+    },
+    "type/education-and-skills/colleges/colleges": {
+      "photo": "education-and-skills",
+      "subject": "Colleges"
+    },
+    "subcategory/education-and-skills/universities": {
+      "photo": "education-and-skills",
+      "subject": "Universities"
+    },
+    "type/education-and-skills/universities/universities": {
+      "photo": "education-and-skills",
+      "subject": "Universities"
+    },
+    "subcategory/education-and-skills/institutes": {
+      "photo": "education-and-skills",
+      "subject": "Institutes"
+    },
+    "type/education-and-skills/institutes/institutes": {
+      "photo": "education-and-skills",
+      "subject": "Institutes"
+    },
+    "subcategory/education-and-skills/tuitions": {
+      "photo": "education-and-skills",
+      "subject": "Tuitions"
+    },
+    "type/education-and-skills/tuitions/tuitions": {
+      "photo": "education-and-skills",
+      "subject": "Tuitions"
+    },
+    "category/salons-and-beauty-parlour": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Salons & Beauty Parlour"
+    },
+    "subcategory/salons-and-beauty-parlour/salons": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Salons"
+    },
+    "type/salons-and-beauty-parlour/salons/salons": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Salons"
+    },
+    "subcategory/salons-and-beauty-parlour/beauty-parlour": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Beauty Parlour"
+    },
+    "type/salons-and-beauty-parlour/beauty-parlour/beauty-parlour": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Beauty Parlour"
+    },
+    "subcategory/salons-and-beauty-parlour/spas": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Spas"
+    },
+    "type/salons-and-beauty-parlour/spas/spas": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Spas"
+    },
+    "subcategory/salons-and-beauty-parlour/sauna": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Sauna"
+    },
+    "type/salons-and-beauty-parlour/sauna/sauna": {
+      "photo": "beauty-fashion-and-lifestyle",
+      "subject": "Sauna"
+    },
+    "category/civil-and-construction": {
+      "photo": "construction-equipment",
+      "subject": "Civil & Construction"
+    },
+    "subcategory/civil-and-construction/residential": {
+      "photo": "construction-equipment",
+      "subject": "Residential"
+    },
+    "type/civil-and-construction/residential/residential": {
+      "photo": "construction-equipment",
+      "subject": "Residential"
+    },
+    "subcategory/civil-and-construction/commercial": {
+      "photo": "construction-equipment",
+      "subject": "Commercial"
+    },
+    "type/civil-and-construction/commercial/commercial": {
+      "photo": "construction-equipment",
+      "subject": "Commercial"
+    },
+    "category/fuel-and-charging-stations": {
+      "photo": "automobiles",
+      "subject": "Fuel & Charging Stations"
+    },
+    "subcategory/fuel-and-charging-stations/petrol-pumps": {
+      "photo": "automobiles",
+      "subject": "Petrol Pumps"
+    },
+    "type/fuel-and-charging-stations/petrol-pumps/petrol-pumps": {
+      "photo": "automobiles",
+      "subject": "Petrol Pumps"
+    },
+    "subcategory/fuel-and-charging-stations/auto-gas": {
+      "photo": "automobiles",
+      "subject": "Auto Gas"
+    },
+    "type/fuel-and-charging-stations/auto-gas/auto-gas": {
+      "photo": "automobiles",
+      "subject": "Auto Gas"
+    },
+    "subcategory/fuel-and-charging-stations/ev-charging": {
+      "photo": "automobiles",
+      "subject": "EV Charging"
+    },
+    "type/fuel-and-charging-stations/ev-charging/ev-charging": {
+      "photo": "automobiles",
+      "subject": "EV Charging"
+    },
+    "category/vibe-finder": {
+      "photo": "events",
+      "subject": "Vibe Finder"
+    },
+    "subcategory/vibe-finder/theatres": {
+      "photo": "events",
+      "subject": "Theatres"
+    },
+    "type/vibe-finder/theatres/theatres": {
+      "photo": "events",
+      "subject": "Theatres"
+    },
+    "subcategory/vibe-finder/social-events": {
+      "photo": "events",
+      "subject": "Social Events"
+    },
+    "type/vibe-finder/social-events/social-events": {
+      "photo": "events",
+      "subject": "Social Events"
+    }
+  }
+}

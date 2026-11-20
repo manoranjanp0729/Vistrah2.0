@@ -35,11 +35,11 @@ const categories=source.map((category,index)=>({
 describe('Public taxonomy page behavior',()=>{
   beforeEach(()=>{
     serverApi.mockReset();
-    serverApi.mockImplementation(async(path:string)=>path==='/catalogue'?categories:{version:null});
+    serverApi.mockImplementation(async(path:string)=>path==='/edit-vistrah/pages/home'?null:path==='/catalogue'?categories:{version:null});
   });
   it('keeps admin-published sections ahead of taxonomy and suppresses fallback content',async()=>{
     const service=allServices(categories).find(c=>c.category.active&&c.service.active&&(!c.subcategory||c.subcategory.active))!;
-    serverApi.mockImplementation(async(path:string)=>path==='/catalogue'?categories:{version:7,layout:{schema_version:1,sections:[{id:'published',template:'service_grid',title:'Published priority',subtitle:'',size:'wide',service_ids:[service.service.id]}]}});
+    serverApi.mockImplementation(async(path:string)=>path==='/edit-vistrah/pages/home'?null:path==='/catalogue'?categories:{version:7,layout:{schema_version:1,sections:[{id:'published',template:'service_grid',title:'Published priority',subtitle:'',size:'wide',service_ids:[service.service.id]}]}});
     const html=renderToStaticMarkup(await Home());
     expect(html.indexOf('Published priority')).toBeGreaterThan(-1);
     expect(html.indexOf('Published priority')).toBeLessThan(html.indexOf('Services for you'));
@@ -52,45 +52,31 @@ describe('Public taxonomy page behavior',()=>{
     const html=renderToStaticMarkup(await Home());
     expect(html).toContain('Services for you');expect(html).not.toContain('14 categories');
     expect(html).toContain('reference-feature');
-    expect(html).toContain('/services?category=pet-care');
+    expect(html).toContain('/services?category=restaurants-and-dining');
   });
   it('shows taxonomy even when the published-service API fails',async()=>{
     serverApi.mockRejectedValue(new Error('Unavailable'));
     const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({})}));
-    expect(html.match(/data-marketplace-category=/g)).toHaveLength(14);
-    expect(html).toContain(english['discovery.temporarilyUnavailable']);
-    expect(serverApi.mock.calls).toEqual([['/catalogue']]);
+    expect(html.match(/data-marketplace-category=/g)).toHaveLength(10);
+    expect(serverApi.mock.calls).toEqual([['/marketplace/service-types']]);
   });
-  it('searches published services while retaining their original URLs and photos',async()=>{
-    const service=allServices(categories).find(c=>c.category.active&&c.service.active&&(!c.subcategory||c.subcategory.active))!;
-    const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({q:`  ${service.service.title.toUpperCase()}  `})}));
-    expect(html).toContain(urls.service(service.category,service.service,service.subcategory));
-    expect(html).toContain(`data-image-id="service/${service.category.slug}/${service.subcategory?service.subcategory.slug+'/':''}${service.service.slug}"`);
-    expect(serverApi.mock.calls).toEqual([['/catalogue']]);
+  it('searches the final direct types and points results at nearby discovery',async()=>{
+    const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({q:'Restaurant'})}));
+    expect(html).toContain('Restaurant');
+    expect(html).toContain('/services/nearby?category=restaurants-and-dining');
+    expect(serverApi.mock.calls).toEqual([['/marketplace/service-types']]);
   });
-  it('never advertises inactive records or turns classification into a published service',async()=>{
-    const rows=structuredClone(categories);
-    rows.forEach(c=>{c.active=false;});
-    serverApi.mockResolvedValue(rows);
+  it('does not expose removed business types through search',async()=>{
     const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({q:'dog walking'})}));
-    expect(html).toContain('Dog walking');
-    expect(html).not.toContain('class="service-card"');
+    expect(html).not.toContain('/services?category=pet-care');
     expect(html).not.toContain('/service/pet-care');
+    expect(html).not.toContain('data-marketplace-result=');
   });
-  it('preserves category-description search and marketing service links',async()=>{
-    const category=categories.find(c=>c.services.length&&c.description)!;
-    const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({q:category.description})}));
-    expect(html).toContain(urls.service(category,category.services[0]));
-    const marketing=categories.find(c=>c.slug==='marketing')!;
-    const marketingHtml=renderToStaticMarkup(await Services({searchParams:Promise.resolve({q:marketing.title})}));
-    expect(marketingHtml).toContain(urls.service(marketing,marketing.services[0]));
-  });
-  it('keeps classification journeys compact and independent of catalogue availability',async()=>{
+  it('keeps final categories available when the dynamic catalogue cannot load',async()=>{
     serverApi.mockRejectedValue(new Error('Unavailable'));
-    const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({category:'pet-care',subcategory:'pet-walking-and-sitting',type:'dog-walking'})}));
-    expect(html).toContain(english['discovery.unavailableType']);
-    expect(html).toContain('/services#published-services');
+    const html=renderToStaticMarkup(await Services({searchParams:Promise.resolve({category:'restaurants-and-dining'})}));
+    expect(html).toContain('Restaurant');
+    expect(html).toContain('/services/nearby?category=restaurants-and-dining');
     expect(html).not.toContain('class="service-card"');
-    expect(serverApi).not.toHaveBeenCalled();
   });
 });

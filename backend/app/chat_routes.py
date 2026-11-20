@@ -215,7 +215,7 @@ def _catalogue_grounding() -> tuple[str, list[dict[str, str]]]:
         + "\n  ".join(division_lines)
         + "\n"
         "- In-App Nearby Service Discovery (`/services/nearby`): 10-sector filter pills + fast keyword search across all child service types, interactive map + distance-sorted nearby businesses (`5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, conditional `Website`, `Directions`, and role-aware `More Options`.\n"
-        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 10 unified sectors (800+ service types) is 100% FREE forever with 0% lead commission. In ~3 minutes: "
+        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 10 unified sectors (direct service types) is 100% FREE forever with 0% lead commission. In ~3 minutes: "
         "(1) Search & pick up to 3 business types across VISTRAH's 10 unified sectors, "
         "(2) Enter shop name, phone/WhatsApp, drop map pin + coverage radius (`5/10/25/50 km`), with optional licence upload ONLY for regulated professions (doctors, pharmacies, food/FSSAI, legal/CA, RERA), "
         "(3) Accept terms & submit.\n"
@@ -353,7 +353,7 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
     if any(k in lower for k in ("price", "pricing", "cost", "fee", "charge", "free", "request website", "build website", "website development", "automation")):
         return {
             "reply": (
-                "Listing your business across all 808+ service types (`/seller/onboard`) and creating/uploading V Ads for **any target radius** inside VISTRAH (`/seller/v-ads`) are **100% Free Forever (₹0)**! "
+                "Listing your business across all the 10 business categories (`/seller/onboard`) and creating/uploading V Ads for **any target radius** inside VISTRAH (`/seller/v-ads`) are **100% Free Forever (₹0)**! "
                 "Paid pricing applies only if you hire **VISTRAH Ads & Marketing Studio** (done-for-you commercial Reels shoots, graphic/brochure design, Meta/Google marketing) or **VISTRAH Tech** for custom business websites and workflow automation."
             ),
             "suggestedActions": [
@@ -429,7 +429,7 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
 
     return {
         "reply": (
-            "I can help you discover nearby local businesses across 800+ service types (`5–50 km` map + tap-to-call listings), "
+            "I can help you discover nearby local businesses across direct service types (`5–50 km` map + tap-to-call listings), "
             "list your business in 3 quick steps on VISTRAH, or explore hyperlocal V Ads reels. What service or business are you looking for?"
         ),
         "suggestedActions": [

@@ -131,14 +131,14 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     primaryCta: {
       label: 'Explore Agri Services',
       shortLabel: 'Agri Services',
-      webHref: '/services?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
-      mobileRoute: '/services?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
+      webHref: '/services',
+      mobileRoute: '/services',
     },
     secondaryCta: {
       label: 'List Agri Business',
       shortLabel: 'List Agri Service',
-      webHref: '/seller/onboard?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
-      mobileRoute: '/seller/onboard?category=civil-construction-and-contractors&subcategory=farming-and-agricultural-services',
+      webHref: '/seller/onboard',
+      mobileRoute: '/seller/onboard',
     },
   },
   {
@@ -159,14 +159,14 @@ export const HERO_BANNERS: readonly HeroBannerSlide[] = [
     primaryCta: {
       label: 'Explore Health Services',
       shortLabel: 'Health Services',
-      webHref: '/services?category=healthconnect-and-clinics',
-      mobileRoute: '/services?category=healthconnect-and-clinics',
+      webHref: '/services?category=hospitals-and-labs',
+      mobileRoute: '/services?category=hospitals-and-labs',
     },
     secondaryCta: {
       label: 'Register Clinic / Lab',
       shortLabel: 'Join HealthConnect',
-      webHref: '/seller/onboard?category=healthconnect-and-clinics',
-      mobileRoute: '/seller/onboard?category=healthconnect-and-clinics',
+      webHref: '/seller/onboard?category=hospitals-and-labs',
+      mobileRoute: '/seller/onboard?category=hospitals-and-labs',
     },
   },
 ] as const;
@@ -191,16 +191,76 @@ export const USER_COMPARISON = {
 } as const;
 
 export const USER_VERTICALS = [
-  {num: '01', slug: 'real-estate-and-property', title: 'Real Estate & Property', caption: 'Plots, apartments, commercial leasing & valuation', icon: 'briefcase'},
-  {num: '02', slug: 'interior-design-and-exteriors', title: 'Interior Design & Exteriors', caption: 'Modular kitchens, facades, painting & home care', icon: 'home'},
-  {num: '03', slug: 'civil-construction-and-contractors', title: 'Civil Construction & Contractors', caption: 'Architects, turnkey builders, materials & borewell', icon: 'sun'},
-  {num: '04', slug: 'healthconnect-and-clinics', title: 'HealthConnect & Clinics', caption: 'Hospitals, labs, pharmacies, physio & vet care', icon: 'heart'},
-  {num: '05', slug: 'hospitality-restaurants-and-cafes', title: 'Hospitality, Restaurants & Cafés', caption: 'Restaurants, cafés, catering, stays & tours', icon: 'coffee'},
-  {num: '06', slug: 'salons-bridal-and-wellness', title: 'Salons, Bridal & Wellness', caption: 'Salons, bridal makeup, spas, boutiques & jewellery', icon: 'star'},
-  {num: '07', slug: 'events-weddings-and-media', title: 'Events, Weddings & Media', caption: 'Venues, wedding planners, film shoots & branding', icon: 'calendar'},
-  {num: '08', slug: 'automobiles-and-garages', title: 'Automobiles & Garages', caption: 'Garages, EV care, detailing, tyres & roadside help', icon: 'truck'},
-  {num: '09', slug: 'legal-tax-and-business-compliance', title: 'Legal, Tax & Business Compliance', caption: 'CAs, GST, advocates, company setup & IT advisory', icon: 'briefcase'},
-  {num: '10', slug: 'overseas-education-and-skill-academies', title: 'Overseas, Education & Skill Academies', caption: 'Study abroad, visas, IELTS, coaching & placement', icon: 'book-open'},
+  {
+    "num": "01",
+    "slug": "restaurants-and-dining",
+    "title": "Restaurants & Dining",
+    "caption": "Restaurant, Cafes, Pubs, Street Food",
+    "icon": "coffee"
+  },
+  {
+    "num": "02",
+    "slug": "hotels-and-stay",
+    "title": "Hotels & Stay",
+    "caption": "Hotels, Homestays, Resorts",
+    "icon": "home"
+  },
+  {
+    "num": "03",
+    "slug": "vehicle-rentals",
+    "title": "Vehicle Rentals",
+    "caption": "Cars, Bikes",
+    "icon": "truck"
+  },
+  {
+    "num": "04",
+    "slug": "event-management",
+    "title": "Event Management",
+    "caption": "Wedding, Birthday",
+    "icon": "calendar"
+  },
+  {
+    "num": "05",
+    "slug": "hospitals-and-labs",
+    "title": "Hospitals and Labs",
+    "caption": "Hospitals, Clinics, Laboratory",
+    "icon": "heart"
+  },
+  {
+    "num": "06",
+    "slug": "education-and-skills",
+    "title": "Education & Skills",
+    "caption": "Schools, Colleges, Universities, Institutes, Tuitions",
+    "icon": "book"
+  },
+  {
+    "num": "07",
+    "slug": "salons-and-beauty-parlour",
+    "title": "Salons & Beauty Parlour",
+    "caption": "Salons, Beauty Parlour, Spas, Sauna",
+    "icon": "star"
+  },
+  {
+    "num": "08",
+    "slug": "civil-and-construction",
+    "title": "Civil & Construction",
+    "caption": "Residential, Commercial",
+    "icon": "sun"
+  },
+  {
+    "num": "09",
+    "slug": "fuel-and-charging-stations",
+    "title": "Fuel & Charging Stations",
+    "caption": "Petrol Pumps, Auto Gas, EV Charging",
+    "icon": "truck"
+  },
+  {
+    "num": "10",
+    "slug": "vibe-finder",
+    "title": "Vibe Finder",
+    "caption": "Theatres, Social Events",
+    "icon": "calendar"
+  }
 ] as const;
 
 export const BUSINESS_TIMELINE = [

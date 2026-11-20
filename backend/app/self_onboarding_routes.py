@@ -12,6 +12,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .business_catalogue import business_types, ensure_business_type_service
+from .business_service_types import CustomServiceType, catalogue_with_custom_types, request_service_type
 from .catalogue import serialize
 from .database import get_db
 from .marketplace_nearby_routes import normalize_website_url
@@ -84,7 +85,8 @@ class RegulatedInfoInput(SafeModel):
 
 
 class SelfOnboardingSubmit(SafeModel):
-    business_types: list[str] = Field(min_length=1, max_length=3)
+    business_types: list[str] = Field(default_factory=list, max_length=3)
+    custom_service_types: list[CustomServiceType] = Field(default_factory=list, max_length=3)
     business_name: str = Field(min_length=2, max_length=150)
     contact_name: str = Field(min_length=2, max_length=150)
     phone: str = Field(min_length=10, max_length=20, pattern=r"^\+?[0-9 ()-]{10,20}$")
@@ -112,6 +114,8 @@ class SelfOnboardingSubmit(SafeModel):
 
     @model_validator(mode="after")
     def validate_selection_and_whatsapp(self):
+        if not 1 <= len(self.business_types) + len(self.custom_service_types) <= 3:
+            raise ValueError('Choose between one and three service types')
         if len(set(self.business_types)) != len(self.business_types):
             raise ValueError("Select each business type at most once")
         for slug in self.business_types:
@@ -129,8 +133,8 @@ class SelfOnboardingSubmit(SafeModel):
 
 
 @router.get("/provider-onboarding/catalogue")
-def get_self_onboarding_catalogue(user: User = Depends(current_user)):
-    source = business_types()
+def get_self_onboarding_catalogue(user: User = Depends(current_user), db: Session = Depends(get_db)):
+    source = catalogue_with_custom_types(db)
     categories = []
     for cat in source["categories"]:
         categories.append({
@@ -219,8 +223,12 @@ def submit_self_onboarding(
 
     resolved_items = []
     total_new_docs = 0
-    for slug in data.business_types:
-        ensured = ensure_business_type_service(db, slug)
+    custom_items = [request_service_type(db, item, user.id) for item in data.custom_service_types]
+    all_slugs = data.business_types + [item[1].slug for item in custom_items]
+    if len(set(all_slugs)) != len(all_slugs):
+        raise HTTPException(422, 'Select each service type at most once')
+    for slug, requested in [(slug, None) for slug in data.business_types] + [(item[1].slug, item) for item in custom_items]:
+        ensured = requested or ensure_business_type_service(db, slug)
         if not ensured:
             raise HTTPException(422, f"Unknown business type: {slug}")
         category, service, requirement, _cat_def, bt_def = ensured

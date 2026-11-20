@@ -24,11 +24,18 @@ from fastapi.testclient import TestClient
 from sqlalchemy import event
 from app.database import engine
 
-@event.listens_for(engine, 'connect')
 def forbid_database_connection(*args):
     raise AssertionError('CMS isolated tests must never open a database')
 
 class CmsTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        event.listen(engine, 'connect', forbid_database_connection)
+
+    @classmethod
+    def tearDownClass(cls):
+        event.remove(engine, 'connect', forbid_database_connection)
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(prefix='vistrah-cms-case-')
         self.addCleanup(self.tmp.cleanup)

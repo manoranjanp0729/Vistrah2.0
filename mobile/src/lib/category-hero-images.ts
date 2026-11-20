@@ -2,6 +2,15 @@ import type {ImageSourcePropType} from 'react-native';
 
 // Bundled category artwork shared by native and phone-web service heroes (10 Unified Sectors + legacy aliases).
 export const categoryHeroImages: Record<string, ImageSourcePropType> = {
+  'vibe-finder': require('../../assets/category-heroes/events-weddings-and-media.webp'),
+  'fuel-and-charging-stations': require('../../assets/category-heroes/automobiles-and-garages.webp'),
+  'civil-and-construction': require('../../assets/category-heroes/civil-construction-and-contractors.webp'),
+  'salons-and-beauty-parlour': require('../../assets/category-heroes/salons-bridal-and-wellness.webp'),
+  'hospitals-and-labs': require('../../assets/category-heroes/healthconnect-and-clinics.webp'),
+  'event-management': require('../../assets/category-heroes/events-weddings-and-media.webp'),
+  'vehicle-rentals': require('../../assets/category-heroes/automobiles-and-garages.webp'),
+  'hotels-and-stay': require('../../assets/category-heroes/real-estate-and-property.webp'),
+  'restaurants-and-dining': require('../../assets/category-heroes/hospitality-restaurants-and-cafes.webp'),
   'real-estate-and-property': require('../../assets/category-heroes/real-estate-and-property.webp'),
   'interior-design-and-exteriors': require('../../assets/category-heroes/interior-design-and-exteriors.webp'),
   'civil-construction-and-contractors': require('../../assets/category-heroes/civil-construction-and-contractors.webp'),

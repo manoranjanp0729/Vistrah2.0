@@ -16,6 +16,7 @@ import {
   isFreeVAdPillarActiveOrTicked,
   recalculateLiveAuditState,
   renderPersonalizedWebsitePreview,
+  splitPlanPillars,
   type BusinessProfileResponse,
   type LeadStatus,
   type SavedAuditLead,
@@ -518,114 +519,145 @@ export function MobileBusinessGrowthAuditView({
           Tick or untick options below to see your score and total price update live
         </Text>
 
-        {live.audit.pillar_breakdown.map(pillar => {
-          const isTicked = !pillar.active_in_baseline && tickedIds.includes(pillar.pillar_id);
-          return (
-            <Pressable
-              key={pillar.pillar_id}
-              disabled={pillar.active_in_baseline}
-              onPress={() => togglePillar(pillar.pillar_id)}
-              style={[
-                st.pillarCard,
-                {
-                  borderColor: pillar.active_in_baseline
-                    ? 'rgba(16,185,129,0.5)'
-                    : isTicked
-                      ? '#d4af37'
-                      : isDark
-                        ? '#32264b'
-                        : '#cbd5e1',
-                },
-              ]}
-            >
-              <View style={st.pillarHeader}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
-                  <Feather
-                    name={
-                      pillar.active_in_baseline
-                        ? 'check-circle'
-                        : isTicked
-                          ? 'check-square'
-                          : 'square'
-                    }
-                    size={17}
-                    color={
-                      pillar.active_in_baseline
-                        ? '#10b981'
-                        : isTicked
-                          ? '#d4af37'
-                          : colors.muted
-                    }
-                  />
-                  <Text style={{ fontSize: 13.5, fontWeight: '700', color: colors.text, flex: 1 }}>
-                    {pillar.product_title}
+        {(() => {
+          const { mainServices, otherPerks } = splitPlanPillars(live.audit.pillar_breakdown);
+          const renderPillarCard = (pillar: (typeof live.audit.pillar_breakdown)[number]) => {
+            const isTicked = !pillar.active_in_baseline && tickedIds.includes(pillar.pillar_id);
+            return (
+              <Pressable
+                key={pillar.pillar_id}
+                disabled={pillar.active_in_baseline}
+                onPress={() => togglePillar(pillar.pillar_id)}
+                style={[
+                  st.pillarCard,
+                  {
+                    borderColor: pillar.active_in_baseline
+                      ? 'rgba(16,185,129,0.5)'
+                      : isTicked
+                        ? '#d4af37'
+                        : isDark
+                          ? '#32264b'
+                          : '#cbd5e1',
+                  },
+                ]}
+              >
+                <View style={st.pillarHeader}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1 }}>
+                    <Feather
+                      name={
+                        pillar.active_in_baseline
+                          ? 'check-circle'
+                          : isTicked
+                            ? 'check-square'
+                            : 'square'
+                      }
+                      size={17}
+                      color={
+                        pillar.active_in_baseline
+                          ? '#10b981'
+                          : isTicked
+                            ? '#d4af37'
+                            : colors.muted
+                      }
+                    />
+                    <Text style={{ fontSize: 13.5, fontWeight: '700', color: colors.text, flex: 1 }}>
+                      {pillar.product_title}
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 11.5, fontWeight: '800', color: '#b45309' }}>
+                    +{pillar.max_points} pts
                   </Text>
                 </View>
-                <Text style={{ fontSize: 11.5, fontWeight: '800', color: '#b45309' }}>
-                  +{pillar.max_points} pts
-                </Text>
-              </View>
 
-              <View style={st.badgeRow}>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: '700',
-                    color: pillar.billing_type === 'free_forever' ? '#10b981' : colors.text,
-                  }}
-                >
-                  {pillar.billing_label}
-                </Text>
-                {pillar.active_in_baseline && (
-                  <Text style={{ fontSize: 11, fontWeight: '800', color: '#10b981' }}>
-                    • Already Done ✓
+                <View style={st.badgeRow}>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '700',
+                      color: pillar.billing_type === 'free_forever' ? '#10b981' : colors.text,
+                    }}
+                  >
+                    {pillar.billing_label}
                   </Text>
+                  {pillar.active_in_baseline && (
+                    <Text style={{ fontSize: 11, fontWeight: '800', color: '#10b981' }}>
+                      • Already Done ✓
+                    </Text>
+                  )}
+                </View>
+                <Text style={{ fontSize: 12, color: colors.muted }}>{pillar.description}</Text>
+              </Pressable>
+            );
+          };
+
+          return (
+            <>
+              {mainServices.map(renderPillarCard)}
+
+              <View
+                style={{
+                  marginTop: 6,
+                  paddingTop: 12,
+                  borderTopWidth: 1,
+                  borderTopColor: 'rgba(148,163,184,0.35)',
+                  gap: 10,
+                }}
+              >
+                <View style={{ gap: 2 }}>
+                  <Text style={st.eyebrow}>OTHER PERKS</Text>
+                  <Text style={{ fontSize: 14.5, fontWeight: '800', color: colors.text }}>
+                    Other Perks (Free on VISTRAH)
+                  </Text>
+                  <Text style={{ fontSize: 12, color: colors.muted }}>
+                    Included free forever on VISTRAH alongside your marketing services
+                  </Text>
+                </View>
+
+                {otherPerks.map(renderPillarCard)}
+
+                {freeVAdShortcutActive && (
+                  <View
+                    style={{
+                      padding: 12,
+                      borderRadius: 12,
+                      borderWidth: 1,
+                      borderColor: 'rgba(16,185,129,0.5)',
+                      backgroundColor: isDark ? 'rgba(16,185,129,0.12)' : '#ecfdf5',
+                      gap: 8,
+                    }}
+                  >
+                    <View style={{ gap: 2 }}>
+                      <Text style={{ fontSize: 13, fontWeight: '800', color: '#059669' }}>
+                        Free Local Area Ads (V Ads) — ₹0 — Free Forever
+                      </Text>
+                      <Text style={{ fontSize: 12, color: colors.muted }}>
+                        Pre-filled with {businessDisplayName}, {flagship_sector.shortTitle},{' '}
+                        {business.service_title}, and {business.city}.
+                      </Text>
+                    </View>
+                    <Pressable
+                      onPress={openPrefilledFreeVAdFlow}
+                      style={[
+                        st.heroBtn,
+                        {
+                          backgroundColor: '#059669',
+                          borderColor: '#059669',
+                          justifyContent: 'center',
+                          minHeight: 38,
+                        },
+                      ]}
+                    >
+                      <Feather name="video" size={14} color="#ffffff" />
+                      <Text style={{ fontSize: 13, fontWeight: '800', color: '#ffffff' }}>
+                        Upload Your Free V Ad Now
+                      </Text>
+                    </Pressable>
+                  </View>
                 )}
               </View>
-              <Text style={{ fontSize: 12, color: colors.muted }}>{pillar.description}</Text>
-            </Pressable>
+            </>
           );
-        })}
-
-        {freeVAdShortcutActive && (
-          <View
-            style={{
-              padding: 12,
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: 'rgba(16,185,129,0.5)',
-              backgroundColor: isDark ? 'rgba(16,185,129,0.12)' : '#ecfdf5',
-              gap: 8,
-            }}
-          >
-            <View style={{ gap: 2 }}>
-              <Text style={{ fontSize: 13, fontWeight: '800', color: '#059669' }}>
-                Free Local Area Ads (V Ads) — ₹0 — Free Forever
-              </Text>
-              <Text style={{ fontSize: 12, color: colors.muted }}>
-                Pre-filled with {businessDisplayName}, {flagship_sector.shortTitle},{' '}
-                {business.service_title}, and {business.city}.
-              </Text>
-            </View>
-            <Pressable
-              onPress={openPrefilledFreeVAdFlow}
-              style={[
-                st.heroBtn,
-                {
-                  backgroundColor: '#059669',
-                  borderColor: '#059669',
-                  justifyContent: 'center',
-                  minHeight: 38,
-                },
-              ]}
-            >
-              <Feather name="video" size={14} color="#ffffff" />
-              <Text style={{ fontSize: 13, fontWeight: '800', color: '#ffffff' }}>
-                Upload Your Free V Ad Now
-              </Text>
-            </Pressable>
-          </View>
-        )}
+        })()}
 
         {/* Your Selected Plan & Total Cost */}
         <View style={st.cartCard}>
@@ -633,14 +665,6 @@ export function MobileBusinessGrowthAuditView({
           <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
             Your Selected Plan & Total Cost
           </Text>
-          <View style={st.cartRow}>
-            <Text style={{ fontSize: 13, color: colors.text }}>
-              Free on VISTRAH ({live.cart.freeItemsCount} items)
-            </Text>
-            <Text style={{ fontSize: 13, fontWeight: '800', color: '#10b981' }}>
-              ₹0 — Free Forever
-            </Text>
-          </View>
           <View style={st.cartRow}>
             <Text style={{ fontSize: 13, color: colors.text }}>One-Time Setup Total</Text>
             <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
@@ -651,6 +675,14 @@ export function MobileBusinessGrowthAuditView({
             <Text style={{ fontSize: 13, color: colors.text }}>Monthly Services Total</Text>
             <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
               {formatInr(live.cart.monthlyTotalInr)} / mo
+            </Text>
+          </View>
+          <View style={st.cartRow}>
+            <Text style={{ fontSize: 13, color: colors.text }}>
+              Other Perks ({live.cart.freeItemsCount} included)
+            </Text>
+            <Text style={{ fontSize: 13, fontWeight: '800', color: '#10b981' }}>
+              ₹0 — Free Forever
             </Text>
           </View>
 

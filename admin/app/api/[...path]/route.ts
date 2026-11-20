@@ -6,7 +6,7 @@ async function handle(request:NextRequest,{params}:{params:Promise<{path:string[
   if(path.some(p=>!p||p==='..'||p.includes('/')||p.includes('\\'))) return NextResponse.json({detail:'Invalid path'},{status:400});
   const endpoint=path.join('/');
   const auditAdminPath=['marketing-audit','business-profile','website-requests'].includes(path[0]);
-  const placePhotoPath=path[0]==='marketplace'&&(path[1]==='place-photo'||path[1]==='provider-photo');
+  const placePhotoPath=path[0]==='marketplace'&&(path[1]==='place-photo'||path[1]==='provider-photo'||path[1]==='service-types');
   if(path[0]!=='admin'&&!auditAdminPath&&!placePhotoPath&&!['auth/login','auth/logout','me','health','catalogue'].includes(endpoint))return NextResponse.json({detail:'Not available in VISTRAH Admin'},{status:404});
   const mutation=!['GET','HEAD'].includes(request.method);
   if(mutation) {

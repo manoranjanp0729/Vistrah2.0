@@ -35,6 +35,8 @@ from .provider_routes import router as provider_router, eligible_query
 app.include_router(provider_router)
 from .self_onboarding_routes import router as self_onboarding_router
 app.include_router(self_onboarding_router)
+from .business_service_types import router as business_service_types_router
+app.include_router(business_service_types_router)
 from .recovery import router as recovery_router
 app.include_router(recovery_router)
 from .seller_routes import router as seller_router

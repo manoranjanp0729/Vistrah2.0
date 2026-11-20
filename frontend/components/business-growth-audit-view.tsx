@@ -34,6 +34,7 @@ import {
   isFreeVAdPillarActiveOrTicked,
   recalculateLiveAuditState,
   renderPersonalizedWebsitePreview,
+  splitPlanPillars,
   type BusinessProfileResponse,
   type LeadStatus,
   type SavedAuditLead,
@@ -610,95 +611,129 @@ export function BusinessGrowthAuditView({
           </p>
         </div>
 
-        {/* Pre-Filled "Upload Your Free V Ad Now" Shortcut when hyperlocal_v_ads is ticked or active */}
-        {showFreeVAdUploadShortcut && (
-          <div className={`${s.freeVAdShortcutCard} ${s.noPrint}`}>
-            <div style={{ display: 'grid', gap: 3 }}>
-              <strong style={{ fontSize: '0.94rem' }}>
-                Free Local Area Ads (V Ads) — ₹0 — Free Forever
-              </strong>
-              <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>
-                Post a short offer video for {business.company || business.name} to reach customers
-                across 2 km, 10 km, 25 km, or 50 km+ on VISTRAH at ₹0 forever.
-              </span>
-            </div>
-            {storefrontBaseUrl ? (
-              <a
-                href={freeVAdHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`${s.actionBtn} ${s.actionPrimaryGold}`}
-              >
-                <Video size={15} aria-hidden="true" />
-                Upload Your Free V Ad Now
-              </a>
-            ) : (
-              <Link href={freeVAdHref} className={`${s.actionBtn} ${s.actionPrimaryGold}`}>
-                <Video size={15} aria-hidden="true" />
-                Upload Your Free V Ad Now
-              </Link>
-            )}
-          </div>
-        )}
-
         <div className={s.configuratorLayout}>
           <div className={s.pillarsList}>
-            {live.audit.pillar_breakdown.map(pillar => {
-              const isTicked =
-                !pillar.active_in_baseline && tickedIds.includes(pillar.pillar_id);
-              const isFree = pillar.billing_type === 'free_forever';
-              return (
-                <div
-                  key={pillar.pillar_id}
-                  className={`${s.pillarRow} ${
-                    pillar.active_in_baseline
-                      ? s.pillarRowActive
-                      : isTicked
-                        ? s.pillarRowTicked
-                        : ''
-                  }`}
-                >
-                  <div className={s.pillarTop}>
-                    {pillar.active_in_baseline ? (
-                      <div className={s.pillarCheckLabel}>
-                        <ShieldCheck size={18} color="#10b981" aria-hidden="true" />
-                        <span>{pillar.product_title}</span>
-                      </div>
-                    ) : (
-                      <label className={s.pillarCheckLabel}>
-                        <input
-                          type="checkbox"
-                          checked={isTicked}
-                          onChange={() => togglePillar(pillar.pillar_id)}
-                          className={s.pillarCheckbox}
-                        />
-                        <span>{pillar.product_title}</span>
-                      </label>
-                    )}
-
-                    <div className={s.badgeRow}>
-                      <span className={s.pointsTag}>+{pillar.max_points} pts</span>
-                      <span className={isFree ? s.priceTagFree : s.priceTagPaid}>
-                        {pillar.billing_label}
-                      </span>
-                      {pillar.active_in_baseline && (
-                        <span className={s.activeBaselineBadge}>Already Done ✓</span>
+            {(() => {
+              const { mainServices, otherPerks } = splitPlanPillars(live.audit.pillar_breakdown);
+              const renderPillarRow = (pillar: (typeof live.audit.pillar_breakdown)[number]) => {
+                const isTicked =
+                  !pillar.active_in_baseline && tickedIds.includes(pillar.pillar_id);
+                const isFree = pillar.billing_type === 'free_forever';
+                return (
+                  <div
+                    key={pillar.pillar_id}
+                    className={`${s.pillarRow} ${
+                      pillar.active_in_baseline
+                        ? s.pillarRowActive
+                        : isTicked
+                          ? s.pillarRowTicked
+                          : ''
+                    }`}
+                  >
+                    <div className={s.pillarTop}>
+                      {pillar.active_in_baseline ? (
+                        <div className={s.pillarCheckLabel}>
+                          <ShieldCheck size={18} color="#10b981" aria-hidden="true" />
+                          <span>{pillar.product_title}</span>
+                        </div>
+                      ) : (
+                        <label className={s.pillarCheckLabel}>
+                          <input
+                            type="checkbox"
+                            checked={isTicked}
+                            onChange={() => togglePillar(pillar.pillar_id)}
+                            className={s.pillarCheckbox}
+                          />
+                          <span>{pillar.product_title}</span>
+                        </label>
                       )}
+
+                      <div className={s.badgeRow}>
+                        <span className={s.pointsTag}>+{pillar.max_points} pts</span>
+                        <span className={isFree ? s.priceTagFree : s.priceTagPaid}>
+                          {pillar.billing_label}
+                        </span>
+                        {pillar.active_in_baseline && (
+                          <span className={s.activeBaselineBadge}>Already Done ✓</span>
+                        )}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className={s.pillarBarTrack}>
-                    {pillar.active_in_baseline ? (
-                      <div className={s.pillarBarFillActive} />
-                    ) : isTicked ? (
-                      <div className={s.pillarBarFillTicked} />
-                    ) : null}
-                  </div>
+                    <div className={s.pillarBarTrack}>
+                      {pillar.active_in_baseline ? (
+                        <div className={s.pillarBarFillActive} />
+                      ) : isTicked ? (
+                        <div className={s.pillarBarFillTicked} />
+                      ) : null}
+                    </div>
 
-                  <p className={s.pillarSummaryText}>{pillar.description}</p>
-                </div>
+                    <p className={s.pillarSummaryText}>{pillar.description}</p>
+                  </div>
+                );
+              };
+
+              return (
+                <>
+                  {mainServices.map(renderPillarRow)}
+
+                  <div
+                    style={{
+                      marginTop: 8,
+                      paddingTop: 14,
+                      borderTop: '1px dashed rgba(148,163,184,0.45)',
+                      display: 'grid',
+                      gap: 10,
+                    }}
+                  >
+                    <div>
+                      <p className={s.sectionEyebrow}>OTHER PERKS</p>
+                      <strong style={{ fontSize: '0.96rem' }}>
+                        Other Perks (Free on VISTRAH)
+                      </strong>
+                      <p className={s.pillarSummaryText} style={{ marginTop: 2 }}>
+                        Included free forever on VISTRAH alongside your marketing services
+                      </p>
+                    </div>
+
+                    {otherPerks.map(renderPillarRow)}
+
+                    {showFreeVAdUploadShortcut && (
+                      <div className={`${s.freeVAdShortcutCard} ${s.noPrint}`}>
+                        <div style={{ display: 'grid', gap: 3 }}>
+                          <strong style={{ fontSize: '0.94rem' }}>
+                            Free Local Area Ads (V Ads) — ₹0 — Free Forever
+                          </strong>
+                          <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>
+                            Post a short offer video for {business.company || business.name} to
+                            reach customers across 2 km, 10 km, 25 km, or 50 km+ on VISTRAH at ₹0
+                            forever.
+                          </span>
+                        </div>
+                        {storefrontBaseUrl ? (
+                          <a
+                            href={freeVAdHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`${s.actionBtn} ${s.actionPrimaryGold}`}
+                          >
+                            <Video size={15} aria-hidden="true" />
+                            Upload Your Free V Ad Now
+                          </a>
+                        ) : (
+                          <Link
+                            href={freeVAdHref}
+                            className={`${s.actionBtn} ${s.actionPrimaryGold}`}
+                          >
+                            <Video size={15} aria-hidden="true" />
+                            Upload Your Free V Ad Now
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </>
               );
-            })}
+            })()}
           </div>
 
           <aside className={s.quoteCart} aria-label="Your Selected Plan & Total Cost">
@@ -710,24 +745,6 @@ export function BusinessGrowthAuditView({
               <div style={{ fontSize: '0.82rem', opacity: 0.82, marginTop: 2 }}>
                 New Score: <strong>{live.simulation.projected_score}/100</strong> ({getScoreTierLabel(live.simulation.projected_score)})
               </div>
-            </div>
-
-            <div className={s.cartGroup}>
-              <span className={s.cartGroupTitle}>
-                Free on VISTRAH ({live.cart.freeItemsCount} selected)
-              </span>
-              {live.cart.freeItems.length === 0 ? (
-                <span style={{ fontSize: '0.8rem', opacity: 0.72 }}>
-                  Already done or unticked
-                </span>
-              ) : (
-                live.cart.freeItems.map(item => (
-                  <div key={item.id} className={s.cartLine}>
-                    <span>{item.short_title}</span>
-                    <strong style={{ color: '#10b981' }}>₹0 — Free Forever</strong>
-                  </div>
-                ))
-              )}
             </div>
 
             <div className={s.cartGroup}>
@@ -764,6 +781,24 @@ export function BusinessGrowthAuditView({
                 <span>Monthly Total</span>
                 <strong>{formatInr(live.cart.monthlyTotalInr)} / mo</strong>
               </div>
+            </div>
+
+            <div className={s.cartGroup}>
+              <span className={s.cartGroupTitle}>
+                Other Perks ({live.cart.freeItemsCount} selected)
+              </span>
+              {live.cart.freeItems.length === 0 ? (
+                <span style={{ fontSize: '0.8rem', opacity: 0.72 }}>
+                  Already done or unticked
+                </span>
+              ) : (
+                live.cart.freeItems.map(item => (
+                  <div key={item.id} className={s.cartLine}>
+                    <span>{item.short_title}</span>
+                    <strong style={{ color: '#10b981' }}>₹0 — Free Forever</strong>
+                  </div>
+                ))
+              )}
             </div>
 
             <div className={s.totalsBlock}>

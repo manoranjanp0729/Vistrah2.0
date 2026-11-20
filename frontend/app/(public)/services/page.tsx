@@ -1,3 +1,4 @@
+import {serverDirectMarketplace} from '@/lib/server-direct-marketplace';
 import {notFound,permanentRedirect} from 'next/navigation';
 import {MarketplaceBrowser} from '@/components/marketplace-browser';
 import {SellerEntry} from '@/components/seller-auth';
@@ -8,6 +9,7 @@ export const dynamic='force-dynamic';
 export const metadata={title:'Service categories'};
 export default async function Services({searchParams}:{searchParams:Promise<MarketplaceSelection>}) {
   const params=await searchParams;
+  const {resolveMarketplaceSelection,legacyMarketplaceSelection}=await serverDirectMarketplace();
   const {q=''}=params;
   const selection=resolveMarketplaceSelection(params);
   if(!selection){

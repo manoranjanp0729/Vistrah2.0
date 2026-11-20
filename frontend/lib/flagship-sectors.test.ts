@@ -12,14 +12,14 @@ describe('Plain-Language 7-Pillar Scoring, Score Tiers & 10-Sector Website Patte
   it('defines 7 everyday pillars totaling 100 points, plain score tiers, and 10 sector 3-step plans', () => {
     expect(AUDIT_PILLARS).toHaveLength(7);
     expect(AUDIT_PILLARS.reduce((acc, p) => acc + p.max_points, 0)).toBe(TOTAL_AUDIT_POINTS);
-    expect(AUDIT_PILLARS.map(p => p.product_title)).toEqual([
-      'Get Listed on VISTRAH',
-      'Your Own Business Website',
-      'Free Local Area Ads (V Ads)',
-      'Instagram & Facebook Reels + Page Care',
-      'Instagram & Facebook Customer Ads',
-      'Professional Shop & Work Photos/Videos',
-      'Rank Higher on Google Search & Maps',
+    expect(AUDIT_PILLARS.map(p => [p.product_title, p.group])).toEqual([
+      ['Your Own Business Website', 'main_service'],
+      ['Instagram & Facebook Reels + Page Care', 'main_service'],
+      ['Instagram & Facebook Customer Ads', 'main_service'],
+      ['Professional Shop & Work Photos/Videos', 'main_service'],
+      ['Rank Higher on Google Search & Maps', 'main_service'],
+      ['Get Listed on VISTRAH', 'other_perk'],
+      ['Free Local Area Ads (V Ads)', 'other_perk'],
     ]);
 
     expect(getScoreTierLabel(20)).toBe('Hard to Find Online');
@@ -27,14 +27,25 @@ describe('Plain-Language 7-Pillar Scoring, Score Tiers & 10-Sector Website Patte
     expect(getScoreTierLabel(80)).toBe('Good Local Reach');
     expect(getScoreTierLabel(95)).toBe('Top Choice in Your Area');
 
-    expect(FLAGSHIP_SECTORS).toHaveLength(10);
+    expect(FLAGSHIP_SECTORS.map(s => s.title)).toEqual([
+      'Restaurants & Dining',
+      'Hotels & Stay',
+      'Vehicle Rentals',
+      'Event Management',
+      'Hospitals and Labs',
+      'Education & Skills',
+      'Salons & Beauty Parlour',
+      'Civil & Construction',
+      'Fuel & Charging Stations',
+      'Vibe Finder',
+    ]);
     for (const sector of FLAGSHIP_SECTORS) {
       expect(sector.website_pattern.pattern_id).toBeTruthy();
       expect(sector.website_pattern.pattern_title).toBeTruthy();
       expect(sector.website_pattern.key_sections.length).toBeGreaterThanOrEqual(3);
       expect(sector.vertical_strategy.plan_heading).toMatch(/^Simple 3-Step Plan/);
       expect(sector.vertical_strategy.funnel_steps).toHaveLength(3);
-      expect(sector.vertical_strategy.recommended_pillar_ids.length).toBeGreaterThanOrEqual(4);
+      expect(sector.vertical_strategy.recommended_pillar_ids.length).toBeGreaterThanOrEqual(3);
     }
   });
 

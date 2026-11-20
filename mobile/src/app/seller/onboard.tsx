@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import {registerCustomServiceTypes} from '../../../../shared/self-onboarding';
+import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
@@ -129,9 +130,6 @@ function MobileSelfOnboardingForm({
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [activeCategory, setActiveCategory] = useState<string>(resolved.categorySlug);
-  const [activeSubcategory, setActiveSubcategory] = useState<string>(
-    resolved.subcategorySlug ?? 'all',
-  );
   const [showAllTypes, setShowAllTypes] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(
@@ -161,6 +159,9 @@ function MobileSelfOnboardingForm({
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState<ProviderApplication[] | null>(null);
 
+  const [customTitle,setCustomTitle]=useState('');
+  const [,refreshCatalogue]=useState(0);
+  useEffect(()=>{let alive=true;void api<{categories:{slug:string;types:{slug:string;title:string}[]}[]}>('/marketplace/service-types').then(data=>{if(alive){registerCustomServiceTypes(data);refreshCatalogue(v=>v+1);}}).catch(()=>{});return()=>{alive=false;};},[]);
   const selectedTypes = selectedSlugs
     .map((slug) => findSelfOnboardingType(slug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
@@ -169,7 +170,7 @@ function MobileSelfOnboardingForm({
   const visibleTypes = searchSelfOnboardingTypes(
     searchQuery,
     activeCategory,
-    !searchQuery.trim() && activeSubcategory !== 'all' ? activeSubcategory : undefined,
+    undefined,
   );
   const cappedTypes =
     showAllTypes || Boolean(searchQuery.trim())
@@ -180,7 +181,7 @@ function MobileSelfOnboardingForm({
     setError('');
     setSelectedSlugs((prev) => {
       if (prev.includes(slug)) return prev.filter((item) => item !== slug);
-      if (prev.length >= MAX_SELF_ONBOARDING_TYPES) {
+      if (prev.length + Number(Boolean(customTitle.trim())) >= MAX_SELF_ONBOARDING_TYPES) {
         setError(`Select up to ${MAX_SELF_ONBOARDING_TYPES} business types.`);
         return prev;
       }
@@ -268,6 +269,7 @@ function MobileSelfOnboardingForm({
         method: 'POST',
         body: JSON.stringify({
           business_types: selectedSlugs,
+          custom_service_types:customTitle.trim()?[{category:activeCategory,title:customTitle.trim()}]:[],
           business_name: businessName.trim(),
           contact_name: contactName.trim(),
           phone: phone.trim(),
@@ -327,7 +329,7 @@ function MobileSelfOnboardingForm({
   return (
     <View style={{ gap: 14 }}>
       <Text style={styles.muted}>
-        <UiText value="₹0 / Free Forever: List your business across 808+ service types and upload V Ads (free for any radius on VISTRAH) in ~3 minutes. Licences are optional and only requested for regulated professions." />
+        <UiText value="₹0 / Free Forever: List your business across the 10 business categories and upload V Ads (free for any radius on VISTRAH) in ~3 minutes. Licences are optional and only requested for regulated professions." />
       </Text>
 
       {/* 3-Step Pills */}
@@ -340,7 +342,7 @@ function MobileSelfOnboardingForm({
           ] as const
         ).map(([num, label]) => {
           const active = step === num;
-          const canJump = num === 1 || (num === 2 && selectedSlugs.length > 0);
+          const canJump = num === 1 || (num === 2 && (selectedSlugs.length > 0 || Boolean(customTitle.trim())));
           return (
             <Pressable
               key={num}
@@ -348,7 +350,7 @@ function MobileSelfOnboardingForm({
               disabled={!canJump && !active}
               onPress={() => {
                 if (num === 1) setStep(1);
-                else if (num === 2 && selectedSlugs.length > 0) setStep(2);
+                else if (num === 2 && (selectedSlugs.length > 0 || Boolean(customTitle.trim()))) setStep(2);
               }}
               style={{
                 paddingHorizontal: 12,
@@ -421,7 +423,7 @@ function MobileSelfOnboardingForm({
                 setSearchQuery(val);
                 setShowAllTypes(false);
               }}
-              placeholder="Search 800+ services (e.g. Plumber, Dental, Tractor, GST)..."
+              placeholder="Search service types (e.g. Restaurant, Clinics, Cars, Wedding)..."
               placeholderTextColor={colors.muted}
               style={[styles.text, { flex: 1, minHeight: 44 }]}
             />
@@ -450,7 +452,6 @@ function MobileSelfOnboardingForm({
                       accessibilityState={{ selected: active }}
                       onPress={() => {
                         setActiveCategory(cat.slug);
-                        setActiveSubcategory('all');
                         setShowAllTypes(false);
                       }}
                       style={{
@@ -469,65 +470,6 @@ function MobileSelfOnboardingForm({
                   );
                 })}
               </ScrollView>
-
-              {Boolean(activeCatObj && activeCatObj.subcategories.length > 1) && (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 6 }}>
-                  <Pressable
-                    onPress={() => {
-                      setActiveSubcategory('all');
-                      setShowAllTypes(false);
-                    }}
-                    style={{
-                      paddingHorizontal: 11,
-                      paddingVertical: 6,
-                      borderRadius: 999,
-                      borderWidth: 1,
-                      borderColor: activeSubcategory === 'all' ? colors.accent : colors.border,
-                      backgroundColor: activeSubcategory === 'all' ? colors.accent : colors.surface,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: activeSubcategory === 'all' ? '#ffffff' : colors.text,
-                        fontSize: 12,
-                        fontWeight: '600',
-                      }}
-                    >
-                      All ({activeCatObj!.types.length})
-                    </Text>
-                  </Pressable>
-                  {activeCatObj!.subcategories.map((sub) => {
-                    const subActive = activeSubcategory === sub.slug;
-                    return (
-                      <Pressable
-                        key={sub.slug}
-                        onPress={() => {
-                          setActiveSubcategory(sub.slug);
-                          setShowAllTypes(false);
-                        }}
-                        style={{
-                          paddingHorizontal: 11,
-                          paddingVertical: 6,
-                          borderRadius: 999,
-                          borderWidth: 1,
-                          borderColor: subActive ? colors.accent : colors.border,
-                          backgroundColor: subActive ? colors.accent : colors.surface,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            color: subActive ? '#ffffff' : colors.text,
-                            fontSize: 12,
-                            fontWeight: '600',
-                          }}
-                        >
-                          {sub.title} ({sub.count})
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
-                </ScrollView>
-              )}
             </View>
           )}
 
@@ -578,10 +520,12 @@ function MobileSelfOnboardingForm({
             />
           )}
 
+          <Field label="Other / Add New Listing Type" value={customTitle} onChangeText={setCustomTitle} maxLength={100} />
+          <Text style={styles.muted}>Request a new direct type under the selected category. VISTRAH will review it before publication.</Text>
           <UiElement
             as={Action}
             label="Continue to Business Basics"
-            disabled={!selectedSlugs.length}
+            disabled={!selectedSlugs.length && !customTitle.trim()}
             onPress={() => {
               setError('');
               setStep(2);

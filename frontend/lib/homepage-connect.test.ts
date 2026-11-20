@@ -12,13 +12,13 @@ const render=(child:React.ReactNode)=>renderToStaticMarkup(createElement(Languag
 describe('Homepage Connect features',()=>{
  it('renders AgriConnect then HealthConnect with canonical category links and approved photographs',()=>{
   const html=render(createElement(HomepageConnect));
-  expect(html.indexOf('VISTRAH AgriConnect')).toBeLessThan(html.indexOf('VISTRAH HealthConnect'));
+  expect(html).not.toContain('VISTRAH AgriConnect');expect(html).toContain('VISTRAH HealthConnect');
   for(const section of connectSections){const category=marketplaceCategories.find(c=>c.slug===section.categorySlug)!;expect(html).toContain(category.title.replaceAll('&','&amp;'));expect(html).toContain(`href="${marketplaceCategoryUrl(category.slug)}"`);expect(resolveMarketplaceSelection({category:section.categorySlug})?.category).toBe(category);expect(html).toContain(section.description);expect(html).toContain(section.background);}
-  expect(html.match(/<img /g)).toHaveLength(2);expect(html).not.toContain('Photograph unavailable');expect(html).not.toContain('lucide-arrow-up-right');expect(html).not.toContain('subcategories');
+  expect(html.match(/<img /g)).toHaveLength(1);expect(html).not.toContain('Photograph unavailable');expect(html).not.toContain('lucide-arrow-up-right');expect(html).not.toContain('subcategories');
  });
  it('excludes the dedicated categories only when explicitly requested by the homepage',()=>{
   const home=render(createElement(MarketplaceCategories,{compact:true,exclude:connectCategorySlugs}));const all=render(createElement(MarketplaceCategories));
-  expect(home.match(/data-marketplace-category=/g)).toHaveLength(8);expect(all.match(/data-marketplace-category=/g)).toHaveLength(10);
+  expect(home.match(/data-marketplace-category=/g)).toHaveLength(10);expect(all.match(/data-marketplace-category=/g)).toHaveLength(10);
   for(const slug of connectCategorySlugs){expect(home).not.toContain(`data-marketplace-category="${slug}"`);expect(all).toContain(`data-marketplace-category="${slug}"`);}
  });
 });

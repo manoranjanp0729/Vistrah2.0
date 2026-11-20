@@ -129,6 +129,7 @@ def _resolve_category_and_type(
     category_slug: str | None,
     subcategory_slug: str | None,
     type_slug: str | None,
+    db=None,
 ) -> tuple[dict, dict | None, dict | None]:
     cat_slug = _clean_slug(category_slug)
     sub_slug = _clean_slug(subcategory_slug)
@@ -146,6 +147,7 @@ def _resolve_category_and_type(
             bt_slug,
             category_slug=cat_slug,
             subcategory_slug=sub_slug,
+            db=db,
         )
         if found:
             found_cat, found_bt = found
@@ -212,7 +214,7 @@ def _run_marketplace_nearby(
     lng: float,
     radius_km: float,
 ) -> dict:
-    cat_def, sub_def, bt_def = _resolve_category_and_type(category_slug, subcategory_slug, type_slug)
+    cat_def, sub_def, bt_def = _resolve_category_and_type(category_slug, subcategory_slug, type_slug, db=db)
     lm_cats = legacy_map().get("categories", {})
     acceptable_cat_slugs = {
         cat_def["slug"],

@@ -1,0 +1,395 @@
+{
+  "version": 5,
+  "categories": [
+    {
+      "slug": "restaurants-and-dining",
+      "title": "Restaurants & Dining",
+      "order": 1,
+      "description": "Show your menu, opening hours and food photos.",
+      "hero": "hospitality-restaurants-and-cafes",
+      "types": [
+        {
+          "slug": "restaurant",
+          "title": "Restaurant"
+        },
+        {
+          "slug": "cafes",
+          "title": "Cafes"
+        },
+        {
+          "slug": "pubs",
+          "title": "Pubs"
+        },
+        {
+          "slug": "street-food",
+          "title": "Street Food"
+        }
+      ],
+      "website": {
+        "title": "Menu, Photos & Table Enquiries",
+        "description": "Show your menu, opening hours and food photos.",
+        "cta": "Ask About a Table",
+        "sections": [
+          "Menu and prices",
+          "Food photos",
+          "Opening hours and location"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "hotels-and-stay",
+      "title": "Hotels & Stay",
+      "order": 2,
+      "description": "Help guests see your rooms, facilities and location.",
+      "hero": "real-estate-and-property",
+      "types": [
+        {
+          "slug": "hotels",
+          "title": "Hotels"
+        },
+        {
+          "slug": "homestays",
+          "title": "Homestays"
+        },
+        {
+          "slug": "resorts",
+          "title": "Resorts"
+        }
+      ],
+      "website": {
+        "title": "Rooms, Facilities & Stay Enquiries",
+        "description": "Help guests see your rooms, facilities and location.",
+        "cta": "Ask About a Stay",
+        "sections": [
+          "Rooms and rates",
+          "Facilities and guest information",
+          "Location and availability enquiries"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "vehicle-rentals",
+      "title": "Vehicle Rentals",
+      "order": 3,
+      "description": "Show vehicles, rental terms and availability.",
+      "hero": "automobiles-and-garages",
+      "types": [
+        {
+          "slug": "cars",
+          "title": "Cars"
+        },
+        {
+          "slug": "bikes",
+          "title": "Bikes"
+        }
+      ],
+      "website": {
+        "title": "Vehicles, Rental Rates & Availability",
+        "description": "Show vehicles, rental terms and availability.",
+        "cta": "Ask About a Rental",
+        "sections": [
+          "Cars and bikes",
+          "Rental rates and terms",
+          "Availability and pickup location"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "event-management",
+      "title": "Event Management",
+      "order": 4,
+      "description": "Show past events, packages and available dates.",
+      "hero": "events-weddings-and-media",
+      "types": [
+        {
+          "slug": "wedding",
+          "title": "Wedding"
+        },
+        {
+          "slug": "birthday",
+          "title": "Birthday"
+        }
+      ],
+      "website": {
+        "title": "Event Packages, Work Photos & Enquiries",
+        "description": "Show past events, packages and available dates.",
+        "cta": "Ask About Your Event",
+        "sections": [
+          "Wedding and birthday packages",
+          "Past event photos",
+          "Date and venue enquiries"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "hospitals-and-labs",
+      "title": "Hospitals and Labs",
+      "order": 5,
+      "description": "Help people find care services, timings and contact details.",
+      "hero": "healthconnect-and-clinics",
+      "types": [
+        {
+          "slug": "hospitals",
+          "title": "Hospitals"
+        },
+        {
+          "slug": "clinics",
+          "title": "Clinics"
+        },
+        {
+          "slug": "laboratory",
+          "title": "Laboratory"
+        }
+      ],
+      "website": {
+        "title": "Care Services, Timings & Appointment Enquiries",
+        "description": "Help people find care services, timings and contact details.",
+        "cta": "Ask About an Appointment",
+        "sections": [
+          "Care services and tests",
+          "Doctor and opening timings",
+          "Location and appointment enquiries"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "education-and-skills",
+      "title": "Education & Skills",
+      "order": 6,
+      "description": "Show courses, fees, schedules and admission details.",
+      "hero": "overseas-education-and-skill-academies",
+      "types": [
+        {
+          "slug": "schools",
+          "title": "Schools"
+        },
+        {
+          "slug": "colleges",
+          "title": "Colleges"
+        },
+        {
+          "slug": "universities",
+          "title": "Universities"
+        },
+        {
+          "slug": "institutes",
+          "title": "Institutes"
+        },
+        {
+          "slug": "tuitions",
+          "title": "Tuitions"
+        }
+      ],
+      "website": {
+        "title": "Courses, Admissions & Learning Enquiries",
+        "description": "Show courses, fees, schedules and admission details.",
+        "cta": "Ask About Admissions",
+        "sections": [
+          "Courses and eligibility",
+          "Fees and schedules",
+          "Admissions and campus contact"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "salons-and-beauty-parlour",
+      "title": "Salons & Beauty Parlour",
+      "order": 7,
+      "description": "Show your treatments, prices and available times.",
+      "hero": "salons-bridal-and-wellness",
+      "types": [
+        {
+          "slug": "salons",
+          "title": "Salons"
+        },
+        {
+          "slug": "beauty-parlour",
+          "title": "Beauty Parlour"
+        },
+        {
+          "slug": "spas",
+          "title": "Spas"
+        },
+        {
+          "slug": "sauna",
+          "title": "Sauna"
+        }
+      ],
+      "website": {
+        "title": "Services, Prices & Booking Enquiries",
+        "description": "Show your treatments, prices and available times.",
+        "cta": "Ask About a Booking",
+        "sections": [
+          "Services and prices",
+          "Work photos and facilities",
+          "Opening hours and bookings"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "civil-and-construction",
+      "title": "Civil & Construction",
+      "order": 8,
+      "description": "Show residential and commercial work and invite quote enquiries.",
+      "hero": "civil-construction-and-contractors",
+      "types": [
+        {
+          "slug": "residential",
+          "title": "Residential"
+        },
+        {
+          "slug": "commercial",
+          "title": "Commercial"
+        }
+      ],
+      "website": {
+        "title": "Project Photos, Services & Quote Enquiries",
+        "description": "Show residential and commercial work and invite quote enquiries.",
+        "cta": "Ask for a Quote",
+        "sections": [
+          "Residential and commercial services",
+          "Completed work photos",
+          "Project requirements and quote enquiries"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "fuel-and-charging-stations",
+      "title": "Fuel & Charging Stations",
+      "order": 9,
+      "description": "Help drivers find available facilities, opening hours and directions.",
+      "hero": "automobiles-and-garages",
+      "types": [
+        {
+          "slug": "petrol-pumps",
+          "title": "Petrol Pumps"
+        },
+        {
+          "slug": "auto-gas",
+          "title": "Auto Gas"
+        },
+        {
+          "slug": "ev-charging",
+          "title": "EV Charging"
+        }
+      ],
+      "website": {
+        "title": "Fuel, Charging Facilities & Location",
+        "description": "Help drivers find available facilities, opening hours and directions.",
+        "cta": "Find the Station",
+        "sections": [
+          "Fuel and charger types",
+          "Facilities and opening hours",
+          "Directions and contact"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    },
+    {
+      "slug": "vibe-finder",
+      "title": "Vibe Finder",
+      "order": 10,
+      "description": "Show upcoming events, venues, timings and enquiry details.",
+      "hero": "events-weddings-and-media",
+      "types": [
+        {
+          "slug": "theatres",
+          "title": "Theatres"
+        },
+        {
+          "slug": "social-events",
+          "title": "Social Events"
+        }
+      ],
+      "website": {
+        "title": "Shows, Events & Visit Information",
+        "description": "Show upcoming events, venues, timings and enquiry details.",
+        "cta": "Ask About a Visit",
+        "sections": [
+          "Shows and social events",
+          "Dates, times and venues",
+          "Visit and ticket enquiries"
+        ]
+      },
+      "growth": [
+        "Show your business details, services and location clearly.",
+        "Share useful updates and free local V Ads so nearby customers can find you.",
+        "Make it easy to call or message, then follow up on enquiries."
+      ]
+    }
+  ],
+  "regulations": {
+    "fssai": {
+      "label": "FSSAI Registration / Licence Number",
+      "document": "FSSAI Certificate"
+    },
+    "medical": {
+      "label": "Medical Council / Clinical Establishment Registration",
+      "document": "Clinical Registration Certificate"
+    },
+    "pharmacy": {
+      "label": "Drug Licence Number (Form 20 / 21)",
+      "document": "Drug Licence Copy"
+    },
+    "veterinary": {
+      "label": "State Veterinary Council Registration Number",
+      "document": "Veterinary Practice Registration"
+    },
+    "legal": {
+      "label": "Bar Council Enrollment Number",
+      "document": "Bar Council Certificate / ID"
+    },
+    "ca_tax": {
+      "label": "ICAI Membership / GST Practitioner Number",
+      "document": "Membership / Practitioner Certificate"
+    },
+    "rera": {
+      "label": "State RERA Registration Number",
+      "document": "RERA Registration Certificate"
+    }
+  }
+}

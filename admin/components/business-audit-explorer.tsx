@@ -1,6 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import {AddServiceType} from './add-service-type';
+import {registerCustomServiceTypes} from '../../shared/self-onboarding';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle,
@@ -36,6 +38,8 @@ import {
 const LIVE_STOREFRONT = process.env.NEXT_PUBLIC_STOREFRONT_URL || 'https://vistrah.in';
 
 export function BusinessAuditExplorer() {
+  const [catalogueRevision,refreshCatalogue]=useState(0);
+  useEffect(()=>{void api<{categories:{slug:string;types:{slug:string;title:string}[]}[]}>('/marketplace/service-types').then(data=>{registerCustomServiceTypes(data);refreshCatalogue(v=>v+1);}).catch(()=>{});},[]);
   const [activeTab, setActiveTab] = useState<'explore' | 'leads'>('explore');
 
   // Cascading Service & Gap Filters
@@ -69,7 +73,7 @@ export function BusinessAuditExplorer() {
     if (sectorSlug === 'all') return [];
     const cat = SELF_ONBOARDING_CATEGORIES.find(c => c.slug === sectorSlug);
     return (cat?.types ?? []).slice(0, 60);
-  }, [sectorSlug, serviceKeyword]);
+  }, [sectorSlug, serviceKeyword, catalogueRevision]);
 
   const loadExplore = useCallback(async () => {
     setLoadingExplore(true);
@@ -165,6 +169,7 @@ export function BusinessAuditExplorer() {
 
   return (
     <div style={{ display: 'grid', gap: 18 }}>
+      <AddServiceType/>
       {/* Top Mode Tabs */}
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <div style={{ display: 'inline-flex', gap: 8 }}>

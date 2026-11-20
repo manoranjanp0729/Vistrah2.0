@@ -1,6 +1,7 @@
 import React from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {expect,it,vi} from 'vitest';
+vi.mock('@/lib/server',()=>({serverApi:vi.fn(async()=>null)}));
 vi.mock('@/components/seller-auth',()=>({SellerEntry:()=>React.createElement('div',null,'Seller entry')}));
 vi.mock('@/components/marketplace-browser',()=>({MarketplaceBrowser:({selection}:{selection:{category?:{title:string};subcategory?:{title:string};listingType?:{title:string}}})=>React.createElement('div',null,selection.listingType?.title??selection.subcategory?.title??selection.category?.title??'Categories')}));
 vi.mock('next/navigation',()=>({
@@ -25,7 +26,7 @@ it('renders only taxonomy browsing at every level without requesting the legacy 
       expect(html).not.toContain('published-services');
       expect(html).not.toContain('Service catalogue');
     }
-    await expect(Services({searchParams:Promise.resolve({category:'home-services',subcategory:'electrician-and-plumber'})})).rejects.toThrow('REDIRECT:/services?category=interior-design-and-exteriors&subcategory=repairs-and-maintenance&type=plumbing');
-    expect(fetcher).not.toHaveBeenCalled();
+    await expect(Services({searchParams:Promise.resolve({category:'home-services',subcategory:'electrician-and-plumber'})})).rejects.toThrow('NOT_FOUND');
+
   }finally{vi.unstubAllGlobals();}
 });

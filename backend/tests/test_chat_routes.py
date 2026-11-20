@@ -21,15 +21,15 @@ def test_chat_gemini_grounded_reply_sanitizes_actions_and_hides_api_key(client, 
                                 {
                                     "text": json.dumps(
                                         {
-                                            "reply": "You can find verified Dental Clinics near you on VISTRAH's interactive map, or list your clinic in 3 steps.",
+                                            "reply": "You can find verified Clinics near you on VISTRAH's interactive map, or list your clinic in 3 steps.",
                                             "suggestedActions": [
                                                 {
-                                                    "label": "Nearby Dental Clinics",
-                                                    "href": "/services/nearby?category=health-fitness-and-wellness&subcategory=dental-care&type=dental-clinics",
+                                                    "label": "Nearby Clinics",
+                                                    "href": "/services/nearby?category=hospitals-and-labs&subcategory=clinics&type=clinics",
                                                 },
                                                 {
                                                     "label": "List Your Clinic",
-                                                    "href": "/seller/onboard?category=health-fitness-and-wellness&type=dental-clinics",
+                                                    "href": "/seller/onboard?category=hospitals-and-labs&type=clinics",
                                                 },
                                                 {
                                                     "label": "Blocked External Link",
@@ -72,23 +72,23 @@ def test_chat_gemini_grounded_reply_sanitizes_actions_and_hides_api_key(client, 
     resp = client.post(
         "/api/chat",
         json={
-            "message": "Where can I find dental clinics near me?",
+            "message": "Where can I find clinics near me?",
             "history": [{"role": "user", "content": "Hello"}],
         },
     )
     assert resp.status_code == 200, resp.text
     assert resp.headers["cache-control"] == "private, no-store"
     data = resp.json()
-    assert "Dental Clinics" in data["reply"]
+    assert "Clinics" in data["reply"]
     # Unsafe external / javascript: links are stripped fail-closed!
     assert data["suggestedActions"] == [
         {
-            "label": "Nearby Dental Clinics",
-            "href": "/services/nearby?category=health-fitness-and-wellness&subcategory=dental-care&type=dental-clinics",
+            "label": "Nearby Clinics",
+            "href": "/services/nearby?category=hospitals-and-labs&subcategory=clinics&type=clinics",
         },
         {
             "label": "List Your Clinic",
-            "href": "/seller/onboard?category=health-fitness-and-wellness&type=dental-clinics",
+            "href": "/seller/onboard?category=hospitals-and-labs&type=clinics",
         },
     ]
 
@@ -102,7 +102,7 @@ def test_chat_gemini_grounded_reply_sanitizes_actions_and_hides_api_key(client, 
     assert "/services/nearby" in sys_prompt
     assert "Free Forever" in sys_prompt
     assert "any geographic radius" in sys_prompt.lower()
-    assert "dental clinics" in sys_prompt.lower()
+    assert "clinics" in sys_prompt.lower()
 
 
 def test_chat_fallback_when_key_missing_and_per_ip_rate_limit(client, monkeypatch):
@@ -124,7 +124,7 @@ def test_chat_fallback_when_key_missing_and_per_ip_rate_limit(client, monkeypatc
     r2 = client.post(
         "/api/chat",
         headers={"X-Forwarded-For": "203.0.113.42"},
-        json={"message": "Find tractor rental near me"},
+        json={"message": "Find EV charging near me"},
     )
     assert r2.status_code == 200
     b2 = r2.json()

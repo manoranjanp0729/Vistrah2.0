@@ -1,0 +1,512 @@
+[
+  {
+    "order": 1,
+    "slug": "restaurants-and-dining",
+    "title": "Restaurants & Dining",
+    "shortTitle": "Restaurants & Dining",
+    "description": "Show your menu, opening hours and food photos.",
+    "icon": "coffee",
+    "heroImage": "/images/category-heroes/hospitality-restaurants-and-cafes.webp",
+    "defaultSubcategorySlug": "restaurant",
+    "defaultTypeSlug": "restaurant",
+    "serviceTypes": [
+      {
+        "slug": "restaurant",
+        "title": "Restaurant"
+      },
+      {
+        "slug": "cafes",
+        "title": "Cafes"
+      },
+      {
+        "slug": "pubs",
+        "title": "Pubs"
+      },
+      {
+        "slug": "street-food",
+        "title": "Street Food"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "restaurants-and-dining-website",
+      "pattern_title": "Sample Website Made for Your Business: Menu, Photos & Table Enquiries",
+      "layout_archetype": "Show your menu, opening hours and food photos.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Menu and prices",
+        "Food photos",
+        "Opening hours and location"
+      ],
+      "conversion_cta": "Ask About a Table"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show your menu, opening hours and food photos.",
+      "funnel_steps": [
+        "Show menu and prices with accurate business details and your map location.",
+        "Share food photos on your website and free local V Ads.",
+        "Invite customers to ask about a table and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 2,
+    "slug": "hotels-and-stay",
+    "title": "Hotels & Stay",
+    "shortTitle": "Hotels & Stay",
+    "description": "Help guests see your rooms, facilities and location.",
+    "icon": "home",
+    "heroImage": "/images/category-heroes/real-estate-and-property.webp",
+    "defaultSubcategorySlug": "hotels",
+    "defaultTypeSlug": "hotels",
+    "serviceTypes": [
+      {
+        "slug": "hotels",
+        "title": "Hotels"
+      },
+      {
+        "slug": "homestays",
+        "title": "Homestays"
+      },
+      {
+        "slug": "resorts",
+        "title": "Resorts"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "hotels-and-stay-website",
+      "pattern_title": "Sample Website Made for Your Business: Rooms, Facilities & Stay Enquiries",
+      "layout_archetype": "Help guests see your rooms, facilities and location.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Rooms and rates",
+        "Facilities and guest information",
+        "Location and availability enquiries"
+      ],
+      "conversion_cta": "Ask About a Stay"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Help guests see your rooms, facilities and location.",
+      "funnel_steps": [
+        "Show rooms and rates with accurate business details and your map location.",
+        "Share facilities and guest information on your website and free local V Ads.",
+        "Invite customers to ask about a stay and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 3,
+    "slug": "vehicle-rentals",
+    "title": "Vehicle Rentals",
+    "shortTitle": "Vehicle Rentals",
+    "description": "Show vehicles, rental terms and availability.",
+    "icon": "truck",
+    "heroImage": "/images/category-heroes/automobiles-and-garages.webp",
+    "defaultSubcategorySlug": "cars",
+    "defaultTypeSlug": "cars",
+    "serviceTypes": [
+      {
+        "slug": "cars",
+        "title": "Cars"
+      },
+      {
+        "slug": "bikes",
+        "title": "Bikes"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "vehicle-rentals-website",
+      "pattern_title": "Sample Website Made for Your Business: Vehicles, Rental Rates & Availability",
+      "layout_archetype": "Show vehicles, rental terms and availability.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Cars and bikes",
+        "Rental rates and terms",
+        "Availability and pickup location"
+      ],
+      "conversion_cta": "Ask About a Rental"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show vehicles, rental terms and availability.",
+      "funnel_steps": [
+        "Show cars and bikes with accurate business details and your map location.",
+        "Share rental rates and terms on your website and free local V Ads.",
+        "Invite customers to ask about a rental and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 4,
+    "slug": "event-management",
+    "title": "Event Management",
+    "shortTitle": "Event Management",
+    "description": "Show past events, packages and available dates.",
+    "icon": "camera",
+    "heroImage": "/images/category-heroes/events-weddings-and-media.webp",
+    "defaultSubcategorySlug": "wedding",
+    "defaultTypeSlug": "wedding",
+    "serviceTypes": [
+      {
+        "slug": "wedding",
+        "title": "Wedding"
+      },
+      {
+        "slug": "birthday",
+        "title": "Birthday"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "event-management-website",
+      "pattern_title": "Sample Website Made for Your Business: Event Packages, Work Photos & Enquiries",
+      "layout_archetype": "Show past events, packages and available dates.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Wedding and birthday packages",
+        "Past event photos",
+        "Date and venue enquiries"
+      ],
+      "conversion_cta": "Ask About Your Event"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show past events, packages and available dates.",
+      "funnel_steps": [
+        "Show wedding and birthday packages with accurate business details and your map location.",
+        "Share past event photos on your website and free local V Ads.",
+        "Invite customers to ask about your event and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 5,
+    "slug": "hospitals-and-labs",
+    "title": "Hospitals and Labs",
+    "shortTitle": "Hospitals and Labs",
+    "description": "Help people find care services, timings and contact details.",
+    "icon": "heart",
+    "heroImage": "/images/category-heroes/healthconnect-and-clinics.webp",
+    "defaultSubcategorySlug": "hospitals",
+    "defaultTypeSlug": "hospitals",
+    "serviceTypes": [
+      {
+        "slug": "hospitals",
+        "title": "Hospitals"
+      },
+      {
+        "slug": "clinics",
+        "title": "Clinics"
+      },
+      {
+        "slug": "laboratory",
+        "title": "Laboratory"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "hospitals-and-labs-website",
+      "pattern_title": "Sample Website Made for Your Business: Care Services, Timings & Appointment Enquiries",
+      "layout_archetype": "Help people find care services, timings and contact details.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Care services and tests",
+        "Doctor and opening timings",
+        "Location and appointment enquiries"
+      ],
+      "conversion_cta": "Ask About an Appointment"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Help people find care services, timings and contact details.",
+      "funnel_steps": [
+        "Show care services and tests with accurate business details and your map location.",
+        "Share doctor and opening timings on your website and free local V Ads.",
+        "Invite customers to ask about an appointment and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 6,
+    "slug": "education-and-skills",
+    "title": "Education & Skills",
+    "shortTitle": "Education & Skills",
+    "description": "Show courses, fees, schedules and admission details.",
+    "icon": "book",
+    "heroImage": "/images/category-heroes/overseas-education-and-skill-academies.webp",
+    "defaultSubcategorySlug": "schools",
+    "defaultTypeSlug": "schools",
+    "serviceTypes": [
+      {
+        "slug": "schools",
+        "title": "Schools"
+      },
+      {
+        "slug": "colleges",
+        "title": "Colleges"
+      },
+      {
+        "slug": "universities",
+        "title": "Universities"
+      },
+      {
+        "slug": "institutes",
+        "title": "Institutes"
+      },
+      {
+        "slug": "tuitions",
+        "title": "Tuitions"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "education-and-skills-website",
+      "pattern_title": "Sample Website Made for Your Business: Courses, Admissions & Learning Enquiries",
+      "layout_archetype": "Show courses, fees, schedules and admission details.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Courses and eligibility",
+        "Fees and schedules",
+        "Admissions and campus contact"
+      ],
+      "conversion_cta": "Ask About Admissions"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show courses, fees, schedules and admission details.",
+      "funnel_steps": [
+        "Show courses and eligibility with accurate business details and your map location.",
+        "Share fees and schedules on your website and free local V Ads.",
+        "Invite customers to ask about admissions and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 7,
+    "slug": "salons-and-beauty-parlour",
+    "title": "Salons & Beauty Parlour",
+    "shortTitle": "Salons & Beauty Parlour",
+    "description": "Show your treatments, prices and available times.",
+    "icon": "scissors",
+    "heroImage": "/images/category-heroes/salons-bridal-and-wellness.webp",
+    "defaultSubcategorySlug": "salons",
+    "defaultTypeSlug": "salons",
+    "serviceTypes": [
+      {
+        "slug": "salons",
+        "title": "Salons"
+      },
+      {
+        "slug": "beauty-parlour",
+        "title": "Beauty Parlour"
+      },
+      {
+        "slug": "spas",
+        "title": "Spas"
+      },
+      {
+        "slug": "sauna",
+        "title": "Sauna"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "salons-and-beauty-parlour-website",
+      "pattern_title": "Sample Website Made for Your Business: Services, Prices & Booking Enquiries",
+      "layout_archetype": "Show your treatments, prices and available times.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Services and prices",
+        "Work photos and facilities",
+        "Opening hours and bookings"
+      ],
+      "conversion_cta": "Ask About a Booking"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show your treatments, prices and available times.",
+      "funnel_steps": [
+        "Show services and prices with accurate business details and your map location.",
+        "Share work photos and facilities on your website and free local V Ads.",
+        "Invite customers to ask about a booking and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 8,
+    "slug": "civil-and-construction",
+    "title": "Civil & Construction",
+    "shortTitle": "Civil & Construction",
+    "description": "Show residential and commercial work and invite quote enquiries.",
+    "icon": "tool",
+    "heroImage": "/images/category-heroes/civil-construction-and-contractors.webp",
+    "defaultSubcategorySlug": "residential",
+    "defaultTypeSlug": "residential",
+    "serviceTypes": [
+      {
+        "slug": "residential",
+        "title": "Residential"
+      },
+      {
+        "slug": "commercial",
+        "title": "Commercial"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "civil-and-construction-website",
+      "pattern_title": "Sample Website Made for Your Business: Project Photos, Services & Quote Enquiries",
+      "layout_archetype": "Show residential and commercial work and invite quote enquiries.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Residential and commercial services",
+        "Completed work photos",
+        "Project requirements and quote enquiries"
+      ],
+      "conversion_cta": "Ask for a Quote"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show residential and commercial work and invite quote enquiries.",
+      "funnel_steps": [
+        "Show residential and commercial services with accurate business details and your map location.",
+        "Share completed work photos on your website and free local V Ads.",
+        "Invite customers to ask for a quote and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 9,
+    "slug": "fuel-and-charging-stations",
+    "title": "Fuel & Charging Stations",
+    "shortTitle": "Fuel & Charging Stations",
+    "description": "Help drivers find available facilities, opening hours and directions.",
+    "icon": "truck",
+    "heroImage": "/images/category-heroes/automobiles-and-garages.webp",
+    "defaultSubcategorySlug": "petrol-pumps",
+    "defaultTypeSlug": "petrol-pumps",
+    "serviceTypes": [
+      {
+        "slug": "petrol-pumps",
+        "title": "Petrol Pumps"
+      },
+      {
+        "slug": "auto-gas",
+        "title": "Auto Gas"
+      },
+      {
+        "slug": "ev-charging",
+        "title": "EV Charging"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "fuel-and-charging-stations-website",
+      "pattern_title": "Sample Website Made for Your Business: Fuel, Charging Facilities & Location",
+      "layout_archetype": "Help drivers find available facilities, opening hours and directions.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Fuel and charger types",
+        "Facilities and opening hours",
+        "Directions and contact"
+      ],
+      "conversion_cta": "Find the Station"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Help drivers find available facilities, opening hours and directions.",
+      "funnel_steps": [
+        "Show fuel and charger types with accurate business details and your map location.",
+        "Share facilities and opening hours on your website and free local V Ads.",
+        "Invite customers to find the station and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  },
+  {
+    "order": 10,
+    "slug": "vibe-finder",
+    "title": "Vibe Finder",
+    "shortTitle": "Vibe Finder",
+    "description": "Show upcoming events, venues, timings and enquiry details.",
+    "icon": "layers",
+    "heroImage": "/images/category-heroes/events-weddings-and-media.webp",
+    "defaultSubcategorySlug": "theatres",
+    "defaultTypeSlug": "theatres",
+    "serviceTypes": [
+      {
+        "slug": "theatres",
+        "title": "Theatres"
+      },
+      {
+        "slug": "social-events",
+        "title": "Social Events"
+      }
+    ],
+    "website_pattern": {
+      "pattern_id": "vibe-finder-website",
+      "pattern_title": "Sample Website Made for Your Business: Shows, Events & Visit Information",
+      "layout_archetype": "Show upcoming events, venues, timings and enquiry details.",
+      "hero_headline_template": "{business_name} in {city}",
+      "key_sections": [
+        "Shows and social events",
+        "Dates, times and venues",
+        "Visit and ticket enquiries"
+      ],
+      "conversion_cta": "Ask About a Visit"
+    },
+    "vertical_strategy": {
+      "plan_heading": "Simple 3-Step Plan to Get More Customers",
+      "summary": "Show upcoming events, venues, timings and enquiry details.",
+      "funnel_steps": [
+        "Show shows and social events with accurate business details and your map location.",
+        "Share dates, times and venues on your website and free local V Ads.",
+        "Invite customers to ask about a visit and follow up on their enquiries."
+      ],
+      "recommended_pillar_ids": [
+        "vistrah_presence",
+        "hyperlocal_v_ads",
+        "dedicated_website"
+      ]
+    }
+  }
+]

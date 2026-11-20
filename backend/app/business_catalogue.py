@@ -39,7 +39,7 @@ from .provider_models import ProviderRequirement
 from .provider_requirements import Requirements
 
 SOURCE_FILE = Path(__file__).resolve().parents[2] / "shared" / "business-types.json"
-BOOTSTRAP_KEY = "business-catalogue-v4-10sectors"
+BOOTSTRAP_KEY = "business-catalogue-v5-direct-types"
 MAX_INCLUDES = 5
 
 
@@ -47,7 +47,7 @@ MAX_INCLUDES = 5
 def business_types() -> dict:
     data = json.loads(SOURCE_FILE.read_text(encoding="utf-8"))
     assert len(data["categories"]) == 10
-    assert sum(len(c["types"]) for c in data["categories"]) >= 800
+    assert all(c["types"] for c in data["categories"])
     return data
 
 
@@ -68,6 +68,7 @@ def find_business_type(
     *,
     category_slug: str | None = None,
     subcategory_slug: str | None = None,
+    db=None,
 ) -> tuple[dict, dict] | None:
     by_slug, by_cat_and_lt = _type_lookup_maps()
     lm = legacy_map()
@@ -94,6 +95,9 @@ def find_business_type(
         if u_slug in by_slug:
             return by_slug[u_slug]
 
+    if db is not None:
+        from .business_service_types import find_dynamic_type
+        return find_dynamic_type(db, type_slug, category_slug)
     return None
 
 
@@ -102,8 +106,9 @@ def ensure_business_type_service(
     type_slug: str,
     *,
     actor_id: int | None = None,
+    custom_definition=None,
 ) -> tuple[Category, Service, ProviderRequirement, dict, dict] | None:
-    found = find_business_type(type_slug)
+    found = custom_definition or find_business_type(type_slug, db=db)
     if not found:
         return None
     cat, bt = found
@@ -166,7 +171,7 @@ def ensure_business_type_service(
         db.flush()
     else:
         changed = False
-        if not service.active:
+        if not service.active and not bt.get('custom'):
             service.active = True
             changed = True
         if subcategory and service.subcategory_id != subcategory.id:
@@ -419,6 +424,9 @@ def apply_business_catalogue(
                 continue
             old_cat = cat_by_id.get(cid)
             if not old_cat or old_cat.slug in retained:
+                continue
+            # Runtime-approved custom types belong directly to a final category.
+            if old_cat.slug in active_cat_slugs:
                 continue
 
             old_sub = sub_by_id.get(old_svc.subcategory_id) if old_svc.subcategory_id else None

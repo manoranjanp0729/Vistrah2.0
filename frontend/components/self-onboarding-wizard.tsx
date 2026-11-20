@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import {registerCustomServiceTypes} from '../../shared/self-onboarding';
+import { useEffect, useState } from 'react';
 import { Check, MapPin, Search, ShieldCheck, X } from 'lucide-react';
 import { AuthGate, notifyUserSession } from './customer';
 import { UiText } from './localized-ui';
@@ -107,9 +108,6 @@ function WizardInner({
   });
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [activeCategory, setActiveCategory] = useState<string>(resolvedInitial.categorySlug);
-  const [activeSubcategory, setActiveSubcategory] = useState<string>(
-    resolvedInitial.subcategorySlug ?? 'all',
-  );
   const [showAllTypes, setShowAllTypes] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSlugs, setSelectedSlugs] = useState<string[]>(
@@ -140,6 +138,9 @@ function WizardInner({
   const [fieldErrors, setFieldErrors] = useState<FieldError[]>([]);
   const [submitted, setSubmitted] = useState<ProviderApplication[] | null>(null);
 
+  const [customTitle,setCustomTitle]=useState('');
+  const [,refreshCatalogue]=useState(0);
+  useEffect(()=>{let alive=true;void api<{categories:{slug:string;types:{slug:string;title:string}[]}[]}>('/marketplace/service-types').then(data=>{if(alive){registerCustomServiceTypes(data);refreshCatalogue(v=>v+1);}}).catch(()=>{});return()=>{alive=false;};},[]);
   const selectedTypes = selectedSlugs
     .map((slug) => findSelfOnboardingType(slug))
     .filter((item): item is NonNullable<typeof item> => Boolean(item));
@@ -148,7 +149,7 @@ function WizardInner({
   const visibleTypes = searchSelfOnboardingTypes(
     searchQuery,
     activeCategory,
-    !searchQuery.trim() && activeSubcategory !== 'all' ? activeSubcategory : undefined,
+    undefined,
   );
   const cappedTypes =
     showAllTypes || Boolean(searchQuery.trim())
@@ -159,7 +160,7 @@ function WizardInner({
     setError('');
     setSelectedSlugs((prev) => {
       if (prev.includes(slug)) return prev.filter((item) => item !== slug);
-      if (prev.length >= MAX_SELF_ONBOARDING_TYPES) {
+      if (prev.length + Number(Boolean(customTitle.trim())) >= MAX_SELF_ONBOARDING_TYPES) {
         setError(`You can select up to ${MAX_SELF_ONBOARDING_TYPES} business types at once.`);
         return prev;
       }
@@ -268,6 +269,7 @@ function WizardInner({
         method: 'POST',
         body: JSON.stringify({
           business_types: selectedSlugs,
+          custom_service_types:customTitle.trim()?[{category:activeCategory,title:customTitle.trim()}]:[],
           business_name: businessName.trim(),
           contact_name: contactName.trim(),
           phone: phone.trim(),
@@ -345,7 +347,7 @@ function WizardInner({
           <UiText value="List your business free on VISTRAH" />
         </h1>
         <p style={{ color: 'var(--muted, #475569)', maxWidth: 680 }}>
-          <UiText value="Listing your business across VISTRAH's 10 unified sectors (800+ service types) and uploading V Ads (free for any radius on VISTRAH) cost ₹0 forever. Pick your sector & service types, pin your location, and submit — optional licences are only shown for regulated professions." />
+          <UiText value="Listing your business across VISTRAH's 10 unified sectors (direct service types) and uploading V Ads (free for any radius on VISTRAH) cost ₹0 forever. Pick your sector & service types, pin your location, and submit — optional licences are only shown for regulated professions." />
         </p>
       </div>
 
@@ -359,7 +361,7 @@ function WizardInner({
           ] as const
         ).map(([num, label]) => {
           const active = step === num;
-          const canJump = num === 1 || (num === 2 && selectedSlugs.length > 0);
+          const canJump = num === 1 || (num === 2 && (selectedSlugs.length > 0 || Boolean(customTitle.trim())));
           return (
             <button
               key={num}
@@ -369,7 +371,7 @@ function WizardInner({
               disabled={!canJump && !active}
               onClick={() => {
                 if (num === 1) setStep(1);
-                else if (num === 2 && selectedSlugs.length > 0) setStep(2);
+                else if (num === 2 && (selectedSlugs.length > 0 || Boolean(customTitle.trim()))) setStep(2);
               }}
             >
               <UiText value={label} />
@@ -448,12 +450,12 @@ function WizardInner({
               <UiText value="1. What does your business do?" />
             </h2>
             <p style={{ margin: 0, color: 'var(--muted, #475569)' }}>
-              <UiText value="Type 1–2 letters below to search 800+ services instantly (e.g. Plumber, Dental Clinic, Tractor, Tiffin, GST) or browse the 15 categories. Pick up to 3 services." />
+              <UiText value="Type 1–2 letters below to search service types instantly (e.g. Restaurant, Clinics, Cars, Wedding) or browse the 10 categories. Pick up to 3 services." />
             </p>
           </div>
 
           <label style={{ display: 'grid', gap: 6 }}>
-            <span className="sr-only">Search 800+ business types</span>
+            <span className="sr-only">Search business types</span>
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
               <Search
                 size={18}
@@ -467,7 +469,7 @@ function WizardInner({
                   setSearchQuery(e.target.value);
                   setShowAllTypes(false);
                 }}
-                placeholder="Search 800+ services (e.g. Plumber, Dental Clinic, Tractor, South Indian Restaurant, GST)..."
+                placeholder="Search service types (e.g. Restaurant, Clinics, Cars, Wedding)..."
                 style={{ paddingLeft: 38, width: '100%' }}
               />
             </div>
@@ -486,7 +488,6 @@ function WizardInner({
                       aria-selected={isActive}
                       onClick={() => {
                         setActiveCategory(cat.slug);
-                        setActiveSubcategory('all');
                         setShowAllTypes(false);
                       }}
                       className={`catalogue-choice${isActive ? ' selected' : ''}`}
@@ -497,57 +498,6 @@ function WizardInner({
                   );
                 })}
               </div>
-
-              {activeCatObj && activeCatObj.subcategories.length > 1 && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }} aria-label="Subcategory filter">
-                  <button
-                    type="button"
-                    aria-pressed={activeSubcategory === 'all'}
-                    onClick={() => {
-                      setActiveSubcategory('all');
-                      setShowAllTypes(false);
-                    }}
-                    style={{
-                      padding: '5px 11px',
-                      borderRadius: 999,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      border: activeSubcategory === 'all' ? '1.5px solid #0f172a' : '1px solid rgba(15, 23, 42, 0.16)',
-                      background: activeSubcategory === 'all' ? '#0f172a' : '#f8fafc',
-                      color: activeSubcategory === 'all' ? '#ffffff' : '#334155',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    All ({activeCatObj.types.length})
-                  </button>
-                  {activeCatObj.subcategories.map((sub) => {
-                    const subActive = activeSubcategory === sub.slug;
-                    return (
-                      <button
-                        key={sub.slug}
-                        type="button"
-                        aria-pressed={subActive}
-                        onClick={() => {
-                          setActiveSubcategory(sub.slug);
-                          setShowAllTypes(false);
-                        }}
-                        style={{
-                          padding: '5px 11px',
-                          borderRadius: 999,
-                          fontSize: 12,
-                          fontWeight: 600,
-                          border: subActive ? '1.5px solid #0f172a' : '1px solid rgba(15, 23, 42, 0.16)',
-                          background: subActive ? '#0f172a' : '#f8fafc',
-                          color: subActive ? '#ffffff' : '#334155',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {sub.title} ({sub.count})
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
             </div>
           )}
 
@@ -624,7 +574,7 @@ function WizardInner({
 
           {!visibleTypes.length && (
             <p style={{ color: '#64748b' }}>
-              No matching business type found for &ldquo;{searchQuery}&rdquo;. Clear search to browse all 15 categories.
+              No matching business type found for &ldquo;{searchQuery}&rdquo;. Clear search to browse all 10 categories.
             </p>
           )}
 
@@ -632,10 +582,11 @@ function WizardInner({
             <Link className="text-link" href="/seller">
               <UiText value="Back to Seller Dashboard" />
             </Link>
+            <label>Other / Add New Listing Type<input value={customTitle} onChange={event=>setCustomTitle(event.target.value)} maxLength={100}/></label><p>Request a new direct type under the selected category. VISTRAH will review it before publication.</p>
             <button
               type="button"
               className="button"
-              disabled={!selectedSlugs.length}
+              disabled={!selectedSlugs.length && !customTitle.trim()}
               onClick={() => {
                 setError('');
                 setStep(2);

@@ -113,9 +113,9 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     owner_headers = seller(client, "nearby-owner@example.com")
     owner_id = client.get("/me", headers=owner_headers).json()["id"]
 
-    cat = db.scalar(select(Category).where(Category.slug == "hospitality-restaurants-and-cafes"))
-    svc_rest = db.scalar(select(Service).where(Service.category_id == cat.id, Service.slug == "restaurants"))
-    svc_other = db.scalar(select(Service).where(Service.category_id == cat.id, Service.slug != "restaurants").limit(1))
+    cat = db.scalar(select(Category).where(Category.slug == "restaurants-and-dining"))
+    svc_rest = db.scalar(select(Service).where(Service.category_id == cat.id, Service.slug == "restaurant"))
+    svc_other = db.scalar(select(Service).where(Service.category_id == cat.id, Service.slug != "restaurant").limit(1))
 
     base_lat, base_lng = 13.7091, 75.8132  # Tarikere
 
@@ -183,7 +183,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     r5 = client.get(
         "/marketplace/nearby",
         params={
-            "category": "food-and-dining",
+            "category": "restaurants-and-dining",
             "business_type": "restaurant",
             "lat": base_lat,
             "lng": base_lng,
@@ -198,7 +198,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     assert first["id"] == near_biz.id
     assert first["owner_user_id"] == owner_id
     assert first["place_id"] is None
-    assert first["category_slug"] == "hospitality-restaurants-and-cafes"
+    assert first["category_slug"] == "restaurants-and-dining"
     assert first["phone"] == "+919845011111"
     assert first["whatsapp"] == "+919845022222"
     assert first["photo_url"] is None  # KYC registration_document remained strictly private!
@@ -208,7 +208,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     r25 = client.post(
         "/marketplace/nearby",
         json={
-            "category": "food-and-dining",
+            "category": "restaurants-and-dining",
             "business_type": "restaurant",
             "lat": base_lat,
             "lng": base_lng,
@@ -242,7 +242,7 @@ def test_public_marketplace_nearby_vistrah_photo_phone_and_skips_google_when_fiv
     r_full = client.get(
         "/marketplace/nearby",
         params={
-            "category": "food-and-dining",
+            "category": "restaurants-and-dining",
             "business_type": "restaurant",
             "lat": base_lat,
             "lng": base_lng,
@@ -266,7 +266,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
 
     owner_headers = seller(client, "hybrid-owner@example.com")
     owner_id = client.get("/me", headers=owner_headers).json()["id"]
-    cat = db.scalar(select(Category).where(Category.slug == "interior-design-and-exteriors"))
+    cat = db.scalar(select(Category).where(Category.slug == "civil-and-construction"))
     svc = db.scalar(select(Service).where(Service.category_id == cat.id).order_by(Service.id).limit(1))
 
     base_lat, base_lng = 12.9716, 77.5946
@@ -345,7 +345,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     resp1 = client.get(
         "/marketplace/nearby",
         params={
-            "category": "home-and-everyday-services",
+            "category": "civil-and-construction",
             "business_type": svc.slug,
             "lat": base_lat,
             "lng": base_lng,
@@ -387,7 +387,7 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
     resp2 = client.get(
         "/marketplace/nearby",
         params={
-            "category": "home-and-everyday-services",
+            "category": "civil-and-construction",
             "business_type": svc.slug,
             "lat": base_lat + 0.002,
             "lng": base_lng - 0.002,

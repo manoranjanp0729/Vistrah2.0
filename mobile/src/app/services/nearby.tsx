@@ -1,3 +1,4 @@
+import {useDirectMarketplace} from '../../lib/direct-marketplace';
 import { useEffect } from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -17,6 +18,7 @@ import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../../../shared/flagship
 import { spacing, useTheme } from '../../lib/theme';
 
 export default function NearbyServicesScreen() {
+  const {resolveMarketplaceSelection,legacyMarketplaceSelection,marketplaceCategories,searchMarketplaceEntries}=useDirectMarketplace();
   const { styles } = useTheme();
   const { t, label } = useLanguage();
   const { width } = useWindowDimensions();

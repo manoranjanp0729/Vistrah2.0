@@ -527,6 +527,31 @@ export function deriveFreeVAdPrefillFromParams(params: {
   };
 }
 
+export function splitPlanPillars<
+  T extends { pillar_id: AuditPillarId; billing_type: string; group?: string },
+>(
+  breakdown: readonly T[],
+): {
+  mainServices: T[];
+  otherPerks: T[];
+} {
+  const mainServices: T[] = [];
+  const otherPerks: T[] = [];
+  for (const item of breakdown) {
+    const isPerk =
+      item.group === 'other_perk' ||
+      item.billing_type === 'free_forever' ||
+      item.pillar_id === 'vistrah_presence' ||
+      item.pillar_id === 'hyperlocal_v_ads';
+    if (isPerk) {
+      otherPerks.push(item);
+    } else {
+      mainServices.push(item);
+    }
+  }
+  return { mainServices, otherPerks };
+}
+
 export function isFreeVAdPillarActiveOrTicked(
   audit: BusinessAuditScoreResult,
   tickedPillarIds: readonly string[],
@@ -555,15 +580,17 @@ export function buildWhatsAppProposalMessage(input: {
     .slice(0, 4)
     .map(g => `• ${g.summary} (-${g.missing_points} pts)`);
 
-  const selectedLines: string[] = [];
-  for (const item of input.cart.freeItems) {
-    selectedLines.push(`✓ ${item.product_title}: ₹0 — Free Forever`);
-  }
+  const mainServiceLines: string[] = [];
   for (const item of input.cart.oneTimeItems) {
-    selectedLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)} One-Time`);
+    mainServiceLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)} One-Time`);
   }
   for (const item of input.cart.monthlyItems) {
-    selectedLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)} / month`);
+    mainServiceLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)} / month`);
+  }
+
+  const otherPerkLines: string[] = [];
+  for (const item of input.cart.freeItems) {
+    otherPerkLines.push(`✓ ${item.product_title}: ₹0 — Free Forever`);
   }
 
   const lines: string[] = [
@@ -579,17 +606,21 @@ export function buildWhatsAppProposalMessage(input: {
     lines.push(``, `*What You Are Missing Right Now:*`, ...topGaps);
   }
 
-  if (selectedLines.length > 0) {
-    lines.push(``, `*Your Selected Plan:*`, ...selectedLines);
+  if (mainServiceLines.length > 0) {
+    lines.push(``, `*Your Selected Plan:*`, ...mainServiceLines);
+  }
+
+  if (otherPerkLines.length > 0) {
+    lines.push(``, `*Other Perks (Free on VISTRAH):*`, ...otherPerkLines);
   }
 
   lines.push(
     ``,
     `*Sample Website for Your Business:* ${input.websitePatternTitle}`,
     `*Your Total Cost:*`,
-    `• Free on VISTRAH (${input.cart.freeItemsCount} items): ₹0 — Free Forever`,
     `• One-Time Setup Total: ${formatInr(input.cart.oneTimeTotalInr)}`,
     `• Monthly Services Total: ${formatInr(input.cart.monthlyTotalInr)} / month`,
+    `• Other Perks (${input.cart.freeItemsCount} included): ₹0 — Free Forever`,
     input.cart.gstIncluded
       ? `• 18% GST: ${formatInr(input.cart.gstAmountInr)} | Total to Start: *${formatInr(input.cart.grandTotalWithGstInr)}*`
       : `• Total to Start (Before GST): *${formatInr(input.cart.subtotalBeforeGstInr)}*`,

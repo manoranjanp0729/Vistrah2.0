@@ -100,7 +100,7 @@ describe('Step 3: Business Growth & Audit Landing Page, 7-Pillar Cart, Website P
       expect(preview.domain_preview).toBe('cauveryheritagestudio.in');
     }
 
-    const sampleSector = FLAGSHIP_SECTORS[3]; // HealthConnect & Clinics
+    const sampleSector = FLAGSHIP_SECTORS[4]; // Hospitals and Labs
     const audit = calculateBusinessAuditScore({
       is_vistrah_claimed: true,
       website_url: null,
@@ -127,8 +127,8 @@ describe('Step 3: Business Growth & Audit Landing Page, 7-Pillar Cart, Website P
         contact_name: 'Dr. Anand',
         sector_slug: sampleSector.slug,
         sector_title: sampleSector.title,
-        service_type: 'dental-clinics',
-        service_title: 'Dental Clinics',
+        service_type: 'clinics',
+        service_title: 'Clinics',
         address: 'Indiranagar, Bengaluru',
         city: 'Bengaluru',
         phone: '08025251111',
@@ -171,13 +171,16 @@ describe('Step 3: Business Growth & Audit Landing Page, 7-Pillar Cart, Website P
     expect(html).toContain('What You Are Missing Right Now');
     expect(html).toContain('Pick What You Want to Improve');
     expect(html).toContain('Tick or untick options below to see your score and total price update live');
+    expect(html).toContain('Other Perks (Free on VISTRAH)');
+    expect(html.indexOf('Your Own Business Website')).toBeLessThan(
+      html.indexOf('Other Perks (Free on VISTRAH)'),
+    );
     expect(html).toContain('Your Selected Plan &amp; Total Cost');
     expect(html).toContain('Already Done ✓');
     expect(html).toContain('Save Proposal &amp; Lead');
     expect(html).toContain('Sample Website Made for Your Business');
-    expect(html).toContain('Doctor Profile, Timings &amp; Appointment Website');
+    expect(html).toContain('Care Services, Timings &amp; Appointment Enquiries');
     expect(html).toContain('Simple 3-Step Plan to Get More Customers');
-    expect(html).toContain('Simple 3-Step Plan to Get More Patients');
     expect(html).toContain('Request This Website');
   });
 

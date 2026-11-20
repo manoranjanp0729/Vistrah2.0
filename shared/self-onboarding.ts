@@ -96,6 +96,24 @@ const typeBySlug = new Map<string, SelfOnboardingBusinessType>(
   ALL_SELF_ONBOARDING_TYPES.map(bt => [bt.slug, bt]),
 );
 
+/** Hydrate approved custom types from the public catalogue on clients. */
+export function registerCustomServiceTypes(remote: {categories: {slug: string; types: {slug: string; title: string; description?: string; regulated?: string}[]}[]}) {
+  for (const category of SELF_ONBOARDING_CATEGORIES) {
+    for (const item of remote?.categories?.find(c => c.slug === category.slug)?.types ?? []) {
+      if (typeBySlug.has(item.slug) || !/^[a-z0-9-]{1,100}$/.test(item.slug)) continue;
+      const type: SelfOnboardingBusinessType = {slug:item.slug, listingTypeSlug:item.slug,
+        subcategorySlug:item.slug, subcategoryTitle:item.title, title:item.title,
+        description:item.description ?? item.title, categorySlug:category.slug, categoryTitle:category.title,
+        keywords:[], searchHaystack:[item.title,category.title,item.slug].join(' ').toLowerCase(),
+        ...(item.regulated ? {regulated:item.regulated as RegulationKey} : {})};
+      category.types.push(type);
+      category.subcategories.push({slug:item.slug,title:item.title,count:1});
+      ALL_SELF_ONBOARDING_TYPES.push(type);
+      typeBySlug.set(item.slug,type);
+    }
+  }
+}
+
 const triplesMap = (legacyMapJson as { triples?: Record<string, string> }).triples ?? {};
 
 export function findSelfOnboardingType(

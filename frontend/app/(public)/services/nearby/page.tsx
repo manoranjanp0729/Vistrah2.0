@@ -1,3 +1,4 @@
+import {serverDirectMarketplace} from '@/lib/server-direct-marketplace';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { MarketplaceBrowser } from '@/components/marketplace-browser';
 import {
@@ -19,6 +20,7 @@ export default async function NearbyServicesPage({
   searchParams: Promise<{ category?: string; subcategory?: string; type?: string; q?: string }>;
 }) {
   const raw = await searchParams;
+  const {resolveMarketplaceSelection,legacyMarketplaceSelection,marketplaceCategories}=await serverDirectMarketplace();
   let cat = raw.category || FLAGSHIP_SECTORS[0].slug;
   let sub = raw.subcategory;
   let typ = raw.type;

@@ -1,3 +1,4 @@
+import {useDirectMarketplace} from '../../../lib/direct-marketplace';
 import {croppedPhoto} from '../../../lib/photo-crop';
 import {BannerGeometry} from '../../../components/banner-geometry';
 import {categoryHeroImages} from '../../../lib/category-hero-images';
@@ -34,6 +35,7 @@ import {officialContact} from '../../../../../shared/public-contact';
 import {servicesNavigationAction} from '../../../lib/marketplace-navigation';
 
 export default function Services() {
+  const {resolveMarketplaceSelection,legacyMarketplaceSelection,marketplaceCategories,searchMarketplaceEntries}=useDirectMarketplace();
   const banner=useBannerTheme();
   const {styles, colors, mode, accentGradient} = useTheme();
   const {t, label} = useLanguage();
@@ -313,7 +315,7 @@ export default function Services() {
                 {categoryName}
               </Text>
               <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
-                <UiText value="Select a specialized subcategory below to view dedicated providers and services." />
+                <UiText value="Choose a service type to see nearby businesses." />
               </Text>
             </>
           ) : isSubcategoryLevel ? (
@@ -639,7 +641,7 @@ export default function Services() {
               <View style={{flex: 1, minWidth: 0}}>
                 <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 2 OF 2</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
-                  {t('discovery.exploreSubcategories')}
+                  {t('discovery.types')}
                 </Text>
               </View>
               <Text style={{fontSize: 12, fontWeight: '600', color: colors.muted}}>
@@ -655,7 +657,7 @@ export default function Services() {
                     key={sub.slug}
                     testID={`marketplace-subcategory-${sub.slug}`}
                     accessibilityRole="button"
-                    onPress={() => open({category: category!.slug, subcategory: sub.slug})}
+                    onPress={() => router.push({pathname:'/services/nearby',params:{category:category!.slug,subcategory:sub.slug,type:sub.listing_types[0].slug}})}
                     style={({pressed}) => [
                       s.flowCard,
                       s.flowGridCard,

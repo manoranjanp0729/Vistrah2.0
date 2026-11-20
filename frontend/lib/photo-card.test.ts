@@ -14,9 +14,9 @@ describe('One premium photo-card design',()=>{
     for(const shell of shells)expect(shell).toEqual(shells[0]);
     for(const [index,source] of html.entries()){expect(source).toContain('--card-width:148px');expect(source).toContain(`--card-height:${index===3?168:150}px`);expect(source.includes('lucide-arrow-up-right')).toBe(index===3);expect(source).toContain('--image-height:86px');expect(source).toContain('aria-label="A complete classification title"');}
   });
-  it('preserves canonical item photo coverage and avoids a universal parent fallback',()=>{
-    expect(Object.keys(imagery.items)).toHaveLength(889);
-    for(const [id,item] of Object.entries(imagery.items)){if(item.photo===null)expect(id).toContain('/agriculture-and-farming');else expect(Object.hasOwn(imagery.assets,item.photo)).toBe(true);}
+  it('preserves canonical item photo coverage across all 10 categories and 30 direct types',()=>{
+    expect(Object.keys(imagery.items)).toHaveLength(70);
+    for(const [,item] of Object.entries(imagery.items)){expect(item.photo).toBeTruthy();expect(Object.hasOwn(imagery.assets,item.photo!)).toBe(true);}
   });
   it('renders unavailable imagery without a broken image',()=>{const html=renderToStaticMarkup(createElement(PhotoCard,{kind:'category',slug:'agriculture-and-farming',title:'Agriculture & Farming',meta:'9 subcategories',href:'/services?category=agriculture-and-farming',photo:null}));expect(html).toContain('Photograph unavailable');expect(html).not.toContain('<img');});
   it('keeps odd rail items and defines two title lines and two shared rows',()=>{

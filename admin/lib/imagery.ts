@@ -1,5 +1,6 @@
 import assets from './photo-assets.json';
 import registry from './image-registry.json';
+import {resolveCatalogueAsset} from '../../shared/catalogue-images';
 import type {Category,ServiceContext,Subcategory} from './types';
 
 export type PhotoKey=keyof typeof assets;
@@ -14,7 +15,7 @@ export const imageVariants={
 } as const;
 
 export type ImageEntry={
-  id:string;kind:string;page:string;subject:string;photo:PhotoKey|null;
+  id:string;kind:string;page:string;subject:string;photo:PhotoKey|null;src?:string;
   alt:string;aspectRatio:string;position:string;surfaces:string[];missingReason?:string;
 };
 export const imageRegistry:Readonly<Record<string,ImageEntry>>=registry as Record<string,ImageEntry>;
@@ -24,7 +25,15 @@ export const imageRegistry:Readonly<Record<string,ImageEntry>>=registry as Recor
  * Provenance, local src and fit are inherited from the referenced photo asset.
  */
 export function imageFor(id:string,subject=id):ImageEntry {
-  return Object.hasOwn(imageRegistry,id)?imageRegistry[id]:{
+  if(Object.hasOwn(imageRegistry,id))return imageRegistry[id];
+  const catalogueAsset=resolveCatalogueAsset(id);
+  if(catalogueAsset){
+    return {
+      id,kind:'catalogue',page:'/services',subject,photo:null,src:catalogueAsset.src,
+      alt:catalogueAsset.alt,aspectRatio:'4 / 3',position:catalogueAsset.position??'50% 50%',surfaces:['card','editorial','compact'],
+    };
+  }
+  return {
     id,kind:'missing',page:'',subject,photo:null,alt:`${subject}: photograph not available`,
     aspectRatio:'3 / 2',position:'50% 50%',surfaces:[],
     missingReason:'This stable identifier has no curated image registry entry.',
@@ -37,7 +46,16 @@ export function subcategoryPhoto(category:Pick<Category,'slug'>,subcategory:Pick
   return imageFor(`subcategory/${category.slug}/${subcategory.slug}`);
 }
 export function servicePhoto(context:ServiceContext):ImageEntry {
-  return imageFor(`service/${context.category.slug}/${context.subcategory?context.subcategory.slug+'/':''}${context.service.slug}`,context.service.title);
+  const id=`service/${context.category.slug}/${context.subcategory?context.subcategory.slug+'/':''}${context.service.slug}`;
+  if(Object.hasOwn(imageRegistry,id))return imageRegistry[id];
+  const directOrParent=resolveCatalogueAsset(`type/${context.category.slug}/${context.service.slug}/${context.service.slug}`,context.category.slug);
+  if(directOrParent){
+    return {
+      id,kind:'catalogue',page:'/services',subject:context.service.title,photo:null,src:directOrParent.src,
+      alt:directOrParent.alt,aspectRatio:'4 / 3',position:directOrParent.position??'50% 50%',surfaces:['card','editorial','compact'],
+    };
+  }
+  return imageFor(id,context.service.title);
 }
 export function pagePhoto(page:string):ImageEntry {return imageFor(`page/${page}`);}
 export function accountPhoto(section:string):ImageEntry {return imageFor(`account/${section||'overview'}`);}

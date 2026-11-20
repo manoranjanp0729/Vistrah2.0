@@ -6,7 +6,7 @@
     "shortTitle": "Restaurants & Dining",
     "description": "Show your menu, opening hours and food photos.",
     "icon": "coffee",
-    "heroImage": "/images/category-heroes/hospitality-restaurants-and-cafes.webp",
+    "heroImage": "/images/category-heroes/restaurants-and-dining.webp",
     "defaultSubcategorySlug": "restaurant",
     "defaultTypeSlug": "restaurant",
     "serviceTypes": [
@@ -61,7 +61,7 @@
     "shortTitle": "Hotels & Stay",
     "description": "Help guests see your rooms, facilities and location.",
     "icon": "home",
-    "heroImage": "/images/category-heroes/real-estate-and-property.webp",
+    "heroImage": "/images/category-heroes/hotels-and-stay.webp",
     "defaultSubcategorySlug": "hotels",
     "defaultTypeSlug": "hotels",
     "serviceTypes": [
@@ -112,7 +112,7 @@
     "shortTitle": "Vehicle Rentals",
     "description": "Show vehicles, rental terms and availability.",
     "icon": "truck",
-    "heroImage": "/images/category-heroes/automobiles-and-garages.webp",
+    "heroImage": "/images/category-heroes/vehicle-rentals.webp",
     "defaultSubcategorySlug": "cars",
     "defaultTypeSlug": "cars",
     "serviceTypes": [
@@ -159,7 +159,7 @@
     "shortTitle": "Event Management",
     "description": "Show past events, packages and available dates.",
     "icon": "camera",
-    "heroImage": "/images/category-heroes/events-weddings-and-media.webp",
+    "heroImage": "/images/category-heroes/event-management.webp",
     "defaultSubcategorySlug": "wedding",
     "defaultTypeSlug": "wedding",
     "serviceTypes": [
@@ -206,7 +206,7 @@
     "shortTitle": "Hospitals and Labs",
     "description": "Help people find care services, timings and contact details.",
     "icon": "heart",
-    "heroImage": "/images/category-heroes/healthconnect-and-clinics.webp",
+    "heroImage": "/images/category-heroes/hospitals-and-labs.webp",
     "defaultSubcategorySlug": "hospitals",
     "defaultTypeSlug": "hospitals",
     "serviceTypes": [
@@ -257,7 +257,7 @@
     "shortTitle": "Education & Skills",
     "description": "Show courses, fees, schedules and admission details.",
     "icon": "book",
-    "heroImage": "/images/category-heroes/overseas-education-and-skill-academies.webp",
+    "heroImage": "/images/category-heroes/education-and-skills.webp",
     "defaultSubcategorySlug": "schools",
     "defaultTypeSlug": "schools",
     "serviceTypes": [
@@ -316,7 +316,7 @@
     "shortTitle": "Salons & Beauty Parlour",
     "description": "Show your treatments, prices and available times.",
     "icon": "scissors",
-    "heroImage": "/images/category-heroes/salons-bridal-and-wellness.webp",
+    "heroImage": "/images/category-heroes/salons-and-beauty-parlour.webp",
     "defaultSubcategorySlug": "salons",
     "defaultTypeSlug": "salons",
     "serviceTypes": [
@@ -371,7 +371,7 @@
     "shortTitle": "Civil & Construction",
     "description": "Show residential and commercial work and invite quote enquiries.",
     "icon": "tool",
-    "heroImage": "/images/category-heroes/civil-construction-and-contractors.webp",
+    "heroImage": "/images/category-heroes/civil-and-construction.webp",
     "defaultSubcategorySlug": "residential",
     "defaultTypeSlug": "residential",
     "serviceTypes": [
@@ -418,7 +418,7 @@
     "shortTitle": "Fuel & Charging Stations",
     "description": "Help drivers find available facilities, opening hours and directions.",
     "icon": "truck",
-    "heroImage": "/images/category-heroes/automobiles-and-garages.webp",
+    "heroImage": "/images/category-heroes/fuel-and-charging-stations.webp",
     "defaultSubcategorySlug": "petrol-pumps",
     "defaultTypeSlug": "petrol-pumps",
     "serviceTypes": [
@@ -469,7 +469,7 @@
     "shortTitle": "Vibe Finder",
     "description": "Show upcoming events, venues, timings and enquiry details.",
     "icon": "layers",
-    "heroImage": "/images/category-heroes/events-weddings-and-media.webp",
+    "heroImage": "/images/category-heroes/vibe-finder.webp",
     "defaultSubcategorySlug": "theatres",
     "defaultTypeSlug": "theatres",
     "serviceTypes": [

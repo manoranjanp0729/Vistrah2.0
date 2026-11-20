@@ -1,12 +1,5 @@
-import manifest from '../../shared/marketplace-imagery.json';
+import {resolveCatalogueAsset} from '../../shared/catalogue-images';
 type Asset={src:string;alt:string};
-const items:Record<string,{photo:string|null}>=manifest.items;
-const assets:Record<string,Asset>=manifest.assets;
-export function marketplacePhoto(id:string):Asset|null {
-  const item=items[id];
-  if(!item)return null;
-  if(item?.photo===null)return null;
-  const photo=item&&assets[item.photo];
-  if(!photo)throw new Error(`Missing curated marketplace photo: ${id}`);
-  return photo;
+export function marketplacePhoto(id:string,parentCategorySlug?:string):Asset|null {
+  return resolveCatalogueAsset(id,parentCategorySlug);
 }

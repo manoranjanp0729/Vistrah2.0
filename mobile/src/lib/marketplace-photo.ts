@@ -1,16 +1,13 @@
-import manifest from '../../../shared/marketplace-imagery.json';
+import {resolveCatalogueAsset,resolveCataloguePhotoKey} from '../../../shared/catalogue-images';
 import {marketplacePhotos} from './marketplace-photos';
-const items:Record<string,{photo:string|null}>=manifest.items;
-export function nativeMarketplacePhoto(id:string):number|undefined {
-  if(!items[id])return undefined;
-  const key=items[id]?.photo;
-  if(key===null)return undefined;
-  const source=key&&marketplacePhotos[key];
+export function nativeMarketplacePhoto(id:string,parentCategorySlug?:string):number|undefined {
+  const key=resolveCataloguePhotoKey(id,parentCategorySlug);
+  if(!key)return undefined;
+  const source=marketplacePhotos[key];
   if(!source)throw new Error(`Missing bundled marketplace photo: ${id}`);
   return source;
 }
 
-export function nativeMarketplaceAlt(id:string):string|undefined {
- const key=items[id]?.photo;
- return key?(manifest.assets as Record<string,{alt:string}>)[key]?.alt:undefined;
+export function nativeMarketplaceAlt(id:string,parentCategorySlug?:string):string|undefined {
+  return resolveCatalogueAsset(id,parentCategorySlug)?.alt;
 }

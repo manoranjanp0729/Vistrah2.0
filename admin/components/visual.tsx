@@ -6,10 +6,10 @@ import {imageVariants,photos,type ImageEntry,type PhotoVariant} from '@/lib/imag
 export function Visual({photo,variant='editorial',decorative=false,preload=false,className=''}:{
   photo:ImageEntry;variant?:PhotoVariant;decorative?:boolean;preload?:boolean;className?:string;
 }) {
-  const asset=photo.photo?photos[photo.photo]:null;
+  const asset=photo.src?{src:photo.src,fit:'cover'}:photo.photo?photos[photo.photo]:null;
   const [failedSource,setFailedSource]=useState<string|null>(null);
   const failed=!asset||failedSource===asset.src;
-  return <div className={`visual visual-${variant} ${className}`} data-photo={photo.photo??'missing'} data-image-id={photo.id}
+  return <div className={`visual visual-${variant} ${className}`} data-photo={photo.photo??(photo.src?'catalogue':'missing')} data-image-id={photo.id}
     style={{aspectRatio:variant==='editorial'?photo.aspectRatio:imageVariants[variant].ratio}}>
     {failed?<span className="visual-unavailable" role={decorative?undefined:'img'}
       aria-label={decorative?undefined:`${photo.alt}. Photograph unavailable.`}>{asset?'Photograph unavailable':'Photograph not yet available'}</span>:

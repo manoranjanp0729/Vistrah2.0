@@ -6,7 +6,7 @@
       "title": "Restaurants & Dining",
       "order": 1,
       "description": "Show your menu, opening hours and food photos.",
-      "hero": "hospitality-restaurants-and-cafes",
+      "hero": "restaurants-and-dining",
       "types": [
         {
           "slug": "restaurant",
@@ -46,7 +46,7 @@
       "title": "Hotels & Stay",
       "order": 2,
       "description": "Help guests see your rooms, facilities and location.",
-      "hero": "real-estate-and-property",
+      "hero": "hotels-and-stay",
       "types": [
         {
           "slug": "hotels",
@@ -82,7 +82,7 @@
       "title": "Vehicle Rentals",
       "order": 3,
       "description": "Show vehicles, rental terms and availability.",
-      "hero": "automobiles-and-garages",
+      "hero": "vehicle-rentals",
       "types": [
         {
           "slug": "cars",
@@ -114,7 +114,7 @@
       "title": "Event Management",
       "order": 4,
       "description": "Show past events, packages and available dates.",
-      "hero": "events-weddings-and-media",
+      "hero": "event-management",
       "types": [
         {
           "slug": "wedding",
@@ -146,7 +146,7 @@
       "title": "Hospitals and Labs",
       "order": 5,
       "description": "Help people find care services, timings and contact details.",
-      "hero": "healthconnect-and-clinics",
+      "hero": "hospitals-and-labs",
       "types": [
         {
           "slug": "hospitals",
@@ -182,7 +182,7 @@
       "title": "Education & Skills",
       "order": 6,
       "description": "Show courses, fees, schedules and admission details.",
-      "hero": "overseas-education-and-skill-academies",
+      "hero": "education-and-skills",
       "types": [
         {
           "slug": "schools",
@@ -226,7 +226,7 @@
       "title": "Salons & Beauty Parlour",
       "order": 7,
       "description": "Show your treatments, prices and available times.",
-      "hero": "salons-bridal-and-wellness",
+      "hero": "salons-and-beauty-parlour",
       "types": [
         {
           "slug": "salons",
@@ -266,7 +266,7 @@
       "title": "Civil & Construction",
       "order": 8,
       "description": "Show residential and commercial work and invite quote enquiries.",
-      "hero": "civil-construction-and-contractors",
+      "hero": "civil-and-construction",
       "types": [
         {
           "slug": "residential",
@@ -298,7 +298,7 @@
       "title": "Fuel & Charging Stations",
       "order": 9,
       "description": "Help drivers find available facilities, opening hours and directions.",
-      "hero": "automobiles-and-garages",
+      "hero": "fuel-and-charging-stations",
       "types": [
         {
           "slug": "petrol-pumps",
@@ -334,7 +334,7 @@
       "title": "Vibe Finder",
       "order": 10,
       "description": "Show upcoming events, venues, timings and enquiry details.",
-      "hero": "events-weddings-and-media",
+      "hero": "vibe-finder",
       "types": [
         {
           "slug": "theatres",

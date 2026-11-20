@@ -37,11 +37,11 @@ def test_seven_pillar_catalog_ten_sector_blueprints_and_deterministic_scoring():
     assert len(AUDIT_PILLARS) == 7
     assert sum(p["max_points"] for p in AUDIT_PILLARS) == 100
     expected_pillars = [
-        ("vistrah_presence", 20, 0, "free_forever", "₹0 Free Forever"),
+        ("vistrah_presence", 20, 0, "free_forever", "₹0 — Free Forever"),
         ("dedicated_website", 20, 4999, "one_time", "₹4,999 One-Time"),
-        ("hyperlocal_v_ads", 15, 0, "free_forever", "₹0 Free Forever"),
-        ("social_media_reach", 15, 4999, "monthly", "₹4,999/month"),
-        ("paid_ad_campaigns", 10, 3999, "monthly", "₹3,999/month"),
+        ("hyperlocal_v_ads", 15, 0, "free_forever", "₹0 — Free Forever"),
+        ("social_media_reach", 15, 4999, "monthly", "₹4,999 / month"),
+        ("paid_ad_campaigns", 10, 3999, "monthly", "₹3,999 / month"),
         ("visual_brand_media", 10, 2999, "one_time", "₹2,999 One-Time"),
         ("google_local_seo", 10, 2499, "one_time", "₹2,499 One-Time"),
     ]
@@ -53,16 +53,16 @@ def test_seven_pillar_catalog_ten_sector_blueprints_and_deterministic_scoring():
     # 2. Verify all 10 Flagship Sector Website Pattern Blueprints & Growth Strategies
     assert len(FLAGSHIP_SECTORS) == 10
     expected_patterns = [
-        ("real-estate-and-property", "Project Showcase & Plot Explorer"),
-        ("interior-design-and-exteriors", "Visual Lookbook & Room Cost Estimator"),
-        ("civil-construction-and-contractors", "Turnkey Portfolio & Milestone Tracker"),
-        ("healthconnect-and-clinics", "Patient Trust & Slot Booking Portal"),
-        ("hospitality-restaurants-and-cafes", "Visual Menu & Direct Zero-Commission Ordering"),
-        ("salons-bridal-and-wellness", "Transformation Gallery & Package Booking"),
-        ("events-weddings-and-media", "Cinematic Showreel & Date Availability Checker"),
-        ("automobiles-and-garages", "Service Bay & Detailing Package Configurator"),
-        ("legal-tax-and-business-compliance", "Authority Advisory & Compliance Checklist Hub"),
-        ("overseas-education-and-skill-academies", "Course Catalog & Admission Counseling Funnel"),
+        ("real-estate-and-property", "Property Photos, Plot Details & Site Visit Website"),
+        ("interior-design-and-exteriors", "Room Photo Gallery & Home Budget Estimate Website"),
+        ("civil-construction-and-contractors", "Completed Buildings & Construction Rate Website"),
+        ("healthconnect-and-clinics", "Doctor Profile, Timings & Appointment Website"),
+        ("hospitality-restaurants-and-cafes", "Photo Menu, Table Booking & Direct Order Website"),
+        ("salons-bridal-and-wellness", "Makeover Photos, Price List & Slot Booking Website"),
+        ("events-weddings-and-media", "Event Highlight Videos, Packages & Date Check Website"),
+        ("automobiles-and-garages", "Vehicle Service Rates, Detailing & Pickup Booking Website"),
+        ("legal-tax-and-business-compliance", "Tax, Legal Services & Consultation Booking Website"),
+        ("overseas-education-and-skill-academies", "Courses, Student Results & Free Counseling Website"),
     ]
     assert [
         (s["slug"], s["website_pattern"]["pattern_title"]) for s in FLAGSHIP_SECTORS
@@ -212,7 +212,7 @@ def test_google_place_claim_onboarding_and_strict_role_gated_business_profile(
     assert unclaimed_body["business"]["google_place_id"] == unclaimed_place_id
     assert (
         unclaimed_body["flagship_sector"]["website_pattern"]["pattern_title"]
-        == "Patient Trust & Slot Booking Portal"
+        == "Doctor Profile, Timings & Appointment Website"
     )
     assert "unclaimed_vistrah" in unclaimed_body["audit"]["gap_codes"]
     assert "missing_website" in unclaimed_body["audit"]["gap_codes"]

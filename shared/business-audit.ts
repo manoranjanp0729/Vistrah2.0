@@ -4,12 +4,14 @@ import {
   FLAGSHIP_SECTORS,
   calculateBusinessAuditScore,
   getFlagshipSector,
+  getScoreTierLabel,
   simulateTickedPlan,
   type AuditPillarDefinition,
   type AuditPillarId,
   type BusinessAuditScoreResult,
   type FlagshipSector,
   type FlagshipSectorSlug,
+  type ScoreTierLabel,
   type SimulatedTickedPlanResult,
 } from './flagship-sectors.ts';
 import { websiteExternalHref } from './nearby-services.ts';
@@ -22,11 +24,11 @@ export type LeadStatus =
   | 'closed';
 
 export const LEAD_STATUS_OPTIONS: ReadonlyArray<{ value: LeadStatus; label: string }> = [
-  { value: 'new', label: 'New Prospect' },
-  { value: 'audit_shared', label: 'Audit Shared' },
-  { value: 'follow_up', label: 'Follow-Up Scheduled' },
+  { value: 'new', label: 'New Business' },
+  { value: 'audit_shared', label: 'Plan Shared' },
+  { value: 'follow_up', label: 'Follow-Up Planned' },
   { value: 'website_requested', label: 'Website Requested' },
-  { value: 'closed', label: 'Closed / Won' },
+  { value: 'closed', label: 'Confirmed / Started' },
 ];
 
 export type MissingPillarFilterOption = {
@@ -37,11 +39,11 @@ export type MissingPillarFilterOption = {
 
 export const MISSING_PILLAR_FILTERS: readonly MissingPillarFilterOption[] = [
   { key: 'all', label: 'All Businesses', apiValue: '' },
-  { key: 'missing_website', label: 'Missing Website', apiValue: 'missing_website' },
-  { key: 'unclaimed_vistrah', label: 'Unclaimed on VISTRAH', apiValue: 'unclaimed_vistrah' },
-  { key: 'no_v_ad', label: 'Zero V Ads', apiValue: 'no_v_ad' },
-  { key: 'missing_social_media', label: 'Low Social Reach', apiValue: 'missing_social_media' },
-  { key: 'score_below_50', label: 'Score < 50', apiValue: 'score_below_50' },
+  { key: 'missing_website', label: 'No Website Yet', apiValue: 'missing_website' },
+  { key: 'unclaimed_vistrah', label: 'Not Listed on VISTRAH', apiValue: 'unclaimed_vistrah' },
+  { key: 'no_v_ad', label: 'No Free V Ad Running', apiValue: 'no_v_ad' },
+  { key: 'missing_social_media', label: 'Low Instagram / Facebook', apiValue: 'missing_social_media' },
+  { key: 'score_below_50', label: 'Score Below 50', apiValue: 'score_below_50' },
 ] as const;
 
 export type AuditExploreBusinessItem = {
@@ -347,9 +349,9 @@ export function renderPersonalizedWebsitePreview(input: {
     layout_archetype: sector.website_pattern.layout_archetype,
     domain_preview: `${domainSlug}.in`,
     personalized_headline: headline,
-    personalized_subheadline: `Verified ${svcText} in ${cityName} · Direct Zero-Commission Inquiries & Instant WhatsApp Support.`,
-    nav_links: ['Overview', 'Services & Packages', 'Gallery & Proof', 'Contact & Map'],
-    trust_badges: ['VISTRAH Verified Partner', `Serving ${cityName}`, 'Direct WhatsApp & Call'],
+    personalized_subheadline: `Trusted ${svcText} in ${cityName} · Direct phone & WhatsApp inquiries with zero commission.`,
+    nav_links: ['Home', 'Services & Prices', 'Photos & Work', 'Contact & Map'],
+    trust_badges: ['Verified on VISTRAH', `Serving ${cityName}`, 'Direct WhatsApp & Call'],
     key_sections: sector.website_pattern.key_sections,
     conversion_cta: sector.website_pattern.conversion_cta,
     contact_phone_display: phoneText,
@@ -546,50 +548,53 @@ export function buildWhatsAppProposalMessage(input: {
 }): string {
   const biz = (input.businessName || '').trim() || 'Your Business';
   const loc = (input.city || '').trim();
+  const baselineTier = getScoreTierLabel(input.audit.baseline_score);
+  const projectedTier = getScoreTierLabel(input.simulation.projected_score);
+
   const topGaps = input.audit.identified_gaps
     .slice(0, 4)
-    .map(g => `• ${g.product_title} (-${g.missing_points} pts)`);
+    .map(g => `• ${g.summary} (-${g.missing_points} pts)`);
 
   const selectedLines: string[] = [];
   for (const item of input.cart.freeItems) {
-    selectedLines.push(`✓ ${item.product_title}: ₹0 Free Forever`);
+    selectedLines.push(`✓ ${item.product_title}: ₹0 — Free Forever`);
   }
   for (const item of input.cart.oneTimeItems) {
     selectedLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)} One-Time`);
   }
   for (const item of input.cart.monthlyItems) {
-    selectedLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)}/month`);
+    selectedLines.push(`✓ ${item.product_title}: ${formatInr(item.unit_price_inr)} / month`);
   }
 
   const lines: string[] = [
-    `*VISTRAH Digital Growth & Audit Proposal*`,
+    `*VISTRAH — Your Online Presence & Customer Growth Plan*`,
     `Business: *${biz}*${loc ? ` (${loc})` : ''}`,
-    `Sector: ${input.sectorTitle}`,
+    `Category: ${input.sectorTitle}`,
     ``,
-    `*7-Pillar Digital Presence Score:*`,
-    `Baseline: *${input.audit.baseline_score}/100* → Projected: *${input.simulation.projected_score}/100* (+${input.simulation.score_gain} pts)`,
+    `*How Easy Customers Can Find You (0–100):*`,
+    `Current: *${input.audit.baseline_score}/100* (${baselineTier}) → With Selected Plan: *${input.simulation.projected_score}/100* (${projectedTier}, +${input.simulation.score_gain} pts)`,
   ];
 
   if (topGaps.length > 0) {
-    lines.push(``, `*Key Digital Gaps Identified:*`, ...topGaps);
+    lines.push(``, `*What You Are Missing Right Now:*`, ...topGaps);
   }
 
   if (selectedLines.length > 0) {
-    lines.push(``, `*Selected VISTRAH Growth Plan:*`, ...selectedLines);
+    lines.push(``, `*Your Selected Plan:*`, ...selectedLines);
   }
 
   lines.push(
     ``,
-    `*Website Blueprint:* ${input.websitePatternTitle}`,
-    `*Investment Summary:*`,
-    `• Free on VISTRAH (${input.cart.freeItemsCount} items): ₹0 Forever`,
+    `*Sample Website for Your Business:* ${input.websitePatternTitle}`,
+    `*Your Total Cost:*`,
+    `• Free on VISTRAH (${input.cart.freeItemsCount} items): ₹0 — Free Forever`,
     `• One-Time Setup Total: ${formatInr(input.cart.oneTimeTotalInr)}`,
-    `• Monthly Retainer Total: ${formatInr(input.cart.monthlyTotalInr)}/month`,
+    `• Monthly Services Total: ${formatInr(input.cart.monthlyTotalInr)} / month`,
     input.cart.gstIncluded
-      ? `• 18% GST: ${formatInr(input.cart.gstAmountInr)} | Initial Total: *${formatInr(input.cart.grandTotalWithGstInr)}*`
-      : `• Initial Payable (Excl. GST): *${formatInr(input.cart.subtotalBeforeGstInr)}*`,
+      ? `• 18% GST: ${formatInr(input.cart.gstAmountInr)} | Total to Start: *${formatInr(input.cart.grandTotalWithGstInr)}*`
+      : `• Total to Start (Before GST): *${formatInr(input.cart.subtotalBeforeGstInr)}*`,
     ``,
-    `Claim your free listing & V Ads at https://vistrah.in`,
+    `Get listed free & post free local V Ads at https://vistrah.in`,
   );
 
   return lines.join('\n');
@@ -614,5 +619,5 @@ export function buildWhatsAppProposalHref(
   return `https://wa.me/${digits}?text=${encoded}`;
 }
 
-export { AUDIT_PILLARS, FLAGSHIP_SECTORS };
-export type { AuditPillarId };
+export { AUDIT_PILLARS, FLAGSHIP_SECTORS, getScoreTierLabel };
+export type { AuditPillarId, ScoreTierLabel };

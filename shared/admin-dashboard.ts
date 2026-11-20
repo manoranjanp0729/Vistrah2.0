@@ -22,9 +22,9 @@ export const adminPrimaryDestinations:readonly AdminPrimaryDestination[] = [
   {
     slug:'business-audit',
     href:'/admin/business-audit',
-    label:'Data & Audit CRM',
-    eyebrow:'MULTI-FILTER PROSPECTING & 7-PILLAR AUDIT',
-    description:'Explore VISTRAH & Google Places businesses across all 10 sectors, filter missing digital pillars, launch 7-pillar live quotes, and track saved leads.',
+    label:'Business Growth Check',
+    eyebrow:'ONLINE PRESENCE & CUSTOMER GROWTH CHECK',
+    description:'Find VISTRAH & Google-listed shops across all 10 categories, see what they are missing online, build live growth plans, and track follow-ups.',
     matches:['business-audit'],
   },
   {

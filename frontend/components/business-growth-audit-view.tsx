@@ -30,6 +30,7 @@ import {
   buildWhatsAppProposalHref,
   buildWhatsAppProposalMessage,
   formatInr,
+  getScoreTierLabel,
   isFreeVAdPillarActiveOrTicked,
   recalculateLiveAuditState,
   renderPersonalizedWebsitePreview,
@@ -318,10 +319,10 @@ export function BusinessGrowthAuditView({
         pattern_id: websitePreview.pattern_id,
         phone: business.phone,
         city: business.city,
-        notes: `Requested ${websitePreview.pattern_title} website blueprint (${formatInr(4999)} One-Time).`,
+        notes: `Requested ${websitePreview.pattern_title} (${formatInr(4999)} One-Time).`,
       });
       setWebsiteFeedback(
-        `Website request logged for "${websitePreview.pattern_title}"! Our VISTRAH Tech team will reach out shortly.`,
+        `Request received for "${websitePreview.pattern_title}"! Our VISTRAH team will call you shortly.`,
       );
     } catch (err) {
       setWebsiteFeedback((err as Error).message || 'Could not submit website request.');
@@ -336,10 +337,10 @@ export function BusinessGrowthAuditView({
       <div className={s.printMasthead}>
         <div>
           <strong style={{ fontSize: '1.15rem', letterSpacing: '0.04em' }}>
-            VISTRAH INDIA PVT LIMITED · ADS, MARKETING & DIGITAL TECH
+            VISTRAH INDIA PVT LIMITED · CUSTOMER GROWTH & WEBSITES
           </strong>
           <div style={{ fontSize: '0.8rem' }}>
-            7-Pillar Digital Presence Audit & Custom Growth Proposal · https://vistrah.in
+            Your Online Presence & Customer Growth Check · https://vistrah.in
           </div>
         </div>
         <div style={{ textAlign: 'right', fontSize: '0.8rem' }}>
@@ -354,9 +355,7 @@ export function BusinessGrowthAuditView({
             ← {backLabel}
           </Link>
           <span style={{ fontSize: '0.8rem', opacity: 0.78 }}>
-            {viewerMode === 'admin'
-              ? 'Admin Business Audit & Strategy Mode'
-              : 'Verified Owner Growth Workspace'}
+            Your Online Presence & Customer Growth Check
           </span>
         </div>
       )}
@@ -473,12 +472,12 @@ export function BusinessGrowthAuditView({
         </div>
       </section>
 
-      {/* MODULE 2: 7-Pillar Digital Presence Score Dashboard & Local Competitor Benchmark */}
-      <section className={s.sectionCard} aria-label="7-Pillar Digital Presence Score Dashboard">
+      {/* MODULE 2: Online Visibility Score & Nearby Comparison */}
+      <section className={s.sectionCard} aria-label="Your Online Presence & Customer Growth Check">
         <div>
-          <p className={s.sectionEyebrow}>7-PILLAR DIGITAL PRESENCE DIAGNOSTIC</p>
+          <p className={s.sectionEyebrow}>YOUR ONLINE PRESENCE & CUSTOMER GROWTH CHECK</p>
           <h2 className={s.sectionHeading}>
-            Baseline Score → Projected Growth Score & Local Competitor Benchmark
+            How Easy Customers Can Find You (0–100)
           </h2>
         </div>
 
@@ -515,12 +514,12 @@ export function BusinessGrowthAuditView({
             </div>
 
             <div className={s.scoreDeltaRow}>
-              <span>Baseline: {live.audit.baseline_score}/100</span>
+              <span>Now: {live.audit.baseline_score}/100 ({getScoreTierLabel(live.audit.baseline_score)})</span>
               <span>→</span>
-              <span>Projected: {live.simulation.projected_score}/100</span>
+              <span>With Plan: {live.simulation.projected_score}/100 ({getScoreTierLabel(live.simulation.projected_score)})</span>
             </div>
             {live.simulation.score_gain > 0 && (
-              <span className={s.gainPill}>+{live.simulation.score_gain} pts unlocked</span>
+              <span className={s.gainPill}>+{live.simulation.score_gain} pts boost</span>
             )}
           </div>
 
@@ -530,35 +529,35 @@ export function BusinessGrowthAuditView({
                 <TrendingUp size={20} color="#2563eb" aria-hidden="true" />
                 <div>
                   <strong>
-                    Local Competitor Benchmark ({competitor_benchmark.locality})
+                    How Nearby Businesses Compare ({competitor_benchmark.locality})
                   </strong>
                   <div style={{ fontSize: '0.84rem', opacity: 0.85 }}>
-                    Same-sector average: <strong>{competitor_benchmark.average_score}/100</strong> ·
-                    Top local performer: <strong>{competitor_benchmark.top_performer_score}/100</strong>
+                    Nearby average: <strong>{competitor_benchmark.average_score}/100</strong> ·
+                    Top business nearby: <strong>{competitor_benchmark.top_performer_score}/100</strong>
                   </div>
                 </div>
               </div>
               <span className={s.pointsTag}>
                 {live.audit.baseline_score >= competitor_benchmark.average_score
-                  ? 'Above Local Average'
-                  : `${competitor_benchmark.average_score - live.audit.baseline_score} pts behind peers`}
+                  ? 'Ahead of Local Average'
+                  : `${competitor_benchmark.average_score - live.audit.baseline_score} pts behind nearby shops`}
               </span>
             </div>
 
             <div className={s.lackingBlock}>
-              <strong style={{ fontSize: '0.88rem' }}>
-                What This Business Is Lacking ({live.audit.identified_gaps.length} gaps):
+              <strong style={{ fontSize: '0.92rem' }}>
+                What You Are Missing Right Now ({live.audit.identified_gaps.length}):
               </strong>
               {live.audit.identified_gaps.length === 0 ? (
                 <p style={{ margin: 0, fontSize: '0.85rem', color: '#10b981', fontWeight: 700 }}>
-                  All 7 Digital Presence Pillars are active (100/100)!
+                  Great job! Everything is set up (100/100 — Top Choice in Your Area).
                 </p>
               ) : (
                 <div className={s.lackingPills}>
                   {live.audit.identified_gaps.map(gap => (
                     <span key={gap.pillar_id} className={s.lackingAlertBadge}>
                       <AlertTriangle size={13} aria-hidden="true" />
-                      {gap.product_title} (-{gap.missing_points} pts)
+                      {gap.summary} (-{gap.missing_points} pts)
                     </span>
                   ))}
                 </div>
@@ -567,7 +566,7 @@ export function BusinessGrowthAuditView({
 
             <div className={`${s.quickCheckGrid} ${s.noPrint}`}>
               <label className={s.quickField}>
-                <span>Live Quick-Check: Website URL</span>
+                <span>Already have a website? Paste link:</span>
                 <input
                   type="text"
                   value={websiteInput}
@@ -577,7 +576,7 @@ export function BusinessGrowthAuditView({
                 />
               </label>
               <label className={s.quickField}>
-                <span>Live Quick-Check: Instagram Handle / URL</span>
+                <span>Instagram page or @name:</span>
                 <input
                   type="text"
                   value={instagramInput}
@@ -587,7 +586,7 @@ export function BusinessGrowthAuditView({
                 />
               </label>
               <label className={s.quickField}>
-                <span>Live Quick-Check: Facebook Page URL</span>
+                <span>Facebook page link:</span>
                 <input
                   type="text"
                   value={facebookInput}
@@ -601,13 +600,14 @@ export function BusinessGrowthAuditView({
         </div>
       </section>
 
-      {/* MODULE 3: 7-Pillar = 7-Product Interactive Tick / Untick Configurator & Live Quote Cart */}
-      <section className={s.sectionCard} aria-label="7-Pillar Product Configurator and Quote Cart">
+      {/* MODULE 3: Interactive Plan Picker & Live Total Cost */}
+      <section className={s.sectionCard} aria-label="Pick What You Want to Improve">
         <div>
-          <p className={s.sectionEyebrow}>7-PILLAR = 7-PRODUCT GROWTH CONFIGURATOR</p>
-          <h2 className={s.sectionHeading}>
-            Tick Pillars to Simulate Score Impact & Build Instant Growth Quote
-          </h2>
+          <p className={s.sectionEyebrow}>BUILD YOUR PLAN</p>
+          <h2 className={s.sectionHeading}>Pick What You Want to Improve</h2>
+          <p className={s.pillarSummaryText} style={{ marginTop: 4 }}>
+            Tick or untick options below to see your score and total price update live
+          </p>
         </div>
 
         {/* Pre-Filled "Upload Your Free V Ad Now" Shortcut when hyperlocal_v_ads is ticked or active */}
@@ -615,11 +615,11 @@ export function BusinessGrowthAuditView({
           <div className={`${s.freeVAdShortcutCard} ${s.noPrint}`}>
             <div style={{ display: 'grid', gap: 3 }}>
               <strong style={{ fontSize: '0.94rem' }}>
-                Any-Radius Hyperlocal V Ad (₹0 Free Forever) Unlocked
+                Free Local Area Ads (V Ads) — ₹0 — Free Forever
               </strong>
               <span style={{ fontSize: '0.82rem', opacity: 0.85 }}>
-                Launch a 9:16 video Reel for {business.company || business.name} across 2 km, 10 km,
-                25 km, or 50 km+ on VISTRAH at ₹0 forever.
+                Post a short offer video for {business.company || business.name} to reach customers
+                across 2 km, 10 km, 25 km, or 50 km+ on VISTRAH at ₹0 forever.
               </span>
             </div>
             {storefrontBaseUrl ? (
@@ -682,7 +682,7 @@ export function BusinessGrowthAuditView({
                         {pillar.billing_label}
                       </span>
                       {pillar.active_in_baseline && (
-                        <span className={s.activeBaselineBadge}>Active in Baseline</span>
+                        <span className={s.activeBaselineBadge}>Already Done ✓</span>
                       )}
                     </div>
                   </div>
@@ -695,18 +695,21 @@ export function BusinessGrowthAuditView({
                     ) : null}
                   </div>
 
-                  <p className={s.pillarSummaryText}>{pillar.summary}</p>
+                  <p className={s.pillarSummaryText}>{pillar.description}</p>
                 </div>
               );
             })}
           </div>
 
-          <aside className={s.quoteCart} aria-label="Selected Products and Pricing Cart">
+          <aside className={s.quoteCart} aria-label="Your Selected Plan & Total Cost">
             <div>
-              <p className={s.sectionEyebrow}>SELECTED PRODUCTS & PRICING CART</p>
+              <p className={s.sectionEyebrow}>YOUR SELECTED PLAN & TOTAL COST</p>
               <h3 style={{ margin: '4px 0 0', fontSize: '1.05rem', fontWeight: 800 }}>
-                Projected Score: {live.simulation.projected_score}/100
+                Your Selected Plan & Total Cost
               </h3>
+              <div style={{ fontSize: '0.82rem', opacity: 0.82, marginTop: 2 }}>
+                New Score: <strong>{live.simulation.projected_score}/100</strong> ({getScoreTierLabel(live.simulation.projected_score)})
+              </div>
             </div>
 
             <div className={s.cartGroup}>
@@ -715,20 +718,20 @@ export function BusinessGrowthAuditView({
               </span>
               {live.cart.freeItems.length === 0 ? (
                 <span style={{ fontSize: '0.8rem', opacity: 0.72 }}>
-                  Already active or unticked
+                  Already done or unticked
                 </span>
               ) : (
                 live.cart.freeItems.map(item => (
                   <div key={item.id} className={s.cartLine}>
                     <span>{item.short_title}</span>
-                    <strong style={{ color: '#10b981' }}>₹0 Free Forever</strong>
+                    <strong style={{ color: '#10b981' }}>₹0 — Free Forever</strong>
                   </div>
                 ))
               )}
             </div>
 
             <div className={s.cartGroup}>
-              <span className={s.cartGroupTitle}>One-Time Setup Products</span>
+              <span className={s.cartGroupTitle}>One-Time Setup Items</span>
               {live.cart.oneTimeItems.length === 0 ? (
                 <span style={{ fontSize: '0.8rem', opacity: 0.72 }}>None selected</span>
               ) : (
@@ -740,26 +743,26 @@ export function BusinessGrowthAuditView({
                 ))
               )}
               <div className={s.cartLine} style={{ paddingTop: 4 }}>
-                <span>One-Time Setup Total</span>
+                <span>One-Time Total</span>
                 <strong>{formatInr(live.cart.oneTimeTotalInr)}</strong>
               </div>
             </div>
 
             <div className={s.cartGroup}>
-              <span className={s.cartGroupTitle}>Monthly Growth Retainers</span>
+              <span className={s.cartGroupTitle}>Monthly Services</span>
               {live.cart.monthlyItems.length === 0 ? (
                 <span style={{ fontSize: '0.8rem', opacity: 0.72 }}>None selected</span>
               ) : (
                 live.cart.monthlyItems.map(item => (
                   <div key={item.id} className={s.cartLine}>
                     <span>{item.short_title}</span>
-                    <strong>{formatInr(item.unit_price_inr)}/mo</strong>
+                    <strong>{formatInr(item.unit_price_inr)} / mo</strong>
                   </div>
                 ))
               )}
               <div className={s.cartLine} style={{ paddingTop: 4 }}>
-                <span>Monthly Retainer Total</span>
-                <strong>{formatInr(live.cart.monthlyTotalInr)}/mo</strong>
+                <span>Monthly Total</span>
+                <strong>{formatInr(live.cart.monthlyTotalInr)} / mo</strong>
               </div>
             </div>
 
@@ -785,7 +788,7 @@ export function BusinessGrowthAuditView({
               </label>
 
               <div className={s.grandTotalRow}>
-                <span>Initial Payable Total</span>
+                <span>Total to Start</span>
                 <span>{formatInr(live.cart.grandTotalWithGstInr)}</span>
               </div>
             </div>
@@ -793,7 +796,7 @@ export function BusinessGrowthAuditView({
             {viewerMode === 'admin' && (
               <div style={{ display: 'grid', gap: 8 }}>
                 <label className={s.quickField}>
-                  <span>Lead Pipeline Stage</span>
+                  <span>Follow-Up Stage</span>
                   <select
                     value={leadStatus}
                     onChange={e => setLeadStatus(e.target.value as LeadStatus)}
@@ -807,12 +810,12 @@ export function BusinessGrowthAuditView({
                   </select>
                 </label>
                 <label className={s.quickField}>
-                  <span>Field Visit / Strategy Notes</span>
+                  <span>Shop Visit / Discussion Notes</span>
                   <textarea
                     rows={2}
                     value={leadNotes}
                     onChange={e => setLeadNotes(e.target.value)}
-                    placeholder="Decision maker name, callback date, custom requirements…"
+                    placeholder="Owner name, callback time, special requests…"
                     className={s.quickInput}
                   />
                 </label>
@@ -869,26 +872,29 @@ export function BusinessGrowthAuditView({
         </div>
       </section>
 
-      {/* MODULE 4 & 5: Live Vertical Website Pattern Preview & Strategy Playbook */}
-      <section className={s.sectionCard} aria-label="Live Vertical Website Pattern Preview">
+      {/* MODULE 4 & 5: Sample Website Made for Your Business & Simple 3-Step Plan */}
+      <section className={s.sectionCard} aria-label="Sample Website Made for Your Business">
         <div className={s.previewHeaderRow}>
           <div>
             <p className={s.sectionEyebrow}>
-              SECTOR WEBSITE BLUEPRINT · {flagship_sector.title.toUpperCase()}
+              {websitePreview.pattern_title.toUpperCase()}
             </p>
             <h2 className={s.sectionHeading}>
-              {websitePreview.pattern_title} — Live Personalized Preview
+              Sample Website Made for Your Business
             </h2>
+            <p className={s.pillarSummaryText} style={{ marginTop: 4 }}>
+              {websitePreview.layout_archetype}
+            </p>
           </div>
 
-          <div className={s.viewportToggle} role="group" aria-label="Preview viewport size">
+          <div className={s.viewportToggle} role="group" aria-label="Preview screen size">
             <button
               type="button"
               onClick={() => setViewport('desktop')}
               className={`${s.viewportBtn} ${viewport === 'desktop' ? s.viewportBtnActive : ''}`}
             >
               <Laptop size={14} style={{ verticalAlign: 'text-bottom', marginRight: 5 }} />
-              Desktop
+              Computer
             </button>
             <button
               type="button"
@@ -896,7 +902,7 @@ export function BusinessGrowthAuditView({
               className={`${s.viewportBtn} ${viewport === 'mobile' ? s.viewportBtnActive : ''}`}
             >
               <Smartphone size={14} style={{ verticalAlign: 'text-bottom', marginRight: 5 }} />
-              Mobile
+              Phone
             </button>
           </div>
         </div>
@@ -914,7 +920,7 @@ export function BusinessGrowthAuditView({
                 <span className={s.browserDot} />
               </span>
               <span>https://{websitePreview.domain_preview}</span>
-              <span>SSL</span>
+              <span>Secure</span>
             </div>
 
             <div className={s.browserBody}>
@@ -997,7 +1003,7 @@ export function BusinessGrowthAuditView({
                         marginBottom: 4,
                       }}
                     >
-                      MODULE 0{idx + 1}
+                      WHAT IT SHOWS {idx + 1}
                     </div>
                     {sec}
                   </div>
@@ -1007,12 +1013,15 @@ export function BusinessGrowthAuditView({
           </div>
         </div>
 
-        {/* Vertical Conversion Strategy Breakdown + One-Click Request This Website */}
+        {/* Simple 3-Step Plan to Get More Customers + One-Click Request This Website */}
         <div style={{ display: 'grid', gap: 12, paddingTop: 6 }}>
           <div>
-            <strong style={{ fontSize: '0.95rem' }}>
-              Vertical Conversion Strategy ({flagship_sector.title}):
-            </strong>
+            <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800 }}>
+              Simple 3-Step Plan to Get More Customers
+            </h3>
+            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#b45309', marginTop: 2 }}>
+              {websitePreview.vertical_strategy.plan_heading}
+            </div>
             <p className={s.pillarSummaryText} style={{ marginTop: 4 }}>
               {websitePreview.vertical_strategy.summary}
             </p>
@@ -1022,7 +1031,7 @@ export function BusinessGrowthAuditView({
             {websitePreview.vertical_strategy.funnel_steps.map((stepText, idx) => (
               <div key={stepText} className={s.funnelStepCard}>
                 <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#b45309' }}>
-                  STEP 0{idx + 1}
+                  STEP {idx + 1}
                 </span>
                 <strong>{stepText}</strong>
               </div>
@@ -1040,8 +1049,8 @@ export function BusinessGrowthAuditView({
             }}
           >
             <div style={{ fontSize: '0.86rem' }}>
-              <strong>Launch "{websitePreview.pattern_title}" Website</strong> · ₹4,999 One-Time
-              (Mobile + Desktop + WhatsApp Lead Capture)
+              <strong>Get "{websitePreview.pattern_title}"</strong> · ₹4,999 One-Time
+              (Works on Phone & Computer + Direct WhatsApp Button)
             </div>
             <button
               type="button"

@@ -216,7 +216,7 @@ export function BusinessAuditExplorer() {
           }}
         >
           <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
-            <span>1. Flagship Sector (10 Unified Sectors)</span>
+            <span>1. Business Category (10 Sectors)</span>
             <select
               value={sectorSlug}
               onChange={e => {
@@ -225,7 +225,7 @@ export function BusinessAuditExplorer() {
               }}
               style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid rgba(148,163,184,0.45)' }}
             >
-              <option value="all">All 10 Flagship Sectors</option>
+              <option value="all">All 10 Categories</option>
               {FLAGSHIP_SECTORS.map(sec => (
                 <option key={sec.slug} value={sec.slug}>
                   {sec.order}. {sec.title}
@@ -235,7 +235,7 @@ export function BusinessAuditExplorer() {
           </label>
 
           <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
-            <span>2. Child Service Keyword Search</span>
+            <span>2. Search Specific Service</span>
             <input
               type="search"
               value={serviceKeyword}
@@ -246,13 +246,13 @@ export function BusinessAuditExplorer() {
           </label>
 
           <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
-            <span>3. Child Service Type</span>
+            <span>3. Service Type</span>
             <select
               value={serviceType}
               onChange={e => setServiceType(e.target.value)}
               style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid rgba(148,163,184,0.45)' }}
             >
-              <option value="">All Child Services in Sector</option>
+              <option value="">All Services in Category</option>
               {matchingChildTypes.map(bt => (
                 <option key={bt.slug} value={bt.slug}>
                   {bt.title}
@@ -262,7 +262,7 @@ export function BusinessAuditExplorer() {
           </label>
 
           <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
-            <span>4. City / Locality</span>
+            <span>4. City / Area</span>
             <input
               type="text"
               value={city}
@@ -312,7 +312,7 @@ export function BusinessAuditExplorer() {
             </div>
 
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-              <strong style={{ fontSize: '0.78rem' }}>Missing Pillar:</strong>
+              <strong style={{ fontSize: '0.78rem' }}>What Is Missing:</strong>
               {MISSING_PILLAR_FILTERS.map(f => (
                 <button
                   key={f.key}
@@ -509,7 +509,7 @@ export function BusinessAuditExplorer() {
                           }}
                         >
                           <AlertTriangle size={11} />
-                          Lacking: {gap.product_title} (-{gap.missing_points})
+                          Missing: {gap.product_title} (-{gap.missing_points})
                         </span>
                       ))}
                     </div>

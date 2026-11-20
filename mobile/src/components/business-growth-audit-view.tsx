@@ -12,6 +12,7 @@ import {
   buildWhatsAppProposalHref,
   buildWhatsAppProposalMessage,
   formatInr,
+  getScoreTierLabel,
   isFreeVAdPillarActiveOrTicked,
   recalculateLiveAuditState,
   renderPersonalizedWebsitePreview,
@@ -304,10 +305,10 @@ export function MobileBusinessGrowthAuditView({
         pattern_id: websitePreview.pattern_id,
         phone: business.phone,
         city: business.city,
-        notes: `Requested ${websitePreview.pattern_title} website blueprint (${formatInr(4999)} One-Time).`,
+        notes: `Requested ${websitePreview.pattern_title} (${formatInr(4999)} One-Time).`,
       });
       setWebsiteFeedback(
-        `Website request logged for "${websitePreview.pattern_title}"! VISTRAH Tech will reach out shortly.`,
+        `Request received for "${websitePreview.pattern_title}"! Our VISTRAH team will call you shortly.`,
       );
     } catch (err) {
       setWebsiteFeedback((err as Error).message || 'Could not submit website request.');
@@ -417,16 +418,22 @@ export function MobileBusinessGrowthAuditView({
         </View>
       </View>
 
-      {/* MODULE 2: 7-Pillar Digital Presence Score & Competitor Benchmark */}
+      {/* MODULE 2: Online Visibility Score & Nearby Comparison */}
       <View style={[st.sectionCard, cardSurface]}>
-        <Text style={st.eyebrow}>7-PILLAR DIGITAL PRESENCE DIAGNOSTIC</Text>
+        <Text style={st.eyebrow}>YOUR ONLINE PRESENCE & CUSTOMER GROWTH CHECK</Text>
+        <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+          How Easy Customers Can Find You (0–100)
+        </Text>
         <View style={st.scoreBanner}>
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 12, color: '#94a3b8', fontWeight: '600' }}>
-              Baseline {live.audit.baseline_score}/100 → Projected
+              Now: {live.audit.baseline_score}/100 ({getScoreTierLabel(live.audit.baseline_score)})
             </Text>
             <Text style={{ fontSize: 28, fontWeight: '800', color: '#fde68a' }}>
               {live.simulation.projected_score} / 100
+            </Text>
+            <Text style={{ fontSize: 12, fontWeight: '700', color: '#e2e8f0' }}>
+              With Plan: {getScoreTierLabel(live.simulation.projected_score)}
             </Text>
           </View>
           {live.simulation.score_gain > 0 && (
@@ -451,23 +458,23 @@ export function MobileBusinessGrowthAuditView({
           <Feather name="trending-up" size={16} color="#2563eb" />
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 12.5, fontWeight: '700', color: colors.text }}>
-              Local Competitor Benchmark ({competitor_benchmark.locality})
+              How Nearby Businesses Compare ({competitor_benchmark.locality})
             </Text>
             <Text style={{ fontSize: 12, color: colors.muted }}>
-              Sector average: {competitor_benchmark.average_score}/100 · Top local:{' '}
+              Nearby average: {competitor_benchmark.average_score}/100 · Top business nearby:{' '}
               {competitor_benchmark.top_performer_score}/100
             </Text>
           </View>
         </View>
 
-        <Text style={{ fontSize: 12.5, fontWeight: '700', color: colors.text }}>
-          What This Business Is Lacking ({live.audit.identified_gaps.length}):
+        <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
+          What You Are Missing Right Now ({live.audit.identified_gaps.length}):
         </Text>
         <View style={st.badgeRow}>
           {live.audit.identified_gaps.map(gap => (
             <View key={gap.pillar_id} style={st.gapPill}>
               <Text style={{ fontSize: 11.5, fontWeight: '700', color: '#dc2626' }}>
-                {gap.product_title} (-{gap.missing_points})
+                {gap.summary} (-{gap.missing_points} pts)
               </Text>
             </View>
           ))}
@@ -475,37 +482,40 @@ export function MobileBusinessGrowthAuditView({
 
         <View style={{ gap: 8, paddingTop: 4 }}>
           <Text style={{ fontSize: 12, fontWeight: '700', color: colors.muted }}>
-            Live Quick-Check Inputs (Recalculates Baseline Score Instantly)
+            Already have a website or social page? Paste below to update your score live:
           </Text>
           <TextInput
             value={websiteInput}
             onChangeText={setWebsiteInput}
-            placeholder="Paste Website URL (e.g. www.yourshop.in)"
+            placeholder="Paste your website link (e.g. www.yourshop.in)"
             placeholderTextColor={colors.muted}
             style={[st.input, { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' }]}
           />
           <TextInput
             value={instagramInput}
             onChangeText={setInstagramInput}
-            placeholder="Paste Instagram @handle or URL"
+            placeholder="Paste your Instagram @name or link"
             placeholderTextColor={colors.muted}
             style={[st.input, { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' }]}
           />
           <TextInput
             value={facebookInput}
             onChangeText={setFacebookInput}
-            placeholder="Paste Facebook Page URL"
+            placeholder="Paste your Facebook page link"
             placeholderTextColor={colors.muted}
             style={[st.input, { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' }]}
           />
         </View>
       </View>
 
-      {/* MODULE 3: 7-Pillar = 7-Product Configurator & Live Quote Cart */}
+      {/* MODULE 3: Interactive Plan Picker & Live Total Cost */}
       <View style={[st.sectionCard, cardSurface]}>
-        <Text style={st.eyebrow}>7-PILLAR = 7-PRODUCT CONFIGURATOR</Text>
+        <Text style={st.eyebrow}>BUILD YOUR PLAN</Text>
         <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
-          Tick Pillars & Live Quote Cart
+          Pick What You Want to Improve
+        </Text>
+        <Text style={{ fontSize: 12.5, color: colors.muted }}>
+          Tick or untick options below to see your score and total price update live
         </Text>
 
         {live.audit.pillar_breakdown.map(pillar => {
@@ -568,11 +578,11 @@ export function MobileBusinessGrowthAuditView({
                 </Text>
                 {pillar.active_in_baseline && (
                   <Text style={{ fontSize: 11, fontWeight: '800', color: '#10b981' }}>
-                    • Active in Baseline
+                    • Already Done ✓
                   </Text>
                 )}
               </View>
-              <Text style={{ fontSize: 12, color: colors.muted }}>{pillar.summary}</Text>
+              <Text style={{ fontSize: 12, color: colors.muted }}>{pillar.description}</Text>
             </Pressable>
           );
         })}
@@ -590,7 +600,7 @@ export function MobileBusinessGrowthAuditView({
           >
             <View style={{ gap: 2 }}>
               <Text style={{ fontSize: 13, fontWeight: '800', color: '#059669' }}>
-                Any-Radius Hyperlocal V Ad (₹0 Free Forever) Ready
+                Free Local Area Ads (V Ads) — ₹0 — Free Forever
               </Text>
               <Text style={{ fontSize: 12, color: colors.muted }}>
                 Pre-filled with {businessDisplayName}, {flagship_sector.shortTitle},{' '}
@@ -617,14 +627,19 @@ export function MobileBusinessGrowthAuditView({
           </View>
         )}
 
-        {/* Selected Products & Pricing Cart */}
+        {/* Your Selected Plan & Total Cost */}
         <View style={st.cartCard}>
-          <Text style={st.eyebrow}>SELECTED PRODUCTS & PRICING CART</Text>
+          <Text style={st.eyebrow}>YOUR SELECTED PLAN & TOTAL COST</Text>
+          <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
+            Your Selected Plan & Total Cost
+          </Text>
           <View style={st.cartRow}>
             <Text style={{ fontSize: 13, color: colors.text }}>
               Free on VISTRAH ({live.cart.freeItemsCount} items)
             </Text>
-            <Text style={{ fontSize: 13, fontWeight: '800', color: '#10b981' }}>₹0</Text>
+            <Text style={{ fontSize: 13, fontWeight: '800', color: '#10b981' }}>
+              ₹0 — Free Forever
+            </Text>
           </View>
           <View style={st.cartRow}>
             <Text style={{ fontSize: 13, color: colors.text }}>One-Time Setup Total</Text>
@@ -633,9 +648,9 @@ export function MobileBusinessGrowthAuditView({
             </Text>
           </View>
           <View style={st.cartRow}>
-            <Text style={{ fontSize: 13, color: colors.text }}>Monthly Retainer Total</Text>
+            <Text style={{ fontSize: 13, color: colors.text }}>Monthly Services Total</Text>
             <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
-              {formatInr(live.cart.monthlyTotalInr)}/mo
+              {formatInr(live.cart.monthlyTotalInr)} / mo
             </Text>
           </View>
 
@@ -665,7 +680,7 @@ export function MobileBusinessGrowthAuditView({
             ]}
           >
             <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
-              Initial Payable Total
+              Total to Start
             </Text>
             <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
               {formatInr(live.cart.grandTotalWithGstInr)}
@@ -777,13 +792,16 @@ export function MobileBusinessGrowthAuditView({
         </View>
       </View>
 
-      {/* MODULE 4 & 5: Live Vertical Website Pattern Preview & Strategy Playbook */}
+      {/* MODULE 4 & 5: Sample Website Made for Your Business & Simple 3-Step Plan */}
       <View style={[st.sectionCard, cardSurface]}>
         <View style={st.pillarHeader}>
-          <View style={{ flex: 1 }}>
-            <Text style={st.eyebrow}>SECTOR WEBSITE BLUEPRINT</Text>
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text style={st.eyebrow}>{websitePreview.pattern_title.toUpperCase()}</Text>
             <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
-              {websitePreview.pattern_title}
+              Sample Website Made for Your Business
+            </Text>
+            <Text style={{ fontSize: 12, color: colors.muted }}>
+              {websitePreview.layout_archetype}
             </Text>
           </View>
           <View style={{ flexDirection: 'row', gap: 6 }}>
@@ -807,7 +825,7 @@ export function MobileBusinessGrowthAuditView({
                     color: viewport === vp ? '#fde68a' : colors.text,
                   }}
                 >
-                  {vp === 'mobile' ? 'Mobile' : 'Desktop'}
+                  {vp === 'mobile' ? 'Phone' : 'Computer'}
                 </Text>
               </Pressable>
             ))}
@@ -863,7 +881,7 @@ export function MobileBusinessGrowthAuditView({
                 }}
               >
                 <Text style={{ fontSize: 10, fontWeight: '800', color: '#b45309' }}>
-                  MODULE 0{idx + 1}
+                  WHAT IT SHOWS {idx + 1}
                 </Text>
                 <Text style={{ fontSize: 12.5, fontWeight: '600', color: '#0f172a' }}>{sec}</Text>
               </View>
@@ -871,15 +889,18 @@ export function MobileBusinessGrowthAuditView({
           </View>
         </View>
 
-        <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
-          Vertical Conversion Strategy:
+        <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
+          Simple 3-Step Plan to Get More Customers
+        </Text>
+        <Text style={{ fontSize: 12.5, fontWeight: '700', color: '#b45309' }}>
+          {websitePreview.vertical_strategy.plan_heading}
         </Text>
         <Text style={{ fontSize: 12.5, color: colors.muted }}>
           {websitePreview.vertical_strategy.summary}
         </Text>
         {websitePreview.vertical_strategy.funnel_steps.map((stepText, idx) => (
           <Text key={stepText} style={{ fontSize: 12.5, color: colors.text }}>
-            <Text style={{ fontWeight: '800', color: '#b45309' }}>0{idx + 1}. </Text>
+            <Text style={{ fontWeight: '800', color: '#b45309' }}>Step {idx + 1}: </Text>
             {stepText}
           </Text>
         ))}

@@ -134,9 +134,9 @@ test('mobile Step 4 sales & owner tools: WhatsApp proposal, QR standee matrix, a
     websitePatternTitle: sector.website_pattern.pattern_title,
   });
   assert.ok(waMsg.includes('*Aura Bridal Studio* (Jayanagar)'));
-  assert.ok(waMsg.includes('₹0 Free Forever'));
+  assert.ok(waMsg.includes('₹0 — Free Forever'));
   assert.ok(waMsg.includes('₹4,999 One-Time'));
-  assert.ok(waMsg.includes('₹4,999/month'));
+  assert.ok(waMsg.includes('₹4,999 / month'));
   assert.ok(waMsg.includes('18% GST:'));
 
   const waHref = buildWhatsAppProposalHref('9845099112', waMsg);
@@ -191,6 +191,19 @@ test('mobile Step 4 sales & owner tools: WhatsApp proposal, QR standee matrix, a
     new URL('../src/components/business-growth-audit-view.tsx', import.meta.url),
     'utf8',
   );
+  assert.ok(mobileAuditComp.includes('YOUR ONLINE PRESENCE & CUSTOMER GROWTH CHECK'));
+  assert.ok(mobileAuditComp.includes('How Easy Customers Can Find You (0–100)'));
+  assert.ok(mobileAuditComp.includes('How Nearby Businesses Compare'));
+  assert.ok(mobileAuditComp.includes('What You Are Missing Right Now'));
+  assert.ok(mobileAuditComp.includes('Pick What You Want to Improve'));
+  assert.ok(
+    mobileAuditComp.includes(
+      'Tick or untick options below to see your score and total price update live',
+    ),
+  );
+  assert.ok(mobileAuditComp.includes('Your Selected Plan & Total Cost'));
+  assert.ok(mobileAuditComp.includes('Sample Website Made for Your Business'));
+  assert.ok(mobileAuditComp.includes('Simple 3-Step Plan to Get More Customers'));
   assert.ok(mobileAuditComp.includes('Send Proposal on WhatsApp'));
   assert.ok(mobileAuditComp.includes('Print / Save PDF Proposal'));
   assert.ok(mobileAuditComp.includes('Upload Your Free V Ad Now'));

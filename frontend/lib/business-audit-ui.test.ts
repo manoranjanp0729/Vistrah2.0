@@ -165,11 +165,19 @@ describe('Step 3: Business Growth & Audit Landing Page, 7-Pillar Cart, Website P
 
     expect(html).toContain('Arogya Care Clinic');
     expect(html).toContain('Create &amp; Upload Free V Ad');
-    expect(html).toContain('Local Competitor Benchmark (Bengaluru)');
-    expect(html).toContain('What This Business Is Lacking');
-    expect(html).toContain('Active in Baseline');
+    expect(html).toContain('Your Online Presence &amp; Customer Growth Check');
+    expect(html).toContain('How Easy Customers Can Find You (0–100)');
+    expect(html).toContain('How Nearby Businesses Compare (Bengaluru)');
+    expect(html).toContain('What You Are Missing Right Now');
+    expect(html).toContain('Pick What You Want to Improve');
+    expect(html).toContain('Tick or untick options below to see your score and total price update live');
+    expect(html).toContain('Your Selected Plan &amp; Total Cost');
+    expect(html).toContain('Already Done ✓');
     expect(html).toContain('Save Proposal &amp; Lead');
-    expect(html).toContain('Patient Trust &amp; Slot Booking Portal');
+    expect(html).toContain('Sample Website Made for Your Business');
+    expect(html).toContain('Doctor Profile, Timings &amp; Appointment Website');
+    expect(html).toContain('Simple 3-Step Plan to Get More Customers');
+    expect(html).toContain('Simple 3-Step Plan to Get More Patients');
     expect(html).toContain('Request This Website');
   });
 
@@ -267,12 +275,14 @@ describe('Step 4: WhatsApp Proposal Formatter, Printable PDF View, QR Standee Ca
       websitePatternTitle: sector.website_pattern.pattern_title,
     });
 
-    expect(msgWithGst).toContain('*VISTRAH Digital Growth & Audit Proposal*');
+    expect(msgWithGst).toContain('*VISTRAH — Your Online Presence & Customer Growth Plan*');
     expect(msgWithGst).toContain('*Malnad Filter Coffee House* (Tarikere)');
-    expect(msgWithGst).toContain('Baseline: *10/100* → Projected: *80/100* (+70 pts)');
-    expect(msgWithGst).toContain('₹0 Free Forever');
+    expect(msgWithGst).toContain(
+      'Current: *10/100* (Hard to Find Online) → With Selected Plan: *80/100* (Good Local Reach, +70 pts)',
+    );
+    expect(msgWithGst).toContain('₹0 — Free Forever');
     expect(msgWithGst).toContain('₹4,999 One-Time');
-    expect(msgWithGst).toContain('₹4,999/month');
+    expect(msgWithGst).toContain('₹4,999 / month');
     expect(msgWithGst).toContain('18% GST:');
     expect(msgWithGst).toContain(sector.website_pattern.pattern_title);
 
@@ -305,7 +315,7 @@ describe('Step 4: WhatsApp Proposal Formatter, Printable PDF View, QR Standee Ca
       cart: liveExclGst.cart,
       websitePatternTitle: sector.website_pattern.pattern_title,
     });
-    expect(msgExclGst).toContain('Initial Payable (Excl. GST): *₹4,999*');
+    expect(msgExclGst).toContain('Total to Start (Before GST): *₹4,999*');
   });
 
   it('generates scannable VISTRAH Verified QR standee URL + SVG matrix and pre-filled Free V Ad shortcut', () => {

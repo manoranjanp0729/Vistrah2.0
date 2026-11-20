@@ -4,18 +4,36 @@ import {
   FLAGSHIP_SECTORS,
   TOTAL_AUDIT_POINTS,
   calculateBusinessAuditScore,
+  getScoreTierLabel,
   simulateTickedPlan,
 } from '../../shared/flagship-sectors';
 
-describe('7-Pillar = 7-Product Scoring & 10-Sector Website Blueprints', () => {
-  it('defines 7 pillars totaling 100 points and 10 sector website patterns', () => {
+describe('Plain-Language 7-Pillar Scoring, Score Tiers & 10-Sector Website Patterns', () => {
+  it('defines 7 everyday pillars totaling 100 points, plain score tiers, and 10 sector 3-step plans', () => {
     expect(AUDIT_PILLARS).toHaveLength(7);
     expect(AUDIT_PILLARS.reduce((acc, p) => acc + p.max_points, 0)).toBe(TOTAL_AUDIT_POINTS);
+    expect(AUDIT_PILLARS.map(p => p.product_title)).toEqual([
+      'Get Listed on VISTRAH',
+      'Your Own Business Website',
+      'Free Local Area Ads (V Ads)',
+      'Instagram & Facebook Reels + Page Care',
+      'Instagram & Facebook Customer Ads',
+      'Professional Shop & Work Photos/Videos',
+      'Rank Higher on Google Search & Maps',
+    ]);
+
+    expect(getScoreTierLabel(20)).toBe('Hard to Find Online');
+    expect(getScoreTierLabel(55)).toBe('Seen, But Losing Customers');
+    expect(getScoreTierLabel(80)).toBe('Good Local Reach');
+    expect(getScoreTierLabel(95)).toBe('Top Choice in Your Area');
+
     expect(FLAGSHIP_SECTORS).toHaveLength(10);
     for (const sector of FLAGSHIP_SECTORS) {
       expect(sector.website_pattern.pattern_id).toBeTruthy();
       expect(sector.website_pattern.pattern_title).toBeTruthy();
       expect(sector.website_pattern.key_sections.length).toBeGreaterThanOrEqual(3);
+      expect(sector.vertical_strategy.plan_heading).toMatch(/^Simple 3-Step Plan/);
+      expect(sector.vertical_strategy.funnel_steps).toHaveLength(3);
       expect(sector.vertical_strategy.recommended_pillar_ids.length).toBeGreaterThanOrEqual(4);
     }
   });

@@ -7,19 +7,19 @@ const copy = {
     "location": "Choose location"
   },
   "home": {
-    "tagline": "DISCOVER. CONNECT. GROW.",
-    "title": "What can we help you with?",
-    "description": "Find help for today. Discover possibilities for tomorrow. Explore services, jobs and business opportunities in one place.",
-    "quick": "QUICK ACCESS",
+    "tagline": "Discover. Connect. Grow.",
+    "title": "Find verified businesses near you",
+    "description": "Explore verified local shops, stays, clinics, construction teams, and services—or list your business for ₹0.",
+    "quick": "Quick Access",
     "categories": "Services for you",
     "viewAll": "View all",
-    "featured": "Make room for your next opportunity",
-    "badge": "FEATURED",
-    "business": "Your expertise deserves to be discovered.",
-    "businessDescription": "Introduce your business, show the services you offer, and take the next step towards connecting with customers.",
-    "more": "Start with your business →",
-    "review": "Business ownership and service listings require review.",
-    "provider": "I provide a service"
+    "featured": "For Local Businesses",
+    "badge": "Free Business Listing",
+    "business": "List your business for ₹0",
+    "businessDescription": "Pin your shop location, show the services you offer, and receive direct customer calls with zero broker commission.",
+    "more": "List Your Business Free →",
+    "review": "Business ownership and service listings are reviewed before going live.",
+    "provider": "List Your Business Free"
   },
   "catalogue": {
     "title": "Service categories",
@@ -153,9 +153,9 @@ const copy = {
     "customerLabel": "I need a service",
     "providerLabel": "I offer a service",
     "customer": {
-      "eyebrow": "MAKE YOUR NEXT MOVE",
-      "title": "From “where do I start?” to a clear next step.",
-      "description": "Explore your options, understand what you need, and decide how to connect.",
+      "eyebrow": "Discover & Connect",
+      "title": "Find verified businesses near you.",
+      "description": "Browse by category or GPS radius, check business details, and call or enquire directly.",
       "steps": [
         {
           "title": "Find your starting point",
@@ -174,9 +174,9 @@ const copy = {
       "note": "Browse freely. Provider details, guides and enquiries need eligible membership."
     },
     "provider": {
-      "eyebrow": "PUT YOUR EXPERTISE IN VIEW",
-      "title": "You bring the skill. Give it a place to be found.",
-      "description": "Build a business profile, present your services and manage customer enquiries in one place.",
+      "eyebrow": "Connect & Grow",
+      "title": "List your business for ₹0 and reach local customers.",
+      "description": "Pin your business profile, share free V Ads reels, and check your business visibility score.",
       "steps": [
         {
           "title": "Introduce your business",

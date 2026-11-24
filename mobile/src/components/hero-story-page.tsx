@@ -102,7 +102,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 ]}
               >
                 <Text style={[s.storyTabText, {color: active ? '#ffffff' : textSecondary}]}>
-                  {item.stepNumber} {item.navTitle}
+                  {item.navTitle}
                 </Text>
               </Pressable>
             );
@@ -115,16 +115,14 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
             <Image
               source={BANNER_IMAGES[storyKey]}
               resizeMode="cover"
-              accessibilityLabel={`${banner.badge} — ${banner.title}`}
+              accessibilityLabel={`${banner.navTitle} — ${banner.title}`}
               style={{width: '100%', height: '100%'}}
             />
           </View>
 
           <View style={[s.heroIntro, {borderTopColor: hairline}]}>
             <View style={{flex: 1, minWidth: 240, gap: 6}}>
-              <Text style={[s.eyebrow, {color: isDark ? '#f9aa45' : '#173f35'}]}>
-                {banner.stepNumber} · {banner.badge}
-              </Text>
+              <Text style={[s.eyebrow, {color: '#EA580C'}]}>{banner.navTitle}</Text>
               <Text accessibilityRole="header" style={[s.displayTitle, {color: textPrimary}]}>
                 {banner.title}
               </Text>
@@ -297,7 +295,6 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                       <View style={[s.iconBox, {backgroundColor: surfaceSoft, borderColor: hairline}]}>
                         <Feather name={v.icon as keyof typeof Feather.glyphMap} size={16} color={accentColor} />
                       </View>
-                      <Text style={[s.numTag, {color: textSecondary}]}>{v.num}</Text>
                     </View>
                     <Text style={[s.cardTitle, {color: textPrimary, fontSize: 15}]}>{v.title}</Text>
                     <Text style={[s.captionText, {color: textSecondary}]}>{v.caption}</Text>
@@ -311,7 +308,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         {/* STORY 2: FOR BUSINESSES */}
         {storyKey === 'businesses' && (
           <View style={s.sectionBlock}>
-            <Text style={[s.eyebrow, {color: textSecondary}]}>3-STEP MERCHANT GROWTH</Text>
+            <Text style={[s.eyebrow, {color: '#EA580C'}]}>Discover · Connect · Grow</Text>
             <Text accessibilityRole="header" style={[s.sectionTitle, {color: textPrimary}]}>
               Start at ₹0. Scale at Your Own Pace.
             </Text>
@@ -324,8 +321,8 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 >
                   <View style={[s.mockupHeader, {backgroundColor: surfaceSoft, borderBottomColor: hairline}]}>
                     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                      <Text style={[s.eyebrow, {color: textSecondary}]}>
-                        STEP {item.step} · {item.badge}
+                      <Text style={[s.eyebrow, {color: '#EA580C'}]}>
+                        {item.step} · {item.badge}
                       </Text>
                       <View style={[s.outlinePill, {backgroundColor: surface, borderColor: hairline}]}>
                         <Text style={{fontSize: 11.5, fontWeight: '700', color: textPrimary, fontVariant: ['tabular-nums']}}>
@@ -347,9 +344,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     </View>
                   </View>
                   <View style={s.cardBody}>
-                    <Text style={[s.cardTitle, {color: textPrimary}]}>
-                      {item.step} / {item.title}
-                    </Text>
+                    <Text style={[s.cardTitle, {color: textPrimary}]}>{item.title}</Text>
                     <Text style={[s.captionText, {color: textSecondary}]}>{item.caption}</Text>
                   </View>
                 </View>
@@ -362,7 +357,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         {storyKey === 'ads' && (
           <>
             <View style={s.sectionBlock}>
-              <Text style={[s.eyebrow, {color: textSecondary}]}>3 CORE STUDIO PILLARS</Text>
+              <Text style={[s.eyebrow, {color: '#EA580C'}]}>Studio &amp; Website Packages</Text>
               <Text accessibilityRole="header" style={[s.sectionTitle, {color: textPrimary}]}>
                 Done-For-You Creative, Web &amp; Growth Studio
               </Text>
@@ -498,9 +493,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     </View>
 
                     <View style={s.cardBody}>
-                      <Text style={[s.cardTitle, {color: textPrimary}]}>
-                        {pillar.num} / {pillar.title}
-                      </Text>
+                      <Text style={[s.cardTitle, {color: textPrimary}]}>{pillar.title}</Text>
                       <Text style={[s.captionText, {color: textSecondary}]}>{pillar.caption}</Text>
 
                       <View style={{borderTopWidth: 1, borderTopColor: hairline, paddingTop: 10, gap: 6, marginTop: 4}}>
@@ -603,9 +596,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                       <Feather name={card.icon as keyof typeof Feather.glyphMap} size={16} color={accentColor} />
                     </View>
                     <View style={[s.outlinePill, {backgroundColor: surfaceSoft, borderColor: hairline}]}>
-                      <Text style={{fontSize: 10.5, fontWeight: '700', color: textPrimary}}>
-                        {card.num} · {card.badge}
-                      </Text>
+                      <Text style={{fontSize: 10.5, fontWeight: '700', color: textPrimary}}>{card.badge}</Text>
                     </View>
                   </View>
                   <Text style={[s.cardTitle, {color: textPrimary}]}>{card.title}</Text>
@@ -628,7 +619,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
           <View style={s.sectionBlock}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6}}>
               <View>
-                <Text style={[s.eyebrow, {color: textSecondary}]}>5 CARE PATHWAYS</Text>
+                <Text style={[s.eyebrow, {color: '#EA580C'}]}>HealthConnect Care</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: textPrimary}]}>
                   Neighborhood Clinics, Labs &amp; Wellness
                 </Text>
@@ -639,7 +630,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
             <View style={s.tileGrid}>
               {HEALTH_PATHWAYS.map(path => (
                 <Pressable
-                  key={path.num}
+                  key={path.title}
                   accessibilityRole="link"
                   onPress={() =>
                     openMobileDestination(
@@ -665,9 +656,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                       <Text style={{fontSize: 10.5, fontWeight: '700', color: textPrimary}}>{path.tag}</Text>
                     </View>
                   </View>
-                  <Text style={[s.eyebrow, {color: textSecondary}]}>
-                    {path.num} · {path.badge}
-                  </Text>
+                  <Text style={[s.eyebrow, {color: '#EA580C'}]}>{path.badge}</Text>
                   <Text style={[s.cardTitle, {color: textPrimary}]}>{path.title}</Text>
                   <Text style={[s.captionText, {color: textSecondary}]}>{path.caption}</Text>
                 </Pressable>
@@ -676,27 +665,45 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
           </View>
         )}
 
-        {/* Bottom Conversion Bar */}
-        <View style={[s.bottomBar, {backgroundColor: surface, borderColor: hairline}]}>
+        {/* Grounded Editorial Footer Lead-In */}
+        <View style={[s.bottomBar, {backgroundColor: isDark ? '#0f233d' : '#f8fafc', borderColor: isDark ? '#1e3a5f' : '#e2e8f0'}]}>
           <View style={{flex: 1, minWidth: 220, gap: 3}}>
-            <Text style={[s.eyebrow, {color: textSecondary}]}>READY TO BEGIN?</Text>
-            <Text style={[s.sectionTitle, {color: textPrimary, fontSize: 18}]}>{banner.title}</Text>
+            <Text style={[s.eyebrow, {color: '#EA580C'}]}>Discover. Connect. Grow.</Text>
+            <Text style={[s.sectionTitle, {color: textPrimary, fontSize: 18}]}>
+              Find verified businesses near you or list your shop for ₹0
+            </Text>
           </View>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => openMobileDestination(banner.primaryCta.mobileRoute)}
-            style={({pressed}) => [
-              s.primaryBtn,
-              {
-                backgroundColor: accentColor,
-                borderColor: accentColor,
-                opacity: pressed ? 0.86 : 1,
-              },
-            ]}
-          >
-            <Text style={[s.primaryBtnText, {color: '#ffffff'}]}>{banner.primaryCta.label}</Text>
-            <Feather name="arrow-right" size={15} color="#ffffff" />
-          </Pressable>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10}}>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => openMobileDestination('/seller/onboard')}
+              style={({pressed}) => [
+                s.primaryBtn,
+                {
+                  backgroundColor: accentColor,
+                  borderColor: accentColor,
+                  opacity: pressed ? 0.86 : 1,
+                },
+              ]}
+            >
+              <Text style={[s.primaryBtnText, {color: '#ffffff'}]}>List Your Business Free</Text>
+              <Feather name="arrow-right" size={15} color="#ffffff" />
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => openMobileDestination('/services/nearby')}
+              style={({pressed}) => [
+                s.secondaryBtn,
+                {
+                  backgroundColor: surface,
+                  borderColor: hairline,
+                  opacity: pressed ? 0.86 : 1,
+                },
+              ]}
+            >
+              <Text style={[s.secondaryBtnText, {color: textPrimary}]}>Explore Nearby Services</Text>
+            </Pressable>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -742,11 +749,8 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
   },
   eyebrow: {
-    fontSize: 10.5,
-    fontWeight: '700',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    fontVariant: ['tabular-nums'],
+    fontSize: 13,
+    fontWeight: '500',
   },
   displayTitle: {
     fontSize: 23,

@@ -22,10 +22,8 @@ export function AppHeader({showBack=false}:{showBack?:boolean}){
   const pillLabel=activePlace?.locality||activePlace?.city||(locCtx?.detecting?'Locating…':'Select Location');
 
   return (
-    <View style={{paddingTop:insets.top,backgroundColor:colors.background,zIndex:1,borderBottomLeftRadius:20,borderBottomRightRadius:20,overflow:'hidden'}}>
-      <LinearGradient pointerEvents="none" colors={headerGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}>
-        <View style={{position:'absolute',right:24,top:-52,width:160,height:160,borderRadius:80,backgroundColor:'#F97316',opacity:mode==='light'?.10:.08}}/>
-      </LinearGradient>
+    <View style={{paddingTop:insets.top,backgroundColor:colors.background,zIndex:1,borderBottomLeftRadius:12,borderBottomRightRadius:12,overflow:'hidden'}}>
+      <LinearGradient pointerEvents="none" colors={headerGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}/>
       <View style={{height:66,paddingLeft:8,paddingRight:12,flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8}}>
         <UiElement
           as={Pressable}

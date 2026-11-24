@@ -86,7 +86,6 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 aria-current={active ? 'page' : undefined}
                 className={`${styles.storyTab} ${active ? styles.storyTabActive : ''}`}
               >
-                <span>{item.stepNumber}</span>
                 <span>{item.navTitle}</span>
               </Link>
             );
@@ -99,16 +98,14 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         <div className={styles.bannerArtworkWrap}>
           <img
             src={banner.webImageSrc}
-            alt={`${banner.badge} — ${banner.title}`}
+            alt={`${banner.navTitle} — ${banner.title}`}
             className={styles.bannerArtwork}
           />
         </div>
 
         <div className={styles.heroIntroRow}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}>
-              {banner.stepNumber} · {banner.badge}
-            </p>
+            <p className={styles.eyebrow}>{banner.navTitle}</p>
             <h1 className={styles.displayTitle}>{banner.title}</h1>
             <p className={styles.oneLineLead}>{banner.subtitle}</p>
           </div>
@@ -142,7 +139,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
           <section className={styles.sectionBlock} aria-labelledby="compare-heading">
             <div className={styles.sectionHeader}>
               <div>
-                <p className={styles.eyebrow}>VISUAL COMPARISON</p>
+                <p className={styles.eyebrow}>Direct Marketplace Comparison</p>
                 <h2 id="compare-heading" className={styles.sectionTitle}>
                   Static Directories vs. VISTRAH Direct
                 </h2>
@@ -249,7 +246,6 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                       <span className={styles.iconBox}>
                         <Icon size={18} aria-hidden="true" />
                       </span>
-                      <span className={styles.numTag}>{v.num}</span>
                     </div>
                     <h3 className={styles.verticalTitle}>{v.title}</h3>
                     <p className={styles.verticalCaption}>{v.caption}</p>
@@ -266,7 +262,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         <section className={styles.sectionBlock} aria-labelledby="timeline-heading">
           <div className={styles.sectionHeader}>
             <div>
-              <p className={styles.eyebrow}>3-STEP MERCHANT GROWTH</p>
+              <p className={styles.eyebrow}>Discover · Connect · Grow</p>
               <h2 id="timeline-heading" className={styles.sectionTitle}>
                 Start at ₹0. Scale at Your Own Pace.
               </h2>
@@ -282,7 +278,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 <div className={styles.uiPreviewHeader}>
                   <div className={styles.previewTopBar}>
                     <span className={styles.eyebrow}>
-                      STEP {item.step} · {item.badge}
+                      {item.step} · {item.badge}
                     </span>
                     <span className={styles.priceBadge}>{item.price}</span>
                   </div>
@@ -295,9 +291,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   </div>
                 </div>
                 <div className={styles.cardBody}>
-                  <h3 className={styles.cardTitle}>
-                    {item.step} / {item.title}
-                  </h3>
+                  <h3 className={styles.cardTitle}>{item.title}</h3>
                   <p className={styles.cardCaption}>{item.caption}</p>
                 </div>
               </article>
@@ -312,7 +306,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
           <section className={styles.sectionBlock} aria-labelledby="studio-pillars-heading">
             <div className={styles.sectionHeader}>
               <div>
-                <p className={styles.eyebrow}>3 CORE STUDIO PILLARS</p>
+                <p className={styles.eyebrow}>Studio &amp; Website Packages</p>
                 <h2 id="studio-pillars-heading" className={styles.sectionTitle}>
                   Done-For-You Creative, Web &amp; Growth Studio
                 </h2>
@@ -323,7 +317,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
             </div>
 
             <div className={styles.threeColGrid}>
-              {/* Pillar 01: Creative & Video Mockup */}
+              {/* Creative & Video Mockup */}
               <article className={styles.graphicCard}>
                 <div className={styles.uiPreviewHeader}>
                   <div className={styles.previewTopBar}>
@@ -333,7 +327,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   <div className={styles.reelMockupRow} aria-hidden="true">
                     <div className={styles.reelFrame}>
                       <Play size={16} />
-                      <span>9:16 REEL</span>
+                      <span>9:16 Reel</span>
                     </div>
                     <div className={styles.brandSwatchCard}>
                       <span className={styles.brandAa}>Aa.</span>
@@ -347,7 +341,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   </div>
                 </div>
                 <div className={styles.cardBody}>
-                  <h3 className={styles.cardTitle}>01 / {ADS_STUDIO_PILLARS[0].title}</h3>
+                  <h3 className={styles.cardTitle}>{ADS_STUDIO_PILLARS[0].title}</h3>
                   <p className={styles.cardCaption}>{ADS_STUDIO_PILLARS[0].caption}</p>
                   <div className={styles.tierTable}>
                     {ADS_STUDIO_PILLARS[0].tiers.map(t => (
@@ -360,7 +354,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 </div>
               </article>
 
-              {/* Pillar 02: Website Creation Mockup */}
+              {/* Website Creation Mockup */}
               <article className={styles.graphicCard}>
                 <div className={styles.uiPreviewHeader}>
                   <div className={styles.previewTopBar}>
@@ -381,7 +375,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   </div>
                 </div>
                 <div className={styles.cardBody}>
-                  <h3 className={styles.cardTitle}>02 / {ADS_STUDIO_PILLARS[1].title}</h3>
+                  <h3 className={styles.cardTitle}>{ADS_STUDIO_PILLARS[1].title}</h3>
                   <p className={styles.cardCaption}>{ADS_STUDIO_PILLARS[1].caption}</p>
                   <div className={styles.tierTable}>
                     {ADS_STUDIO_PILLARS[1].tiers.map(t => (
@@ -394,7 +388,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                 </div>
               </article>
 
-              {/* Pillar 03: Social Media Split-Billing Mockup */}
+              {/* Social Media Split-Billing Mockup */}
               <article className={styles.graphicCard}>
                 <div className={styles.uiPreviewHeader}>
                   <div className={styles.previewTopBar}>
@@ -413,7 +407,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   </div>
                 </div>
                 <div className={styles.cardBody}>
-                  <h3 className={styles.cardTitle}>03 / {ADS_STUDIO_PILLARS[2].title}</h3>
+                  <h3 className={styles.cardTitle}>{ADS_STUDIO_PILLARS[2].title}</h3>
                   <p className={styles.cardCaption}>{ADS_STUDIO_PILLARS[2].caption}</p>
                   <div className={styles.tierTable}>
                     {ADS_STUDIO_PILLARS[2].tiers.map(t => (
@@ -431,7 +425,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
           <section className={styles.vAdsSpotlight} aria-labelledby="vads-free-heading">
             <div className={styles.vAdsSpotTop}>
               <div>
-                <p className={styles.eyebrow}>SELF-SERVE HYPERLOCAL V ADS</p>
+                <p className={styles.eyebrow}>Local Video Discovery</p>
                 <h2 id="vads-free-heading" className={styles.sectionTitle}>
                   ₹0 / Free Forever — Free for Any Radius on VISTRAH
                 </h2>
@@ -465,7 +459,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         <section className={styles.sectionBlock} aria-labelledby="agri-grid-heading">
           <div className={styles.sectionHeader}>
             <div>
-              <p className={styles.eyebrow}>4 AGRICULTURAL PILLARS</p>
+              <p className={styles.eyebrow}>AgriConnect Services</p>
               <h2 id="agri-grid-heading" className={styles.sectionTitle}>
                 Seed-to-Market Farming Network
               </h2>
@@ -480,7 +474,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
               const Icon = ICON_MAP[card.icon as keyof typeof ICON_MAP] ?? Sun;
               return (
                 <Link
-                  key={card.num}
+                  key={card.title}
                   href={`/services?category=agriculture-and-farming&subcategory=${encodeURIComponent(
                     card.subcategory,
                   )}`}
@@ -490,9 +484,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     <span className={styles.iconBox}>
                       <Icon size={18} aria-hidden="true" />
                     </span>
-                    <span className={styles.priceBadge}>
-                      {card.num} · {card.badge}
-                    </span>
+                    <span className={styles.priceBadge}>{card.badge}</span>
                   </div>
                   <h3 className={styles.cardTitle}>{card.title}</h3>
                   <p className={styles.cardCaption}>{card.caption}</p>
@@ -519,7 +511,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         <section className={styles.sectionBlock} aria-labelledby="health-grid-heading">
           <div className={styles.sectionHeader}>
             <div>
-              <p className={styles.eyebrow}>5 CARE PATHWAYS</p>
+              <p className={styles.eyebrow}>HealthConnect Care</p>
               <h2 id="health-grid-heading" className={styles.sectionTitle}>
                 Neighborhood Clinics, Doorstep Labs &amp; Family Wellness
               </h2>
@@ -534,7 +526,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
               const Icon = ICON_MAP[path.icon as keyof typeof ICON_MAP] ?? Heart;
               return (
                 <Link
-                  key={path.num}
+                  key={path.title}
                   href={`/services?category=health-fitness-and-wellness&subcategory=${encodeURIComponent(
                     path.subcategory,
                   )}`}
@@ -546,9 +538,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     </span>
                     <span className={styles.priceBadge}>{path.tag}</span>
                   </div>
-                  <p className={styles.eyebrow}>
-                    {path.num} · {path.badge}
-                  </p>
+                  <p className={styles.eyebrow}>{path.badge}</p>
                   <h3 className={styles.cardTitle}>{path.title}</h3>
                   <p className={styles.cardCaption}>{path.caption}</p>
                   <div className={styles.pathwayAction}>
@@ -562,22 +552,20 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
         </section>
       )}
 
-      {/* Crisp Footer Conversion Bar */}
+      {/* Grounded Editorial Footer Lead-In */}
       <section className={styles.bottomCtaBar} aria-label="Next step">
         <div>
-          <p className={styles.eyebrow}>READY TO BEGIN?</p>
-          <h2 className={styles.sectionTitle}>{banner.title}</h2>
+          <p className={styles.eyebrow}>Discover. Connect. Grow.</p>
+          <h2 className={styles.sectionTitle}>Find verified businesses near you or list your shop for ₹0</h2>
         </div>
         <div className={styles.ctaGroup}>
-          <Link href={banner.primaryCta.webHref} className={styles.primaryBtn}>
-            <span>{banner.primaryCta.label}</span>
+          <Link href="/seller/onboard" className={styles.primaryBtn}>
+            <span>List Your Business Free</span>
             <ArrowRight size={16} aria-hidden="true" />
           </Link>
-          {banner.secondaryCta && (
-            <Link href={banner.secondaryCta.webHref} className={styles.secondaryBtn}>
-              <span>{banner.secondaryCta.label}</span>
-            </Link>
-          )}
+          <Link href="/services/nearby" className={styles.secondaryBtn}>
+            <span>Explore Nearby Services</span>
+          </Link>
         </div>
       </section>
     </div>

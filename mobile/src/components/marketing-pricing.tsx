@@ -186,7 +186,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
    {detailService?(
     <>
-     <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+     <View style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
       <Image source={mobileDetailImage(detailService.category_ids[0])} accessibilityLabel={detailService.name} resizeMode="cover" style={{width:'100%',height:190}}/>
       <View style={{padding:16,gap:8}}>
        <Feather name={(catalogue.categories.find(c=>c.id===detailService.category_ids[0])?.icon??'briefcase') as React.ComponentProps<typeof Feather>['name']} size={22} color={colors.accent}/>
@@ -202,15 +202,15 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
    ):(
     <>
      {/* Editorial Hero: ₹0 / Free Forever Platform */}
-     <View style={{borderRadius:18,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+     <View style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
       <View style={{position:'relative'}}>
        <Image source={PRICING_IMAGES.heroFree} accessibilityLabel="Free Forever Business Listing and Any-Radius V Ads on VISTRAH" resizeMode="cover" style={{width:'100%',height:200}}/>
-       <View style={{position:'absolute',left:12,bottom:12,paddingHorizontal:10,paddingVertical:5,borderRadius:999,backgroundColor:'rgba(15,23,42,0.82)'}}>
-        <Text style={{color:'#ffffff',fontSize:10,fontWeight:'700',letterSpacing:0.7}}>₹0 / FREE FOREVER · ANY RADIUS</Text>
+       <View style={{position:'absolute',left:12,bottom:12,paddingHorizontal:10,paddingVertical:5,borderRadius:9999,backgroundColor:'#0F294A'}}>
+        <Text style={{color:'#ffffff',fontSize:11,fontWeight:'600'}}>₹0 / Free Forever · Any Radius</Text>
        </View>
       </View>
       <View style={{padding:16,gap:12}}>
-       <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.8}]}>VISTRAH PRICING · ₹0 / FREE FOREVER PLATFORM</Text>
+       <Text style={styles.label}>VISTRAH Pricing · ₹0 / Free Forever Platform</Text>
        <Text accessibilityRole="header" style={[styles.title,{fontSize:24,lineHeight:29,letterSpacing:-0.6}]}>
         {promo.headline}
        </Text>
@@ -224,8 +224,8 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         <Text style={[styles.muted,styles.tabular,{fontSize:12,marginTop:2}]}>{promo.microcopy}</Text>
        </View>
 
-       <View style={{padding:14,borderRadius:14,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:8}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>{promo.anchorBadge}</Text>
+       <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:8}}>
+        <Text style={styles.label}>{promo.anchorBadge}</Text>
         <View style={{flexDirection:'row',alignItems:'baseline',gap:8,flexWrap:'wrap'}}>
          <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'700',color:colors.accent,letterSpacing:-0.6}]}>{promo.anchorPriceLabel}</Text>
          <Text style={[styles.heading,{fontSize:16}]}>{promo.anchorTitle}</Text>
@@ -284,12 +284,12 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
      {intent==='boosts'?(
       <View style={{padding:16,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:16}}>
        <View style={{gap:4}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>₹0 / FREE FOREVER · ZERO PER-RADIUS FEES</Text>
+        <Text style={styles.label}>₹0 / Free Forever · Zero Per-Radius Fees</Text>
         <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Free Business Listing &amp; Free V Ads for Any Radius</Text>
        </View>
 
        <View style={{gap:8}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PREVIEW TARGET RADIUS — FREE FOR ANY RADIUS ON VISTRAH</Text>
+        <Text style={styles.label}>Preview target radius — free for any radius on VISTRAH</Text>
         <View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>
          {vAdsTiers.map(tier=>{
           const active=selectedTier.id===tier.id;
@@ -311,7 +311,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
              gap:2,
             }}
            >
-            <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:11}]}>{(tier.promoBadge||'₹0 Free Forever').toUpperCase()}</Text>
+            <Text style={[styles.tabular,{color:colors.accent,fontWeight:'600',fontSize:11}]}>{tier.promoBadge||'₹0 Free Forever'}</Text>
             <Text style={[styles.tabular,{color:colors.text,fontWeight:'700',fontSize:15}]}>{tier.label}</Text>
             <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>₹0 / Free Forever · {tier.zoneLabel}</Text>
            </Pressable>
@@ -322,7 +322,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
        {/* Hairline Ledger Readout */}
        <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,gap:2}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6,marginBottom:4}]}>SELF-SERVE PLATFORM SUMMARY</Text>
+        <Text style={[styles.label,{marginBottom:4}]}>Self-Serve Platform Summary</Text>
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingVertical:10,borderBottomWidth:1,borderColor:colors.border}}>
          <View style={{flex:1,gap:2}}>
           <Text style={{color:colors.text,fontWeight:'700',fontSize:15}}>₹0 / Free Forever</Text>
@@ -350,30 +350,30 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
        <Action secondary label="List Your Business Free" onPress={()=>router.push('/seller/onboard')}/>
 
-       <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+       <View style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
         <View style={{position:'relative'}}>
          <Image source={PRICING_IMAGES.video} accessibilityLabel="VISTRAH Ads and Marketing Studio commercial video shoot" resizeMode="cover" style={{width:'100%',height:165}}/>
-         <View style={{position:'absolute',left:10,bottom:10,paddingHorizontal:10,paddingVertical:4,borderRadius:999,backgroundColor:'rgba(15,23,42,0.82)'}}>
-          <Text style={{color:'#ffffff',fontSize:10,fontWeight:'700',letterSpacing:0.6}}>CREATIVES ₹499+ · REELS ₹2,999</Text>
+         <View style={{position:'absolute',left:10,bottom:10,paddingHorizontal:10,paddingVertical:4,borderRadius:9999,backgroundColor:'#0F294A'}}>
+          <Text style={{color:'#ffffff',fontSize:11,fontWeight:'600'}}>Creatives ₹499+ · Reels ₹2,999</Text>
          </View>
         </View>
         <View style={{padding:14,gap:8}}>
-         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PAID AGENCY TRACK 01</Text>
+         <Text style={styles.label}>Brand &amp; Video Studio</Text>
          <Text style={[styles.heading,{fontSize:16}]}>VISTRAH Ads &amp; Marketing Studio</Text>
          <Text style={styles.muted}>Custom commercial video shoots (Reels, Shorts, brand films), graphic/brochure design, and managed Meta/Google/social/outdoor campaigns.</Text>
          <Action secondary label="View Studio Rates & Request Quote" onPress={()=>openCustomPlan('promotional-reel','Looking for custom commercial video ad production, graphic/brochure design, or managed Meta/Google marketing: ')}/>
         </View>
        </View>
 
-       <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+       <View style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
         <View style={{position:'relative'}}>
          <Image source={PRICING_IMAGES.digital} accessibilityLabel="Custom business website design and workflow automation" resizeMode="cover" style={{width:'100%',height:165}}/>
-         <View style={{position:'absolute',left:10,bottom:10,paddingHorizontal:10,paddingVertical:4,borderRadius:999,backgroundColor:'rgba(15,23,42,0.82)'}}>
-          <Text style={{color:'#ffffff',fontSize:10,fontWeight:'700',letterSpacing:0.6}}>WEBSITES ₹4,999+ · WORKFLOW AUTOMATION</Text>
+         <View style={{position:'absolute',left:10,bottom:10,paddingHorizontal:10,paddingVertical:4,borderRadius:9999,backgroundColor:'#0F294A'}}>
+          <Text style={{color:'#ffffff',fontSize:11,fontWeight:'600'}}>Websites ₹4,999+ · Workflow Setup</Text>
          </View>
         </View>
         <View style={{padding:14,gap:8}}>
-         <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>PAID TECH TRACK 02</Text>
+         <Text style={styles.label}>Websites &amp; Workflow Setup</Text>
          <Text style={[styles.heading,{fontSize:16}]}>Website &amp; Digital Setup (VISTRAH Tech / Automation)</Text>
          <Text style={styles.muted}>Custom mobile-first business website design &amp; launch (with Call &amp; WhatsApp capture) and custom business workflow automation.</Text>
          <Action secondary label="Explore Website & Automation Plans" onPress={()=>{setCategory('websites');setIntent('studio');}}/>
@@ -390,7 +390,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         <Text style={styles.muted}>{promo.studioBoundary}</Text>
        </View>
        <View style={{gap:4}}>
-        <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>FULL-STACK AGENCY &amp; CITY MEDIA</Text>
+        <Text style={styles.label}>Full-Stack Agency &amp; City Media</Text>
         <Text accessibilityRole="header" style={[styles.heading,{fontSize:20,letterSpacing:-0.45}]}>VISTRAH Ads &amp; Marketing Studio</Text>
         <Text style={styles.muted}>Compare starting fees across 4 agency pillars. Third-party ad spend, printing, and 18% GST are itemised separately.</Text>
        </View>
@@ -467,10 +467,10 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         if(!pillarItems.length)return null;
         const pillarImg=PRICING_IMAGES[pillar.id as keyof typeof PRICING_IMAGES]??PRICING_IMAGES.creative;
         return (
-         <View key={pillar.id} style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
+         <View key={pillar.id} style={{borderRadius:12,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
           <Image source={pillarImg} accessibilityLabel={pillar.title} resizeMode="cover" style={{width:'100%',height:165}}/>
           <View style={{padding:14,gap:8}}>
-           <Text style={[styles.label,styles.tabular,{color:colors.accent,fontWeight:'700',letterSpacing:0.8}]}>PILLAR {pillar.step}</Text>
+           <Text style={styles.label}>Studio Category</Text>
            <Text style={[styles.heading,{fontSize:18,letterSpacing:-0.45}]}>{pillar.title}</Text>
            <Text style={styles.muted}>{pillar.subtitle}</Text>
            <Text style={{color:colors.text,fontSize:12,fontWeight:'600'}}>{pillar.feeNote}</Text>
@@ -674,7 +674,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
     <>
      {/* Hairline Track Comparison */}
      <View style={{borderTopWidth:1,borderColor:colors.border,paddingTop:16,gap:8}}>
-      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>FREE PLATFORM VS. PAID SOLUTIONS</Text>
+      <Text style={styles.label}>Free Platform vs. Paid Solutions</Text>
       <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Compare ₹0 Business Listing, Free V Ads &amp; Paid Studio / Tech</Text>
       <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
        {PRICING_COMPARISON_ROWS.map(row=>(
@@ -690,7 +690,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
      {/* Hairline Merchant FAQs */}
      <View style={{borderTopWidth:1,borderColor:colors.border,paddingTop:16,gap:8}}>
-      <Text style={[styles.label,{fontWeight:'700',letterSpacing:0.6}]}>BILLING, GST &amp; CAMPAIGN RULES</Text>
+      <Text style={styles.label}>Billing, GST &amp; Campaign Rules</Text>
       <Text accessibilityRole="header" style={[styles.heading,{fontSize:19,letterSpacing:-0.45}]}>Frequently asked questions</Text>
       <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
        {faqs.map((faq,idx)=>{

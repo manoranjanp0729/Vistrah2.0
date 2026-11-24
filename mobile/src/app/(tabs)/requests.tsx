@@ -160,7 +160,6 @@ export default function VistrahEssentials() {
         style={s.hero}
       >
         <BannerGeometry/>
-        <View pointerEvents="none" style={[s.heroGlowOrb,{backgroundColor:banner.glow}]} />
         <View style={s.heroTopRow}>
           <LinearGradient
             colors={banner.gradient}
@@ -168,7 +167,7 @@ export default function VistrahEssentials() {
             end={{x: 1, y: 0}}
             style={s.heroTag}
           >
-            <Text style={s.heroTagText}>VISTRAH ESSENTIALS</Text>
+            <Text style={s.heroTagText}>Vistrah Essentials</Text>
           </LinearGradient>
           <View style={s.heroVerifiedTag}>
             <Feather name="check-circle" size={12} color="#34d399" />
@@ -495,7 +494,7 @@ export default function VistrahEssentials() {
           },
         ]}
       >
-        <Text style={[s.sectionEyebrow, {color: colors.accent}]}>THE VISTRAH PROMISE</Text>
+        <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Direct Local Trust</Text>
         <Text accessibilityRole="header" style={[s.trustTitle, {color: colors.text}]}>
           <UiText value="Why Vistrah Essentials?" />
         </Text>
@@ -537,62 +536,73 @@ export default function VistrahEssentials() {
               <UiText value="Built for Karnataka & India" />
             </Text>
             <Text style={[s.trustItemBody, {color: colors.muted}]}>
-              <UiText value="Localized in Kannada, Hindi, and English to serve rural taluks and urban neighborhoods seamlessly." />
+              <UiText value="Available in Kannada, Hindi, and English across towns, taluks, and city neighbourhoods." />
             </Text>
           </View>
         </View>
       </View>
 
-      {/* 6. PARTNER & PROVIDER ECOSYSTEM INVITATION BANNER */}
-      <LinearGradient
-        colors={isDark ? ['#091B33', '#0F294A', '#132F54'] : ['#091B33', '#0F294A', '#163A66']}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 1}}
-        style={s.partnerBanner}
+      {/* 6. GROUNDED EDITORIAL PARTNER LEAD-IN */}
+      <View
+        style={[
+          s.partnerBanner,
+          {
+            backgroundColor: isDark ? '#0f233d' : '#f8fafc',
+            borderWidth: 1,
+            borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+          },
+        ]}
       >
-        <View pointerEvents="none" style={s.partnerGlow} />
-        <View style={s.partnerTopRow}>
-          <LinearGradient
-            colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            style={s.partnerTag}
-          >
-            <Text style={s.partnerTagText}>⭐ PROVIDER PARTNERSHIP</Text>
-          </LinearGradient>
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
-            <View style={{width: 6, height: 6, borderRadius: 3, backgroundColor: '#34d399'}} />
-            <Text style={{color: '#cbd5e1', fontSize: 11, fontWeight: '600'}}>
-              <UiText value="Open Registration" />
-            </Text>
-          </View>
-        </View>
-
-        <Text accessibilityRole="header" style={s.partnerTitle}>
+        <Text style={{color: '#EA580C', fontSize: 13, fontWeight: '600'}}>
+          Discover. Connect. Grow.
+        </Text>
+        <Text accessibilityRole="header" style={[s.partnerTitle, {color: colors.text}]}>
           <UiText value="Are you an Agricultural Specialist, Doctor, or Clinic?" />
         </Text>
-        <Text style={s.partnerBody}>
-          <UiText value="List your essential services on Vistrah to connect with thousands of local households and farmers across your region." />
+        <Text style={[s.partnerBody, {color: colors.muted}]}>
+          <UiText value="List your business for ₹0 on VISTRAH to connect directly with local households and farmers in your area." />
         </Text>
 
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push('/membership')}
-          style={({pressed}) => [s.partnerButton, {opacity: pressed ? 0.9 : 1}]}
-        >
-          <LinearGradient
-            colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            style={s.partnerButtonGradient}
+        <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10, paddingTop: 4}}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push('/seller/onboard')}
+            style={({pressed}) => [s.partnerButton, {opacity: pressed ? 0.9 : 1}]}
           >
-            <Text style={s.partnerButtonText}>
-              <UiText value="Join Verified Provider Network" />
+            <LinearGradient
+              colors={[brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]]}
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 1}}
+              style={s.partnerButtonGradient}
+            >
+              <Text style={s.partnerButtonText}>
+                <UiText value="List Your Business Free" />
+              </Text>
+              <Feather name="arrow-right" size={16} color="#fff" />
+            </LinearGradient>
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push('/services/nearby')}
+            style={({pressed}) => [
+              {
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                backgroundColor: isDark ? '#091526' : '#ffffff',
+                paddingHorizontal: 14,
+                paddingVertical: 11,
+                justifyContent: 'center',
+                opacity: pressed ? 0.85 : 1,
+              },
+            ]}
+          >
+            <Text style={{color: colors.text, fontSize: 13, fontWeight: '600'}}>
+              <UiText value="Explore Nearby Services" />
             </Text>
-            <Feather name="arrow-right" size={16} color="#fff" />
-          </LinearGradient>
-        </Pressable>
-      </LinearGradient>
+          </Pressable>
+        </View>
+      </View>
     </Page>
   );
 }

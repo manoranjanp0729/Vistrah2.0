@@ -38,7 +38,7 @@ export default function Discover() {
   // Area 1: Top Hero Greeting & Search Bar with Quick Filter Tags
   const searchSection = (
     <View style={s.topGreetingWrap}>
-      {/* Eyebrow badge with glowing sparkle */}
+      {/* Eyebrow badge */}
       <View style={s.topBadgeRow}>
         <LinearGradient
           colors={accentGradient}
@@ -46,7 +46,7 @@ export default function Discover() {
           end={{x: 1, y: 0}}
           style={s.topBadgePill}
         >
-          <Text style={s.topBadgeText}>VISTRAH INDIA</Text>
+          <Text style={s.topBadgeText}>Vistrah India</Text>
         </LinearGradient>
         <Text style={[s.topTagline, {color: colors.muted}]}>
           <UiText value={copy.home.tagline} />
@@ -193,7 +193,7 @@ export default function Discover() {
       <View style={s.sectionHeaderWrap}>
         <View style={{flex: 1, minWidth: 0}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Text style={[s.sectionEyebrow, {color: colors.accent}]}>COMMUNITY LIFELINES</Text>
+            <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Essential Local Networks</Text>
           </View>
           <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
             <UiText value="Vistrah Essentials" />
@@ -218,7 +218,7 @@ export default function Discover() {
     <View style={s.shortcutsSectionWrap}>
       <View style={s.sectionHeaderWrap}>
         <View style={{flex: 1, minWidth: 0}}>
-          <Text style={[s.sectionEyebrow, {color: colors.accent}]}>HANDPICKED SERVICES</Text>
+          <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Popular Categories</Text>
           <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
             <UiText value={copy.home.quick} />
           </Text>
@@ -284,11 +284,10 @@ export default function Discover() {
                     end={{x: 1, y: 1}}
                     style={s.shortcutFallback}
                   >
-                    <View style={s.shortcutFallbackOrb} />
                     <View style={s.shortcutFallbackIconCircle}>
                       <Feather name={item.icon} size={17} color="#F97316" />
                     </View>
-                    <Text style={s.shortcutFallbackLabel}>VISTRAH</Text>
+                    <Text style={s.shortcutFallbackLabel}>Vistrah</Text>
                   </LinearGradient>
                 )}
               </View>
@@ -515,21 +514,21 @@ const s = StyleSheet.create({
   shortcutCard: {
     width: 140,
     flexDirection: 'column',
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     overflow: 'hidden',
-    elevation: 2,
+    elevation: 1,
     shadowColor: '#0F294A',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.06,
-    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
   },
   shortcutPhoto: {
     margin: 7,
     width: 124,
     height: 90,
     flexShrink: 0,
-    borderRadius: 14,
+    borderRadius: 8,
     overflow: 'hidden',
     backgroundColor: '#0F294A',
     position: 'relative',
@@ -545,16 +544,6 @@ const s = StyleSheet.create({
     justifyContent: 'center',
     gap: 5,
     position: 'relative',
-  },
-  shortcutFallbackOrb: {
-    position: 'absolute',
-    top: -18,
-    right: -18,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#F97316',
-    opacity: 0.22,
   },
   shortcutFallbackIconCircle: {
     width: 34,

@@ -117,13 +117,11 @@ html:not([data-theme="dark"]) .storyTabActive {
 
 .eyebrow {
   margin: 0;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent-orange, var(--text-secondary));
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #ea580c;
 }
 
 .displayTitle {
@@ -768,17 +766,22 @@ html:not([data-theme="dark"]) .iconBox {
   color: var(--text-primary);
 }
 
-/* Bottom Conversion Banner */
+/* Grounded Footer Lead-In */
 .bottomCtaBar {
-  border: 1px solid var(--border);
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
-  background: var(--surface);
+  background: #f8fafc;
   padding: 24px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+:global(:root[data-theme="dark"]) .bottomCtaBar {
+  background: var(--surface-soft);
+  border-color: var(--border);
 }
 
 @media (max-width: 960px) {

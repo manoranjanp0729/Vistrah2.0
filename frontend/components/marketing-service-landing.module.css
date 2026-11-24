@@ -13,9 +13,9 @@
 .trail>span{min-width:0;font-weight:600;color:var(--text-primary)}
 .hero{position:relative;display:grid;grid-template-columns:1.1fr 1fr;gap:24px;padding:24px;border-radius:12px;background:var(--service-paper);color:var(--service-ink);border:1px solid var(--border);isolation:isolate}
 .heroCopy{position:relative;align-self:center;z-index:2}
-.eyebrow{display:flex;justify-content:space-between;gap:16px;color:var(--service-ink);opacity:.8;font-size:11px;font-weight:600;letter-spacing:.08em;line-height:1.4;margin:0 0 16px}
+.eyebrow{display:flex;justify-content:space-between;gap:16px;color:#ea580c;font-size:14px;font-weight:500;letter-spacing:normal;line-height:1.4;margin:0 0 12px}
 .eyebrow span{white-space:nowrap;color:var(--accent-orange)}
-.serviceName{display:inline-flex;align-items:center;min-height:28px;font-size:12px;font-weight:600;line-height:1.4;margin:0 0 12px;padding:4px 10px;border-radius:6px;background:var(--brand-highlight);color:var(--accent-orange)}
+.serviceName{display:inline-flex;align-items:center;min-height:28px;font-size:12px;font-weight:600;line-height:1.4;margin:0 0 12px;padding:4px 10px;border-radius:9999px;background:var(--brand-highlight);color:var(--accent-orange)}
 .hero h1{font-family:var(--font-body);color:var(--service-ink);font-weight:600;font-size:clamp(28px,3.6vw,44px);letter-spacing:-.025em;line-height:1.2;margin:0 0 16px;overflow-wrap:break-word}
 .intro{color:var(--service-ink);opacity:.88;font-size:15px;line-height:1.5;max-width:600px;margin:0 0 24px}
 .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -30,7 +30,7 @@
 .visualCaption strong{font-size:15px;font-weight:600;line-height:1.4;letter-spacing:-.015em}
 .section{margin-top:32px;padding-top:24px;border-top:1px solid var(--hairline,var(--border));scroll-margin-top:100px}
 .section h2,.delivery h2,.brief h2{font-family:var(--font-body);font-size:clamp(22px,2.4vw,28px);font-weight:600;line-height:1.2;letter-spacing:-.025em;margin:0 0 16px;color:inherit}
-.kicker{font-size:11px;letter-spacing:.08em;text-transform:uppercase;line-height:1.4;color:var(--text-secondary);margin:0 0 8px;font-weight:600}
+.kicker{font-size:14px;letter-spacing:normal;text-transform:none;line-height:1.4;color:#ea580c;margin:0 0 8px;font-weight:500}
 .capabilities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;border-top:1px solid var(--hairline,var(--border));padding-top:16px}
 .capability{padding:0 0 16px;border-bottom:1px solid var(--hairline,var(--border));background:transparent}
 .cardTop{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;color:var(--accent-orange)}

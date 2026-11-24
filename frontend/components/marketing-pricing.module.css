@@ -28,11 +28,11 @@
 }
 
 .eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--text-secondary);
+  font-size: 14px;
+  letter-spacing: normal;
+  font-weight: 500;
+  text-transform: none;
+  color: #ea580c;
   margin: 0;
 }
 
@@ -46,11 +46,11 @@
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   gap: 32px;
-  padding: clamp(24px, 4vw, 44px);
-  border-radius: 24px;
-  background: radial-gradient(ellipse at top right, color-mix(in srgb, var(--accent-orange) 14%, transparent), transparent 65%), var(--ivory, var(--surface-soft));
+  padding: clamp(24px, 4vw, 36px);
+  border-radius: 12px;
+  background: var(--ivory, var(--surface-soft));
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   align-items: stretch;
 }
 
@@ -77,7 +77,7 @@
   gap: 12px;
   padding: 20px;
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 12px;
   background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
@@ -86,7 +86,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--ivory, var(--surface-soft));
@@ -107,23 +107,22 @@
   align-items: center;
   gap: 6px;
   padding: 5px 11px;
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.82);
-  backdrop-filter: blur(8px);
+  border-radius: 9999px;
+  background: rgba(15, 41, 74, 0.92);
   color: #ffffff !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.06em !important;
-  text-transform: uppercase;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: normal !important;
+  text-transform: none;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .heroAside span {
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--text-secondary);
+  font-size: 13px;
+  letter-spacing: normal;
+  font-weight: 500;
+  text-transform: none;
+  color: #ea580c;
 }
 
 .heroAside strong {

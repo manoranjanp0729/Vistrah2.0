@@ -1034,7 +1034,7 @@ export function MarketingPricing({
                   </div>
                   <div className={styles.showcaseBody}>
                     <div>
-                      <p className={styles.eyebrow}>PAID AGENCY TRACK 01</p>
+                      <p className={styles.eyebrow}>Brand &amp; Video Studio</p>
                       <h3>VISTRAH Ads &amp; Marketing Studio</h3>
                       <p>
                         Custom commercial video ad production (Reels, Shorts,
@@ -1073,7 +1073,7 @@ export function MarketingPricing({
                   </div>
                   <div className={styles.showcaseBody}>
                     <div>
-                      <p className={styles.eyebrow}>PAID TECH TRACK 02</p>
+                      <p className={styles.eyebrow}>Websites &amp; Workflow Setup</p>
                       <h3>
                         Website &amp; Digital Setup (VISTRAH Tech / Automation)
                       </h3>
@@ -1211,7 +1211,7 @@ export function MarketingPricing({
                         <div className={styles.pillarHeaderContent}>
                           <div className={styles.pillarMeta}>
                             <span className={styles.pillarStep}>
-                              PILLAR {pillar.step}
+                              Studio Category
                             </span>
                             <h3>{pillar.title}</h3>
                             <p>{pillar.subtitle}</p>

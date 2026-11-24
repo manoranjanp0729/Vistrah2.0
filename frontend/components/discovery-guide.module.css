@@ -10,11 +10,11 @@
 .choices button.selected{background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink)}
 .choices button:focus-visible,.shortcut:focus-visible,.faq summary:focus-visible{outline:3px solid var(--accent-orange);outline-offset:4px}
 .journey{display:grid;gap:16px;padding:20px 0;border-top:1px solid var(--hairline,var(--border));background:transparent}
-.journey .eyebrow{font-size:11px;letter-spacing:.08em;font-weight:600;color:var(--accent-orange)}
+.journey .eyebrow{font-size:14px;letter-spacing:normal;font-weight:500;color:#ea580c}
 .journey>a{justify-self:start}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:8px 0;padding:0;list-style:none}
-.steps li{display:flex;align-items:flex-start;gap:12px;padding-top:12px;border-top:1px solid var(--hairline,var(--border))}
-.steps li>span{font-size:12px;font-weight:700;flex-shrink:0;color:var(--accent-orange);font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.steps li{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-top:14px;border-top:1px solid var(--hairline,var(--border))}
+.milestonePill{display:inline-flex;align-items:center;padding:2px 10px;border-radius:9999px;font-size:12px;font-weight:600;background:#fff7ed;border:1px solid rgba(249,115,22,0.35);color:#ea580c}
 .steps li>div{display:grid;gap:4px}
 .steps p{font-size:13px;line-height:1.5}
 .journey .note{font-size:12px;line-height:1.5}

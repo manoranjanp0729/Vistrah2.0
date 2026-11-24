@@ -265,7 +265,6 @@ export default function Services() {
           style={[s.hero, {backgroundColor: isDark ? 'rgba(15, 41, 74, 0.5)' : 'rgba(15, 41, 74, 0.5)', borderColor: 'rgba(249, 115, 22, 0.3)'}]}
         >
           <BannerGeometry/>
-          <View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow,opacity:0.5}]} />
 
           {isRootLevel ? (
             <>
@@ -276,7 +275,7 @@ export default function Services() {
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
                 >
-                  <Text style={s.heroBadgeText}>VISTRAH MARKETPLACE</Text>
+                  <Text style={s.heroBadgeText}>Vistrah Marketplace</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
                   <Feather name="shield" size={11} color="#F97316" />
@@ -564,7 +563,7 @@ export default function Services() {
           <View style={{gap: 12}}>
             <View style={s.sectionHeader}>
               <View style={{flex: 1, minWidth: 0}}>
-                <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 3</Text>
+                <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Service Types</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
                   {t('discovery.types')}
                 </Text>
@@ -633,7 +632,7 @@ export default function Services() {
           <View style={{gap: 12}}>
             <View style={s.sectionHeader}>
               <View style={{flex: 1, minWidth: 0}}>
-                <Text style={[s.sectionEyebrow, {color: colors.accent}]}>STEP 2 OF 2</Text>
+                <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Available Services</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
                   {t('discovery.types')}
                 </Text>

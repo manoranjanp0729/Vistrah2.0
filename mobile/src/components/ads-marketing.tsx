@@ -26,7 +26,6 @@ export function AdsMarketing(){
  const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={[s.startText,{color:buttonAccent}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color={buttonAccent}/></UiElement>;
 
  return <LinearGradient testID="ads-marketing" colors={brandGradient} locations={[0,.52,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.section}>
-  <View pointerEvents="none" accessible={false} style={s.blueGlow}/><View pointerEvents="none" accessible={false} style={s.pinkGlow}/>
   <Text accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit onLayout={event=>setHeadingWidth(event.nativeEvent.layout.width)} style={[s.headline,headingWidth>0&&{fontSize:Math.min(Platform.OS==='android'?25:21,headingWidth/15.5)}]}><UiText value={"VISTRAH Ads & Marketing"}/></Text>
   <View style={s.hero}>
    <View style={s.heroCopy}>
@@ -34,7 +33,7 @@ export function AdsMarketing(){
     {getStarted}
    </View>
    <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={s.art}>
-    <View style={s.halo}/><View style={s.ground}/>
+    <View style={s.ground}/>
     <View style={s.chart}><View style={s.chartBars}>{[12,20,30].map((height,index)=><View key={index} style={{width:10,height,borderRadius:3,backgroundColor:['#93c5fd','#3b82f6','#0F294A'][index]}}/>)}</View><Feather name="trending-up" size={31} color="#F97316" style={{position:'absolute',right:7,top:4}}/></View>
     <View style={s.shop}>
      <View style={s.roof}/><View style={s.awning}>{[0,1,2,3,4,5,6].map(index=><View key={index} style={{flex:1,height:12,borderBottomLeftRadius:4,borderBottomRightRadius:4,backgroundColor:index%2?'#fff7ed':'#F97316'}}/>)}</View>
@@ -56,17 +55,14 @@ export function AdsMarketing(){
  </LinearGradient>;
 }
 const s=StyleSheet.create({
- section:{backgroundColor:'#0F294A',borderRadius:20,padding:spacing.pagePadding,gap:8,overflow:'hidden'},
- blueGlow:{position:'absolute',right:-65,top:-75,width:210,height:210,borderRadius:105,backgroundColor:'#60a5fa',opacity:.18},
- pinkGlow:{position:'absolute',left:-70,top:135,width:180,height:180,borderRadius:90,backgroundColor:'#F97316',opacity:.16},
+ section:{backgroundColor:'#0F294A',borderRadius:12,padding:spacing.pagePadding,gap:8,overflow:'hidden'},
  hero:{flexDirection:'row',alignItems:'center',gap:8,padding:0,marginBottom:2},
  heroCopy:{flex:1,minWidth:0,gap:6},
  headline:{fontSize:Platform.OS==='android'?25:21,lineHeight:Platform.OS==='android'?30:24,fontWeight:'700',letterSpacing:-.5,color:'#fff'},
  support:{fontSize:Platform.OS==='android'?14:12.5,lineHeight:Platform.OS==='android'?20:17,color:'#d3deea'},
- start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:40,paddingHorizontal:13,marginTop:2,borderRadius:10,backgroundColor:'#fff',boxShadow:'0px 4px 10px rgba(9,27,51,0.2)'},
+ start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:40,paddingHorizontal:13,marginTop:2,borderRadius:8,backgroundColor:'#fff',boxShadow:'0px 2px 6px rgba(9,27,51,0.14)'},
  startText:{flexShrink:1,fontSize:Platform.OS==='android'?13:12,lineHeight:Platform.OS==='android'?19:17,fontWeight:'700',color:'#0F294A'},
  art:{width:100,height:118},
- halo:{position:'absolute',width:100,height:100,top:23,right:-5,borderRadius:50,backgroundColor:'#ffffff12'},
  ground:{position:'absolute',bottom:9,left:0,width:102,height:13,borderRadius:50,backgroundColor:'#fdba7440'},
  chart:{position:'absolute',top:6,right:0,width:68,height:54,padding:7,borderRadius:10,backgroundColor:'#eff6ff',transform:[{rotate:'8deg'}],boxShadow:'0px 4px 10px rgba(9,27,51,0.16)'},
  chartBars:{flex:1,flexDirection:'row',alignItems:'flex-end',gap:5},

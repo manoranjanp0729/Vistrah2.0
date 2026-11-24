@@ -44,10 +44,8 @@ export function ServiceBanner({context}:{context:ServiceContext}){
       </View>
     ):(
       <LinearGradient colors={['#091B33','#0F294A','#163A66']} start={{x:0,y:0}} end={{x:1,y:1}} style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-        <View style={{position:'absolute',width:180,height:180,borderRadius:90,borderWidth:1,borderColor:'#60a5fa',opacity:.22}}/>
-        <View style={{position:'absolute',width:240,height:240,borderRadius:120,borderWidth:1,borderColor:'#60a5fa',opacity:.14}}/>
-        <View style={{width:92,height:78,borderRadius:14,backgroundColor:'#eff6ff',alignItems:'center',justifyContent:'center',transform:[{rotate:'-5deg'}],borderBottomWidth:5,borderBottomColor:'#93c5fd'}}><Feather name={subject} size={42} color="#0F294A"/></View>
-        <View style={{position:'absolute',left:'18%',top:28,width:40,height:40,borderRadius:12,backgroundColor:'#fff7ed',alignItems:'center',justifyContent:'center',transform:[{rotate:'-12deg'}]}}><Feather name={category} size={20} color="#EA580C"/></View>
+        <View style={{width:92,height:78,borderRadius:12,backgroundColor:'#eff6ff',alignItems:'center',justifyContent:'center',transform:[{rotate:'-5deg'}],borderBottomWidth:4,borderBottomColor:'#93c5fd'}}><Feather name={subject} size={40} color="#0F294A"/></View>
+        <View style={{position:'absolute',left:'18%',top:28,width:40,height:40,borderRadius:8,backgroundColor:'#fff7ed',alignItems:'center',justifyContent:'center',transform:[{rotate:'-12deg'}]}}><Feather name={category} size={20} color="#EA580C"/></View>
         <View style={{position:'absolute',right:'18%',bottom:17,width:32,height:32,borderRadius:16,backgroundColor:'#F97316',alignItems:'center',justifyContent:'center'}}><Feather name="check" size={17} color="#ffffff"/></View>
       </LinearGradient>
     )}

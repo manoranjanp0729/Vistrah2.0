@@ -75,7 +75,7 @@ export const SECTION_LIBRARY: SectionLibraryItem[] = [
     recommended_resolution: '800 × 200 px (Brand Lockup)',
     variations: [
       { key: 'sticky_standard', name: 'Standard Sticky Header', description: 'Fixed top bar with logo, category navigation & profile actions.', badge: 'Most Popular' },
-      { key: 'minimal_transparent', name: 'Minimal Transparent Scrim', description: 'Blends seamlessly into hero banner with subtle dark contrast gradient.' },
+      { key: 'minimal_transparent', name: 'Minimal Transparent Scrim', description: 'Blends cleanly into hero banner with subtle dark contrast gradient.' },
       { key: 'centered_brand', name: 'Centered Brand Lockup', description: 'Prominent central Vistrah insignia with split utility menus.' },
       { key: 'elevated_segmented', name: 'Elevated with Service Tabs', description: 'Includes 3 service pathway quick-selector tabs.' },
     ],

@@ -7,19 +7,19 @@
     "location": "Choose location"
   },
   "home": {
-    "tagline": "VERIFIED SERVICES & LOCAL BUSINESSES",
-    "title": "Find verified providers & business services",
-    "description": "Compare reviewed professionals across GST & tax compliance, civil construction, home services, jobs, and local commerce.",
-    "quick": "QUICK ACCESS",
+    "tagline": "Discover. Connect. Grow.",
+    "title": "Find verified businesses near you",
+    "description": "Browse verified local shops, clinics, stays, construction teams, and services across India—or list your business for ₹0.",
+    "quick": "Quick Access",
     "categories": "Services for you",
     "viewAll": "View all",
-    "featured": "Business & Provider Onboarding",
-    "badge": "SELLER WORKSPACE",
-    "business": "Verify and manage your business listing",
-    "businessDescription": "Register your business, submit ownership verification, and manage approved service listings and customer enquiries.",
-    "more": "Verify & register business →",
-    "review": "Business ownership and service listings require independent review.",
-    "provider": "Register business"
+    "featured": "For Local Businesses",
+    "badge": "Free Business Listing",
+    "business": "List your business for ₹0",
+    "businessDescription": "Pin your shop location, publish your services, and receive direct customer calls and enquiries with zero commission.",
+    "more": "List Your Business Free →",
+    "review": "Business ownership and service listings are reviewed before going live.",
+    "provider": "List Your Business Free"
   },
   "catalogue": {
     "title": "Service categories",
@@ -153,9 +153,9 @@
     "customerLabel": "I need a service",
     "providerLabel": "I offer a service",
     "customer": {
-      "eyebrow": "CUSTOMER DISCOVERY",
-      "title": "Compare local providers and submit requirements",
-      "description": "Filter by city or PIN code, review service scope, and send enquiries for human review.",
+      "eyebrow": "Discover & Connect",
+      "title": "Find verified local businesses and compare options",
+      "description": "Filter by city or radius, check verified details, and call or enquire directly.",
       "steps": [
         {
           "title": "Select category & locality",
@@ -174,9 +174,9 @@
       "note": "Browse freely. Provider details, guides and enquiries need eligible membership."
     },
     "provider": {
-      "eyebrow": "SELLER & PROVIDER TOOLS",
-      "title": "Verify business ownership and publish services",
-      "description": "Register your business, submit service packages or V Ads, and manage incoming leads.",
+      "eyebrow": "Connect & Grow",
+      "title": "List your business for ₹0 and reach nearby customers",
+      "description": "Pin your shop on the map, upload free local V Ads, and check your business visibility score.",
       "steps": [
         {
           "title": "Submit ownership verification",

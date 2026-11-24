@@ -28,8 +28,8 @@ export const typography={
 } as const;
 // Strict 4pt/8pt spatial rhythm across mobile and phone-web surfaces.
 // Keep control sizing and measured grid geometry independent.
-export const spacing={small:4,fieldGap:8,cardGap:8,elementGap:8,feedGap:12,regular:12,controlPadding:12,pagePadding:16,pagePaddingDesktop:24,cardPaddingCompact:16,cardPadding:20,pageGap:12,sectionGap:24,sectionPadding:16,pageBottom:24} as const;
-export const radii={input:14,action:17,surface:20} as const;
+export const spacing={small:4,fieldGap:8,cardGap:8,elementGap:8,feedGap:12,regular:12,controlPadding:12,pagePadding:16,pagePaddingDesktop:24,cardPaddingCompact:16,cardPadding:20,pageGap:16,sectionGap:24,sectionPadding:24,pageBottom:24} as const;
+export const radii={input:8,action:8,surface:12,pill:9999} as const;
 export const controlHeights={pill:36,compact:44,standard:44,multiline:120} as const;
 export const layout={pageMaxWidth:900,borderWidth:1} as const;
 

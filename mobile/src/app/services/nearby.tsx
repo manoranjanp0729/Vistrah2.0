@@ -131,10 +131,6 @@ export default function NearbyServicesScreen() {
           style={heroStyles.hero}
         >
           <BannerGeometry />
-          <View
-            pointerEvents="none"
-            style={[heroStyles.heroGlow, { backgroundColor: banner.glow, opacity: 0.5 }]}
-          />
           <View style={heroStyles.heroBadgeRow}>
             <LinearGradient
               colors={['#0F294A', '#132F54']}
@@ -142,7 +138,7 @@ export default function NearbyServicesScreen() {
               end={{ x: 1, y: 0 }}
               style={heroStyles.heroBadge}
             >
-              <Text style={heroStyles.heroBadgeText}>VISTRAH MARKETPLACE</Text>
+              <Text style={heroStyles.heroBadgeText}>Vistrah Marketplace</Text>
             </LinearGradient>
             <View style={heroStyles.heroPill}>
               <Feather name="map-pin" size={11} color="#F97316" />
@@ -193,20 +189,12 @@ const heroStyles = StyleSheet.create({
   hero: {
     position: 'relative',
     overflow: 'hidden',
-    borderRadius: 18,
+    borderRadius: 12,
     padding: 18,
     gap: 8,
     backgroundColor: 'rgba(15, 41, 74, 0.5)',
     borderWidth: 1,
     borderColor: 'rgba(249, 115, 22, 0.3)',
-  },
-  heroGlow: {
-    position: 'absolute',
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    top: -60,
-    right: -40,
   },
   heroBadgeRow: {
     flexDirection: 'row',

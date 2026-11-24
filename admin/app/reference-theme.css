@@ -5,14 +5,14 @@
   --text-primary:#fafafa;--text-secondary:#b8b8b8;--accent-orange:#f9aa45;
   --brand-green-950:#f9aa45;--brand-green-800:#ffc778;--brand-green-700:#f9aa45;
   --text-warning:#f5c76b;--text-error:#ff9f96;
-  --radius-sm:14px;--radius-md:22px;--radius-lg:28px;
+  --radius-sm:8px;--radius-md:12px;--radius-lg:12px;--radius-pill:9999px;
   --font-display:var(--font-body);--font-display-italic:var(--font-body-italic);
 }
 body{background:var(--page-background)}
 h1,h2,h3,h4,h5,h6{color:var(--text-primary)}
 button,input,textarea,select{color:inherit}
 input,textarea,select{background:var(--surface);border-color:var(--border)}
-.button{background:var(--accent-orange);border-color:var(--accent-orange);color:#20170c;border-radius:18px;min-height:44px}
+.button{background:var(--accent-orange);border-color:var(--accent-orange);color:#20170c;border-radius:8px;min-height:44px}
 .button:hover{background:#ffc16f;border-color:#ffc16f}
 .button.secondary,.button.light{background:var(--surface);color:var(--text-primary);border-color:var(--border)}
 .button.secondary:hover,.button.light:hover{background:#333}
@@ -143,8 +143,8 @@ th,.admin-table th,.table-actions button,.admin-search button{background:#292929
 .replica-actions>a:hover{background:#303030}
 .replica-search{display:flex;align-items:flex-end;flex-direction:row}.replica-search label{flex:1}
 .auth-page{display:block;max-width:640px;margin:28px auto;padding:20px;border:0}.auth-form-wrap{padding:0}.auth-form-wrap h2{font-size:24px;margin-bottom:12px}.auth-form-wrap p{font-size:13px;line-height:1.45}
-.reference-service-banner{height:112px;border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#182d3b,#223b47,#473126);position:relative;display:flex;align-items:center;justify-content:center}
-.banner-orbit{position:absolute;width:180px;height:180px;border:1px solid #5d81914d;border-radius:50%;box-shadow:0 0 0 30px #5d819112}
+.reference-service-banner{height:72px;border-radius:12px;overflow:hidden;background:#0f294a;position:relative;display:flex;align-items:center;justify-content:center}
+.banner-orbit{display:none}
 .banner-document{width:92px;height:78px;background:#e6edfb;color:#213c5b;border-radius:14px;transform:rotate(-5deg);border-bottom:5px solid #b4c8db;display:flex;align-items:center;justify-content:center}
 .banner-category{position:absolute;left:18%;top:28px;width:40px;height:40px;background:#f9e8d6;color:#6d4524;border-radius:12px;transform:rotate(-12deg);display:flex;align-items:center;justify-content:center}
 .banner-check{position:absolute;right:18%;bottom:17px;width:32px;height:32px;border-radius:50%;background:#f9aa45;color:#20170c;display:flex;align-items:center;justify-content:center}

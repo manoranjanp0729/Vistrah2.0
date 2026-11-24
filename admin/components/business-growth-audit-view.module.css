@@ -188,29 +188,29 @@
   display: grid;
   gap: 16px;
   padding: 20px;
-  border-radius: 16px;
-  border: 1px solid var(--border-subtle, rgba(15, 23, 42, 0.12));
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle, #e2e8f0);
   background: var(--surface-card, #ffffff);
   color: var(--text-primary, #0f172a);
 }
 
 :global(:root[data-theme='dark']) .sectionCard {
-  background: #131b2e;
+  background: #0f233d;
   border-color: rgba(148, 163, 184, 0.2);
   color: #f8fafc;
 }
 
 .sectionEyebrow {
   margin: 0;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #b45309;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #ea580c;
 }
 
 :global(:root[data-theme='dark']) .sectionEyebrow {
-  color: #fbbf24;
+  color: #fb923c;
 }
 
 .sectionHeading {

@@ -14,7 +14,7 @@ import {
 } from '../../shared/nearby-services.ts';
 
 test('mobile services tab and /services/nearby wire in-app map + synchronized listings', () => {
-  assert.deepEqual(NEARBY_DISCOVERY_RADII, [5, 10, 25, 50]);
+  assert.deepEqual(NEARBY_DISCOVERY_RADII, [2, 5, 10, 25, 50]);
   assert.equal(phoneCallHref('98450 12345'), 'tel:9845012345');
   assert.equal(phoneCallHref(''), null);
   assert.equal(websiteExternalHref('malnadspice.in'), 'https://malnadspice.in/');
@@ -91,13 +91,22 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
   assert.match(whatsappChatHref('09845012345', 'Plumber') ?? '', /^https:\/\/wa\.me\/919845012345\?/);
   assert.equal(
     buildNearbyMarketplacePath({
-      category: 'home-services',
-      businessType: 'plumber',
+      category: 'restaurants-and-dining',
+      businessType: 'cafes',
       latitude: 12.9716,
       longitude: 77.5946,
-      radiusKm: 25,
+      radiusKm: 5,
     }),
-    '/marketplace/nearby?category=home-services&lat=12.971600&lng=77.594600&radius_km=25&business_type=plumber',
+    '/marketplace/nearby?category=restaurants-and-dining&lat=12.971600&lng=77.594600&radius_km=5&service_type=cafes&business_type=cafes',
+  );
+  assert.equal(
+    buildNearbyMarketplacePath({
+      category: 'restaurants-and-dining',
+      latitude: 12.9716,
+      longitude: 77.5946,
+      radiusKm: 2,
+    }),
+    '/marketplace/nearby?category=restaurants-and-dining&lat=12.971600&lng=77.594600&radius_km=2',
   );
 
   assert.equal(

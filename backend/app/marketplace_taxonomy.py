@@ -1,4 +1,4 @@
-"""Read-only master taxonomy metadata (10 Unified Sectors -> 133 subcategories -> 814 listing types).
+"""Read-only master taxonomy metadata (10 Main Categories -> direct service types).
 
 Simplified v2 slugs and bookmarks remain accepted on read through
 `shared/marketplace-legacy-map.json` so existing links keep resolving cleanly.

@@ -1,13 +1,14 @@
-import { createElement, useId, useRef, useState } from 'react';
-import { Image, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { createElement, useId, useMemo, useRef, useState } from 'react';
+import { Image, PanResponder, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router, usePathname } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import { api, ApiError } from '../lib/api';
 import { useTheme } from '../lib/theme';
 import { Text, TextInput } from './typography';
 import {
-  ASK_VISTRAH_STARTERS,
-  ASK_VISTRAH_WELCOME,
+  ASTRA_AGENT_NAME,
+  ASTRA_STARTERS,
+  ASTRA_WELCOME,
   GEMINI_BRAND_LABEL,
   GEMINI_SPARK_PATH,
   GEMINI_SPARK_VIEWBOX,
@@ -31,6 +32,7 @@ function MobileGeminiLogo({ size = 16 }: { size?: number }) {
         height: size,
         viewBox: GEMINI_SPARK_VIEWBOX,
         'aria-hidden': 'true',
+        'data-gemini-spark': 'true',
         style: { display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 },
       },
       createElement(
@@ -95,10 +97,24 @@ export function MobileAskVistrahWidget() {
   const { colors, mode } = useTheme();
   const isDark = mode === 'dark';
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<AskVistrahMessage[]>([ASK_VISTRAH_WELCOME]);
+  const [messages, setMessages] = useState<AskVistrahMessage[]>([ASTRA_WELCOME]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
+
+  const panResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_evt, gestureState) =>
+          Math.abs(gestureState.dx) > 10 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
+        onPanResponderRelease: (_evt, gestureState) => {
+          if (gestureState.dx <= -22) {
+            setOpen(true);
+          }
+        },
+      }),
+    [],
+  );
 
   if (pathname === '/settings') return null;
 
@@ -143,9 +159,9 @@ export function MobileAskVistrahWidget() {
           id: `e-${Date.now()}`,
           role: 'assistant',
           content: isRateLimited
-            ? 'Ask VISTRAH is receiving many questions right now. Please pause ~30 seconds or use the quick links below.'
+            ? 'Astra is receiving many questions right now. Please pause ~30 seconds or use the quick links below.'
             : (err as Error).message ||
-              'Could not reach Ask VISTRAH right now. You can browse services or list your business below.',
+              'Could not reach Astra right now. You can browse verified local services or list your business below.',
           suggestedActions: [
             { label: 'Browse Services', href: '/services' },
             { label: 'List Your Business', href: '/seller/onboard' },
@@ -160,39 +176,41 @@ export function MobileAskVistrahWidget() {
   }
 
   return (
-    <View pointerEvents="box-none" style={s.overlay}>
+    <View pointerEvents="box-none" style={s.overlay} testID="astra-widget">
       {open && (
         <View
           style={[
             s.panel,
             {
-              backgroundColor: isDark ? '#141927' : '#ffffff',
-              borderColor: isDark ? 'rgba(212,175,55,0.35)' : 'rgba(15,23,42,0.16)',
+              backgroundColor: isDark ? '#0f172a' : '#ffffff',
+              borderColor: isDark ? 'rgba(249,115,22,0.4)' : 'rgba(15,41,74,0.16)',
             },
           ]}
         >
           <View style={s.header}>
             <View style={s.headerLeft}>
-              <View style={s.sparkleBadge}>
-                <MobileGeminiLogo size={16} />
-              </View>
               <View style={{ gap: 2 }}>
-                <Text style={s.headerTitle}>Ask VISTRAH</Text>
+                <Text style={s.headerTitle}>{ASTRA_AGENT_NAME}</Text>
                 <View style={s.poweredRow}>
-                  <MobileGeminiLogo size={10} />
                   <Text style={s.headerSubtitle}>{GEMINI_BRAND_LABEL}</Text>
+                  <MobileGeminiLogo size={10} />
                 </View>
               </View>
             </View>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="Minimize Ask VISTRAH"
-              onPress={() => setOpen(false)}
-              hitSlop={8}
-              style={s.closeBtn}
-            >
-              <Feather name="x" size={16} color="#f8fafc" />
-            </Pressable>
+            <View style={s.headerRight}>
+              <View style={s.sparkleBadge}>
+                <MobileGeminiLogo size={15} />
+              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Minimize Astra"
+                onPress={() => setOpen(false)}
+                hitSlop={8}
+                style={s.closeBtn}
+              >
+                <Feather name="x" size={16} color="#f8fafc" />
+              </Pressable>
+            </View>
           </View>
 
           <ScrollView
@@ -207,14 +225,14 @@ export function MobileAskVistrahWidget() {
                   <View
                     style={[
                       s.userBubble,
-                      { backgroundColor: isDark ? '#d4af37' : '#0f172a' },
+                      { backgroundColor: isDark ? '#f97316' : '#0f294a' },
                     ]}
                   >
                     <Text
                       style={{
                         fontSize: 13,
                         lineHeight: 18,
-                        color: isDark ? '#0f172a' : '#ffffff',
+                        color: '#ffffff',
                         fontWeight: isDark ? '600' : '400',
                       }}
                     >
@@ -228,7 +246,7 @@ export function MobileAskVistrahWidget() {
                     style={[
                       s.botBubble,
                       {
-                        backgroundColor: isDark ? '#1e293b' : '#f1f5f9',
+                        backgroundColor: isDark ? '#132f54' : '#f1f5f9',
                         borderColor: msg.isError ? 'rgba(220,38,38,0.45)' : 'transparent',
                         borderWidth: msg.isError ? 1 : 0,
                       },
@@ -248,8 +266,8 @@ export function MobileAskVistrahWidget() {
                           style={[
                             s.actionChip,
                             {
-                              backgroundColor: isDark ? 'rgba(212,175,55,0.16)' : '#fffbeb',
-                              borderColor: 'rgba(212,175,55,0.6)',
+                              backgroundColor: isDark ? 'rgba(249,115,22,0.16)' : '#fff7ed',
+                              borderColor: 'rgba(249,115,22,0.55)',
                             },
                           ]}
                         >
@@ -257,7 +275,7 @@ export function MobileAskVistrahWidget() {
                             style={{
                               fontSize: 12,
                               fontWeight: '700',
-                              color: isDark ? '#fde68a' : '#92400e',
+                              color: isDark ? '#fed7aa' : '#ea580c',
                             }}
                           >
                             {act.label}
@@ -265,7 +283,7 @@ export function MobileAskVistrahWidget() {
                           <Feather
                             name="arrow-up-right"
                             size={12}
-                            color={isDark ? '#fde68a' : '#92400e'}
+                            color={isDark ? '#fed7aa' : '#ea580c'}
                           />
                         </Pressable>
                       ))}
@@ -277,7 +295,7 @@ export function MobileAskVistrahWidget() {
 
             {messages.length <= 2 && !busy && (
               <View style={s.startersWrap}>
-                {ASK_VISTRAH_STARTERS.map(starter => (
+                {ASTRA_STARTERS.map(starter => (
                   <Pressable
                     key={starter}
                     accessibilityRole="button"
@@ -285,8 +303,8 @@ export function MobileAskVistrahWidget() {
                     style={[
                       s.starterChip,
                       {
-                        backgroundColor: isDark ? 'rgba(212,175,55,0.1)' : '#f8fafc',
-                        borderColor: isDark ? 'rgba(212,175,55,0.35)' : colors.border,
+                        backgroundColor: isDark ? 'rgba(249,115,22,0.12)' : '#f8fafc',
+                        borderColor: isDark ? 'rgba(249,115,22,0.38)' : colors.border,
                       },
                     ]}
                   >
@@ -303,7 +321,7 @@ export function MobileAskVistrahWidget() {
                 <View
                   style={[
                     s.botBubble,
-                    { backgroundColor: isDark ? '#1e293b' : '#f1f5f9' },
+                    { backgroundColor: isDark ? '#132f54' : '#f1f5f9' },
                   ]}
                 >
                   <Text style={{ fontSize: 13, color: colors.muted }}>Thinking…</Text>
@@ -325,7 +343,7 @@ export function MobileAskVistrahWidget() {
               value={input}
               onChangeText={setInput}
               maxLength={600}
-              placeholder="Ask about services, onboarding…"
+              placeholder="Ask Astra about services, onboarding…"
               placeholderTextColor={colors.muted}
               returnKeyType="send"
               onSubmitEditing={() => void sendQuestion(input)}
@@ -345,7 +363,7 @@ export function MobileAskVistrahWidget() {
               style={[
                 s.sendBtn,
                 {
-                  backgroundColor: isDark ? '#d4af37' : '#0f172a',
+                  backgroundColor: '#f97316',
                   opacity: busy || !input.trim() ? 0.45 : 1,
                 },
               ]}
@@ -353,28 +371,27 @@ export function MobileAskVistrahWidget() {
               <Feather
                 name="send"
                 size={14}
-                color={isDark ? '#0f172a' : '#d4af37'}
+                color="#ffffff"
               />
             </Pressable>
           </View>
         </View>
       )}
 
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={open ? 'Close Ask VISTRAH' : 'Ask VISTRAH — Powered by Google Gemini'}
-        onPress={() => setOpen(v => !v)}
-        style={({ pressed }) => [s.launcher, { opacity: pressed ? 0.9 : 1 }]}
-      >
-        <MobileGeminiLogo size={19} />
-        <View style={s.launcherTextCol}>
-          <Text style={s.launcherTitle}>Ask VISTRAH</Text>
-          <View style={s.poweredRow}>
-            <MobileGeminiLogo size={9.5} />
+      <View {...panResponder.panHandlers}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={open ? 'Close Astra' : 'Astra — Powered by Google Gemini'}
+          onPress={() => setOpen(v => !v)}
+          style={({ pressed }) => [s.launcher, { opacity: pressed ? 0.9 : 1 }]}
+        >
+          <View style={s.launcherTextCol}>
+            <Text style={s.launcherTitle}>{ASTRA_AGENT_NAME}</Text>
             <Text style={s.poweredText}>{GEMINI_BRAND_LABEL}</Text>
           </View>
-        </View>
-      </Pressable>
+          <MobileGeminiLogo size={18} />
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -382,7 +399,7 @@ export function MobileAskVistrahWidget() {
 const s = StyleSheet.create({
   overlay: {
     position: 'absolute',
-    right: 14,
+    right: 0,
     bottom: 84,
     zIndex: 900,
     alignItems: 'flex-end',
@@ -391,27 +408,32 @@ const s = StyleSheet.create({
   launcher: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 9,
-    minHeight: 48,
-    paddingHorizontal: 15,
+    justifyContent: 'space-between',
+    gap: 10,
+    minHeight: 46,
+    paddingLeft: 16,
+    paddingRight: 13,
     paddingVertical: 8,
-    borderRadius: 999,
-    backgroundColor: '#0f172a',
+    borderTopLeftRadius: 999,
+    borderBottomLeftRadius: 999,
+    backgroundColor: '#0f294a',
     borderWidth: 1.5,
-    borderColor: 'rgba(212,175,55,0.75)',
-    elevation: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.3,
+    borderRightWidth: 0,
+    borderColor: 'rgba(249,115,22,0.72)',
+    shadowColor: '#0f294a',
+    shadowOffset: { width: -2, height: 6 },
+    shadowOpacity: 0.34,
     shadowRadius: 12,
+    elevation: 6,
   },
   launcherTextCol: {
+    flexDirection: 'column',
     alignItems: 'flex-start',
-    gap: 1.5,
+    gap: 1,
   },
   launcherTitle: {
-    color: '#f8fafc',
-    fontSize: 13,
+    color: '#ffffff',
+    fontSize: 13.5,
     fontWeight: '700',
     lineHeight: 16,
   },
@@ -422,57 +444,64 @@ const s = StyleSheet.create({
   },
   poweredText: {
     color: '#cbd5e1',
-    fontSize: 9.5,
+    fontSize: 9,
     fontWeight: '500',
-    lineHeight: 12,
+    lineHeight: 11,
   },
   panel: {
-    width: 340,
+    marginRight: 12,
+    width: 332,
     maxWidth: '92%',
-    maxHeight: 450,
+    maxHeight: 460,
     borderRadius: 18,
     borderWidth: 1,
     overflow: 'hidden',
-    elevation: 8,
-    shadowColor: '#000',
+    shadowColor: '#0f294a',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.32,
-    shadowRadius: 18,
+    shadowRadius: 20,
+    elevation: 8,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 13,
+    paddingHorizontal: 14,
     paddingVertical: 11,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#0f294a',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(212,175,55,0.32)',
+    borderBottomColor: 'rgba(249,115,22,0.35)',
   },
   headerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 9,
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   sparkleBadge: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(66,133,244,0.14)',
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.1)',
     borderWidth: 1,
-    borderColor: 'rgba(155,114,203,0.45)',
+    borderColor: 'rgba(249,115,22,0.55)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   headerTitle: {
     color: '#ffffff',
-    fontSize: 14,
+    fontSize: 14.5,
     fontWeight: '700',
+    lineHeight: 18,
   },
   headerSubtitle: {
     color: '#cbd5e1',
-    fontSize: 10.5,
-    fontWeight: '500',
+    fontSize: 10,
+    lineHeight: 13,
   },
   closeBtn: {
     width: 30,
@@ -483,7 +512,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   scroll: {
-    maxHeight: 320,
+    maxHeight: 300,
   },
   scrollContent: {
     padding: 12,
@@ -493,21 +522,23 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  botRow: {
+    gap: 6,
+    alignItems: 'flex-start',
+  },
   userBubble: {
     maxWidth: '85%',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 14,
-  },
-  botRow: {
-    alignItems: 'flex-start',
-    gap: 6,
+    borderBottomRightRadius: 4,
   },
   botBubble: {
-    maxWidth: '94%',
+    maxWidth: '93%',
     paddingHorizontal: 12,
     paddingVertical: 9,
     borderRadius: 14,
+    borderBottomLeftRadius: 4,
   },
   actionsWrap: {
     flexDirection: 'row',
@@ -527,6 +558,7 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 6,
+    paddingTop: 2,
   },
   starterChip: {
     paddingHorizontal: 10,
@@ -539,12 +571,13 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingVertical: 9,
     borderTopWidth: 1,
   },
   input: {
     flex: 1,
-    minHeight: 38,
+    minWidth: 0,
+    minHeight: 36,
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 999,
@@ -552,9 +585,9 @@ const s = StyleSheet.create({
     fontSize: 13,
   },
   sendBtn: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
   },

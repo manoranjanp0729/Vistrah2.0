@@ -12,7 +12,6 @@ import {
   Eye,
   Globe,
   Smartphone,
-  Sparkles,
   AlertCircle,
   Copy,
   Save,
@@ -766,7 +765,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                     fontWeight: 700,
                   }}
                 >
-                  <Sparkles size={16} /> Make It Live
+                  Make It Live
                 </button>
 
                 {!['home', 'services', 'v-ads', 'v-essentials'].includes(currentPage.slug) && (

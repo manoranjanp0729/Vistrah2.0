@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ArrowUpRight, Send, X } from 'lucide-react';
 import {
-  ASK_VISTRAH_STARTERS,
-  ASK_VISTRAH_WELCOME,
+  ASTRA_AGENT_NAME,
+  ASTRA_STARTERS,
+  ASTRA_WELCOME,
   GEMINI_BRAND_LABEL,
   GEMINI_SPARK_PATH,
   GEMINI_SPARK_VIEWBOX,
@@ -15,7 +16,7 @@ import {
 } from '../../shared/ask-vistrah';
 import s from './ask-vistrah-widget.module.css';
 
-const SESSION_KEY = 'vistrah.ask_chat.v1';
+const SESSION_KEY = 'vistrah.astra_chat.v1';
 
 function GeminiLogo({ size = 16 }: { size?: number }) {
   const gradId = useId();
@@ -26,6 +27,7 @@ function GeminiLogo({ size = 16 }: { size?: number }) {
       height={size}
       viewBox={GEMINI_SPARK_VIEWBOX}
       aria-hidden="true"
+      data-gemini-spark="true"
       style={{ flexShrink: 0, display: 'inline-block' }}
     >
       <defs>
@@ -42,9 +44,11 @@ function GeminiLogo({ size = 16 }: { size?: number }) {
 
 export function AskVistrahWidget() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<AskVistrahMessage[]>([ASK_VISTRAH_WELCOME]);
+  const [messages, setMessages] = useState<AskVistrahMessage[]>([ASTRA_WELCOME]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const dragRef = useRef<{ startX: number; dragged: boolean } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,7 +115,7 @@ export function AskVistrahWidget() {
             content:
               body.reply ||
               body.detail ||
-              'Ask VISTRAH is receiving high traffic right now. Please wait ~30 seconds or use the direct links below.',
+              'Astra is receiving high traffic right now. Please wait ~30 seconds or use the direct links below.',
             suggestedActions: normalizeSuggestedActions(
               body.suggestedActions ?? [
                 { label: 'Browse Services', href: '/services' },
@@ -125,7 +129,7 @@ export function AskVistrahWidget() {
       }
 
       if (!res.ok || !body.reply) {
-        throw new Error(body.detail || 'Ask VISTRAH is temporarily unavailable.');
+        throw new Error(body.detail || 'Astra is temporarily unavailable.');
       }
 
       setMessages(prev => [
@@ -145,7 +149,7 @@ export function AskVistrahWidget() {
           role: 'assistant',
           content:
             (err as Error).message ||
-            'Could not reach Ask VISTRAH right now. You can still browse all 800+ services or list your business directly.',
+            'Could not reach Astra right now. You can still browse verified local services or list your business directly.',
           suggestedActions: [
             { label: 'Browse Services', href: '/services' },
             { label: 'List Your Business', href: '/seller/onboard' },
@@ -159,34 +163,36 @@ export function AskVistrahWidget() {
   }
 
   return (
-    <div className={s.root} data-ask-vistrah="true">
+    <div className={s.root} data-ask-vistrah="true" data-astra="true">
       {open && (
         <section
           className={s.panel}
           role="dialog"
-          aria-label="Ask VISTRAH AI Assistant"
+          aria-label="Astra — VISTRAH AI Assistant Powered by Google Gemini"
         >
           <header className={s.header}>
             <div className={s.headerBrand}>
-              <span className={s.headerBadge} aria-hidden="true">
-                <GeminiLogo size={17} />
-              </span>
               <div>
-                <h2 className={s.headerTitle}>Ask VISTRAH</h2>
+                <h2 className={s.headerTitle}>{ASTRA_AGENT_NAME}</h2>
                 <p className={s.headerSubtitle}>
-                  <GeminiLogo size={11} />
                   <span>{GEMINI_BRAND_LABEL}</span>
+                  <GeminiLogo size={11} />
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              className={s.closeBtn}
-              aria-label="Minimize Ask VISTRAH"
-              onClick={() => setOpen(false)}
-            >
-              <X size={16} />
-            </button>
+            <div className={s.headerRight}>
+              <span className={s.headerBadge} aria-hidden="true">
+                <GeminiLogo size={16} />
+              </span>
+              <button
+                type="button"
+                className={s.closeBtn}
+                aria-label="Minimize Astra"
+                onClick={() => setOpen(false)}
+              >
+                <X size={16} />
+              </button>
+            </div>
           </header>
 
           <div ref={scrollRef} className={s.messages}>
@@ -221,7 +227,7 @@ export function AskVistrahWidget() {
 
             {messages.length <= 2 && !busy && (
               <div className={s.startersWrap} aria-label="Suggested questions">
-                {ASK_VISTRAH_STARTERS.map(starter => (
+                {ASTRA_STARTERS.map(starter => (
                   <button
                     key={starter}
                     type="button"
@@ -257,8 +263,8 @@ export function AskVistrahWidget() {
               value={input}
               maxLength={600}
               onChange={e => setInput(e.target.value)}
-              placeholder="Ask about services, onboarding, V Ads…"
-              aria-label="Ask VISTRAH a question"
+              placeholder="Ask Astra about services, onboarding, V Ads…"
+              aria-label="Ask Astra a question"
             />
             <button
               type="submit"
@@ -276,17 +282,46 @@ export function AskVistrahWidget() {
         type="button"
         className={s.launcher}
         aria-expanded={open}
-        aria-label={open ? 'Close Ask VISTRAH chat' : 'Open Ask VISTRAH — Powered by Google Gemini'}
-        onClick={() => setOpen(v => !v)}
+        aria-label={open ? 'Close Astra chat' : 'Open Astra — Powered by Google Gemini'}
+        style={dragOffset < 0 ? { transform: `translateX(${Math.max(-36, dragOffset)}px)` } : undefined}
+        onPointerDown={e => {
+          dragRef.current = { startX: e.clientX, dragged: false };
+          e.currentTarget.setPointerCapture?.(e.pointerId);
+        }}
+        onPointerMove={e => {
+          if (!dragRef.current) return;
+          const dx = e.clientX - dragRef.current.startX;
+          if (dx < -8) {
+            dragRef.current.dragged = true;
+            setDragOffset(dx);
+          }
+        }}
+        onPointerUp={e => {
+          const info = dragRef.current;
+          dragRef.current = null;
+          setDragOffset(0);
+          e.currentTarget.releasePointerCapture?.(e.pointerId);
+          if (info?.dragged) {
+            if (e.clientX - info.startX <= -24) {
+              setOpen(true);
+            }
+          }
+        }}
+        onPointerCancel={() => {
+          dragRef.current = null;
+          setDragOffset(0);
+        }}
+        onClick={() => {
+          if (!dragRef.current?.dragged) {
+            setOpen(v => !v);
+          }
+        }}
       >
-        <GeminiLogo size={20} />
         <span className={s.launcherTextCol}>
-          <span className={s.launcherTitle}>Ask VISTRAH</span>
-          <span className={s.launcherPowered}>
-            <GeminiLogo size={10} />
-            <span>{GEMINI_BRAND_LABEL}</span>
-          </span>
+          <span className={s.launcherTitle}>{ASTRA_AGENT_NAME}</span>
+          <span className={s.launcherPowered}>{GEMINI_BRAND_LABEL}</span>
         </span>
+        <GeminiLogo size={18} />
       </button>
     </div>
   );

@@ -42,6 +42,7 @@ export type VistrahMobileMapProps={
   height?:number;
   onPinChange?:(point:GooglePoint)=>void;
   onResolvedAddress?:(place:ResolvedMobilePlace)=>void;
+  onViewCenterChange?:(point:GooglePoint)=>void;
   onSelectMarker?:(id:string|number)=>void;
 };
 
@@ -105,6 +106,7 @@ export function VistrahMobileMap({
   height=280,
   onPinChange,
   onResolvedAddress,
+  onViewCenterChange,
   onSelectMarker,
 }:VistrahMobileMapProps){
   const {colors,styles,mode}=useTheme();
@@ -188,6 +190,7 @@ export function VistrahMobileMap({
             }
           }}
           onRegionChangeComplete={region=>{
+            onViewCenterChange?.({latitude:region.latitude,longitude:region.longitude});
             if(centerPinMode&&editable&&!disabled&&Date.now()>lastProgrammaticRef.current){
               updatePin({latitude:region.latitude,longitude:region.longitude});
             }
@@ -197,16 +200,16 @@ export function VistrahMobileMap({
             <Circle
               center={safeCenter}
               radius={radiusKm*1000}
-              strokeColor="rgba(15, 23, 42, 0.65)"
-              strokeWidth={1.5}
-              fillColor="rgba(212, 175, 55, 0.15)"
+              strokeColor="rgba(15, 41, 74, 0.72)"
+              strokeWidth={1.6}
+              fillColor="rgba(249, 115, 22, 0.13)"
             />
           )}
 
           {!centerPinMode&&(
             <Marker
               coordinate={safeCenter}
-              pinColor="#d4af37"
+              pinColor="#F97316"
               title={editable?'Drag or tap map to set pin':'Selected location'}
               draggable={editable&&!disabled}
               onDragEnd={event=>{
@@ -221,7 +224,7 @@ export function VistrahMobileMap({
             <Marker
               key={String(marker.id)}
               coordinate={{latitude:marker.latitude,longitude:marker.longitude}}
-              pinColor={marker.id===selectedId?'#d4af37':'#0f172a'}
+              pinColor={marker.id===selectedId?'#EA580C':'#0F294A'}
               title={marker.title}
               description={marker.subtitle}
               onPress={()=>{
@@ -244,10 +247,10 @@ export function VistrahMobileMap({
               alignItems:'center',
             }}
           >
-            <View style={{width:28,height:28,borderRadius:14,backgroundColor:'#0f172a',borderWidth:3,borderColor:'#d4af37',alignItems:'center',justifyContent:'center'}}>
-              <View style={{width:8,height:8,borderRadius:4,backgroundColor:'#d4af37'}}/>
+            <View style={{width:28,height:28,borderRadius:14,backgroundColor:'#0F294A',borderWidth:3,borderColor:'#F97316',alignItems:'center',justifyContent:'center'}}>
+              <View style={{width:8,height:8,borderRadius:4,backgroundColor:'#F97316'}}/>
             </View>
-            <View style={{width:3,height:10,backgroundColor:'#0f172a'}}/>
+            <View style={{width:3,height:10,backgroundColor:'#0F294A'}}/>
           </View>
         )}
       </View>
@@ -265,7 +268,7 @@ export function VistrahMobileMap({
             {selectedMarker.onAction&&(
               <Pressable
                 onPress={selectedMarker.onAction}
-                style={{paddingHorizontal:12,paddingVertical:8,borderRadius:8,backgroundColor:'#0f172a'}}
+                style={{paddingHorizontal:12,paddingVertical:8,borderRadius:8,backgroundColor:'#F97316'}}
               >
                 <Text style={{color:'#ffffff',fontWeight:'600',fontSize:13}}>{selectedMarker.actionLabel||'View'}</Text>
               </Pressable>

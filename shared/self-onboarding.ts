@@ -183,7 +183,7 @@ export function resolveSelfOnboardingInitialSelection(params: {
     }
   }
 
-  // 2. Direct unique service type slug (any of the 808 slugs)
+  // 2. Direct unique service type slug
   const rawType = type || subcategory;
   if (rawType) {
     const direct = typeBySlug.get(rawType);

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
-import { Lock, ShieldAlert, Sparkles } from 'lucide-react';
+import { Lock, ShieldAlert } from 'lucide-react';
 import {
   BusinessGrowthAuditView,
   type RequestWebsitePayload,
@@ -203,7 +203,6 @@ export default function ProtectedBusinessGrowthAuditPage() {
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
           <Link href={claimHref} className="button">
-            <Sparkles size={15} style={{ marginRight: 6, verticalAlign: 'text-bottom' }} />
             Claim & List Your Business Free (₹0)
           </Link>
           <ButtonLink secondary href="/seller">

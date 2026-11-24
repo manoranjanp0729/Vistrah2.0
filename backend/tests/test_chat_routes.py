@@ -97,6 +97,10 @@ def test_chat_gemini_grounded_reply_sanitizes_actions_and_hides_api_key(client, 
     assert "key=" not in sent["url"]  # Key passed only via header, never URL
     assert sent["headers"]["x-goog-api-key"] == "test-secret-gemini-key"
     sys_prompt = sent["body"]["systemInstruction"]["parts"][0]["text"]
+    assert "Astra" in sys_prompt
+    assert "Google Gemini" in sys_prompt
+    assert "800+" not in sys_prompt
+    assert "808+" not in sys_prompt
     assert "Vistrah India Pvt Limited" in sys_prompt
     assert "/seller/onboard" in sys_prompt
     assert "/services/nearby" in sys_prompt

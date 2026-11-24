@@ -366,9 +366,10 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
 
     assert data1["has_google_places"] is True
     assert data1["total"] == 3
-    assert data1["items"][0]["id"] == vistrah_biz.id
-    assert data1["items"][0]["owner_user_id"] == owner_id
-    gp1 = data1["items"][1]
+    assert [it["distance_km"] for it in data1["items"]] == sorted(
+        it["distance_km"] for it in data1["items"]
+    )
+    gp1 = data1["items"][0]
     assert gp1["source"] == "google_places"
     assert gp1["owner_user_id"] is None
     assert gp1["place_id"] == "ChIJ_place_near_08"
@@ -378,6 +379,8 @@ def test_hybrid_google_places_phone_photo_fieldmask_and_60_min_cache(
         gp1["photo_url"]
         == "/api/marketplace/place-photo?ref=places%2FChIJ_place_near_08%2Fphotos%2FAUc7tX_photo_abc123"
     )
+    assert data1["items"][1]["id"] == vistrah_biz.id
+    assert data1["items"][1]["owner_user_id"] == owner_id
     gp2 = data1["items"][2]
     assert gp2["phone"] == ""
     assert gp2["photo_url"] is None
@@ -470,3 +473,141 @@ def test_place_photo_proxy_validation_and_24h_caching(client, monkeypatch):
     assert len(photo_calls) == 1
 
     maps_proxy_routes.clear_maps_proxy_state()
+
+
+def test_strict_category_service_type_and_exact_radius_filtering_nearest_first(
+    client, seeded, db, monkeypatch
+):
+    maps_proxy_routes.clear_maps_proxy_state()
+    monkeypatch.delenv("GOOGLE_MAPS_SERVER_API_KEY", raising=False)
+
+    apply_business_catalogue(seeded)
+    seeded.commit()
+
+    owner_headers = seller(client, "strict-filter-owner@example.com")
+    owner_id = client.get("/me", headers=owner_headers).json()["id"]
+
+    cat_food = db.scalar(select(Category).where(Category.slug == "restaurants-and-dining"))
+    svc_rest = db.scalar(
+        select(Service).where(Service.category_id == cat_food.id, Service.slug == "restaurant")
+    )
+    svc_cafe = db.scalar(
+        select(Service).where(Service.category_id == cat_food.id, Service.slug == "cafes")
+    )
+    cat_hotel = db.scalar(select(Category).where(Category.slug == "hotels-and-stay"))
+    svc_hotel = db.scalar(
+        select(Service).where(Service.category_id == cat_hotel.id, Service.slug == "hotels")
+    )
+
+    base_lat, base_lng = 12.9716, 77.5946
+
+    rest_3km, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_rest.id,
+        category_id=cat_food.id,
+        company="Udupi Grand 3km",
+        lat=base_lat + math.degrees(3.1 / EARTH_KM),
+        lng=base_lng,
+    )
+    cafe_1km, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_cafe.id,
+        category_id=cat_food.id,
+        company="Filter Roast Cafe 1km",
+        lat=base_lat + math.degrees(1.1 / EARTH_KM),
+        lng=base_lng,
+    )
+    edge_outside_5km, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_rest.id,
+        category_id=cat_food.id,
+        company="Outer Ring Diner 5.08km",
+        lat=base_lat + math.degrees(5.08 / EARTH_KM),
+        lng=base_lng,
+    )
+    # Unrelated category right next door (0.3 km) must NEVER appear in restaurants-and-dining
+    _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_hotel.id,
+        category_id=cat_hotel.id,
+        company="Brigade Stay Hotel 0.3km",
+        lat=base_lat + math.degrees(0.3 / EARTH_KM),
+        lng=base_lng,
+    )
+    # Null-coordinate listing must NEVER appear in radius-bounded searches
+    null_coord_biz, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_rest.id,
+        category_id=cat_food.id,
+        company="No Pin Kitchen",
+        lat=base_lat,
+        lng=base_lng,
+    )
+    null_coord_biz.latitude = None
+    null_coord_biz.longitude = None
+    db.commit()
+
+    # 1. Category-only filter within 5 km: includes cafe_1km + rest_3km sorted nearest-first,
+    #    strictly excludes 5.08km restaurant, unrelated hotel, and null-coordinate provider!
+    r_cat_5 = client.get(
+        "/api/marketplace/listings",
+        params={
+            "category": "restaurants-and-dining",
+            "lat": base_lat,
+            "lng": base_lng,
+            "radius_km": 5,
+        },
+    )
+    assert r_cat_5.status_code == 200
+    items_cat_5 = r_cat_5.json()["items"]
+    assert [it["id"] for it in items_cat_5] == [cafe_1km.id, rest_3km.id]
+    assert items_cat_5[0]["distance_km"] < items_cat_5[1]["distance_km"] <= 5.0
+
+    # 2. Expanding to 10 km includes the 5.08 km restaurant in nearest-first order
+    r_cat_10 = client.get(
+        "/api/marketplace/listings",
+        params={
+            "category": "restaurants-and-dining",
+            "lat": base_lat,
+            "lng": base_lng,
+            "radius_km": 10,
+        },
+    )
+    assert r_cat_10.status_code == 200
+    assert [it["id"] for it in r_cat_10.json()["items"]] == [
+        cafe_1km.id,
+        rest_3km.id,
+        edge_outside_5km.id,
+    ]
+
+    # 3. Direct service_type filter (`service_type=cafes`) strictly returns only cafes
+    r_cafes = client.get(
+        "/api/marketplace/listings",
+        params={
+            "category": "restaurants-and-dining",
+            "service_type": "cafes",
+            "lat": base_lat,
+            "lng": base_lng,
+            "radius_km": 10,
+        },
+    )
+    assert r_cafes.status_code == 200
+    assert [it["id"] for it in r_cafes.json()["items"]] == [cafe_1km.id]
+
+    # 4. Tight 2 km radius excludes 3.1 km restaurant
+    r_2km = client.get(
+        "/marketplace/nearby",
+        params={
+            "category": "restaurants-and-dining",
+            "lat": base_lat,
+            "lng": base_lng,
+            "radius_km": 2,
+        },
+    )
+    assert r_2km.status_code == 200
+    assert [it["id"] for it in r_2km.json()["items"]] == [cafe_1km.id]

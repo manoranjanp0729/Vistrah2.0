@@ -1,7 +1,6 @@
 import {useDirectMarketplace} from '../../../lib/direct-marketplace';
 import {croppedPhoto} from '../../../lib/photo-crop';
 import {BannerGeometry} from '../../../components/banner-geometry';
-import {categoryHeroImages} from '../../../lib/category-hero-images';
 import {useBannerTheme} from '../../../lib/banner-theme';
 import {Text} from '../../../components/typography';
 import {EditVistrahContent} from '../../../components/edit-vistrah-content';
@@ -17,7 +16,6 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {Field, Heading, ErrorPanel, Action} from '../../../components/ui';
 import {MarketplaceCategories} from '../../../components/marketplace-categories';
-import {WhyVistrah} from '../../../components/why-vistrah';
 import {
   legacyMarketplaceSelection,
   marketplaceItemId,
@@ -259,62 +257,60 @@ export default function Services() {
           </View>
         )}
 
-        {/* PROGRESSIVE CONTEXTUAL HERO BANNER */}
+        {/* PROGRESSIVE CONTEXTUAL HERO BANNER (50% TRANSPARENCY UNIFIED THEME) */}
         <LinearGradient
-          colors={category ? ['#233d34','#172c26'] : banner.gradient}
+          colors={['rgba(15, 41, 74, 0.5)', 'rgba(19, 47, 84, 0.5)']}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          style={s.hero}
+          style={[s.hero, {backgroundColor: isDark ? 'rgba(15, 41, 74, 0.5)' : 'rgba(15, 41, 74, 0.5)', borderColor: 'rgba(249, 115, 22, 0.3)'}]}
         >
-          {!category&&<BannerGeometry/>}
-          {!category&&<View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow}]} />}
-          {category&&<View pointerEvents="none" style={StyleSheet.absoluteFill}><Image source={categoryHeroImages[category.slug]} resizeMode="cover" accessible={false} style={{width:'100%',height:'100%'}}/></View>}
+          <BannerGeometry/>
+          <View pointerEvents="none" style={[s.heroGlow,{backgroundColor:banner.glow,opacity:0.5}]} />
 
           {isRootLevel ? (
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={banner.gradient}
+                  colors={['#0F294A', '#132F54']}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
                 >
-                  <Ionicons name="sparkles" size={11} color="#fff" />
                   <Text style={s.heroBadgeText}>VISTRAH MARKETPLACE</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
-                  <Feather name="shield" size={11} color="#34d399" />
+                  <Feather name="shield" size={11} color="#F97316" />
                   <Text style={[s.heroPillText,{color:banner.muted}]}>Verified Providers</Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {t('discovery.title')}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
-                <UiText value="Browse and connect with verified local professionals, equipment rentals, and specialized services across India." />
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
+                <UiText value="Verified local businesses & services across India." />
               </Text>
             </>
           ) : isCategoryLevel ? (
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={banner.gradient}
+                  colors={['#0F294A', '#132F54']}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
                 >
-                  <Text style={s.heroBadgeText}>SECTOR CATEGORY</Text>
+                  <Text style={s.heroBadgeText}>MAIN CATEGORY</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
                   <Text style={[s.heroPillText,{color:banner.muted}]}>
-                    {category!.subcategories.length} <UiText value="Subcategories" />
+                    {category!.subcategories.length} <UiText value="Service Types" />
                   </Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {categoryName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Choose a service type to see nearby businesses." />
               </Text>
             </>
@@ -322,7 +318,7 @@ export default function Services() {
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={banner.gradient}
+                  colors={['#0F294A', '#132F54']}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -335,10 +331,10 @@ export default function Services() {
                   </Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {subcategoryName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Choose an exact service listing type to browse offers, get quotations, and contact verified specialists." />
               </Text>
             </>
@@ -346,7 +342,7 @@ export default function Services() {
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={banner.gradient}
+                  colors={['#0F294A', '#132F54']}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -354,21 +350,19 @@ export default function Services() {
                   <Text style={s.heroBadgeText}>{subcategoryName.toUpperCase()}</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
-                  <Feather name="check-circle" size={11} color="#34d399" />
+                  <Feather name="check-circle" size={11} color="#F97316" />
                   <Text style={[s.heroPillText,{color:banner.muted}]}>Direct Listings</Text>
                 </View>
               </View>
-              <Text accessibilityRole="header" style={[s.heroTitle,category&&s.heroTextSurface]}>
+              <Text accessibilityRole="header" style={s.heroTitle}>
                 {listingTypeName}
               </Text>
-              <Text style={[s.heroSubtitle,{color:banner.muted},category&&s.heroTextSurface]}>
+              <Text style={[s.heroSubtitle,{color:banner.muted}]}>
                 <UiText value="Review available packages, verify provider details, and submit direct enquiries." />
               </Text>
             </>
           )}
         </LinearGradient>
-
-        <WhyVistrah variant="strip" />
 
         {/* SEARCH BAR (Available on Root, Category, and Subcategory levels) */}
         {(!isListingTypeLevel || Boolean(needle)) && (

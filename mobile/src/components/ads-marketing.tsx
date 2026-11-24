@@ -31,7 +31,7 @@ export function AdsMarketing(){
   <View style={s.hero}>
    <View style={s.heroCopy}>
     <Text style={s.support}>{t('marketing.homeCopy')}</Text>
-    {android&&getStarted}
+    {getStarted}
    </View>
    <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={s.art}>
     <View style={s.halo}/><View style={s.ground}/>
@@ -41,10 +41,8 @@ export function AdsMarketing(){
      <View style={s.shopFront}><View style={s.window}><View style={s.windowShine}/></View><View style={s.door}><View style={s.doorHandle}/></View></View>
     </View>
     <View style={s.megaphone}><Feather name="volume-2" size={23} color="#fff"/></View>
-    <View style={s.spark}><Feather name="plus" size={13} color="#ffe0ef"/></View>
    </View>
   </View>
-  {!android&&getStarted}
   <View style={s.grid}>{highlights.map((card,index)=>{
    const visual = marketingVisuals[card.key as keyof typeof marketingVisuals];
    const cardBg = visual ? visual.paper : (index%2 ? '#fff5fb' : '#f7f5ff');
@@ -58,16 +56,16 @@ export function AdsMarketing(){
  </LinearGradient>;
 }
 const s=StyleSheet.create({
- section:{backgroundColor:'#7741c4',borderRadius:20,padding:spacing.pagePadding,gap:spacing.elementGap,overflow:'hidden'},
+ section:{backgroundColor:'#7741c4',borderRadius:20,padding:spacing.pagePadding,gap:8,overflow:'hidden'},
  blueGlow:{position:'absolute',right:-65,top:-75,width:210,height:210,borderRadius:105,backgroundColor:'#bca5ff',opacity:.22},
  pinkGlow:{position:'absolute',left:-70,top:135,width:180,height:180,borderRadius:90,backgroundColor:'#ffc5e3',opacity:.18},
- hero:{flexDirection:'row',alignItems:Platform.OS==='android'?'flex-start':'center',gap:8,padding:Platform.OS==='android'?0:2,marginBottom:Platform.OS==='android'?10:0},
- heroCopy:{flex:1,minWidth:0,gap:Platform.OS==='android'?8:9},
- headline:{fontSize:Platform.OS==='android'?25:21,lineHeight:Platform.OS==='android'?31:25,fontWeight:'700',letterSpacing:-.5,color:'#fff'},
- support:{fontSize:Platform.OS==='android'?14:12,lineHeight:Platform.OS==='android'?21:17,color:'#d3deea'},
- start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:44,paddingHorizontal:13,borderRadius:12,backgroundColor:'#fff',boxShadow:'0px 4px 10px rgba(65,24,129,0.16)'},
+ hero:{flexDirection:'row',alignItems:'center',gap:8,padding:0,marginBottom:2},
+ heroCopy:{flex:1,minWidth:0,gap:6},
+ headline:{fontSize:Platform.OS==='android'?25:21,lineHeight:Platform.OS==='android'?30:24,fontWeight:'700',letterSpacing:-.5,color:'#fff'},
+ support:{fontSize:Platform.OS==='android'?14:12.5,lineHeight:Platform.OS==='android'?20:17,color:'#d3deea'},
+ start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:40,paddingHorizontal:13,marginTop:2,borderRadius:10,backgroundColor:'#fff',boxShadow:'0px 4px 10px rgba(65,24,129,0.16)'},
  startText:{flexShrink:1,fontSize:Platform.OS==='android'?13:12,lineHeight:Platform.OS==='android'?19:17,fontWeight:'700',color:'#6340b8'},
- art:{width:104,height:145},
+ art:{width:100,height:118},
  halo:{position:'absolute',width:100,height:100,top:23,right:-5,borderRadius:50,backgroundColor:'#ffffff12'},
  ground:{position:'absolute',bottom:9,left:0,width:102,height:13,borderRadius:50,backgroundColor:'#f3b5ef40'},
  chart:{position:'absolute',top:6,right:0,width:68,height:54,padding:7,borderRadius:10,backgroundColor:'#fff4fe',transform:[{rotate:'8deg'}],boxShadow:'0px 4px 10px rgba(63,25,123,0.14)'},

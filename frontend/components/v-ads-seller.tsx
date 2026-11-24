@@ -3,7 +3,7 @@ import {UiText,UiNav,UiInput,UiTextarea,UiDiv} from "./localized-ui";
 import Link from 'next/link';
 import {redirect,useSearchParams} from 'next/navigation';
 import {Suspense,useCallback,useEffect,useRef,useState} from 'react';
-import {Play,RefreshCw,Eye,Heart,MessageCircle,Video,CheckCircle2,Sparkles,Check,PlusCircle,Volume2,VolumeX,Lock,Globe,ShoppingBag,Briefcase,Truck,X,ArrowRight} from 'lucide-react';
+import {Play,RefreshCw,Eye,Heart,MessageCircle,Video,CheckCircle2,Check,PlusCircle,Volume2,VolumeX,Lock,Globe,ShoppingBag,Briefcase,Truck,X,ArrowRight} from 'lucide-react';
 import {api,ApiError} from '@/lib/api';
 import {isSellerUser,type User} from '@/lib/types';
 import {notifyUserSession,useUser} from './customer';
@@ -501,7 +501,7 @@ function SellerWorkspace({
         {/* Creator Growth Tips Card */}
         <div className={s.tipsCard}>
           <div className={s.tipsTitle}>
-            <Sparkles size={16}/>
+            <CheckCircle2 size={16}/>
             <span><UiText value={"Tips for a clear V Ad"}/></span>
           </div>
           <ul className={s.tipsList}>

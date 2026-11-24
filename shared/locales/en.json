@@ -47,7 +47,7 @@
   "discovery.type": "Listing type",
   "discovery.exploreSubcategories": "Explore subcategories",
   "discovery.searchLabel": "Search categories, subcategories and listing types",
-  "discovery.searchPlaceholder": "Search 800+ services (e.g. Plumber, Dental, Tractor, Dosa)...",
+  "discovery.searchPlaceholder": "Search verified local businesses & services (e.g. Restaurant, Hotels, Clinics, EV Charging)...",
   "discovery.results": "Search results",
   "discovery.resultsLabel": "Classification search results",
   "discovery.noMatches": "No classification matches. Try another word.",

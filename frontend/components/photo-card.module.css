@@ -16,3 +16,8 @@
 
 :global(html:not([lang="en"])) .card{height:auto;min-height:var(--card-height)}
 :global(html:not([lang="en"])) .copy h3{display:block;height:auto;min-height:calc(var(--title-line)*2);line-height:1.6;-webkit-line-clamp:unset;overflow:visible}
+
+.borderless,.borderless:hover{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0}
+.borderless .photo{margin:0;border-radius:12px}
+.borderless .copy{padding:8px 2px 0;border:0;background:transparent}
+.borderless .copy h3{border:0;background:transparent;box-shadow:none}

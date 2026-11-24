@@ -1,13 +1,8 @@
-import {serverDirectMarketplace} from '@/lib/server-direct-marketplace';
+import { serverDirectMarketplace } from '@/lib/server-direct-marketplace';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { MarketplaceBrowser } from '@/components/marketplace-browser';
-import {
-  legacyMarketplaceSelection,
-  marketplaceCategories,
-  resolveMarketplaceSelection,
-  type MarketplaceSelection,
-} from '@/lib/marketplace-taxonomy';
-import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../../../../shared/flagship-sectors';
+import { type MarketplaceSelection } from '@/lib/marketplace-taxonomy';
+import { FLAGSHIP_SECTORS } from '../../../../../shared/flagship-sectors';
 import { nearbyServicesUrl } from '../../../../../shared/nearby-services';
 import styles from '@/components/marketplace.module.css';
 
@@ -20,25 +15,13 @@ export default async function NearbyServicesPage({
   searchParams: Promise<{ category?: string; subcategory?: string; type?: string; q?: string }>;
 }) {
   const raw = await searchParams;
-  const {resolveMarketplaceSelection,legacyMarketplaceSelection,marketplaceCategories}=await serverDirectMarketplace();
-  let cat = raw.category || FLAGSHIP_SECTORS[0].slug;
+  const { resolveMarketplaceSelection, legacyMarketplaceSelection, marketplaceCategories } =
+    await serverDirectMarketplace();
+  const cat = raw.category || FLAGSHIP_SECTORS[0].slug;
   let sub = raw.subcategory;
   let typ = raw.type;
 
-  if (cat && !sub && !typ) {
-    const flagship = getFlagshipSector(cat);
-    if (flagship) {
-      sub = flagship.defaultSubcategorySlug;
-      typ = flagship.defaultTypeSlug;
-    } else {
-      const matchedCat = marketplaceCategories.find(c => c.slug === cat);
-      const firstSub = matchedCat?.subcategories[0];
-      if (firstSub) {
-        sub = firstSub.slug;
-        typ = firstSub.listing_types[0]?.slug;
-      }
-    }
-  } else if (cat && !sub && typ) {
+  if (cat && !sub && typ) {
     const matchedCat = marketplaceCategories.find(c => c.slug === cat);
     const matchedSub =
       matchedCat?.subcategories.find(s => s.listing_types.some(lt => lt.slug === typ)) ??
@@ -65,27 +48,20 @@ export default async function NearbyServicesPage({
   };
 
   const selection = resolveMarketplaceSelection(normalized);
-  if (!selection || !selection.category || !selection.subcategory) {
+  if (!selection || !selection.category) {
     const legacy = legacyMarketplaceSelection({
       category: raw.category,
       subcategory: raw.subcategory || raw.type,
       type: raw.type,
       q: raw.q,
     });
-    if (legacy?.category && (legacy.type || legacy.subcategory)) {
+    if (legacy?.category) {
       permanentRedirect(
         nearbyServicesUrl({
           category: legacy.category,
           subcategory: legacy.subcategory,
-          type: legacy.type || legacy.subcategory!,
+          type: legacy.type || legacy.subcategory,
         }),
-      );
-    }
-    if (selection?.category && !selection.subcategory) {
-      return (
-        <div className={`container ${styles.servicesPage}`}>
-          <MarketplaceBrowser selection={selection} query={raw.q ?? ''} />
-        </div>
       );
     }
     notFound();
@@ -93,7 +69,7 @@ export default async function NearbyServicesPage({
 
   return (
     <div className={`container ${styles.servicesPage}`}>
-      <MarketplaceBrowser selection={selection} query={raw.q ?? ''} />
+      <MarketplaceBrowser selection={selection} query={raw.q ?? ''} nearbyMode />
     </div>
   );
 }

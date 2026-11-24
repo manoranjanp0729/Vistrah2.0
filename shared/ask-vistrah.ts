@@ -26,27 +26,33 @@ export type AskVistrahResponse = {
   suggestedActions: AskVistrahAction[];
 };
 
-export const ASK_VISTRAH_STARTERS: readonly string[] = [
+export const ASTRA_AGENT_NAME = 'Astra';
+export const GEMINI_BRAND_LABEL = 'Powered by Google Gemini';
+
+export const ASTRA_STARTERS: readonly string[] = [
   'How do I list my business?',
-  'Explore the 15 divisions',
+  'Explore the 10 categories',
   'Find nearby services',
 ] as const;
+
+export const ASK_VISTRAH_STARTERS = ASTRA_STARTERS;
 
 export const GEMINI_SPARK_VIEWBOX = '0 0 24 24';
 export const GEMINI_SPARK_PATH =
   'M12 1C12 7.075 16.925 12 23 12C16.925 12 12 16.925 12 23C12 16.925 7.075 12 1 12C7.075 12 12 7.075 12 1Z';
-export const GEMINI_BRAND_LABEL = 'Powered by Google Gemini';
 
-export const ASK_VISTRAH_WELCOME: AskVistrahMessage = {
+export const ASTRA_WELCOME: AskVistrahMessage = {
   id: 'welcome',
   role: 'assistant',
   content:
-    'Namaskara! I am Ask VISTRAH, your AI guide for Vistrah India. Ask me to find nearby services, explore our 800+ business categories, or list your business in 3 easy steps.',
+    "Namaskara! I am Astra, VISTRAH's AI assistant powered by Google Gemini. Ask me to find verified local businesses near you, explore our 10 service categories, or list your business for free.",
   suggestedActions: [
     { label: 'Browse Services', href: '/services' },
     { label: 'List Your Business', href: '/seller/onboard' },
   ],
 };
+
+export const ASK_VISTRAH_WELCOME = ASTRA_WELCOME;
 
 const SAFE_PATH_PREFIXES: readonly string[] = [
   '/services',

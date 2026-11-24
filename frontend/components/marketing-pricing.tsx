@@ -826,7 +826,7 @@ export function MarketingPricing({
                 1. Free Forever Platform — ₹0
               </span>
               <span className={styles.intentMeta}>
-                808+ business listings + Creating &amp; uploading V Ads for ANY
+                Verified local business listings + Creating &amp; uploading V Ads for ANY
                 radius inside VISTRAH
               </span>
             </button>
@@ -918,8 +918,7 @@ export function MarketingPricing({
                       <Check size={16} />
                       <span>
                         <strong>
-                          ₹0 / Free Forever — Business Listing (808+ Service
-                          Types):
+                          ₹0 / Free Forever — Verified Local Business Listing:
                         </strong>{" "}
                         List in ~3 minutes with shop map pin, direct Call,
                         Website, and Directions.
@@ -970,7 +969,7 @@ export function MarketingPricing({
                     </div>
                     <div className={styles.ledgerRows}>
                       <div className={styles.ledgerRow}>
-                        <span>Business listing (808+ service types)</span>
+                        <span>Verified business listing across India</span>
                         <strong>₹0 / Free Forever</strong>
                       </div>
                       <div className={styles.ledgerRow}>
@@ -1000,7 +999,7 @@ export function MarketingPricing({
                       href={promo.secondaryCtaHref}
                       className={styles.secondary}
                     >
-                      {promo.secondaryCtaLabel} (808+ Services)
+                      {promo.secondaryCtaLabel}
                       <ChevronRight size={15} />
                     </Link>
                     <button

@@ -1,4 +1,4 @@
-"""Grounded Ask VISTRAH Gemini chatbot endpoint (`POST /chat` and `POST /api/chat`)."""
+"""Grounded Astra (Powered by Google Gemini) chatbot endpoint (`POST /chat` and `POST /api/chat`)."""
 from __future__ import annotations
 
 from collections import deque
@@ -24,7 +24,7 @@ from .business_catalogue import business_types
 from .http_security import apply_security_headers
 
 logger = logging.getLogger("vistrah.chat")
-router = APIRouter(tags=["Ask VISTRAH Chat"])
+router = APIRouter(tags=["Astra Chat"])
 
 GEMINI_MODELS: tuple[str, ...] = (
     "gemini-3.5-flash-lite",
@@ -207,15 +207,15 @@ def _catalogue_grounding() -> tuple[str, list[dict[str, str]]]:
         )
 
     base_prompt = (
-        "You are Ask VISTRAH, the official helpful AI guide for Vistrah India Pvt Limited (https://vistrah.in).\n"
-        "Always be warm, concise (2 to 4 short sentences or compact bullet points), accurate, and India-focused.\n"
+        "You are Astra, VISTRAH's official AI assistant powered by Google Gemini for Vistrah India Pvt Limited (https://vistrah.in).\n"
+        "Introduce yourself naturally as Astra when greeted, and always be warm, concise (2 to 4 short sentences or compact bullet points), accurate, and India-focused.\n"
         "Never invent phone numbers, prices, external links, or unverified claims.\n\n"
         "GROUNDED VISTRAH PLATFORM FACTS:\n"
-        f"- Marketplace Taxonomy: {len(categories)} unified sectors covering {total_types}+ service & business types:\n  "
+        f"- Marketplace Taxonomy: {len(categories)} main categories covering {total_types} direct service types (plus verified custom service types):\n  "
         + "\n  ".join(division_lines)
         + "\n"
-        "- In-App Nearby Service Discovery (`/services/nearby`): 10-sector filter pills + fast keyword search across all child service types, interactive map + distance-sorted nearby businesses (`5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, conditional `Website`, `Directions`, and role-aware `More Options`.\n"
-        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 10 unified sectors (direct service types) is 100% FREE forever with 0% lead commission. In ~3 minutes: "
+        "- In-App Nearby Service Discovery (`/services/nearby`): 10-category filter pills + direct service type filter chips + fast keyword search, interactive map + nearest-first nearby businesses (`2 km`, `5 km`, `10 km`, `25 km`, `50 km`), shop photos, tap-to-call `Call`, conditional `Website`, `Directions`, and role-aware `More Options`.\n"
+        "- 100% Free Business Listing (`/seller/onboard` — ₹0 / Free Forever): Listing a business across all 10 categories (direct service types) is 100% FREE forever with 0% lead commission. In ~3 minutes: "
         "(1) Search & pick up to 3 business types across VISTRAH's 10 unified sectors, "
         "(2) Enter shop name, phone/WhatsApp, drop map pin + coverage radius (`5/10/25/50 km`), with optional licence upload ONLY for regulated professions (doctors, pharmacies, food/FSSAI, legal/CA, RERA), "
         "(3) Accept terms & submit.\n"
@@ -374,7 +374,7 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
         actions.append({"label": "Upload Free V Ad", "href": "/seller/v-ads"})
         return {
             "reply": (
-                "Listing your business on VISTRAH is **100% Free Forever (₹0)** across 808+ services (and uploading V Ads for any radius is ₹0 too). Start in ~3 minutes at `/seller/onboard`: "
+                "Listing your business on VISTRAH is **100% Free Forever (₹0)** across verified local service categories (and uploading V Ads for any radius is ₹0 too). Start in ~3 minutes at `/seller/onboard`: "
                 "(1) Pick up to 3 services, "
                 "(2) Add your business name, phone/WhatsApp, and map pin + coverage radius (`5–50 km`), "
                 "(3) Accept terms and submit."
@@ -382,17 +382,30 @@ def _deterministic_grounded_reply(message: str) -> dict[str, object]:
             "suggestedActions": actions[:3],
         }
 
-    if any(k in lower for k in ("division", "sector", "categories", "10 sector", "13 division", "15 division", "what services", "explore")):
+    if any(k in lower for k in ("who are you", "your name", "astra", "hello", "hi", "namaskara", "hey")) and len(lower.split()) <= 6:
+        return {
+            "reply": (
+                "Namaskara! I am **Astra**, VISTRAH's AI assistant powered by Google Gemini. "
+                "I can help you discover verified local businesses & services near you, explore our 10 main categories, or list your business for free."
+            ),
+            "suggestedActions": [
+                {"label": "Browse Services", "href": "/services"},
+                {"label": "Nearby Services", "href": "/services/nearby?category=restaurants-and-dining"},
+                {"label": "List Business Free", "href": "/seller/onboard"},
+            ],
+        }
+
+    if any(k in lower for k in ("division", "sector", "categories", "10 sector", "10 categor", "13 division", "15 division", "what services", "explore")):
         cats = business_types().get("categories", [])
         names = ", ".join(c["title"] for c in cats)
         return {
             "reply": (
-                f"Vistrah India organizes 800+ hyperlocal services across {len(cats)} unified sectors: {names}. "
-                "Tap any sector or search child services to view nearby businesses on an interactive map with shop photos, Call, Website, Directions, and role-aware More Options."
+                f"VISTRAH connects you with verified local businesses & services across India in {len(cats)} main categories: {names}. "
+                "Select any category or direct service type to see nearest-first businesses on the interactive map with shop photos, Call, Website, and Directions."
             ),
             "suggestedActions": [
-                {"label": "Browse 10 Sectors", "href": "/services"},
-                {"label": "Nearby Services", "href": "/services/nearby?category=real-estate-and-property"},
+                {"label": "Browse 10 Categories", "href": "/services"},
+                {"label": "Nearby Services", "href": "/services/nearby?category=restaurants-and-dining"},
                 {"label": "List Business Free", "href": "/seller/onboard"},
             ],
         }
@@ -536,7 +549,7 @@ def _handle_chat(payload: ChatRequest, request: Request, response: Response):
         limited = JSONResponse(
             status_code=429,
             content={
-                "detail": "Ask VISTRAH has reached the per-minute message limit for your connection. Please wait a few seconds or use the quick links below.",
+                "detail": "Astra has reached the per-minute message limit for your connection. Please wait a few seconds or use the quick links below.",
                 "code": "CHAT_RATE_LIMITED",
                 "reply": "You have sent several messages quickly — please pause ~30 seconds, or jump straight to our services below.",
                 "suggestedActions": [

@@ -30,9 +30,9 @@ import {
   X,
 } from 'lucide-react';
 import { api } from '@/lib/api';
-import { LatestSearch, validPoint } from '@/lib/location';
+import { LatestSearch, validPoint, type Point } from '@/lib/location';
 import { searchMarketplaceEntries } from '@/lib/marketplace-taxonomy';
-import { FLAGSHIP_SECTORS } from '../../shared/flagship-sectors';
+import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../shared/flagship-sectors';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
@@ -63,6 +63,18 @@ import {
   type VistrahMapMarker,
 } from './vistrah-google-maps';
 import s from './nearby-service-discovery.module.css';
+
+function approxDistanceKm(a: Point, b: Point): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(b.latitude - a.latitude);
+  const dLng = toRad(b.longitude - a.longitude);
+  const sinLat = Math.sin(dLat / 2);
+  const sinLng = Math.sin(dLng / 2);
+  const h =
+    sinLat * sinLat +
+    Math.cos(toRad(a.latitude)) * Math.cos(toRad(b.latitude)) * sinLng * sinLng;
+  return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+}
 
 function DivisionGlyph({
   glyph,
@@ -111,16 +123,19 @@ export function NearbyServiceDiscovery({
   categorySlug: string;
   categoryTitle: string;
   subcategorySlug?: string;
-  typeSlug: string;
+  typeSlug?: string;
   serviceTitle: string;
 }) {
   const locCtx = useOptionalCustomerLocation();
   const { user: currentUser } = useUser();
   const [sectorQuery, setSectorQuery] = useState('');
+  const activeSector = useMemo(() => getFlagshipSector(categorySlug), [categorySlug]);
   const quickServiceHits = useMemo(
     () =>
       sectorQuery.trim()
-        ? searchMarketplaceEntries(sectorQuery).filter(entry => Boolean(entry.selection.type)).slice(0, 8)
+        ? searchMarketplaceEntries(sectorQuery)
+            .filter(entry => Boolean(entry.selection.type))
+            .slice(0, 8)
         : [],
     [sectorQuery],
   );
@@ -139,6 +154,20 @@ export function NearbyServiceDiscovery({
       locality: 'Bengaluru',
     };
   }, [locCtx?.active, locCtx?.draft]);
+
+  const [customCenter, setCustomCenter] = useState<Point | null>(null);
+  const [pannedCenter, setPannedCenter] = useState<Point | null>(null);
+
+  useEffect(() => {
+    setCustomCenter(null);
+    setPannedCenter(null);
+  }, [activePoint.latitude, activePoint.longitude, locCtx?.locationRevision]);
+
+  const queryCenter = customCenter ?? {
+    latitude: activePoint.latitude,
+    longitude: activePoint.longitude,
+  };
+  const displayLocality = customCenter ? 'Moved map area' : activePoint.locality;
 
   const [radiusKm, setRadiusKm] = useState<NearbyDiscoveryRadius>(() =>
     normalizeNearbyRadius(locCtx?.radius ?? 10),
@@ -183,6 +212,7 @@ export function NearbyServiceDiscovery({
       websiteUrl: item.website_url,
     });
   }
+
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
@@ -191,16 +221,17 @@ export function NearbyServiceDiscovery({
   } | null>(null);
 
   const searchRunner = useRef(new LatestSearch());
-  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${typeSlug}:${activePoint.latitude.toFixed(5)}:${activePoint.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
+  const normalizedTypeSlug = (typeSlug || '').trim();
+  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${normalizedTypeSlug}:${queryCenter.latitude.toFixed(5)}:${queryCenter.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
 
   useEffect(() => {
     let alive = true;
     const path = buildNearbyMarketplacePath({
       category: categorySlug,
       subcategory: subcategorySlug,
-      businessType: typeSlug,
-      latitude: activePoint.latitude,
-      longitude: activePoint.longitude,
+      serviceType: normalizedTypeSlug || undefined,
+      latitude: queryCenter.latitude,
+      longitude: queryCenter.longitude,
       radiusKm,
     });
     searchRunner.current
@@ -238,7 +269,15 @@ export function NearbyServiceDiscovery({
       alive = false;
       current.cancel();
     };
-  }, [categorySlug, subcategorySlug, typeSlug, activePoint.latitude, activePoint.longitude, radiusKm, requestKey]);
+  }, [
+    categorySlug,
+    subcategorySlug,
+    normalizedTypeSlug,
+    queryCenter.latitude,
+    queryCenter.longitude,
+    radiusKm,
+    requestKey,
+  ]);
 
   const loading = state?.key !== requestKey;
   const items = state?.key === requestKey ? state.items : [];
@@ -279,17 +318,20 @@ export function NearbyServiceDiscovery({
   const onboardHref = selfOnboardingUrl({
     category: categorySlug,
     subcategory: subcategorySlug,
-    type: typeSlug,
+    type: normalizedTypeSlug || undefined,
   });
+
+  const largerRadii = NEARBY_DISCOVERY_RADII.filter(r => r > radiusKm);
 
   return (
     <section
       className={s.wrapper}
       aria-label={`Nearby ${serviceTitle} map and listings`}
-      data-nearby-service={typeSlug}
+      data-nearby-service={normalizedTypeSlug || categorySlug}
+      data-brand-palette="vistrah-navy-orange"
     >
-      {/* 10 Unified Sectors Filter Pills + Fast Child Service Search */}
-      <div className={s.sectorFilterBar} aria-label="10 Unified Sectors filter">
+      {/* 10 Main Categories + Direct Service Type Filter Chips */}
+      <div className={s.sectorFilterBar} aria-label="Category and service type filters">
         <div className={s.sectorSearchWrap}>
           <div className={s.sectorSearchBox}>
             <Search size={15} aria-hidden="true" />
@@ -297,8 +339,8 @@ export function NearbyServiceDiscovery({
               type="search"
               value={sectorQuery}
               onChange={e => setSectorQuery(e.target.value)}
-              placeholder="Search child service types across 10 sectors (e.g. dental, architect, study abroad)…"
-              aria-label="Search child service types"
+              placeholder="Search service types across 10 categories (e.g. cafes, hospitals, EV charging)…"
+              aria-label="Search service types"
               className={s.sectorSearchInput}
             />
             {sectorQuery && (
@@ -313,11 +355,19 @@ export function NearbyServiceDiscovery({
             )}
           </div>
           {quickServiceHits.length > 0 && (
-            <div className={s.sectorSearchResults} role="listbox" aria-label="Matching service types">
+            <div
+              className={s.sectorSearchResults}
+              role="listbox"
+              aria-label="Matching service types"
+            >
               {quickServiceHits.map(hit => (
                 <Link
                   key={hit.id}
-                  href={hit.href}
+                  href={nearbyServicesUrl({
+                    category: hit.selection.category!,
+                    subcategory: hit.selection.subcategory,
+                    type: hit.selection.type,
+                  })}
                   className={s.sectorSearchHit}
                   onClick={() => setSectorQuery('')}
                 >
@@ -329,17 +379,13 @@ export function NearbyServiceDiscovery({
           )}
         </div>
 
-        <nav className={s.sectorPillsRail} aria-label="VISTRAH 10 Unified Sectors">
+        <nav className={s.sectorPillsRail} aria-label="VISTRAH 10 Main Categories">
           {FLAGSHIP_SECTORS.map(sector => {
             const isActiveSector = sector.slug === categorySlug;
             return (
               <Link
                 key={sector.slug}
-                href={nearbyServicesUrl({
-                  category: sector.slug,
-                  subcategory: sector.defaultSubcategorySlug,
-                  type: sector.defaultTypeSlug,
-                })}
+                href={nearbyServicesUrl({ category: sector.slug })}
                 aria-current={isActiveSector ? 'true' : undefined}
                 className={`${s.sectorPill} ${isActiveSector ? s.sectorPillActive : ''}`}
               >
@@ -348,6 +394,38 @@ export function NearbyServiceDiscovery({
             );
           })}
         </nav>
+
+        {activeSector && activeSector.serviceTypes.length > 0 && (
+          <nav
+            className={s.serviceTypeRail}
+            aria-label={`${activeSector.title} service types`}
+          >
+            <Link
+              href={nearbyServicesUrl({ category: activeSector.slug })}
+              aria-current={!normalizedTypeSlug ? 'true' : undefined}
+              className={`${s.typeChip} ${!normalizedTypeSlug ? s.typeChipActive : ''}`}
+            >
+              <UiText value={`All in ${activeSector.shortTitle || activeSector.title}`} />
+            </Link>
+            {activeSector.serviceTypes.map(st => {
+              const isActiveType = normalizedTypeSlug === st.slug;
+              return (
+                <Link
+                  key={st.slug}
+                  href={nearbyServicesUrl({
+                    category: activeSector.slug,
+                    subcategory: st.slug,
+                    type: st.slug,
+                  })}
+                  aria-current={isActiveType ? 'true' : undefined}
+                  className={`${s.typeChip} ${isActiveType ? s.typeChipActive : ''}`}
+                >
+                  <UiText value={st.title} />
+                </Link>
+              );
+            })}
+          </nav>
+        )}
       </div>
 
       {/* Top Location + Radius Control Bar */}
@@ -359,17 +437,33 @@ export function NearbyServiceDiscovery({
           <div className={s.locationPillRow}>
             <Link href="/location" className={s.locationPill} aria-label="Change active location">
               <MapPin size={14} aria-hidden="true" />
-              <span>{locCtx?.detecting ? 'Locating…' : activePoint.locality}</span>
+              <span>{locCtx?.detecting ? 'Locating…' : displayLocality}</span>
             </Link>
             {locCtx && (
               <button
                 type="button"
                 className={s.gpsQuickBtn}
                 disabled={locCtx.busy || locCtx.detecting}
-                onClick={() => void locCtx.gps()}
+                onClick={() => {
+                  setCustomCenter(null);
+                  setPannedCenter(null);
+                  void locCtx.gps();
+                }}
               >
                 <LocateFixed size={13} aria-hidden="true" />
                 <UiText value="Use GPS" />
+              </button>
+            )}
+            {customCenter && (
+              <button
+                type="button"
+                className={s.gpsQuickBtn}
+                onClick={() => {
+                  setCustomCenter(null);
+                  setPannedCenter(null);
+                }}
+              >
+                <UiText value="Reset area" />
               </button>
             )}
             <span>· {categoryTitle}</span>
@@ -401,7 +495,7 @@ export function NearbyServiceDiscovery({
         </p>
         <Link href={onboardHref} className={s.onboardCta}>
           <Plus size={15} aria-hidden="true" />
-          <UiText value="+ List Free on VISTRAH" />
+          <UiText value="List Free on VISTRAH" />
         </Link>
       </div>
 
@@ -409,17 +503,43 @@ export function NearbyServiceDiscovery({
       <div className={viewMode === 'split' ? s.splitGrid : undefined}>
         {viewMode !== 'list' && (
           <div className={s.mapColumn}>
+            {pannedCenter && (
+              <div className={s.searchHereOverlay}>
+                <button
+                  type="button"
+                  className={s.searchHereBtn}
+                  onClick={() => {
+                    setCustomCenter(pannedCenter);
+                    setPannedCenter(null);
+                  }}
+                >
+                  <Search size={14} aria-hidden="true" />
+                  <UiText value="Search Here" />
+                </button>
+              </div>
+            )}
             <VistrahMap
-              center={{ latitude: activePoint.latitude, longitude: activePoint.longitude }}
+              center={{ latitude: queryCenter.latitude, longitude: queryCenter.longitude }}
               radiusKm={radiusKm}
               markers={markers}
               selectedId={selectedId}
               height={420}
+              onViewCenterChange={pt => {
+                if (!validPoint(pt)) return;
+                if (approxDistanceKm(queryCenter, pt) > 0.25) {
+                  setPannedCenter({
+                    latitude: Number(pt.latitude.toFixed(6)),
+                    longitude: Number(pt.longitude.toFixed(6)),
+                  });
+                } else {
+                  setPannedCenter(null);
+                }
+              }}
               onSelectMarker={id => {
                 if (viewMode === 'map') setViewMode('split');
                 selectListing(id, true);
               }}
-              ariaLabel={`Nearby ${serviceTitle} businesses around ${activePoint.locality}`}
+              ariaLabel={`Nearby ${serviceTitle} businesses around ${displayLocality}`}
             />
           </div>
         )}
@@ -436,8 +556,8 @@ export function NearbyServiceDiscovery({
                     <UiText
                       value={
                         items.length === 1
-                          ? `nearby place within ${radiusKm} km`
-                          : `nearby places within ${radiusKm} km`
+                          ? `listing within ${radiusKm} km (nearest first)`
+                          : `listings within ${radiusKm} km (nearest first)`
                       }
                     />
                   </>
@@ -461,10 +581,26 @@ export function NearbyServiceDiscovery({
             )}
 
             {!loading && !error && items.length === 0 && (
-              <div className={s.statusBox}>
-                <UiText
-                  value={`No ${serviceTitle} places found within ${radiusKm} km of ${activePoint.locality}. Tap 25 km or 50 km above to search a wider radius.`}
-                />
+              <div className={s.emptyBox} role="status">
+                <p className={s.emptyTitle}>
+                  <UiText
+                    value={`No listings found within ${radiusKm} km — try expanding your radius`}
+                  />
+                </p>
+                {largerRadii.length > 0 && (
+                  <div className={s.emptyRadiusActions}>
+                    {largerRadii.map(nextRadius => (
+                      <button
+                        key={nextRadius}
+                        type="button"
+                        className={s.expandRadiusBtn}
+                        onClick={() => setRadiusKm(nextRadius)}
+                      >
+                        Try {nextRadius} km
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -604,7 +740,7 @@ export function NearbyServiceDiscovery({
                           href={directionsUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={s.actionBtn}
+                          className={`${s.actionBtn} ${s.secondaryNavyBtn}`}
                         >
                           <Navigation size={14} aria-hidden="true" />
                           <UiText value="Directions" />
@@ -614,7 +750,7 @@ export function NearbyServiceDiscovery({
                             href={websiteUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={s.actionBtn}
+                            className={`${s.actionBtn} ${s.secondaryNavyBtn}`}
                           >
                             <Globe size={14} aria-hidden="true" />
                             <UiText value="Website" />
@@ -635,7 +771,7 @@ export function NearbyServiceDiscovery({
                             }
                           >
                             <MoreHorizontal size={15} aria-hidden="true" />
-                            <UiText value="More" />
+                            <UiText value="More Options" />
                           </button>
                           {isMoreOpen && (
                             <div

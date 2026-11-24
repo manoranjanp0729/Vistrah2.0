@@ -168,7 +168,6 @@ export default function VistrahEssentials() {
             end={{x: 1, y: 0}}
             style={s.heroTag}
           >
-            <Ionicons name="sparkles" size={11} color="#fff" />
             <Text style={s.heroTagText}>VISTRAH ESSENTIALS</Text>
           </LinearGradient>
           <View style={s.heroVerifiedTag}>

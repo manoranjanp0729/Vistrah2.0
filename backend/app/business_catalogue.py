@@ -1,7 +1,7 @@
-"""Unified 10-Sector business & service catalogue (10 sectors -> 133 subcategories -> 814 types).
+"""Unified 10-Category 2-level business & service catalogue (10 main categories -> direct service types).
 
 `apply_business_catalogue` is idempotent and safe to re-run. It:
-  1. upserts all 10 Unified Sectors, 133 subcategories, and 814 service types from
+  1. upserts all 10 Main Categories and their direct service types from
      `shared/business-types.json` into PostgreSQL `categories`, `subcategories`,
      and `services`;
   2. publishes a concise self-onboarding form for every service (licence fields
@@ -516,12 +516,12 @@ def apply_business_catalogue(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Apply VISTRAH's 800+ business catalogue.")
+    parser = argparse.ArgumentParser(description="Apply VISTRAH's 10-category business catalogue.")
     parser.add_argument("--dry-run", action="store_true", help="Report changes and roll back.")
     parser.add_argument(
         "--keep-legacy",
         action="store_true",
-        help="Add full 808 types without retiring old intermediate categories.",
+        help="Add direct service types without retiring old intermediate categories.",
     )
     args = parser.parse_args()
     from .database import SessionLocal

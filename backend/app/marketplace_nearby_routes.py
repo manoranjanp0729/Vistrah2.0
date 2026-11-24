@@ -44,6 +44,7 @@ PUBLIC_PHOTO_FIELDS = ("shop_photo", "business_photo", "photo")
 class MarketplaceNearbyBody(SafeModel):
     category: str | None = Field(default=None, max_length=100)
     business_type: str | None = Field(default=None, max_length=100)
+    service_type: str | None = Field(default=None, max_length=100)
     type: str | None = Field(default=None, max_length=100)
     subcategory: str | None = Field(default=None, max_length=100)
     lat: float | None = Field(default=None, strict=True)
@@ -252,7 +253,7 @@ def _run_marketplace_nearby(
                 Provider.owner_user_id.is_(None),
                 and_(User.deleted_at.is_(None), User.seller_enabled.is_(True)),
             ),
-            distance <= radius_km + EDGE_KM,
+            distance <= radius_km,
         )
     )
 
@@ -290,13 +291,23 @@ def _run_marketplace_nearby(
 
     deduped: list[tuple[Provider, ProviderService, Service, Category, float]] = []
     seen_provider_ids: set[int] = set()
-    for provider, grant, service, category, km in rows:
+    for provider, grant, service, category, _sql_km in rows:
         if provider.id in seen_provider_ids:
             continue
+        if provider.latitude is None or provider.longitude is None:
+            continue
+        p_lat_val = float(provider.latitude)
+        p_lng_val = float(provider.longitude)
+        if not (math.isfinite(p_lat_val) and math.isfinite(p_lng_val)):
+            continue
+        exact_km = _haversine_km(lat, lng, p_lat_val, p_lng_val)
+        if exact_km > radius_km:
+            continue
         seen_provider_ids.add(provider.id)
-        deduped.append((provider, grant, service, category, float(km)))
+        deduped.append((provider, grant, service, category, exact_km))
         if len(deduped) >= MAX_RESULTS:
             break
+    deduped.sort(key=lambda entry: (entry[4], entry[0].id))
 
     app_by_id: dict[str, ProviderApplication] = {}
     app_by_provider_id: dict[int, ProviderApplication] = {}
@@ -407,10 +418,16 @@ def _run_marketplace_nearby(
             radius_km=radius_km,
         )
         for gp in raw_places:
-            p_lat = float(gp["latitude"])
-            p_lng = float(gp["longitude"])
+            raw_p_lat = gp.get("latitude")
+            raw_p_lng = gp.get("longitude")
+            if raw_p_lat is None or raw_p_lng is None:
+                continue
+            p_lat = float(raw_p_lat)
+            p_lng = float(raw_p_lng)
+            if not (math.isfinite(p_lat) and math.isfinite(p_lng)):
+                continue
             dist_km = _haversine_km(lat, lng, p_lat, p_lng)
-            if dist_km > radius_km + EDGE_KM:
+            if dist_km > radius_km:
                 continue
             gp_norm = _norm_name(gp["name"])
             if gp_norm and any(
@@ -464,7 +481,10 @@ def _run_marketplace_nearby(
             )
         google_items.sort(key=lambda item: (item["distance_km"], str(item["id"])))
 
-    combined = (vistrah_items + google_items)[:MAX_RESULTS]
+    combined = sorted(
+        vistrah_items + google_items,
+        key=lambda item: (item["distance_km"], 0 if item["source"] == "vistrah" else 1, str(item["id"])),
+    )[:MAX_RESULTS]
     has_google = any(item["source"] == "google_places" for item in combined)
 
     return {
@@ -546,10 +566,13 @@ def get_marketplace_provider_photo(doc_id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/marketplace/nearby")
+@router.get("/marketplace/listings")
+@router.get("/api/marketplace/listings", include_in_schema=False)
 def get_marketplace_nearby(
     response: Response,
     category: str | None = Query(default=None, max_length=100),
     business_type: str | None = Query(default=None, max_length=100),
+    service_type: str | None = Query(default=None, max_length=100),
     type: str | None = Query(default=None, max_length=100),
     subcategory: str | None = Query(default=None, max_length=100),
     lat: float | None = Query(default=None),
@@ -565,7 +588,7 @@ def get_marketplace_nearby(
         lng if lng is not None else longitude,
         radius_km,
     )
-    resolved_type = business_type or type
+    resolved_type = service_type or business_type or type
     return _run_marketplace_nearby(
         db,
         category_slug=category,
@@ -578,6 +601,8 @@ def get_marketplace_nearby(
 
 
 @router.post("/marketplace/nearby")
+@router.post("/marketplace/listings")
+@router.post("/api/marketplace/listings", include_in_schema=False)
 def post_marketplace_nearby(
     data: MarketplaceNearbyBody,
     response: Response,
@@ -589,7 +614,7 @@ def post_marketplace_nearby(
         data.lng if data.lng is not None else data.longitude,
         data.radius_km,
     )
-    resolved_type = data.business_type or data.type
+    resolved_type = data.service_type or data.business_type or data.type
     return _run_marketplace_nearby(
         db,
         category_slug=data.category,

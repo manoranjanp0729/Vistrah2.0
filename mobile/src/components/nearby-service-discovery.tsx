@@ -9,7 +9,8 @@ import { useOptionalLocation } from '../lib/location';
 import { searchMarketplaceEntries } from '../lib/marketplace';
 import { useSession } from '../lib/session';
 import { useTheme } from '../lib/theme';
-import { FLAGSHIP_SECTORS } from '../../../shared/flagship-sectors';
+import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../../shared/flagship-sectors';
+import type { GooglePoint } from '../../../shared/google-location';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
@@ -38,6 +39,18 @@ const DEFAULT_MOBILE_POINT = {
   longitude: 77.5946,
   locality: 'Bengaluru',
 };
+
+function approxDistanceKm(a: GooglePoint, b: GooglePoint): number {
+  const toRad = (deg: number) => (deg * Math.PI) / 180;
+  const dLat = toRad(b.latitude - a.latitude);
+  const dLng = toRad(b.longitude - a.longitude);
+  const sinLat = Math.sin(dLat / 2);
+  const sinLng = Math.sin(dLng / 2);
+  const h =
+    sinLat * sinLat +
+    Math.cos(toRad(a.latitude)) * Math.cos(toRad(b.latitude)) * sinLng * sinLng;
+  return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(h)));
+}
 
 function MobileDivisionGlyph({
   glyph,
@@ -86,7 +99,7 @@ export function MobileNearbyServiceDiscovery({
   categorySlug: string;
   categoryTitle: string;
   subcategorySlug?: string;
-  typeSlug: string;
+  typeSlug?: string;
   serviceTitle: string;
 }) {
   const { colors, mode } = useTheme();
@@ -95,10 +108,13 @@ export function MobileNearbyServiceDiscovery({
   const session = useSession(false);
   const currentUser = session.user;
   const [sectorQuery, setSectorQuery] = useState('');
+  const activeSector = useMemo(() => getFlagshipSector(categorySlug), [categorySlug]);
   const quickServiceHits = useMemo(
     () =>
       sectorQuery.trim()
-        ? searchMarketplaceEntries(sectorQuery).filter(entry => Boolean(entry.selection.type)).slice(0, 6)
+        ? searchMarketplaceEntries(sectorQuery)
+            .filter(entry => Boolean(entry.selection.type))
+            .slice(0, 6)
         : [],
     [sectorQuery],
   );
@@ -133,6 +149,20 @@ export function MobileNearbyServiceDiscovery({
     };
   }, [locCtx?.selectedLocation]);
 
+  const [customCenter, setCustomCenter] = useState<GooglePoint | null>(null);
+  const [pannedCenter, setPannedCenter] = useState<GooglePoint | null>(null);
+
+  useEffect(() => {
+    setCustomCenter(null);
+    setPannedCenter(null);
+  }, [activePoint.latitude, activePoint.longitude, locCtx?.locationRevision]);
+
+  const queryCenter = customCenter ?? {
+    latitude: activePoint.latitude,
+    longitude: activePoint.longitude,
+  };
+  const displayLocality = customCenter ? 'Moved map area' : activePoint.locality;
+
   const [radiusKm, setRadiusKm] = useState<NearbyDiscoveryRadius>(() =>
     normalizeNearbyRadius(locCtx?.selectedLocation?.radiusKm ?? 10),
   );
@@ -164,6 +194,7 @@ export function MobileNearbyServiceDiscovery({
       params: opt.params,
     });
   }
+
   const [state, setState] = useState<{
     key: string;
     items: NearbyBusinessItem[];
@@ -171,16 +202,17 @@ export function MobileNearbyServiceDiscovery({
     error: string;
   } | null>(null);
 
-  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${typeSlug}:${activePoint.latitude.toFixed(5)}:${activePoint.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
+  const normalizedTypeSlug = (typeSlug || '').trim();
+  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${normalizedTypeSlug}:${queryCenter.latitude.toFixed(5)}:${queryCenter.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
 
   useEffect(() => {
     let alive = true;
     const path = buildNearbyMarketplacePath({
       category: categorySlug,
       subcategory: subcategorySlug,
-      businessType: typeSlug,
-      latitude: activePoint.latitude,
-      longitude: activePoint.longitude,
+      serviceType: normalizedTypeSlug || undefined,
+      latitude: queryCenter.latitude,
+      longitude: queryCenter.longitude,
       radiusKm,
     });
     api<NearbyServicesResponse>(path)
@@ -191,8 +223,7 @@ export function MobileNearbyServiceDiscovery({
           key: requestKey,
           items: nextItems,
           hasGooglePlaces: Boolean(
-            res.has_google_places ||
-              nextItems.some(item => item.source === 'google_places'),
+            res.has_google_places || nextItems.some(item => item.source === 'google_places'),
           ),
           error: '',
         });
@@ -213,7 +244,15 @@ export function MobileNearbyServiceDiscovery({
     return () => {
       alive = false;
     };
-  }, [categorySlug, subcategorySlug, typeSlug, activePoint.latitude, activePoint.longitude, radiusKm, requestKey]);
+  }, [
+    categorySlug,
+    subcategorySlug,
+    normalizedTypeSlug,
+    queryCenter.latitude,
+    queryCenter.longitude,
+    radiusKm,
+    requestKey,
+  ]);
 
   const loading = state?.key !== requestKey;
   const items = state?.key === requestKey ? state.items : [];
@@ -233,15 +272,20 @@ export function MobileNearbyServiceDiscovery({
     [items],
   );
 
+  const largerRadii = NEARBY_DISCOVERY_RADII.filter(r => r > radiusKm);
+  const surfaceBg = isDark ? '#0F294A' : '#ffffff';
+  const surfaceSubtle = isDark ? '#132F54' : '#f8fafc';
+  const surfaceBorder = isDark ? 'rgba(148,163,184,0.28)' : '#cbd5e1';
+
   return (
     <View style={s.container}>
-      {/* 10 Unified Sectors Filter Pills + Fast Child Service Search */}
+      {/* 10 Main Categories + Direct Service Type Filter Chips */}
       <View
         style={[
           s.controlCard,
           {
-            backgroundColor: isDark ? '#181426' : '#ffffff',
-            borderColor: isDark ? '#32264b' : '#e2d8ef',
+            backgroundColor: surfaceBg,
+            borderColor: surfaceBorder,
             gap: 10,
           },
         ]}
@@ -255,17 +299,17 @@ export function MobileNearbyServiceDiscovery({
             minHeight: 38,
             borderRadius: 10,
             borderWidth: 1,
-            borderColor: isDark ? '#32264b' : '#cbd5e1',
-            backgroundColor: isDark ? '#0f172a' : '#f8fafc',
+            borderColor: surfaceBorder,
+            backgroundColor: surfaceSubtle,
           }}
         >
           <Feather name="search" size={14} color={colors.muted} />
           <TextInput
             value={sectorQuery}
             onChangeText={setSectorQuery}
-            placeholder="Search child services across 10 sectors…"
+            placeholder="Search services across 10 categories…"
             placeholderTextColor={colors.muted}
-            accessibilityLabel="Search child service types"
+            accessibilityLabel="Search service types"
             style={{ flex: 1, fontSize: 13, color: colors.text, paddingVertical: 6 }}
           />
           {Boolean(sectorQuery.trim()) && (
@@ -285,8 +329,8 @@ export function MobileNearbyServiceDiscovery({
             style={{
               borderRadius: 10,
               borderWidth: 1,
-              borderColor: isDark ? '#32264b' : '#e2e8f0',
-              backgroundColor: isDark ? '#0f172a' : '#f8fafc',
+              borderColor: surfaceBorder,
+              backgroundColor: surfaceSubtle,
               overflow: 'hidden',
             }}
           >
@@ -311,7 +355,7 @@ export function MobileNearbyServiceDiscovery({
                   paddingHorizontal: 12,
                   paddingVertical: 9,
                   borderBottomWidth: 1,
-                  borderBottomColor: isDark ? '#1e293b' : '#e2e8f0',
+                  borderBottomColor: surfaceBorder,
                 }}
               >
                 <Text style={{ fontSize: 13, fontWeight: '600', color: colors.text }}>
@@ -340,8 +384,6 @@ export function MobileNearbyServiceDiscovery({
                     pathname: '/services/nearby',
                     params: {
                       category: sector.slug,
-                      subcategory: sector.defaultSubcategorySlug,
-                      type: sector.defaultTypeSlug,
                     },
                   })
                 }
@@ -350,19 +392,15 @@ export function MobileNearbyServiceDiscovery({
                   paddingVertical: 7,
                   borderRadius: 999,
                   borderWidth: 1,
-                  backgroundColor: active ? '#0f172a' : isDark ? '#241c36' : '#f8fafc',
-                  borderColor: active
-                    ? 'rgba(212,175,55,0.75)'
-                    : isDark
-                      ? '#382a53'
-                      : '#cbd5e1',
+                  backgroundColor: active ? '#0F294A' : surfaceSubtle,
+                  borderColor: active ? '#F97316' : surfaceBorder,
                 }}
               >
                 <Text
                   style={{
                     fontSize: 12,
                     fontWeight: '700',
-                    color: active ? '#f8e7b0' : colors.text,
+                    color: active ? '#ffffff' : colors.text,
                   }}
                 >
                   {sector.title}
@@ -371,6 +409,82 @@ export function MobileNearbyServiceDiscovery({
             );
           })}
         </ScrollView>
+
+        {activeSector && activeSector.serviceTypes.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 8, paddingVertical: 2 }}
+          >
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: !normalizedTypeSlug }}
+              onPress={() =>
+                router.push({
+                  pathname: '/services/nearby',
+                  params: { category: activeSector.slug },
+                })
+              }
+              style={{
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                borderRadius: 999,
+                borderWidth: 1,
+                backgroundColor: !normalizedTypeSlug ? '#F97316' : surfaceSubtle,
+                borderColor: !normalizedTypeSlug ? '#EA580C' : surfaceBorder,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '700',
+                  color: !normalizedTypeSlug ? '#ffffff' : colors.text,
+                }}
+              >
+                All in {activeSector.shortTitle || activeSector.title}
+              </Text>
+            </Pressable>
+
+            {activeSector.serviceTypes.map(st => {
+              const active = normalizedTypeSlug === st.slug;
+              return (
+                <Pressable
+                  key={st.slug}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected: active }}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/services/nearby',
+                      params: {
+                        category: activeSector.slug,
+                        subcategory: st.slug,
+                        type: st.slug,
+                      },
+                    })
+                  }
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    borderRadius: 999,
+                    borderWidth: 1,
+                    backgroundColor: active ? '#F97316' : surfaceSubtle,
+                    borderColor: active ? '#EA580C' : surfaceBorder,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: '700',
+                      color: active ? '#ffffff' : colors.text,
+                    }}
+                  >
+                    {st.title}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        )}
       </View>
 
       {/* Header Bar: Nearby Title + Active Location Pill + Segmented Radius Filter */}
@@ -378,8 +492,8 @@ export function MobileNearbyServiceDiscovery({
         style={[
           s.controlCard,
           {
-            backgroundColor: isDark ? '#181426' : '#ffffff',
-            borderColor: isDark ? '#32264b' : '#e2d8ef',
+            backgroundColor: surfaceBg,
+            borderColor: surfaceBorder,
           },
         ]}
       >
@@ -399,34 +513,34 @@ export function MobileNearbyServiceDiscovery({
             style={({ pressed }) => [
               s.locationPill,
               {
-                backgroundColor: isDark ? 'rgba(212,175,55,0.15)' : 'rgba(212,175,55,0.18)',
-                borderColor: 'rgba(212,175,55,0.45)',
-                opacity: pressed ? 0.8 : 1,
+                backgroundColor: isDark ? '#132F54' : '#fff7ed',
+                borderColor: 'rgba(249,115,22,0.5)',
+                opacity: pressed ? 0.85 : 1,
               },
             ]}
           >
-            <Feather name="map-pin" size={12} color="#d4af37" />
+            <Feather name="map-pin" size={12} color="#F97316" />
             <Text
               numberOfLines={1}
-              style={[s.locationPillText, { color: isDark ? '#f8fafc' : '#0f172a' }]}
+              style={[s.locationPillText, { color: isDark ? '#ffffff' : '#0F294A' }]}
             >
               {locCtx?.detecting
                 ? 'Locating…'
-                : activePoint.hasCustomLocation
-                  ? activePoint.locality
-                  : `${activePoint.locality} · Change`}
+                : activePoint.hasCustomLocation || customCenter
+                  ? displayLocality
+                  : `${displayLocality} · Change`}
             </Text>
           </Pressable>
         </View>
 
-        {/* Segmented Radius Selector: 5 km / 10 km / 25 km / 50 km */}
+        {/* Segmented Radius Selector: 2 km / 5 km / 10 km / 25 km / 50 km */}
         <View
           accessibilityRole="radiogroup"
           style={[
             s.radiusTrack,
             {
-              backgroundColor: isDark ? '#0f172a' : '#f1f5f9',
-              borderColor: isDark ? '#2d3748' : '#e2e8f0',
+              backgroundColor: isDark ? '#132F54' : '#f1f5f9',
+              borderColor: surfaceBorder,
             },
           ]}
         >
@@ -438,13 +552,13 @@ export function MobileNearbyServiceDiscovery({
                 accessibilityRole="radio"
                 accessibilityState={{ checked: active }}
                 onPress={() => setRadiusKm(r)}
-                style={[s.radiusChip, active && { backgroundColor: '#d4af37' }]}
+                style={[s.radiusChip, active && { backgroundColor: '#F97316' }]}
               >
                 <Text
                   style={[
                     s.radiusChipText,
                     {
-                      color: active ? '#0f172a' : colors.muted,
+                      color: active ? '#ffffff' : colors.muted,
                       fontWeight: active ? '700' : '600',
                     },
                   ]}
@@ -462,12 +576,12 @@ export function MobileNearbyServiceDiscovery({
         style={[
           s.compactBanner,
           {
-            backgroundColor: isDark ? 'rgba(212,175,55,0.09)' : '#fffbeb',
-            borderColor: isDark ? 'rgba(212,175,55,0.42)' : 'rgba(180,134,11,0.38)',
+            backgroundColor: isDark ? '#0F294A' : '#fff7ed',
+            borderColor: isDark ? 'rgba(249,115,22,0.42)' : '#fed7aa',
           },
         ]}
       >
-        <Text style={[s.compactBannerText, { color: colors.text }]}>
+        <Text style={[s.compactBannerText, { color: isDark ? '#ffffff' : '#0F294A' }]}>
           <UiText value="Own a " />
           {serviceTitle}
           <UiText value=" business here?" />
@@ -480,27 +594,58 @@ export function MobileNearbyServiceDiscovery({
               params: {
                 category: categorySlug,
                 ...(subcategorySlug ? { subcategory: subcategorySlug } : {}),
-                type: typeSlug,
+                ...(normalizedTypeSlug ? { type: normalizedTypeSlug } : {}),
               },
             })
           }
           style={({ pressed }) => [s.primaryOnboardBtn, { opacity: pressed ? 0.88 : 1 }]}
         >
-          <Feather name="plus" size={14} color="#0f172a" />
-          <Text style={s.primaryOnboardText}>+ List Free on VISTRAH</Text>
+          <Feather name="plus" size={14} color="#ffffff" />
+          <Text style={s.primaryOnboardText}>List Free on VISTRAH</Text>
         </Pressable>
       </View>
 
-      {/* Interactive Map Stage */}
-      <VistrahMobileMap
-        center={{ latitude: activePoint.latitude, longitude: activePoint.longitude }}
-        radiusKm={radiusKm}
-        markers={markers}
-        selectedId={selectedId}
-        hideSelectedCard
-        height={270}
-        onSelectMarker={id => setSelectedId(id)}
-      />
+      {/* Interactive Map Stage + Search Here Overlay */}
+      <View style={{ position: 'relative' }}>
+        {pannedCenter && (
+          <View style={s.searchHereWrap} pointerEvents="box-none">
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Search Here"
+              onPress={() => {
+                setCustomCenter(pannedCenter);
+                setPannedCenter(null);
+              }}
+              style={({ pressed }) => [
+                s.searchHereBtn,
+                { opacity: pressed ? 0.9 : 1 },
+              ]}
+            >
+              <Feather name="search" size={13} color="#ffffff" />
+              <Text style={s.searchHereText}>Search Here</Text>
+            </Pressable>
+          </View>
+        )}
+        <VistrahMobileMap
+          center={{ latitude: queryCenter.latitude, longitude: queryCenter.longitude }}
+          radiusKm={radiusKm}
+          markers={markers}
+          selectedId={selectedId}
+          hideSelectedCard
+          height={270}
+          onViewCenterChange={pt => {
+            if (approxDistanceKm(queryCenter, pt) > 0.25) {
+              setPannedCenter({
+                latitude: Number(pt.latitude.toFixed(6)),
+                longitude: Number(pt.longitude.toFixed(6)),
+              });
+            } else {
+              setPannedCenter(null);
+            }
+          }}
+          onSelectMarker={id => setSelectedId(id)}
+        />
+      </View>
 
       {/* Synchronized Business List Header */}
       <View style={s.listMetaRow}>
@@ -513,20 +658,34 @@ export function MobileNearbyServiceDiscovery({
               <UiText
                 value={
                   items.length === 1
-                    ? `nearby place within ${radiusKm} km`
-                    : `nearby places within ${radiusKm} km`
+                    ? `listing within ${radiusKm} km (nearest first)`
+                    : `listings within ${radiusKm} km (nearest first)`
                 }
               />
             </>
           )}
         </Text>
-        {selectedId !== null && (
-          <Pressable onPress={() => setSelectedId(null)}>
-            <Text style={{ fontSize: 12, fontWeight: '600', color: colors.accent }}>
-              <UiText value="Clear pin" />
-            </Text>
-          </Pressable>
-        )}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          {customCenter && (
+            <Pressable
+              onPress={() => {
+                setCustomCenter(null);
+                setPannedCenter(null);
+              }}
+            >
+              <Text style={{ fontSize: 12, fontWeight: '700', color: '#F97316' }}>
+                <UiText value="Reset area" />
+              </Text>
+            </Pressable>
+          )}
+          {selectedId !== null && (
+            <Pressable onPress={() => setSelectedId(null)}>
+              <Text style={{ fontSize: 12, fontWeight: '700', color: '#F97316' }}>
+                <UiText value="Clear pin" />
+              </Text>
+            </Pressable>
+          )}
+        </View>
       </View>
 
       {Boolean(error) && (
@@ -534,12 +693,12 @@ export function MobileNearbyServiceDiscovery({
           style={[
             s.errorBox,
             {
-              backgroundColor: isDark ? '#2c151b' : '#fef2f2',
-              borderColor: isDark ? '#7f1d1d' : '#fecaca',
+              backgroundColor: isDark ? '#132F54' : '#fff7ed',
+              borderColor: '#EA580C',
             },
           ]}
         >
-          <Text style={{ fontSize: 13, color: isDark ? '#fca5a5' : '#991b1b' }}>{error}</Text>
+          <Text style={{ fontSize: 13, color: isDark ? '#fed7aa' : '#9a3412' }}>{error}</Text>
         </View>
       )}
 
@@ -548,20 +707,43 @@ export function MobileNearbyServiceDiscovery({
           style={[
             s.emptyNotice,
             {
-              backgroundColor: isDark ? '#1a1429' : '#ffffff',
-              borderColor: isDark ? '#33264d' : '#e4daef',
+              backgroundColor: surfaceBg,
+              borderColor: surfaceBorder,
             },
           ]}
         >
-          <Text style={{ fontSize: 13, lineHeight: 19, color: colors.muted }}>
+          <Text style={{ fontSize: 13.5, fontWeight: '600', lineHeight: 20, color: colors.text }}>
             <UiText
-              value={`No ${serviceTitle} places found within ${radiusKm} km of ${activePoint.locality}. Tap 25 km or 50 km above to expand your search radius.`}
+              value={`No listings found within ${radiusKm} km — try expanding your radius`}
             />
           </Text>
+          {largerRadii.length > 0 && (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 10 }}>
+              {largerRadii.map(nextRadius => (
+                <Pressable
+                  key={nextRadius}
+                  accessibilityRole="button"
+                  onPress={() => setRadiusKm(nextRadius)}
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 7,
+                    borderRadius: 999,
+                    backgroundColor: '#F97316',
+                    borderWidth: 1,
+                    borderColor: '#EA580C',
+                  }}
+                >
+                  <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
+                    Try {nextRadius} km
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          )}
         </View>
       )}
 
-      {/* Unified Distance-Sorted Cards (VISTRAH Verified first, then Google Places) */}
+      {/* Unified Nearest-First Cards */}
       {items.map(item => {
         const itemKey = String(item.id);
         const isSelected = selectedId === item.id;
@@ -599,15 +781,14 @@ export function MobileNearbyServiceDiscovery({
             style={({ pressed }) => [
               s.bizCard,
               {
-                backgroundColor: isDark ? '#1a1429' : '#ffffff',
-                borderColor: isSelected ? '#d4af37' : isDark ? '#33264d' : '#e4daef',
+                backgroundColor: surfaceBg,
+                borderColor: isSelected ? '#F97316' : surfaceBorder,
                 borderWidth: isSelected ? 2 : 1,
                 opacity: pressed ? 0.94 : 1,
               },
             ]}
           >
             <View style={s.bizTopRow}>
-              {/* Shop Photo Thumbnail or Crisp Division-Themed Fallback Icon Tile */}
               <View style={s.photoSlot}>
                 {photoUri ? (
                   <Image
@@ -653,7 +834,7 @@ export function MobileNearbyServiceDiscovery({
                 <View style={s.badgesRow}>
                   {isVistrah ? (
                     <View style={s.verifiedPill}>
-                      <Feather name="check-circle" size={11} color="#10b981" />
+                      <Feather name="check-circle" size={11} color="#F97316" />
                       <Text style={s.verifiedText}>
                         {item.verification_status === 'VERIFIED'
                           ? 'VISTRAH Verified'
@@ -665,22 +846,20 @@ export function MobileNearbyServiceDiscovery({
                       style={[
                         s.nearbyPlacePill,
                         {
-                          backgroundColor: isDark ? 'rgba(56,189,248,0.14)' : '#f0f9ff',
-                          borderColor: isDark
-                            ? 'rgba(56,189,248,0.32)'
-                            : 'rgba(3,105,161,0.24)',
+                          backgroundColor: isDark ? '#132F54' : '#f1f5f9',
+                          borderColor: surfaceBorder,
                         },
                       ]}
                     >
                       <Feather
                         name="map-pin"
                         size={11}
-                        color={isDark ? '#7dd3fc' : '#0369a1'}
+                        color={isDark ? '#ffffff' : '#0F294A'}
                       />
                       <Text
                         style={[
                           s.nearbyPlaceText,
-                          { color: isDark ? '#7dd3fc' : '#0369a1' },
+                          { color: isDark ? '#ffffff' : '#0F294A' },
                         ]}
                       >
                         Nearby Place
@@ -707,7 +886,7 @@ export function MobileNearbyServiceDiscovery({
               </Text>
             )}
 
-            {/* Direct Actions: Call (whenever phone is present) + WhatsApp (VISTRAH sellers) + Directions */}
+            {/* Direct Actions in VISTRAH Navy + Warm Orange Palette */}
             <View style={s.actionRow}>
               {Boolean(callUrl) && (
                 <Pressable
@@ -716,7 +895,12 @@ export function MobileNearbyServiceDiscovery({
                   onPress={() => void Linking.openURL(callUrl!)}
                   style={({ pressed }) => [
                     s.actionBtn,
-                    { backgroundColor: '#0f172a', opacity: pressed ? 0.85 : 1 },
+                    {
+                      backgroundColor: '#F97316',
+                      borderWidth: 1,
+                      borderColor: '#EA580C',
+                      opacity: pressed ? 0.85 : 1,
+                    },
                   ]}
                 >
                   <Feather name="phone" size={13} color="#ffffff" />
@@ -732,9 +916,9 @@ export function MobileNearbyServiceDiscovery({
                   style={({ pressed }) => [
                     s.actionBtn,
                     {
-                      backgroundColor: isDark ? 'rgba(34,197,94,0.16)' : '#ecfdf5',
+                      backgroundColor: isDark ? 'rgba(249,115,22,0.16)' : '#fff7ed',
                       borderWidth: 1,
-                      borderColor: 'rgba(34,197,94,0.4)',
+                      borderColor: 'rgba(249,115,22,0.45)',
                       opacity: pressed ? 0.85 : 1,
                     },
                   ]}
@@ -742,11 +926,11 @@ export function MobileNearbyServiceDiscovery({
                   <Ionicons
                     name="logo-whatsapp"
                     size={14}
-                    color={isDark ? '#4ade80' : '#15803d'}
+                    color={isDark ? '#F97316' : '#EA580C'}
                   />
                   <Text
                     style={{
-                      color: isDark ? '#4ade80' : '#15803d',
+                      color: isDark ? '#F97316' : '#EA580C',
                       fontSize: 12.5,
                       fontWeight: '700',
                     }}
@@ -763,15 +947,15 @@ export function MobileNearbyServiceDiscovery({
                 style={({ pressed }) => [
                   s.actionBtn,
                   {
-                    backgroundColor: isDark ? '#251c38' : '#f8fafc',
+                    backgroundColor: '#0F294A',
                     borderWidth: 1,
-                    borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                    borderColor: '#132F54',
                     opacity: pressed ? 0.85 : 1,
                   },
                 ]}
               >
-                <Feather name="navigation" size={13} color={colors.text} />
-                <Text style={{ color: colors.text, fontSize: 12.5, fontWeight: '600' }}>
+                <Feather name="navigation" size={13} color="#ffffff" />
+                <Text style={{ color: '#ffffff', fontSize: 12.5, fontWeight: '600' }}>
                   Directions
                 </Text>
               </Pressable>
@@ -784,15 +968,15 @@ export function MobileNearbyServiceDiscovery({
                   style={({ pressed }) => [
                     s.actionBtn,
                     {
-                      backgroundColor: isDark ? '#251c38' : '#f8fafc',
+                      backgroundColor: '#0F294A',
                       borderWidth: 1,
-                      borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                      borderColor: '#132F54',
                       opacity: pressed ? 0.85 : 1,
                     },
                   ]}
                 >
-                  <Feather name="globe" size={13} color={colors.text} />
-                  <Text style={{ color: colors.text, fontSize: 12.5, fontWeight: '600' }}>
+                  <Feather name="globe" size={13} color="#ffffff" />
+                  <Text style={{ color: '#ffffff', fontSize: 12.5, fontWeight: '600' }}>
                     Website
                   </Text>
                 </Pressable>
@@ -806,15 +990,17 @@ export function MobileNearbyServiceDiscovery({
                   s.actionBtn,
                   {
                     marginLeft: 'auto',
-                    backgroundColor: isDark ? '#251c38' : '#f8fafc',
+                    backgroundColor: surfaceSubtle,
                     borderWidth: 1,
-                    borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                    borderColor: surfaceBorder,
                     opacity: pressed ? 0.85 : 1,
                   },
                 ]}
               >
                 <Feather name="more-horizontal" size={14} color={colors.text} />
-                <Text style={{ color: colors.text, fontSize: 12.5, fontWeight: '600' }}>More</Text>
+                <Text style={{ color: colors.text, fontSize: 12.5, fontWeight: '600' }}>
+                  More Options
+                </Text>
               </Pressable>
             </View>
           </Pressable>
@@ -833,8 +1019,8 @@ export function MobileNearbyServiceDiscovery({
             style={[
               s.sheetCard,
               {
-                backgroundColor: isDark ? '#181426' : '#ffffff',
-                borderColor: isDark ? 'rgba(212,175,55,0.4)' : '#e2e8f0',
+                backgroundColor: surfaceBg,
+                borderColor: isDark ? 'rgba(249,115,22,0.45)' : '#cbd5e1',
               },
             ]}
             onPress={() => {}}
@@ -866,8 +1052,8 @@ export function MobileNearbyServiceDiscovery({
                     style={({ pressed }) => [
                       s.sheetActionRow,
                       {
-                        backgroundColor: isDark ? '#251c38' : '#f8fafc',
-                        borderColor: isDark ? '#3d2f5a' : '#e2e8f0',
+                        backgroundColor: surfaceSubtle,
+                        borderColor: surfaceBorder,
                         opacity: pressed ? 0.85 : 1,
                       },
                     ]}
@@ -875,7 +1061,7 @@ export function MobileNearbyServiceDiscovery({
                     <Text style={{ fontSize: 13.5, fontWeight: '600', color: colors.text }}>
                       {opt.label}
                     </Text>
-                    <Feather name="chevron-right" size={15} color={colors.accent} />
+                    <Feather name="chevron-right" size={15} color="#F97316" />
                   </Pressable>
                 ))}
 
@@ -885,7 +1071,7 @@ export function MobileNearbyServiceDiscovery({
                   style={({ pressed }) => [
                     s.sheetCancelBtn,
                     {
-                      borderColor: isDark ? '#3d2f5a' : '#cbd5e1',
+                      borderColor: surfaceBorder,
                       opacity: pressed ? 0.85 : 1,
                     },
                   ]}
@@ -905,7 +1091,7 @@ export function MobileNearbyServiceDiscovery({
             borderRadius: 10,
             overflow: 'hidden',
             borderWidth: 1,
-            borderColor: isDark ? '#2e2444' : '#e2e8f0',
+            borderColor: surfaceBorder,
           }}
         >
           <MobilePoweredByGoogle dark={isDark} />
@@ -966,7 +1152,7 @@ const s = StyleSheet.create({
     justifyContent: 'center',
   },
   radiusChipText: {
-    fontSize: 12.5,
+    fontSize: 12,
     fontVariant: ['tabular-nums'],
   },
   compactBanner: {
@@ -984,6 +1170,31 @@ const s = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     flexShrink: 1,
+  },
+  searchHereWrap: {
+    position: 'absolute',
+    top: 12,
+    left: 0,
+    right: 0,
+    zIndex: 25,
+    alignItems: 'center',
+  },
+  searchHereBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: '#F97316',
+    borderWidth: 1,
+    borderColor: '#EA580C',
+    elevation: 4,
+  },
+  searchHereText: {
+    color: '#ffffff',
+    fontSize: 12.5,
+    fontWeight: '700',
   },
   listMetaRow: {
     flexDirection: 'row',
@@ -1061,14 +1272,14 @@ const s = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 2,
     borderRadius: 999,
-    backgroundColor: 'rgba(16,185,129,0.12)',
+    backgroundColor: 'rgba(249,115,22,0.14)',
     borderWidth: 1,
-    borderColor: 'rgba(16,185,129,0.3)',
+    borderColor: 'rgba(249,115,22,0.38)',
   },
   verifiedText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#10b981',
+    color: '#F97316',
   },
   nearbyPlacePill: {
     flexDirection: 'row',
@@ -1087,15 +1298,15 @@ const s = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 999,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#0F294A',
     borderWidth: 1,
-    borderColor: 'rgba(212,175,55,0.4)',
+    borderColor: 'rgba(249,115,22,0.45)',
     flexShrink: 0,
   },
   distanceText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#f8e7b0',
+    color: '#ffffff',
     fontVariant: ['tabular-nums'],
   },
   actionRow: {
@@ -1120,11 +1331,13 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     minHeight: 34,
     borderRadius: 9,
-    backgroundColor: '#d4af37',
+    backgroundColor: '#F97316',
+    borderWidth: 1,
+    borderColor: '#EA580C',
   },
   sheetBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(2,6,23,0.55)',
+    backgroundColor: 'rgba(15,41,74,0.6)',
     justifyContent: 'flex-end',
     padding: 16,
   },
@@ -1164,6 +1377,6 @@ const s = StyleSheet.create({
   primaryOnboardText: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#0f172a',
+    color: '#ffffff',
   },
 });

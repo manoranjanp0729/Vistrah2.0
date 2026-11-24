@@ -449,20 +449,6 @@ export function HomepageEditor() {
                 padding: 16,
               }}
             >
-              <section
-                style={{
-                  marginBottom: 16,
-                  paddingBottom: 12,
-                  borderBottom: '1px solid var(--border)',
-                }}
-              >
-                <p className="eyebrow">ANCHORED BELOW HERO FOLD</p>
-                <h3>Why VISTRAH • Discover. Connect. Grow.</h3>
-                <p className="editorial-muted tabular-nums">
-                  01 / Discover Live · 02 / Connect Direct · 03 / Grow Across 13 Verticals (renders
-                  automatically above published blocks)
-                </p>
-              </section>
               {draft.layout.sections.map(s => (
                 <section key={s.id} style={{marginBottom: 16}}>
                   <h3>{s.title}</h3>

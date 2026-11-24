@@ -27,9 +27,10 @@ vi.mock('next/link', () => ({
 }));
 
 describe('In-app Nearby Services Map + Listings contract', () => {
-  it('supports 5/10/25/50 km radius normalization and contact deep-link builders', () => {
-    expect(NEARBY_DISCOVERY_RADII).toEqual([5, 10, 25, 50]);
-    expect(normalizeNearbyRadius(2)).toBe(5);
+  it('supports 2/5/10/25/50 km radius normalization and contact deep-link builders', () => {
+    expect(NEARBY_DISCOVERY_RADII).toEqual([2, 5, 10, 25, 50]);
+    expect(normalizeNearbyRadius(2)).toBe(2);
+    expect(normalizeNearbyRadius(4)).toBe(5);
     expect(normalizeNearbyRadius(10)).toBe(10);
     expect(normalizeNearbyRadius(25)).toBe(25);
     expect(normalizeNearbyRadius(50)).toBe(50);
@@ -175,20 +176,28 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     );
     expect(
       buildNearbyMarketplacePath({
-        category: 'food-and-dining',
+        category: 'restaurants-and-dining',
         businessType: 'restaurant',
         latitude: 13.7091,
         longitude: 75.8132,
         radiusKm: 10,
       }),
     ).toBe(
-      '/marketplace/nearby?category=food-and-dining&lat=13.709100&lng=75.813200&radius_km=10&business_type=restaurant',
+      '/marketplace/nearby?category=restaurants-and-dining&lat=13.709100&lng=75.813200&radius_km=10&service_type=restaurant&business_type=restaurant',
     );
+    expect(
+      buildNearbyMarketplacePath({
+        category: 'restaurants-and-dining',
+        latitude: 13.7091,
+        longitude: 75.8132,
+        radiusKm: 5,
+      }),
+    ).toBe('/marketplace/nearby?category=restaurants-and-dining&lat=13.709100&lng=75.813200&radius_km=5');
   });
 
-  it('allowlists /services/nearby destinations and renders in-app radius pills without external redirect', () => {
-    const url = nearbyServicesUrl({ category: 'food-and-dining', type: 'restaurant' });
-    expect(url).toBe('/services/nearby?category=food-and-dining&type=restaurant');
+  it('allowlists /services/nearby destinations and renders in-app radius pills + direct service type chips without external redirect', () => {
+    const url = nearbyServicesUrl({ category: 'restaurants-and-dining', type: 'restaurant' });
+    expect(url).toBe('/services/nearby?category=restaurants-and-dining&type=restaurant');
     expect(safeDestination(url)).toBe(url);
 
     const html = renderToStaticMarkup(
@@ -196,17 +205,19 @@ describe('In-app Nearby Services Map + Listings contract', () => {
         LanguageProvider,
         null,
         createElement(NearbyServiceDiscovery, {
-          categorySlug: 'food-and-dining',
-          categoryTitle: 'Food & Dining',
+          categorySlug: 'restaurants-and-dining',
+          categoryTitle: 'Restaurants & Dining',
           typeSlug: 'restaurant',
-          serviceTitle: 'Restaurant / Mess / Dhaba',
+          serviceTitle: 'Restaurant',
         }),
       ),
     );
     expect(html).toContain('Nearby');
-    expect(html).toContain('Restaurant / Mess / Dhaba');
-    expect(html).toContain('+ List Free on VISTRAH');
-    for (const r of [5, 10, 25, 50]) {
+    expect(html).toContain('Restaurant');
+    expect(html).toContain('Cafes');
+    expect(html).toContain('data-brand-palette="vistrah-navy-orange"');
+    expect(html).toContain('List Free on VISTRAH');
+    for (const r of [2, 5, 10, 25, 50]) {
       expect(html).toContain(`${r} km`);
     }
   });

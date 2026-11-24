@@ -45,7 +45,6 @@ export default function Discover() {
           end={{x: 1, y: 0}}
           style={s.topBadgePill}
         >
-          <Ionicons name="sparkles" size={10} color="#fff" />
           <Text style={s.topBadgeText}>VISTRAH INDIA</Text>
         </LinearGradient>
         <Text style={[s.topTagline, {color: colors.muted}]}>
@@ -100,12 +99,12 @@ export default function Discover() {
         contentContainerStyle={s.quickTagsScroll}
       >
         {[
-          {label: '🏢 Real Estate', category: 'real-estate-and-property'},
-          {label: '🏠 Interiors', category: 'interior-design-and-exteriors'},
-          {label: '🏗️ Civil & Contractors', category: 'civil-construction-and-contractors'},
-          {label: '🩺 HealthConnect', category: 'healthconnect-and-clinics'},
-          {label: '🍽️ Dining & Stays', category: 'hospitality-restaurants-and-cafes'},
-          {label: '🚗 Automobiles', category: 'automobiles-and-garages'},
+          {label: '🍽️ Restaurants & Dining', category: 'restaurants-and-dining'},
+          {label: '🏨 Hotels & Stay', category: 'hotels-and-stay'},
+          {label: '🏥 Hospitals & Labs', category: 'hospitals-and-labs'},
+          {label: '💇 Salons & Wellness', category: 'salons-and-beauty-parlour'},
+          {label: '🏗️ Civil & Construction', category: 'civil-and-construction'},
+          {label: '⚡ Fuel & EV Charging', category: 'fuel-and-charging-stations'},
         ].map((tag) => (
           <Pressable
             key={tag.category}
@@ -201,7 +200,6 @@ export default function Discover() {
       <View style={s.sectionHeaderWrap}>
         <View style={{flex: 1, minWidth: 0}}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Ionicons name="sparkles" size={12} color="#52b788" />
             <Text style={[s.sectionEyebrow, {color: colors.accent}]}>COMMUNITY LIFELINES</Text>
           </View>
           <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>

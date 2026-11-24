@@ -28,7 +28,7 @@ export type HeroBannerSlide = {
 
 export const HERO_BANNER_ASPECT_RATIO = 1736 / 621;
 
-export const HERO_BANNERS: readonly HeroBannerSlide[] = [
+export const ALL_HERO_BANNERS: readonly HeroBannerSlide[] = [
   {
     key: 'users',
     stepNumber: '01',
@@ -268,10 +268,10 @@ export const BUSINESS_TIMELINE = [
     step: '01',
     badge: 'FREE FOREVER',
     price: '₹0',
-    title: 'List Free — 808+ Service Types',
+    title: 'List Free — Verified Local Businesses',
     caption: 'Pick your services, pin your shop location, and receive direct customer calls & directions at ₹0.',
     mockupTitle: 'Verified Business Card',
-    mockupPills: ['✓ Free Forever', 'Direct Call & Website', '808+ Service Types'],
+    mockupPills: ['✓ Free Forever', 'Direct Call & Website', '10 Main Categories'],
   },
   {
     step: '02',
@@ -426,6 +426,11 @@ export const HEALTH_PATHWAYS = [
   },
 ] as const;
 
+export const FOR_BUSINESSES_HERO_BANNER: HeroBannerSlide =
+  ALL_HERO_BANNERS.find(b => b.key === 'businesses')!;
+
+export const HERO_BANNERS: readonly HeroBannerSlide[] = [FOR_BUSINESSES_HERO_BANNER];
+
 export function getHeroBannerByKey(key: HeroBannerKey): HeroBannerSlide {
-  return HERO_BANNERS.find(b => b.key === key) ?? HERO_BANNERS[0];
+  return ALL_HERO_BANNERS.find(b => b.key === key) ?? FOR_BUSINESSES_HERO_BANNER;
 }

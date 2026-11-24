@@ -13,7 +13,6 @@ import {
   Phone,
   RefreshCw,
   Search,
-  Sparkles,
   Users,
 } from 'lucide-react';
 import { api } from '@/lib/api';
@@ -489,7 +488,6 @@ export function BusinessAuditExplorer() {
                       </div>
 
                       <Link href={buildAdminBusinessHref(item)} className="button">
-                        <Sparkles size={14} style={{ marginRight: 5, verticalAlign: 'text-bottom' }} />
                         Open Audit & Quote
                         <ArrowRight size={14} style={{ marginLeft: 5, verticalAlign: 'text-bottom' }} />
                       </Link>

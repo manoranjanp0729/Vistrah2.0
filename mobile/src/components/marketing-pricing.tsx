@@ -332,7 +332,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         </View>
 
         {[
-         ['Business listing (808+ service types)','₹0 / Free Forever'],
+         ['Verified business listing across India','₹0 / Free Forever'],
          [`Self-serve V Ads (${selectedTier.label} or any radius)`,'₹0 / Free Forever'],
          ['Customer call & lead commission','0% (Direct to you)'],
         ].map(([k,v])=>(
@@ -348,7 +348,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        </View>
 
        <Action label={promo.primaryCta} onPress={()=>router.push('/seller/v-ads')}/>
-       <Action secondary label="List Your Business Free (808+ Services)" onPress={()=>router.push('/seller/onboard')}/>
+       <Action secondary label="List Your Business Free" onPress={()=>router.push('/seller/onboard')}/>
 
        <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft}}>
         <View style={{position:'relative'}}>

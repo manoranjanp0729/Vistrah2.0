@@ -58,8 +58,8 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
             'tab_group': 'v_ads',
             'step_label': 'FREE FOREVER',
             'title': 'List Your Business & Upload V Ads — 100% Free Forever',
-            'subtitle': 'List your business across all 808+ service types and publish hyperlocal V Ads for any target radius inside VISTRAH at ₹0 forever. Pay only when you hire VISTRAH Ads & Marketing Studio or request custom Website & Automation solutions.',
-            'fee_note': '₹0 / Free Forever for Business Listings (808+ services) & Self-Serve V Ads (any radius on VISTRAH) • Zero commission',
+            'subtitle': 'List your business across verified local categories across India and publish hyperlocal V Ads for any target radius inside VISTRAH at ₹0 forever. Pay only when you hire VISTRAH Ads & Marketing Studio or request custom Website & Automation solutions.',
+            'fee_note': '₹0 / Free Forever for Verified Business Listings & Self-Serve V Ads (any radius on VISTRAH) • Zero commission',
             'promo_enabled': True,
             'free_trial_days': 0,
             'promo_badge': '₹0 / FREE FOREVER · LISTING & ANY-RADIUS V ADS',
@@ -69,13 +69,13 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
                 'anchor_price_label': '₹0',
                 'anchor_title': 'Free Forever: Business Listing + Any-Radius V Ads',
                 'anchor_summary': (
-                    'List your business across 808+ service types and create & upload V Ads for any target radius on VISTRAH at ₹0 forever. '
+                    'List your business on VISTRAH and create & upload V Ads for any target radius across India at ₹0 forever. '
                     'Done-for-you VISTRAH Ads & Marketing Studio and Website / Business Automation services are quoted transparently below.'
                 ),
                 'secondary_cta_label': 'List Business Free',
                 'secondary_cta_href': '/seller/onboard',
                 'studio_boundary': (
-                    'Business listings across all 808+ service types and self-serve V Ads creation/upload for any target radius inside VISTRAH are 100% Free Forever (₹0). '
+                    'Business listings across all VISTRAH service categories and self-serve V Ads creation/upload for any target radius inside VISTRAH are 100% Free Forever (₹0). '
                     'Paid pricing applies strictly to optional done-for-you VISTRAH Ads & Marketing Studio campaigns/production and VISTRAH Tech Website & Business Automation solutions.'
                 ),
                 'duration_options': [3, 7, 15, 30],
@@ -251,7 +251,7 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
                 'promo_badge': '₹0 Free Forever',
                 'deliverables': [
                     f'₹0 / Free Forever — Free for any radius on VISTRAH ({label} {zone.lower()})',
-                    'Free business listing across 808+ service types + 9:16 V Ads Reels placement',
+                    'Free business listing across verified local categories + 9:16 V Ads Reels placement',
                     'Direct Call, Website, Directions & live engagement metrics in Seller Studio',
                 ],
                 'meta': {
@@ -340,7 +340,7 @@ def build_pricing_seed_data() -> tuple[list[dict], list[dict]]:
         (
             'faq-1',
             'Are business listings and uploading V Ads really 100% free for any radius?',
-            'Yes! Listing your business across all 808+ service types on VISTRAH (/seller/onboard) and creating/uploading self-serve V Ads for ANY target radius inside VISTRAH (/seller/v-ads) are ₹0 / Free Forever—with zero per-radius charges and zero lead commissions. All V Ads go through standard quality moderation before appearing live.',
+            'Yes! Listing your business across VISTRAH service categories (/seller/onboard) and creating/uploading self-serve V Ads for ANY target radius inside VISTRAH (/seller/v-ads) are ₹0 / Free Forever—with zero per-radius charges and zero lead commissions. All V Ads go through standard quality moderation before appearing live.',
         ),
         (
             'faq-2',

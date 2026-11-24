@@ -175,7 +175,7 @@ export function defaultHydratedPricing():HydratedPricingState{
     promoBadge:'₹0 Free Forever',
     deliverables:[
      `₹0 / Free Forever — Free for any radius on VISTRAH (${km} km ${t.zoneLabel.toLowerCase()})`,
-     'Free business listing across 808+ service types + 9:16 V Ads Reels placement',
+      'Free business listing across verified local categories + 9:16 V Ads Reels placement',
      'Direct Call, Website, Directions & live engagement metrics in Seller Studio',
     ],
     reachMinPerDay:t.reachMinPerDay,
@@ -310,11 +310,11 @@ export type VAdsDurationDays=3|7|15|30;
 
 export const VADS_FREE_FOREVER={
  headline:'List Your Business & Upload V Ads — 100% Free Forever',
- subheadline:'List your business across all 808+ service types and publish hyperlocal V Ads for any target radius inside VISTRAH at ₹0 forever. Pay only when you hire VISTRAH Ads & Marketing Studio or request custom Website & Automation solutions.',
+ subheadline:'List your business across verified local categories across India and publish hyperlocal V Ads for any target radius inside VISTRAH at ₹0 forever. Pay only when you hire VISTRAH Ads & Marketing Studio or request custom Website & Automation solutions.',
  primaryCta:'Create & Upload Free V Ad',
  primaryHref:'/seller/v-ads',
- microcopy:'₹0 / Free Forever for Business Listings (808+ services) & Self-Serve V Ads (any radius on VISTRAH) • Zero commission',
- studioBoundary:'Business listings across all 808+ service types and self-serve V Ads creation/upload for any target radius inside VISTRAH are 100% Free Forever (₹0). Paid pricing applies strictly to optional done-for-you VISTRAH Ads & Marketing Studio campaigns/production and VISTRAH Tech Website & Business Automation solutions.',
+ microcopy:'₹0 / Free Forever for Verified Business Listings & Self-Serve V Ads (any radius on VISTRAH) • Zero commission',
+ studioBoundary:'Business listings across all VISTRAH service categories and self-serve V Ads creation/upload for any target radius inside VISTRAH are 100% Free Forever (₹0). Paid pricing applies strictly to optional done-for-you VISTRAH Ads & Marketing Studio campaigns/production and VISTRAH Tech Website & Business Automation solutions.',
 } as const;
 
 export const VADS_FREE_FIRST_MONTH=VADS_FREE_FOREVER;
@@ -323,7 +323,7 @@ export const FREE_LISTING_ANCHOR={
  priceLabel:'₹0',
  badge:'₹0 / FREE FOREVER · LISTING & ANY-RADIUS V ADS',
  title:'Free Forever: Business Listing + Any-Radius V Ads',
- summary:'List your business across 808+ service types and create & upload V Ads for any target radius on VISTRAH at ₹0 forever. Done-for-you VISTRAH Ads & Marketing Studio and Website / Business Automation services are quoted transparently below.',
+ summary:'List your business on VISTRAH and create & upload V Ads for any target radius across India at ₹0 forever. Done-for-you VISTRAH Ads & Marketing Studio and Website / Business Automation services are quoted transparently below.',
  primaryHref:'/seller/v-ads',
  primaryLabel:'Create & Upload Free V Ad',
  secondaryHref:'/seller/onboard',
@@ -441,7 +441,7 @@ export function serviceFeeClarity(service:PricingService):string{
 export const PRICING_COMPARISON_ROWS=[
  {
   criteria:'Best suited for',
-  free:'Every shop, clinic, freelancer, farmer & enterprise across 808+ service types',
+  free:'Every shop, clinic, salon, contractor, hospitality & local business across India',
   boosts:'Local businesses broadcasting 9:16 video ads across any radius inside VISTRAH',
   studio:'Businesses wanting done-for-you ad shoots, managed Meta/Google campaigns, custom websites, or automation',
  },
@@ -480,7 +480,7 @@ export const PRICING_COMPARISON_ROWS=[
 export const MERCHANT_PRICING_FAQS=[
  {
   question:'Are business listings and uploading V Ads really 100% free for any radius?',
-  answer:'Yes! Listing your business across all 808+ service types on VISTRAH (/seller/onboard) and creating/uploading self-serve V Ads for ANY target radius inside VISTRAH (/seller/v-ads) are ₹0 / Free Forever—with zero per-radius charges and zero lead commissions. All V Ads go through standard quality moderation before appearing live.',
+  answer:'Yes! Listing your business across VISTRAH service categories (/seller/onboard) and creating/uploading self-serve V Ads for ANY target radius inside VISTRAH (/seller/v-ads) are ₹0 / Free Forever—with zero per-radius charges and zero lead commissions. All V Ads go through standard quality moderation before appearing live.',
  },
  {
   question:'What services are paid on VISTRAH?',

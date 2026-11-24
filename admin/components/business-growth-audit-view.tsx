@@ -18,7 +18,6 @@ import {
   QrCode,
   ShieldCheck,
   Smartphone,
-  Sparkles,
   Star,
   TrendingUp,
   Video,
@@ -865,7 +864,6 @@ export function BusinessGrowthAuditView({
                 className={`${s.actionBtn} ${s.actionPrimaryGold}`}
                 style={{ justifyContent: 'center', width: '100%' }}
               >
-                <Sparkles size={15} aria-hidden="true" />
                 {savingLead
                   ? 'Saving Proposal…'
                   : viewerMode === 'admin'

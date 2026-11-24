@@ -338,10 +338,10 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     <div className={styles.brandSwatchCard}>
                       <span className={styles.brandAa}>Aa.</span>
                       <div className={styles.swatchRow}>
-                        <span className={styles.swatchDot} style={{background: '#173f35'}} />
-                        <span className={styles.swatchDot} style={{background: '#f9aa45'}} />
-                        <span className={styles.swatchDot} style={{background: '#2563eb'}} />
-                        <span className={styles.swatchDot} style={{background: '#ec4899'}} />
+                        <span className={styles.swatchDot} style={{background: '#0F294A'}} />
+                        <span className={styles.swatchDot} style={{background: '#F97316'}} />
+                        <span className={styles.swatchDot} style={{background: '#132F54'}} />
+                        <span className={styles.swatchDot} style={{background: '#EA580C'}} />
                       </div>
                     </div>
                   </div>

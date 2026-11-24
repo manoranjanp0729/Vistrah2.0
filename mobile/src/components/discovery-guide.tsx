@@ -10,8 +10,8 @@ import copy from '../lib/interface-copy';
 import {useTheme,spacing} from '../lib/theme';
 
 const shortcuts = {
-  jobs: {route: '/service/find-jobs', icon: 'briefcase', gradient: ['#2563eb', '#3b82f6']},
-  discovery: {route: '/discover-more', icon: 'compass', gradient: ['#7c3aed', '#a855f7']},
+  jobs: {route: '/service/find-jobs', icon: 'briefcase', gradient: ['#0F294A', '#163A66']},
+  discovery: {route: '/discover-more', icon: 'compass', gradient: ['#EA580C', '#F97316']},
   employer: {route: '/employer-jobs', icon: 'users', gradient: ['#059669', '#10b981']},
 } as const;
 
@@ -51,11 +51,11 @@ export function DiscoveryGuide() {
         <View
           style={{
             flexDirection: 'row',
-            backgroundColor: mode === 'dark' ? '#211e2c' : '#f0ecf7',
+            backgroundColor: mode === 'dark' ? '#0f233d' : '#f1f5f9',
             padding: 4,
             borderRadius: 20,
             borderWidth: 1,
-            borderColor: mode === 'dark' ? '#393246' : '#e2dbef',
+            borderColor: mode === 'dark' ? '#1e3a5f' : '#cbd5e1',
             gap: 4,
           }}
         >
@@ -129,8 +129,8 @@ export function DiscoveryGuide() {
               padding: 20,
               gap: 16,
               borderWidth: 1,
-              borderColor: mode === 'dark' ? '#393246' : '#e2dbef',
-              backgroundColor: mode === 'dark' ? '#211e2c' : '#ffffff',
+              borderColor: mode === 'dark' ? '#1e3a5f' : '#cbd5e1',
+              backgroundColor: mode === 'dark' ? '#0f233d' : '#ffffff',
               shadowColor: brandTheme.gradient[1],
               shadowOffset: {width: 0, height: 6},
               shadowOpacity: mode === 'dark' ? 0.22 : 0.08,
@@ -161,11 +161,11 @@ export function DiscoveryGuide() {
                   flexDirection: 'row',
                   gap: 12,
                   alignItems: 'flex-start',
-                  backgroundColor: mode === 'dark' ? '#29243d' : '#f9f7fd',
+                  backgroundColor: mode === 'dark' ? '#132f54' : '#f8fafc',
                   padding: 12,
                   borderRadius: 14,
                   borderWidth: 1,
-                  borderColor: mode === 'dark' ? '#393246' : '#ece5f7',
+                  borderColor: mode === 'dark' ? '#1e3a5f' : '#e2e8f0',
                 }}
               >
                 <View
@@ -235,7 +235,7 @@ export function DiscoveryGuide() {
               paddingHorizontal: 8,
               paddingVertical: 3,
               borderRadius: 8,
-              backgroundColor: mode === 'dark' ? '#2c2542' : '#ebdffc',
+              backgroundColor: mode === 'dark' ? '#132f54' : '#eff6ff',
             }}
           >
             <Text style={{color: colors.accent, fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
@@ -266,8 +266,8 @@ export function DiscoveryGuide() {
                     padding: 14,
                     borderRadius: 18,
                     borderWidth: 1,
-                    borderColor: mode === 'dark' ? '#393246' : '#e6e0f0',
-                    backgroundColor: mode === 'dark' ? '#211e2c' : '#ffffff',
+                    borderColor: mode === 'dark' ? '#1e3a5f' : '#e2e8f0',
+                    backgroundColor: mode === 'dark' ? '#0f233d' : '#ffffff',
                     opacity: pressed ? 0.85 : 1,
                   },
                 ]}
@@ -297,7 +297,7 @@ export function DiscoveryGuide() {
                     paddingHorizontal: 10,
                     paddingVertical: 6,
                     borderRadius: 12,
-                    backgroundColor: mode === 'dark' ? '#2c2542' : '#f0ecf7',
+                    backgroundColor: mode === 'dark' ? '#132f54' : '#f1f5f9',
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 4,
@@ -327,7 +327,7 @@ export function DiscoveryGuide() {
                   paddingHorizontal: 8,
                   paddingVertical: 3,
                   borderRadius: 8,
-                  backgroundColor: mode === 'dark' ? '#2c2542' : '#ebdffc',
+                  backgroundColor: mode === 'dark' ? '#132f54' : '#eff6ff',
                 }}
               >
                 <Text style={{color: colors.accent, fontSize: 10, fontWeight: '800', letterSpacing: 1}}>
@@ -354,8 +354,8 @@ export function DiscoveryGuide() {
                   style={{
                     borderRadius: 16,
                     borderWidth: 1,
-                    borderColor: mode === 'dark' ? '#393246' : '#e6e0f0',
-                    backgroundColor: mode === 'dark' ? '#211e2c' : '#ffffff',
+                    borderColor: mode === 'dark' ? '#1e3a5f' : '#e2e8f0',
+                    backgroundColor: mode === 'dark' ? '#0f233d' : '#ffffff',
                     padding: 14,
                     gap: isItemOpen ? 8 : 0,
                   }}
@@ -369,7 +369,7 @@ export function DiscoveryGuide() {
                         width: 24,
                         height: 24,
                         borderRadius: 12,
-                        backgroundColor: mode === 'dark' ? '#29243d' : '#f3effa',
+                        backgroundColor: mode === 'dark' ? '#132f54' : '#f1f5f9',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}

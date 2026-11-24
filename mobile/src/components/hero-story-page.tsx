@@ -63,9 +63,9 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
 
   const banner = getHeroBannerByKey(storyKey);
 
-  const pageBg = isDark ? '#0b0b0e' : '#f8fafc';
-  const surface = isDark ? '#18181b' : '#ffffff';
-  const surfaceSoft = isDark ? '#111114' : '#f1f5f9';
+  const pageBg = isDark ? '#091526' : '#f8fafc';
+  const surface = isDark ? '#0f233d' : '#ffffff';
+  const surfaceSoft = isDark ? '#132f54' : '#f1f5f9';
   const hairline = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(15,23,42,0.10)';
   const textPrimary = isDark ? '#fafafa' : '#0f172a';
   const textSecondary = isDark ? '#a1a1aa' : '#475569';
@@ -415,7 +415,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                           >
                             <Text style={{fontSize: 20, fontWeight: '700', color: textPrimary}}>Aa.</Text>
                             <View style={{flexDirection: 'row', gap: 5}}>
-                              {['#173f35', '#f9aa45', '#2563eb', '#ec4899'].map(sw => (
+                              {['#0F294A', '#F97316', '#132F54', '#EA580C'].map(sw => (
                                 <View key={sw} style={{width: 16, height: 7, borderRadius: 3, backgroundColor: sw}} />
                               ))}
                             </View>

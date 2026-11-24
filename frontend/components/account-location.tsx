@@ -50,7 +50,7 @@ export function AccountLocation({compactHeader=false}:{compactHeader?:boolean}){
             : undefined
         }
       >
-        <MapPin size={15} style={{flexShrink:0,color:'#503fbd'}} aria-hidden="true"/>
+        <MapPin size={15} style={{flexShrink:0,color:'#F97316'}} aria-hidden="true"/>
         <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{pillText}</span>
         <ChevronDown size={14} style={{flexShrink:0,opacity:0.65}} aria-hidden="true"/>
       </button>

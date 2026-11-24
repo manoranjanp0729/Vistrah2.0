@@ -73,8 +73,8 @@ export const MARKETING_TEMPLATES: readonly MarketingTemplate[] = [
     tagline: 'New branch & locality announcement',
     description: 'Announce new retail outlets, clinics, restaurants, and regional branch expansions.',
     icon: 'zap',
-    themeColor: '#7C3AED',
-    gradient: ['#4C1D95', '#7C3AED', '#A78BFA'],
+    themeColor: '#EA580C',
+    gradient: ['#0F294A', '#EA580C', '#F97316'],
     defaultHeadline: 'Now Serving Your Locality',
     defaultBadge: 'NEW BRANCH',
     defaultHighlights: [

@@ -47,7 +47,7 @@ function GeneratedVideoPreview({ videoUrl }: { videoUrl: string }) {
           width: '100%',
           height: 260,
           borderRadius: 16,
-          backgroundColor: '#0c0714',
+          backgroundColor: '#091526',
           alignItems: 'center',
           justifyContent: 'center',
           gap: 6,
@@ -233,7 +233,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             borderRadius: 20,
             padding: 16,
             gap: 8,
-            backgroundColor: mode === 'light' ? '#fdfaff' : '#1f192b',
+            backgroundColor: mode === 'light' ? '#f8fafc' : '#0f233d',
             borderWidth: 1,
             borderColor: colors.accent + '40',
           },
@@ -401,8 +401,8 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                   gap: 8,
                   backgroundColor: isSelected
                     ? mode === 'light'
-                      ? '#f8f4fc'
-                      : '#271d36'
+                      ? '#f8fafc'
+                      : '#132f54'
                     : colors.surface,
                   borderWidth: 2,
                   borderColor: isSelected ? template.themeColor : colors.border,
@@ -724,8 +724,8 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                   borderRadius: 14,
                   backgroundColor: isSelected
                     ? mode === 'light'
-                      ? '#f3e8ff'
-                      : '#2e1c3e'
+                      ? '#eff6ff'
+                      : '#132f54'
                     : colors.surface,
                   borderWidth: 1.5,
                   borderColor: isSelected ? colors.accent : colors.border,
@@ -787,7 +787,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             borderWidth: 2,
             borderColor: colors.border,
             position: 'relative',
-            backgroundColor: '#0a0a0f',
+            backgroundColor: '#091526',
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.25,

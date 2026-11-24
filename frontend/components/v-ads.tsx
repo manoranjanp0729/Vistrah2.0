@@ -305,7 +305,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)}
-            style={{background:'#503fbd',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value={"Explore Brand"}/></span>
@@ -335,7 +335,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         <div style={{display:'grid',gap:12,paddingBottom:16}}>
           <div>
             <h2 style={{margin:'0 0 4px',fontSize:18}}>{productMeta.product_name || reel.title}</h2>
-            <Link href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)} style={{fontSize:13,color:'#503fbd',fontWeight:600,display:'inline-flex',alignItems:'center',gap:4}}>
+            <Link href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)} style={{fontSize:13,color:'#0F294A',fontWeight:600,display:'inline-flex',alignItems:'center',gap:4}}>
               <span>{reel.advertiser.name}</span>
               <CheckCircle2 size={13} color="#16a34a"/>
               <span style={{color:'var(--text-secondary)'}}>· <UiText value={"View Brand Channel"}/></span>
@@ -417,7 +417,7 @@ export function VAdsAdvertiser({id}:{id:string}) {
                   : 'Standard delivery options'}
               </span>
             </div>
-            <Link href={'/commerce/'+encodeURIComponent(product.id)} style={{fontSize:13,fontWeight:600,color:'#503fbd'}}>
+            <Link href={'/commerce/'+encodeURIComponent(product.id)} style={{fontSize:13,fontWeight:600,color:'#0F294A'}}>
               <UiText value={"View details & order →"}/>
             </Link>
           </div>

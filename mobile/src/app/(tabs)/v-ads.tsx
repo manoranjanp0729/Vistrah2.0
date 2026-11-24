@@ -338,7 +338,7 @@ function ReelCard({reel, active, height}: {
 
       {/* Comments Panel */}
       {commentsOpen && (
-        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728', borderColor: colors.border}]}>
+        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#0f233d', borderColor: colors.border}]}>
           <View style={s.commentGrabHandle} />
           <View style={s.commentHeader}>
             <Text style={[s.commentTitle, {color: colors.text}]}><UiText value={"Comments"}/></Text>
@@ -377,11 +377,11 @@ function ReelCard({reel, active, height}: {
 
       {/* Product Details Sheet for Product Ads */}
       {productDetailsOpen && productMeta && (
-        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728', borderColor: colors.border, height: '70%', maxHeight: 520}]}>
+        <View style={[s.commentPanel, {backgroundColor: mode === 'light' ? '#FFFFFF' : '#0f233d', borderColor: colors.border, height: '70%', maxHeight: 520}]}>
           <View style={s.commentGrabHandle} />
           <View style={s.commentHeader}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1}}>
-              <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a1520', alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fff7ed' : '#1e293b', alignItems: 'center', justifyContent: 'center'}}>
                 <Feather name="shopping-bag" size={16} color="#e11d48"/>
               </View>
               <Text numberOfLines={1} style={[s.commentTitle, {color: colors.text, flex: 1}]}>
@@ -416,7 +416,7 @@ function ReelCard({reel, active, height}: {
             </View>
 
             {/* Price Details */}
-            <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
+            <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fff7ed' : '#132f54', borderWidth: 1, borderColor: '#fdba74', gap: 4}}>
               <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
@@ -669,7 +669,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 14,
-    backgroundColor: '#503fbd',
+    backgroundColor: '#0F294A',
     marginTop: 2,
   },
   exploreBrandText: {

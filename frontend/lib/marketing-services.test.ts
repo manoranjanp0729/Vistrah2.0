@@ -51,7 +51,7 @@ describe('dedicated marketing service journeys',()=>{
 it("keeps all four service palettes light and responsive to every App Theme",()=>{
  for(const page of marketingServicePages){
   const papers=new Set<string>();
-  for(const id of ["blue","indigo","lavender","orchid","pink"]){
+  for(const id of ["navy","orange","cobalt","slate","teal"]){
    const visual=themedMarketingVisuals(page.key,themeAppearance("light",id).colors.accent);
    papers.add(visual.paper);
    for(const color of [visual.paper,visual.wash]){

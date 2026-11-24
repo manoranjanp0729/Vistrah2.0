@@ -45,7 +45,7 @@ export const marketingServicePages=[
   brief:[c('Your business, offer and target audience','ನಿಮ್ಮ ವ್ಯವಹಾರ, ಕೊಡುಗೆ ಮತ್ತು ಗುರಿ ಪ್ರೇಕ್ಷಕರು','आपका व्यवसाय, ऑफ़र और लक्षित दर्शक'),c('Website, social channels and current challenges','ವೆಬ್‌ಸೈಟ್, ಸಾಮಾಜಿಕ ಚಾನೆಲ್‌ಗಳು ಮತ್ತು ಪ್ರಸ್ತುತ ಸವಾಲುಗಳು','वेबसाइट, सोशल चैनल और मौजूदा चुनौतियाँ'),c('Campaign goal, timeline and media budget','ಅಭಿಯಾನದ ಗುರಿ, ಸಮಯ ಮತ್ತು ಮಾಧ್ಯಮ ಬಜೆಟ್','अभियान का लक्ष्य, समय और मीडिया बजट')],
  },
  {
-  slug:'branding-creative-production',key:'branding-creative',accent:'#f9a8d4',photo:'branding-creative.webp',
+  slug:'branding-creative-production',key:'branding-creative',accent:'#fb923c',photo:'branding-creative.webp',
   title:c('Branding & Creative Production','ಬ್ರ್ಯಾಂಡಿಂಗ್ ಮತ್ತು ಸೃಜನಾತ್ಮಕ ನಿರ್ಮಾಣ','ब्रांडिंग और क्रिएटिव प्रोडक्शन'),
   headline:c('Commercial brand identity and short-form video production.','ಜನರು ಗುರುತಿಸುವ ಬ್ರ್ಯಾಂಡ್. ನೆನಪಿನಲ್ಲಿಡುವ ಕಥೆ.','ऐसा ब्रांड जिसे लोग पहचानें। ऐसी कहानी जो याद रहे।'),
   intro:c('Develop structured brand systems, packaging collateral, product photography, and 9:16 commercial reels ready for digital and V Ads distribution.','ನಿಮ್ಮ ಗುರುತು, ದೃಶ್ಯಗಳು ಮತ್ತು ಸಂದೇಶವನ್ನು ಒಂದೇ ಅಭಿವ್ಯಕ್ತಿಯ ಜಗತ್ತಿಗೆ ತನ್ನಿ. ಮೊದಲ ಲೋಗೋದಿಂದ ಮುಂದಿನ ಅಭಿಯಾನದ ಚಿತ್ರವರೆಗೆ ಗ್ರಾಹಕರ ಪ್ರತಿ ಸಂಪರ್ಕಕ್ಕೂ ಒಂದೇ ವ್ಯಕ್ತಿತ್ವ ನೀಡಿ.','अपनी पहचान, दृश्यों और संदेश को एक अभिव्यक्तिपूर्ण दुनिया में लाएँ। पहले लोगो से अगले अभियान वीडियो तक हर ग्राहक अनुभव में एक जैसा व्यक्तित्व रखें।'),

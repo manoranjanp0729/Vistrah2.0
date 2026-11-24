@@ -138,7 +138,7 @@ function InlineStudioPlayer({videoUrl,isActive,onActivate}:{videoUrl:string;isAc
   useEffect(()=>{return ()=>{try{player.pause();}catch{}};},[player]);
 
   if(!url){
-    return <View style={{width:'100%',height:200,borderRadius:12,backgroundColor:'#160e22',alignItems:'center',justifyContent:'center',gap:6}}><Feather name="video-off" size={24} color="#888"/><Text style={{fontSize:12,color:'#888'}}><UiText value={"Video preview unavailable"}/></Text></View>;
+    return <View style={{width:'100%',height:200,borderRadius:12,backgroundColor:'#091526',alignItems:'center',justifyContent:'center',gap:6}}><Feather name="video-off" size={24} color="#888"/><Text style={{fontSize:12,color:'#888'}}><UiText value={"Video preview unavailable"}/></Text></View>;
   }
 
   return (
@@ -219,7 +219,7 @@ function InlineStudioPlayer({videoUrl,isActive,onActivate}:{videoUrl:string;isAc
           </View>
           <View style={{flexDirection:'row',alignItems:'center',gap:8,paddingHorizontal:4}} pointerEvents="box-none">
             <View style={{flex:1,height:4,backgroundColor:'rgba(255,255,255,0.25)',borderRadius:2,overflow:'hidden'}}>
-              <View style={{height:'100%',width:`${progress}%`,backgroundColor:'#a855f7',borderRadius:2}}/>
+              <View style={{height:'100%',width:`${progress}%`,backgroundColor:'#F97316',borderRadius:2}}/>
             </View>
           </View>
         </View>
@@ -260,7 +260,7 @@ function StudioProductDetailsModal({
         <Pressable style={{flex: 1}} onPress={onClose} />
         <View
           style={{
-            backgroundColor: mode === 'light' ? '#FFFFFF' : '#1c1728',
+            backgroundColor: mode === 'light' ? '#FFFFFF' : '#0f233d',
             borderTopLeftRadius: 24,
             borderTopRightRadius: 24,
             padding: 18,
@@ -273,7 +273,7 @@ function StudioProductDetailsModal({
           <View style={{width: 36, height: 4, borderRadius: 2, backgroundColor: 'rgba(128,128,128,0.4)', alignSelf: 'center', marginBottom: 4}} />
           <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 8, flex: 1}}>
-              <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a1520', alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fff7ed' : '#132f54', alignItems: 'center', justifyContent: 'center'}}>
                 <Feather name="shopping-bag" size={16} color="#e11d48"/>
               </View>
               <Text numberOfLines={1} style={{fontSize: 16, fontWeight: '700', color: colors.text, flex: 1}}>
@@ -310,7 +310,7 @@ function StudioProductDetailsModal({
             </View>
 
             {/* Price Details */}
-            <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fdf2f4' : '#2a121c', borderWidth: 1, borderColor: '#fca5a5', gap: 4}}>
+            <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fff7ed' : '#132f54', borderWidth: 1, borderColor: '#fdba74', gap: 4}}>
               <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
@@ -447,9 +447,9 @@ function WorkspaceScreen(){
 
   return <>
     {/* Exact V Ads Studio Top Banner */}
-    <View style={{borderRadius: 20, overflow: 'hidden', borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)', shadowColor: '#503fbd', shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.16, shadowRadius: 8, elevation: 3}}>
+    <View style={{borderRadius: 20, overflow: 'hidden', borderWidth: 1, borderColor: 'rgba(255,255,255,0.22)', shadowColor: '#0F294A', shadowOffset: {width: 0, height: 3}, shadowOpacity: 0.16, shadowRadius: 8, elevation: 3}}>
       <LinearGradient
-        colors={['#2D1F50', '#48257C', '#642E9E']}
+        colors={['#091B33', '#0F294A', '#163A66']}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
         style={{
@@ -473,13 +473,13 @@ function WorkspaceScreen(){
           <Feather name="video" size={22} color="#FFFFFF" />
         </View>
         <View style={{flex: 1, gap: 2}}>
-          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: '#f0e6ff', textTransform: 'uppercase'}}>
+          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: '#fdba74', textTransform: 'uppercase'}}>
             <UiText value="CREATOR STUDIO · ₹0 FREE FOREVER"/>
           </Text>
           <Text style={{fontSize: 17, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2}}>
             <UiText value="V Ads Studio"/>
           </Text>
-          <Text numberOfLines={1} style={{fontSize: 12, color: '#eadaff', fontWeight: '500'}}>
+          <Text numberOfLines={1} style={{fontSize: 12, color: '#e2e8f0', fontWeight: '500'}}>
             <UiText value="Free for any radius on VISTRAH · Create & track ads"/>
           </Text>
         </View>
@@ -555,14 +555,14 @@ function WorkspaceScreen(){
 
 
     {Boolean(error)&&<ErrorPanel error={new Error(error)}/>}
-    {Boolean(message)&&<View style={[styles.card,{backgroundColor:mode==='light'?'#f4ecf9':'#26173a',borderColor:colors.accent}]}><Text style={{color:colors.text,fontWeight:'500'}}><UiText value={message}/></Text></View>}
+    {Boolean(message)&&<View style={[styles.card,{backgroundColor:mode==='light'?'#eff6ff':'#0f233d',borderColor:colors.accent}]}><Text style={{color:colors.text,fontWeight:'500'}}><UiText value={message}/></Text></View>}
 
     {/* Clean Segmented Control Tabs */}
-    <View style={{flexDirection: 'row', backgroundColor: mode === 'light' ? '#eceef3' : '#1e1c26', padding: 4, borderRadius: 14, gap: 4}}>
+    <View style={{flexDirection: 'row', backgroundColor: mode === 'light' ? '#f1f5f9' : '#091526', padding: 4, borderRadius: 14, gap: 4}}>
       <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel={`My V Ads tab (${accountVideos.length})`} accessibilityState={{selected: studioTab === 'ads'}} onPress={()=>setStudioTab('ads')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'ads' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'ads' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'ads' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="video" size={14} color={studioTab === 'ads' ? colors.accent : colors.muted}/>
         <Text style={{fontSize: 13, fontWeight: studioTab === 'ads' ? '700' : '500', color: studioTab === 'ads' ? colors.text : colors.muted}}><UiText value={"My V Ads"}/></Text>
-        <View style={{paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, backgroundColor: studioTab === 'ads' ? (mode === 'light' ? '#e9ecef' : '#2e2b38') : (mode === 'light' ? '#dfdbe7' : '#292534')}}>
+        <View style={{paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, backgroundColor: studioTab === 'ads' ? (mode === 'light' ? '#e2e8f0' : '#1e3a5f') : (mode === 'light' ? '#e2e8f0' : '#132f54')}}>
           <Text style={{fontSize: 11, fontWeight: '700', fontVariant: ['tabular-nums'], color: studioTab === 'ads' ? colors.text : colors.muted}}>{accountVideos.length}</Text>
         </View>
       </UiElement>
@@ -591,17 +591,17 @@ function WorkspaceScreen(){
       <View style={{gap:12}}>
       {/* Filter Tabs */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8, paddingVertical: 2}}>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('ALL')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'ALL' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'ALL' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'ALL' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"All ("}/>{accountVideos.length})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('ALL')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'ALL' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'ALL' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'ALL' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"All ("}/>{accountVideos.length})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('APPROVED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'APPROVED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'APPROVED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'APPROVED' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"● Approved ("}/>{accountVideos.filter(v=>v.status==='APPROVED').length})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('APPROVED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'APPROVED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'APPROVED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'APPROVED' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"● Approved ("}/>{accountVideos.filter(v=>v.status==='APPROVED').length})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('PENDING')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'PENDING' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'PENDING' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'PENDING' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"⏳ Review ("}/>{pendingCount})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('PENDING')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'PENDING' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'PENDING' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'PENDING' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"⏳ Review ("}/>{pendingCount})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('REJECTED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'REJECTED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.surface, borderWidth: 1, borderColor: filter === 'REJECTED' ? (mode === 'light' ? '#20344f' : '#f4edff') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'REJECTED' ? (mode === 'light' ? '#fff' : '#1e1c26') : colors.text}}><UiText value={"⚠️ Changes ("}/>{rejectedCount})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('REJECTED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'REJECTED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'REJECTED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'REJECTED' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"⚠️ Changes ("}/>{rejectedCount})</Text>
         </Pressable>
       </ScrollView>
 
@@ -687,7 +687,7 @@ function WorkspaceScreen(){
                         paddingHorizontal: 12,
                         paddingVertical: 8,
                         borderRadius: 14,
-                        backgroundColor: '#503fbd',
+                        backgroundColor: '#0F294A',
                         flexDirection: 'row',
                         alignItems: 'center',
                         gap: 6,
@@ -856,7 +856,7 @@ function WorkspaceScreen(){
                 flex: 1,
                 padding: 12,
                 borderRadius: 14,
-                backgroundColor: adType === 'PRODUCT' ? (mode === 'light' ? '#fdf2f4' : '#2a1520') : colors.surface,
+                backgroundColor: adType === 'PRODUCT' ? (mode === 'light' ? '#fff7ed' : '#132f54') : colors.surface,
                 borderWidth: 1.5,
                 borderColor: adType === 'PRODUCT' ? '#e11d48' : colors.border,
                 alignItems: 'center',
@@ -880,7 +880,7 @@ function WorkspaceScreen(){
                 flex: 1,
                 padding: 12,
                 borderRadius: 14,
-                backgroundColor: adType === 'BRAND' ? (mode === 'light' ? '#f3eefc' : '#221935') : colors.surface,
+                backgroundColor: adType === 'BRAND' ? (mode === 'light' ? '#eff6ff' : '#132f54') : colors.surface,
                 borderWidth: 1.5,
                 borderColor: adType === 'BRAND' ? colors.accent : colors.border,
                 alignItems: 'center',
@@ -899,7 +899,7 @@ function WorkspaceScreen(){
         </View>
 
         {adType === 'PRODUCT' ? (
-          <View style={{gap: 10, padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#faf7fc' : '#1d172b', borderWidth: 1, borderColor: colors.border}}>
+          <View style={{gap: 10, padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f8fafc' : '#0f233d', borderWidth: 1, borderColor: colors.border}}>
             <Text style={{fontSize: 12, fontWeight: '700', color: colors.accent, letterSpacing: 0.5, textTransform: 'uppercase'}}>
               <UiText value="Product Details & Purchasing Options" />
             </Text>
@@ -909,7 +909,7 @@ function WorkspaceScreen(){
             <UiElement as={Field} label="Catalog Product ID (Optional)" placeholder="Paste listing ID if this product is listed in Vistrah commerce" value={productId} onChangeText={setProductId} maxLength={64} />
           </View>
         ) : (
-          <View style={{gap: 10, padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#faf7fc' : '#1d172b', borderWidth: 1, borderColor: colors.border}}>
+          <View style={{gap: 10, padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f8fafc' : '#0f233d', borderWidth: 1, borderColor: colors.border}}>
             <Text style={{fontSize: 12, fontWeight: '700', color: colors.accent, letterSpacing: 0.5, textTransform: 'uppercase'}}>
               <UiText value="Brand Details & Catalog Available" />
             </Text>
@@ -951,7 +951,7 @@ function WorkspaceScreen(){
       </View>}
 
       {/* Creator Growth Tips Card */}
-      <View style={[styles.card, {borderRadius: 20, padding: 16, gap: 8, backgroundColor: mode === 'light' ? '#f8f5fc' : '#221933', borderColor: colors.accent + '30'}]}>
+      <View style={[styles.card, {borderRadius: 20, padding: 16, gap: 8, backgroundColor: mode === 'light' ? '#f8fafc' : '#0f233d', borderColor: colors.accent + '30'}]}>
         <View style={{flexDirection: 'row', alignItems: 'center', gap: 8}}>
           <Feather name="trending-up" size={16} color={colors.accent}/>
           <Text style={[styles.heading, {fontSize: 15, color: colors.text}]}><UiText value={"Tips for a clear V Ad"}/></Text>
@@ -1177,7 +1177,7 @@ function PublicFeedView() {
                       paddingHorizontal: 12,
                       paddingVertical: 8,
                       borderRadius: 14,
-                      backgroundColor: '#503fbd',
+                      backgroundColor: '#0F294A',
                       flexDirection: 'row',
                       alignItems: 'center',
                       gap: 6,

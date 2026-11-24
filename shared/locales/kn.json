@@ -1353,10 +1353,10 @@
   "footer.sellerLogin": "ಮಾರಾಟಗಾರರಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ",
   "settings.themeColor": "ಅಪ್ಲಿಕೇಶನ್ ಥೀಮ್",
   "settings.themeColorHelp": "ಅಪ್ಲಿಕೇಶನ್ ಬಣ್ಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ. ನೋಟವನ್ನು ಬದಲಾಯಿಸಲು ಲೈಟ್ ಅಥವಾ ಡಾರ್ಕ್ ಆಯ್ಕೆಮಾಡಿ.",
-  "settings.theme.blue": "ಸಾಗರ ನೀಲಿ",
-  "settings.theme.indigo": "ರಾಯಲ್ ಇಂಡಿಗೋ",
-  "settings.theme.lavender": "ಕ್ಲಾಸಿಕ್ ಲ್ಯಾವೆಂಡರ್",
-  "settings.theme.orchid": "ಆರ್ಕಿಡ್ ನೇರಳೆ",
-  "settings.theme.pink": "ರೋಸ್ ಗುಲಾಬಿ",
+  "settings.theme.navy": "ವಿಸ್ತ್ರಾ ನೇವಿ",
+  "settings.theme.orange": "ವಾರ್ಮ್ ಕಿತ್ತಳೆ",
+  "settings.theme.cobalt": "ಡೀಪ್ ಕೋಬಾಲ್ಟ್",
+  "settings.theme.slate": "ಕ್ರಿಸ್ಪ್ ಸ್ಲೇಟ್",
+  "settings.theme.teal": "ಕೋಸ್ಟಲ್ ಟೀಲ್",
   "settings.close": "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮುಚ್ಚಿ"
 }

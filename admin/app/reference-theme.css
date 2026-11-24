@@ -68,7 +68,7 @@ th,.admin-table th,.table-actions button,.admin-search button{background:#292929
 .reference-category h3{color:inherit;font-size:22px;margin:4px 0 0;line-height:1.3}
 .reference-category p{color:inherit;font-size:14px;line-height:1.6;margin:0 0 6px}
 .reference-category>span{display:flex;align-items:center;gap:8px;font-size:13px;margin-top:auto}
-.reference-tone-0{background:#e6edfb;color:#213c5b}.reference-tone-1{background:#f9e8d6;color:#6d4524}.reference-tone-2{background:#e8e4f5;color:#493a69}.reference-tone-3{background:#dfece3;color:#294934}
+.reference-tone-0{background:#e6edfb;color:#213c5b}.reference-tone-1{background:#fff7ed;color:#9a3412}.reference-tone-2{background:#eff6ff;color:#0f294a}.reference-tone-3{background:#dfece3;color:#294934}
 .reference-feature{display:grid;grid-template-columns:210px minmax(0,1fr);gap:28px;border-radius:28px;padding:26px;background:#222;align-items:center}
 .reference-feature>.visual{height:240px;aspect-ratio:auto!important;border-radius:22px}
 .reference-feature h2{font-size:30px;margin:16px 0}.reference-feature p{font-size:20px;max-width:560px;margin-bottom:18px}
@@ -120,7 +120,7 @@ th,.admin-table th,.table-actions button,.admin-search button{background:#292929
 /* Matched consumer interface; desktop keeps its wider presentation. */
 .reference-home .reference-hero{grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:start}
 .reference-slide-tone-0{background:linear-gradient(120deg,#18394b,#17202e)}
-.reference-slide-tone-1{background:linear-gradient(120deg,#452b1d,#211c29)}
+.reference-slide-tone-1{background:linear-gradient(120deg,#091b33,#0f294a)}
 .reference-hero-slide>div:not(.visual){min-height:210px;display:flex;flex-direction:column;justify-content:center;padding:24px}
 .reference-hero-slide h2{font-size:24px;line-height:1.25}
 .reference-hero-slide p:not(.reference-label){font-size:14px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin:0 0 12px}

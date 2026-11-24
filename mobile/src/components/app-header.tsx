@@ -24,7 +24,7 @@ export function AppHeader({showBack=false}:{showBack?:boolean}){
   return (
     <View style={{paddingTop:insets.top,backgroundColor:colors.background,zIndex:1,borderBottomLeftRadius:20,borderBottomRightRadius:20,overflow:'hidden'}}>
       <LinearGradient pointerEvents="none" colors={headerGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={{position:'absolute',top:0,left:0,right:0,bottom:0}}>
-        <View style={{position:'absolute',right:24,top:-52,width:160,height:160,borderRadius:80,backgroundColor:'#baa3e4',opacity:mode==='light'?.12:.06}}/>
+        <View style={{position:'absolute',right:24,top:-52,width:160,height:160,borderRadius:80,backgroundColor:'#F97316',opacity:mode==='light'?.10:.08}}/>
       </LinearGradient>
       <View style={{height:66,paddingLeft:8,paddingRight:12,flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8}}>
         <UiElement
@@ -59,9 +59,9 @@ export function AppHeader({showBack=false}:{showBack?:boolean}){
               paddingHorizontal:10,
               paddingVertical:6,
               borderRadius:999,
-              backgroundColor:mode==='light'?'rgba(255,255,255,0.88)':'rgba(31,26,46,0.88)',
+              backgroundColor:mode==='light'?'rgba(255,255,255,0.88)':'rgba(15,35,61,0.88)',
               borderWidth:1,
-              borderColor:activePlace?colors.accent:(mode==='light'?'#dfd6ec':'#393246'),
+              borderColor:activePlace?colors.accent:(mode==='light'?'#cbd5e1':'#1e3a5f'),
               opacity:pressed?0.82:1,
             })}
           >

@@ -24,26 +24,26 @@
 .heroHandle{color:var(--text-secondary);font-size:13px;line-height:1.5;margin:0}
 .heroActions{display:flex;gap:8px;flex-wrap:wrap}
 .heroActionBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:8px 16px;border-radius:8px;background:var(--surface-soft);border:1px solid var(--border);color:var(--text-primary)!important;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;transition:border-color .15s ease}
-.heroActionBtn:hover{border-color:var(--accent-orange,#503fbd)}
+.heroActionBtn:hover{border-color:var(--accent-orange,#F97316)}
 
 /* Segmented Studio Toggle Tabs */
-.tabNav{display:flex;background:var(--surface-soft,#f1ecf8);border:1px solid var(--border);border-radius:12px;padding:4px;gap:4px}
+.tabNav{display:flex;background:var(--surface-soft,#f1f5f9);border:1px solid var(--border);border-radius:12px;padding:4px;gap:4px}
 .tabButton{flex:1;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid transparent;background:transparent;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:color .15s ease,background .15s ease}
 .tabButton:hover{color:var(--text-primary)}
-.tabButtonActive{background:var(--surface)!important;color:var(--accent-orange,#503fbd)!important;border-color:var(--border)!important;box-shadow:none}
+.tabButtonActive{background:var(--surface)!important;color:var(--accent-orange,#0F294A)!important;border-color:var(--border)!important;box-shadow:none}
 .tabBadge{padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;background:var(--border);color:var(--text-primary)}
-.tabButtonActive .tabBadge{background:rgba(80,63,189,0.12);color:var(--accent-orange,#503fbd)}
+.tabButtonActive .tabBadge{background:rgba(249,115,22,0.14);color:var(--accent-orange,#EA580C)}
 
 .statsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .statCard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md,12px);padding:16px;display:flex;flex-direction:column;gap:4px}
 .statHeader{display:flex;align-items:center;justify-content:space-between;color:var(--text-secondary);font-size:12px;font-weight:500}
-.statIcon{color:#503fbd}
+.statIcon{color:#F97316}
 .statValue{font-size:22px;font-weight:600;color:var(--text-primary);line-height:1.2;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
 .statMuted{font-size:11px;color:var(--text-secondary)}
 .filterBar{display:flex;gap:8px;flex-wrap:wrap}
 .filterPill{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--border);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;color:var(--text-primary);cursor:pointer;transition:border-color .15s ease}
-.filterPill:hover{border-color:#503fbd}
-.filterPillActive{background:#503fbd!important;color:#fff!important;border-color:#503fbd!important}
+.filterPill:hover{border-color:#F97316}
+.filterPillActive{background:#0F294A!important;color:#fff!important;border-color:#0F294A!important}
 .videoCard{background:var(--surface);border:1px solid var(--border);box-shadow:none;border-radius:var(--radius-md,12px);padding:20px;display:grid;gap:12px}
 .videoCardHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .videoTitle{margin:0;font-size:16px;font-weight:600;line-height:1.2;letter-spacing:-.015em;color:var(--text-primary)}

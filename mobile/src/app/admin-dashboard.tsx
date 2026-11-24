@@ -91,15 +91,15 @@ function AdminVideoPlayer({video}: {video: VideoItem}) {
           width: '100%',
           height: 160,
           borderRadius: 14,
-          backgroundColor: mode === 'dark' ? '#181228' : '#f6f3fc',
+          backgroundColor: mode === 'dark' ? '#091526' : '#f8fafc',
           alignItems: 'center',
           justifyContent: 'center',
           padding: 16,
           borderWidth: 1,
-          borderColor: mode === 'dark' ? '#392f4e' : '#e4dbf0',
+          borderColor: mode === 'dark' ? '#1e3a5f' : '#e2e8f0',
         }}
       >
-        <Text style={{color: mode === 'dark' ? '#caa5f5' : '#7741c4', fontSize: 13, fontWeight: '600'}}>
+        <Text style={{color: mode === 'dark' ? '#fb923c' : '#0F294A', fontSize: 13, fontWeight: '600'}}>
           <UiText value={video.preview_available ? 'Preview stream loading…' : 'Video media not uploaded'}/>
         </Text>
       </View>
@@ -115,7 +115,7 @@ function AdminVideoPlayer({video}: {video: VideoItem}) {
         overflow: 'hidden',
         backgroundColor: '#000',
         borderWidth: 1,
-        borderColor: mode === 'dark' ? '#392f4e' : '#e4dbf0',
+        borderColor: mode === 'dark' ? '#1e3a5f' : '#e2e8f0',
       }}
     >
       <VideoView
@@ -997,7 +997,7 @@ export default function AdminDashboard() {
                     : req.status === 'UNDER_REVIEW'
                     ? '#3b82f6'
                     : req.status === 'ASSIGNED'
-                    ? '#8b5cf6'
+                    ? '#F97316'
                     : req.status === 'IN_PROGRESS'
                     ? '#06b6d4'
                     : req.status === 'COMPLETED'

@@ -462,13 +462,13 @@ export default function VistrahEssentials() {
               style={({pressed}) => [
                 s.gridCard,
                 {
-                  backgroundColor: isDark ? '#1e182d' : '#ffffff',
-                  borderColor: isDark ? '#362a4d' : '#e4dcee',
+                  backgroundColor: isDark ? '#0f233d' : '#ffffff',
+                  borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                   opacity: pressed ? 0.88 : 1,
                 },
               ]}
             >
-              <View style={[s.gridIconWrap, {backgroundColor: isDark ? '#2a223f' : item.bg}]}>
+              <View style={[s.gridIconWrap, {backgroundColor: isDark ? '#132f54' : item.bg}]}>
                 <Feather name={item.icon} size={18} color={item.accent} />
               </View>
               <View style={{flex: 1, minWidth: 0}}>
@@ -490,8 +490,8 @@ export default function VistrahEssentials() {
         style={[
           s.trustBox,
           {
-            backgroundColor: isDark ? '#191329' : '#f7f4fc',
-            borderColor: isDark ? '#312547' : '#e7def0',
+            backgroundColor: isDark ? '#0f233d' : '#f8fafc',
+            borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
           },
         ]}
       >
@@ -501,7 +501,7 @@ export default function VistrahEssentials() {
         </Text>
 
         <View style={s.trustItem}>
-          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#29213e' : '#edf7f1'}]}>
+          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#132f54' : '#edf7f1'}]}>
             <Feather name="users" size={16} color="#2d6a4f" />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
@@ -515,7 +515,7 @@ export default function VistrahEssentials() {
         </View>
 
         <View style={s.trustItem}>
-          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#29213e' : '#ebf8ff'}]}>
+          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#132f54' : '#ebf8ff'}]}>
             <Feather name="check-circle" size={16} color="#1f6f8b" />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
@@ -529,8 +529,8 @@ export default function VistrahEssentials() {
         </View>
 
         <View style={s.trustItem}>
-          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#29213e' : '#faf5ff'}]}>
-            <Feather name="globe" size={16} color="#7741c4" />
+          <View style={[s.trustIconBox, {backgroundColor: isDark ? '#132f54' : '#fff7ed'}]}>
+            <Feather name="globe" size={16} color="#EA580C" />
           </View>
           <View style={{flex: 1, minWidth: 0}}>
             <Text style={[s.trustItemTitle, {color: colors.text}]}>
@@ -545,7 +545,7 @@ export default function VistrahEssentials() {
 
       {/* 6. PARTNER & PROVIDER ECOSYSTEM INVITATION BANNER */}
       <LinearGradient
-        colors={isDark ? ['#130e22', '#1f1636', '#2f1847'] : ['#181126', '#261746', '#3f1a63']}
+        colors={isDark ? ['#091B33', '#0F294A', '#132F54'] : ['#091B33', '#0F294A', '#163A66']}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 1}}
         style={s.partnerBanner}
@@ -562,7 +562,7 @@ export default function VistrahEssentials() {
           </LinearGradient>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
             <View style={{width: 6, height: 6, borderRadius: 3, backgroundColor: '#34d399'}} />
-            <Text style={{color: '#c2b2df', fontSize: 11, fontWeight: '600'}}>
+            <Text style={{color: '#cbd5e1', fontSize: 11, fontWeight: '600'}}>
               <UiText value="Open Registration" />
             </Text>
           </View>
@@ -615,8 +615,8 @@ const s = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    backgroundColor: '#7741c4',
-    opacity: 0.28,
+    backgroundColor: '#F97316',
+    opacity: 0.22,
   },
   heroTopRow: {
     flexDirection: 'row',
@@ -649,7 +649,7 @@ const s = StyleSheet.create({
   heroVerifiedText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#e2d9f3',
+    color: '#e2e8f0',
   },
   heroTitle: {
     fontSize: Platform.OS === 'android' ? 22 : 20,
@@ -661,7 +661,7 @@ const s = StyleSheet.create({
   heroSubtitle: {
     fontSize: 12.5,
     lineHeight: 18,
-    color: '#d4c7ea',
+    color: '#cbd5e1',
   },
   heroPillsRow: {
     flexDirection: 'row',
@@ -683,7 +683,7 @@ const s = StyleSheet.create({
   heroPillText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#f0eaff',
+    color: '#f8fafc',
   },
 
   // Connect Card (Shared Agri & Health)
@@ -973,8 +973,8 @@ const s = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    backgroundColor: '#7741c4',
-    opacity: 0.25,
+    backgroundColor: '#F97316',
+    opacity: 0.2,
   },
   partnerTopRow: {
     flexDirection: 'row',
@@ -1001,7 +1001,7 @@ const s = StyleSheet.create({
   partnerBody: {
     fontSize: 12,
     lineHeight: 17,
-    color: '#d6c8ed',
+    color: '#cbd5e1',
   },
   partnerButton: {
     borderRadius: 14,

@@ -34,7 +34,7 @@ export default function Settings() {
         {
           paddingTop: insets.top + 20,
           paddingBottom: insets.bottom + 20,
-          backgroundColor: isDark ? 'rgba(0, 0, 0, 0.65)' : 'rgba(15, 12, 25, 0.45)',
+          backgroundColor: isDark ? 'rgba(0, 0, 0, 0.65)' : 'rgba(9, 21, 38, 0.45)',
         },
       ]}
     >
@@ -47,8 +47,8 @@ export default function Settings() {
         style={[
           s.modalCard,
           {
-            backgroundColor: isDark ? '#1a1922ed' : '#ffffffed',
-            borderColor: isDark ? '#2e2c3b' : '#e5e7eb',
+            backgroundColor: isDark ? '#0f233ded' : '#ffffffed',
+            borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
           },
         ]}
       >
@@ -57,7 +57,7 @@ export default function Settings() {
           style={[
             s.header,
             {
-              borderBottomColor: isDark ? '#272533' : '#f0f0f3',
+              borderBottomColor: isDark ? '#1e3a5f' : '#f1f5f9',
             },
           ]}
         >
@@ -74,7 +74,7 @@ export default function Settings() {
             style={({pressed}) => [
               s.closeButton,
               {
-                backgroundColor: isDark ? '#262432' : '#f3f4f6',
+                backgroundColor: isDark ? '#132f54' : '#f1f5f9',
                 opacity: pressed ? 0.75 : 1,
               },
             ]}
@@ -93,8 +93,8 @@ export default function Settings() {
             style={[
               s.sectionCard,
               {
-                backgroundColor: isDark ? '#211f2c' : '#f9fafb',
-                borderColor: isDark ? '#2e2b3c' : '#eaedf0',
+                backgroundColor: isDark ? '#132f54' : '#f8fafc',
+                borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
               },
             ]}
           >
@@ -122,7 +122,7 @@ export default function Settings() {
             )}
           </View>
 
-          <View style={[s.sectionCard,{backgroundColor:isDark?'#211f2c':'#f9fafb',borderColor:isDark?'#2e2b3c':'#eaedf0'}]}>
+          <View style={[s.sectionCard,{backgroundColor:isDark?'#132f54':'#f8fafc',borderColor:isDark?'#1e3a5f':'#e2e8f0'}]}>
             <Text accessibilityRole="header" style={[s.sectionHeading,{color:colors.text}]}>{t('settings.font')}</Text>
             <Text style={[s.sectionHelp,{color:colors.muted}]}>{t('settings.fontHelp')}</Text>
             <SettingsDropdown label={t('settings.font')} value={fonts.font} disabled={!fonts.ready} options={fontChoices.map(font=>({value:font.id,label:font.label,fontFamily:previewFont(font.id),opticalScale:Platform.OS==='web'&&font.id==='montserrat'?1:font.opticalScale}))} onSelect={fonts.setFont}/>
@@ -139,8 +139,8 @@ export default function Settings() {
             style={[
               s.sectionCard,
               {
-                backgroundColor: isDark ? '#211f2c' : '#f9fafb',
-                borderColor: isDark ? '#2e2b3c' : '#eaedf0',
+                backgroundColor: isDark ? '#132f54' : '#f8fafc',
+                borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
               },
             ]}
           >
@@ -153,8 +153,8 @@ export default function Settings() {
                 style={[
                   s.segmentContainer,
                   {
-                    backgroundColor: isDark ? '#16151e' : '#e9ebef',
-                    borderColor: isDark ? '#2b2938' : '#dedfe5',
+                    backgroundColor: isDark ? '#091526' : '#e2e8f0',
+                    borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
                   },
                 ]}
               >
@@ -172,7 +172,7 @@ export default function Settings() {
                       style={({pressed}) => [
                         s.segmentButton,
                         selected && {
-                          backgroundColor: isDark ? '#2e2c3d' : '#ffffff',
+                          backgroundColor: isDark ? '#1e3a5f' : '#ffffff',
                           shadowColor: '#000',
                           shadowOffset: {width: 0, height: 1},
                           shadowOpacity: 0.12,
@@ -261,8 +261,8 @@ function SettingsDropdown({
         style={({pressed}) => [
           s.dropdownTrigger,
           {
-            backgroundColor: isDark ? '#1a1924' : '#ffffff',
-            borderColor: isDark ? '#302d3e' : '#e2e4e9',
+            backgroundColor: isDark ? '#091526' : '#ffffff',
+            borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
             opacity: disabled ? 0.5 : pressed ? 0.75 : 1,
           },
         ]}
@@ -285,8 +285,8 @@ function SettingsDropdown({
           style={[
             s.dropdownMenu,
             {
-              backgroundColor: isDark ? '#1a1924' : '#ffffff',
-              borderColor: isDark ? '#302d3e' : '#e2e4e9',
+              backgroundColor: isDark ? '#091526' : '#ffffff',
+              borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
             },
           ]}
         >
@@ -307,12 +307,12 @@ function SettingsDropdown({
                   {
                     backgroundColor: isSelected
                       ? isDark
-                        ? '#2b283a'
-                        : '#f2f3f7'
+                        ? '#1e3a5f'
+                        : '#f1f5f9'
                       : pressed
                       ? isDark
-                        ? '#222030'
-                        : '#f8f9fa'
+                        ? '#132f54'
+                        : '#f8fafc'
                       : 'transparent',
                   },
                 ]}

@@ -17,7 +17,7 @@ const Context=createContext<ThemeContextType|null>(null);
 
 export function ThemeProvider({children,initialMode}:{children:ReactNode;initialMode:ThemeMode}){
  const [mode,updateMode]=useState<ThemeMode>(initialMode);
- const [accent,updateAccent]=useState<string>('indigo');
+ const [accent,updateAccent]=useState<string>('navy');
 
  useEffect(()=>{
    try {

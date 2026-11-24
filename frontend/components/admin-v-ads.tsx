@@ -161,9 +161,9 @@ export function AdminVAds({actorId}: {actorId?: number}) {
                       maxWidth: 480,
                       borderRadius: 14,
                       overflow: 'hidden',
-                      backgroundColor: '#120d20',
-                      border: '1px solid #ded3f3',
-                      boxShadow: '0 4px 16px rgba(40,20,70,0.15)',
+                      backgroundColor: '#091b33',
+                      border: '1px solid #cbd5e1',
+                      boxShadow: '0 4px 16px rgba(15,41,74,0.15)',
                       margin: '6px 0',
                     }}>
                       <video
@@ -178,9 +178,9 @@ export function AdminVAds({actorId}: {actorId?: number}) {
                     <div style={{
                       padding: '16px 20px',
                       borderRadius: 12,
-                      backgroundColor: '#f8f5fc',
-                      border: '1px dashed #cfc0e8',
-                      color: '#655780',
+                      backgroundColor: '#f8fafc',
+                      border: '1px dashed #cbd5e1',
+                      color: '#475569',
                       fontSize: 13,
                       margin: '6px 0',
                     }}>

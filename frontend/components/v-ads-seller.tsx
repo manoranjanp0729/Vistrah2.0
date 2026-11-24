@@ -210,7 +210,7 @@ function SellerWorkspace({
     ) : (
       <div className={s.panel} style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,padding:'16px 20px',borderRadius:12}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <div style={{width:40,height:40,borderRadius:8,background:'rgba(80,63,189,0.08)',color:'#503fbd',display:'grid',placeItems:'center'}}>
+          <div style={{width:40,height:40,borderRadius:8,background:'rgba(15,41,74,0.08)',color:'#0F294A',display:'grid',placeItems:'center'}}>
             <Globe size={20}/>
           </div>
           <div>
@@ -220,7 +220,7 @@ function SellerWorkspace({
             </p>
           </div>
         </div>
-        <Link href="/login?next=%2Fseller%2Fv-ads" style={{padding:'8px 16px',borderRadius:8,background:'#503fbd',color:'#fff',fontWeight:600,fontSize:13,textDecoration:'none'}}>
+        <Link href="/login?next=%2Fseller%2Fv-ads" style={{padding:'8px 16px',borderRadius:8,background:'#0F294A',color:'#fff',fontWeight:600,fontSize:13,textDecoration:'none'}}>
           <UiText value="Sign in / Register"/>
         </Link>
       </div>
@@ -228,7 +228,7 @@ function SellerWorkspace({
 
     {Boolean(error)&&<p role="alert" className={s.error}><UiText value={error}/></p>}
     {authRequired&&<Link href="/login?next=%2Fseller%2Fv-ads"><UiText value={"Sign in again"}/></Link>}
-    {Boolean(message)&&<div className={s.panel} style={{borderColor:'#503fbd',background:'var(--surface)'}}><p role="status" style={{margin:0,color:'var(--text-primary)',fontWeight:500}}><UiText value={message}/></p></div>}
+    {Boolean(message)&&<div className={s.panel} style={{borderColor:'#0F294A',background:'var(--surface)'}}><p role="status" style={{margin:0,color:'var(--text-primary)',fontWeight:500}}><UiText value={message}/></p></div>}
 
     {/* Clean Segmented Toggle Tabs */}
     <UiNav className={s.tabNav} aria-label="Creator Studio Sections">
@@ -366,7 +366,7 @@ function SellerWorkspace({
       <p role="status"><UiText value={"Unable to load workspace data."}/></p>
     ) : (
       <section style={{display:'grid',gap:12}}>
-        {account?.status!=='APPROVED'?<div className={s.panel}><p><UiText value={"An approved advertiser profile is required to upload V Ads."}/></p></div>:!data.uploads_available?<div className={s.panel}><h2><UiText value={"Upload New V Ad"}/></h2><p role="status"><UiText value={"Video storage is currently offline in this environment. Once enabled, upload MP4 videos (H.264/AAC, up to 60s and 100 MB) here."}/></p></div>:<form className={s.panel} style={{borderColor:uploadId?'#503fbd':'var(--border)'}} onSubmit={event=>{event.preventDefault();if(!uploadId)return;void action(async()=>{
+        {account?.status!=='APPROVED'?<div className={s.panel}><p><UiText value={"An approved advertiser profile is required to upload V Ads."}/></p></div>:!data.uploads_available?<div className={s.panel}><h2><UiText value={"Upload New V Ad"}/></h2><p role="status"><UiText value={"Video storage is currently offline in this environment. Once enabled, upload MP4 videos (H.264/AAC, up to 60s and 100 MB) here."}/></p></div>:<form className={s.panel} style={{borderColor:uploadId?'#0F294A':'var(--border)'}} onSubmit={event=>{event.preventDefault();if(!uploadId)return;void action(async()=>{
             const meta: AdMetadata = adType === 'PRODUCT'
               ? {
                   ad_type: 'PRODUCT',
@@ -393,7 +393,7 @@ function SellerWorkspace({
             await refresh();
           });}}>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:36,height:36,borderRadius:8,background:'var(--surface-soft)',border:'1px solid var(--border)',color:'#503fbd',display:'grid',placeItems:'center'}}>
+            <div style={{width:36,height:36,borderRadius:8,background:'var(--surface-soft)',border:'1px solid var(--border)',color:'#0F294A',display:'grid',placeItems:'center'}}>
               <Video size={18}/>
             </div>
             <div>
@@ -439,9 +439,9 @@ function SellerWorkspace({
                 style={{
                   padding:'12px',
                   borderRadius:12,
-                  border:adType==='BRAND'?'2px solid #503fbd':'1px solid var(--border)',
-                  background:adType==='BRAND'?'rgba(80,63,189,0.06)':'var(--surface)',
-                  color:adType==='BRAND'?'#503fbd':'var(--text)',
+                  border:adType==='BRAND'?'2px solid #0F294A':'1px solid var(--border)',
+                  background:adType==='BRAND'?'rgba(15,41,74,0.06)':'var(--surface)',
+                  color:adType==='BRAND'?'#0F294A':'var(--text)',
                   cursor:'pointer',
                   display:'flex',
                   flexDirection:'column',
@@ -458,7 +458,7 @@ function SellerWorkspace({
           </div>
 
           {adType==='PRODUCT' ? (
-            <div style={{display:'grid',gap:10,padding:14,borderRadius:12,border:'1px solid var(--border)',background:'var(--surface-soft,#faf7fc)'}}>
+            <div style={{display:'grid',gap:10,padding:14,borderRadius:12,border:'1px solid var(--border)',background:'var(--surface-soft,#f8fafc)'}}>
               <span style={{fontSize:12,fontWeight:700,color:'#e11d48',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Product Details & Purchasing Options"}/></span>
               <label>
                 <span style={{fontWeight:600}}><UiText value={"Product Name"}/></span>
@@ -478,8 +478,8 @@ function SellerWorkspace({
               </label>
             </div>
           ) : (
-            <div style={{display:'grid',gap:10,padding:14,borderRadius:12,border:'1px solid var(--border)',background:'var(--surface-soft,#faf7fc)'}}>
-              <span style={{fontSize:12,fontWeight:700,color:'#503fbd',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Brand Details & Products Available"}/></span>
+            <div style={{display:'grid',gap:10,padding:14,borderRadius:12,border:'1px solid var(--border)',background:'var(--surface-soft,#f8fafc)'}}>
+              <span style={{fontSize:12,fontWeight:700,color:'#0F294A',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Brand Details & Products Available"}/></span>
               <label>
                 <span style={{fontWeight:600}}><UiText value={"Products & Services Available"}/></span>
                 <UiTextarea maxLength={200} placeholder="E.g., Custom tailoring, silk sarees, bridal accessories, fabric dyes" value={productsAvailable} onChange={event=>setProductsAvailable(event.target.value)}/>
@@ -495,7 +495,7 @@ function SellerWorkspace({
             <span style={{fontWeight:600}}><UiText value={"4. Where Product/Brand is Used & Caption"}/></span>
             <UiTextarea maxLength={2000} placeholder="Describe where and how the product is used in the video, business contact, shop location…" value={videoDescription} onChange={event=>setVideoDescription(event.target.value)}/>
           </label>
-          <button disabled={busy||!uploadId||title.trim().length<3} style={{background:uploadId&&title.trim().length>=3?'#503fbd':'',color:uploadId&&title.trim().length>=3?'#fff':''}}><UiText value={"Submit V Ad for admin review"}/></button>
+          <button disabled={busy||!uploadId||title.trim().length<3} style={{background:uploadId&&title.trim().length>=3?'#0F294A':'',color:uploadId&&title.trim().length>=3?'#fff':''}}><UiText value={"Submit V Ad for admin review"}/></button>
         </form>}
 
         {/* Creator Growth Tips Card */}
@@ -526,14 +526,14 @@ function RestrictedStudioTool({
 }){
   return (
     <div className={s.panel} style={{textAlign:'center',padding:'44px 24px',borderRadius:18,display:'grid',gap:12,justifyItems:'center'}}>
-      <div style={{width:54,height:54,borderRadius:27,background:'rgba(80,63,189,0.1)',color:'#503fbd',display:'grid',placeItems:'center'}}>
+      <div style={{width:54,height:54,borderRadius:27,background:'rgba(15,41,74,0.1)',color:'#0F294A',display:'grid',placeItems:'center'}}>
         {icon==='video'?<Video size={26}/>:<PlusCircle size={26}/>}
       </div>
       <h2 style={{margin:0,fontSize:18,fontWeight:700}}><UiText value={title}/></h2>
       <p style={{margin:0,fontSize:13,color:'var(--text-secondary)',maxWidth:420,lineHeight:1.5}}>
         <UiText value={description}/>
       </p>
-      <Link href="/login?next=%2Fseller%2Fv-ads" style={{marginTop:6,padding:'10px 24px',borderRadius:10,background:'#503fbd',color:'#fff',fontWeight:700,fontSize:13,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}}>
+      <Link href="/login?next=%2Fseller%2Fv-ads" style={{marginTop:6,padding:'10px 24px',borderRadius:10,background:'#0F294A',color:'#fff',fontWeight:700,fontSize:13,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}}>
         <Lock size={14}/>
         <UiText value="Sign in / Register"/>
       </Link>
@@ -732,7 +732,7 @@ function PublicAdCard({reel}:{reel:Reel}){
     >
       <div className={s.videoCardHeader}>
         <div>
-          <span style={{fontSize:11,fontWeight:700,letterSpacing:'0.5px',textTransform:'uppercase',color:'#503fbd'}}>
+          <span style={{fontSize:11,fontWeight:700,letterSpacing:'0.5px',textTransform:'uppercase',color:'#0F294A'}}>
             {advertiserName}
           </span>
           <h3 className={s.videoTitle} style={{marginTop:2}}>{reel.title}</h3>
@@ -769,7 +769,7 @@ function PublicAdCard({reel}:{reel:Reel}){
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser?.id || '')}
-            style={{background:'#503fbd',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -904,7 +904,7 @@ function PublicAdCard({reel}:{reel:Reel}){
       {/* Engagement bar + Watch Full Reel */}
       <div className={s.engagementBar}>
         <div className={s.engagementItem}>
-          <Heart size={15} color="#503fbd"/>
+          <Heart size={15} color="#0F294A"/>
           <span>{(reel.likes_count??0).toLocaleString()} <UiText value="likes"/></span>
         </div>
         <div className={s.engagementItem}>
@@ -913,7 +913,7 @@ function PublicAdCard({reel}:{reel:Reel}){
         </div>
         <Link
           href={`/v-ads?video=${encodeURIComponent(reel.id)}`}
-          style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:4,color:'#503fbd',fontWeight:600,fontSize:13,textDecoration:'none'}}
+          style={{marginLeft:'auto',display:'inline-flex',alignItems:'center',gap:4,color:'#0F294A',fontWeight:600,fontSize:13,textDecoration:'none'}}
         >
           <UiText value="Watch Full Reel"/> &rarr;
         </Link>
@@ -1059,7 +1059,7 @@ function SellerVideoCard({
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(video.advertiser_id || '')}
-            style={{background:'#503fbd',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -1205,7 +1205,7 @@ function SellerVideoCard({
           <span>{(video.views??0).toLocaleString()} <UiText value={"views"}/></span>
         </div>
         <div className={s.engagementItem}>
-          <Heart size={15} color="#503fbd"/>
+          <Heart size={15} color="#0F294A"/>
           <span>{(video.likes??0).toLocaleString()} <UiText value={"likes"}/></span>
         </div>
         <div className={s.engagementItem}>
@@ -1283,7 +1283,7 @@ function StudioWebProductModal({
           <div>
             <h2 style={{margin: '0 0 4px', fontSize: 18}}>{meta.product_name || title}</h2>
             {Boolean(advertiserId) && (
-              <Link href={'/v-ads/advertisers/' + encodeURIComponent(advertiserId!)} style={{fontSize: 13, color: '#503fbd', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4}}>
+              <Link href={'/v-ads/advertisers/' + encodeURIComponent(advertiserId!)} style={{fontSize: 13, color: '#0F294A', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 4}}>
                 <span>{channelName}</span>
                 <CheckCircle2 size={13} color="#16a34a"/>
                 <span style={{color: 'var(--text-secondary)'}}>· <UiText value="View Brand Profile"/></span>

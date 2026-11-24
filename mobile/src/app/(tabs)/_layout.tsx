@@ -20,7 +20,7 @@ function VAdsCenterIcon({focused,mode,accent}:{focused:boolean;mode:'light'|'dar
   return (
     <View style={{width:72.5,height:28,alignItems:'center',justifyContent:'center'}}>
       <LinearGradient
-        colors={focused?accentGradient:(isLight?['#ffffff','#f4effa']:['#2b2438','#1f1a29'])}
+        colors={focused?accentGradient:(isLight?['#ffffff','#f1f5f9']:['#132f54','#091526'])}
         start={{x:0,y:0}}
         end={{x:1,y:1}}
         style={{
@@ -34,7 +34,7 @@ function VAdsCenterIcon({focused,mode,accent}:{focused:boolean;mode:'light'|'dar
           alignItems:'center',
           justifyContent:'center',
           borderWidth:focused?2:1.5,
-          borderColor:focused?(isLight?'#ffffff':'#d4c4ee'):(isLight?'#E2DBEF':'#393246'),
+          borderColor:focused?(isLight?'#ffffff':'#F97316'):(isLight?'#cbd5e1':'#1e3a5f'),
           shadowColor:accent,
           shadowOffset:{width:0,height:focused?3:1.5},
           shadowOpacity:focused?(isLight?0.28:0.38):(isLight?0.10:0.18),
@@ -64,7 +64,7 @@ function VAdsCenterIcon({focused,mode,accent}:{focused:boolean;mode:'light'|'dar
 
 export default function TabLayout(){const labelFont=useAppFont(500);const {colors,mode}=useTheme();const {copy,t,locale}=useLanguage();
 
-  return <Tabs backBehavior="history" screenOptions={{header:()=> <AppHeader/>,sceneStyle:{backgroundColor:colors.background,paddingBottom:14},tabBarStyle:{backgroundColor:colors.footer,borderTopColor:mode==='light'?'#E2DBEF':'#393246',borderTopWidth:.5,borderTopLeftRadius:18,borderTopRightRadius:18,overflow:'visible'},tabBarItemStyle:{minHeight:44},tabBarIconStyle:{width:48,height:28},tabBarLabelStyle:{fontFamily:labelFont,fontSize:11,lineHeight:locale==='en'?14:16,fontWeight:Platform.OS==='web'?'500':'normal'},tabBarLabelPosition:'below-icon',tabBarActiveTintColor:colors.accent,tabBarInactiveTintColor:mode==='light'?'#69758A':'#a3aec1'}}>
+  return <Tabs backBehavior="history" screenOptions={{header:()=> <AppHeader/>,sceneStyle:{backgroundColor:colors.background,paddingBottom:14},tabBarStyle:{backgroundColor:colors.footer,borderTopColor:mode==='light'?'#cbd5e1':'#1e3a5f',borderTopWidth:.5,borderTopLeftRadius:18,borderTopRightRadius:18,overflow:'visible'},tabBarItemStyle:{minHeight:44},tabBarIconStyle:{width:48,height:28},tabBarLabelStyle:{fontFamily:labelFont,fontSize:11,lineHeight:locale==='en'?14:16,fontWeight:Platform.OS==='web'?'500':'normal'},tabBarLabelPosition:'below-icon',tabBarActiveTintColor:colors.accent,tabBarInactiveTintColor:mode==='light'?'#69758A':'#a3aec1'}}>
     <Tabs.Screen name="index" options={{title:copy.nav.discover,tabBarIcon:({color})=><Feather name="home" color={color} size={20}/>}}/>
     <Tabs.Screen name="services" options={{title:copy.nav.services,tabBarIcon:({color})=><Feather name="grid" color={color} size={20}/>}}/>
     <Tabs.Screen name="v-ads" options={{

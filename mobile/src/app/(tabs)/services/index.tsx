@@ -153,8 +153,8 @@ export default function Services() {
             style={[
               s.breadcrumbBar,
               {
-                backgroundColor: isDark ? '#1a1329' : '#f5effc',
-                borderColor: isDark ? '#322549' : '#e6daf2',
+                backgroundColor: isDark ? '#0f233d' : '#f1f5f9',
+                borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
               },
             ]}
           >
@@ -173,7 +173,7 @@ export default function Services() {
               }}
               style={({pressed}) => [
                 s.backCircle,
-                {backgroundColor: isDark ? '#2a1f42' : '#ffffff', opacity: pressed ? 0.7 : 1},
+                {backgroundColor: isDark ? '#132f54' : '#ffffff', opacity: pressed ? 0.7 : 1},
               ]}
             >
               <Feather name="arrow-left" size={16} color={colors.accent} />
@@ -201,7 +201,7 @@ export default function Services() {
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: isCategoryLevel ? (isDark ? '#fff' : '#1f1338') : colors.accent},
+                        {color: isCategoryLevel ? (isDark ? '#fff' : '#0F294A') : colors.accent},
                         isCategoryLevel && s.crumbActiveText,
                       ]}
                     >
@@ -226,7 +226,7 @@ export default function Services() {
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: isSubcategoryLevel || singleType ? (isDark ? '#fff' : '#1f1338') : colors.accent},
+                        {color: isSubcategoryLevel || singleType ? (isDark ? '#fff' : '#0F294A') : colors.accent},
                         (isSubcategoryLevel || singleType) && s.crumbActiveText,
                       ]}
                     >
@@ -244,7 +244,7 @@ export default function Services() {
                       numberOfLines={1}
                       style={[
                         s.crumbText,
-                        {color: isDark ? '#fff' : '#1f1338'},
+                        {color: isDark ? '#fff' : '#0F294A'},
                         s.crumbActiveText,
                       ]}
                     >
@@ -414,8 +414,8 @@ export default function Services() {
                   style={({pressed}) => [
                     s.flowCard,
                     {
-                      backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
-                      borderColor: isDark ? '#33264c' : '#e5dbee',
+                      backgroundColor: isDark ? '#0f233dd9' : '#ffffffd9',
+                      borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                       opacity: pressed ? 0.88 : 1,
                     },
                   ]}
@@ -476,8 +476,8 @@ export default function Services() {
                 style={[
                   s.sellerOfferCard,
                   {
-                    backgroundColor: isDark ? '#1f1830' : '#ffffff',
-                    borderColor: isDark ? '#372854' : '#e2d5ed',
+                    backgroundColor: isDark ? '#0f233d' : '#ffffff',
+                    borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                   },
                 ]}
               >
@@ -541,8 +541,8 @@ export default function Services() {
                       style={({pressed}) => [
                         s.sisterChip,
                         {
-                          backgroundColor: isDark ? '#231b34' : '#ffffff',
-                          borderColor: isDark ? '#382a52' : '#e0d4ea',
+                          backgroundColor: isDark ? '#0f233d' : '#ffffff',
+                          borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                           opacity: pressed ? 0.8 : 1,
                         },
                       ]}
@@ -597,8 +597,8 @@ export default function Services() {
                       s.flowGridCard,
                       {width: cardWidth ?? '48%', flexGrow: 0, flexShrink: 0, paddingBottom: 10},
                       {
-                        backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
-                        borderColor: isDark ? '#33264c' : '#e5dbee',
+                        backgroundColor: isDark ? '#0f233dd9' : '#ffffffd9',
+                        borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                         opacity: pressed ? 0.88 : 1,
                       },
                     ]}
@@ -657,8 +657,8 @@ export default function Services() {
                       s.flowGridCard,
                       {width:cardWidth??'48%',flexGrow:0,flexShrink:0},
                       {
-                        backgroundColor: isDark ? '#1d172bd9' : '#ffffffd9',
-                        borderColor: isDark ? '#33264c' : '#e5dbee',
+                        backgroundColor: isDark ? '#0f233dd9' : '#ffffffd9',
+                        borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                         opacity: pressed ? 0.88 : 1,
                       },
                     ]}
@@ -814,8 +814,8 @@ const s = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    backgroundColor: '#7741c4',
-    opacity: 0.25,
+    backgroundColor: '#F97316',
+    opacity: 0.2,
   },
   heroBadgeRow: {
     flexDirection: 'row',
@@ -848,7 +848,7 @@ const s = StyleSheet.create({
   heroPillText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#e4d8f5',
+    color: '#e2e8f0',
   },
   heroTextSurface: {
     backgroundColor: '#172c26',
@@ -865,7 +865,7 @@ const s = StyleSheet.create({
   heroSubtitle: {
     fontSize: 12.5,
     lineHeight: 19,
-    color: '#d6c8ed',
+    color: '#cbd5e1',
   },
 
   searchWrap: {
@@ -903,7 +903,7 @@ const s = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     elevation: 2,
-    shadowColor: '#503fbd',
+    shadowColor: '#0F294A',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.06,
     shadowRadius: 6,
@@ -952,7 +952,7 @@ const s = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#7741c4',
+    backgroundColor: '#0F294A',
     color: '#fff',
     fontSize: 11,
     fontWeight: '600',

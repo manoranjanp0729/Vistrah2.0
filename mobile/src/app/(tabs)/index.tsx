@@ -57,9 +57,9 @@ export default function Discover() {
         style={[
           s.searchContainer,
           {
-            backgroundColor: isDark ? '#1f1a2e' : '#ffffff',
-            borderColor: searchFocused ? colors.accent : isDark ? '#33294c' : '#e0d8eb',
-            shadowColor: '#503fbd',
+            backgroundColor: isDark ? '#0f233d' : '#ffffff',
+            borderColor: searchFocused ? colors.accent : isDark ? '#1e3a5f' : '#cbd5e1',
+            shadowColor: '#0F294A',
             shadowOffset: {width: 0, height: searchFocused ? 3 : 1},
             shadowOpacity: searchFocused ? 0.16 : 0.06,
             shadowRadius: 8,
@@ -67,14 +67,14 @@ export default function Discover() {
           },
         ]}
       >
-        <View style={[s.searchIconWrap, {backgroundColor: isDark ? '#2e2444' : '#f5effa'}]}>
+        <View style={[s.searchIconWrap, {backgroundColor: isDark ? '#132f54' : '#f1f5f9'}]}>
           <Feather name="search" size={16} color={colors.accent} />
         </View>
         <UiElement
           as={TextInput}
           accessibilityLabel={t('home.search.placeholder')}
           placeholder={searchFocused ? '' : t('home.search.placeholder')}
-          placeholderTextColor={isDark ? '#8b7f9d' : '#9ca3af'}
+          placeholderTextColor={isDark ? '#94a3b8' : '#64748b'}
           value={search}
           onChangeText={setSearch}
           onFocus={() => setSearchFocused(true)}
@@ -113,8 +113,8 @@ export default function Discover() {
             style={({pressed}) => [
               s.quickTagPill,
               {
-                backgroundColor: isDark ? '#241c36' : '#f7f4fb',
-                borderColor: isDark ? '#382a53' : '#e5daef',
+                backgroundColor: isDark ? '#0f233d' : '#f8fafc',
+                borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                 opacity: pressed ? 0.8 : 1,
               },
             ]}
@@ -136,8 +136,8 @@ export default function Discover() {
       style={({pressed}) => [
         s.elevatedProviderCard,
         {
-          backgroundColor: isDark ? '#1a122c' : '#f8f4fc',
-          borderColor: isDark ? '#3b2a50' : '#e4d7ef',
+          backgroundColor: isDark ? '#0f233d' : '#f8fafc',
+          borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
           opacity: pressed ? 0.88 : 1,
         },
       ]}
@@ -256,8 +256,8 @@ export default function Discover() {
             style={({pressed}) => [
               s.shortcutCard,
               {
-                backgroundColor: isDark ? '#1c172a' : '#ffffff',
-                borderColor: isDark ? '#302644' : '#e6dced',
+                backgroundColor: isDark ? '#0f233d' : '#ffffff',
+                borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
                 opacity: pressed ? 0.88 : 1,
               },
             ]}
@@ -498,7 +498,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     overflow: 'hidden',
     elevation: 2,
-    shadowColor: '#503fbd',
+    shadowColor: '#0F294A',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.06,
     shadowRadius: 5,
@@ -509,7 +509,7 @@ const s = StyleSheet.create({
     flexShrink: 0,
     borderRadius: 14,
     overflow: 'hidden',
-    backgroundColor: '#ede9f5',
+    backgroundColor: '#f1f5f9',
     position: 'relative',
   },
   shortcutImage: {
@@ -529,7 +529,7 @@ const s = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: 'rgba(24, 17, 38, 0.75)',
+    backgroundColor: 'rgba(9, 27, 51, 0.78)',
     alignItems: 'center',
     justifyContent: 'center',
   },

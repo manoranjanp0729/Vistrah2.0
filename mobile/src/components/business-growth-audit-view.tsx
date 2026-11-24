@@ -319,8 +319,8 @@ export function MobileBusinessGrowthAuditView({
   }
 
   const cardSurface = {
-    backgroundColor: isDark ? '#181426' : '#ffffff',
-    borderColor: isDark ? '#32264b' : '#e2e8f0',
+    backgroundColor: isDark ? '#0f233d' : '#ffffff',
+    borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
   };
 
   return (
@@ -490,21 +490,21 @@ export function MobileBusinessGrowthAuditView({
             onChangeText={setWebsiteInput}
             placeholder="Paste your website link (e.g. www.yourshop.in)"
             placeholderTextColor={colors.muted}
-            style={[st.input, { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' }]}
+            style={[st.input, { color: colors.text, borderColor: isDark ? '#1e3a5f' : '#cbd5e1' }]}
           />
           <TextInput
             value={instagramInput}
             onChangeText={setInstagramInput}
             placeholder="Paste your Instagram @name or link"
             placeholderTextColor={colors.muted}
-            style={[st.input, { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' }]}
+            style={[st.input, { color: colors.text, borderColor: isDark ? '#1e3a5f' : '#cbd5e1' }]}
           />
           <TextInput
             value={facebookInput}
             onChangeText={setFacebookInput}
             placeholder="Paste your Facebook page link"
             placeholderTextColor={colors.muted}
-            style={[st.input, { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' }]}
+            style={[st.input, { color: colors.text, borderColor: isDark ? '#1e3a5f' : '#cbd5e1' }]}
           />
         </View>
       </View>
@@ -536,7 +536,7 @@ export function MobileBusinessGrowthAuditView({
                       : isTicked
                         ? '#d4af37'
                         : isDark
-                          ? '#32264b'
+                          ? '#1e3a5f'
                           : '#cbd5e1',
                   },
                 ]}
@@ -754,7 +754,7 @@ export function MobileBusinessGrowthAuditView({
                 placeholderTextColor={colors.muted}
                 style={[
                   st.input,
-                  { color: colors.text, borderColor: isDark ? '#32264b' : '#cbd5e1' },
+                  { color: colors.text, borderColor: isDark ? '#1e3a5f' : '#cbd5e1' },
                 ]}
               />
             </View>

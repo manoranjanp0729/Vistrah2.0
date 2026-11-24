@@ -11,7 +11,7 @@ export type AccentId = AccentPreset['id'];
 const palettes = brandTheme.palettes;
 type Palette = typeof palettes.dark;
 
-export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',text:'#6d4524'},{background:'#e8e4f5',text:'#493a69'},{background:'#dfece3',text:'#294934'}];
+export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',text:'#6d4524'},{background:'#eff6ff',text:'#0f294a'},{background:'#dfece3',text:'#294934'}];
 
 // Shared text hierarchy across the phone website and native screens.
 export const typography={

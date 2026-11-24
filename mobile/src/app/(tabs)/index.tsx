@@ -13,7 +13,7 @@ import {DiscoveryGuide} from '../../components/discovery-guide';
 import {HomepagePartnerBanner} from '../../components/homepage-partner-banner';
 import {PublishedHomepage, type Homepage} from '../../components/published-homepage';
 import {useLanguage} from '../../lib/language';
-import {servicePhotos} from '../../lib/service-photos';
+import {buildQuickAccessShortcuts} from '../../lib/service-photos';
 import {Platform,Image,Pressable,ScrollView,View,StyleSheet,} from 'react-native';
 import {router} from 'expo-router';
 import {AdsMarketing} from '../../components/ads-marketing';
@@ -21,7 +21,7 @@ import {Page, Heading, Action} from '../../components/ui';
 import {MarketplaceCategories} from '../../components/marketplace-categories';
 import {ServiceCarousel} from '../../components/service-carousel';
 import {useResource} from '../../lib/resource';
-import {allServices, type Category} from '../../lib/catalogue';
+import {type Category} from '../../lib/catalogue';
 import brandTheme from '../../../../shared/brand-theme.json';
 import {useTheme,spacing,typography} from '../../lib/theme';
 
@@ -32,6 +32,7 @@ export default function Discover() {
   const homepage = useResource<Homepage>('/homepage');
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
+  const [failedShortcutPhotos, setFailedShortcutPhotos] = useState<Record<string, boolean>>({});
   const isDark = mode === 'dark';
 
   // Area 1: Top Hero Greeting & Search Bar with Quick Filter Tags
@@ -170,29 +171,21 @@ export default function Discover() {
 
   const marketingSection = <AdsMarketing/>;
 
-  // Area 2: Popular Quick Shortcuts
-  const shortcuts = allServices(catalogue.data ?? [])
-    .filter((item) => item.service.active && item.category.slug !== 'marketing')
-    .sort(
-      (a, b) =>
-        Number(b.service.slug === 'digital-marketing') - Number(a.service.slug === 'digital-marketing') ||
-        Number(b.service.popular) - Number(a.service.popular)
-    )
-    .slice(0, 10)
-    .map(({category, service}) => ({
-      key: String(service.id),
-      title: service.title,
-      photo: servicePhotos[service.slug]?.source,
-      icon:
-        service.slug === 'digital-marketing'
-          ? ('volume-2' as const)
-          : category.slug === 'real-estate'
-          ? ('home' as const)
-          : category.slug === 'tax-compliance'
-          ? ('credit-card' as const)
-          : ('briefcase' as const),
-      open: () => router.push({pathname: '/service/[id]', params: {id: service.id}}),
-    }));
+  // Area 2: Popular Quick Shortcuts (Self-hosted catalogue assets + verified taxonomy fallback)
+  const shortcuts = buildQuickAccessShortcuts(catalogue.data ?? [], 10).map((item) => ({
+    ...item,
+    open: () =>
+      item.serviceId != null
+        ? router.push({pathname: '/service/[id]', params: {id: item.serviceId}})
+        : router.push({
+            pathname: '/services/nearby',
+            params: {
+              category: item.categorySlug,
+              subcategory: item.serviceSlug,
+              type: item.serviceSlug,
+            },
+          }),
+  }));
 
   // Area 2: Framed Essentials (AgriConnect & HealthConnect) Section
   const essentialsSection = (
@@ -248,41 +241,69 @@ export default function Discover() {
         accessibilityLabel={t('home.quickAccessibility')}
         contentContainerStyle={s.shortcutsScrollContent}
       >
-        {shortcuts.map((item) => (
-          <Pressable
-            key={item.key}
-            accessibilityRole="button"
-            onPress={item.open}
-            style={({pressed}) => [
-              s.shortcutCard,
-              {
-                backgroundColor: isDark ? '#0f233d' : '#ffffff',
-                borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
-                opacity: pressed ? 0.88 : 1,
-              },
-            ]}
-          >
-            <View style={s.shortcutPhoto}>
-              {item.photo ? (
-                <Image source={croppedPhoto(item.photo,'landscape')} resizeMode="cover" style={s.shortcutImage} />
-              ) : (
-                <View style={[StyleSheet.absoluteFill, {backgroundColor: '#eee'}]} />
-              )}
-              <View style={s.shortcutIconBadge}>
-                <Feather name={item.icon} size={12} color="#fff" />
+        {shortcuts.map((item) => {
+          const showPhoto = Boolean(item.photo) && !failedShortcutPhotos[item.key];
+          return (
+            <Pressable
+              key={item.key}
+              testID={`quick-access-card-${item.serviceSlug}`}
+              accessibilityRole="button"
+              accessibilityLabel={`${item.title} — Verified`}
+              onPress={item.open}
+              style={({pressed}) => [
+                s.shortcutCard,
+                {
+                  backgroundColor: isDark ? '#0f233d' : '#ffffff',
+                  borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+                  opacity: pressed ? 0.88 : 1,
+                },
+              ]}
+            >
+              <View style={s.shortcutPhoto}>
+                {showPhoto ? (
+                  <>
+                    <Image
+                      source={croppedPhoto(item.photo!, 'landscape')}
+                      resizeMode="cover"
+                      accessibilityLabel={item.alt}
+                      onError={() =>
+                        setFailedShortcutPhotos((prev) =>
+                          prev[item.key] ? prev : {...prev, [item.key]: true},
+                        )
+                      }
+                      style={s.shortcutImage}
+                    />
+                    <View style={s.shortcutIconBadge}>
+                      <Feather name={item.icon} size={12} color="#fff" />
+                    </View>
+                  </>
+                ) : (
+                  <LinearGradient
+                    colors={['#091B33', '#0F294A', '#163A66']}
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 1}}
+                    style={s.shortcutFallback}
+                  >
+                    <View style={s.shortcutFallbackOrb} />
+                    <View style={s.shortcutFallbackIconCircle}>
+                      <Feather name={item.icon} size={17} color="#F97316" />
+                    </View>
+                    <Text style={s.shortcutFallbackLabel}>VISTRAH</Text>
+                  </LinearGradient>
+                )}
               </View>
-            </View>
-            <View style={s.shortcutCopy}>
-              <Text numberOfLines={2} style={[s.shortcutTitle, {color: colors.text}]}>
-                {item.title}
-              </Text>
-              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-                <Text style={[s.shortcutMeta, {color: colors.muted}]}>Verified</Text>
-                <Feather name="arrow-right" size={13} color={colors.accent} />
+              <View style={s.shortcutCopy}>
+                <Text numberOfLines={2} style={[s.shortcutTitle, {color: colors.text}]}>
+                  {item.title}
+                </Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                  <Text style={[s.shortcutMeta, {color: colors.muted}]}>Verified</Text>
+                  <Feather name="arrow-right" size={13} color={colors.accent} />
+                </View>
               </View>
-            </View>
-          </Pressable>
-        ))}
+            </Pressable>
+          );
+        })}
       </UiElement>
     </View>
   );
@@ -505,16 +526,51 @@ const s = StyleSheet.create({
   },
   shortcutPhoto: {
     margin: 7,
+    width: 124,
     height: 90,
     flexShrink: 0,
     borderRadius: 14,
     overflow: 'hidden',
-    backgroundColor: '#f1f5f9',
+    backgroundColor: '#0F294A',
     position: 'relative',
   },
   shortcutImage: {
-    width: '100%',
-    height: '100%',
+    width: 124,
+    height: 90,
+  },
+  shortcutFallback: {
+    width: 124,
+    height: 90,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
+    position: 'relative',
+  },
+  shortcutFallbackOrb: {
+    position: 'absolute',
+    top: -18,
+    right: -18,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#F97316',
+    opacity: 0.22,
+  },
+  shortcutFallbackIconCircle: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(249, 115, 22, 0.45)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shortcutFallbackLabel: {
+    fontSize: 8.5,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    color: '#cbd5e1',
   },
   shortcutCopy: {
     gap: 3,

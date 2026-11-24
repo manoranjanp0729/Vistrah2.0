@@ -1,5 +1,30 @@
-// Service-specific local images; specialist renders are illustrative.
+import type {ImageSourcePropType} from 'react-native';
+import {
+  resolveCatalogueAsset,
+  resolveCataloguePhotoKey,
+  resolveQuickAccessImageUri,
+  selectQuickAccessDescriptors,
+  type QuickAccessCatalogueCategory,
+  type QuickAccessIconName,
+} from '../../../shared/catalogue-images';
+import {getApiBase} from './api';
+import {marketplacePhotos} from './marketplace-photos';
+
+function cataloguePhotoEntries(): Record<string, {source: number; alt: string}> {
+  const entries: Record<string, {source: number; alt: string}> = {};
+  for (const [slug, source] of Object.entries(marketplacePhotos)) {
+    const asset = resolveCatalogueAsset(slug);
+    entries[slug] = {
+      source,
+      alt: asset?.alt ?? `${slug.replace(/-/g, ' ')} service photograph`,
+    };
+  }
+  return entries;
+}
+
+// Service-specific local images; includes all 10 Main Categories, 30 Direct Service Types, and retained legacy slugs.
 export const servicePhotos:Record<string,{source:number;alt:string}>={
+  ...cataloguePhotoEntries(),
   "find-jobs":{source:require('../../assets/services/find-jobs.png'),alt:"A job seeker browsing vacancies on a laptop — AI-generated illustrative image"},
   "resume-building":{source:require('../../assets/services/resume.webp'),alt:"A candidate presenting a printed resume across a desk"},
   "job-application-assistance":{source:require('../../assets/services/application-desk.webp'),alt:"Resume papers beside a laptop and coffee on a wooden desk"},
@@ -61,4 +86,82 @@ export const servicePhotos:Record<string,{source:number;alt:string}>={
   "professional-consultation":{source:require('../../assets/services/professional-advice.webp'),alt:"Two professionals discussing documents across a meeting table"},
   "interior-design":{source:require('../../assets/services/interior.webp'),alt:"A bright living room with a teal sofa, timber floor and large windows"},
 };
+
+function safeApiBase(): string {
+  try {
+    return getApiBase();
+  } catch {
+    return '';
+  }
+}
+
+export function resolveServicePhotoSource(
+  serviceSlug: string,
+  categorySlug?: string,
+  rawImage?: string | null,
+): ImageSourcePropType | undefined {
+  const catalogueKey = resolveCataloguePhotoKey(serviceSlug, categorySlug);
+  if (catalogueKey && marketplacePhotos[catalogueKey]) {
+    return marketplacePhotos[catalogueKey];
+  }
+  if (servicePhotos[serviceSlug]?.source) {
+    return servicePhotos[serviceSlug].source;
+  }
+  if (rawImage) {
+    const rawCatalogueKey = resolveCataloguePhotoKey(rawImage, categorySlug);
+    if (rawCatalogueKey && marketplacePhotos[rawCatalogueKey]) {
+      return marketplacePhotos[rawCatalogueKey];
+    }
+    const resolvedUri = resolveQuickAccessImageUri(rawImage, {
+      apiBase: safeApiBase(),
+      webBasePath: '/app',
+    });
+    if (resolvedUri) {
+      return {uri: resolvedUri};
+    }
+  }
+  return undefined;
+}
+
+export function resolveServicePhotoAlt(
+  serviceSlug: string,
+  categorySlug?: string,
+  fallbackTitle?: string,
+): string {
+  const asset = resolveCatalogueAsset(serviceSlug, categorySlug);
+  if (asset?.alt) return asset.alt;
+  if (servicePhotos[serviceSlug]?.alt) return servicePhotos[serviceSlug].alt;
+  return fallbackTitle
+    ? `${fallbackTitle} — verified local service on VISTRAH`
+    : 'Verified local service on VISTRAH';
+}
+
+export type QuickAccessShortcutItem = {
+  key: string;
+  serviceId: number | null;
+  serviceSlug: string;
+  categorySlug: string;
+  title: string;
+  photo: ImageSourcePropType | undefined;
+  alt: string;
+  icon: QuickAccessIconName;
+};
+
+export function buildQuickAccessShortcuts(
+  categories: readonly QuickAccessCatalogueCategory[],
+  limit = 10,
+): QuickAccessShortcutItem[] {
+  return selectQuickAccessDescriptors(categories, limit).map(desc => ({
+    key: desc.key,
+    serviceId: desc.serviceId,
+    serviceSlug: desc.serviceSlug,
+    categorySlug: desc.categorySlug,
+    title: desc.title,
+    photo:
+      (desc.photoKey ? marketplacePhotos[desc.photoKey] : undefined) ??
+      resolveServicePhotoSource(desc.serviceSlug, desc.categorySlug, desc.rawImage),
+    alt: desc.alt,
+    icon: desc.icon,
+  }));
+}
 

@@ -2,7 +2,7 @@
 .bar{background:transparent;border:0;border-bottom:1px solid var(--hairline,var(--border));border-radius:0;padding:0 0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .feedBar{padding:0 0 12px}
 .feedBar h1{margin:0;font-size:24px;font-weight:600;line-height:1.2;letter-spacing:-.025em}
-.feed{width:min(100%,440px,calc(var(--feed-max-height,calc(100dvh - 168px)) * 9 / 16));margin:0 auto;aspect-ratio:9/16;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;border-radius:var(--radius-md,12px);border:1px solid var(--border);background:#080b11}
+.feed{width:min(100%,440px,calc(var(--feed-max-height,calc(100dvh - 96px)) * 9 / 16));margin:0 auto;aspect-ratio:9/16;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;border-radius:var(--radius-md,12px);border:1px solid var(--border);background:#080b11}
 .feed::-webkit-scrollbar{display:none}
 .reel{height:100%;position:relative;scroll-snap-align:start;scroll-snap-stop:always;isolation:isolate;background:#080b11;color:#fff}
 .video{width:100%;height:100%;object-fit:contain;position:absolute;inset:0;z-index:-1}
@@ -61,7 +61,7 @@
 
 /* Short landscape screens keep room for controls while contain preserves the frame. */
 @media(max-height:500px){
- .feed{width:min(100%,760px);height:var(--feed-max-height,calc(100dvh - 168px));aspect-ratio:auto}
+ .feed{width:min(100%,760px);height:var(--feed-max-height,calc(100dvh - 96px));aspect-ratio:auto}
  .actions{right:8px;bottom:8px;display:flex;gap:4px}
  .actions button{width:44px;min-height:44px;font-size:10px;gap:2px}
  .actions svg{width:18px;height:18px}

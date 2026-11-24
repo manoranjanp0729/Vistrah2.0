@@ -4,6 +4,7 @@ import {UiText,UiElement} from "../../components/localized-ui";
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useFocusEffect,router,useLocalSearchParams} from 'expo-router';
 import {AppState,FlatList,Pressable,Share,StyleSheet,View,ScrollView,type LayoutChangeEvent,} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import {Feather} from '@expo/vector-icons';
 import {useVideoPlayer, VideoView} from 'expo-video';
@@ -518,7 +519,8 @@ function VAdsFeed({video}:{video:string}) {
   }
 
   return (
-    <View key={user?.id??'guest'} style={styles.page} onLayout={onLayout}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
+    <View key={user?.id??'guest'} style={{flex:1}} onLayout={onLayout}>
       {loading?<Loading/>:!reels.length?<View style={styles.content}>{Boolean(error)?<ErrorPanel error={new Error(error)} retry={()=>setVersion(v=>v+1)}/>:<Text style={styles.muted}><UiText value={"No approved videos yet."}/></Text>}<UiElement as={Action} label="Refresh V Ads" onPress={()=>setVersion(v=>v+1)}/>{user?.seller_enabled&&<UiElement as={Action} label="Your V Ads" secondary onPress={()=>router.push({pathname:'/seller/v-ads',params:{from:'v-ads'}})}/>}</View>:height > 0 && (
         <FlatList
           data={reels}
@@ -550,6 +552,7 @@ function VAdsFeed({video}:{video:string}) {
         />
       )}
     </View>
+    </SafeAreaView>
   );
 }
 

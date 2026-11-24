@@ -10,6 +10,7 @@ import {useOptionalLocation} from '../context/LocationContext';
 import {UiElement} from './localized-ui';
 import {BackButton} from './back-button';
 import {SettingsButton} from './settings-button';
+import {shouldShowMainHeader} from '../../../shared/header-visibility';
 
 export function AppHeader({showBack=false}:{showBack?:boolean}){
   const {colors,mode,headerGradient}=useTheme();
@@ -17,6 +18,7 @@ export function AppHeader({showBack=false}:{showBack?:boolean}){
   const insets=useSafeAreaInsets();
   const pathname=usePathname();
   const locCtx=useOptionalLocation();
+  if(!shouldShowMainHeader(pathname))return null;
 
   const activePlace=locCtx?.selectedLocation;
   const pillLabel=activePlace?.locality||activePlace?.city||(locCtx?.detecting?'Locating…':'Select Location');

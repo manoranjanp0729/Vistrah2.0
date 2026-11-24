@@ -19,7 +19,7 @@ test('existing playback and five-tab navigation controls remain wired',()=>{
  for(const marker of ['pagingEnabled','decelerationRate="fast"','itemVisiblePercentThreshold: 60','active && !commentsOpen && !paused && screenFocused && appActive','player.pause()','player.muted = !muted','vAds.feed()','vAds.like(','vAds.comment(','sharePath(reel.id)'])assert(source.includes(marker),marker);
  assert(!source.includes('Demo comments'));assert(!source.includes("id: 'users'"));
  const tabs=readFileSync(new URL('../src/app/(tabs)/_layout.tsx',import.meta.url),'utf8');
- assert.deepEqual([...tabs.matchAll(/Tabs.Screen name="([^"]+)"/g)].map(match=>match[1]),['index','services','v-ads','requests','account']);
+ assert.deepEqual([...tabs.matchAll(/Tabs.Screen name="([^"]+)"/g)].map(match=>match[1]),['index','products','v-ads','vibe-finder','account']);
 });
 test('native raw uploads keep bearer authentication and extended transport timeout',async()=>{
  process.env.EXPO_PUBLIC_API_URL='https://api.example.test';Object.assign(globalThis,{__DEV__:true});

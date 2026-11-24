@@ -41,7 +41,7 @@ export default function MarketingPricingCodex(){
  const filtered=useMemo(()=>items.filter(item=>(search.trim()?true:item.group===group)&&(item.name+' '+item.description).toLowerCase().includes(search.trim().toLowerCase())),[group,search]);
  const selected=items.find(x=>x.id===selectedId)??items[0];
  const choose=(item:Item)=>{setSelectedId(item.id);setCompare(false);};
- return <SafeAreaView style={s.screen} edges={['bottom']}>
+ return <SafeAreaView style={s.screen} edges={['top','left','right','bottom']}>
   <ScrollView contentContainerStyle={s.content} keyboardShouldPersistTaps="handled">
    <Text style={s.title}>Ads & Marketing</Text><Text style={s.subtitle}>Explore transparent starting prices for your business.</Text>
    <View style={s.search}><Feather name="search" size={22} color={C.muted}/><TextInput value={search} onChangeText={setSearch} placeholder="Search websites, creatives, outdoor ads…" placeholderTextColor="#64748b" style={s.input} accessibilityLabel="Search marketing services"/></View>

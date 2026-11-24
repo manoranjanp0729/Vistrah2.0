@@ -252,7 +252,7 @@ html select{background-image:none;box-shadow:none;min-height:44px;border-radius:
 .admin-topbar{padding-right:76px}
 
 .standalone-settings{position:fixed;top:12px;right:16px;z-index:90}
-body:has(.public-header) .standalone-settings{display:none}
+body:has(.public-header,.vistrah-app) .standalone-settings{display:none}
 
 /* Actions follow App Theme; white surfaces are reserved for colourful sections. */
 html .button:not(.secondary):not(.light):not(.danger):not([aria-disabled=true]),html .service-tablist button[aria-selected=true],html button[aria-pressed=true]:not([role=switch]){background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink);box-shadow:none}

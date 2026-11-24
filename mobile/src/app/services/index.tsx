@@ -92,7 +92,7 @@ export default function Services() {
 
   if (!selected) {
     return (
-      <SafeAreaView edges={['left', 'right']} style={styles.page}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
         <View style={[styles.content, {paddingHorizontal: horizontalPadding}]}>
           <UiElement as={Heading} title={t('discovery.notFound')} />
           <Text style={styles.muted}>{t('discovery.chooseValid')}</Text>
@@ -125,12 +125,33 @@ export default function Services() {
   const isRootLevel = !category && !subcategory && !listingType;
 
   return (
-    <SafeAreaView edges={['left', 'right']} style={styles.page}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
       <ScrollView
         ref={scroll}
         contentContainerStyle={[styles.content, {paddingHorizontal: horizontalPadding, gap: spacing.sectionGap}]}
         keyboardShouldPersistTaps="handled"
       >
+        {isRootLevel && (
+          <Pressable
+            accessibilityRole="link"
+            accessibilityLabel={t('common.home')}
+            onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+            style={({pressed}) => ({
+              alignSelf: 'flex-start',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 6,
+              minHeight: 36,
+              paddingVertical: 4,
+              opacity: pressed ? 0.72 : 1,
+            })}
+          >
+            <Feather name="arrow-left" size={16} color={colors.accent} />
+            <Text style={{color: colors.accent, fontWeight: '600', fontSize: 13.5}}>
+              {t('common.home')}
+            </Text>
+          </Pressable>
+        )}
         {isRootLevel&&<EditVistrahContent slug="services"/>}
         {/* Top Seller Bar */}
         <View style={s.topBarRow}>

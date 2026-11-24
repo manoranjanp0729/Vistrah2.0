@@ -78,8 +78,8 @@ export default function MarketingSolutions(){
  },[reducedMotion,float,entrance]));
  const revealProps={scrollY,reducedMotion,windowHeight:height};
  const activeTheme=marketingCards.find(card=>card.key===selected);
- return <SafeAreaView edges={['left','right','bottom']} style={{flex:1,backgroundColor:mode==='dark'?'#091526':'#f8fafc'}}>
-  <Animated.ScrollView ref={scroll} keyboardShouldPersistTaps="handled" scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent:{contentOffset:{y:scrollY}}}],{useNativeDriver:Platform.OS!=='web'})} contentContainerStyle={s.page}><MarketingPricingEntry/><EditVistrahContent slug="marketing-solutions" replace>
+ return <SafeAreaView edges={['top','left','right','bottom']} style={{flex:1,backgroundColor:mode==='dark'?'#091526':'#f8fafc'}}>
+  <Animated.ScrollView ref={scroll} keyboardShouldPersistTaps="handled" scrollEventThrottle={16} onScroll={Animated.event([{nativeEvent:{contentOffset:{y:scrollY}}}],{useNativeDriver:Platform.OS!=='web'})} contentContainerStyle={s.page}><Pressable accessibilityRole="button" accessibilityLabel={t('common.back')} onPress={()=>(router.canGoBack()?router.back():router.replace('/'))} style={({pressed})=>({alignSelf:'flex-start',flexDirection:'row',alignItems:'center',gap:6,minHeight:36,paddingVertical:4,opacity:pressed?0.72:1})}><Feather name="arrow-left" size={16} color="#EA580C"/><Text style={{color:'#EA580C',fontWeight:'600',fontSize:13.5}}>{t('common.back')}</Text></Pressable><MarketingPricingEntry/><EditVistrahContent slug="marketing-solutions" replace>
    <LinearGradient colors={accentGradient} start={{x:0,y:0}} end={{x:1,y:1}} style={[s.hero,wide&&s.heroWide]}>
     <Animated.View style={[s.heroCopy,wide&&{flex:1},{transform:[{translateY:entrance.interpolate({inputRange:[0,1],outputRange:[10,0]})}]}]}>
      <Text accessibilityRole="header" style={[s.heroTitle,{fontSize:wide?28:22,lineHeight:wide?34:28}]}><UiText value={"VISTRAH Ads & Marketing"}/></Text>

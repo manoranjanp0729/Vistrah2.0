@@ -2,7 +2,6 @@ import {useAppFont} from '../components/typography';
 import {BundledFonts} from '../lib/bundled-fonts';
 import {FontPreferenceProvider} from '../lib/font-preference';
 import {LanguageProvider,useLanguage} from '../lib/language';
-import {AppHeader} from '../components/app-header';
 import * as SplashScreen from 'expo-splash-screen';
 import {Platform,View} from 'react-native';
 import {StartupLoading} from '../components/startup-loading';
@@ -19,7 +18,7 @@ import {MobileAskVistrahWidget} from '../components/ask-vistrah-widget';
 if(Platform.OS!=='web')void SplashScreen.preventAutoHideAsync().catch(()=>{});
 export default function RootLayout(){return <ThemeProvider><LanguageProvider><BundledFonts><FontPreferenceProvider><ThemedRoot/></FontPreferenceProvider></BundledFonts></LanguageProvider></ThemeProvider>;}
 function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTheme();const {t}=useLanguage();
-  return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{header:()=> <AppHeader showBack/>,contentStyle:{backgroundColor:colors.background}}}>
+  return <SafeAreaProvider><SessionProvider><LocationProvider><View style={{flex:1}}><StatusBar style={mode==='dark'?'light':'dark'}/><Stack screenOptions={{headerShown:false,contentStyle:{backgroundColor:colors.background}}}>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="(tabs)" options={{headerShown:false}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="admin-dashboard" options={{title:'Admin dashboard'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="employees" options={{title:'Employees & HR Letters'}}/>
@@ -54,7 +53,7 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="for-businesses" options={{title:'For Businesses',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="ads-and-marketing" options={{title:'VISTRAH Ads & Marketing',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="marketing-solutions" options={{title:t('marketing.title'),headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
-    <Stack.Screen dangerouslySingular={appRouteIdentity} name="membership" options={{title:t('account.membership')}}/>
+    <Stack.Screen name="membership" dangerouslySingular={appRouteIdentity} options={{title:t('account.membership')}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="location" options={{title:t('nav.location')}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="provider" options={{title:'Offer your services'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="terms" options={{title:'Terms & Conditions'}}/>

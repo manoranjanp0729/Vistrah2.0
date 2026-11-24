@@ -69,7 +69,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
   const primaryBtnInk = '#ffffff';
 
   return (
-    <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: pageBg}}>
+    <SafeAreaView edges={['top', 'left', 'right', 'bottom']} style={{flex: 1, backgroundColor: pageBg}}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[s.page, {paddingHorizontal: wide ? 24 : 16}]}

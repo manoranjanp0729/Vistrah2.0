@@ -1,6 +1,6 @@
 import { useDirectMarketplace } from '../../lib/direct-marketplace';
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -21,7 +21,7 @@ export default function NearbyServicesScreen() {
   const { resolveMarketplaceSelection, legacyMarketplaceSelection, marketplaceCategories } =
     useDirectMarketplace();
   const banner = useBannerTheme();
-  const { styles } = useTheme();
+  const { styles, colors } = useTheme();
   const { t, label } = useLanguage();
   const { width } = useWindowDimensions();
   const horizontalPadding = width >= 768 ? spacing.pagePaddingDesktop : spacing.pagePadding;
@@ -79,7 +79,7 @@ export default function NearbyServicesScreen() {
 
   if (!resolved?.category) {
     return (
-      <SafeAreaView edges={['left', 'right']} style={styles.page}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
         <View style={[styles.content, { paddingHorizontal: horizontalPadding }]}>
           <UiElement as={Heading} title={t('discovery.notFound')} />
           <Text style={styles.muted}>{t('discovery.chooseValid')}</Text>
@@ -115,7 +115,7 @@ export default function NearbyServicesScreen() {
     : subcategoryTitle || categoryTitle;
 
   return (
-    <SafeAreaView edges={['left', 'right']} style={styles.page}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
       <ScrollView
         contentContainerStyle={[
           styles.content,
@@ -123,6 +123,36 @@ export default function NearbyServicesScreen() {
         ]}
         keyboardShouldPersistTaps="handled"
       >
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t('common.back')}
+          onPress={() =>
+            router.canGoBack()
+              ? router.back()
+              : router.push({
+                  pathname: '/services',
+                  params: {
+                    category: resolved.category!.slug,
+                    ...(resolved.subcategory ? { subcategory: resolved.subcategory.slug } : {}),
+                  },
+                })
+          }
+          style={({ pressed }) => ({
+            alignSelf: 'flex-start',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 6,
+            minHeight: 36,
+            paddingVertical: 4,
+            opacity: pressed ? 0.72 : 1,
+          })}
+        >
+          <Feather name="arrow-left" size={16} color={colors.accent} />
+          <Text style={{ color: colors.accent, fontWeight: '600', fontSize: 13.5 }}>
+            {subcategoryTitle || categoryTitle}
+          </Text>
+        </Pressable>
+
         {/* Unified 50%-Transparent VISTRAH Marketplace Hero Banner */}
         <LinearGradient
           colors={['rgba(15, 41, 74, 0.5)', 'rgba(19, 47, 84, 0.5)']}

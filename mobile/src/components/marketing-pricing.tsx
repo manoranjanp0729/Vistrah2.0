@@ -171,10 +171,10 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
 
  const months=Number(draft.months),estimate=activeQuoteService&&Number.isInteger(months)&&months>=1&&months<=24?baseEstimate(activeQuoteService,pack,months):null;
 
- if(serviceId&&!detailService)return <Page title="Service unavailable"><Text style={styles.muted}>This service is not in the current public catalogue.</Text><Action label="Back to pricing" onPress={()=>router.dismissTo('/marketing-pricing')}/></Page>;
+ if(serviceId&&!detailService)return <Page hideBack title="Service unavailable"><Text style={styles.muted}>This service is not in the current public catalogue.</Text><Action label="Back to pricing" onPress={()=>router.dismissTo('/marketing-pricing')}/></Page>;
 
  return (
-  <Page title={detailService?.name}>
+  <Page hideBack title={detailService?.name}>
    <Pressable
     accessibilityRole="link"
     onPress={()=>router.dismissTo(detailService?'/marketing-pricing':'/marketing-solutions')}

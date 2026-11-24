@@ -1,18 +1,38 @@
-import { createElement, useId, useMemo, useRef, useState } from 'react';
-import { Image, PanResponder, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { createElement, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  Animated,
+  Image,
+  PanResponder,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { router, usePathname } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { api, ApiError } from '../lib/api';
 import { useTheme } from '../lib/theme';
 import { Text, TextInput } from './typography';
 import {
   ASTRA_AGENT_NAME,
+  ASTRA_AUTO_HIDE_MS,
+  ASTRA_DRAG_DEADZONE_PX,
+  ASTRA_LAUNCHER_WIDTH_PX,
+  ASTRA_LEFT_OPEN_THRESHOLD_PX,
+  ASTRA_PEEK_COUNTER_SHIFT_PX,
   ASTRA_STARTERS,
   ASTRA_WELCOME,
   GEMINI_BRAND_LABEL,
   GEMINI_SPARK_PATH,
   GEMINI_SPARK_VIEWBOX,
+  clampAstraTop,
+  defaultAstraTop,
   normalizeSuggestedActions,
+  readStoredAstraTop,
+  saveStoredAstraTop,
   sanitizeChatActionHref,
   type AskVistrahHistoryItem,
   type AskVistrahMessage,
@@ -20,6 +40,19 @@ import {
 } from '../../../shared/ask-vistrah';
 
 const GEMINI_SPARK_PNG = require('../../assets/google/gemini-spark.png');
+const MOBILE_LAUNCHER_HEIGHT = 46;
+const USE_NATIVE_DRIVER = Platform.OS !== 'web';
+
+let persistedMobileTopPx: number | null = null;
+
+function getWebSessionStorage() {
+  if (Platform.OS !== 'web' || typeof window === 'undefined') return null;
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
+}
 
 function MobileGeminiLogo({ size = 16 }: { size?: number }) {
   const gradId = useId();
@@ -94,26 +127,186 @@ function navigateChatHref(rawHref: string, onDone: () => void) {
 
 export function MobileAskVistrahWidget() {
   const pathname = usePathname();
+  const insets = useSafeAreaInsets();
+  const { height: windowHeight } = useWindowDimensions();
   const { colors, mode } = useTheme();
   const isDark = mode === 'dark';
+
+  const topSafe = Math.max(72, Math.round(insets.top + 56));
+  const bottomSafe = Math.max(96, Math.round(insets.bottom + 76));
+  const safeHeight = windowHeight > 0 ? windowHeight : 800;
+
+  const initialTop = useMemo(() => {
+    const fromStorage = readStoredAstraTop(
+      getWebSessionStorage(),
+      safeHeight,
+      topSafe,
+      bottomSafe,
+      MOBILE_LAUNCHER_HEIGHT,
+    );
+    if (fromStorage !== null) {
+      persistedMobileTopPx = fromStorage;
+      return fromStorage;
+    }
+    if (persistedMobileTopPx !== null) {
+      return clampAstraTop(
+        persistedMobileTopPx,
+        safeHeight,
+        topSafe,
+        bottomSafe,
+        MOBILE_LAUNCHER_HEIGHT,
+      );
+    }
+    return defaultAstraTop(safeHeight, topSafe, bottomSafe, MOBILE_LAUNCHER_HEIGHT);
+  }, [bottomSafe, safeHeight, topSafe]);
+
   const [open, setOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isPeek, setIsPeek] = useState(false);
   const [messages, setMessages] = useState<AskVistrahMessage[]>([ASTRA_WELCOME]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
 
+  const topAnim = useRef(new Animated.Value(initialTop)).current;
+  const peekAnim = useRef(new Animated.Value(0)).current;
+  const pullXAnim = useRef(new Animated.Value(0)).current;
+
+  const currentTopRef = useRef(initialTop);
+  const gestureStartTopRef = useRef(initialTop);
+  const gestureModeRef = useRef<'y' | 'x' | null>(null);
+  const openedBySwipeRef = useRef(false);
+  const suppressPressUntilRef = useRef(0);
+  const boundsRef = useRef({ height: safeHeight, topSafe, bottomSafe });
+  boundsRef.current = { height: safeHeight, topSafe, bottomSafe };
+
+  useEffect(() => {
+    const clamped = clampAstraTop(
+      currentTopRef.current,
+      safeHeight,
+      topSafe,
+      bottomSafe,
+      MOBILE_LAUNCHER_HEIGHT,
+    );
+    currentTopRef.current = clamped;
+    persistedMobileTopPx = clamped;
+    topAnim.setValue(clamped);
+  }, [bottomSafe, safeHeight, topAnim, topSafe]);
+
+  const animatePeek = useCallback(
+    (nextPeek: boolean) => {
+      setIsPeek(nextPeek);
+      Animated.timing(peekAnim, {
+        toValue: nextPeek ? 1 : 0,
+        duration: 220,
+        useNativeDriver: USE_NATIVE_DRIVER,
+      }).start();
+    },
+    [peekAnim],
+  );
+
+  useEffect(() => {
+    if (open || isHovered || isDragging) {
+      animatePeek(false);
+      return;
+    }
+    const timer = setTimeout(() => {
+      animatePeek(true);
+    }, ASTRA_AUTO_HIDE_MS);
+    return () => clearTimeout(timer);
+  }, [animatePeek, isDragging, isHovered, open]);
+
+  const closeChat = useCallback(() => {
+    setOpen(false);
+    setIsHovered(false);
+    pullXAnim.setValue(0);
+    animatePeek(false);
+  }, [animatePeek, pullXAnim]);
+
   const panResponder = useMemo(
     () =>
       PanResponder.create({
-        onMoveShouldSetPanResponder: (_evt, gestureState) =>
-          Math.abs(gestureState.dx) > 10 && Math.abs(gestureState.dx) > Math.abs(gestureState.dy),
-        onPanResponderRelease: (_evt, gestureState) => {
-          if (gestureState.dx <= -22) {
-            setOpen(true);
+        onStartShouldSetPanResponder: () => false,
+        onMoveShouldSetPanResponder: (_evt, gs) =>
+          Math.abs(gs.dy) > ASTRA_DRAG_DEADZONE_PX || Math.abs(gs.dx) > ASTRA_DRAG_DEADZONE_PX,
+        onPanResponderGrant: () => {
+          gestureStartTopRef.current = currentTopRef.current;
+          gestureModeRef.current = null;
+          openedBySwipeRef.current = false;
+          setIsDragging(true);
+          animatePeek(false);
+        },
+        onPanResponderMove: (_evt, gs) => {
+          if (gestureModeRef.current === null) {
+            if (Math.abs(gs.dy) >= Math.abs(gs.dx)) {
+              gestureModeRef.current = 'y';
+            } else if (gs.dx < 0) {
+              gestureModeRef.current = 'x';
+            } else {
+              return;
+            }
+          }
+
+          if (gestureModeRef.current === 'y') {
+            const { height, topSafe: minT, bottomSafe: botS } = boundsRef.current;
+            const nextTop = clampAstraTop(
+              gestureStartTopRef.current + gs.dy,
+              height,
+              minT,
+              botS,
+              MOBILE_LAUNCHER_HEIGHT,
+            );
+            currentTopRef.current = nextTop;
+            topAnim.setValue(nextTop);
+          } else if (gestureModeRef.current === 'x') {
+            const pull = Math.min(0, Math.max(-44, gs.dx));
+            pullXAnim.setValue(pull);
+            if (gs.dx <= ASTRA_LEFT_OPEN_THRESHOLD_PX && !openedBySwipeRef.current) {
+              openedBySwipeRef.current = true;
+              setOpen(true);
+            }
           }
         },
+        onPanResponderRelease: (_evt, gs) => {
+          suppressPressUntilRef.current = Date.now() + 350;
+          if (gestureModeRef.current === 'y') {
+            const { height, topSafe: minT, bottomSafe: botS } = boundsRef.current;
+            const finalTop = clampAstraTop(
+              gestureStartTopRef.current + gs.dy,
+              height,
+              minT,
+              botS,
+              MOBILE_LAUNCHER_HEIGHT,
+            );
+            currentTopRef.current = finalTop;
+            persistedMobileTopPx = finalTop;
+            saveStoredAstraTop(getWebSessionStorage(), finalTop);
+            topAnim.setValue(finalTop);
+          } else if (gestureModeRef.current === 'x') {
+            if (gs.dx <= ASTRA_LEFT_OPEN_THRESHOLD_PX || openedBySwipeRef.current) {
+              setOpen(true);
+            }
+            Animated.spring(pullXAnim, {
+              toValue: 0,
+              useNativeDriver: USE_NATIVE_DRIVER,
+            }).start();
+          }
+          gestureModeRef.current = null;
+          openedBySwipeRef.current = false;
+          setIsDragging(false);
+        },
+        onPanResponderTerminate: () => {
+          Animated.spring(pullXAnim, {
+            toValue: 0,
+            useNativeDriver: USE_NATIVE_DRIVER,
+          }).start();
+          gestureModeRef.current = null;
+          openedBySwipeRef.current = false;
+          setIsDragging(false);
+        },
       }),
-    [],
+    [animatePeek, pullXAnim, topAnim],
   );
 
   if (pathname === '/settings') return null;
@@ -175,6 +368,20 @@ export function MobileAskVistrahWidget() {
     }
   }
 
+  const peekTranslateX = peekAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, ASTRA_PEEK_COUNTER_SHIFT_PX],
+  });
+  const combinedTranslateX = Animated.add(peekTranslateX, pullXAnim);
+  const sparkCounterX = peekAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -ASTRA_PEEK_COUNTER_SHIFT_PX],
+  });
+  const textOpacity = peekAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0],
+  });
+
   return (
     <View pointerEvents="box-none" style={s.overlay} testID="astra-widget">
       {open && (
@@ -204,7 +411,7 @@ export function MobileAskVistrahWidget() {
               <Pressable
                 accessibilityRole="button"
                 accessibilityLabel="Minimize Astra"
-                onPress={() => setOpen(false)}
+                onPress={closeChat}
                 hitSlop={8}
                 style={s.closeBtn}
               >
@@ -262,7 +469,7 @@ export function MobileAskVistrahWidget() {
                         <Pressable
                           key={`${msg.id}-${act.href}`}
                           accessibilityRole="button"
-                          onPress={() => navigateChatHref(act.href, () => setOpen(false))}
+                          onPress={() => navigateChatHref(act.href, closeChat)}
                           style={[
                             s.actionChip,
                             {
@@ -368,30 +575,55 @@ export function MobileAskVistrahWidget() {
                 },
               ]}
             >
-              <Feather
-                name="send"
-                size={14}
-                color="#ffffff"
-              />
+              <Feather name="send" size={14} color="#ffffff" />
             </Pressable>
           </View>
         </View>
       )}
 
-      <View {...panResponder.panHandlers}>
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={[
+          s.launcherAnchor,
+          Platform.OS === 'web'
+            ? ({ touchAction: 'none', userSelect: 'none' } as unknown as object)
+            : null,
+          {
+            top: topAnim,
+            transform: [{ translateX: combinedTranslateX }],
+          },
+        ]}
+        testID={isPeek && !open ? 'astra-launcher-peek' : 'astra-launcher-expanded'}
+      >
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={open ? 'Close Astra' : 'Astra — Powered by Google Gemini'}
-          onPress={() => setOpen(v => !v)}
-          style={({ pressed }) => [s.launcher, { opacity: pressed ? 0.9 : 1 }]}
+          onHoverIn={() => {
+            setIsHovered(true);
+            animatePeek(false);
+          }}
+          onHoverOut={() => setIsHovered(false)}
+          onPress={() => {
+            if (Date.now() < suppressPressUntilRef.current) return;
+            animatePeek(false);
+            setOpen(v => !v);
+          }}
+          style={({ pressed }) => [s.launcher, { opacity: pressed ? 0.92 : 1 }]}
         >
-          <View style={s.launcherTextCol}>
-            <Text style={s.launcherTitle}>{ASTRA_AGENT_NAME}</Text>
-            <Text style={s.poweredText}>{GEMINI_BRAND_LABEL}</Text>
-          </View>
-          <MobileGeminiLogo size={18} />
+          <View style={s.edgeGrip} />
+          <Animated.View style={[s.launcherTextCol, { opacity: textOpacity }]}>
+            <Text numberOfLines={1} style={s.launcherTitle}>
+              {ASTRA_AGENT_NAME}
+            </Text>
+            <Text numberOfLines={1} style={s.poweredText}>
+              {GEMINI_BRAND_LABEL}
+            </Text>
+          </Animated.View>
+          <Animated.View style={{ transform: [{ translateX: sparkCounterX }] }}>
+            <MobileGeminiLogo size={18} />
+          </Animated.View>
         </Pressable>
-      </View>
+      </Animated.View>
     </View>
   );
 }
@@ -399,34 +631,48 @@ export function MobileAskVistrahWidget() {
 const s = StyleSheet.create({
   overlay: {
     position: 'absolute',
+    top: 0,
     right: 0,
-    bottom: 84,
+    bottom: 0,
+    left: 0,
     zIndex: 900,
-    alignItems: 'flex-end',
-    gap: 10,
+  },
+  launcherAnchor: {
+    position: 'absolute',
+    right: 0,
+    zIndex: 901,
   },
   launcher: {
+    width: ASTRA_LAUNCHER_WIDTH_PX,
+    minHeight: MOBILE_LAUNCHER_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 10,
-    minHeight: 46,
-    paddingLeft: 16,
-    paddingRight: 13,
+    gap: 7,
+    paddingLeft: 10,
+    paddingRight: 12,
     paddingVertical: 8,
     borderTopLeftRadius: 999,
     borderBottomLeftRadius: 999,
     backgroundColor: '#0f294a',
     borderWidth: 1.5,
     borderRightWidth: 0,
-    borderColor: 'rgba(249,115,22,0.72)',
+    borderColor: 'rgba(249,115,22,0.78)',
     shadowColor: '#0f294a',
     shadowOffset: { width: -2, height: 6 },
     shadowOpacity: 0.34,
     shadowRadius: 12,
     elevation: 6,
   },
+  edgeGrip: {
+    width: 3,
+    height: 18,
+    borderRadius: 999,
+    backgroundColor: 'rgba(249,115,22,0.72)',
+  },
   launcherTextCol: {
+    flex: 1,
+    minWidth: 0,
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: 1,
@@ -444,12 +690,15 @@ const s = StyleSheet.create({
   },
   poweredText: {
     color: '#cbd5e1',
-    fontSize: 9,
+    fontSize: 8.5,
     fontWeight: '500',
     lineHeight: 11,
   },
   panel: {
-    marginRight: 12,
+    position: 'absolute',
+    right: 12,
+    bottom: 92,
+    zIndex: 902,
     width: 332,
     maxWidth: '92%',
     maxHeight: 460,

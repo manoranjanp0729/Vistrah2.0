@@ -1,18 +1,21 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import { ArrowUpRight, Send, X } from 'lucide-react';
 import {
   ASTRA_AGENT_NAME,
+  ASTRA_PEEK_TRANSLATE_PERCENT,
   ASTRA_STARTERS,
   ASTRA_WELCOME,
   GEMINI_BRAND_LABEL,
   GEMINI_SPARK_PATH,
   GEMINI_SPARK_VIEWBOX,
+  createAstraLauncherController,
   normalizeSuggestedActions,
   type AskVistrahHistoryItem,
   type AskVistrahMessage,
+  type AstraLauncherState,
 } from '../../shared/ask-vistrah';
 import s from './ask-vistrah-widget.module.css';
 
@@ -42,16 +45,44 @@ function GeminiLogo({ size = 16 }: { size?: number }) {
   );
 }
 
-export function AskVistrahWidget() {
-  const [open, setOpen] = useState(false);
+export type AskVistrahWidgetProps = {
+  initialPeek?: boolean;
+  initialTopPx?: number;
+};
+
+export function AskVistrahWidget({
+  initialPeek = false,
+  initialTopPx,
+}: AskVistrahWidgetProps) {
+  const controllerRef = useRef<ReturnType<typeof createAstraLauncherController> | null>(null);
+  const [ui, setUi] = useState<AstraLauncherState>(() => {
+    const initial = createAstraLauncherController({ initialPeek, initialTopPx });
+    return initial.getState();
+  });
+  const [hydrated, setHydrated] = useState(initialTopPx !== undefined);
   const [messages, setMessages] = useState<AskVistrahMessage[]>([ASTRA_WELCOME]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0);
-  const dragRef = useRef<{ startX: number; dragged: boolean } | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const storage = typeof window !== 'undefined' ? window.sessionStorage : null;
+    const ctrl = createAstraLauncherController({
+      initialViewportHeight: typeof window !== 'undefined' ? window.innerHeight : 800,
+      initialPeek,
+      initialTopPx,
+      storage,
+      onChange: next => setUi(next),
+    });
+    controllerRef.current = ctrl;
+    ctrl.hydrateFromStorage(typeof window !== 'undefined' ? window.innerHeight : 800, storage);
+    setHydrated(true);
+
+    function onResize() {
+      ctrl.resize(window.innerHeight);
+    }
+    window.addEventListener('resize', onResize);
+
     try {
       const saved = sessionStorage.getItem(SESSION_KEY);
       if (saved) {
@@ -63,7 +94,12 @@ export function AskVistrahWidget() {
     } catch {
       // Ignore storage access errors in private browsing
     }
-  }, []);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      ctrl.dispose();
+    };
+  }, [initialPeek, initialTopPx]);
 
   useEffect(() => {
     try {
@@ -71,10 +107,10 @@ export function AskVistrahWidget() {
     } catch {
       // Ignore storage quota errors
     }
-    if (open && scrollRef.current) {
+    if (ui.open && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, open]);
+  }, [messages, ui.open]);
 
   async function sendQuestion(rawText: string) {
     const trimmed = rawText.trim();
@@ -162,9 +198,34 @@ export function AskVistrahWidget() {
     }
   }
 
+  const isDragging = ui.isDraggingY || ui.isDraggingX;
+  const launcherStyle: CSSProperties = {};
+  if (hydrated) {
+    launcherStyle.top = `${ui.topPx}px`;
+    launcherStyle.bottom = 'auto';
+  }
+  if (ui.isDraggingX && ui.pullX < 0) {
+    launcherStyle.transform = `translateX(${ui.pullX}px)`;
+  } else if (ui.isPeek && !ui.open) {
+    launcherStyle.transform = `translateX(${ASTRA_PEEK_TRANSLATE_PERCENT}%)`;
+  }
+
+  const launcherClassName = [
+    s.launcher,
+    ui.isPeek && !ui.open ? s.launcherPeek : '',
+    isDragging ? s.launcherDragging : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div className={s.root} data-ask-vistrah="true" data-astra="true">
-      {open && (
+    <div
+      className={s.root}
+      data-ask-vistrah="true"
+      data-astra="true"
+      data-docked-edge="right"
+    >
+      {ui.open && (
         <section
           className={s.panel}
           role="dialog"
@@ -188,7 +249,7 @@ export function AskVistrahWidget() {
                 type="button"
                 className={s.closeBtn}
                 aria-label="Minimize Astra"
-                onClick={() => setOpen(false)}
+                onClick={() => controllerRef.current?.closeChat()}
               >
                 <X size={16} />
               </button>
@@ -213,7 +274,7 @@ export function AskVistrahWidget() {
                           key={`${msg.id}-${act.href}`}
                           href={act.href}
                           className={s.actionLink}
-                          onClick={() => setOpen(false)}
+                          onClick={() => controllerRef.current?.closeChat()}
                         >
                           <span>{act.label}</span>
                           <ArrowUpRight size={13} aria-hidden="true" />
@@ -280,48 +341,62 @@ export function AskVistrahWidget() {
 
       <button
         type="button"
-        className={s.launcher}
-        aria-expanded={open}
-        aria-label={open ? 'Close Astra chat' : 'Open Astra — Powered by Google Gemini'}
-        style={dragOffset < 0 ? { transform: `translateX(${Math.max(-36, dragOffset)}px)` } : undefined}
+        className={launcherClassName}
+        aria-expanded={ui.open}
+        aria-label={ui.open ? 'Close Astra chat' : 'Open Astra — Powered by Google Gemini'}
+        data-astra-peek={ui.isPeek && !ui.open ? 'true' : 'false'}
+        data-astra-dragging={isDragging ? 'true' : 'false'}
+        style={launcherStyle}
+        onPointerEnter={() => controllerRef.current?.pointerEnter()}
+        onPointerLeave={() => controllerRef.current?.pointerLeave()}
+        onFocus={() => controllerRef.current?.focus()}
+        onBlur={() => controllerRef.current?.blur()}
         onPointerDown={e => {
-          dragRef.current = { startX: e.clientX, dragged: false };
+          if (e.pointerType === 'mouse' && e.button !== 0) return;
           e.currentTarget.setPointerCapture?.(e.pointerId);
+          controllerRef.current?.pointerDown({
+            pointerId: e.pointerId,
+            clientX: e.clientX,
+            clientY: e.clientY,
+            viewportHeight: typeof window !== 'undefined' ? window.innerHeight : 800,
+          });
         }}
         onPointerMove={e => {
-          if (!dragRef.current) return;
-          const dx = e.clientX - dragRef.current.startX;
-          if (dx < -8) {
-            dragRef.current.dragged = true;
-            setDragOffset(dx);
-          }
+          controllerRef.current?.pointerMove({
+            pointerId: e.pointerId,
+            clientX: e.clientX,
+            clientY: e.clientY,
+            viewportHeight: typeof window !== 'undefined' ? window.innerHeight : 800,
+          });
         }}
         onPointerUp={e => {
-          const info = dragRef.current;
-          dragRef.current = null;
-          setDragOffset(0);
           e.currentTarget.releasePointerCapture?.(e.pointerId);
-          if (info?.dragged) {
-            if (e.clientX - info.startX <= -24) {
-              setOpen(true);
-            }
-          }
+          controllerRef.current?.pointerUp(
+            {
+              pointerId: e.pointerId,
+              clientX: e.clientX,
+              clientY: e.clientY,
+              viewportHeight: typeof window !== 'undefined' ? window.innerHeight : 800,
+            },
+            typeof window !== 'undefined' ? window.sessionStorage : null,
+          );
         }}
-        onPointerCancel={() => {
-          dragRef.current = null;
-          setDragOffset(0);
+        onPointerCancel={e => {
+          e.currentTarget.releasePointerCapture?.(e.pointerId);
+          controllerRef.current?.pointerCancel(e.pointerId);
         }}
         onClick={() => {
-          if (!dragRef.current?.dragged) {
-            setOpen(v => !v);
-          }
+          controllerRef.current?.click();
         }}
       >
+        <span className={s.edgeGrip} aria-hidden="true" />
         <span className={s.launcherTextCol}>
           <span className={s.launcherTitle}>{ASTRA_AGENT_NAME}</span>
           <span className={s.launcherPowered}>{GEMINI_BRAND_LABEL}</span>
         </span>
-        <GeminiLogo size={18} />
+        <span className={s.launcherSparkWrap}>
+          <GeminiLogo size={18} />
+        </span>
       </button>
     </div>
   );

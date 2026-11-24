@@ -102,6 +102,67 @@
   color: #F97316;
 }
 
+.gpsQuickBtn:disabled {
+  opacity: 0.78;
+  cursor: wait;
+}
+
+@keyframes vistrahSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinIcon {
+  animation: vistrahSpin 0.85s linear infinite;
+}
+
+.gpsErrorBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #EA580C;
+  background: rgba(249, 115, 22, 0.14);
+  color: var(--text-primary, #f8fafc);
+  font-size: 0.83rem;
+}
+
+:global(:root[data-theme='light']) .gpsErrorBanner {
+  background: #fff7ed;
+  color: #0F294A;
+}
+
+.gpsErrorCopy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.gpsErrorAction {
+  font-weight: 700;
+  color: #F97316;
+  text-decoration: underline;
+}
+
+:global(:root[data-theme='light']) .gpsErrorAction {
+  color: #EA580C;
+}
+
+.gpsErrorDismiss {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .controlsRight {
   display: flex;
   flex-wrap: wrap;

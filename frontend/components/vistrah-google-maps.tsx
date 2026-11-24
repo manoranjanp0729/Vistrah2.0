@@ -1134,7 +1134,10 @@ export function MapFirstLocationPicker({
     setGpsBusy(true);
     setGpsRecoveryMsg('');
     try {
-      const fix = await requestGps(typeof navigator !== 'undefined' ? navigator.geolocation : undefined);
+      const fix = await requestGps(
+        typeof navigator !== 'undefined' ? navigator.geolocation : undefined,
+        typeof navigator !== 'undefined' ? navigator.permissions : undefined,
+      );
       programmaticPanUntilRef.current = Date.now() + 1400;
       const resolved = await reverseGeocodePoint(fix.point);
       const roundedLat = Number(fix.point.latitude.toFixed(6));
@@ -1153,9 +1156,10 @@ export function MapFirstLocationPicker({
       };
       onChange(committed);
       onQuickCommit?.(committed);
-    } catch {
+    } catch (err) {
       setGpsRecoveryMsg(
-        'Location permission was denied or GPS timed out. Tap a Karnataka city chip above, pan the map pin, or edit your street / PIN below.',
+        (err as Error)?.message ||
+          'Location permission was denied or GPS timed out. Tap a city chip above, pan the map pin, or edit your street / PIN below.',
       );
       setDrawerOpen(true);
     } finally {

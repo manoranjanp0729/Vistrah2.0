@@ -232,6 +232,32 @@ export function buildNearbyMarketplacePath(params: {
   return `/marketplace/nearby?${qs.toString()}`;
 }
 
+export function buildNearbyListingsPath(params: {
+  category: string;
+  subcategory?: string;
+  businessType?: string;
+  serviceType?: string;
+  latitude: number;
+  longitude: number;
+  radiusKm: number;
+}): string {
+  const qs = new URLSearchParams({
+    category: params.category,
+    lat: params.latitude.toFixed(6),
+    lng: params.longitude.toFixed(6),
+    radius_km: String(params.radiusKm),
+  });
+  if (params.subcategory) {
+    qs.set('subcategory', params.subcategory);
+  }
+  const activeType = (params.serviceType ?? params.businessType ?? '').trim();
+  if (activeType) {
+    qs.set('service_type', activeType);
+    qs.set('business_type', activeType);
+  }
+  return `/marketplace/listings?${qs.toString()}`;
+}
+
 export function formatDistanceAway(distanceKm: number): string {
   if (!Number.isFinite(distanceKm) || distanceKm < 0) return '';
   if (distanceKm < 0.1) return '< 0.1 km away';

@@ -1,6 +1,7 @@
 import {reversePlace} from './maptiler';
+import {requestBrowserGpsFix,type GeolocationPermissionsLike} from '../../shared/live-geolocation';
 export type Point={latitude:number;longitude:number};
-export type CustomerLocation=Point&{locality:string;postal_code:string;address:string;landmark:string;source?:'google'};
+export type CustomerLocation=Point&{locality:string;postal_code:string;address:string;landmark:string;source?:'google'|'gps'|'preset'|'manual'};
 export type NearbyProvider=Point&{id:number;slug:string;company:string;name:string;location:string;description:string;verification_status:string;distance_km:number};
 export type NearbyResult={nearby:NearbyProvider[];also_serves:NearbyProvider[];distance_kind:'straight-line';page:number;has_more_nearby:boolean;has_more_also_serves:boolean};
 export const radii=[2,5,10,25] as const;
@@ -22,16 +23,11 @@ export async function resolveAddress(query:string,providers:LocationProviders,si
   catch{throw new Error('Address lookup is unavailable. Enter locality/PIN and adjust the manual pin.');}
 }
 
-export function requestGps(geolocation:Pick<Geolocation,'getCurrentPosition'>|undefined):Promise<{point:Point;accuracy:number}>{
-  return new Promise((resolve,reject)=>{
-    if(!geolocation){reject(new Error('GPS is unavailable. Enter your location and adjust the manual pin.'));return;}
-    geolocation.getCurrentPosition(position=>{
-      const point={latitude:position.coords.latitude,longitude:position.coords.longitude};
-      if(!validPoint(point)||!Number.isFinite(position.coords.accuracy)||position.coords.accuracy<0){reject(new Error('GPS returned an invalid position. Use the manual pin.'));return;}
-      resolve({point,accuracy:position.coords.accuracy});
-    },()=>reject(new Error('GPS was denied or unavailable. Enter your location and adjust the manual pin.')),
-    {enableHighAccuracy:true,timeout:10000,maximumAge:0});
-  });
+export function requestGps(
+  geolocation:Pick<Geolocation,'getCurrentPosition'>|undefined,
+  permissions?:GeolocationPermissionsLike|null,
+):Promise<{point:Point;accuracy:number}>{
+  return requestBrowserGpsFix(geolocation,permissions);
 }
 
 // Abort and a generation check cover providers which ignore AbortSignal too.

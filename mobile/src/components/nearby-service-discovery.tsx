@@ -14,7 +14,7 @@ import type { GooglePoint } from '../../../shared/google-location';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
-  buildNearbyMarketplacePath,
+  buildNearbyListingsPath,
   formatDistanceAway,
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
@@ -207,7 +207,7 @@ export function MobileNearbyServiceDiscovery({
 
   useEffect(() => {
     let alive = true;
-    const path = buildNearbyMarketplacePath({
+    const path = buildNearbyListingsPath({
       category: categorySlug,
       subcategory: subcategorySlug,
       serviceType: normalizedTypeSlug || undefined,
@@ -506,32 +506,85 @@ export function MobileNearbyServiceDiscovery({
             <Text style={{ fontSize: 12, color: colors.muted }}>{categoryTitle}</Text>
           </View>
 
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel="Change search location"
-            onPress={() => router.push('/location')}
-            style={({ pressed }) => [
-              s.locationPill,
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexShrink: 1 }}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Change search location"
+              onPress={() => router.push('/location')}
+              style={({ pressed }) => [
+                s.locationPill,
+                {
+                  backgroundColor: isDark ? '#132F54' : '#fff7ed',
+                  borderColor: 'rgba(249,115,22,0.5)',
+                  opacity: pressed ? 0.85 : 1,
+                },
+              ]}
+            >
+              <Feather name="map-pin" size={12} color="#F97316" />
+              <Text
+                numberOfLines={1}
+                style={[s.locationPillText, { color: isDark ? '#ffffff' : '#0F294A' }]}
+              >
+                {locCtx?.detecting
+                  ? 'Locating…'
+                  : activePoint.hasCustomLocation || customCenter
+                    ? displayLocality
+                    : `${displayLocality} · Change`}
+              </Text>
+            </Pressable>
+
+            {locCtx && (
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Use GPS"
+                disabled={locCtx.detecting}
+                onPress={() => {
+                  setCustomCenter(null);
+                  setPannedCenter(null);
+                  void locCtx.requestCurrentGps();
+                }}
+                style={({ pressed }) => [
+                  s.gpsBtn,
+                  {
+                    backgroundColor: '#F97316',
+                    borderColor: '#EA580C',
+                    opacity: locCtx.detecting ? 0.72 : pressed ? 0.85 : 1,
+                  },
+                ]}
+              >
+                <Feather name="crosshair" size={12} color="#ffffff" />
+                <Text style={s.gpsBtnText}>
+                  {locCtx.detecting ? 'Locating…' : 'Use GPS'}
+                </Text>
+              </Pressable>
+            )}
+          </View>
+        </View>
+
+        {Boolean(locCtx?.gpsError) && (
+          <View
+            accessibilityRole="alert"
+            style={[
+              s.gpsAlertRow,
               {
-                backgroundColor: isDark ? '#132F54' : '#fff7ed',
-                borderColor: 'rgba(249,115,22,0.5)',
-                opacity: pressed ? 0.85 : 1,
+                backgroundColor: isDark ? 'rgba(249,115,22,0.14)' : '#fff7ed',
+                borderColor: '#EA580C',
               },
             ]}
           >
-            <Feather name="map-pin" size={12} color="#F97316" />
-            <Text
-              numberOfLines={1}
-              style={[s.locationPillText, { color: isDark ? '#ffffff' : '#0F294A' }]}
-            >
-              {locCtx?.detecting
-                ? 'Locating…'
-                : activePoint.hasCustomLocation || customCenter
-                  ? displayLocality
-                  : `${displayLocality} · Change`}
+            <Text style={{ flex: 1, fontSize: 12, lineHeight: 17, color: colors.text }}>
+              {locCtx?.gpsError}
             </Text>
-          </Pressable>
-        </View>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Dismiss location notice"
+              onPress={() => locCtx?.clearGpsError()}
+              hitSlop={8}
+            >
+              <Feather name="x" size={15} color={colors.muted} />
+            </Pressable>
+          </View>
+        )}
 
         {/* Segmented Radius Selector: 2 km / 5 km / 10 km / 25 km / 50 km */}
         <View
@@ -1136,6 +1189,30 @@ const s = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     flexShrink: 1,
+  },
+  gpsBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  gpsBtnText: {
+    color: '#ffffff',
+    fontSize: 11.5,
+    fontWeight: '700',
+  },
+  gpsAlertRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderRadius: 10,
+    borderWidth: 1,
   },
   radiusTrack: {
     flexDirection: 'row',

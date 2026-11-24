@@ -14,6 +14,7 @@ import {
   Globe,
   HardHat,
   HeartPulse,
+  Loader2,
   LocateFixed,
   MapPin,
   MessageCircle,
@@ -36,7 +37,7 @@ import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../shared/flagship-secto
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
-  buildNearbyMarketplacePath,
+  buildNearbyListingsPath,
   formatDistanceAway,
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
@@ -226,7 +227,7 @@ export function NearbyServiceDiscovery({
 
   useEffect(() => {
     let alive = true;
-    const path = buildNearbyMarketplacePath({
+    const path = buildNearbyListingsPath({
       category: categorySlug,
       subcategory: subcategorySlug,
       serviceType: normalizedTypeSlug || undefined,
@@ -444,14 +445,19 @@ export function NearbyServiceDiscovery({
                 type="button"
                 className={s.gpsQuickBtn}
                 disabled={locCtx.busy || locCtx.detecting}
+                aria-busy={locCtx.busy || locCtx.detecting}
                 onClick={() => {
                   setCustomCenter(null);
                   setPannedCenter(null);
                   void locCtx.gps();
                 }}
               >
-                <LocateFixed size={13} aria-hidden="true" />
-                <UiText value="Use GPS" />
+                {locCtx.busy || locCtx.detecting ? (
+                  <Loader2 size={13} className={s.spinIcon} aria-hidden="true" />
+                ) : (
+                  <LocateFixed size={13} aria-hidden="true" />
+                )}
+                <UiText value={locCtx.busy || locCtx.detecting ? 'Locating…' : 'Use GPS'} />
               </button>
             )}
             {customCenter && (
@@ -487,6 +493,25 @@ export function NearbyServiceDiscovery({
           <MapListViewToggle mode={viewMode} onChange={setViewMode} />
         </div>
       </div>
+
+      {locCtx?.error && (
+        <div className={s.gpsErrorBanner} role="alert">
+          <div className={s.gpsErrorCopy}>
+            <span>{locCtx.error}</span>
+            <Link href="/location" className={s.gpsErrorAction}>
+              <UiText value="Pick city manually" />
+            </Link>
+          </div>
+          <button
+            type="button"
+            className={s.gpsErrorDismiss}
+            aria-label="Dismiss location notice"
+            onClick={() => locCtx.clearError()}
+          >
+            <X size={14} aria-hidden="true" />
+          </button>
+        </div>
+      )}
 
       {/* Compact Non-Blocking Seller Banner */}
       <div className={s.compactBanner} data-seller-banner="true">

@@ -1,5 +1,5 @@
 import {useEffect,useMemo,useRef,useState,type ReactNode} from 'react';
-import {Linking,Platform,Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
+import {Alert,Linking,Platform,Pressable,ScrollView,View,useWindowDimensions} from 'react-native';
 import * as GPS from 'expo-location';
 import {Feather} from '@expo/vector-icons';
 import {Text,TextInput} from './typography';
@@ -9,6 +9,11 @@ import {googleMapsDirectionsUrl} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
 import {MobileGoogleWordmark,MobilePoweredByGoogle} from './google-attribution';
 import {VistrahMobileMap,reverseGeocodeMobilePoint} from './vistrah-mobile-map';
+import {
+  acquireNativeExpoGpsFix,
+  requestBrowserGpsFix,
+  type GeolocationPermissionsLike,
+} from '../../../shared/live-geolocation';
 import {
   CUSTOMER_SEARCH_RADII,
   KARNATAKA_QUICK_CITIES,
@@ -187,43 +192,16 @@ export function MobileMapFirstLocationPicker({
     setGpsBusy(true);
     setGpsRecovery('');
     try{
-      let pt:{latitude:number;longitude:number}|null=null;
-      let accMeters=0;
-
-      if(Platform.OS==='web'&&typeof navigator!=='undefined'&&navigator.geolocation){
-        pt=await new Promise<{latitude:number;longitude:number}>((resolve,reject)=>{
-          navigator.geolocation.getCurrentPosition(
-            pos=>{
-              accMeters=Math.round(pos.coords.accuracy??0);
-              resolve({
-                latitude:Number(pos.coords.latitude.toFixed(6)),
-                longitude:Number(pos.coords.longitude.toFixed(6)),
-              });
-            },
-            err=>reject(err),
-            {enableHighAccuracy:false,timeout:8000,maximumAge:30000},
-          );
-        });
-      }else{
-        const permission=await GPS.requestForegroundPermissionsAsync();
-        if(permission.status!=='granted')throw new Error('denied');
-        let timer:ReturnType<typeof setTimeout>|undefined;
-        try{
-          const pos=await Promise.race([
-            GPS.getCurrentPositionAsync({accuracy:GPS.Accuracy.Balanced}),
-            new Promise<never>((_,reject)=>{
-              timer=setTimeout(()=>reject(new Error('timeout')),8000);
-            }),
-          ]);
-          accMeters=Math.round(pos.coords.accuracy??0);
-          pt={
-            latitude:Number(pos.coords.latitude.toFixed(6)),
-            longitude:Number(pos.coords.longitude.toFixed(6)),
-          };
-        }finally{
-          if(timer)clearTimeout(timer);
-        }
-      }
+      const fix=Platform.OS==='web'
+        ? await requestBrowserGpsFix(
+            typeof navigator!=='undefined'?navigator.geolocation:undefined,
+            typeof navigator!=='undefined'
+              ? ((navigator as unknown as {permissions?:GeolocationPermissionsLike}).permissions??null)
+              : null,
+          )
+        : await acquireNativeExpoGpsFix(GPS);
+      const pt=fix.point;
+      const accMeters=Math.round(fix.accuracy);
 
       const resolved=await reverseGeocodeMobilePoint(pt);
       const fallbackLabel=`${pt.latitude.toFixed(3)}° N, ${pt.longitude.toFixed(3)}° E`;
@@ -240,8 +218,12 @@ export function MobileMapFirstLocationPicker({
       };
       onChange(committed);
       onQuickCommit?.(committed);
-    }catch{
-      setGpsRecovery('Location permission denied or GPS timed out. Tap a Karnataka city chip above, pan the map, or edit street / PIN below.');
+    }catch(err){
+      const msg=(err as Error)?.message||'Location permission denied or GPS timed out. Tap a city chip above, pan the map, or edit street / PIN below.';
+      setGpsRecovery(msg);
+      if(Platform.OS!=='web'&&msg.toLowerCase().includes('permission')){
+        Alert.alert('Location Permission Needed',msg);
+      }
       setDrawerOpen(true);
     }finally{
       setGpsBusy(false);

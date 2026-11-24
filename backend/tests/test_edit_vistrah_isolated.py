@@ -45,7 +45,7 @@ class CmsTests(unittest.TestCase):
     def test_existing_pages_have_content_without_creating_runtime_files(self):
         pages = self.store.list_pages()
         self.assertEqual(len(pages), 9)
-        self.assertEqual({p['slug'] for p in pages}, {'home','services','v-ads','v-essentials','marketing-solutions','digital-marketing','branding-creative-production','outdoor-advertising-signage','mobility-billboard-advertising'})
+        self.assertEqual({p['slug'] for p in pages}, {'home','services','v-ads','vibe-finder','marketing-solutions','digital-marketing','branding-creative-production','outdoor-advertising-signage','mobility-billboard-advertising'})
         for page in pages:
             self.assertTrue(page['sections'], page['slug'])
             self.assertEqual(page['content_source'], 'APP')

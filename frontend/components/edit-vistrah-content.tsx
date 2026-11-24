@@ -45,7 +45,7 @@ export function EditVistrahContent({children,slug:explicitSlug,required=false}:{
  const page=result.key===slug?result.page:undefined;
  if(!page||page.path!==pathname||page.target_platform==='mobile')return <>{required?<div className="container" role="status">{result.key===slug?'This page is not published for the website.':translate(locale,'common.loading')}</div>:children}</>;
  // Native account, seller, catalogue and moderation journeys retain their functional screens.
- const replace=!['/services','/v-ads','/v-essentials'].includes(pathname)||required;
+ const replace=!['/services','/v-ads','/vibe-finder'].includes(pathname)||required;
  const drilledServices=pathname==='/services'&&query.size>0;
  return <>{!drilledServices&&<div className="container"><ContentSections sections={page.sections} editorialOnly={!replace}/></div>}{!replace&&children}</>;
 }

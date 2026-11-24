@@ -1,6 +1,8 @@
 {
   "nav": {
     "discover": "Discover",
+    "products": "Products",
+    "vibeFinder": "Vibe Finder",
     "services": "Services",
     "requests": "Requests",
     "account": "Account",
@@ -11,7 +13,7 @@
     "title": "Find verified businesses near you",
     "description": "Browse verified local shops, clinics, stays, construction teams, and services across India—or list your business for ₹0.",
     "quick": "Quick Access",
-    "categories": "Services for you",
+    "categories": "Services Near You",
     "viewAll": "View all",
     "featured": "For Local Businesses",
     "badge": "Free Business Listing",

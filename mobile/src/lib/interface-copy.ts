@@ -1,6 +1,8 @@
 const copy = {
   "nav": {
     "discover": "Discover",
+    "products": "Products",
+    "vibeFinder": "Vibe Finder",
     "services": "Services",
     "requests": "Requests",
     "account": "Account",
@@ -11,7 +13,7 @@ const copy = {
     "title": "Find verified businesses near you",
     "description": "Explore verified local shops, stays, clinics, construction teams, and services—or list your business for ₹0.",
     "quick": "Quick Access",
-    "categories": "Services for you",
+    "categories": "Services Near You",
     "viewAll": "View all",
     "featured": "For Local Businesses",
     "badge": "Free Business Listing",

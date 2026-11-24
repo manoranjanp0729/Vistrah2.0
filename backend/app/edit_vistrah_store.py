@@ -112,7 +112,7 @@ DEFAULT_LIBRARY = [
     },
     {
         'type': 'services_for_you',
-        'default_name': 'Services For You',
+        'default_name': 'Services Near You',
         'description': 'Personalized service recommendations, category rails, and fixed-price packages.',
         'recommended_resolution': '800 × 600 px (4:3) or 800 × 800 px (1:1)',
         'variations': [
@@ -260,7 +260,7 @@ DEFAULT_PAGES = [
             {
                 'id': 'sec-home-services',
                 'type': 'services_for_you',
-                'name': 'Curated Services For You',
+                'name': 'Curated Services Near You',
                 'variation': 'adaptive_grid',
                 'available_variations': DEFAULT_LIBRARY[3]['variations'],
                 'features': DEFAULT_LIBRARY[3]['default_features'],
@@ -376,11 +376,11 @@ DEFAULT_PAGES = [
         ],
     },
     {
-        'id': 'page-v-essentials',
-        'slug': 'v-essentials',
-        'name': 'V Essentials',
-        'path': '/v-essentials',
-        'description': 'Curated everyday essentials, home necessities, and verified fast local fulfillment.',
+        'id': 'page-vibe-finder',
+        'slug': 'vibe-finder',
+        'name': 'Vibe Finder',
+        'path': '/vibe-finder',
+        'description': 'Discover cinemas, social events, cafes, lounges, and local experiences near you.',
         'target_platform': 'all',
         'status': 'LIVE',
         'revision': 1,
@@ -390,7 +390,7 @@ DEFAULT_PAGES = [
             {
                 'id': 'sec-vess-header',
                 'type': 'header',
-                'name': 'V Essentials Header',
+                'name': 'Vibe Finder Header',
                 'variation': 'sticky_standard',
                 'available_variations': DEFAULT_LIBRARY[0]['variations'],
                 'features': DEFAULT_LIBRARY[0]['default_features'],
@@ -401,7 +401,7 @@ DEFAULT_PAGES = [
             {
                 'id': 'sec-vess-banner',
                 'type': 'editable_banner',
-                'name': 'Daily Essentials Flash Banner',
+                'name': 'Featured Vibes Banner',
                 'variation': 'full_promotional',
                 'available_variations': DEFAULT_LIBRARY[4]['variations'],
                 'features': DEFAULT_LIBRARY[4]['default_features'],
@@ -521,11 +521,11 @@ class EditVistrahStore:
             raise ValueError('Account and administrative routes cannot be replaced with content pages')
         if path.startswith('/marketing-services/') and page['slug'] not in ('digital-marketing', 'branding-creative-production', 'outdoor-advertising-signage', 'mobility-billboard-advertising'):
             raise ValueError('Use /pages/' + page['slug'] + ' for a custom page')
-        if path not in ('/', '/services', '/v-ads', '/v-essentials', '/marketing-solutions') and path not in ('/pages/' + page['slug'], '/marketing-services/' + page['slug']):
+        if path not in ('/', '/services', '/v-ads', '/vibe-finder', '/marketing-solutions') and path not in ('/pages/' + page['slug'], '/marketing-services/' + page['slug']):
             raise ValueError('Use /pages/' + page['slug'] + ' for a custom page, or its existing marketing service path')
         if any(p['slug'] != page['slug'] and p['path'] == path for p in self._editor_pages().values()):
             raise ValueError('Another page already uses this path')
-        canonical = {'home': '/', 'services': '/services', 'v-ads': '/v-ads', 'v-essentials': '/v-essentials', 'marketing-solutions': '/marketing-solutions'}
+        canonical = {'home': '/', 'services': '/services', 'v-ads': '/v-ads', 'vibe-finder': '/vibe-finder', 'marketing-solutions': '/marketing-solutions'}
         if page['slug'] in canonical and path != canonical[page['slug']]:
             raise ValueError('This page must keep its existing app path: ' + canonical[page['slug']])
         sections = page.get('sections', [])
@@ -647,7 +647,7 @@ class EditVistrahStore:
 
     def delete_page(self, slug):
         with self._lock:
-            if slug in ('home', 'services', 'v-ads', 'v-essentials', 'marketing-solutions', 'digital-marketing', 'branding-creative-production', 'outdoor-advertising-signage', 'mobility-billboard-advertising'):
+            if slug in ('home', 'services', 'v-ads', 'vibe-finder', 'marketing-solutions', 'digital-marketing', 'branding-creative-production', 'outdoor-advertising-signage', 'mobility-billboard-advertising'):
                 raise ValueError('Core pages cannot be deleted')
             if slug not in self._pages:
                 return False

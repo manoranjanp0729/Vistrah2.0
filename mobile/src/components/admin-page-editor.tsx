@@ -15,7 +15,7 @@ import {validateEditorPageSize} from '../../../shared/editor-image';
 type Locale='en'|'kn'|'hi';
 type Panel='text'|'photos'|'button'|'layout'|'add'|'settings'|'create';
 const clone=<T,>(value:T):T=>JSON.parse(JSON.stringify(value));
-const corePages=['home','services','v-ads','v-essentials','marketing-solutions','digital-marketing','branding-creative-production','outdoor-advertising-signage','mobility-billboard-advertising'];
+const corePages=['home','services','v-ads','vibe-finder','marketing-solutions','digital-marketing','branding-creative-production','outdoor-advertising-signage','mobility-billboard-advertising'];
 const sectionNames:Record<string,string>={hero_banner:'Photo banner',editable_banner:'Highlight',custom:'Text & media',search_bar:'Search',services_for_you:'Categories',big_widget:'Ads & Marketing'};
 const languages:{key:Locale;label:string}[]=[{key:'en',label:'English'},{key:'kn',label:'ಕನ್ನಡ'},{key:'hi',label:'हिन्दी'}];
 const audience={all:'Website and app',web:'Website only',mobile:'App only'};

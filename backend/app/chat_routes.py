@@ -44,9 +44,9 @@ SAFE_ACTION_PREFIXES: tuple[str, ...] = (
     "/marketing-pricing",
     "/marketing-solutions",
     "/commerce",
+    "/products",
+    "/vibe-finder",
     "/jobs",
-    "/agri-connect",
-    "/health-connect",
     "/contact",
     "/about",
     "/pricing",
@@ -228,7 +228,7 @@ def _catalogue_grounding() -> tuple[str, list[dict[str, str]]]:
         "Allowed `href` patterns ONLY: `/services`, `/services?category=<cat_slug>`, "
         "`/services/nearby?category=<cat_slug>&subcategory=<sub_slug>&type=<lt_slug>`, "
         "`/seller/onboard`, `/seller/onboard?category=<cat_slug>&subcategory=<sub_slug>&type=<slug>`, "
-        "`/seller/v-ads`, `/v-ads`, `/pricing`, `/marketing-pricing`, `/contact`, `/contact?intent=request-website`, `/location`, `/agri-connect`, `/health-connect`, `/jobs`.\n"
+        "`/seller/v-ads`, `/v-ads`, `/products`, `/vibe-finder`, `/pricing`, `/marketing-pricing`, `/contact`, `/contact?intent=request-website`, `/location`, `/jobs`.\n"
         "Include 1 to 3 relevant `suggestedActions`."
     )
     return base_prompt, search_index

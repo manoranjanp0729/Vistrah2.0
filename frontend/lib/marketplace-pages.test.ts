@@ -42,7 +42,9 @@ describe('Public taxonomy page behavior',()=>{
     serverApi.mockImplementation(async(path:string)=>path==='/edit-vistrah/pages/home'?null:path==='/catalogue'?categories:{version:7,layout:{schema_version:1,sections:[{id:'published',template:'service_grid',title:'Published priority',subtitle:'',size:'wide',service_ids:[service.service.id]}]}});
     const html=renderToStaticMarkup(await Home());
     expect(html.indexOf('Published priority')).toBeGreaterThan(-1);
-    expect(html.indexOf('Published priority')).toBeLessThan(html.indexOf('Services for you'));
+    expect(html.indexOf('Published priority')).toBeLessThan(html.indexOf('Services Near You'));
+    expect(html).not.toContain('Services for you');
+    expect(html).not.toContain('data-marketplace-category="vibe-finder"');
     expect(html).not.toContain('Quick access services');
     expect(html).not.toContain('reference-feature');
     expect(html).toContain(urls.service(service.category,service.service,service.subcategory));
@@ -50,7 +52,8 @@ describe('Public taxonomy page behavior',()=>{
   it('keeps canonical navigation when the homepage endpoint is unavailable',async()=>{
     serverApi.mockImplementation(async(path:string)=>{if(path==='/catalogue')return categories;throw new Error('Unavailable');});
     const html=renderToStaticMarkup(await Home());
-    expect(html).toContain('Services for you');expect(html).not.toContain('14 categories');
+    expect(html).toContain('Services Near You');expect(html).not.toContain('Services for you');expect(html).not.toContain('14 categories');
+    expect(html).not.toContain('data-marketplace-category="vibe-finder"');
     expect(html).toContain('reference-feature');
     expect(html).toContain('/services?category=restaurants-and-dining');
   });

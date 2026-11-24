@@ -1,12 +1,12 @@
-import {useDirectMarketplace} from '../../../lib/direct-marketplace';
-import {croppedPhoto} from '../../../lib/photo-crop';
-import {BannerGeometry} from '../../../components/banner-geometry';
-import {useBannerTheme} from '../../../lib/banner-theme';
-import {Text} from '../../../components/typography';
-import {EditVistrahContent} from '../../../components/edit-vistrah-content';
-import {UiText, UiElement} from '../../../components/localized-ui';
-import {SellerSignInAction} from '../../../components/seller-sign-in-action';
-import {useLanguage} from '../../../lib/language';
+import {useDirectMarketplace} from '../../lib/direct-marketplace';
+import {croppedPhoto} from '../../lib/photo-crop';
+import {BannerGeometry} from '../../components/banner-geometry';
+import {useBannerTheme} from '../../lib/banner-theme';
+import {Text} from '../../components/typography';
+import {EditVistrahContent} from '../../components/edit-vistrah-content';
+import {UiText, UiElement} from '../../components/localized-ui';
+import {SellerSignInAction} from '../../components/seller-sign-in-action';
+import {useLanguage} from '../../lib/language';
 import {useEffect, useRef, useState} from 'react';
 import {Linking,ScrollView,View,Pressable,StyleSheet,Platform,Image,useWindowDimensions} from 'react-native';
 import {router, useLocalSearchParams} from 'expo-router';
@@ -14,23 +14,23 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {Field, Heading, ErrorPanel, Action} from '../../../components/ui';
-import {MarketplaceCategories} from '../../../components/marketplace-categories';
+import {Field, Heading, ErrorPanel, Action} from '../../components/ui';
+import {MarketplaceCategories} from '../../components/marketplace-categories';
 import {
   legacyMarketplaceSelection,
   marketplaceItemId,
   resolveMarketplaceSelection,
   searchMarketplaceEntries,
   type MarketplaceSelection,
-} from '../../../lib/marketplace';
-import {nativeMarketplacePhoto, nativeMarketplaceAlt} from '../../../lib/marketplace-photo';
-import {useTheme,spacing,typography} from '../../../lib/theme';
-import {useSession} from '../../../lib/session';
-import {isSellerUser} from '../../../lib/types';
-import {MobileNearbyServiceDiscovery} from '../../../components/nearby-service-discovery';
-import {customerListingCopy, listingEnquiryHref} from '../../../../../shared/customer-listing';
-import {officialContact} from '../../../../../shared/public-contact';
-import {servicesNavigationAction} from '../../../lib/marketplace-navigation';
+} from '../../lib/marketplace';
+import {nativeMarketplacePhoto, nativeMarketplaceAlt} from '../../lib/marketplace-photo';
+import {useTheme,spacing,typography} from '../../lib/theme';
+import {useSession} from '../../lib/session';
+import {isSellerUser} from '../../lib/types';
+import {MobileNearbyServiceDiscovery} from '../../components/nearby-service-discovery';
+import {customerListingCopy, listingEnquiryHref} from '../../../../shared/customer-listing';
+import {officialContact} from '../../../../shared/public-contact';
+import {servicesNavigationAction} from '../../lib/marketplace-navigation';
 
 export default function Services() {
   const {resolveMarketplaceSelection,legacyMarketplaceSelection,marketplaceCategories,searchMarketplaceEntries}=useDirectMarketplace();

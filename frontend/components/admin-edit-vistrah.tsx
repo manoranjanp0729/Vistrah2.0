@@ -395,7 +395,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
   // Delete Page
   async function handleDeletePage() {
     if (!currentPage || busy) return;
-    if (['home', 'services', 'v-ads', 'v-essentials'].includes(currentPage.slug)) {
+    if (['home', 'services', 'v-ads', 'vibe-finder'].includes(currentPage.slug)) {
       alert('Core Vistrah pages cannot be deleted.');
       return;
     }
@@ -768,7 +768,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                   Make It Live
                 </button>
 
-                {!['home', 'services', 'v-ads', 'v-essentials'].includes(currentPage.slug) && (
+                {!['home', 'services', 'v-ads', 'vibe-finder'].includes(currentPage.slug) && (
                   <button
                     className="button secondary"
                     disabled={busy}

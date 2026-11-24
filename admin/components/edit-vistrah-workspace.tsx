@@ -8,7 +8,7 @@ import {validateEditorImage,validateEditorPageSize} from '../../shared/editor-im
 import styles from './edit-vistrah.module.css';
 
 const clone=<T,>(value:T):T=>JSON.parse(JSON.stringify(value));
-const corePages=['home','services','v-ads','v-essentials','marketing-solutions','digital-marketing','branding-creative-production','outdoor-advertising-signage','mobility-billboard-advertising'];
+const corePages=['home','services','v-ads','vibe-finder','marketing-solutions','digital-marketing','branding-creative-production','outdoor-advertising-signage','mobility-billboard-advertising'];
 type Locale='en'|'kn'|'hi';
 export function EditVistrah(){return <AuthGate>{()=> <Editor/>}</AuthGate>;}
 

@@ -14,10 +14,8 @@ import {Text} from './typography';
 import {useTheme} from '../lib/theme';
 import {
   ADS_STUDIO_PILLARS,
-  AGRI_CARDS,
   BUSINESS_TIMELINE,
   getHeroBannerByKey,
-  HEALTH_PATHWAYS,
   HERO_BANNER_ASPECT_RATIO,
   HERO_BANNERS,
   USER_COMPARISON,
@@ -30,8 +28,6 @@ const BANNER_IMAGES: Record<HeroBannerKey, ImageSourcePropType> = {
   users: require('../../assets/hero-journey/for-users-widescreen.jpg'),
   businesses: require('../../assets/hero-journey/for-businesses-widescreen.jpg'),
   ads: require('../../assets/hero-journey/v-ads-widescreen.jpg'),
-  agri: require('../../assets/hero-journey/agriconnect-widescreen.jpg'),
-  health: require('../../assets/hero-journey/healthconnect-family-banner.jpg'),
 };
 
 function openMobileDestination(dest: string) {
@@ -560,109 +556,6 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
               </View>
             </View>
           </>
-        )}
-
-        {/* STORY 4: AGRICONNECT */}
-        {storyKey === 'agri' && (
-          <View style={s.sectionBlock}>
-            <Text style={[s.eyebrow, {color: textSecondary}]}>4 AGRICULTURAL PILLARS</Text>
-            <Text accessibilityRole="header" style={[s.sectionTitle, {color: textPrimary}]}>
-              Seed-to-Market Farming Network
-            </Text>
-
-            <View style={s.tileGrid}>
-              {AGRI_CARDS.map(card => (
-                <Pressable
-                  key={card.num}
-                  accessibilityRole="link"
-                  onPress={() =>
-                    openMobileDestination(
-                      `/services?category=agriculture-and-farming&subcategory=${card.subcategory}`,
-                    )
-                  }
-                  style={({pressed}) => [
-                    s.verticalTile,
-                    {
-                      width: wide || medium ? '48.6%' : '100%',
-                      backgroundColor: surface,
-                      borderColor: hairline,
-                      opacity: pressed ? 0.85 : 1,
-                      gap: 10,
-                    },
-                  ]}
-                >
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <View style={[s.iconBox, {backgroundColor: surfaceSoft, borderColor: hairline}]}>
-                      <Feather name={card.icon as keyof typeof Feather.glyphMap} size={16} color={accentColor} />
-                    </View>
-                    <View style={[s.outlinePill, {backgroundColor: surfaceSoft, borderColor: hairline}]}>
-                      <Text style={{fontSize: 10.5, fontWeight: '700', color: textPrimary}}>{card.badge}</Text>
-                    </View>
-                  </View>
-                  <Text style={[s.cardTitle, {color: textPrimary}]}>{card.title}</Text>
-                  <Text style={[s.captionText, {color: textSecondary}]}>{card.caption}</Text>
-                  <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 6}}>
-                    {card.chips.map(c => (
-                      <View key={c} style={[s.outlinePill, {borderColor: hairline}]}>
-                        <Text style={{fontSize: 10.5, color: textSecondary}}>{c}</Text>
-                      </View>
-                    ))}
-                  </View>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* STORY 5: HEALTHCONNECT */}
-        {storyKey === 'health' && (
-          <View style={s.sectionBlock}>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6}}>
-              <View>
-                <Text style={[s.eyebrow, {color: '#EA580C'}]}>HealthConnect Care</Text>
-                <Text accessibilityRole="header" style={[s.sectionTitle, {color: textPrimary}]}>
-                  Neighborhood Clinics, Labs &amp; Wellness
-                </Text>
-              </View>
-              <Text style={{fontSize: 12, color: textSecondary}}>Emergency: Dial 108 immediately</Text>
-            </View>
-
-            <View style={s.tileGrid}>
-              {HEALTH_PATHWAYS.map(path => (
-                <Pressable
-                  key={path.title}
-                  accessibilityRole="link"
-                  onPress={() =>
-                    openMobileDestination(
-                      `/services?category=health-fitness-and-wellness&subcategory=${path.subcategory}`,
-                    )
-                  }
-                  style={({pressed}) => [
-                    s.verticalTile,
-                    {
-                      width: wide ? '32%' : medium ? '48.6%' : '100%',
-                      backgroundColor: surface,
-                      borderColor: hairline,
-                      opacity: pressed ? 0.85 : 1,
-                      gap: 8,
-                    },
-                  ]}
-                >
-                  <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <View style={[s.iconBox, {backgroundColor: surfaceSoft, borderColor: hairline}]}>
-                      <Feather name={path.icon as keyof typeof Feather.glyphMap} size={16} color={accentColor} />
-                    </View>
-                    <View style={[s.outlinePill, {backgroundColor: surfaceSoft, borderColor: hairline}]}>
-                      <Text style={{fontSize: 10.5, fontWeight: '700', color: textPrimary}}>{path.tag}</Text>
-                    </View>
-                  </View>
-                  <Text style={[s.eyebrow, {color: '#EA580C'}]}>{path.badge}</Text>
-                  <Text style={[s.cardTitle, {color: textPrimary}]}>{path.title}</Text>
-                  <Text style={[s.captionText, {color: textSecondary}]}>{path.caption}</Text>
-                </Pressable>
-              ))}
-            </View>
-          </View>
         )}
 
         {/* Grounded Editorial Footer Lead-In */}

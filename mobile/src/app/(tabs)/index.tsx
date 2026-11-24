@@ -7,8 +7,7 @@ import {useState} from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {LinearGradient} from 'expo-linear-gradient';
-import {HomepageConnect} from '../../components/homepage-connect';
-import {connectCategorySlugs} from '../../../../shared/homepage-connect';
+import {HOMEPAGE_EXCLUDED_CATEGORY_SLUGS} from '../../../../shared/vibe-finder';
 import {DiscoveryGuide} from '../../components/discovery-guide';
 import {HomepagePartnerBanner} from '../../components/homepage-partner-banner';
 import {PublishedHomepage, type Homepage} from '../../components/published-homepage';
@@ -172,46 +171,22 @@ export default function Discover() {
   const marketingSection = <AdsMarketing/>;
 
   // Area 2: Popular Quick Shortcuts (Self-hosted catalogue assets + verified taxonomy fallback)
-  const shortcuts = buildQuickAccessShortcuts(catalogue.data ?? [], 10).map((item) => ({
-    ...item,
-    open: () =>
-      item.serviceId != null
-        ? router.push({pathname: '/service/[id]', params: {id: item.serviceId}})
-        : router.push({
-            pathname: '/services/nearby',
-            params: {
-              category: item.categorySlug,
-              subcategory: item.serviceSlug,
-              type: item.serviceSlug,
-            },
-          }),
-  }));
-
-  // Area 2: Framed Essentials (AgriConnect & HealthConnect) Section
-  const essentialsSection = (
-    <View style={s.essentialsSectionWrap}>
-      <View style={s.sectionHeaderWrap}>
-        <View style={{flex: 1, minWidth: 0}}>
-          <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Essential Local Networks</Text>
-          </View>
-          <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
-            <UiText value="Vistrah Essentials" />
-          </Text>
-        </View>
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push('/requests')}
-          style={({pressed}) => [{opacity: pressed ? 0.7 : 1}]}
-        >
-          <Text style={{color: colors.accent, fontSize: 13, fontWeight: '600'}}>
-            <UiText value="Explore Hub" /> →
-          </Text>
-        </Pressable>
-      </View>
-      <HomepageConnect />
-    </View>
-  );
+  const shortcuts = buildQuickAccessShortcuts(catalogue.data ?? [], 10)
+    .filter(item => item.categorySlug !== 'vibe-finder')
+    .map((item) => ({
+      ...item,
+      open: () =>
+        item.serviceId != null
+          ? router.push({pathname: '/service/[id]', params: {id: item.serviceId}})
+          : router.push({
+              pathname: '/services/nearby',
+              params: {
+                category: item.categorySlug,
+                subcategory: item.serviceSlug,
+                type: item.serviceSlug,
+              },
+            }),
+    }));
 
   // Area 2: Elevated Popular Shortcuts Rail
   const shortcutsSection = (
@@ -315,13 +290,12 @@ export default function Discover() {
         <PublishedHomepage homepage={homepage.data} categories={catalogue.data} />
         <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
           <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
-          <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />
+          <MarketplaceCategories compact homepage exclude={HOMEPAGE_EXCLUDED_CATEGORY_SLUGS} />
         </View>
         {providerBanner}
         {marketingSection}
         <Action label="VISTRAH Ads & Marketing pricing →" onPress={() => router.push('/marketing-pricing')} />
         <HomepageVideo />
-        {essentialsSection}
         {shortcutsSection}
         <DiscoveryGuide />
         <HomepagePartnerBanner />
@@ -335,13 +309,12 @@ export default function Discover() {
       <ServiceCarousel />
       <View testID="homepage-categories" style={{gap: spacing.elementGap}}>
         <UiElement as={Heading} title={copy.home.categories} action="View all" onPress={() => router.push('/services')} />
-        <MarketplaceCategories compact homepage exclude={connectCategorySlugs} />
+        <MarketplaceCategories compact homepage exclude={HOMEPAGE_EXCLUDED_CATEGORY_SLUGS} />
       </View>
       {providerBanner}
       {marketingSection}
       <Action label="VISTRAH Ads & Marketing pricing →" onPress={() => router.push('/marketing-pricing')} />
       <HomepageVideo />
-      {essentialsSection}
       {shortcutsSection}
       <DiscoveryGuide />
       <HomepagePartnerBanner />

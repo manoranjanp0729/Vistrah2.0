@@ -1,17 +1,19 @@
 {
   "nav": {
     "discover": "Discover",
+    "products": "Products",
+    "vibeFinder": "Vibe Finder",
     "services": "Services",
     "requests": "Requests",
     "account": "Account",
     "location": "Choose location"
   },
   "home": {
-    "tagline": "DISCOVER. CONNECT. GROW.",
-    "title": "Discover VISTRAH",
+    "tagline": "Discover. Connect. Grow.",
+    "title": "Find verified businesses near you",
     "description": "Explore services, products, and opportunities in one place.",
-    "quick": "QUICK ACCESS",
-    "categories": "Services for you",
+    "quick": "Quick Access",
+    "categories": "Services Near You",
     "viewAll": "View all",
     "featured": "Featured opportunities",
     "badge": "FEATURED",

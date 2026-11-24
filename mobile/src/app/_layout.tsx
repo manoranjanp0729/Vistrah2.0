@@ -8,6 +8,7 @@ import {Platform,View} from 'react-native';
 import {StartupLoading} from '../components/startup-loading';
 import {Stack} from 'expo-router';
 import {appRouteIdentity} from '../lib/navigation-policy';
+import {servicesSelectionKey} from '../lib/marketplace-navigation';
 import {StatusBar} from 'expo-status-bar';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {SessionProvider} from '../lib/session';
@@ -52,8 +53,6 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="for-users" options={{title:'For Users',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="for-businesses" options={{title:'For Businesses',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="ads-and-marketing" options={{title:'VISTRAH Ads & Marketing',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
-    <Stack.Screen dangerouslySingular={appRouteIdentity} name="health-connect" options={{title:'V HealthConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
-    <Stack.Screen dangerouslySingular={appRouteIdentity} name="agri-connect" options={{title:'VISTRAH AgriConnect',headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="marketing-solutions" options={{title:t('marketing.title'),headerTitleStyle:{fontSize:16,fontFamily:headerFont,fontWeight:Platform.OS==='web'?'600':'normal'},headerBackButtonDisplayMode:'minimal'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="membership" options={{title:t('account.membership')}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="location" options={{title:t('nav.location')}}/>
@@ -71,8 +70,8 @@ function ThemedRoot(){const headerFont=useAppFont(600);const {colors,mode}=useTh
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="pages/[slug]"/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/add-service"/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="seller/onboard" options={{title:'List your business'}}/>
+    <Stack.Screen dangerouslySingular={(_name,params)=>servicesSelectionKey(params)} name="services/index" options={{title:t('discovery.marketplace')}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="services/nearby" options={{title:'Nearby services'}}/>
     <Stack.Screen dangerouslySingular={appRouteIdentity} name="contact" options={{title:'Contact VISTRAH'}}/>
-    <Stack.Screen dangerouslySingular={appRouteIdentity} name="v-essentials"/>
   </Stack><MobileAskVistrahWidget/><WebsiteRouteBridge/><StartupLoading/></View></LocationProvider></SessionProvider></SafeAreaProvider>;
 }

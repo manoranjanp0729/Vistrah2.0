@@ -108,10 +108,10 @@ function navigateChatHref(rawHref: string, onDone: () => void) {
     router.push('/v-ads');
   } else if (parsed.pathname === '/location') {
     router.push('/location');
-  } else if (parsed.pathname === '/agri-connect') {
-    router.push('/agri-connect');
-  } else if (parsed.pathname === '/health-connect') {
-    router.push('/health-connect');
+  } else if (parsed.pathname === '/products' || parsed.pathname === '/commerce') {
+    router.push('/products');
+  } else if (parsed.pathname === '/vibe-finder') {
+    router.push('/vibe-finder');
   } else if (parsed.pathname === '/marketing-pricing' || parsed.pathname === '/pricing') {
     router.push('/marketing-pricing');
   } else if (parsed.pathname === '/jobs') {

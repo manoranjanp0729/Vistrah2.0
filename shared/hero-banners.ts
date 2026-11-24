@@ -1,4 +1,4 @@
-export type HeroBannerKey = 'users' | 'businesses' | 'ads' | 'agri' | 'health';
+export type HeroBannerKey = 'users' | 'businesses' | 'ads';
 
 export type HeroStat = {
   value: string;
@@ -14,7 +14,7 @@ export type HeroBannerCta = {
 
 export type HeroBannerSlide = {
   key: HeroBannerKey;
-  stepNumber: '01' | '02' | '03' | '04' | '05';
+  stepNumber: '01' | '02' | '03';
   badge: string;
   navTitle: string;
   title: string;
@@ -111,62 +111,6 @@ export const ALL_HERO_BANNERS: readonly HeroBannerSlide[] = [
       shortLabel: 'V Ads Studio',
       webHref: '/seller/v-ads',
       mobileRoute: '/seller/v-ads',
-    },
-  },
-  {
-    key: 'agri',
-    stepNumber: '04',
-    badge: 'VISTRAH AGRICONNECT',
-    navTitle: 'AgriConnect',
-    title: 'Stronger Farmers, Brighter Tomorrow',
-    subtitle: 'Direct produce buyers, certified inputs, tractor rentals, and soil advisory.',
-    webImageSrc: '/hero-journey/agriconnect-widescreen.jpg',
-    storyPath: '/agri-connect',
-    stats: [
-      {value: '9', label: 'Agri Subsectors'},
-      {value: '54', label: 'Farming Services'},
-      {value: 'Direct', label: 'Buyer & Rental Links'},
-      {value: '₹0', label: 'Farmer Discovery'},
-    ],
-    primaryCta: {
-      label: 'Explore Agri Services',
-      shortLabel: 'Agri Services',
-      webHref: '/services',
-      mobileRoute: '/services',
-    },
-    secondaryCta: {
-      label: 'List Agri Business',
-      shortLabel: 'List Agri Service',
-      webHref: '/seller/onboard',
-      mobileRoute: '/seller/onboard',
-    },
-  },
-  {
-    key: 'health',
-    stepNumber: '05',
-    badge: 'V HEALTHCONNECT',
-    navTitle: 'HealthConnect',
-    title: 'Better Health for a Brighter Tomorrow',
-    subtitle: 'Verified clinics, doorstep lab tests, pharmacies, home care, and wellness.',
-    webImageSrc: '/hero-journey/healthconnect-family-banner.jpg',
-    storyPath: '/health-connect',
-    stats: [
-      {value: '10+', label: 'Care Pathways'},
-      {value: '50+', label: 'Health Specialties'},
-      {value: 'At-Home', label: 'Labs & Nursing'},
-      {value: 'Direct', label: 'Clinic Appointments'},
-    ],
-    primaryCta: {
-      label: 'Explore Health Services',
-      shortLabel: 'Health Services',
-      webHref: '/services?category=hospitals-and-labs',
-      mobileRoute: '/services?category=hospitals-and-labs',
-    },
-    secondaryCta: {
-      label: 'Register Clinic / Lab',
-      shortLabel: 'Join HealthConnect',
-      webHref: '/seller/onboard?category=hospitals-and-labs',
-      mobileRoute: '/seller/onboard?category=hospitals-and-labs',
     },
   },
 ] as const;
@@ -337,93 +281,6 @@ export const VADS_RATE_SNAPSHOT = [
   {zone: '5 km Ward Cluster', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
   {zone: '10 km City Corridor', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
   {zone: '25 km – 50 km+ Reach', month1: '₹0 / Free Forever', day31: 'Free on VISTRAH', daily: '₹0'},
-] as const;
-
-export const AGRI_CARDS = [
-  {
-    num: '01',
-    badge: 'FARM → BUYER',
-    title: 'Direct Market Access',
-    caption: 'Connect directly with produce buyers, cold storage, grading teams, and transport.',
-    chips: ['Land Prep & Harvest', 'Post-Harvest Grading', 'Transport Links'],
-    subcategory: 'farming-and-agricultural-services',
-    icon: 'trending-up',
-  },
-  {
-    num: '02',
-    badge: 'CERTIFIED SUPPLY',
-    title: 'Quality Inputs & Irrigation',
-    caption: 'Source verified seeds, saplings, drip-irrigation kits, and organic compost.',
-    chips: ['Crop Seeds & Nurseries', 'Drip & Sprinklers', 'Organic Compost'],
-    subcategory: 'seeds-plants-and-nurseries',
-    icon: 'droplet',
-  },
-  {
-    num: '03',
-    badge: 'ON-DEMAND FLEET',
-    title: 'Machinery & Rentals',
-    caption: 'Book tractors, tillers, combine harvesters, and agricultural drones on clear terms.',
-    chips: ['Tractor Rental', 'Harvester Booking', 'Drone Surveying'],
-    subcategory: 'farm-equipment-and-machinery',
-    icon: 'sliders',
-  },
-  {
-    num: '04',
-    badge: 'PRECISION CARE',
-    title: 'Expert Crop Advisory',
-    caption: 'Schedule soil NPK testing, pest monitoring, nutrient plans, and dairy setup help.',
-    chips: ['Soil Lab Testing', 'Crop Pest Care', 'Dairy & Livestock'],
-    subcategory: 'soil-testing-and-crop-care',
-    icon: 'compass',
-  },
-] as const;
-
-export const HEALTH_PATHWAYS = [
-  {
-    num: '01',
-    badge: 'CLINICAL CARE',
-    title: 'Doctors & Clinics',
-    caption: 'General physicians, pediatrics, dental, eye care, orthopedic, and cardiology clinics.',
-    tag: 'Direct Clinic Call',
-    subcategory: 'doctors-and-specialists',
-    icon: 'user-check',
-  },
-  {
-    num: '02',
-    badge: 'DOORSTEP LABS',
-    title: 'Diagnostics & Imaging',
-    caption: 'Pathology blood panels, full-body checkups, X-ray/MRI centers, and home sample pickup.',
-    tag: 'Home Collection',
-    subcategory: 'diagnostic-services',
-    icon: 'activity',
-  },
-  {
-    num: '03',
-    badge: 'MEDICAL ESSENTIALS',
-    title: 'Pharmacies & Supplies',
-    caption: 'Neighborhood chemists, surgical supplies, oxygen concentrators, and mobility aids.',
-    tag: 'Verified Stockists',
-    subcategory: 'pharmacies-and-medical-supplies',
-    icon: 'plus-square',
-  },
-  {
-    num: '04',
-    badge: 'RECOVERY AT HOME',
-    title: 'Home Care & Physiotherapy',
-    caption: 'Post-operative rehabilitation, sports physio, elder care, and recovery support.',
-    tag: 'Home Visits',
-    subcategory: 'physiotherapy-and-rehabilitation',
-    icon: 'home',
-  },
-  {
-    num: '05',
-    badge: 'PREVENTIVE HEALTH',
-    title: 'Wellness, Yoga & Nutrition',
-    caption: 'Fitness studios, yoga & meditation, registered dietitians, and mental wellbeing.',
-    tag: 'Holistic Care',
-    subcategory: 'fitness-centres',
-    icon: 'heart',
-  },
 ] as const;
 
 export const FOR_BUSINESSES_HERO_BANNER: HeroBannerSlide =

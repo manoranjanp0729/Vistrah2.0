@@ -30,10 +30,8 @@ import {
 } from 'lucide-react';
 import {
   ADS_STUDIO_PILLARS,
-  AGRI_CARDS,
   BUSINESS_TIMELINE,
   getHeroBannerByKey,
-  HEALTH_PATHWAYS,
   HERO_BANNERS,
   USER_COMPARISON,
   USER_VERTICALS,
@@ -452,104 +450,6 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
             </div>
           </section>
         </>
-      )}
-
-      {/* STORY 4: AGRICONNECT */}
-      {storyKey === 'agri' && (
-        <section className={styles.sectionBlock} aria-labelledby="agri-grid-heading">
-          <div className={styles.sectionHeader}>
-            <div>
-              <p className={styles.eyebrow}>AgriConnect Services</p>
-              <h2 id="agri-grid-heading" className={styles.sectionTitle}>
-                Seed-to-Market Farming Network
-              </h2>
-            </div>
-            <p className={styles.sectionCaption}>
-              Tap any card to browse verified providers in your district.
-            </p>
-          </div>
-
-          <div className={styles.twoColGrid}>
-            {AGRI_CARDS.map(card => {
-              const Icon = ICON_MAP[card.icon as keyof typeof ICON_MAP] ?? Sun;
-              return (
-                <Link
-                  key={card.title}
-                  href={`/services?category=agriculture-and-farming&subcategory=${encodeURIComponent(
-                    card.subcategory,
-                  )}`}
-                  className={styles.pathwayLinkCard}
-                >
-                  <div className={styles.previewTopBar}>
-                    <span className={styles.iconBox}>
-                      <Icon size={18} aria-hidden="true" />
-                    </span>
-                    <span className={styles.priceBadge}>{card.badge}</span>
-                  </div>
-                  <h3 className={styles.cardTitle}>{card.title}</h3>
-                  <p className={styles.cardCaption}>{card.caption}</p>
-                  <div className={styles.mockupChipList}>
-                    {card.chips.map(chip => (
-                      <span key={chip} className={styles.mockupChip}>
-                        {chip}
-                      </span>
-                    ))}
-                  </div>
-                  <div className={styles.pathwayAction}>
-                    <span>Browse {card.title}</span>
-                    <ArrowRight size={15} aria-hidden="true" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
-      )}
-
-      {/* STORY 5: HEALTHCONNECT */}
-      {storyKey === 'health' && (
-        <section className={styles.sectionBlock} aria-labelledby="health-grid-heading">
-          <div className={styles.sectionHeader}>
-            <div>
-              <p className={styles.eyebrow}>HealthConnect Care</p>
-              <h2 id="health-grid-heading" className={styles.sectionTitle}>
-                Neighborhood Clinics, Doorstep Labs &amp; Family Wellness
-              </h2>
-            </div>
-            <p className={styles.sectionCaption}>
-              For medical emergencies dial 108 immediately.
-            </p>
-          </div>
-
-          <div className={styles.threeColGrid}>
-            {HEALTH_PATHWAYS.map(path => {
-              const Icon = ICON_MAP[path.icon as keyof typeof ICON_MAP] ?? Heart;
-              return (
-                <Link
-                  key={path.title}
-                  href={`/services?category=health-fitness-and-wellness&subcategory=${encodeURIComponent(
-                    path.subcategory,
-                  )}`}
-                  className={styles.pathwayLinkCard}
-                >
-                  <div className={styles.previewTopBar}>
-                    <span className={styles.iconBox}>
-                      <Icon size={18} aria-hidden="true" />
-                    </span>
-                    <span className={styles.priceBadge}>{path.tag}</span>
-                  </div>
-                  <p className={styles.eyebrow}>{path.badge}</p>
-                  <h3 className={styles.cardTitle}>{path.title}</h3>
-                  <p className={styles.cardCaption}>{path.caption}</p>
-                  <div className={styles.pathwayAction}>
-                    <span>Open Pathway</span>
-                    <ArrowRight size={15} aria-hidden="true" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
       )}
 
       {/* Grounded Editorial Footer Lead-In */}

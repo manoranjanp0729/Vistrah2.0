@@ -116,10 +116,11 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
   assert.equal(backFallback('/services/nearby'), '/services');
 
   const servicesScreen = readFileSync(
-    new URL('../src/app/(tabs)/services/index.tsx', import.meta.url),
+    new URL('../src/app/services/index.tsx', import.meta.url),
     'utf8',
   );
   assert.ok(servicesScreen.includes('MobileNearbyServiceDiscovery'));
   const layout = readFileSync(new URL('../src/app/_layout.tsx', import.meta.url), 'utf8');
   assert.ok(layout.includes('name="services/nearby"'));
+  assert.ok(layout.includes('name="services/index"'));
 });

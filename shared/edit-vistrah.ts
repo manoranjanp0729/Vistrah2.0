@@ -46,7 +46,7 @@ export type VistrahPage = {
   content_source?: 'APP'|'CMS'|'DRAFT';
   id: string;
   slug: string; // e.g. 'home', 'services', 'v-ads', 'festive-deals'
-  name: string; // e.g. "Home Page", "V Essentials"
+  name: string; // e.g. "Home Page", "Vibe Finder"
   path: string; // e.g. '/', '/services', '/v-ads'
   description: string;
   target_platform: 'all' | 'web' | 'mobile';
@@ -167,7 +167,7 @@ export const SECTION_LIBRARY: SectionLibraryItem[] = [
   },
   {
     type: 'services_for_you',
-    default_name: 'Services For You',
+    default_name: 'Services Near You',
     description: 'Personalized service recommendations, category rails, and fixed-price packages.',
     recommended_resolution: '800 × 600 px (4:3) or 800 × 800 px (1:1)',
     variations: [
@@ -315,7 +315,7 @@ export const INITIAL_EDIT_VISTRAH_PAGES: VistrahPage[] = [
       {
         id: 'sec-home-services',
         type: 'services_for_you',
-        name: 'Curated Services For You',
+        name: 'Curated Services Near You',
         variation: 'adaptive_grid',
         available_variations: SECTION_LIBRARY[3].variations,
         features: SECTION_LIBRARY[3].default_features,
@@ -431,11 +431,11 @@ export const INITIAL_EDIT_VISTRAH_PAGES: VistrahPage[] = [
     ],
   },
   {
-    id: 'page-v-essentials',
-    slug: 'v-essentials',
-    name: 'V Essentials',
-    path: '/v-essentials',
-    description: 'Curated everyday essentials, home necessities, and verified fast local fulfillment.',
+    id: 'page-vibe-finder',
+    slug: 'vibe-finder',
+    name: 'Vibe Finder',
+    path: '/vibe-finder',
+    description: 'Discover cinemas, social events, cafes, lounges, and local experiences near you.',
     target_platform: 'all',
     status: 'LIVE',
     revision: 1,
@@ -445,7 +445,7 @@ export const INITIAL_EDIT_VISTRAH_PAGES: VistrahPage[] = [
       {
         id: 'sec-vess-header',
         type: 'header',
-        name: 'V Essentials Header',
+        name: 'Vibe Finder Header',
         variation: 'sticky_standard',
         available_variations: SECTION_LIBRARY[0].variations,
         features: SECTION_LIBRARY[0].default_features,
@@ -456,7 +456,7 @@ export const INITIAL_EDIT_VISTRAH_PAGES: VistrahPage[] = [
       {
         id: 'sec-vess-banner',
         type: 'editable_banner',
-        name: 'Daily Essentials Flash Banner',
+        name: 'Featured Vibes Banner',
         variation: 'full_promotional',
         available_variations: SECTION_LIBRARY[4].variations,
         features: SECTION_LIBRARY[4].default_features,

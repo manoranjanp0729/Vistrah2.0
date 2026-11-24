@@ -213,7 +213,7 @@
       {
         "id": "sec-home-services",
         "type": "services_for_you",
-        "name": "Curated Services For You",
+        "name": "Curated Services Near You",
         "variation": "adaptive_grid",
         "available_variations": [
           {
@@ -795,11 +795,11 @@
     ]
   },
   {
-    "id": "page-v-essentials",
-    "slug": "v-essentials",
-    "name": "V Essentials",
-    "path": "/v-essentials",
-    "description": "Curated everyday essentials, home necessities, and verified fast local fulfillment.",
+    "id": "page-vibe-finder",
+    "slug": "vibe-finder",
+    "name": "Vibe Finder",
+    "path": "/vibe-finder",
+    "description": "Discover cinemas, social events, cafes, lounges, and local experiences near you.",
     "target_platform": "all",
     "status": "LIVE",
     "revision": 1,
@@ -809,7 +809,7 @@
       {
         "id": "sec-vess-header",
         "type": "header",
-        "name": "V Essentials Header",
+        "name": "Vibe Finder Header",
         "variation": "sticky_standard",
         "available_variations": [
           {
@@ -872,7 +872,7 @@
       {
         "id": "sec-vess-banner",
         "type": "editable_banner",
-        "name": "Daily Essentials Flash Banner",
+        "name": "Featured Vibes Banner",
         "variation": "full_promotional",
         "available_variations": [
           {

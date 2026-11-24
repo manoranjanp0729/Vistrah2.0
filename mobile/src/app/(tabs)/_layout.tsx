@@ -66,7 +66,7 @@ export default function TabLayout(){const labelFont=useAppFont(500);const {color
 
   return <Tabs backBehavior="history" screenOptions={{header:()=> <AppHeader/>,sceneStyle:{backgroundColor:colors.background,paddingBottom:14},tabBarStyle:{backgroundColor:colors.footer,borderTopColor:mode==='light'?'#cbd5e1':'#1e3a5f',borderTopWidth:.5,borderTopLeftRadius:18,borderTopRightRadius:18,overflow:'visible'},tabBarItemStyle:{minHeight:44},tabBarIconStyle:{width:48,height:28},tabBarLabelStyle:{fontFamily:labelFont,fontSize:11,lineHeight:locale==='en'?14:16,fontWeight:Platform.OS==='web'?'500':'normal'},tabBarLabelPosition:'below-icon',tabBarActiveTintColor:colors.accent,tabBarInactiveTintColor:mode==='light'?'#69758A':'#a3aec1'}}>
     <Tabs.Screen name="index" options={{title:copy.nav.discover,tabBarIcon:({color})=><Feather name="home" color={color} size={20}/>}}/>
-    <Tabs.Screen name="services" options={{title:copy.nav.services,tabBarIcon:({color})=><Feather name="grid" color={color} size={20}/>}}/>
+    <Tabs.Screen name="products" options={{title:copy.nav.products,tabBarIcon:({color})=><Feather name="shopping-bag" color={color} size={20}/>}}/>
     <Tabs.Screen name="v-ads" options={{
       title:t('navigation.vAds'),
       tabBarShowLabel:false,
@@ -76,7 +76,7 @@ export default function TabLayout(){const labelFont=useAppFont(500);const {color
       tabBarButton:({ref:_ref,style,children,...props})=><UiElement as={Pressable} {...props} android_ripple={null} accessibilityLabel={t('navigation.vAds')} style={({pressed})=>[style,{padding:0,justifyContent:'flex-start',alignItems:'center',overflow:'visible',opacity:pressed?.88:1}]}>{children}</UiElement>,
       tabBarIcon:({focused})=><VAdsCenterIcon focused={focused} mode={mode} accent={colors.accent}/>
     }}/>
-    <Tabs.Screen name="requests" options={{title:'V Essentials',tabBarIcon:({color})=><Feather name="layers" color={color} size={20}/>}}/>
+    <Tabs.Screen name="vibe-finder" options={{title:copy.nav.vibeFinder,tabBarIcon:({color})=><Feather name="compass" color={color} size={20}/>}}/>
     <Tabs.Screen name="account" options={{title:copy.nav.account,tabBarIcon:({color})=><Feather name="user" color={color} size={20}/>}}/>
   </Tabs>;
 }

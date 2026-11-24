@@ -56,9 +56,9 @@ describe('In-app Nearby Services Map + Listings contract', () => {
       listingId: 'gp_ChIJ_place_near_08',
       placeId: 'ChIJ_place_near_08',
       businessName: 'Sri Krishna Clinic',
-      categorySlug: 'healthconnect-and-clinics',
-      subcategorySlug: 'hospitals-and-clinics',
-      typeSlug: 'dental-clinics',
+      categorySlug: 'hospitals-and-labs',
+      subcategorySlug: 'clinics',
+      typeSlug: 'clinics',
       locality: 'Indiranagar, Bengaluru',
     });
     expect(moreItems.map(i => i.label)).toEqual([
@@ -68,16 +68,16 @@ describe('In-app Nearby Services Map + Listings contract', () => {
       'Contact Vistrah',
     ]);
     expect(moreItems[0].href).toBe(
-      '/seller/onboard?place_id=ChIJ_place_near_08&category=healthconnect-and-clinics&subcategory=hospitals-and-clinics&type=dental-clinics&business=Sri+Krishna+Clinic&locality=Indiranagar%2C+Bengaluru',
+      '/seller/onboard?place_id=ChIJ_place_near_08&category=hospitals-and-labs&subcategory=clinics&type=clinics&business=Sri+Krishna+Clinic&locality=Indiranagar%2C+Bengaluru',
     );
     expect(moreItems[1].href).toBe(
-      '/contact?intent=request-website&business=Sri+Krishna+Clinic&category=healthconnect-and-clinics&type=dental-clinics&locality=Indiranagar%2C+Bengaluru',
+      '/contact?intent=request-website&business=Sri+Krishna+Clinic&category=hospitals-and-labs&type=clinics&locality=Indiranagar%2C+Bengaluru',
     );
     expect(moreItems[2].href).toBe(
-      '/seller/v-ads?business=Sri+Krishna+Clinic&category=healthconnect-and-clinics&type=dental-clinics&locality=Indiranagar%2C+Bengaluru',
+      '/seller/v-ads?business=Sri+Krishna+Clinic&category=hospitals-and-labs&type=clinics&locality=Indiranagar%2C+Bengaluru',
     );
     expect(moreItems[3].href).toBe(
-      '/contact?business=Sri+Krishna+Clinic&category=healthconnect-and-clinics&type=dental-clinics&locality=Indiranagar%2C+Bengaluru',
+      '/contact?business=Sri+Krishna+Clinic&category=hospitals-and-labs&type=clinics&locality=Indiranagar%2C+Bengaluru',
     );
     for (const item of moreItems) {
       expect(safeDestination(item.href)).toBe(item.href);
@@ -90,8 +90,8 @@ describe('In-app Nearby Services Map + Listings contract', () => {
       viewerUserId: 77,
       viewerRole: 'USER',
       businessName: 'Sri Krishna Clinic',
-      categorySlug: 'healthconnect-and-clinics',
-      typeSlug: 'dental-clinics',
+      categorySlug: 'hospitals-and-labs',
+      typeSlug: 'clinics',
     });
     expect(ownerItems[0]).toMatchObject({
       id: 'my-business-growth',
@@ -107,8 +107,8 @@ describe('In-app Nearby Services Map + Listings contract', () => {
       viewerUserId: 88,
       viewerRole: 'USER',
       businessName: 'Sri Krishna Clinic',
-      categorySlug: 'healthconnect-and-clinics',
-      typeSlug: 'dental-clinics',
+      categorySlug: 'hospitals-and-labs',
+      typeSlug: 'clinics',
     });
     expect(nonOwnerItems.map(i => i.label)).toEqual([
       'Join Vistrah',
@@ -125,8 +125,8 @@ describe('In-app Nearby Services Map + Listings contract', () => {
       viewerUserId: 1,
       viewerRole: 'ADMIN',
       businessName: 'Sri Krishna Clinic',
-      categorySlug: 'healthconnect-and-clinics',
-      typeSlug: 'dental-clinics',
+      categorySlug: 'hospitals-and-labs',
+      typeSlug: 'clinics',
     });
     expect(adminItems.map(i => i.label)).toEqual([
       'Open Business Audit & Strategy',
@@ -136,7 +136,7 @@ describe('In-app Nearby Services Map + Listings contract', () => {
       'Contact Vistrah',
     ]);
     expect(adminItems[0].href).toBe(
-      '/business/gp_ChIJ_place_near_08?name=Sri+Krishna+Clinic&sector=healthconnect-and-clinics&service_type=dental-clinics',
+      '/business/gp_ChIJ_place_near_08?name=Sri+Krishna+Clinic&sector=hospitals-and-labs&service_type=clinics',
     );
     expect(safeDestination(adminItems[0].href)).toBe(adminItems[0].href);
 

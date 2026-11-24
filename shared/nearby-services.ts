@@ -120,7 +120,6 @@ const DIVISION_GLYPHS: Record<string, DivisionFallbackTheme['glyph']> = {
   'real-estate-and-property': 'layers',
   'interior-design-and-exteriors': 'tool',
   'civil-construction-and-contractors': 'layers',
-  'healthconnect-and-clinics': 'heart',
   'hospitality-restaurants-and-cafes': 'utensils',
   'salons-bridal-and-wellness': 'scissors',
   'events-weddings-and-media': 'camera',

@@ -88,54 +88,6 @@
         "action_href": "/services"
       },
       {
-        "id": "home-agri",
-        "type": "editable_banner",
-        "name": "VISTRAH AgriConnect",
-        "variation": "adaptive_grid",
-        "available_variations": [],
-        "features": [],
-        "images": [
-          {
-            "url": "/images/marketplace/agriculture-category.webp",
-            "alt_text": "Aerial shot of green and brown agricultural fields showcasing rural farmland and crop diversity."
-          }
-        ],
-        "order": 5,
-        "enabled": true,
-        "content": {
-          "en": {
-            "title": "VISTRAH AgriConnect",
-            "description": "Find farming services, equipment, and practical support for your farm.",
-            "action": "Explore farming services"
-          }
-        },
-        "action_href": "/services?category=agriculture-and-farming"
-      },
-      {
-        "id": "home-health",
-        "type": "editable_banner",
-        "name": "VISTRAH HealthConnect",
-        "variation": "adaptive_grid",
-        "available_variations": [],
-        "features": [],
-        "images": [
-          {
-            "url": "/images/marketplace/health-fitness-and-wellness.webp",
-            "alt_text": "A woman practising yoga in a sunlit indoor space"
-          }
-        ],
-        "order": 6,
-        "enabled": true,
-        "content": {
-          "en": {
-            "title": "VISTRAH HealthConnect",
-            "description": "Explore healthcare, fitness, and wellbeing options in one place.",
-            "action": "Explore healthcare"
-          }
-        },
-        "action_href": "/services?category=health-fitness-and-wellness"
-      },
-      {
         "id": "home-partner",
         "type": "editable_banner",
         "name": "Partner with VISTRAH",
@@ -143,7 +95,7 @@
         "available_variations": [],
         "features": [],
         "images": [],
-        "order": 7,
+        "order": 5,
         "enabled": true,
         "content": {
           "en": {
@@ -221,10 +173,10 @@
     ]
   },
   {
-    "id": "page-v-essentials",
-    "slug": "v-essentials",
-    "name": "V Essentials",
-    "path": "/v-essentials",
+    "id": "page-vibe-finder",
+    "slug": "vibe-finder",
+    "name": "Vibe Finder",
+    "path": "/vibe-finder",
     "description": "Existing app content. Save a draft and publish to enable CMS overrides.",
     "target_platform": "all",
     "status": "DRAFT",
@@ -233,9 +185,9 @@
     "published_at": null,
     "sections": [
       {
-        "id": "essentials-intro",
+        "id": "vibe-finder-intro",
         "type": "custom",
-        "name": "Vistrah Essentials",
+        "name": "Vibe Finder",
         "variation": "adaptive_grid",
         "available_variations": [],
         "features": [],
@@ -244,8 +196,8 @@
         "enabled": true,
         "content": {
           "en": {
-            "title": "Vistrah Essentials",
-            "description": "Explore VISTRAH AgriConnect and VISTRAH HealthConnect essential services.",
+            "title": "Vibe Finder",
+            "description": "Discover cinemas, live social events, cafes, evening lounges, and weekend getaways near you.",
             "action": ""
           }
         }
@@ -449,8 +401,8 @@
         "enabled": true,
         "content": {
           "en": {
-            "title": "Turn attention into your next opportunity.",
-            "description": "Connect search, social, content and paid campaigns around one clear business goal. Build a digital presence that gives people a reason to discover, trust and contact you.",
+            "title": "Target hyper-local consumers across search and social.",
+            "description": "Plan search, paid media, and local discovery campaigns structured around verified customer enquiries across Bengaluru, Mysuru, and regional markets.",
             "action": "Discuss my project"
           },
           "kn": {
@@ -666,8 +618,8 @@
         "enabled": true,
         "content": {
           "en": {
-            "title": "A brand people recognise. A story they remember.",
-            "description": "Bring your identity, visuals and message into one expressive world. From your first logo to your next campaign film, give every customer touchpoint a consistent personality.",
+            "title": "Commercial brand identity and short-form video production.",
+            "description": "Develop structured brand systems, packaging collateral, product photography, and 9:16 commercial reels ready for digital and V Ads distribution.",
             "action": "Discuss my project"
           },
           "kn": {
@@ -883,8 +835,8 @@
         "enabled": true,
         "content": {
           "en": {
-            "title": "Make your presence part of the city.",
-            "description": "Take your message beyond the screen. Plan location-aware outdoor campaigns and storefront signage with clear design, readable messaging and production suited to the setting.",
+            "title": "Commercial hoardings, retail fascia and storefront signage.",
+            "description": "Shortlist high-footfall hoarding sites and fabricate illuminated storefront boards with clear specifications, dimensions, and municipal compliance checks.",
             "action": "Discuss my project"
           },
           "kn": {
@@ -1100,8 +1052,8 @@
         "enabled": true,
         "content": {
           "en": {
-            "title": "Your message. A city in motion.",
-            "description": "Bring your campaign closer to the places your audience spends time. Explore vehicle-led displays, branded mobility and route-based promotions with a plan for every stop.",
+            "title": "Route-mapped LED display vans and transit campaigns.",
+            "description": "Deploy mobile LED and static transit displays across commercial corridors, residential catchments, and retail hubs with scheduled route plans.",
             "action": "Discuss my project"
           },
           "kn": {

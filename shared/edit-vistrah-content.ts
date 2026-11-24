@@ -24,9 +24,9 @@ export function sectionLayout(section:PageSection){
  if(key==='content_ribbon'||key==='countdown_ribbon')return 'ribbon';
  return 'grid';
 }
-export function pageUsesEditorialContent(path:string){return ['/services','/v-ads','/v-essentials'].includes(path);}
+export function pageUsesEditorialContent(path:string){return ['/services','/v-ads','/vibe-finder'].includes(path);}
 export function contentPageSlug(path:string){
- const routes:Record<string,string>={'/':'home','/services':'services','/v-ads':'v-ads','/v-essentials':'v-essentials','/marketing-solutions':'marketing-solutions'};
+ const routes:Record<string,string>={'/':'home','/services':'services','/v-ads':'v-ads','/vibe-finder':'vibe-finder','/marketing-solutions':'marketing-solutions'};
  if(routes[path])return routes[path];
  const match=path.match(/^\/(?:pages|marketing-services)\/([a-z0-9-]+)$/);
  return match?.[1]??null;

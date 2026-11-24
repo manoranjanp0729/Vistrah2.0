@@ -185,7 +185,7 @@ describe('Astra movable & auto-hiding launcher, static hero, and borderless card
     ctrl.dispose();
   });
 
-  it('keeps only the single static For Businesses homepage hero banner and borderless Services for You cards', () => {
+  it('keeps only the single static For Businesses homepage hero banner and borderless Services Near You cards', () => {
     expect(HERO_BANNERS).toHaveLength(1);
     expect(HERO_BANNERS[0].key).toBe('businesses');
     expect(HERO_BANNERS[0].navTitle).toBe('For Businesses');

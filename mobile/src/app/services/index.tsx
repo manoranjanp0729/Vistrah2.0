@@ -607,8 +607,10 @@ export default function Services() {
                         pathname: '/services/nearby',
                         params: {
                           category: category!.slug,
-                          subcategory: subcategory!.slug,
-                          type: type.slug,
+                          ...(subcategory!.slug !== type.slug
+                            ? { subcategory: subcategory!.slug }
+                            : {}),
+                          service_type: type.slug,
                         },
                       })
                     }
@@ -671,7 +673,7 @@ export default function Services() {
                     key={sub.slug}
                     testID={`marketplace-subcategory-${sub.slug}`}
                     accessibilityRole="button"
-                    onPress={() => router.push({pathname:'/services/nearby',params:{category:category!.slug,subcategory:sub.slug,type:sub.listing_types[0].slug}})}
+                    onPress={() => router.push({pathname:'/services/nearby',params:{category:category!.slug,service_type:sub.listing_types[0].slug}})}
                     style={({pressed}) => [
                       s.flowCard,
                       s.flowGridCard,

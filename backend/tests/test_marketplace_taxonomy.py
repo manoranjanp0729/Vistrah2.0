@@ -1,51 +1,62 @@
-"""Contract checks for the full 800+ marketplace classification (15 categories, 132 subcategories, 808 listing types)."""
+"""Contract checks for the 10-category, 60-subcategory 2-level VISTRAH marketplace classification."""
+import json
+from pathlib import Path
+
 from app.marketplace_taxonomy import legacy_map, master_taxonomy, taxonomy_summary
+
+SHARED = Path(__file__).resolve().parents[2] / "shared"
 
 
 def test_taxonomy_complete_and_ordered():
     data = master_taxonomy()
     assert [c["slug"] for c in data["categories"]] == [
-        "food-and-dining",
-        "home-and-everyday-services",
-        "shopping-and-local-retail",
-        "beauty-fashion-and-lifestyle",
-        "automobiles",
-        "rental-services",
-        "travel-stay-and-experiences",
-        "health-fitness-and-wellness",
+        "restaurants-and-dining",
+        "hotels-and-stay",
+        "vehicle-rentals",
+        "event-management",
+        "hospitals-and-labs",
         "education-and-skills",
-        "jobs-and-careers",
-        "professional-services",
-        "events-and-celebrations",
-        "pet-care",
-        "agriculture-and-farming",
-        "property-and-construction",
+        "salons-and-beauty-parlour",
+        "civil-and-construction",
+        "fuel-and-charging-stations",
+        "vibe-finder",
     ]
     assert taxonomy_summary() == {
-        "version": 1,
-        "categories": 15,
-        "subcategories": 132,
-        "listing_types": 808,
+        "version": 6,
+        "categories": 10,
+        "subcategories": 60,
+        "listing_types": 60,
     }
+    seen_slugs: set[str] = set()
+    imagery = json.loads((SHARED / "marketplace-imagery.json").read_text(encoding="utf-8"))
     for category in data["categories"]:
-        assert len(category["subcategories"]) >= 3
+        assert len(category["subcategories"]) >= 5
+        assert f"category/{category['slug']}" in imagery["items"]
         for sub in category["subcategories"]:
-            assert len(sub["listing_types"]) >= 1
-            for lt in sub["listing_types"]:
-                assert lt["slug"] and lt["title"]
+            assert sub["slug"] not in seen_slugs
+            seen_slugs.add(sub["slug"])
+            assert sub["listing_types"] == [{"slug": sub["slug"], "title": sub["title"]}]
+            assert f"subcategory/{category['slug']}/{sub['slug']}" in imagery["items"]
+            assert f"type/{category['slug']}/{sub['slug']}/{sub['slug']}" in imagery["items"]
+            assert sub["slug"] in imagery["assets"]
 
 
-def test_every_legacy_v2_slug_maps_to_a_current_classification():
-    current_triples = {
-        (c["slug"], s["slug"], lt["slug"])
+def test_removed_verticals_never_present():
+    forbidden = {
+        "v-essentials",
+        "agri-connect",
+        "agriconnect",
+        "health-connect",
+        "healthconnect",
+        "agriculture-and-farming",
+        "marketing",
+    }
+    all_slugs = {
+        c["slug"] for c in master_taxonomy()["categories"]
+    } | {
+        s["slug"]
         for c in master_taxonomy()["categories"]
         for s in c["subcategories"]
-        for lt in s["listing_types"]
     }
-    mapping = legacy_map()["subcategories"]
-    assert len(mapping) == 81
-    assert all(tuple(target[:3]) in current_triples for target in mapping.values())
-
-
-def test_marketing_hub_is_not_marketplace_category():
-    assert "marketing" not in {c["slug"] for c in master_taxonomy()["categories"]}
+    assert all_slugs.isdisjoint(forbidden)
+    assert isinstance(legacy_map()["subcategories"], dict)

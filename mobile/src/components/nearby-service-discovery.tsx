@@ -344,10 +344,11 @@ export function MobileNearbyServiceDiscovery({
                     pathname: '/services/nearby',
                     params: {
                       category: hit.selection.category!,
-                      ...(hit.selection.subcategory
-                        ? { subcategory: hit.selection.subcategory }
-                        : {}),
-                      ...(hit.selection.type ? { type: hit.selection.type } : {}),
+                      ...(hit.selection.type
+                        ? { service_type: hit.selection.type }
+                        : hit.selection.subcategory
+                          ? { service_type: hit.selection.subcategory }
+                          : {}),
                     },
                   });
                 }}
@@ -457,8 +458,7 @@ export function MobileNearbyServiceDiscovery({
                       pathname: '/services/nearby',
                       params: {
                         category: activeSector.slug,
-                        subcategory: st.slug,
-                        type: st.slug,
+                        service_type: st.slug,
                       },
                     })
                   }
@@ -531,6 +531,31 @@ export function MobileNearbyServiceDiscovery({
                     ? displayLocality
                     : `${displayLocality} · Change`}
               </Text>
+            </Pressable>
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Watch V Ads for ${serviceTitle}`}
+              onPress={() =>
+                router.push({
+                  pathname: '/(tabs)/v-ads',
+                  params: {
+                    category: categorySlug,
+                    ...(normalizedTypeSlug ? { service_type: normalizedTypeSlug } : {}),
+                  },
+                })
+              }
+              style={({ pressed }) => [
+                s.gpsBtn,
+                {
+                  backgroundColor: '#0F294A',
+                  borderColor: 'rgba(249,115,22,0.55)',
+                  opacity: pressed ? 0.85 : 1,
+                },
+              ]}
+            >
+              <Feather name="video" size={12} color="#F97316" />
+              <Text style={s.gpsBtnText}>V Ads</Text>
             </Pressable>
 
             {locCtx && (

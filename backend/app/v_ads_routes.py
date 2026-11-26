@@ -1,10 +1,15 @@
 """Public read-only V Ads feed and advertiser profiles."""
+import json
+import re
+
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic.fields import FieldInfo
-from sqlalchemy import exists, func, select
+from sqlalchemy import exists, func, or_, select
 from sqlalchemy.orm import Session
 
+from .business_catalogue import business_types, find_business_type
 from .database import get_db
+from .models import Category, Provider, ProviderService, Service
 from .v_ads_geography import (
     DEFAULT_DISCOVERY_RADIUS_KM,
     DEG_PER_KM,
@@ -44,6 +49,103 @@ def _opt_bool(value) -> bool:
     return bool(value)
 
 
+def _opt_str(value) -> str | None:
+    if value is None or isinstance(value, FieldInfo):
+        return None
+    cleaned = str(value).strip()
+    return cleaned or None
+
+
+_SLUG_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+_META_START = "<!--V_AD_META:"
+_META_END = ":V_AD_META-->"
+
+
+def _extract_ad_taxonomy_meta(raw_description: str | None) -> tuple[str | None, str | None]:
+    if not raw_description:
+        return None, None
+    start = raw_description.find(_META_START)
+    end = raw_description.find(_META_END)
+    if start == -1 or end == -1 or end <= start:
+        return None, None
+    try:
+        parsed = json.loads(raw_description[start + len(_META_START) : end])
+        if isinstance(parsed, dict):
+            cat = parsed.get("category_slug")
+            svc = parsed.get("service_type")
+            return (
+                cat if isinstance(cat, str) and cat else None,
+                svc if isinstance(svc, str) and svc else None,
+            )
+    except Exception:
+        return None, None
+    return None, None
+
+
+def _resolve_v_ads_taxonomy_filter(
+    raw_category: str | None,
+    raw_service_type: str | None,
+    *,
+    db: Session,
+):
+    if not raw_category and not raw_service_type:
+        return None
+    for val in (raw_category, raw_service_type):
+        if val is not None and (len(val) > 100 or not _SLUG_RE.fullmatch(val)):
+            raise HTTPException(422, "Select a valid category or service_type")
+
+    if raw_service_type:
+        found = find_business_type(raw_service_type, category_slug=raw_category, db=db)
+        if not found:
+            raise HTTPException(422, "Unknown service_type")
+        found_cat, found_bt = found
+        if raw_category and raw_category != found_cat["slug"]:
+            raise HTTPException(422, "service_type does not belong to the selected category")
+        slug = found_bt["slug"]
+        title_lower = found_bt["title"].lower()
+        return or_(
+            VAdsVideo.description.contains(f'"service_type":"{slug}"'),
+            VAdsVideo.description.contains(f'"service_type": "{slug}"'),
+            func.lower(VAdsVideo.title).contains(title_lower),
+            func.lower(VAdsVideo.description).contains(title_lower),
+            exists(
+                select(ProviderService.provider_id)
+                .join(Provider, Provider.id == ProviderService.provider_id)
+                .join(Service, Service.id == ProviderService.service_id)
+                .where(
+                    Provider.owner_user_id.is_not(None),
+                    Provider.owner_user_id == VAdsAdvertiser.owner_id,
+                    Provider.active.is_(True),
+                    ProviderService.approval_status == "APPROVED",
+                    Service.slug == slug,
+                )
+            ),
+        )
+
+    cats_by_slug = {c["slug"]: c for c in business_types()["categories"]}
+    cat_def = cats_by_slug.get(raw_category or "")
+    if not cat_def:
+        raise HTTPException(422, "Unknown category")
+    cat_slug = cat_def["slug"]
+    return or_(
+        VAdsVideo.description.contains(f'"category_slug":"{cat_slug}"'),
+        VAdsVideo.description.contains(f'"category_slug": "{cat_slug}"'),
+        exists(
+            select(ProviderService.provider_id)
+            .join(Provider, Provider.id == ProviderService.provider_id)
+            .join(Service, Service.id == ProviderService.service_id)
+            .join(Category, Category.id == Service.category_id)
+            .where(
+                Provider.owner_user_id.is_not(None),
+                Provider.owner_user_id == VAdsAdvertiser.owner_id,
+                Provider.active.is_(True),
+                ProviderService.approval_status == "APPROVED",
+                Category.slug == cat_slug,
+            )
+        ),
+    )
+
+
 def engagement_counts(db: Session, video_ids: list[str]) -> dict[str, tuple[int, int]]:
     if not video_ids:
         return {}
@@ -59,8 +161,9 @@ def video_payload(db: Session, video: VAdsVideo, advertiser: VAdsAdvertiser,
                   counts: dict[str, tuple[int, int]] | None = None):
     counts = engagement_counts(db, [video.id]) if counts is None else counts
     likes, comments = counts.get(video.id, (0, 0))
+    cat_slug, svc_slug = _extract_ad_taxonomy_meta(video.description)
 
-    return {
+    payload = {
         "id": video.id,
         "title": video.title,
         "description": video.description,
@@ -74,6 +177,11 @@ def video_payload(db: Session, video: VAdsVideo, advertiser: VAdsAdvertiser,
         "likes_count": likes,
         "comments_count": comments,
     }
+    if cat_slug:
+        payload["category_slug"] = cat_slug
+    if svc_slug:
+        payload["service_type"] = svc_slug
+    return payload
 
 
 @router.get("/reels")
@@ -87,6 +195,8 @@ def list_reels(
     radius_km: float | None = Query(None),
     radius: float | None = Query(None),
     local_only: bool = Query(False),
+    category: str | None = Query(None, max_length=100),
+    service_type: str | None = Query(None, max_length=100),
     x_user_latitude: float | None = Header(None, alias="X-User-Latitude"),
     x_user_longitude: float | None = Header(None, alias="X-User-Longitude"),
     x_user_radius_km: float | None = Header(None, alias="X-User-Radius-Km"),
@@ -105,6 +215,11 @@ def list_reels(
         None,
     )
     only_local = _opt_bool(local_only)
+    taxonomy_predicate = _resolve_v_ads_taxonomy_filter(
+        _opt_str(category),
+        _opt_str(service_type),
+        db=db,
+    )
 
     if (raw_lat is None) != (raw_lon is None):
         raise HTTPException(422, "Both lat and lon are required for geographic filtering")
@@ -143,6 +258,8 @@ def list_reels(
                 VAdsAdvertiser.status == "APPROVED",
             )
         )
+        if taxonomy_predicate is not None:
+            spatial_stmt = spatial_stmt.where(taxonomy_predicate)
         if only_local:
             lat_delta = (VAdsTargetingRevision.targeting_radius_km + EDGE_KM) * DEG_PER_KM
             min_lat, max_lat, min_lon, max_lon = bounding_box(
@@ -212,7 +329,7 @@ def list_reels(
         if not only_local and len(combined_slice) < page_size + 1:
             unpinned_offset = max(0, start - len(matched))
             unpinned_limit = (page_size + 1) - len(combined_slice)
-            unpinned_rows = db.execute(
+            unpinned_stmt = (
                 select(VAdsVideo, VAdsAdvertiser)
                 .join(
                     VAdsAdvertiser,
@@ -228,6 +345,11 @@ def list_reels(
                         )
                     ),
                 )
+            )
+            if taxonomy_predicate is not None:
+                unpinned_stmt = unpinned_stmt.where(taxonomy_predicate)
+            unpinned_rows = db.execute(
+                unpinned_stmt
                 .order_by(
                     VAdsVideo.published_at.desc(),
                     VAdsVideo.id.desc(),
@@ -273,6 +395,11 @@ def list_reels(
             VAdsVideo.status == "APPROVED",
             VAdsAdvertiser.status == "APPROVED",
         )
+    )
+    if taxonomy_predicate is not None:
+        statement = statement.where(taxonomy_predicate)
+    statement = (
+        statement
         .order_by(
             VAdsVideo.published_at.desc(),
             VAdsVideo.id.desc(),

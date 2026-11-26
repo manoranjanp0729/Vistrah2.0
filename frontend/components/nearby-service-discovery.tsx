@@ -27,6 +27,7 @@ import {
   ShoppingBag,
   Sprout,
   Utensils,
+  Video,
   Wrench,
   X,
 } from 'lucide-react';
@@ -42,6 +43,7 @@ import {
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   nearbyServicesUrl,
+  nearbyVAdsUrl,
   normalizeNearbyRadius,
   phoneCallHref,
   resolveListingPhotoUri,
@@ -415,8 +417,7 @@ export function NearbyServiceDiscovery({
                   key={st.slug}
                   href={nearbyServicesUrl({
                     category: activeSector.slug,
-                    subcategory: st.slug,
-                    type: st.slug,
+                    serviceType: st.slug,
                   })}
                   aria-current={isActiveType ? 'true' : undefined}
                   className={`${s.typeChip} ${isActiveType ? s.typeChipActive : ''}`}
@@ -490,6 +491,19 @@ export function NearbyServiceDiscovery({
               </button>
             ))}
           </div>
+          <Link
+            href={nearbyVAdsUrl({
+              category: categorySlug,
+              serviceType: normalizedTypeSlug || undefined,
+              radiusKm,
+            })}
+            className={s.vAdsFilterBtn}
+            data-nearby-v-ads-link="true"
+            aria-label={`Watch V Ads for ${serviceTitle}`}
+          >
+            <Video size={14} aria-hidden="true" />
+            <UiText value="V Ads" />
+          </Link>
           <MapListViewToggle mode={viewMode} onChange={setViewMode} />
         </div>
       </div>

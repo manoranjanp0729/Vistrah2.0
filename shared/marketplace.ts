@@ -17,6 +17,7 @@ export type MarketplaceSelection = {
   category?: string;
   subcategory?: string;
   type?: string;
+  service_type?: string;
   q?: string;
 };
 export type MarketplaceLegacyMap = {
@@ -42,14 +43,20 @@ export function marketplaceUrl(selection: MarketplaceSelection = {}) {
 
 export function marketplaceNearbyTypeUrl(selection: {
   category: string;
-  subcategory: string;
-  type: string;
+  subcategory?: string;
+  type?: string;
+  service_type?: string;
 }) {
+  const effectiveType = selection.service_type || selection.type || selection.subcategory;
   const params = new URLSearchParams({
     category: selection.category,
-    subcategory: selection.subcategory,
-    type: selection.type,
   });
+  if (selection.subcategory && effectiveType && selection.subcategory !== effectiveType) {
+    params.set('subcategory', selection.subcategory);
+  }
+  if (effectiveType) {
+    params.set('service_type', effectiveType);
+  }
   return `/services/nearby?${params.toString()}`;
 }
 
@@ -80,19 +87,25 @@ export function createMarketplace(
   };
 
   function resolveMarketplaceSelection(selection: MarketplaceSelection) {
+    const effectiveType = selection.service_type || selection.type;
     const category = selection.category
       ? marketplaceCategories.find(c => c.slug === selection.category)
       : undefined;
-    const subcategory = selection.subcategory
+    let subcategory = selection.subcategory
       ? category?.subcategories.find(s => s.slug === selection.subcategory)
       : undefined;
-    let listingType = selection.type
-      ? subcategory?.listing_types.find(t => t.slug === selection.type)
+    if (!subcategory && !selection.subcategory && category && effectiveType) {
+      subcategory =
+        category.subcategories.find(s => s.listing_types.some(lt => lt.slug === effectiveType)) ??
+        category.subcategories.find(s => s.slug === effectiveType);
+    }
+    let listingType = effectiveType
+      ? subcategory?.listing_types.find(t => t.slug === effectiveType)
       : undefined;
     if (
       (selection.category && !category) ||
       (selection.subcategory && !subcategory) ||
-      (selection.type && !listingType)
+      (effectiveType && !listingType)
     ) {
       return null;
     }

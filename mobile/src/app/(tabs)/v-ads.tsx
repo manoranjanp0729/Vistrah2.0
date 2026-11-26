@@ -14,6 +14,7 @@ import {useSession} from '../../lib/session';
 import {useOptionalLocation} from '../../lib/location';
 import {vAds,playableReel,publicVideoLink,type PlayableReel as Reel} from '../../lib/v-ads';
 import {mergeReels,sharePath,parseAdDescription,type Comment,type FeedFilter} from '../../../../shared/v-ads';
+import {FLAGSHIP_SECTORS,getFlagshipSector} from '../../../../shared/flagship-sectors';
 import brandTheme from '../../../../shared/brand-theme.json';
 import {Loading,ErrorPanel,Action} from '../../components/ui';
 import {api} from '../../lib/api';
@@ -479,12 +480,14 @@ function ReelCard({reel, active, height}: {
 }
 
 export default function VAds() {
-  const params=useLocalSearchParams<{video?:string}>();
+  const params=useLocalSearchParams<{video?:string;category?:string;service_type?:string}>();
   const video=typeof params.video==='string'?params.video:'';
-  return <VAdsFeed key={video} video={video}/>;
+  const category=typeof params.category==='string'?params.category:'';
+  const serviceType=typeof params.service_type==='string'?params.service_type:'';
+  return <VAdsFeed key={`${video}:${category}:${serviceType}`} video={video} initialCategory={category} initialServiceType={serviceType}/>;
 }
-function VAdsFeed({video}:{video:string}) {
-  const {styles} = useTheme();
+function VAdsFeed({video,initialCategory,initialServiceType}:{video:string;initialCategory:string;initialServiceType:string}) {
+  const {styles,colors,mode} = useTheme();
   const {user}=useSession();
   const locationCtx=useOptionalLocation();
   const activeLoc=locationCtx?.location;
@@ -492,6 +495,26 @@ function VAdsFeed({video}:{video:string}) {
   const activeLat=activeLoc&&Number.isFinite(activeLoc.latitude)&&Number.isFinite(activeLoc.longitude)&&Math.abs(activeLoc.latitude)<=90&&Math.abs(activeLoc.longitude)<=180?activeLoc.latitude:undefined;
   const activeLon=activeLat!==undefined?activeLoc?.longitude:undefined;
   const activeRadius=activeLoc?.radius;
+  const [categoryFilter,setCategoryFilter]=useState(initialCategory);
+  const [serviceTypeFilter,setServiceTypeFilter]=useState(initialServiceType);
+  const activeSector=useMemo(()=>{
+    if(categoryFilter)return getFlagshipSector(categoryFilter);
+    if(serviceTypeFilter)return FLAGSHIP_SECTORS.find(sec=>sec.serviceTypes.some(st=>st.slug===serviceTypeFilter));
+    return undefined;
+  },[categoryFilter,serviceTypeFilter]);
+  const activeServiceTitle=useMemo(()=>{
+    if(!serviceTypeFilter)return activeSector?.title??'';
+    return activeSector?.serviceTypes.find(st=>st.slug===serviceTypeFilter)?.title??serviceTypeFilter;
+  },[activeSector,serviceTypeFilter]);
+  const activeFeedFilter=useMemo<FeedFilter|undefined>(()=>{
+    const hasGeo=activeLat!==undefined&&activeLon!==undefined;
+    if(!hasGeo&&!categoryFilter&&!serviceTypeFilter)return undefined;
+    return {
+      ...(hasGeo?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:{}),
+      ...(categoryFilter?{category:categoryFilter}:{}),
+      ...(serviceTypeFilter?{service_type:serviceTypeFilter}:{}),
+    };
+  },[activeLat,activeLon,activeRadius,categoryFilter,serviceTypeFilter]);
   const [reels,setReels]=useState<Reel[]>([]);
   const [loading,setLoading]=useState(true),[error,setError]=useState(''),[version,setVersion]=useState(0);
   const [page,setPage]=useState(1),[hasMore,setHasMore]=useState(false);
@@ -499,12 +522,12 @@ function VAdsFeed({video}:{video:string}) {
   const [height, setHeight] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   useEffect(()=>{let alive=true;
-    const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;
-    Promise.all([filter?vAds.feed(1,filter):vAds.feed(),video?vAds.reel(video):Promise.resolve(null)]).then(([feed,selected])=>{
+    setLoading(true);
+    Promise.all([activeFeedFilter?vAds.feed(1,activeFeedFilter):vAds.feed(),video?vAds.reel(video):Promise.resolve(null)]).then(([feed,selected])=>{
       if(alive){setReels(mergeReels(selected?[selected]:[],feed.items).map(playableReel));setPage(1);setHasMore(feed.has_more);setActiveIndex(0);setError('');}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[video,version,activeLat,activeLon,activeRadius,locRev]);
-  async function loadMore(){if(paging.current||loading||!hasMore)return;paging.current=true;try{const filter:FeedFilter|undefined=activeLat!==undefined&&activeLon!==undefined?{lat:activeLat,lon:activeLon,radius_km:activeRadius}:undefined;const feed=await vAds.feed(page+1,filter);setReels(previous=>mergeReels(previous,feed.items).map(playableReel));setPage(feed.page);setHasMore(feed.has_more);setError('');}catch(e){setError((e as Error).message);}finally{paging.current=false;}}
+  },[video,version,activeFeedFilter,locRev]);
+  async function loadMore(){if(paging.current||loading||!hasMore)return;paging.current=true;try{const feed=await vAds.feed(page+1,activeFeedFilter);setReels(previous=>mergeReels(previous,feed.items).map(playableReel));setPage(feed.page);setHasMore(feed.has_more);setError('');}catch(e){setError((e as Error).message);}finally{paging.current=false;}}
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: {index: number | null}[]}) => {
       const next = viewableItems.find(item => item.index !== null);
@@ -520,6 +543,25 @@ function VAdsFeed({video}:{video:string}) {
 
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
+    {Boolean(categoryFilter||serviceTypeFilter)&&(
+      <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,paddingHorizontal:14,paddingVertical:8,backgroundColor:mode==='light'?'#0F294A':'#132F54',borderBottomWidth:1,borderBottomColor:'rgba(249,115,22,0.4)'}}>
+        <View style={{flexDirection:'row',alignItems:'center',gap:6,flex:1,minWidth:0}}>
+          <Feather name="video" size={13} color="#F97316"/>
+          <Text numberOfLines={1} style={{fontSize:12,fontWeight:'700',color:'#ffffff',flex:1}}>
+            V Ads · {activeServiceTitle}
+          </Text>
+        </View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Clear V Ads filter"
+          onPress={()=>{setCategoryFilter('');setServiceTypeFilter('');router.setParams({category:'',service_type:''});}}
+          style={{flexDirection:'row',alignItems:'center',gap:4,paddingHorizontal:10,paddingVertical:4,borderRadius:999,backgroundColor:'rgba(255,255,255,0.14)'}}
+        >
+          <Feather name="x" size={12} color="#ffffff"/>
+          <Text style={{fontSize:11,fontWeight:'700',color:'#ffffff'}}>All V Ads</Text>
+        </Pressable>
+      </View>
+    )}
     <View key={user?.id??'guest'} style={{flex:1}} onLayout={onLayout}>
       {loading?<Loading/>:!reels.length?<View style={styles.content}>{Boolean(error)?<ErrorPanel error={new Error(error)} retry={()=>setVersion(v=>v+1)}/>:<Text style={styles.muted}><UiText value={"No approved videos yet."}/></Text>}<UiElement as={Action} label="Refresh V Ads" onPress={()=>setVersion(v=>v+1)}/>{user?.seller_enabled&&<UiElement as={Action} label="Your V Ads" secondary onPress={()=>router.push({pathname:'/seller/v-ads',params:{from:'v-ads'}})}/>}</View>:height > 0 && (
         <FlatList

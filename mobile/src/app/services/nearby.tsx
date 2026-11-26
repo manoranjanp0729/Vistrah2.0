@@ -26,13 +26,23 @@ export default function NearbyServicesScreen() {
   const { width } = useWindowDimensions();
   const horizontalPadding = width >= 768 ? spacing.pagePaddingDesktop : spacing.pagePadding;
 
-  const raw = useLocalSearchParams<{ category?: string; subcategory?: string; type?: string }>();
+  const raw = useLocalSearchParams<{
+    category?: string;
+    subcategory?: string;
+    type?: string;
+    service_type?: string;
+  }>();
   const cat =
     typeof raw.category === 'string' && raw.category
       ? raw.category
       : FLAGSHIP_SECTORS[0].slug;
   let sub = typeof raw.subcategory === 'string' && raw.subcategory ? raw.subcategory : undefined;
-  let typ = typeof raw.type === 'string' && raw.type ? raw.type : undefined;
+  let typ =
+    typeof raw.service_type === 'string' && raw.service_type
+      ? raw.service_type
+      : typeof raw.type === 'string' && raw.type
+        ? raw.type
+        : undefined;
 
   if (cat && !sub && typ) {
     const matchedCat = marketplaceCategories.find(c => c.slug === cat);
@@ -58,8 +68,8 @@ export default function NearbyServicesScreen() {
     ? null
     : legacyMarketplaceSelection({
         category: cat,
-        subcategory: raw.subcategory || raw.type,
-        type: raw.type,
+        subcategory: raw.subcategory || raw.service_type || raw.type,
+        type: raw.service_type || raw.type,
       });
 
   useEffect(() => {
@@ -68,9 +78,8 @@ export default function NearbyServicesScreen() {
         pathname: '/services/nearby',
         params: {
           category: legacy.category,
-          ...(legacy.subcategory ? { subcategory: legacy.subcategory } : {}),
           ...(legacy.type || legacy.subcategory
-            ? { type: (legacy.type || legacy.subcategory)! }
+            ? { service_type: (legacy.type || legacy.subcategory)! }
             : {}),
         },
       });

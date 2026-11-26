@@ -9,6 +9,7 @@ import {isSellerUser,type User} from '@/lib/types';
 import {notifyUserSession,useUser} from './customer';
 import {legalVersion,sellerLegalCopy} from '../../shared/legal';
 import {deriveFreeVAdPrefillFromParams} from '../../shared/business-audit';
+import {FLAGSHIP_SECTORS,getFlagshipSector} from '../../shared/flagship-sectors';
 import {vAdsClient,validateVideoFile,studioVideoLive,mediaUrl,mergeReels,parseAdDescription,type Workspace,type Reel,type SellerVideo,type AdMetadata,type AdType,type AdProductMeta} from '../../shared/v-ads';
 import s from './v-ads.module.css';
 import {AdvertiserManagement,VideoManagement,DiscardUpload} from './v-ads-management';
@@ -91,6 +92,9 @@ function SellerWorkspace({
   const [accountId,setAccountId]=useState('');
   const [uploadId,setUploadId]=useState('');
   const [adType,setAdType]=useState<AdType>(prefill.hasPrefill?prefill.adType:'PRODUCT');
+  const [adCategorySlug,setAdCategorySlug]=useState<string>(searchParams?.get('category') || '');
+  const [adServiceTypeSlug,setAdServiceTypeSlug]=useState<string>(searchParams?.get('service_type') || searchParams?.get('type') || '');
+  const selectedAdSector=getFlagshipSector(adCategorySlug);
   const [productName,setProductName]=useState('');
   const [productPrice,setProductPrice]=useState('');
   const [deliveryInfo,setDeliveryInfo]=useState('');
@@ -374,10 +378,14 @@ function SellerWorkspace({
                   product_price: productPrice.trim(),
                   delivery_info: deliveryInfo.trim(),
                   product_id: productId.trim() || undefined,
+                  ...(adCategorySlug ? { category_slug: adCategorySlug } : {}),
+                  ...(adServiceTypeSlug ? { service_type: adServiceTypeSlug } : {}),
                 }
               : {
                   ad_type: 'BRAND',
                   products_available: productsAvailable.trim() || undefined,
+                  ...(adCategorySlug ? { category_slug: adCategorySlug } : {}),
+                  ...(adServiceTypeSlug ? { service_type: adServiceTypeSlug } : {}),
                 };
             const sub=await client.submit(account.id,uploadId,title,videoDescription,meta);
             setUploadId('');
@@ -486,6 +494,36 @@ function SellerWorkspace({
               </label>
             </div>
           )}
+
+          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:10}}>
+            <label>
+              <span style={{fontWeight:600}}><UiText value={"Main Category"}/></span>
+              <select
+                aria-label="Target main category"
+                value={adCategorySlug}
+                onChange={e=>{setAdCategorySlug(e.target.value);setAdServiceTypeSlug('');}}
+              >
+                <option value="">Select category (optional)</option>
+                {FLAGSHIP_SECTORS.map(sec=>(
+                  <option key={sec.slug} value={sec.slug}>{sec.title}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              <span style={{fontWeight:600}}><UiText value={"Service Type / Subcategory"}/></span>
+              <select
+                aria-label="Target service type"
+                value={adServiceTypeSlug}
+                onChange={e=>setAdServiceTypeSlug(e.target.value)}
+                disabled={!selectedAdSector}
+              >
+                <option value="">{selectedAdSector ? `All in ${selectedAdSector.title}` : 'Select a category first'}</option>
+                {(selectedAdSector?.serviceTypes ?? []).map(st=>(
+                  <option key={st.slug} value={st.slug}>{st.title}</option>
+                ))}
+              </select>
+            </label>
+          </div>
 
           <label>
             <span style={{fontWeight:600}}><UiText value={"3. V Ad title"}/></span>

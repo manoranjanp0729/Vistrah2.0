@@ -19,12 +19,16 @@ export type AdProductMeta = {
   product_price?: string;
   delivery_info?: string;
   product_id?: string;
+  category_slug?: string;
+  service_type?: string;
 };
 
 export type AdBrandMeta = {
   ad_type: 'BRAND';
   brand_highlights?: string;
   products_available?: string;
+  category_slug?: string;
+  service_type?: string;
 };
 
 export type AdMetadata = AdProductMeta | AdBrandMeta;
@@ -39,6 +43,8 @@ export type Reel = {
   likes_count:number;
   comments_count:number;
   ad_type?: AdType;
+  category_slug?: string | null;
+  service_type?: string | null;
   product_id?: string | null;
   product_name?: string | null;
   product_price?: string | null;
@@ -51,10 +57,12 @@ export type Reel = {
 };
 
 export type FeedFilter = {
-  lat: number;
-  lon: number;
+  lat?: number;
+  lon?: number;
   radius_km?: number;
   local_only?: boolean;
+  category?: string;
+  service_type?: string;
 };
 
 export type Comment = {id:string;user_id:number;body:string;created_at:string};
@@ -158,11 +166,15 @@ export function vAdsClient(api:Api) {
   return {
     feed:(page=1,filter?:FeedFilter)=>{
       const params=new URLSearchParams({page:String(page)});
-      if(filter&&Number.isFinite(filter.lat)&&Number.isFinite(filter.lon)&&Math.abs(filter.lat)<=90&&Math.abs(filter.lon)<=180){
-        params.set('lat',String(filter.lat));
-        params.set('lon',String(filter.lon));
-        if(filter.radius_km!=null&&Number.isFinite(filter.radius_km)&&filter.radius_km>0)params.set('radius_km',String(filter.radius_km));
-        if(filter.local_only)params.set('local_only','true');
+      if(filter){
+        if(filter.lat!==undefined&&filter.lon!==undefined&&Number.isFinite(filter.lat)&&Number.isFinite(filter.lon)&&Math.abs(filter.lat)<=90&&Math.abs(filter.lon)<=180){
+          params.set('lat',String(filter.lat));
+          params.set('lon',String(filter.lon));
+          if(filter.radius_km!=null&&Number.isFinite(filter.radius_km)&&filter.radius_km>0)params.set('radius_km',String(filter.radius_km));
+          if(filter.local_only)params.set('local_only','true');
+        }
+        if(filter.category&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(filter.category))params.set('category',filter.category);
+        if(filter.service_type&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(filter.service_type))params.set('service_type',filter.service_type);
       }
       return api<Feed>('/v-ads/reels?'+params.toString());
     },

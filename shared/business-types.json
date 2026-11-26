@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "regulations": {
     "fssai": {
       "label": "FSSAI Registration / Licence Number",
@@ -87,6 +87,45 @@
             "Restaurants & Dining"
           ],
           "regulated": "fssai"
+        },
+        {
+          "slug": "bakeries-and-desserts",
+          "listing_type_slug": "bakeries-and-desserts",
+          "subcategory_slug": null,
+          "subcategory_title": "Bakeries & Desserts",
+          "title": "Bakeries & Desserts",
+          "description": "Bakeries & Desserts in Restaurants & Dining.",
+          "keywords": [
+            "Bakeries & Desserts",
+            "Restaurants & Dining"
+          ],
+          "regulated": "fssai"
+        },
+        {
+          "slug": "cloud-kitchens-and-tiffins",
+          "listing_type_slug": "cloud-kitchens-and-tiffins",
+          "subcategory_slug": null,
+          "subcategory_title": "Cloud Kitchens & Tiffins",
+          "title": "Cloud Kitchens & Tiffins",
+          "description": "Cloud Kitchens & Tiffins in Restaurants & Dining.",
+          "keywords": [
+            "Cloud Kitchens & Tiffins",
+            "Restaurants & Dining"
+          ],
+          "regulated": "fssai"
+        },
+        {
+          "slug": "juice-and-ice-cream-bars",
+          "listing_type_slug": "juice-and-ice-cream-bars",
+          "subcategory_slug": null,
+          "subcategory_title": "Juice & Ice Cream Bars",
+          "title": "Juice & Ice Cream Bars",
+          "description": "Juice & Ice Cream Bars in Restaurants & Dining.",
+          "keywords": [
+            "Juice & Ice Cream Bars",
+            "Restaurants & Dining"
+          ],
+          "regulated": "fssai"
         }
       ]
     },
@@ -130,6 +169,42 @@
             "Resorts",
             "Hotels & Stay"
           ]
+        },
+        {
+          "slug": "pgs-and-hostels",
+          "listing_type_slug": "pgs-and-hostels",
+          "subcategory_slug": null,
+          "subcategory_title": "PGs & Hostels",
+          "title": "PGs & Hostels",
+          "description": "PGs & Hostels in Hotels & Stay.",
+          "keywords": [
+            "PGs & Hostels",
+            "Hotels & Stay"
+          ]
+        },
+        {
+          "slug": "service-apartments",
+          "listing_type_slug": "service-apartments",
+          "subcategory_slug": null,
+          "subcategory_title": "Service Apartments",
+          "title": "Service Apartments",
+          "description": "Service Apartments in Hotels & Stay.",
+          "keywords": [
+            "Service Apartments",
+            "Hotels & Stay"
+          ]
+        },
+        {
+          "slug": "guest-houses-and-lodges",
+          "listing_type_slug": "guest-houses-and-lodges",
+          "subcategory_slug": null,
+          "subcategory_title": "Guest Houses & Lodges",
+          "title": "Guest Houses & Lodges",
+          "description": "Guest Houses & Lodges in Hotels & Stay.",
+          "keywords": [
+            "Guest Houses & Lodges",
+            "Hotels & Stay"
+          ]
         }
       ]
     },
@@ -161,6 +236,42 @@
             "Bikes",
             "Vehicle Rentals"
           ]
+        },
+        {
+          "slug": "tempo-travellers-and-vans",
+          "listing_type_slug": "tempo-travellers-and-vans",
+          "subcategory_slug": null,
+          "subcategory_title": "Tempo Travellers & Vans",
+          "title": "Tempo Travellers & Vans",
+          "description": "Tempo Travellers & Vans in Vehicle Rentals.",
+          "keywords": [
+            "Tempo Travellers & Vans",
+            "Vehicle Rentals"
+          ]
+        },
+        {
+          "slug": "outstation-cabs-and-taxis",
+          "listing_type_slug": "outstation-cabs-and-taxis",
+          "subcategory_slug": null,
+          "subcategory_title": "Outstation Cabs & Taxis",
+          "title": "Outstation Cabs & Taxis",
+          "description": "Outstation Cabs & Taxis in Vehicle Rentals.",
+          "keywords": [
+            "Outstation Cabs & Taxis",
+            "Vehicle Rentals"
+          ]
+        },
+        {
+          "slug": "goods-and-mini-trucks",
+          "listing_type_slug": "goods-and-mini-trucks",
+          "subcategory_slug": null,
+          "subcategory_title": "Goods & Mini Trucks",
+          "title": "Goods & Mini Trucks",
+          "description": "Goods & Mini Trucks in Vehicle Rentals.",
+          "keywords": [
+            "Goods & Mini Trucks",
+            "Vehicle Rentals"
+          ]
         }
       ]
     },
@@ -190,6 +301,42 @@
           "description": "Birthday in Event Management.",
           "keywords": [
             "Birthday",
+            "Event Management"
+          ]
+        },
+        {
+          "slug": "banquet-and-event-venues",
+          "listing_type_slug": "banquet-and-event-venues",
+          "subcategory_slug": null,
+          "subcategory_title": "Banquet & Event Venues",
+          "title": "Banquet & Event Venues",
+          "description": "Banquet & Event Venues in Event Management.",
+          "keywords": [
+            "Banquet & Event Venues",
+            "Event Management"
+          ]
+        },
+        {
+          "slug": "catering-and-live-counters",
+          "listing_type_slug": "catering-and-live-counters",
+          "subcategory_slug": null,
+          "subcategory_title": "Catering & Live Counters",
+          "title": "Catering & Live Counters",
+          "description": "Catering & Live Counters in Event Management.",
+          "keywords": [
+            "Catering & Live Counters",
+            "Event Management"
+          ]
+        },
+        {
+          "slug": "photography-and-videography",
+          "listing_type_slug": "photography-and-videography",
+          "subcategory_slug": null,
+          "subcategory_title": "Photography & Videography",
+          "title": "Photography & Videography",
+          "description": "Photography & Videography in Event Management.",
+          "keywords": [
+            "Photography & Videography",
             "Event Management"
           ]
         }
@@ -235,6 +382,45 @@
           "description": "Laboratory in Hospitals and Labs.",
           "keywords": [
             "Laboratory",
+            "Hospitals and Labs"
+          ],
+          "regulated": "medical"
+        },
+        {
+          "slug": "dental-clinics",
+          "listing_type_slug": "dental-clinics",
+          "subcategory_slug": null,
+          "subcategory_title": "Dental Clinics",
+          "title": "Dental Clinics",
+          "description": "Dental Clinics in Hospitals and Labs.",
+          "keywords": [
+            "Dental Clinics",
+            "Hospitals and Labs"
+          ],
+          "regulated": "medical"
+        },
+        {
+          "slug": "physiotherapy-and-rehab",
+          "listing_type_slug": "physiotherapy-and-rehab",
+          "subcategory_slug": null,
+          "subcategory_title": "Physiotherapy & Rehab",
+          "title": "Physiotherapy & Rehab",
+          "description": "Physiotherapy & Rehab in Hospitals and Labs.",
+          "keywords": [
+            "Physiotherapy & Rehab",
+            "Hospitals and Labs"
+          ],
+          "regulated": "medical"
+        },
+        {
+          "slug": "eye-and-skin-clinics",
+          "listing_type_slug": "eye-and-skin-clinics",
+          "subcategory_slug": null,
+          "subcategory_title": "Eye & Skin Clinics",
+          "title": "Eye & Skin Clinics",
+          "description": "Eye & Skin Clinics in Hospitals and Labs.",
+          "keywords": [
+            "Eye & Skin Clinics",
             "Hospitals and Labs"
           ],
           "regulated": "medical"
@@ -305,6 +491,42 @@
             "Tuitions",
             "Education & Skills"
           ]
+        },
+        {
+          "slug": "competitive-exam-coaching",
+          "listing_type_slug": "competitive-exam-coaching",
+          "subcategory_slug": null,
+          "subcategory_title": "Competitive Exam Coaching",
+          "title": "Competitive Exam Coaching",
+          "description": "Competitive Exam Coaching in Education & Skills.",
+          "keywords": [
+            "Competitive Exam Coaching",
+            "Education & Skills"
+          ]
+        },
+        {
+          "slug": "music-dance-and-arts",
+          "listing_type_slug": "music-dance-and-arts",
+          "subcategory_slug": null,
+          "subcategory_title": "Music, Dance & Arts",
+          "title": "Music, Dance & Arts",
+          "description": "Music, Dance & Arts in Education & Skills.",
+          "keywords": [
+            "Music, Dance & Arts",
+            "Education & Skills"
+          ]
+        },
+        {
+          "slug": "preschools-and-daycare",
+          "listing_type_slug": "preschools-and-daycare",
+          "subcategory_slug": null,
+          "subcategory_title": "Preschools & Daycare",
+          "title": "Preschools & Daycare",
+          "description": "Preschools & Daycare in Education & Skills.",
+          "keywords": [
+            "Preschools & Daycare",
+            "Education & Skills"
+          ]
         }
       ]
     },
@@ -360,6 +582,42 @@
             "Sauna",
             "Salons & Beauty Parlour"
           ]
+        },
+        {
+          "slug": "bridal-makeup-and-mehendi",
+          "listing_type_slug": "bridal-makeup-and-mehendi",
+          "subcategory_slug": null,
+          "subcategory_title": "Bridal Makeup & Mehendi",
+          "title": "Bridal Makeup & Mehendi",
+          "description": "Bridal Makeup & Mehendi in Salons & Beauty Parlour.",
+          "keywords": [
+            "Bridal Makeup & Mehendi",
+            "Salons & Beauty Parlour"
+          ]
+        },
+        {
+          "slug": "mens-grooming-and-barbers",
+          "listing_type_slug": "mens-grooming-and-barbers",
+          "subcategory_slug": null,
+          "subcategory_title": "Men's Grooming & Barbers",
+          "title": "Men's Grooming & Barbers",
+          "description": "Men's Grooming & Barbers in Salons & Beauty Parlour.",
+          "keywords": [
+            "Men's Grooming & Barbers",
+            "Salons & Beauty Parlour"
+          ]
+        },
+        {
+          "slug": "nail-and-lash-studios",
+          "listing_type_slug": "nail-and-lash-studios",
+          "subcategory_slug": null,
+          "subcategory_title": "Nail & Lash Studios",
+          "title": "Nail & Lash Studios",
+          "description": "Nail & Lash Studios in Salons & Beauty Parlour.",
+          "keywords": [
+            "Nail & Lash Studios",
+            "Salons & Beauty Parlour"
+          ]
         }
       ]
     },
@@ -389,6 +647,42 @@
           "description": "Commercial in Civil & Construction.",
           "keywords": [
             "Commercial",
+            "Civil & Construction"
+          ]
+        },
+        {
+          "slug": "plumbing-and-electrical-repairs",
+          "listing_type_slug": "plumbing-and-electrical-repairs",
+          "subcategory_slug": null,
+          "subcategory_title": "Plumbing & Electrical Repairs",
+          "title": "Plumbing & Electrical Repairs",
+          "description": "Plumbing & Electrical Repairs in Civil & Construction.",
+          "keywords": [
+            "Plumbing & Electrical Repairs",
+            "Civil & Construction"
+          ]
+        },
+        {
+          "slug": "waterproofing-and-painting",
+          "listing_type_slug": "waterproofing-and-painting",
+          "subcategory_slug": null,
+          "subcategory_title": "Waterproofing & Painting",
+          "title": "Waterproofing & Painting",
+          "description": "Waterproofing & Painting in Civil & Construction.",
+          "keywords": [
+            "Waterproofing & Painting",
+            "Civil & Construction"
+          ]
+        },
+        {
+          "slug": "architecture-and-interiors",
+          "listing_type_slug": "architecture-and-interiors",
+          "subcategory_slug": null,
+          "subcategory_title": "Architecture & Interiors",
+          "title": "Architecture & Interiors",
+          "description": "Architecture & Interiors in Civil & Construction.",
+          "keywords": [
+            "Architecture & Interiors",
             "Civil & Construction"
           ]
         }
@@ -434,6 +728,42 @@
             "EV Charging",
             "Fuel & Charging Stations"
           ]
+        },
+        {
+          "slug": "car-and-bike-wash-detailing",
+          "listing_type_slug": "car-and-bike-wash-detailing",
+          "subcategory_slug": null,
+          "subcategory_title": "Car & Bike Wash / Detailing",
+          "title": "Car & Bike Wash / Detailing",
+          "description": "Car & Bike Wash / Detailing in Fuel & Charging Stations.",
+          "keywords": [
+            "Car & Bike Wash / Detailing",
+            "Fuel & Charging Stations"
+          ]
+        },
+        {
+          "slug": "tyre-battery-and-puncture-care",
+          "listing_type_slug": "tyre-battery-and-puncture-care",
+          "subcategory_slug": null,
+          "subcategory_title": "Tyre, Battery & Puncture Care",
+          "title": "Tyre, Battery & Puncture Care",
+          "description": "Tyre, Battery & Puncture Care in Fuel & Charging Stations.",
+          "keywords": [
+            "Tyre, Battery & Puncture Care",
+            "Fuel & Charging Stations"
+          ]
+        },
+        {
+          "slug": "ev-service-and-battery-swap",
+          "listing_type_slug": "ev-service-and-battery-swap",
+          "subcategory_slug": null,
+          "subcategory_title": "EV Service & Battery Swap",
+          "title": "EV Service & Battery Swap",
+          "description": "EV Service & Battery Swap in Fuel & Charging Stations.",
+          "keywords": [
+            "EV Service & Battery Swap",
+            "Fuel & Charging Stations"
+          ]
         }
       ]
     },
@@ -463,6 +793,42 @@
           "description": "Social Events in Vibe Finder.",
           "keywords": [
             "Social Events",
+            "Vibe Finder"
+          ]
+        },
+        {
+          "slug": "gaming-and-bowling-zones",
+          "listing_type_slug": "gaming-and-bowling-zones",
+          "subcategory_slug": null,
+          "subcategory_title": "Gaming & Bowling Zones",
+          "title": "Gaming & Bowling Zones",
+          "description": "Gaming & Bowling Zones in Vibe Finder.",
+          "keywords": [
+            "Gaming & Bowling Zones",
+            "Vibe Finder"
+          ]
+        },
+        {
+          "slug": "turf-and-sports-arenas",
+          "listing_type_slug": "turf-and-sports-arenas",
+          "subcategory_slug": null,
+          "subcategory_title": "Turf & Sports Arenas",
+          "title": "Turf & Sports Arenas",
+          "description": "Turf & Sports Arenas in Vibe Finder.",
+          "keywords": [
+            "Turf & Sports Arenas",
+            "Vibe Finder"
+          ]
+        },
+        {
+          "slug": "live-music-and-comedy-clubs",
+          "listing_type_slug": "live-music-and-comedy-clubs",
+          "subcategory_slug": null,
+          "subcategory_title": "Live Music & Comedy Clubs",
+          "title": "Live Music & Comedy Clubs",
+          "description": "Live Music & Comedy Clubs in Vibe Finder.",
+          "keywords": [
+            "Live Music & Comedy Clubs",
             "Vibe Finder"
           ]
         }

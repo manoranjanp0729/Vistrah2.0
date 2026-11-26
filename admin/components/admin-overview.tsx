@@ -7,7 +7,10 @@ import type {Category} from '@/lib/types';
 import {useUser} from './customer';
 import {Notice,Status} from './ui';
 import {type AdminOverview as Overview} from '../../shared/admin-dashboard';
-import {SELF_ONBOARDING_CATEGORIES} from '../../shared/self-onboarding';
+import {
+  ALL_SELF_ONBOARDING_TYPES,
+  SELF_ONBOARDING_CATEGORIES,
+} from '../../shared/self-onboarding';
 import {
   AdminInspectionDrawer,
   approveSellerListing,
@@ -41,6 +44,12 @@ export function AdminOverview({
   const [activeTab, setActiveTab] = useState<InboxTab>('listings');
   const [searchInput, setSearchInput] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [serviceTypeFilter, setServiceTypeFilter] = useState('all');
+
+  const availableServiceTypes = useMemo(() => {
+    if (categoryFilter === 'all') return ALL_SELF_ONBOARDING_TYPES;
+    return SELF_ONBOARDING_CATEGORIES.find(c => c.slug === categoryFilter)?.types ?? [];
+  }, [categoryFilter]);
 
   const [overviewStats, setOverviewStats] = useState<Overview>(data);
   const [pendingListings, setPendingListings] = useState<SellerItem[]>(
@@ -104,12 +113,15 @@ export function AdminOverview({
       if (categoryFilter !== 'all' && !tax.categorySlugs.includes(categoryFilter)) {
         return false;
       }
+      if (serviceTypeFilter !== 'all' && !tax.serviceTypeSlugs.includes(serviceTypeFilter)) {
+        return false;
+      }
       if (!q) return true;
       return `${seller.company} ${seller.name} ${seller.location} ${seller.email} ${seller.phone} ${tax.categoryLabel} ${tax.serviceTypeLabel}`
         .toLowerCase()
         .includes(q);
     });
-  }, [pendingListings, searchInput, categoryFilter, serviceLookup]);
+  }, [pendingListings, searchInput, categoryFilter, serviceTypeFilter, serviceLookup]);
 
   const filteredVAds = useMemo(() => {
     const q = searchInput.trim().toLowerCase();
@@ -118,12 +130,15 @@ export function AdminOverview({
       if (categoryFilter !== 'all' && tax.categorySlug !== categoryFilter) {
         return false;
       }
+      if (serviceTypeFilter !== 'all' && tax.serviceTypeSlug !== serviceTypeFilter) {
+        return false;
+      }
       if (!q) return true;
-      return `${item.title} ${item.description} ${item.advertiser.name} ${item.advertiser.handle} ${tax.categoryLabel}`
+      return `${item.title} ${item.description} ${item.advertiser.name} ${item.advertiser.handle} ${tax.categoryLabel} ${tax.serviceTypeLabel}`
         .toLowerCase()
         .includes(q);
     });
-  }, [pendingVAds, searchInput, categoryFilter]);
+  }, [pendingVAds, searchInput, categoryFilter, serviceTypeFilter]);
 
   async function handleQuickAction(key: string, fn: () => Promise<void>, successMessage: string) {
     setBusyId(key);
@@ -231,12 +246,29 @@ export function AdminOverview({
               aria-label="Filter by category"
               className="editorial-select"
               value={categoryFilter}
-              onChange={e => setCategoryFilter(e.target.value)}
+              onChange={e => {
+                setCategoryFilter(e.target.value);
+                setServiceTypeFilter('all');
+              }}
             >
               <option value="all">All categories</option>
               {SELF_ONBOARDING_CATEGORIES.map(cat => (
                 <option key={cat.slug} value={cat.slug}>
                   {cat.title}
+                </option>
+              ))}
+            </select>
+
+            <select
+              aria-label="Filter by service type"
+              className="editorial-select"
+              value={serviceTypeFilter}
+              onChange={e => setServiceTypeFilter(e.target.value)}
+            >
+              <option value="all">All service types ({availableServiceTypes.length})</option>
+              {availableServiceTypes.map(st => (
+                <option key={st.slug} value={st.slug}>
+                  {st.title}
                 </option>
               ))}
             </select>

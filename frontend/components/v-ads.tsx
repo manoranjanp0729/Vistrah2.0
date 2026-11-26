@@ -9,6 +9,7 @@ import {useUser} from './customer';
 import {useOptionalCustomerLocation} from './customer-location';
 import {PlaceAutocompleteInput,VistrahMap,googleMapsDirectionsHref,type VistrahMapMarker} from './vistrah-google-maps';
 import {mediaUrl,mergeReels,sharePath,vAdsClient,parseAdDescription,type Reel,type Comment,type AdvertiserProfile,type FeedFilter} from '../../shared/v-ads';
+import {FLAGSHIP_SECTORS,getFlagshipSector} from '../../shared/flagship-sectors';
 import {listingPrice} from '../../shared/commerce';
 import s from './v-ads.module.css';
 import {managementClient,advanceView} from '../../shared/v-ads-management';
@@ -16,13 +17,31 @@ import {webVideoCoordinator} from '../lib/video-coordinator';
 const client=vAdsClient(api);
 const management=managementClient(api);
 
-export function VAdsReels({initialVideo}:{initialVideo?:string}) {
+export function VAdsReels({
+  initialVideo,
+  initialCategory,
+  initialServiceType,
+}: {
+  initialVideo?: string;
+  initialCategory?: string;
+  initialServiceType?: string;
+}) {
   const {user}=useUser();const locationState=useOptionalCustomerLocation();const root=useRef<HTMLDivElement>(null);
   const activePoint=locationState?.active&&validPoint(locationState.active)?locationState.active:null;
   const activeLat=activePoint?.latitude,activeLon=activePoint?.longitude,activeRadius=locationState?.radius,locRev=locationState?.locationRevision??0;
   const [items,setItems]=useState<Reel[]>([]),[loading,setLoading]=useState(true),[error,setError]=useState('');
   const [version,setVersion]=useState(0),[page,setPage]=useState(1),[more,setMore]=useState(false),[paging,setPaging]=useState(false);
   const [displayMode,setDisplayMode]=useState<'reels'|'map'>('reels');
+  const [categoryFilter,setCategoryFilter]=useState<string>(() => {
+    if (initialCategory) return initialCategory;
+    if (initialServiceType) {
+      const owner = FLAGSHIP_SECTORS.find(sec => sec.serviceTypes.some(st => st.slug === initialServiceType));
+      if (owner) return owner.slug;
+    }
+    return '';
+  });
+  const [serviceTypeFilter,setServiceTypeFilter]=useState<string>(initialServiceType ?? '');
+  const selectedSector = useMemo(() => getFlagshipSector(categoryFilter), [categoryFilter]);
   const [mapCenter,setMapCenter]=useState<Point>(()=>activePoint??{latitude:12.9716,longitude:77.5946});
   const [mapRadius,setMapRadius]=useState<Radius>(()=>locationState?.radius??10);
   const [mapLabel,setMapLabel]=useState<string>(()=>activePoint?.locality??'Bengaluru');
@@ -31,13 +50,22 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
   const effectiveFilterLat=displayMode==='map'?mapCenter.latitude:activeLat;
   const effectiveFilterLon=displayMode==='map'?mapCenter.longitude:activeLon;
   const effectiveFilterRadius=displayMode==='map'?mapRadius:activeRadius;
+  const activeFeedFilter=useMemo<FeedFilter|undefined>(()=>{
+    const hasGeo=effectiveFilterLat!==undefined&&effectiveFilterLon!==undefined;
+    if(!hasGeo&&!categoryFilter&&!serviceTypeFilter)return undefined;
+    return {
+      ...(hasGeo?{lat:effectiveFilterLat,lon:effectiveFilterLon,radius_km:effectiveFilterRadius}:{}),
+      ...(categoryFilter?{category:categoryFilter}:{}),
+      ...(serviceTypeFilter?{service_type:serviceTypeFilter}:{}),
+    };
+  },[effectiveFilterLat,effectiveFilterLon,effectiveFilterRadius,categoryFilter,serviceTypeFilter]);
   useEffect(()=>{if(activePoint){setMapCenter({latitude:activePoint.latitude,longitude:activePoint.longitude});if(activePoint.locality)setMapLabel(activePoint.locality);}},[activePoint?.latitude,activePoint?.longitude,activePoint?.locality]);
   useEffect(()=>{let alive=true;
-    const filter:FeedFilter|undefined=effectiveFilterLat!==undefined&&effectiveFilterLon!==undefined?{lat:effectiveFilterLat,lon:effectiveFilterLon,radius_km:effectiveFilterRadius}:undefined;
-    Promise.all([filter?client.feed(1,filter):client.feed(),initialVideo?client.reel(initialVideo):Promise.resolve(null)]).then(([feed,selected])=>{
-      if(alive){setItems(mergeReels(selected?[selected]:[],feed.items));setPage(1);setMore(feed.has_more);root.current?.scrollTo(0,0);}
+    setLoading(true);
+    Promise.all([activeFeedFilter?client.feed(1,activeFeedFilter):client.feed(),initialVideo?client.reel(initialVideo):Promise.resolve(null)]).then(([feed,selected])=>{
+      if(alive){setItems(mergeReels(selected?[selected]:[],feed.items));setPage(1);setMore(feed.has_more);root.current?.scrollTo(0,0);setError('');}
     }).catch(e=>{if(alive)setError(e.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};
-  },[initialVideo,version,effectiveFilterLat,effectiveFilterLon,effectiveFilterRadius,locRev]);
+  },[initialVideo,version,activeFeedFilter,locRev]);
   useEffect(()=>{
     const feed=root.current;if(!feed)return;
     const viewport=window.visualViewport;
@@ -59,7 +87,7 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
     viewport?.addEventListener('resize',fit);
     return()=>{observer.disconnect();window.removeEventListener('resize',fit);viewport?.removeEventListener('resize',fit);};
   },[loading,items.length]);
-  async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const filter:FeedFilter|undefined=effectiveFilterLat!==undefined&&effectiveFilterLon!==undefined?{lat:effectiveFilterLat,lon:effectiveFilterLon,radius_km:effectiveFilterRadius}:undefined;const next=await client.feed(page+1,filter);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
+  async function loadMore(){if(lock.current||!more)return;lock.current=true;setPaging(true);try{const next=await client.feed(page+1,activeFeedFilter);setItems(old=>mergeReels(old,next.items));setPage(next.page);setMore(next.has_more);setError('');}catch(e){setError((e as Error).message);}finally{lock.current=false;setPaging(false);}}
   const reelMapMarkers=useMemo<VistrahMapMarker[]>(()=>items.filter(item=>item.area_coordinates&&validPoint(item.area_coordinates)).map(item=>({
     id:item.id,
     latitude:item.area_coordinates!.latitude,
@@ -86,7 +114,7 @@ export function VAdsReels({initialVideo}:{initialVideo?:string}) {
     }catch(e){setError((e as Error).message);}
     finally{setGpsBusy(false);}
   }
-  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}><div role="group" aria-label="V Ads view mode" style={{display:'inline-flex',padding:3,borderRadius:9,border:'1px solid var(--hairline, var(--border))',gap:2}}><button type="button" className={displayMode==='reels'?'button':'button secondary'} style={{minHeight:32,padding:'4px 10px',fontSize:12}} aria-pressed={displayMode==='reels'} onClick={()=>setDisplayMode('reels')}><UiText value={"Reels"}/></button><button type="button" className={displayMode==='map'?'button':'button secondary'} style={{minHeight:32,padding:'4px 10px',fontSize:12}} aria-pressed={displayMode==='map'} onClick={()=>setDisplayMode('map')}><MapPin size={13} aria-hidden="true"/> <UiText value={"Map View"}/></button></div><Link href="/seller/v-ads?from=v-ads" className="button secondary"><UiText value={"V Ads Studio"}/></Link></div></div>
+  return <div className={s.page}><div className={`${s.bar} ${s.feedBar}`}><h1><UiText value={"V Ads"}/></h1><div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}><select aria-label="Filter V Ads by category" value={categoryFilter} onChange={e=>{setCategoryFilter(e.target.value);setServiceTypeFilter('');}} style={{minHeight:36,padding:'6px 10px',borderRadius:8,border:'1px solid var(--hairline, var(--border))',background:'var(--surface)',fontSize:12.5,fontWeight:600}}><option value="">All 10 categories</option>{FLAGSHIP_SECTORS.map(sec=><option key={sec.slug} value={sec.slug}>{sec.title}</option>)}</select>{selectedSector&&<select aria-label="Filter V Ads by service type" value={serviceTypeFilter} onChange={e=>setServiceTypeFilter(e.target.value)} style={{minHeight:36,padding:'6px 10px',borderRadius:8,border:'1px solid var(--hairline, var(--border))',background:'var(--surface)',fontSize:12.5,fontWeight:600}}><option value="">All in {selectedSector.shortTitle||selectedSector.title}</option>{selectedSector.serviceTypes.map(st=><option key={st.slug} value={st.slug}>{st.title}</option>)}</select>}{(categoryFilter||serviceTypeFilter)&&<button type="button" className="button secondary" style={{minHeight:32,padding:'4px 10px',fontSize:12}} onClick={()=>{setCategoryFilter('');setServiceTypeFilter('');}}><X size={13} aria-hidden="true"/> <UiText value={"Clear filter"}/></button>}<div role="group" aria-label="V Ads view mode" style={{display:'inline-flex',padding:3,borderRadius:9,border:'1px solid var(--hairline, var(--border))',gap:2}}><button type="button" className={displayMode==='reels'?'button':'button secondary'} style={{minHeight:32,padding:'4px 10px',fontSize:12}} aria-pressed={displayMode==='reels'} onClick={()=>setDisplayMode('reels')}><UiText value={"Reels"}/></button><button type="button" className={displayMode==='map'?'button':'button secondary'} style={{minHeight:32,padding:'4px 10px',fontSize:12}} aria-pressed={displayMode==='map'} onClick={()=>setDisplayMode('map')}><MapPin size={13} aria-hidden="true"/> <UiText value={"Map View"}/></button></div><Link href="/seller/v-ads?from=v-ads" className="button secondary"><UiText value={"V Ads Studio"}/></Link></div></div>
     {displayMode==='map'&&(
       <section aria-label="Nearby V Ads Map" style={{display:'grid',gap:12,padding:'12px 0'}}>
         <div style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:8,alignItems:'end'}}>

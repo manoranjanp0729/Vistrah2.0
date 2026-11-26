@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "categories": [
     {
       "slug": "restaurants-and-dining",
@@ -23,6 +23,18 @@
         {
           "slug": "street-food",
           "title": "Street Food"
+        },
+        {
+          "slug": "bakeries-and-desserts",
+          "title": "Bakeries & Desserts"
+        },
+        {
+          "slug": "cloud-kitchens-and-tiffins",
+          "title": "Cloud Kitchens & Tiffins"
+        },
+        {
+          "slug": "juice-and-ice-cream-bars",
+          "title": "Juice & Ice Cream Bars"
         }
       ],
       "website": {
@@ -59,6 +71,18 @@
         {
           "slug": "resorts",
           "title": "Resorts"
+        },
+        {
+          "slug": "pgs-and-hostels",
+          "title": "PGs & Hostels"
+        },
+        {
+          "slug": "service-apartments",
+          "title": "Service Apartments"
+        },
+        {
+          "slug": "guest-houses-and-lodges",
+          "title": "Guest Houses & Lodges"
         }
       ],
       "website": {
@@ -91,6 +115,18 @@
         {
           "slug": "bikes",
           "title": "Bikes"
+        },
+        {
+          "slug": "tempo-travellers-and-vans",
+          "title": "Tempo Travellers & Vans"
+        },
+        {
+          "slug": "outstation-cabs-and-taxis",
+          "title": "Outstation Cabs & Taxis"
+        },
+        {
+          "slug": "goods-and-mini-trucks",
+          "title": "Goods & Mini Trucks"
         }
       ],
       "website": {
@@ -123,6 +159,18 @@
         {
           "slug": "birthday",
           "title": "Birthday"
+        },
+        {
+          "slug": "banquet-and-event-venues",
+          "title": "Banquet & Event Venues"
+        },
+        {
+          "slug": "catering-and-live-counters",
+          "title": "Catering & Live Counters"
+        },
+        {
+          "slug": "photography-and-videography",
+          "title": "Photography & Videography"
         }
       ],
       "website": {
@@ -159,6 +207,18 @@
         {
           "slug": "laboratory",
           "title": "Laboratory"
+        },
+        {
+          "slug": "dental-clinics",
+          "title": "Dental Clinics"
+        },
+        {
+          "slug": "physiotherapy-and-rehab",
+          "title": "Physiotherapy & Rehab"
+        },
+        {
+          "slug": "eye-and-skin-clinics",
+          "title": "Eye & Skin Clinics"
         }
       ],
       "website": {
@@ -203,6 +263,18 @@
         {
           "slug": "tuitions",
           "title": "Tuitions"
+        },
+        {
+          "slug": "competitive-exam-coaching",
+          "title": "Competitive Exam Coaching"
+        },
+        {
+          "slug": "music-dance-and-arts",
+          "title": "Music, Dance & Arts"
+        },
+        {
+          "slug": "preschools-and-daycare",
+          "title": "Preschools & Daycare"
         }
       ],
       "website": {
@@ -243,6 +315,18 @@
         {
           "slug": "sauna",
           "title": "Sauna"
+        },
+        {
+          "slug": "bridal-makeup-and-mehendi",
+          "title": "Bridal Makeup & Mehendi"
+        },
+        {
+          "slug": "mens-grooming-and-barbers",
+          "title": "Men's Grooming & Barbers"
+        },
+        {
+          "slug": "nail-and-lash-studios",
+          "title": "Nail & Lash Studios"
         }
       ],
       "website": {
@@ -275,6 +359,18 @@
         {
           "slug": "commercial",
           "title": "Commercial"
+        },
+        {
+          "slug": "plumbing-and-electrical-repairs",
+          "title": "Plumbing & Electrical Repairs"
+        },
+        {
+          "slug": "waterproofing-and-painting",
+          "title": "Waterproofing & Painting"
+        },
+        {
+          "slug": "architecture-and-interiors",
+          "title": "Architecture & Interiors"
         }
       ],
       "website": {
@@ -311,6 +407,18 @@
         {
           "slug": "ev-charging",
           "title": "EV Charging"
+        },
+        {
+          "slug": "car-and-bike-wash-detailing",
+          "title": "Car & Bike Wash / Detailing"
+        },
+        {
+          "slug": "tyre-battery-and-puncture-care",
+          "title": "Tyre, Battery & Puncture Care"
+        },
+        {
+          "slug": "ev-service-and-battery-swap",
+          "title": "EV Service & Battery Swap"
         }
       ],
       "website": {
@@ -343,6 +451,18 @@
         {
           "slug": "social-events",
           "title": "Social Events"
+        },
+        {
+          "slug": "gaming-and-bowling-zones",
+          "title": "Gaming & Bowling Zones"
+        },
+        {
+          "slug": "turf-and-sports-arenas",
+          "title": "Turf & Sports Arenas"
+        },
+        {
+          "slug": "live-music-and-comedy-clubs",
+          "title": "Live Music & Comedy Clubs"
         }
       ],
       "website": {

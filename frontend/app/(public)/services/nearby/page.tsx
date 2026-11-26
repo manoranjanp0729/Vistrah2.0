@@ -12,14 +12,20 @@ export const metadata = { title: 'Nearby services' };
 export default async function NearbyServicesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; subcategory?: string; type?: string; q?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    subcategory?: string;
+    type?: string;
+    service_type?: string;
+    q?: string;
+  }>;
 }) {
   const raw = await searchParams;
   const { resolveMarketplaceSelection, legacyMarketplaceSelection, marketplaceCategories } =
     await serverDirectMarketplace();
   const cat = raw.category || FLAGSHIP_SECTORS[0].slug;
   let sub = raw.subcategory;
-  let typ = raw.type;
+  let typ = raw.service_type || raw.type;
 
   if (cat && !sub && typ) {
     const matchedCat = marketplaceCategories.find(c => c.slug === cat);
@@ -51,8 +57,8 @@ export default async function NearbyServicesPage({
   if (!selection || !selection.category) {
     const legacy = legacyMarketplaceSelection({
       category: raw.category,
-      subcategory: raw.subcategory || raw.type,
-      type: raw.type,
+      subcategory: raw.subcategory || raw.service_type || raw.type,
+      type: raw.service_type || raw.type,
       q: raw.q,
     });
     if (legacy?.category) {
@@ -60,7 +66,7 @@ export default async function NearbyServicesPage({
         nearbyServicesUrl({
           category: legacy.category,
           subcategory: legacy.subcategory,
-          type: legacy.type || legacy.subcategory,
+          serviceType: legacy.type || legacy.subcategory,
         }),
       );
     }

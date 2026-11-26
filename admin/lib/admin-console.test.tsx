@@ -28,7 +28,7 @@ const sampleSeller: SellerItem = {
   owner_user_id: 42,
   service_ids: [7],
   category_slug: 'hospitals-and-labs',
-  business_type: 'dental-clinic',
+  business_type: 'dental-clinics',
   latitude: 12.9784,
   longitude: 77.6408,
   coverage_radius_km: 15,
@@ -180,6 +180,8 @@ describe('VISTRAH Admin Operations Console', () => {
     expect(populatedHtml).toContain('Audit Leads');
     expect(populatedHtml).toContain('/users?tab=audits');
     expect(populatedHtml).toContain('Needs Review');
+    expect(populatedHtml).toContain('All service types (60)');
+    expect(populatedHtml).toContain('Dental Clinics');
     expect(populatedHtml).toContain('Indiranagar Dental Studio');
     expect(populatedHtml).toContain('Approve');
     expect(populatedHtml).toContain('Reject');

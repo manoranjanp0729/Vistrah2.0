@@ -197,12 +197,33 @@ export function nearbyServicesUrl(params: {
   category: string;
   subcategory?: string;
   type?: string;
+  service_type?: string;
+  serviceType?: string;
 }): string {
   const qs = new URLSearchParams();
   if (params.category) qs.set('category', params.category);
-  if (params.subcategory) qs.set('subcategory', params.subcategory);
-  if (params.type) qs.set('type', params.type);
+  const effectiveType = params.serviceType ?? params.service_type ?? params.type;
+  if (params.subcategory && (!effectiveType || params.subcategory !== effectiveType)) {
+    qs.set('subcategory', params.subcategory);
+  }
+  if (effectiveType) {
+    qs.set('service_type', effectiveType);
+  }
   return `/services/nearby${qs.size ? `?${qs.toString()}` : ''}`;
+}
+
+export function nearbyVAdsUrl(params: {
+  category?: string;
+  serviceType?: string;
+  radiusKm?: number;
+}): string {
+  const qs = new URLSearchParams();
+  if (params.category) qs.set('category', params.category);
+  if (params.serviceType) qs.set('service_type', params.serviceType);
+  if (typeof params.radiusKm === 'number' && Number.isFinite(params.radiusKm) && params.radiusKm > 0) {
+    qs.set('radius_km', String(params.radiusKm));
+  }
+  return `/v-ads${qs.size ? `?${qs.toString()}` : ''}`;
 }
 
 export function buildNearbyMarketplacePath(params: {

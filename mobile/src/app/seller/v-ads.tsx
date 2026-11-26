@@ -18,6 +18,7 @@ import {vAds, toPlayableUrl} from '../../lib/v-ads';
 import brandTheme from '../../../../shared/brand-theme.json';
 import {pickAndUploadVideo} from '../../lib/v-ads-upload';
 import {deriveFreeVAdPrefillFromParams} from '../../../../shared/business-audit';
+import {FLAGSHIP_SECTORS,getFlagshipSector} from '../../../../shared/flagship-sectors';
 import {studioVideoLive,type Workspace,type Reel,type AdMetadata,type AdType,parseAdDescription,type AdProductMeta} from '../../../../shared/v-ads';
 import {AdvertiserManagement,VideoManagement,DiscardUpload} from '../../components/v-ads-management';
 import {VAdsCreator} from '../../components/v-ads-creator';
@@ -382,11 +383,12 @@ function WorkspaceScreen(){
   const surface=mode==='light'?brandTheme.headerLight:brandTheme.headerDark;
   const brandGradient=[brandTheme.gradient[0],brandTheme.gradient[1],brandTheme.gradient[2]] as const;
   const resource=useResource<Workspace>('/v-ads/me',isSeller?(user?.id??null):null);
-  const params=useLocalSearchParams<{from?:string;tab?:string;business?:string;category?:string;type?:string;locality?:string}>();
+  const params=useLocalSearchParams<{from?:string;tab?:string;business?:string;category?:string;type?:string;service_type?:string;locality?:string}>();
+  const initialServiceTypeParam=typeof params.service_type==='string'&&params.service_type?params.service_type:typeof params.type==='string'?params.type:undefined;
   const prefill=deriveFreeVAdPrefillFromParams({
     business:typeof params.business==='string'?params.business:undefined,
     category:typeof params.category==='string'?params.category:undefined,
-    type:typeof params.type==='string'?params.type:undefined,
+    type:initialServiceTypeParam,
     locality:typeof params.locality==='string'?params.locality:undefined,
   });
   const wantsUploadTab=params.tab==='upload'||prefill.hasPrefill;
@@ -401,6 +403,9 @@ function WorkspaceScreen(){
   },[publicBrowse,isSeller,user,wantsUploadTab]);
   const [title,setTitle]=useState(prefill.title),[videoDescription,setVideoDescription]=useState(prefill.videoDescription),[uploadId,setUploadId]=useState('');
   const [adType,setAdType]=useState<AdType>(prefill.hasPrefill?prefill.adType:'PRODUCT');
+  const [adCategorySlug,setAdCategorySlug]=useState<string>(typeof params.category==='string'?params.category:'');
+  const [adServiceTypeSlug,setAdServiceTypeSlug]=useState<string>(initialServiceTypeParam??'');
+  const selectedAdSector=useMemo(()=>getFlagshipSector(adCategorySlug),[adCategorySlug]);
   const [productName,setProductName]=useState('');
   const [productPrice,setProductPrice]=useState('');
   const [deliveryInfo,setDeliveryInfo]=useState('');
@@ -917,6 +922,67 @@ function WorkspaceScreen(){
           </View>
         )}
 
+        <View style={{gap: 8}}>
+          <Text style={{fontSize: 13, fontWeight: '700', color: colors.text}}>
+            <UiText value="Category & Service Type (Optional)" />
+          </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8}}>
+            {FLAGSHIP_SECTORS.map(sec => {
+              const selected = adCategorySlug === sec.slug;
+              return (
+                <Pressable
+                  key={sec.slug}
+                  accessibilityRole="button"
+                  accessibilityState={{selected}}
+                  onPress={() => {
+                    setAdCategorySlug(selected ? '' : sec.slug);
+                    setAdServiceTypeSlug('');
+                  }}
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 7,
+                    borderRadius: 999,
+                    borderWidth: 1,
+                    backgroundColor: selected ? '#0F294A' : colors.surface,
+                    borderColor: selected ? '#F97316' : colors.border,
+                  }}
+                >
+                  <Text style={{fontSize: 12, fontWeight: '600', color: selected ? '#ffffff' : colors.text}}>
+                    {sec.title}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+          {selectedAdSector && (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8}}>
+              {selectedAdSector.serviceTypes.map(st => {
+                const selected = adServiceTypeSlug === st.slug;
+                return (
+                  <Pressable
+                    key={st.slug}
+                    accessibilityRole="button"
+                    accessibilityState={{selected}}
+                    onPress={() => setAdServiceTypeSlug(selected ? '' : st.slug)}
+                    style={{
+                      paddingHorizontal: 12,
+                      paddingVertical: 6,
+                      borderRadius: 999,
+                      borderWidth: 1,
+                      backgroundColor: selected ? '#F97316' : colors.surface,
+                      borderColor: selected ? '#EA580C' : colors.border,
+                    }}
+                  >
+                    <Text style={{fontSize: 12, fontWeight: '600', color: selected ? '#ffffff' : colors.text}}>
+                      {st.title}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </ScrollView>
+          )}
+        </View>
+
         <UiElement as={Field} label="3. V Ad Title" placeholder="E.g., Special Bridal Makeup Offer or Farm Land Prep" value={title} onChangeText={setTitle} maxLength={160}/>
         <UiElement as={Field} label="4. Where Product/Brand is Used & Caption" placeholder="Describe where/how the product is used in the video, shop location, and contact..." value={videoDescription} onChangeText={setVideoDescription} multiline maxLength={2000}/>
         <UiElement as={Action} label="Submit V Ad for admin review" disabled={busy||!uploadId||title.trim().length<3} onPress={()=>void perform(async()=>{
@@ -927,10 +993,14 @@ function WorkspaceScreen(){
                 product_price: productPrice.trim(),
                 delivery_info: deliveryInfo.trim(),
                 product_id: productId.trim() || undefined,
+                ...(adCategorySlug ? { category_slug: adCategorySlug } : {}),
+                ...(adServiceTypeSlug ? { service_type: adServiceTypeSlug } : {}),
               }
             : {
                 ad_type: 'BRAND',
                 products_available: productsAvailable.trim() || undefined,
+                ...(adCategorySlug ? { category_slug: adCategorySlug } : {}),
+                ...(adServiceTypeSlug ? { service_type: adServiceTypeSlug } : {}),
               };
           const sub=await vAds.submit(account.id,uploadId,title,videoDescription,meta);
           setUploadId('');

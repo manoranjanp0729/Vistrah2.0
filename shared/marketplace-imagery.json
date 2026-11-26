@@ -55,6 +55,39 @@
       "bytes": 125526,
       "sha256": "b38e8b33c30e330348b2ddb45ee696316649e3b04346923362ee163f935e7543"
     },
+    "bakeries-and-desserts": {
+      "src": "/images/catalogue/bakeries-and-desserts.webp",
+      "alt": "Artisan bakery display counter with fresh cakes, pastries, and warm desserts",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 24936,
+      "sha256": "b4b8c8683acbbd30aa9be8ab772bfeffa49cb4b21c7351dd74713cc10da80651"
+    },
+    "cloud-kitchens-and-tiffins": {
+      "src": "/images/catalogue/cloud-kitchens-and-tiffins.webp",
+      "alt": "Freshly packed home-style tiffin meals and takeaway containers ready for local delivery",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 44744,
+      "sha256": "35a0f5b24e24ce732e706941e7964c55bbebd6041379d3135f68c03751593b6a"
+    },
+    "juice-and-ice-cream-bars": {
+      "src": "/images/catalogue/juice-and-ice-cream-bars.webp",
+      "alt": "Chilled artisanal ice cream scoops and fresh fruit juices at a bright dessert bar",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 16248,
+      "sha256": "014af35b4071adf183ff32c9a9942beeca75daef5744e5a570690df0c355770f"
+    },
     "hotels-and-stay": {
       "src": "/images/catalogue/hotels-and-stay.webp",
       "alt": "Modern Indian boutique hotel courtyard and welcoming reception lounge with sandstone arches",
@@ -99,6 +132,39 @@
       "bytes": 132104,
       "sha256": "978cc209af273a00f6b2bac8cafd7f12030e6cd9fa4466baa08263ec089f8d70"
     },
+    "pgs-and-hostels": {
+      "src": "/images/catalogue/pgs-and-hostels.webp",
+      "alt": "Bright furnished PG and co-living student and working-professional accommodation room",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 33284,
+      "sha256": "502c494b9bcc675d1bcaea7edaaf9c1e7b231e9efd4c903fd93108872d723af7"
+    },
+    "service-apartments": {
+      "src": "/images/catalogue/service-apartments.webp",
+      "alt": "Modern furnished service apartment living room with sofa, timber flooring, and sunlit windows",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 81652,
+      "sha256": "6ba23ce781f0b295055e31d07a754b7400b2e21238a0940e13567213273bc8b4"
+    },
+    "guest-houses-and-lodges": {
+      "src": "/images/catalogue/guest-houses-and-lodges.webp",
+      "alt": "Welcoming guest house and lodge bedroom with clean linens and warm bedside lighting",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 20656,
+      "sha256": "66af27960d43ab8007f794fe24ab06390df61932561288be5067019f8244322e"
+    },
     "vehicle-rentals": {
       "src": "/images/catalogue/vehicle-rentals.webp",
       "alt": "Modern Indian self-drive vehicle rental fleet with SUV, compact sedan, and urban scooters",
@@ -132,6 +198,39 @@
       "bytes": 143068,
       "sha256": "0120b2acdebd612be2d3ea6f1cc7ecd2e71ae5957f7efec06bcbacb77d1ecdf1"
     },
+    "tempo-travellers-and-vans": {
+      "src": "/images/catalogue/tempo-travellers-and-vans.webp",
+      "alt": "Passenger van and tempo traveller rental ready for group tours and family travel",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 66574,
+      "sha256": "e1e41ddf464790f70a704c6f8ac04dc58803e9a71efeae156b38ab7dec01dade"
+    },
+    "outstation-cabs-and-taxis": {
+      "src": "/images/catalogue/outstation-cabs-and-taxis.webp",
+      "alt": "Chauffeur handing car keys to a traveller for outstation cab and local taxi booking",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 33194,
+      "sha256": "9fb01a7ca110ca6900bbb7fe25b3459672f6af9538ec7908c300b56121e75713"
+    },
+    "goods-and-mini-trucks": {
+      "src": "/images/catalogue/goods-and-mini-trucks.webp",
+      "alt": "Commercial goods carrier and mini truck ready for local shifting and cargo transport",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 13766,
+      "sha256": "920e8459e207fca183fe13c9bd8202fd3ed86044eeaa21c37e3a50908ebae772"
+    },
     "event-management": {
       "src": "/images/catalogue/event-management.webp",
       "alt": "Decorated Indian outdoor banquet venue at twilight with silk canopies, floral arches, and fairy lights",
@@ -164,6 +263,39 @@
       "height": 720,
       "bytes": 116938,
       "sha256": "f0708d9265e6da932df8f02177e3bc69545198e91ecebee86b310c5a3dc1dea8"
+    },
+    "banquet-and-event-venues": {
+      "src": "/images/catalogue/banquet-and-event-venues.webp",
+      "alt": "Spacious indoor banquet and event hall arranged with dining tables and warm chandeliers",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 49642,
+      "sha256": "4a0cac3e7cd04d383ab60740df8274108abf0ea14610c6207f3c9391480e5323"
+    },
+    "catering-and-live-counters": {
+      "src": "/images/catalogue/catering-and-live-counters.webp",
+      "alt": "Professional catering chef plating fresh dishes at a live event food counter",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 34732,
+      "sha256": "56836fa6b582f0d37c159f7a5960cbe7cdcad4d165b6473663d087ae8d36ddbd"
+    },
+    "photography-and-videography": {
+      "src": "/images/catalogue/photography-and-videography.webp",
+      "alt": "Event photographer and videographer operating professional camera and lighting gear",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 39966,
+      "sha256": "be92e812eb58732eb7ef6fae9e255ec666c512b8d13c79fdb830726e70be40f8"
     },
     "hospitals-and-labs": {
       "src": "/images/catalogue/hospitals-and-labs.webp",
@@ -208,6 +340,39 @@
       "height": 720,
       "bytes": 40676,
       "sha256": "e6b391b984d5e7b2cf2745b3750494f32f0338964356a1ba2350048941d6be4c"
+    },
+    "dental-clinics": {
+      "src": "/images/catalogue/dental-clinics.webp",
+      "alt": "Modern sunlit Indian dental clinic with friendly dentist beside a dental chair and exam lamp",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 74578,
+      "sha256": "55825701f33e16e55399fb655ad42fbe286c1bd2afe9c36d074be29649044b44"
+    },
+    "physiotherapy-and-rehab": {
+      "src": "/images/catalogue/physiotherapy-and-rehab.webp",
+      "alt": "Physiotherapist guiding mobility and rehabilitation exercises in a bright recovery clinic",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 24664,
+      "sha256": "666991dbf999ed04911a574212dcac6b2dd154743504de7d2823bf7205153ded"
+    },
+    "eye-and-skin-clinics": {
+      "src": "/images/catalogue/eye-and-skin-clinics.webp",
+      "alt": "Modern Indian eye and skin care clinic room with slit-lamp vision testing and dermatology setup",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 67364,
+      "sha256": "58cd3f9de01a049eee578541d24147a337052b9ad6e48b046244550a25ed2cad"
     },
     "education-and-skills": {
       "src": "/images/catalogue/education-and-skills.webp",
@@ -275,6 +440,39 @@
       "bytes": 86512,
       "sha256": "68faa15132f6fdc4999612954dbbc102f691fc56ee121580320431bcd163cf37"
     },
+    "competitive-exam-coaching": {
+      "src": "/images/catalogue/competitive-exam-coaching.webp",
+      "alt": "Dedicated mentor coaching students through competitive exam practice and test preparation",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 39174,
+      "sha256": "e403816ca7408a456721724fa42774663789d7ef2ed86cf34eea50c0d0653cea"
+    },
+    "music-dance-and-arts": {
+      "src": "/images/catalogue/music-dance-and-arts.webp",
+      "alt": "Sunlit Indian music, dance, and fine arts studio with guitar, tabla, keyboard, and learners",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 115034,
+      "sha256": "0ab38c59866a12366faa343b63fddf06c86f402ece007fb80bddcf8a25bf1950"
+    },
+    "preschools-and-daycare": {
+      "src": "/images/catalogue/preschools-and-daycare.webp",
+      "alt": "Cheerful preschool and daycare learning space with young children reading and exploring together",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 46702,
+      "sha256": "2562e4d95f0aaeb06eca9c5e01337fb3eb90e02dddad578e0b0449c683addf80"
+    },
     "salons-and-beauty-parlour": {
       "src": "/images/catalogue/salons-and-beauty-parlour.webp",
       "alt": "Sunlit modern Indian salon and beauty studio interior with backlit mirrors and styling chairs",
@@ -330,6 +528,39 @@
       "bytes": 62306,
       "sha256": "8503028d7e83b5e944b7ad894049274dcdac9a1a5518378c687c56df3475e401"
     },
+    "bridal-makeup-and-mehendi": {
+      "src": "/images/catalogue/bridal-makeup-and-mehendi.webp",
+      "alt": "Bridal makeup artist styling a bride with fine cosmetics in a warm studio",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 43904,
+      "sha256": "1c91c00ef7bf189285af58f2c837e0205b27a8e0f6bbc85a8c9d2e0e8284da65"
+    },
+    "mens-grooming-and-barbers": {
+      "src": "/images/catalogue/mens-grooming-and-barbers.webp",
+      "alt": "Professional barber trimming hair and beard in a clean men’s grooming studio",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 40080,
+      "sha256": "91c3f7ba8609cc1a5ec4f2a70247320a0f0c540bfb38c93c4142838a1aaec67a"
+    },
+    "nail-and-lash-studios": {
+      "src": "/images/catalogue/nail-and-lash-studios.webp",
+      "alt": "Curated nail polish, manicure tools, and lash studio beauty palette on a clean vanity",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 50468,
+      "sha256": "e25f130b232b318533fb66a1d5808cbf70d2227064d27f7ffa8a1fec7088b661"
+    },
     "civil-and-construction": {
       "src": "/images/catalogue/civil-and-construction.webp",
       "alt": "Indian civil engineers in hardhats reviewing architectural plans at an active construction site",
@@ -362,6 +593,39 @@
       "height": 720,
       "bytes": 130232,
       "sha256": "e7fea9b5ca428a7f5173e36629b9dc0502a0b7e6822724c486eb6abd9e887a35"
+    },
+    "plumbing-and-electrical-repairs": {
+      "src": "/images/catalogue/plumbing-and-electrical-repairs.webp",
+      "alt": "Skilled technician servicing residential plumbing tapware and household utility fittings",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 80382,
+      "sha256": "b239f25be673b62cedcb3a5ae1515059050490a4d33fcf7cc1034d0810140fdc"
+    },
+    "waterproofing-and-painting": {
+      "src": "/images/catalogue/waterproofing-and-painting.webp",
+      "alt": "Painter applying smooth protective interior and exterior wall coating with a roller",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 31552,
+      "sha256": "c314339fb49f00b87f11d5b512ce687583398ea96349bd964d2d67e629475524"
+    },
+    "architecture-and-interiors": {
+      "src": "/images/catalogue/architecture-and-interiors.webp",
+      "alt": "Architect drafting residential floor plans and interior layout blueprints with a scale ruler",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 37608,
+      "sha256": "0e57caae91021437225d2e0488047bdef2807f3dabbdff193109011e82f0da06"
     },
     "fuel-and-charging-stations": {
       "src": "/images/catalogue/fuel-and-charging-stations.webp",
@@ -407,6 +671,39 @@
       "bytes": 77478,
       "sha256": "449d1cfcb70b5055d9af8e16ae358da30d6dc4e2b8cc0849179e9396d23401b4"
     },
+    "car-and-bike-wash-detailing": {
+      "src": "/images/catalogue/car-and-bike-wash-detailing.webp",
+      "alt": "High-pressure foam wash and exterior detailing on a car at a clean wash bay",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 45780,
+      "sha256": "534b5cfd903d30b5390f04c583289f15f4dad1bb2838443257607e56ad807c6d"
+    },
+    "tyre-battery-and-puncture-care": {
+      "src": "/images/catalogue/tyre-battery-and-puncture-care.webp",
+      "alt": "Automotive technician servicing tyres, wheel alignment, and vehicle battery in a service bay",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 55720,
+      "sha256": "2cf97827033946f6e72e3a15f5a33627ac00e3cd8f437ccd6a158825b2680c5a"
+    },
+    "ev-service-and-battery-swap": {
+      "src": "/images/catalogue/ev-service-and-battery-swap.webp",
+      "alt": "Modern Indian EV scooter and electric car service bay with modular battery-swap cabinet",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 93214,
+      "sha256": "ecc807a54ee3b50c140fa6ebe8a01a61493599ed9858b094f6b632d64843ad26"
+    },
     "vibe-finder": {
       "src": "/images/catalogue/vibe-finder.webp",
       "alt": "Vibrant Indian evening open-air stage and social venue lit with warm string lights",
@@ -439,6 +736,39 @@
       "height": 720,
       "bytes": 136300,
       "sha256": "d6432a57be18a8c356d161ffd22c2ef43052e4b10a2e2c74e844b4dfb78509ad"
+    },
+    "gaming-and-bowling-zones": {
+      "src": "/images/catalogue/gaming-and-bowling-zones.webp",
+      "alt": "Modern Indian indoor bowling lanes and family arcade gaming zone with warm lighting",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 146958,
+      "sha256": "6c72ebd8c2ac37c2a063e686c969d149af07cd56623daa509fe03b57bcb269c9"
+    },
+    "turf-and-sports-arenas": {
+      "src": "/images/catalogue/turf-and-sports-arenas.webp",
+      "alt": "Floodlit synthetic turf football and box-cricket sports arena ready for neighbourhood matches",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 35802,
+      "sha256": "f0b7ac435f7e463a89d242122d702bef1d66ed1c20f454ccbb6b7f4be866a064"
+    },
+    "live-music-and-comedy-clubs": {
+      "src": "/images/catalogue/live-music-and-comedy-clubs.webp",
+      "alt": "Intimate Indian live acoustic music and stand-up comedy club stage with warm spotlighting",
+      "source": "VISTRAH Studio Commercial Photography",
+      "position": "50% 50%",
+      "fit": "cover",
+      "width": 960,
+      "height": 720,
+      "bytes": 118242,
+      "sha256": "ada362f6a6e632529d619f1e16463f95a9584191e096cc0b4dfd0327d83904b3"
     }
   },
   "items": {
@@ -478,6 +808,30 @@
       "photo": "street-food",
       "subject": "Street Food"
     },
+    "subcategory/restaurants-and-dining/bakeries-and-desserts": {
+      "photo": "bakeries-and-desserts",
+      "subject": "Bakeries & Desserts"
+    },
+    "type/restaurants-and-dining/bakeries-and-desserts/bakeries-and-desserts": {
+      "photo": "bakeries-and-desserts",
+      "subject": "Bakeries & Desserts"
+    },
+    "subcategory/restaurants-and-dining/cloud-kitchens-and-tiffins": {
+      "photo": "cloud-kitchens-and-tiffins",
+      "subject": "Cloud Kitchens & Tiffins"
+    },
+    "type/restaurants-and-dining/cloud-kitchens-and-tiffins/cloud-kitchens-and-tiffins": {
+      "photo": "cloud-kitchens-and-tiffins",
+      "subject": "Cloud Kitchens & Tiffins"
+    },
+    "subcategory/restaurants-and-dining/juice-and-ice-cream-bars": {
+      "photo": "juice-and-ice-cream-bars",
+      "subject": "Juice & Ice Cream Bars"
+    },
+    "type/restaurants-and-dining/juice-and-ice-cream-bars/juice-and-ice-cream-bars": {
+      "photo": "juice-and-ice-cream-bars",
+      "subject": "Juice & Ice Cream Bars"
+    },
     "category/hotels-and-stay": {
       "photo": "hotels-and-stay",
       "subject": "Hotels & Stay"
@@ -506,6 +860,30 @@
       "photo": "resorts",
       "subject": "Resorts"
     },
+    "subcategory/hotels-and-stay/pgs-and-hostels": {
+      "photo": "pgs-and-hostels",
+      "subject": "PGs & Hostels"
+    },
+    "type/hotels-and-stay/pgs-and-hostels/pgs-and-hostels": {
+      "photo": "pgs-and-hostels",
+      "subject": "PGs & Hostels"
+    },
+    "subcategory/hotels-and-stay/service-apartments": {
+      "photo": "service-apartments",
+      "subject": "Service Apartments"
+    },
+    "type/hotels-and-stay/service-apartments/service-apartments": {
+      "photo": "service-apartments",
+      "subject": "Service Apartments"
+    },
+    "subcategory/hotels-and-stay/guest-houses-and-lodges": {
+      "photo": "guest-houses-and-lodges",
+      "subject": "Guest Houses & Lodges"
+    },
+    "type/hotels-and-stay/guest-houses-and-lodges/guest-houses-and-lodges": {
+      "photo": "guest-houses-and-lodges",
+      "subject": "Guest Houses & Lodges"
+    },
     "category/vehicle-rentals": {
       "photo": "vehicle-rentals",
       "subject": "Vehicle Rentals"
@@ -526,6 +904,30 @@
       "photo": "bikes",
       "subject": "Bikes"
     },
+    "subcategory/vehicle-rentals/tempo-travellers-and-vans": {
+      "photo": "tempo-travellers-and-vans",
+      "subject": "Tempo Travellers & Vans"
+    },
+    "type/vehicle-rentals/tempo-travellers-and-vans/tempo-travellers-and-vans": {
+      "photo": "tempo-travellers-and-vans",
+      "subject": "Tempo Travellers & Vans"
+    },
+    "subcategory/vehicle-rentals/outstation-cabs-and-taxis": {
+      "photo": "outstation-cabs-and-taxis",
+      "subject": "Outstation Cabs & Taxis"
+    },
+    "type/vehicle-rentals/outstation-cabs-and-taxis/outstation-cabs-and-taxis": {
+      "photo": "outstation-cabs-and-taxis",
+      "subject": "Outstation Cabs & Taxis"
+    },
+    "subcategory/vehicle-rentals/goods-and-mini-trucks": {
+      "photo": "goods-and-mini-trucks",
+      "subject": "Goods & Mini Trucks"
+    },
+    "type/vehicle-rentals/goods-and-mini-trucks/goods-and-mini-trucks": {
+      "photo": "goods-and-mini-trucks",
+      "subject": "Goods & Mini Trucks"
+    },
     "category/event-management": {
       "photo": "event-management",
       "subject": "Event Management"
@@ -545,6 +947,30 @@
     "type/event-management/birthday/birthday": {
       "photo": "birthday",
       "subject": "Birthday"
+    },
+    "subcategory/event-management/banquet-and-event-venues": {
+      "photo": "banquet-and-event-venues",
+      "subject": "Banquet & Event Venues"
+    },
+    "type/event-management/banquet-and-event-venues/banquet-and-event-venues": {
+      "photo": "banquet-and-event-venues",
+      "subject": "Banquet & Event Venues"
+    },
+    "subcategory/event-management/catering-and-live-counters": {
+      "photo": "catering-and-live-counters",
+      "subject": "Catering & Live Counters"
+    },
+    "type/event-management/catering-and-live-counters/catering-and-live-counters": {
+      "photo": "catering-and-live-counters",
+      "subject": "Catering & Live Counters"
+    },
+    "subcategory/event-management/photography-and-videography": {
+      "photo": "photography-and-videography",
+      "subject": "Photography & Videography"
+    },
+    "type/event-management/photography-and-videography/photography-and-videography": {
+      "photo": "photography-and-videography",
+      "subject": "Photography & Videography"
     },
     "category/hospitals-and-labs": {
       "photo": "hospitals-and-labs",
@@ -573,6 +999,30 @@
     "type/hospitals-and-labs/laboratory/laboratory": {
       "photo": "laboratory",
       "subject": "Laboratory"
+    },
+    "subcategory/hospitals-and-labs/dental-clinics": {
+      "photo": "dental-clinics",
+      "subject": "Dental Clinics"
+    },
+    "type/hospitals-and-labs/dental-clinics/dental-clinics": {
+      "photo": "dental-clinics",
+      "subject": "Dental Clinics"
+    },
+    "subcategory/hospitals-and-labs/physiotherapy-and-rehab": {
+      "photo": "physiotherapy-and-rehab",
+      "subject": "Physiotherapy & Rehab"
+    },
+    "type/hospitals-and-labs/physiotherapy-and-rehab/physiotherapy-and-rehab": {
+      "photo": "physiotherapy-and-rehab",
+      "subject": "Physiotherapy & Rehab"
+    },
+    "subcategory/hospitals-and-labs/eye-and-skin-clinics": {
+      "photo": "eye-and-skin-clinics",
+      "subject": "Eye & Skin Clinics"
+    },
+    "type/hospitals-and-labs/eye-and-skin-clinics/eye-and-skin-clinics": {
+      "photo": "eye-and-skin-clinics",
+      "subject": "Eye & Skin Clinics"
     },
     "category/education-and-skills": {
       "photo": "education-and-skills",
@@ -618,6 +1068,30 @@
       "photo": "tuitions",
       "subject": "Tuitions"
     },
+    "subcategory/education-and-skills/competitive-exam-coaching": {
+      "photo": "competitive-exam-coaching",
+      "subject": "Competitive Exam Coaching"
+    },
+    "type/education-and-skills/competitive-exam-coaching/competitive-exam-coaching": {
+      "photo": "competitive-exam-coaching",
+      "subject": "Competitive Exam Coaching"
+    },
+    "subcategory/education-and-skills/music-dance-and-arts": {
+      "photo": "music-dance-and-arts",
+      "subject": "Music, Dance & Arts"
+    },
+    "type/education-and-skills/music-dance-and-arts/music-dance-and-arts": {
+      "photo": "music-dance-and-arts",
+      "subject": "Music, Dance & Arts"
+    },
+    "subcategory/education-and-skills/preschools-and-daycare": {
+      "photo": "preschools-and-daycare",
+      "subject": "Preschools & Daycare"
+    },
+    "type/education-and-skills/preschools-and-daycare/preschools-and-daycare": {
+      "photo": "preschools-and-daycare",
+      "subject": "Preschools & Daycare"
+    },
     "category/salons-and-beauty-parlour": {
       "photo": "salons-and-beauty-parlour",
       "subject": "Salons & Beauty Parlour"
@@ -654,6 +1128,30 @@
       "photo": "sauna",
       "subject": "Sauna"
     },
+    "subcategory/salons-and-beauty-parlour/bridal-makeup-and-mehendi": {
+      "photo": "bridal-makeup-and-mehendi",
+      "subject": "Bridal Makeup & Mehendi"
+    },
+    "type/salons-and-beauty-parlour/bridal-makeup-and-mehendi/bridal-makeup-and-mehendi": {
+      "photo": "bridal-makeup-and-mehendi",
+      "subject": "Bridal Makeup & Mehendi"
+    },
+    "subcategory/salons-and-beauty-parlour/mens-grooming-and-barbers": {
+      "photo": "mens-grooming-and-barbers",
+      "subject": "Men's Grooming & Barbers"
+    },
+    "type/salons-and-beauty-parlour/mens-grooming-and-barbers/mens-grooming-and-barbers": {
+      "photo": "mens-grooming-and-barbers",
+      "subject": "Men's Grooming & Barbers"
+    },
+    "subcategory/salons-and-beauty-parlour/nail-and-lash-studios": {
+      "photo": "nail-and-lash-studios",
+      "subject": "Nail & Lash Studios"
+    },
+    "type/salons-and-beauty-parlour/nail-and-lash-studios/nail-and-lash-studios": {
+      "photo": "nail-and-lash-studios",
+      "subject": "Nail & Lash Studios"
+    },
     "category/civil-and-construction": {
       "photo": "civil-and-construction",
       "subject": "Civil & Construction"
@@ -673,6 +1171,30 @@
     "type/civil-and-construction/commercial/commercial": {
       "photo": "commercial",
       "subject": "Commercial"
+    },
+    "subcategory/civil-and-construction/plumbing-and-electrical-repairs": {
+      "photo": "plumbing-and-electrical-repairs",
+      "subject": "Plumbing & Electrical Repairs"
+    },
+    "type/civil-and-construction/plumbing-and-electrical-repairs/plumbing-and-electrical-repairs": {
+      "photo": "plumbing-and-electrical-repairs",
+      "subject": "Plumbing & Electrical Repairs"
+    },
+    "subcategory/civil-and-construction/waterproofing-and-painting": {
+      "photo": "waterproofing-and-painting",
+      "subject": "Waterproofing & Painting"
+    },
+    "type/civil-and-construction/waterproofing-and-painting/waterproofing-and-painting": {
+      "photo": "waterproofing-and-painting",
+      "subject": "Waterproofing & Painting"
+    },
+    "subcategory/civil-and-construction/architecture-and-interiors": {
+      "photo": "architecture-and-interiors",
+      "subject": "Architecture & Interiors"
+    },
+    "type/civil-and-construction/architecture-and-interiors/architecture-and-interiors": {
+      "photo": "architecture-and-interiors",
+      "subject": "Architecture & Interiors"
     },
     "category/fuel-and-charging-stations": {
       "photo": "fuel-and-charging-stations",
@@ -702,6 +1224,30 @@
       "photo": "ev-charging",
       "subject": "EV Charging"
     },
+    "subcategory/fuel-and-charging-stations/car-and-bike-wash-detailing": {
+      "photo": "car-and-bike-wash-detailing",
+      "subject": "Car & Bike Wash / Detailing"
+    },
+    "type/fuel-and-charging-stations/car-and-bike-wash-detailing/car-and-bike-wash-detailing": {
+      "photo": "car-and-bike-wash-detailing",
+      "subject": "Car & Bike Wash / Detailing"
+    },
+    "subcategory/fuel-and-charging-stations/tyre-battery-and-puncture-care": {
+      "photo": "tyre-battery-and-puncture-care",
+      "subject": "Tyre, Battery & Puncture Care"
+    },
+    "type/fuel-and-charging-stations/tyre-battery-and-puncture-care/tyre-battery-and-puncture-care": {
+      "photo": "tyre-battery-and-puncture-care",
+      "subject": "Tyre, Battery & Puncture Care"
+    },
+    "subcategory/fuel-and-charging-stations/ev-service-and-battery-swap": {
+      "photo": "ev-service-and-battery-swap",
+      "subject": "EV Service & Battery Swap"
+    },
+    "type/fuel-and-charging-stations/ev-service-and-battery-swap/ev-service-and-battery-swap": {
+      "photo": "ev-service-and-battery-swap",
+      "subject": "EV Service & Battery Swap"
+    },
     "category/vibe-finder": {
       "photo": "vibe-finder",
       "subject": "Vibe Finder"
@@ -721,6 +1267,30 @@
     "type/vibe-finder/social-events/social-events": {
       "photo": "social-events",
       "subject": "Social Events"
+    },
+    "subcategory/vibe-finder/gaming-and-bowling-zones": {
+      "photo": "gaming-and-bowling-zones",
+      "subject": "Gaming & Bowling Zones"
+    },
+    "type/vibe-finder/gaming-and-bowling-zones/gaming-and-bowling-zones": {
+      "photo": "gaming-and-bowling-zones",
+      "subject": "Gaming & Bowling Zones"
+    },
+    "subcategory/vibe-finder/turf-and-sports-arenas": {
+      "photo": "turf-and-sports-arenas",
+      "subject": "Turf & Sports Arenas"
+    },
+    "type/vibe-finder/turf-and-sports-arenas/turf-and-sports-arenas": {
+      "photo": "turf-and-sports-arenas",
+      "subject": "Turf & Sports Arenas"
+    },
+    "subcategory/vibe-finder/live-music-and-comedy-clubs": {
+      "photo": "live-music-and-comedy-clubs",
+      "subject": "Live Music & Comedy Clubs"
+    },
+    "type/vibe-finder/live-music-and-comedy-clubs/live-music-and-comedy-clubs": {
+      "photo": "live-music-and-comedy-clubs",
+      "subject": "Live Music & Comedy Clubs"
     }
   }
 }

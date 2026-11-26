@@ -17,7 +17,12 @@ import {
 import {api,date} from '@/lib/api';
 import {Notice,Status} from './ui';
 import {adminVAdsClient} from '../../shared/v-ads-management';
-import {SELF_ONBOARDING_CATEGORIES} from '../../shared/self-onboarding';
+import {parseAdDescription} from '../../shared/v-ads';
+import {
+  ALL_SELF_ONBOARDING_TYPES,
+  SELF_ONBOARDING_CATEGORIES,
+  findSelfOnboardingType,
+} from '../../shared/self-onboarding';
 import type {Category} from '@/lib/types';
 
 const vAdsClient = adminVAdsClient(api);
@@ -146,6 +151,7 @@ export type ServiceLookupEntry = {
   categoryTitle: string;
   categorySlug: string;
   serviceTitle: string;
+  serviceSlug: string;
 };
 
 export type ServiceLookup = Record<number, ServiceLookupEntry>;
@@ -169,6 +175,7 @@ export function buildServiceLookup(catalogue: Category[]): ServiceLookup {
         categoryTitle: cat.title,
         categorySlug: cat.slug,
         serviceTitle: svc.title,
+        serviceSlug: svc.slug,
       };
     }
     for (const sub of cat.subcategories ?? []) {
@@ -177,6 +184,7 @@ export function buildServiceLookup(catalogue: Category[]): ServiceLookup {
           categoryTitle: cat.title,
           categorySlug: cat.slug,
           serviceTitle: svc.title,
+          serviceSlug: svc.slug,
         };
       }
     }
@@ -191,6 +199,7 @@ export function describeSellerTaxonomy(
   categoryLabel: string;
   serviceTypeLabel: string;
   categorySlugs: string[];
+  serviceTypeSlugs: string[];
 } {
   const matched = (seller.service_ids ?? [])
     .map(id => serviceLookup[id])
@@ -200,6 +209,7 @@ export function describeSellerTaxonomy(
     const categories = Array.from(new Set(matched.map(m => m.categoryTitle)));
     const services = Array.from(new Set(matched.map(m => m.serviceTitle)));
     const slugs = Array.from(new Set(matched.map(m => m.categorySlug)));
+    const serviceTypeSlugs = Array.from(new Set(matched.map(m => m.serviceSlug)));
     return {
       categoryLabel: categories.slice(0, 2).join(', '),
       serviceTypeLabel:
@@ -207,7 +217,20 @@ export function describeSellerTaxonomy(
           ? `${services.slice(0, 2).join(', ')} +${services.length - 2}`
           : services.join(', '),
       categorySlugs: slugs,
+      serviceTypeSlugs,
     };
+  }
+
+  if (seller.business_type) {
+    const knownType = findSelfOnboardingType(seller.business_type);
+    if (knownType) {
+      return {
+        categoryLabel: knownType.categoryTitle,
+        serviceTypeLabel: knownType.title,
+        categorySlugs: [knownType.categorySlug],
+        serviceTypeSlugs: [knownType.slug],
+      };
+    }
   }
 
   if (seller.category_slug) {
@@ -218,10 +241,23 @@ export function describeSellerTaxonomy(
         ? seller.business_type.replaceAll('-', ' ')
         : `${seller.service_ids?.length ?? 0} linked services`,
       categorySlugs: [seller.category_slug],
+      serviceTypeSlugs: seller.business_type ? [seller.business_type] : [],
     };
   }
 
   const haystack = `${seller.company} ${seller.slug} ${seller.address}`.toLowerCase();
+  const inferredType = ALL_SELF_ONBOARDING_TYPES.find(bt =>
+    haystack.includes(bt.title.toLowerCase()),
+  );
+  if (inferredType) {
+    return {
+      categoryLabel: inferredType.categoryTitle,
+      serviceTypeLabel: inferredType.title,
+      categorySlugs: [inferredType.categorySlug],
+      serviceTypeSlugs: [inferredType.slug],
+    };
+  }
+
   const inferred = SELF_ONBOARDING_CATEGORIES.find(cat =>
     cat.title
       .toLowerCase()
@@ -235,6 +271,7 @@ export function describeSellerTaxonomy(
         ? `${seller.service_ids.length} linked service${seller.service_ids.length === 1 ? '' : 's'}`
         : 'Storefront listing',
     categorySlugs: inferred ? [inferred.slug] : [],
+    serviceTypeSlugs: [],
   };
 }
 
@@ -242,17 +279,46 @@ export function describeVAdTaxonomy(item: VAdsItem): {
   categoryLabel: string;
   serviceTypeLabel: string;
   categorySlug: string | null;
+  serviceTypeSlug: string | null;
 } {
-  if (item.category_slug) {
-    const found = SELF_ONBOARDING_CATEGORIES.find(c => c.slug === item.category_slug);
+  const {meta} = parseAdDescription(item.description);
+  const effectiveServiceType = item.service_type || meta.service_type || null;
+  const effectiveCategorySlug = item.category_slug || meta.category_slug || null;
+
+  if (effectiveServiceType) {
+    const known = findSelfOnboardingType(effectiveServiceType);
+    if (known) {
+      return {
+        categoryLabel: known.categoryTitle,
+        serviceTypeLabel: known.title,
+        categorySlug: known.categorySlug,
+        serviceTypeSlug: known.slug,
+      };
+    }
+  }
+
+  if (effectiveCategorySlug) {
+    const found = SELF_ONBOARDING_CATEGORIES.find(c => c.slug === effectiveCategorySlug);
     return {
-      categoryLabel: found?.title ?? item.category_slug,
-      serviceTypeLabel: item.service_type || `@${item.advertiser.handle}`,
-      categorySlug: item.category_slug,
+      categoryLabel: found?.title ?? effectiveCategorySlug,
+      serviceTypeLabel: effectiveServiceType || `@${item.advertiser.handle}`,
+      categorySlug: effectiveCategorySlug,
+      serviceTypeSlug: effectiveServiceType,
     };
   }
   const haystack =
     `${item.title} ${item.description} ${item.advertiser.name} ${item.advertiser.description}`.toLowerCase();
+  const inferredType = ALL_SELF_ONBOARDING_TYPES.find(bt =>
+    haystack.includes(bt.title.toLowerCase()),
+  );
+  if (inferredType) {
+    return {
+      categoryLabel: inferredType.categoryTitle,
+      serviceTypeLabel: inferredType.title,
+      categorySlug: inferredType.categorySlug,
+      serviceTypeSlug: inferredType.slug,
+    };
+  }
   const inferred = SELF_ONBOARDING_CATEGORIES.find(cat =>
     cat.title
       .toLowerCase()
@@ -261,8 +327,9 @@ export function describeVAdTaxonomy(item: VAdsItem): {
   );
   return {
     categoryLabel: inferred?.title ?? 'Visual Ad Campaign',
-    serviceTypeLabel: item.service_type || `@${item.advertiser.handle}`,
+    serviceTypeLabel: effectiveServiceType || `@${item.advertiser.handle}`,
     categorySlug: inferred?.slug ?? null,
+    serviceTypeSlug: effectiveServiceType,
   };
 }
 

@@ -11,7 +11,7 @@ const ROOT = path.resolve(__dirname, '../..');
 const taxonomy = JSON.parse(fs.readFileSync(path.join(ROOT, 'shared/final-service-taxonomy.json'), 'utf8'));
 const imagery = JSON.parse(fs.readFileSync(path.join(ROOT, 'shared/marketplace-imagery.json'), 'utf8'));
 
-test('all 10 Main Categories and 30 Direct Service Types exist in mobile/assets/images/catalogue with 40 unique files', () => {
+test('all 10 Main Categories and 60 Direct Service Types exist in mobile/assets/images/catalogue with 70 unique files', () => {
   assert.equal(taxonomy.categories.length, 10);
   const mobilePhotosSource = fs.readFileSync(path.join(ROOT, 'mobile/src/lib/marketplace-photos.ts'), 'utf8');
   const heroSource = fs.readFileSync(path.join(ROOT, 'mobile/src/lib/category-hero-images.ts'), 'utf8');
@@ -62,10 +62,10 @@ test('all 10 Main Categories and 30 Direct Service Types exist in mobile/assets/
     assert.equal(resolveCataloguePhotoKey(`type/${cat.slug}/custom-added-type/custom-added-type`), cat.slug);
   }
 
-  assert.equal(totalTypes, 30);
-  assert.equal(hashes.size, 40);
+  assert.equal(totalTypes, 60);
+  assert.equal(hashes.size, 70);
   assert.equal(heroHashes.size, 10);
-  assert.equal(Object.keys(imagery.assets).length, 40);
+  assert.equal(Object.keys(imagery.assets).length, 70);
   assert.equal(resolveCataloguePhotoKey('category/stale-old-category'), null);
   assert.equal(resolveCataloguePhotoKey('subcategory/stale-old-category/foo'), null);
 });

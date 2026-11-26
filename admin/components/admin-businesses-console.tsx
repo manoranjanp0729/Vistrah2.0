@@ -8,7 +8,10 @@ import {useUser} from './customer';
 import {Notice,Status} from './ui';
 import {AdminProviderApplications} from './admin-provider-onboarding';
 import {AddServiceType} from './add-service-type';
-import {SELF_ONBOARDING_CATEGORIES} from '../../shared/self-onboarding';
+import {
+  ALL_SELF_ONBOARDING_TYPES,
+  SELF_ONBOARDING_CATEGORIES,
+} from '../../shared/self-onboarding';
 import {
   AdminInspectionDrawer,
   approveSellerListing,
@@ -39,7 +42,13 @@ function BusinessesInner() {
   const [queryInput, setQueryInput] = useState(initialQuery);
   const [appliedQuery, setAppliedQuery] = useState(initialQuery);
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [serviceTypeFilter, setServiceTypeFilter] = useState('all');
   const [page, setPage] = useState(1);
+
+  const availableServiceTypes = useMemo(() => {
+    if (categoryFilter === 'all') return ALL_SELF_ONBOARDING_TYPES;
+    return SELF_ONBOARDING_CATEGORIES.find(c => c.slug === categoryFilter)?.types ?? [];
+  }, [categoryFilter]);
 
   const [sellers, setSellers] = useState<SellerItem[]>([]);
   const [catalogue, setCatalogue] = useState<Category[]>([]);
@@ -96,12 +105,18 @@ function BusinessesInner() {
   }, [loadSellers]);
 
   const filteredSellers = useMemo(() => {
-    if (categoryFilter === 'all') return sellers;
+    if (categoryFilter === 'all' && serviceTypeFilter === 'all') return sellers;
     return sellers.filter(seller => {
       const tax = describeSellerTaxonomy(seller, serviceLookup);
-      return tax.categorySlugs.includes(categoryFilter);
+      if (categoryFilter !== 'all' && !tax.categorySlugs.includes(categoryFilter)) {
+        return false;
+      }
+      if (serviceTypeFilter !== 'all' && !tax.serviceTypeSlugs.includes(serviceTypeFilter)) {
+        return false;
+      }
+      return true;
     });
-  }, [sellers, categoryFilter, serviceLookup]);
+  }, [sellers, categoryFilter, serviceTypeFilter, serviceLookup]);
 
   function switchTab(next: BusinessTab) {
     setSelected(null);
@@ -251,12 +266,29 @@ function BusinessesInner() {
                 aria-label="Filter businesses by category"
                 className="editorial-select"
                 value={categoryFilter}
-                onChange={e => setCategoryFilter(e.target.value)}
+                onChange={e => {
+                  setCategoryFilter(e.target.value);
+                  setServiceTypeFilter('all');
+                }}
               >
                 <option value="all">All categories</option>
                 {SELF_ONBOARDING_CATEGORIES.map(cat => (
                   <option key={cat.slug} value={cat.slug}>
                     {cat.title}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                aria-label="Filter businesses by service type"
+                className="editorial-select"
+                value={serviceTypeFilter}
+                onChange={e => setServiceTypeFilter(e.target.value)}
+              >
+                <option value="all">All service types ({availableServiceTypes.length})</option>
+                {availableServiceTypes.map(st => (
+                  <option key={st.slug} value={st.slug}>
+                    {st.title}
                   </option>
                 ))}
               </select>

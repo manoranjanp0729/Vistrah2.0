@@ -88,11 +88,11 @@ describe('10 Main Categories & 30 Direct Service Types Self-Hosted Catalogue Ima
       }
     }
 
-    expect(allSlugs).toHaveLength(40);
-    expect(seenPaths.size).toBe(40);
-    expect(seenHashes.size).toBe(40);
-    expect(Object.keys(imagery.assets)).toHaveLength(40);
-    expect(Object.keys(imagery.items)).toHaveLength(70);
+    expect(allSlugs).toHaveLength(70);
+    expect(seenPaths.size).toBe(70);
+    expect(seenHashes.size).toBe(70);
+    expect(Object.keys(imagery.assets)).toHaveLength(70);
+    expect(Object.keys(imagery.items)).toHaveLength(130);
 
     const heroHashes = new Set(
       taxonomy.categories.map((c) =>

@@ -5,7 +5,10 @@ import {CheckCircle2,RefreshCw,Search,Video,XCircle} from 'lucide-react';
 import {api} from '@/lib/api';
 import {useUser} from './customer';
 import {Notice,Status} from './ui';
-import {SELF_ONBOARDING_CATEGORIES} from '../../shared/self-onboarding';
+import {
+  ALL_SELF_ONBOARDING_TYPES,
+  SELF_ONBOARDING_CATEGORIES,
+} from '../../shared/self-onboarding';
 import {
   AdminInspectionDrawer,
   approveVAdItem,
@@ -33,7 +36,13 @@ function VAdsConsoleInner() {
   const [queryInput, setQueryInput] = useState('');
   const [appliedQuery, setAppliedQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
+  const [serviceTypeFilter, setServiceTypeFilter] = useState('all');
   const [page, setPage] = useState(1);
+
+  const availableServiceTypes = useMemo(() => {
+    if (categoryFilter === 'all') return ALL_SELF_ONBOARDING_TYPES;
+    return SELF_ONBOARDING_CATEGORIES.find(c => c.slug === categoryFilter)?.types ?? [];
+  }, [categoryFilter]);
 
   const [items, setItems] = useState<VAdsItem[]>([]);
   const [channels, setChannels] = useState<StandaloneAdvertiser[]>([]);
@@ -74,9 +83,14 @@ function VAdsConsoleInner() {
   }, [loadVAds]);
 
   const filteredItems = useMemo(() => {
-    if (categoryFilter === 'all') return items;
-    return items.filter(item => describeVAdTaxonomy(item).categorySlug === categoryFilter);
-  }, [items, categoryFilter]);
+    if (categoryFilter === 'all' && serviceTypeFilter === 'all') return items;
+    return items.filter(item => {
+      const tax = describeVAdTaxonomy(item);
+      if (categoryFilter !== 'all' && tax.categorySlug !== categoryFilter) return false;
+      if (serviceTypeFilter !== 'all' && tax.serviceTypeSlug !== serviceTypeFilter) return false;
+      return true;
+    });
+  }, [items, categoryFilter, serviceTypeFilter]);
 
   function switchScope(next: VAdsScope) {
     setSelected(null);
@@ -169,12 +183,29 @@ function VAdsConsoleInner() {
             aria-label="Filter V Ads by category"
             className="editorial-select"
             value={categoryFilter}
-            onChange={e => setCategoryFilter(e.target.value)}
+            onChange={e => {
+              setCategoryFilter(e.target.value);
+              setServiceTypeFilter('all');
+            }}
           >
             <option value="all">All categories</option>
             {SELF_ONBOARDING_CATEGORIES.map(cat => (
               <option key={cat.slug} value={cat.slug}>
                 {cat.title}
+              </option>
+            ))}
+          </select>
+
+          <select
+            aria-label="Filter V Ads by service type"
+            className="editorial-select"
+            value={serviceTypeFilter}
+            onChange={e => setServiceTypeFilter(e.target.value)}
+          >
+            <option value="all">All service types ({availableServiceTypes.length})</option>
+            {availableServiceTypes.map(st => (
+              <option key={st.slug} value={st.slug}>
+                {st.title}
               </option>
             ))}
           </select>

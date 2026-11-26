@@ -195,9 +195,14 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     ).toBe('/marketplace/nearby?category=restaurants-and-dining&lat=13.709100&lng=75.813200&radius_km=5');
   });
 
-  it('allowlists /services/nearby destinations and renders in-app radius pills + direct service type chips without external redirect', () => {
-    const url = nearbyServicesUrl({ category: 'restaurants-and-dining', type: 'restaurant' });
-    expect(url).toBe('/services/nearby?category=restaurants-and-dining&type=restaurant');
+  it('allowlists /services/nearby destinations and renders in-app radius pills + direct service type chips + V Ads filter button', () => {
+    const url = nearbyServicesUrl({
+      category: 'restaurants-and-dining',
+      type: 'bakeries-and-desserts',
+    });
+    expect(url).toBe(
+      '/services/nearby?category=restaurants-and-dining&service_type=bakeries-and-desserts',
+    );
     expect(safeDestination(url)).toBe(url);
 
     const html = renderToStaticMarkup(
@@ -207,15 +212,19 @@ describe('In-app Nearby Services Map + Listings contract', () => {
         createElement(NearbyServiceDiscovery, {
           categorySlug: 'restaurants-and-dining',
           categoryTitle: 'Restaurants & Dining',
-          typeSlug: 'restaurant',
-          serviceTitle: 'Restaurant',
+          typeSlug: 'bakeries-and-desserts',
+          serviceTitle: 'Bakeries & Desserts',
         }),
       ),
     );
     expect(html).toContain('Nearby');
-    expect(html).toContain('Restaurant');
+    expect(html).toContain('Bakeries &amp; Desserts');
     expect(html).toContain('Cafes');
     expect(html).toContain('data-brand-palette="vistrah-navy-orange"');
+    expect(html).toContain('data-nearby-v-ads-link="true"');
+    expect(html).toContain(
+      '/v-ads?category=restaurants-and-dining&amp;service_type=bakeries-and-desserts&amp;radius_km=10',
+    );
     expect(html).toContain('List Free on VISTRAH');
     for (const r of [2, 5, 10, 25, 50]) {
       expect(html).toContain(`${r} km`);

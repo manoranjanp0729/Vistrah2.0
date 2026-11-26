@@ -29,18 +29,19 @@ it('keeps subcategory and search service cards free of plus overlays while retai
   session.user={seller_enabled:false};expect(render(selection)).not.toContain('Add service:');
   session.user={seller_enabled:true};
   expect(render({})).not.toContain('Add service:');
-  expect(render({category:category.slug})).not.toContain('Add service:');
-  const subHtml=render({category:category.slug,subcategory:sub.slug});
-  expect(subHtml).not.toContain('Add service:');
-  expect(subHtml).not.toContain('>+<');
+  const catHtml=render({category:category.slug});
+  expect(catHtml).not.toContain('Add service:');
+  expect(catHtml).not.toContain('>+<');
   expect(render({},type.title)).not.toContain('Add service:');
   expect(render({},type.title)).not.toContain('>+<');
   expect(addServiceUrl(selection)).toBe(`/seller/onboard?category=${category.slug}&subcategory=${sub.slug}&type=${type.slug}`);
-  const detailHtml=render(selection);
-  expect(detailHtml).toContain('Nearby services');
-  expect(detailHtml).toContain(addServiceUrl(selection).replaceAll('&','&amp;'));
-  expect(detailHtml).toContain('Email VISTRAH about this service');
-  expect(detailHtml).not.toContain('Browse published products');
+  for (const detailSelection of [selection, {category:category.slug,service_type:type.slug}, {category:category.slug,subcategory:sub.slug}]) {
+    const detailHtml=render(detailSelection);
+    expect(detailHtml).toContain('Nearby services');
+    expect(detailHtml).toContain(addServiceUrl(selection).replaceAll('&','&amp;'));
+    expect(detailHtml).toContain('Email VISTRAH about this service');
+    expect(detailHtml).not.toContain('Browse published products');
+  }
 });
 
 it('redirects legacy /seller/add-service URLs directly to /seller/onboard with category, subcategory and type preserved',async()=>{

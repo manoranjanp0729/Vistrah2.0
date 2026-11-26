@@ -39,7 +39,7 @@ from .provider_models import ProviderRequirement
 from .provider_requirements import Requirements
 
 SOURCE_FILE = Path(__file__).resolve().parents[2] / "shared" / "business-types.json"
-BOOTSTRAP_KEY = "business-catalogue-v5-direct-types"
+BOOTSTRAP_KEY = "business-catalogue-v6-60-direct-types"
 MAX_INCLUDES = 5
 
 

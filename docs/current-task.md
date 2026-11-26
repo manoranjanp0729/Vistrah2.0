@@ -1,3 +1,24 @@
+# GitHub preservation before laptop cleanup - 25 November 2026
+
+- User authorized committing/pushing all VISTRAH source, then removing local VISTRAH copies and Docker data; Windows, personal files and unrelated applications must remain intact. E:\Vistra V.1 is now explicitly included in the cleanup inventory. Private configuration/signing files are to be retained in E:\VISTRAH-Recovery-20261125 and never committed.
+- Current source destination: origin/main at manoranjanp0729/Vistrah2.0. Older checkouts and non-generated backup source will be preserved separately on an archive branch. Local removal must wait for verified remote commits and a fresh-source retrieval check. Docker databases/uploads are disposable under this authorization; no AWS/hosted deployment or remote deletion is authorized.
+- Existing UI verification and baseline lint limitations remain as recorded below. Dependency/build caches, runtime databases, generated artifacts and private configuration are not application source. The reviewed current pending source passes focused credential-pattern and Git whitespace checks; this is not a blanket no-secret guarantee for historical backup copies.
+
+## Approved C: cache cleanup - 25 November 2026
+- Removed 1 stale Comfy installer archive and 28 VS Code cached installers (3.23 GiB net recovered); C: free space increased to 3.26 GiB. Evidence: artifacts/storage-audit/cleanup-result.json.
+- Skipped protected/locked McAfee logs and one in-use VS Code cache file. No ACL/security changes, process termination, OS/personal-file deletion, Docker/volume operations, or deployment. Original UI cleanup/review status remains as recorded below.
+
+# Shared visual hierarchy and decluttering — 25 November 2026 (source verified; deployment held)
+
+- Authorized: clean UI/UX across web, mobile/phone web and admin; consolidate duplicate prompts and reuse theme/design tokens. Source only, no commit/push/deployment or normal-container operations.
+- Foundation: shared/ui-tokens.json is consumed by shared/theme-appearance.ts, frontend/lib/brand-theme.ts and mobile/src/lib/theme.ts. Shared title/body/control hierarchy, 44px controls, spacing, widths and radii; existing brand palettes remain authoritative. Admin root/theme consumes these tokens. Mobile PageTitle/Action now use plain headings and flat themed controls.
+- Screens: Products and Vibe Finder styles/clients use theme colors and consistent hierarchy; removed repeated Products heading and seller entry. Homepage drops duplicate footer promotion (web), hardcoded emoji category shortcuts, extra seller banner and repeated marketing pricing CTA (mobile). Native marketing section now uses restrained photo cards; guidance is collapsed until opened. Marketing detail styling, web chat chrome and footer are simplified; legal/accessibility content retained. CMS-managed content is preserved.
+- Settings: one web settings control remains available on public inner pages; header remains homepage-only. Membership gates, three service tabs, seller ownership, listing approvals, account/API boundaries and explicit GPS/manual location behavior are unchanged.
+- Verification: frontend/mobile/admin TypeScript passed. Web brand-theme/design/header tests 9/9; mobile design/header checks 5/5 after updating the geometry guard to read shared tokens. Scoped lint passes for other changed TS/TSX/JS files. Vibe Finder lint is blocked by pre-existing effect-state errors in both clients and a missing @next/next/no-img-element rule in frontend; reproduced against HEAD, left unchanged.
+- Phone refinement: Vibe Finder mood/radius filters scroll horizontally on narrow screens; both 390px light/dark checks passed (52px mood row, no page overflow). Evidence: artifacts/visual-consistency/phone-filters.json and *-compact.png.
+- Browser: isolated Next dev preview on 127.0.0.1:3115 (separate .next-visual-review output), intercepted sample responses, no database/account writes. 16 checks passed across Products, Vibe Finder, signed-out Account and settings at 1440/390px in light/dark themes, including contrast/overflow/settings checks. Evidence: artifacts/visual-consistency/results.json and screenshots; reusable frontend/scripts/visual-consistency-check.mjs. Preview stopped; its generated config changes restored. This is source-preview evidence, not live production or physical-device acceptance.
+- Remaining gates: review source/screenshots and physical-phone/authenticated/admin/CMS layouts. Fix baseline lint separately if requested. Normal runtime and AWS deployment remain held; pre-existing cloud Compose/mobile config/untracked artwork files preserved.
+
 # Homepage-Only Top Navigation Header Across Web & Mobile (Local Verified & Pushed to `origin/main` — AWS Deploy Held) - 24 November 2026
 
 - **Homepage-Only Main Header & Top Safe-Area / Inline Back Preservation (`shared/header-visibility.ts`, `frontend/components/shell.tsx`, `frontend/app/reference-theme.css`, `frontend/components/v-ads.module.css`, `mobile/src/app/_layout.tsx`, `mobile/src/app/(tabs)/{_layout,v-ads}.tsx`, `mobile/src/components/{app-header,ui,marketing-pricing,hero-story-page,service-list,marketing-pricing-codex}.tsx`, `mobile/src/app/{services/index,services/nearby,marketing-solutions}.tsx`)**: restricted `<header class="public-header">` on web and `<AppHeader/>` (`headerShown: true`) on mobile exclusively to the Homepage (`/` and `/app/`), suppressed the top header across all inner routes (`headerShown: false` across root `Stack` and non-Home `Tabs`), removed the `/v-ads` SSR header offset, preserved `SafeAreaView` `'top'` insets across all non-Home mobile screens so status bar icons never overlap content, and kept lightweight inline back links on pushed drilldown screens.
@@ -2538,3 +2559,9 @@ Advisories: https://github.com/advisories/GHSA-vfj7-8cjw-p6xm and https://github
 ## Focused multilingual UI review ? 2026-10-16
 - Connected homepage provider/marketing/Connect copy, navigation accessibility and footer labels, Settings th
 ... [truncated for diff preview]
+
+## Visual consistency source review - 25 November 2026
+- Scope: read-only review of desktop public shell, shared theme, Products, Vibe Finder and V-Ads styles. No UI fixes or runtime changes.
+- Findings: dark-mode contrast in commerce.module.css product text/pills and vibe-finder-discovery.module.css labels/ratings; hardcoded action/selection colors bypass theme; mixed 36/38/42/44px controls. Inner public routes hide standalone settings while homepage-only header contains the other settings entry.
+- Verification: source inspection only; browser preview unavailable (node absent from PATH and checked locations). No live visual or device claims; no tests run. Existing uncommitted files preserved.
+- Next step: user review of findings; targeted source fixes can follow explicit scope selection. Deployment remains held.

@@ -37,13 +37,13 @@
 .statsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .statCard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md,12px);padding:16px;display:flex;flex-direction:column;gap:4px}
 .statHeader{display:flex;align-items:center;justify-content:space-between;color:var(--text-secondary);font-size:12px;font-weight:500}
-.statIcon{color:#F97316}
+.statIcon{color:var(--accent-orange)}
 .statValue{font-size:22px;font-weight:600;color:var(--text-primary);line-height:1.2;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
 .statMuted{font-size:11px;color:var(--text-secondary)}
 .filterBar{display:flex;gap:8px;flex-wrap:wrap}
 .filterPill{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:6px 14px;border-radius:8px;background:var(--surface);border:1px solid var(--border);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;color:var(--text-primary);cursor:pointer;transition:border-color .15s ease}
-.filterPill:hover{border-color:#F97316}
-.filterPillActive{background:#0F294A!important;color:#fff!important;border-color:#0F294A!important}
+.filterPill:hover{border-color:var(--accent-orange)}
+.filterPillActive{background:var(--accent-orange)!important;color:var(--button-ink)!important;border-color:var(--accent-orange)!important}
 .videoCard{background:var(--surface);border:1px solid var(--border);box-shadow:none;border-radius:var(--radius-md,12px);padding:20px;display:grid;gap:12px}
 .videoCardHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .videoTitle{margin:0;font-size:16px;font-weight:600;line-height:1.2;letter-spacing:-.015em;color:var(--text-primary)}

@@ -1567,3 +1567,10 @@ html[data-preferences][data-theme="dark"] .dialog {
     display: none !important;
   }
 }
+
+@media screen {
+ .admin-heading h1{font-size:var(--ui-title)}
+ .button,.icon-button,.admin-search :is(input,button),.form :is(input,select){min-height:var(--control-height);border-radius:var(--radius-input)}
+ .admin-panel,.stat-card{border-radius:var(--radius-card);box-shadow:none}
+ .button{font-size:var(--ui-action);font-weight:600}
+}

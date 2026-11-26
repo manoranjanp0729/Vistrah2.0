@@ -183,9 +183,6 @@ export function VibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { initialMo
       <section className={styles.hero} aria-labelledby="vibe-finder-heading">
         <div className={styles.heroTop}>
           <div>
-            <p className={styles.heroEyebrow}>
-              <UiText value="Discover. Connect. Grow." />
-            </p>
             <h1 id="vibe-finder-heading" className={styles.heroTitle}>
               <UiText value="Vibe Finder" />
             </h1>
@@ -215,7 +212,7 @@ export function VibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { initialMo
       <section className={styles.controlsCard} aria-label="Vibe Finder filters">
         <div className={styles.filterRow}>
           <div className={styles.searchWrap}>
-            <Search size={16} color="#F97316" aria-hidden="true" />
+            <Search size={16} color="var(--accent-orange)" aria-hidden="true" />
             <input
               type="search"
               value={search}
@@ -322,7 +319,7 @@ export function VibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { initialMo
           </div>
         ) : filteredItems.length === 0 ? (
           <div className={styles.emptyCard}>
-            <Compass size={28} color="#F97316" aria-hidden="true" />
+            <Compass size={28} color="var(--accent-orange)" aria-hidden="true" />
             <h3 className={styles.cardTitle}>
               No listings found within {radiusKm} km — try expanding your radius
             </h3>
@@ -339,9 +336,6 @@ export function VibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { initialMo
                   Expand to 50 km
                 </button>
               )}
-              <Link href="/seller/onboard?category=vibe-finder" className={styles.actionSecondary}>
-                List Your Venue Free
-              </Link>
             </div>
           </div>
         ) : (

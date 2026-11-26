@@ -1,87 +1,32 @@
 import {croppedPhoto} from '../lib/photo-crop';
 import {Text} from './typography';
-import {useTheme,spacing,typography} from '../lib/theme';
-import {UiText,UiElement} from "./localized-ui";
-import {useState} from 'react';
+import {useTheme,spacing,radii,typography,controlHeights} from '../lib/theme';
+import {UiText,UiElement} from './localized-ui';
 import {useLanguage} from '../lib/language';
-import {Platform,Image,Pressable,StyleSheet,View} from 'react-native';
+import {Image,Pressable,View} from 'react-native';
 import {router} from 'expo-router';
-import {LinearGradient} from 'expo-linear-gradient';
 import Feather from '@expo/vector-icons/Feather';
-import {photoCardDesign as design} from '../../../shared/photo-card-design';
 import {marketingServicePages} from '../../../shared/marketing-services';
-import {marketingVisuals} from '../../../shared/marketing-visuals';
-import brandTheme from '../../../shared/brand-theme.json';
 
 const images=[require('../../assets/ads-marketing/performance-marketing.webp'),require('../../assets/ads-marketing/branding-creative.webp'),require('../../assets/ads-marketing/outdoor-signage.jpg'),require('../../assets/ads-marketing/mobility-billboard.jpg')];
-const highlights=marketingServicePages;
+const photoKeys=['photoDigital','photoCreative','photoOutdoor','photoMobility'];
 
 export function AdsMarketing(){
  const {t,locale}=useLanguage();
- const {accent}=useTheme();const buttonAccent=brandTheme.accentPresets.find(p=>p.id===accent)?.light??'#0F294A';
- const [headingWidth,setHeadingWidth]=useState(0);
- const android=Platform.OS==='android';
- const brandGradient = [brandTheme.gradient[0], brandTheme.gradient[1], brandTheme.gradient[2]] as const;
-
- const getStarted=<UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>[s.start,{opacity:pressed?.85:1}]}><Text style={[s.startText,{color:buttonAccent}]}>{t('marketing.started')}</Text><Feather name="arrow-right" size={15} color={buttonAccent}/></UiElement>;
-
- return <LinearGradient testID="ads-marketing" colors={brandGradient} locations={[0,.52,1]} start={{x:0,y:0}} end={{x:1,y:1}} style={s.section}>
-  <Text accessibilityRole="header" numberOfLines={1} adjustsFontSizeToFit onLayout={event=>setHeadingWidth(event.nativeEvent.layout.width)} style={[s.headline,headingWidth>0&&{fontSize:Math.min(Platform.OS==='android'?25:21,headingWidth/15.5)}]}><UiText value={"VISTRAH Ads & Marketing"}/></Text>
-  <View style={s.hero}>
-   <View style={s.heroCopy}>
-    <Text style={s.support}>{t('marketing.homeCopy')}</Text>
-    {getStarted}
-   </View>
-   <View pointerEvents="none" accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" style={s.art}>
-    <View style={s.ground}/>
-    <View style={s.chart}><View style={s.chartBars}>{[12,20,30].map((height,index)=><View key={index} style={{width:10,height,borderRadius:3,backgroundColor:['#93c5fd','#3b82f6','#0F294A'][index]}}/>)}</View><Feather name="trending-up" size={31} color="#F97316" style={{position:'absolute',right:7,top:4}}/></View>
-    <View style={s.shop}>
-     <View style={s.roof}/><View style={s.awning}>{[0,1,2,3,4,5,6].map(index=><View key={index} style={{flex:1,height:12,borderBottomLeftRadius:4,borderBottomRightRadius:4,backgroundColor:index%2?'#fff7ed':'#F97316'}}/>)}</View>
-     <View style={s.shopFront}><View style={s.window}><View style={s.windowShine}/></View><View style={s.door}><View style={s.doorHandle}/></View></View>
-    </View>
-    <View style={s.megaphone}><Feather name="volume-2" size={23} color="#fff"/></View>
-   </View>
+ const {colors,styles}=useTheme();
+ return <View testID="ads-marketing" style={{gap:spacing.pageGap}}>
+  <View style={{gap:spacing.fieldGap}}>
+   <Text accessibilityRole="header" style={styles.heading}><UiText value="VISTRAH Ads & Marketing"/></Text>
+   <Text style={styles.muted}>{t('marketing.homeCopy')}</Text>
+   <UiElement as={Pressable} accessibilityRole="link" accessibilityLabel={t('marketing.started')} onPress={()=>router.push('/marketing-solutions')} style={({pressed})=>({alignSelf:'flex-start',minHeight:controlHeights.standard,flexDirection:'row',alignItems:'center',gap:spacing.fieldGap,opacity:pressed?.85:1})}>
+    <Text style={{...typography.action,color:colors.accent}}>{t('marketing.started')}</Text><Feather name="arrow-right" size={16} color={colors.accent}/>
+   </UiElement>
   </View>
-  <View style={s.grid}>{highlights.map((card,index)=>{
-   const visual = marketingVisuals[card.key as keyof typeof marketingVisuals];
-   const cardBg = visual ? visual.paper : (index%2 ? '#fff7ed' : '#f8fafc');
-   const cardAccent = visual ? visual.accent : '#0F294A';
-   const cardInk = visual ? visual.ink : '#0F294A';
-   return <UiElement as={Pressable} key={card.key} accessibilityRole="link" accessibilityLabel={card.title[locale]} onPress={()=>router.push({pathname:'/marketing-services/[slug]',params:{slug:card.slug}})} style={({pressed})=>[s.card,{backgroundColor:cardBg,borderWidth:1,borderColor:cardAccent+'35',opacity:pressed?.85:1}]}>
-    <View style={s.image}><UiElement as={Image} source={croppedPhoto(images[index],'wide')} accessibilityLabel={t('marketing.'+(['photoDigital','photoCreative','photoOutdoor','photoMobility'][index]))} resizeMode="cover" style={s.cardImage}/></View>
-    <View style={s.cardContent}><Text style={[s.cardTitle,{color:cardInk}]}>{card.title[locale]}</Text><Text style={s.cardDescription}>{t('marketing.'+(['digitalCopy','brandCopy','outdoorCopy','mobilityCopy'][index]))}</Text></View>
-   </UiElement>;
-  })}</View>
- </LinearGradient>;
+  <View style={{flexDirection:'row',flexWrap:'wrap',gap:spacing.regular}}>
+   {marketingServicePages.map((card,index)=><UiElement as={Pressable} key={card.key} accessibilityRole="link" accessibilityLabel={card.title[locale]} onPress={()=>router.push({pathname:'/marketing-services/[slug]',params:{slug:card.slug}})} style={({pressed})=>({flexGrow:1,flexBasis:'45%',minWidth:0,borderRadius:radii.surface,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,overflow:'hidden',opacity:pressed?.85:1})}>
+    <UiElement as={Image} source={croppedPhoto(images[index],'wide')} accessibilityLabel={t('marketing.'+photoKeys[index])} resizeMode="cover" style={{width:'100%',aspectRatio:16/9}}/>
+    <View style={{padding:spacing.cardPaddingCompact,gap:spacing.fieldGap}}><Text style={styles.cardTitle}>{card.title[locale]}</Text></View>
+   </UiElement>)}
+  </View>
+ </View>;
 }
-const s=StyleSheet.create({
- section:{backgroundColor:'#0F294A',borderRadius:12,padding:spacing.pagePadding,gap:8,overflow:'hidden'},
- hero:{flexDirection:'row',alignItems:'center',gap:8,padding:0,marginBottom:2},
- heroCopy:{flex:1,minWidth:0,gap:6},
- headline:{fontSize:Platform.OS==='android'?25:21,lineHeight:Platform.OS==='android'?30:24,fontWeight:'700',letterSpacing:-.5,color:'#fff'},
- support:{fontSize:Platform.OS==='android'?14:12.5,lineHeight:Platform.OS==='android'?20:17,color:'#d3deea'},
- start:{alignSelf:'flex-start',maxWidth:Platform.OS==='android'?'100%':undefined,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:8,minHeight:40,paddingHorizontal:13,marginTop:2,borderRadius:8,backgroundColor:'#fff',boxShadow:'0px 2px 6px rgba(9,27,51,0.14)'},
- startText:{flexShrink:1,fontSize:Platform.OS==='android'?13:12,lineHeight:Platform.OS==='android'?19:17,fontWeight:'700',color:'#0F294A'},
- art:{width:100,height:118},
- ground:{position:'absolute',bottom:9,left:0,width:102,height:13,borderRadius:50,backgroundColor:'#fdba7440'},
- chart:{position:'absolute',top:6,right:0,width:68,height:54,padding:7,borderRadius:10,backgroundColor:'#eff6ff',transform:[{rotate:'8deg'}],boxShadow:'0px 4px 10px rgba(9,27,51,0.16)'},
- chartBars:{flex:1,flexDirection:'row',alignItems:'flex-end',gap:5},
- shop:{position:'absolute',bottom:20,left:4,width:88,height:65,borderRadius:8,backgroundColor:'#fff7ed',boxShadow:'0px 5px 12px rgba(9,27,51,0.2)'},
- roof:{height:13,borderTopLeftRadius:7,borderTopRightRadius:7,backgroundColor:'#fdba74'},
- awning:{flexDirection:'row'},
- shopFront:{flex:1,flexDirection:'row',alignItems:'flex-end',justifyContent:'space-between',paddingHorizontal:9,paddingTop:7},
- window:{width:34,height:24,marginBottom:7,borderRadius:3,backgroundColor:'#93c5fd',overflow:'hidden'},
- windowShine:{position:'absolute',left:9,top:-8,width:7,height:40,backgroundColor:'#eff6ff',transform:[{rotate:'30deg'}]},
- door:{width:20,height:31,borderTopLeftRadius:3,borderTopRightRadius:3,backgroundColor:'#132F54'},
- doorHandle:{position:'absolute',right:3,top:16,width:3,height:3,borderRadius:2,backgroundColor:'#fff'},
- megaphone:{position:'absolute',top:33,left:0,width:39,height:39,borderRadius:13,backgroundColor:'#F97316',alignItems:'center',justifyContent:'center',transform:[{rotate:'-12deg'}],boxShadow:'0px 3px 8px rgba(9,27,51,0.18)'},
- spark:{position:'absolute',right:0,bottom:37},
- gridHeading:{fontSize:14,lineHeight:20,fontWeight:'600',color:'#fff',marginTop:3},
- grid:{flexDirection:'row',flexWrap:'wrap',alignItems:'stretch',gap:10},
- card:{width:'47%',flexGrow:1,flexBasis:'45%',minWidth:0,borderRadius:design.radius,overflow:'hidden',boxShadow:'0px 3px 8px rgba(15,41,74,0.12)'},
- image:{aspectRatio:16/9,marginTop:5,marginHorizontal:5,borderRadius:design.imageRadius,overflow:'hidden'},
- cardImage:{position:'absolute',top:0,left:0,width:'100%',height:'100%'},
- cardContent:{paddingTop:8,paddingHorizontal:9,paddingBottom:10,gap:6},
- cardTitle:{...typography.cardTitle,color:'#0F294A'},
- cardDescription:{fontSize:Platform.OS==='android'?13:11,lineHeight:Platform.OS==='android'?20:16,color:'#475569'},
-});

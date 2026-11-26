@@ -28,3 +28,5 @@
 .faq summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:600;line-height:1.5}
 .faq details p{font-size:14px;line-height:1.5;padding:4px 0}
 @media(max-width:680px){.steps{grid-template-columns:1fr;gap:12px}.shortcut{grid-template-columns:1fr;gap:6px}.choices button{flex:1;min-width:140px}}
+
+.summary{cursor:pointer;font-size:var(--ui-heading);font-weight:600;padding:var(--space-3) 0;min-height:var(--control-height)}

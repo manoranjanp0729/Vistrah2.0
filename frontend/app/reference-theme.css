@@ -139,7 +139,7 @@ th,.admin-table th,.table-actions button,.admin-search button{background:var(--i
 .replica-location-dialog{background:var(--surface);border:1px solid var(--border);border-radius:12px;width:min(700px,100%);padding:20px;max-height:85vh;overflow:auto}
 .replica-location-dialog>.icon-button{float:right}
 .replica-page{max-width:1080px;padding-block:24px;display:flex;flex-direction:column;gap:24px}
-.replica-page h1{font-size:26px;line-height:1.2;letter-spacing:-.025em;margin:0}.replica-page h2{font-size:20px;line-height:1.2;letter-spacing:-.025em;margin:0}
+.replica-page h1{font-size:var(--ui-title);line-height:1.2;letter-spacing:-.025em;margin:0}.replica-page h2{font-size:var(--ui-heading);line-height:1.2;letter-spacing:-.025em;margin:0}
 .replica-page p,.replica-page small{font-size:14px;line-height:1.5;margin:0;color:var(--text-secondary)}
 .replica-page .panel{padding:20px;display:flex;flex-direction:column;gap:12px}
 .replica-page .form{width:min(100%,640px);gap:16px}.replica-page .button{align-self:flex-start}
@@ -207,7 +207,7 @@ dialog.replica-location-dialog{margin:auto;max-height:85vh;color:var(--text-prim
 .button.secondary:hover,.button.light:hover{filter:none}
 .vistrah-app{padding-bottom:24px}
 .vistrah-app :is(.page,.auth-page,.provider-onboarding){padding-top:24px}
-.vistrah-app :is(.page,.provider-onboarding) > h1,.vistrah-app .auth-form-wrap > h2{background:transparent;color:var(--text-primary);padding:0 0 16px;border-bottom:1px solid var(--hairline,var(--border));border-radius:0;font-family:var(--font-body);font-size:clamp(24px,2.8vw,32px);font-weight:600;line-height:1.2;letter-spacing:-.025em;margin:0 0 24px;overflow-wrap:anywhere}
+.vistrah-app :is(.page,.provider-onboarding) > h1,.vistrah-app .auth-form-wrap > h2{background:transparent;color:var(--text-primary);padding:0 0 16px;border-bottom:1px solid var(--hairline,var(--border));border-radius:0;font-family:var(--font-body);font-size:var(--ui-title);font-weight:600;line-height:1.2;letter-spacing:-.025em;margin:0 0 24px;overflow-wrap:anywhere}
 .vistrah-app :is(.page,.provider-onboarding) > h1 a{color:inherit}
 .vistrah-app :is(.panel,.help-card,.request-card,.form-card,.account-hero,.checkout-card,.membership-card,.provider-profile,.empty){border:1px solid var(--border);border-radius:12px;background:var(--surface);box-shadow:none;color:var(--text-primary);position:static;max-width:100%;min-width:0}
 .vistrah-app .help-card{margin-block:12px;padding:20px}
@@ -242,7 +242,7 @@ dialog.replica-location-dialog{margin:auto;max-height:85vh;color:var(--text-prim
 .button.seller-sign-in:hover{filter:brightness(.96)}.button.seller-sign-in:focus-visible{outline:3px solid var(--accent-orange);outline-offset:4px}
 
 /* Shared action treatment across signup, forms and selection controls. */
-html .button{transition:filter .15s;box-shadow:none}
+html .button{min-height:var(--control-height);font-size:var(--ui-action);transition:filter .15s;box-shadow:none}
 html .button:focus-visible{outline:3px solid var(--accent-orange);outline-offset:3px}
 html select{background-image:none;box-shadow:none;min-height:44px;border-radius:8px}
 @media(prefers-reduced-motion:reduce){html .button{transition:none}}
@@ -251,8 +251,10 @@ html select{background-image:none;box-shadow:none;min-height:44px;border-radius:
 .theme-switch[aria-checked=true]{background:var(--accent-orange)}
 .admin-topbar{padding-right:76px}
 
-.standalone-settings{position:fixed;top:12px;right:16px;z-index:90}
-body:has(.public-header,.vistrah-app) .standalone-settings{display:none}
+.standalone-settings{position:absolute;top:var(--space-3);right:var(--page-gutter);z-index:90}
+body:not(:has(.public-header)) .vistrah-app{padding-top:calc(var(--control-height) + var(--space-3))}
+.public-header .header-inner{padding-right:calc(var(--control-height) + var(--page-gutter))}
+
 
 /* Actions follow App Theme; white surfaces are reserved for colourful sections. */
 html .button:not(.secondary):not(.light):not(.danger):not([aria-disabled=true]),html .service-tablist button[aria-selected=true],html button[aria-pressed=true]:not([role=switch]){background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink);box-shadow:none}
@@ -260,3 +262,17 @@ html .button:not(.secondary):not(.light):not(.danger):not([aria-disabled=true]):
 html .button.secondary{background:var(--surface);border-color:var(--border);color:var(--text-primary)}
 html .button.secondary:hover{background:var(--surface-hover);border-color:var(--accent-orange)}
 html .button.light,.reference-home .button.light,.reference-home .button.light:hover{background:#fff;border-color:var(--border);color:var(--accent-on-white,var(--accent-orange))}
+
+/* Shared hierarchy; content and its next action take precedence over decoration. */
+.vistrah-app :is(.page,.replica-page){max-width:var(--page-max-width);gap:var(--section-gap)}
+.vistrah-app :is(.page,.replica-page) h2{font-size:var(--ui-heading);font-weight:600}
+.vistrah-app :is(.page,.replica-page) h3{font-size:var(--ui-card-title);font-weight:600}
+.reference-section .section-heading h2{font-size:var(--ui-heading)}
+.reference-home .reference-label{font-size:var(--ui-supporting);letter-spacing:normal}
+.reference-home .reference-lead{font-size:var(--ui-heading);line-height:var(--leading-body)}
+.reference-home .reference-feature h2{font-size:var(--ui-heading)}
+.reference-home .reference-badge{background:transparent;border:0;padding:0;color:var(--text-secondary);font-size:var(--ui-supporting)}
+
+.footer-grid{grid-template-columns:1.6fr repeat(2,minmax(0,1fr))}
+@media(max-width:800px){.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.footer-grid>div:first-child{grid-column:1/-1}}
+@media(max-width:420px){.footer-grid{grid-template-columns:1fr}}

@@ -2,11 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { Image, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import { LinearGradient } from 'expo-linear-gradient';
 import { api, getApiBase } from '../lib/api';
 import { useOptionalLocation } from '../lib/location';
 import { marketplacePhotos } from '../lib/marketplace-photos';
-import { useTheme } from '../lib/theme';
+import { useTheme, typography, spacing, radii, controlHeights, type ThemeColors } from '../lib/theme';
 import {
   buildNearbyListingsPath,
   formatDistanceAway,
@@ -36,8 +35,8 @@ const DEFAULT_POINT = {
 };
 
 export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { initialMoodId?: string }) {
-  const { colors, mode } = useTheme();
-  const isDark = mode === 'dark';
+  const { colors } = useTheme();
+  const s = useMemo(() => makeStyles(colors), [colors]);
   const locCtx = useOptionalLocation();
 
   const [moodId, setMoodId] = useState<string>(() => getVibeMoodById(initialMoodId).id);
@@ -142,15 +141,7 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
   return (
     <View style={s.page} testID="vibe-finder-screen">
       {/* VISTRAH Navy + Orange Vibe Finder Hero */}
-      <LinearGradient
-        colors={['#091B33', '#0F294A', '#163A66']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={s.hero}
-      >
-        <Text style={s.heroEyebrow}>
-          <UiText value="Discover. Connect. Grow." />
-        </Text>
+      <View style={s.hero}>
         <Text accessibilityRole="header" style={s.heroTitle}>
           <UiText value="Vibe Finder" />
         </Text>
@@ -164,7 +155,7 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
             onPress={openMap}
             style={({ pressed }) => [s.primaryBtn, { opacity: pressed ? 0.88 : 1 }]}
           >
-            <Feather name="map-pin" size={14} color="#ffffff" />
+            <Feather name="map-pin" size={14} color={colors.ink} />
             <Text style={s.primaryBtnText}>
               <UiText value="Explore on Map" />
             </Text>
@@ -182,15 +173,15 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
             </Text>
           </Pressable>
         </View>
-      </LinearGradient>
+      </View>
 
       {/* Search, GPS Location & Mood / Radius Filter Controls */}
       <View
         style={[
           s.controlsCard,
           {
-            backgroundColor: isDark ? '#0f233d' : '#ffffff',
-            borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
           },
         ]}
       >
@@ -198,17 +189,17 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
           style={[
             s.searchWrap,
             {
-              backgroundColor: isDark ? '#09192e' : '#f8fafc',
-              borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+              backgroundColor: colors.soft,
+              borderColor: colors.border,
             },
           ]}
         >
-          <Feather name="search" size={16} color="#F97316" />
+          <Feather name="search" size={16} color={colors.accent} />
           <TextInput
             value={search}
             onChangeText={setSearch}
             placeholder="Filter theatres, cafes, social events..."
-            placeholderTextColor={isDark ? '#94a3b8' : '#64748b'}
+            placeholderTextColor={colors.muted}
             accessibilityLabel="Search Vibe Finder places"
             style={[s.searchInput, { color: colors.text }]}
           />
@@ -221,7 +212,7 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
 
         <View style={s.locationBar}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
-            <Feather name="map-pin" size={14} color="#F97316" />
+            <Feather name="map-pin" size={14} color={colors.accent} />
             <Text numberOfLines={1} style={[s.localityText, { color: colors.text }]}>
               {activePoint.locality}
             </Text>
@@ -235,13 +226,13 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
               { opacity: locCtx?.detecting ? 0.7 : pressed ? 0.86 : 1 },
             ]}
           >
-            <Feather name="crosshair" size={13} color="#ffffff" />
+            <Feather name="crosshair" size={13} color={colors.ink} />
             <Text style={s.gpsBtnText}>{locCtx?.detecting ? 'Locating…' : 'Use GPS'}</Text>
           </Pressable>
         </View>
 
         {Boolean(locCtx?.gpsError) && (
-          <Text style={{ fontSize: 12.5, color: '#EA580C' }}>{locCtx?.gpsError}</Text>
+          <Text style={{ fontSize: typography.supporting.fontSize, color: colors.accent }}>{locCtx?.gpsError}</Text>
         )}
 
         {/* Mood / Vibe Selector Pills */}
@@ -263,20 +254,20 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                   selected
                     ? s.moodPillActive
                     : {
-                        backgroundColor: isDark ? '#09192e' : '#f8fafc',
-                        borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                        backgroundColor: colors.soft,
+                        borderColor: colors.border,
                       },
                 ]}
               >
                 <Feather
                   name={mood.icon}
                   size={13}
-                  color={selected ? '#ffffff' : '#F97316'}
+                  color={selected ? colors.ink : colors.accent}
                 />
                 <Text
                   style={[
                     s.pillText,
-                    { color: selected ? '#ffffff' : colors.text },
+                    { color: selected ? colors.ink : colors.text },
                   ]}
                 >
                   {mood.label}
@@ -305,15 +296,15 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                   selected
                     ? s.radiusPillActive
                     : {
-                        backgroundColor: isDark ? '#09192e' : '#f8fafc',
-                        borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                        backgroundColor: colors.soft,
+                        borderColor: colors.border,
                       },
                 ]}
               >
                 <Text
                   style={[
                     s.pillText,
-                    { color: selected ? '#ffffff' : colors.text },
+                    { color: selected ? colors.ink : colors.text },
                   ]}
                 >
                   {km} km
@@ -344,8 +335,8 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
           style={[
             s.emptyCard,
             {
-              backgroundColor: isDark ? '#0f233d' : '#f8fafc',
-              borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
             },
           ]}
         >
@@ -361,8 +352,8 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
           style={[
             s.emptyCard,
             {
-              backgroundColor: isDark ? '#0f233d' : '#f8fafc',
-              borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
             },
           ]}
         >
@@ -375,12 +366,12 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
           style={[
             s.emptyCard,
             {
-              backgroundColor: isDark ? '#0f233d' : '#f8fafc',
-              borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+              backgroundColor: colors.surface,
+              borderColor: colors.border,
             },
           ]}
         >
-          <Feather name="compass" size={26} color="#F97316" />
+          <Feather name="compass" size={26} color={colors.accent} />
           <Text style={[s.cardTitle, { color: colors.text, textAlign: 'center' }]}>
             No listings found within {radiusKm} km — try expanding your radius
           </Text>
@@ -415,8 +406,8 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                 style={[
                   s.card,
                   {
-                    backgroundColor: isDark ? '#0f233d' : '#ffffff',
-                    borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
                   },
                 ]}
               >
@@ -439,12 +430,9 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                       style={s.photoImg}
                     />
                   ) : (
-                    <LinearGradient
-                      colors={['#091B33', '#0F294A', '#163A66']}
-                      style={s.photoFallback}
-                    >
-                      <Feather name="compass" size={28} color="#F97316" />
-                    </LinearGradient>
+                    <View style={s.photoFallback}>
+                      <Feather name="compass" size={28} color={colors.accent} />
+                    </View>
                   )}
 
                   <View style={s.badgeStrip}>
@@ -484,7 +472,7 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                         onPress={() => void Linking.openURL(telHref)}
                         style={s.actionPrimary}
                       >
-                        <Feather name="phone" size={13} color="#ffffff" />
+                        <Feather name="phone" size={13} color={colors.ink} />
                         <Text style={s.actionPrimaryText}>Call</Text>
                       </Pressable>
                     )}
@@ -495,8 +483,8 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                       style={[
                         s.actionSecondary,
                         {
-                          backgroundColor: isDark ? '#09192e' : '#f8fafc',
-                          borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                          backgroundColor: colors.soft,
+                          borderColor: colors.border,
                         },
                       ]}
                     >
@@ -513,8 +501,8 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
                         style={[
                           s.actionSecondary,
                           {
-                            backgroundColor: isDark ? '#09192e' : '#f8fafc',
-                            borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                            backgroundColor: colors.soft,
+                            borderColor: colors.border,
                           },
                         ]}
                       >
@@ -535,33 +523,22 @@ export function MobileVibeFinderDiscovery({ initialMoodId = 'all-vibes' }: { ini
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   page: {
-    gap: 16,
+    gap: spacing.pageGap,
     paddingBottom: 24,
   },
-  hero: {
-    borderRadius: 12,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#1E3A5F',
-    gap: 8,
-  },
+  hero: {paddingVertical:spacing.regular,borderBottomWidth:1,borderColor:colors.border,gap:spacing.fieldGap},
   heroEyebrow: {
-    fontSize: 13,
+    fontSize: typography.body.fontSize,
     fontWeight: '600',
-    color: '#FB923C',
+    color: colors.accent,
   },
-  heroTitle: {
-    fontSize: 24,
-    lineHeight: 30,
-    fontWeight: '800',
-    color: '#ffffff',
-  },
+  heroTitle: {...typography.title,color:colors.text},
   heroSubtitle: {
-    fontSize: 13.5,
+    fontSize: typography.body.fontSize,
     lineHeight: 20,
-    color: '#CBD5E1',
+    color: colors.muted,
   },
   heroActionRow: {
     flexDirection: 'row',
@@ -573,51 +550,51 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 40,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: '#F97316',
+    borderRadius: radii.input,
+    backgroundColor: colors.accent,
   },
   primaryBtnText: {
-    color: '#ffffff',
-    fontSize: 13.5,
-    fontWeight: '700',
+    color: colors.ink,
+    fontSize: typography.body.fontSize,
+    fontWeight: '600',
   },
   secondaryHeroBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 40,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: radii.input,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.25)',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderColor: colors.border,
+    backgroundColor: colors.soft,
   },
   secondaryHeroBtnText: {
-    color: '#ffffff',
-    fontSize: 13.5,
+    color: colors.text,
+    fontSize: typography.body.fontSize,
     fontWeight: '600',
   },
   controlsCard: {
-    borderRadius: 12,
+    borderRadius: radii.surface,
     borderWidth: 1,
     padding: 14,
-    gap: 12,
+    gap: spacing.regular,
   },
   searchWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.fieldGap,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: radii.input,
     paddingHorizontal: 12,
-    minHeight: 42,
+    minHeight: controlHeights.standard,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: typography.body.fontSize,
     paddingVertical: 8,
   },
   locationBar: {
@@ -627,7 +604,7 @@ const s = StyleSheet.create({
     gap: 10,
   },
   localityText: {
-    fontSize: 13,
+    fontSize: typography.body.fontSize,
     fontWeight: '600',
     flexShrink: 1,
   },
@@ -635,72 +612,72 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 36,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 8,
-    backgroundColor: '#0F294A',
+    borderRadius: radii.input,
+    backgroundColor: colors.accent,
   },
   gpsBtnText: {
-    color: '#ffffff',
-    fontSize: 12.5,
-    fontWeight: '700',
+    color: colors.ink,
+    fontSize: typography.supporting.fontSize,
+    fontWeight: '600',
   },
   pillsScroll: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.fieldGap,
     paddingVertical: 2,
   },
   pill: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 36,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 9999,
+    borderRadius: radii.action,
     borderWidth: 1,
   },
   moodPillActive: {
-    backgroundColor: '#F97316',
-    borderColor: '#EA580C',
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
   },
   radiusPillActive: {
-    backgroundColor: '#0F294A',
-    borderColor: '#0F294A',
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
   },
   pillText: {
-    fontSize: 12.5,
+    fontSize: typography.supporting.fontSize,
     fontWeight: '600',
   },
   moodSubtitle: {
-    fontSize: 13,
+    fontSize: typography.body.fontSize,
     lineHeight: 18,
   },
   resultsHeader: {
     flexDirection: 'row',
     alignItems: 'baseline',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: spacing.fieldGap,
   },
   resultsTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   resultsCount: {
-    fontSize: 12.5,
+    fontSize: typography.supporting.fontSize,
     fontWeight: '600',
   },
   emptyCard: {
-    borderRadius: 12,
+    borderRadius: radii.surface,
     borderWidth: 1,
     padding: 24,
     alignItems: 'center',
     gap: 10,
   },
   card: {
-    borderRadius: 12,
+    borderRadius: radii.surface,
     borderWidth: 1,
     overflow: 'hidden',
   },
@@ -708,7 +685,7 @@ const s = StyleSheet.create({
     width: '100%',
     height: 176,
     position: 'relative',
-    backgroundColor: '#0F294A',
+    backgroundColor: colors.accent,
   },
   photoImg: {
     width: '100%',
@@ -731,19 +708,19 @@ const s = StyleSheet.create({
   distanceBadge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 9999,
-    backgroundColor: '#0F294A',
+    borderRadius: radii.action,
+    backgroundColor: colors.accent,
   },
   verifiedBadge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 9999,
-    backgroundColor: '#EA580C',
+    borderRadius: radii.action,
+    backgroundColor: colors.accent,
   },
   badgeText: {
-    color: '#ffffff',
+    color: colors.ink,
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   cardBody: {
     padding: 14,
@@ -752,47 +729,47 @@ const s = StyleSheet.create({
   cardCategory: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#EA580C',
+    color: colors.accent,
   },
   cardTitle: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   cardMeta: {
-    fontSize: 13,
+    fontSize: typography.body.fontSize,
     lineHeight: 18,
   },
   cardActions: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: spacing.fieldGap,
     marginTop: 6,
   },
   actionPrimary: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 36,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 12,
-    borderRadius: 8,
-    backgroundColor: '#F97316',
+    borderRadius: radii.input,
+    backgroundColor: colors.accent,
   },
   actionPrimaryText: {
-    color: '#ffffff',
-    fontSize: 12.5,
-    fontWeight: '700',
+    color: colors.ink,
+    fontSize: typography.supporting.fontSize,
+    fontWeight: '600',
   },
   actionSecondary: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 36,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: radii.input,
     borderWidth: 1,
   },
   actionSecondaryText: {
-    fontSize: 12.5,
+    fontSize: typography.supporting.fontSize,
     fontWeight: '600',
   },
 });

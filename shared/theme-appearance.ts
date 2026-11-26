@@ -1,4 +1,5 @@
 import theme from './brand-theme.json';
+import ui from './ui-tokens.json';
 
 export function mixColor(base:string,tint:string,amount:number){
  const channels=(value:string)=>value.slice(1).match(/.{2}/g)!.map(part=>parseInt(part,16));
@@ -20,6 +21,14 @@ export function themeProperties(mode:'light'|'dark',accentId?:string){
  const {colors:p,gradient,headerGradient}=themeAppearance(mode,accentId);
  return {
   '--page-background':p.background,'--surface':p.surface,'--border':p.border,
+  '--control-height':`${ui.controlHeights.standard}px`,
+  '--radius-input':`${ui.radii.input}px`,'--radius-card':`${ui.radii.surface}px`,
+  '--page-max-width':`${ui.layout.pageMaxWidth}px`,
+  '--page-gutter':`${ui.spacing.pagePadding}px`,'--section-gap':`${ui.spacing.sectionGap}px`,
+  '--card-padding':`${ui.spacing.cardPadding}px`,
+  '--ui-title':`${ui.typography.title/16}rem`,'--ui-heading':`${ui.typography.heading/16}rem`,
+  '--ui-card-title':`${ui.typography.cardTitle/16}rem`,'--ui-body':`${ui.typography.body/16}rem`,
+  '--ui-supporting':`${ui.typography.supporting/16}rem`,'--ui-action':`${ui.typography.action/16}rem`,
   '--text-primary':p.text,'--text-secondary':p.muted,'--text-error':p.error,
   '--accent-orange':p.accent,'--button-ink':p.ink,
   '--accent-on-white':(theme.accentPresets.find(item=>item.id===(accentId??theme.defaultAccent))??theme.accentPresets[1]).light,

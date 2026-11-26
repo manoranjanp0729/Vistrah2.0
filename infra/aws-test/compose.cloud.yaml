@@ -19,20 +19,26 @@ services:
     pull_policy: never
     restart: unless-stopped
     command: [uvicorn, app.main:app, --host, 0.0.0.0, --port, '8000']
-    environment: &api_environment
-      DATABASE_URL: postgresql+psycopg://vistrah:${POSTGRES_PASSWORD:?Missing database password}@db:5432/vistrah
-      JWT_SECRET: ${JWT_SECRET:?Missing cloud signing secret}
-      SEED_CATALOGUE: 'false'
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
-      GOOGLE_MAPS_SERVER_API_KEY: ${GOOGLE_MAPS_SERVER_API_KEY:-}
-      GOOGLE_MAPS_GEOCODING_ENABLED: ${GOOGLE_MAPS_GEOCODING_ENABLED:-0}
-      GOOGLE_MAPS_GEOCODING_API_KEY: ${GOOGLE_MAPS_GEOCODING_API_KEY:-}
-      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      APP_ENV: development
-      PUBLIC_APP_URL: https://vistrah.in
-      SOURCE_NETWORK_ENABLED: 'false'
-      REMOTIVE_ENABLED: 'false'
-      ADZUNA_ACCESS_CONFIRMED: 'false'
+    environment:
+      <<: &api_environment
+        DATABASE_URL: postgresql+psycopg://vistrah:${POSTGRES_PASSWORD:?Missing database password}@db:5432/vistrah
+        JWT_SECRET: ${JWT_SECRET:?Missing cloud signing secret}
+        SEED_CATALOGUE: 'false'
+        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+        GOOGLE_MAPS_SERVER_API_KEY: ${GOOGLE_MAPS_SERVER_API_KEY:-}
+        GOOGLE_MAPS_GEOCODING_ENABLED: ${GOOGLE_MAPS_GEOCODING_ENABLED:-0}
+        GOOGLE_MAPS_GEOCODING_API_KEY: ${GOOGLE_MAPS_GEOCODING_API_KEY:-}
+        GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+        APP_ENV: development
+        PUBLIC_APP_URL: https://vistrah.in
+        SOURCE_NETWORK_ENABLED: 'false'
+        REMOTIVE_ENABLED: 'false'
+        ADZUNA_ACCESS_CONFIRMED: 'false'
+      V_ADS_MEDIA_ENABLED: '1'
+      V_ADS_PRIVATE_ROOT: /data/v-ads
+      V_ADS_MIN_FREE_BYTES: '1073741824'
+    volumes:
+      - api_data:/data
     depends_on:
       db:
         condition: service_healthy
@@ -117,6 +123,9 @@ services:
       timeout: 5s
       retries: 10
 volumes:
+  api_data:
+    external: true
+    name: vistrah-cloud_api_data
   postgres_data:
   caddy_data:
   caddy_config:

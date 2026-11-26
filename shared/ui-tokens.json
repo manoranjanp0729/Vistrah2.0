@@ -1,0 +1,7 @@
+{
+  "spacing": {"small":4,"fieldGap":8,"cardGap":8,"elementGap":8,"feedGap":12,"regular":12,"controlPadding":12,"pagePadding":16,"pagePaddingDesktop":24,"cardPaddingCompact":16,"cardPadding":20,"pageGap":16,"sectionGap":24,"sectionPadding":24,"pageBottom":24},
+  "radii": {"input":8,"action":8,"surface":12,"pill":9999},
+  "controlHeights": {"pill":44,"compact":44,"standard":44,"multiline":120},
+  "layout": {"pageMaxWidth":1080,"borderWidth":1},
+  "typography": {"title":24,"heading":18,"cardTitle":16,"body":14,"supporting":12,"action":13}
+}

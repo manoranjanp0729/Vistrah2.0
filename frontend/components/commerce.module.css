@@ -1,32 +1,26 @@
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
-.description{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.actions{display:flex;flex-wrap:wrap;gap:var(--space-3);margin:var(--space-4) 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:var(--space-4)}
+.description{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;color:var(--text-secondary);font-size:var(--ui-body)}
 .fullDescription{white-space:pre-wrap;overflow-wrap:anywhere}
-.fields{border:0;padding:0;display:grid;gap:16px;min-width:0}
-
-.hero{border-radius:12px;background:linear-gradient(135deg,#091b33 0%,#0f294a 55%,#163a66 100%);border:1px solid #1e3a5f;padding:clamp(24px,4vw,36px);color:#ffffff;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:24px}
-.heroEyebrow{margin:0 0 4px;font-size:14px;font-weight:500;color:#fb923c}
-.heroTitle{margin:0 0 8px;font-size:clamp(1.625rem,3vw,2.25rem);line-height:1.2;color:#ffffff}
-.heroCopy{margin:0;max-width:620px;font-size:15px;line-height:1.55;color:#cbd5e1}
-.heroActions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.heroPrimary,.heroSecondary{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:9px 16px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none}
-.heroPrimary{background:#f97316;color:#ffffff}
-.heroPrimary:hover{background:#ea580c}
-.heroSecondary{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.24);color:#ffffff}
-.heroSecondary:hover{background:rgba(255,255,255,0.18)}
-
-.toolbar{border-radius:12px;border:1px solid var(--border,#e2e8f0);background:var(--surface,#ffffff);padding:16px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px}
-.searchBox{flex:1 1 260px;display:flex;align-items:center;gap:8px;border:1px solid var(--border,#cbd5e1);border-radius:8px;padding:0 12px;min-height:42px;background:var(--surface,#ffffff)}
-.searchInput{flex:1;border:0;outline:none;font:inherit;font-size:14px;color:var(--text-primary,#0f172a);background:transparent}
-.pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.pill{min-height:36px;padding:6px 14px;border-radius:9999px;border:1px solid var(--border,#cbd5e1);background:var(--surface-soft,#f8fafc);color:#0f294a;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
-.pillActive{background:#0f294a;border-color:#0f294a;color:#ffffff}
-
-.productCard{border-radius:12px;border:1px solid var(--border,#e2e8f0);background:var(--surface,#ffffff);padding:20px;display:flex;flex-direction:column;gap:10px}
-.productKind{align-self:flex-start;padding:3px 10px;border-radius:9999px;background:#fff7ed;color:#ea580c;font-size:12px;font-weight:600}
-.productTitle{margin:0;font-size:18px;color:#0f294a}
-.productSeller{margin:0;font-size:13px;font-weight:600;color:#475569}
-.productFooter{margin-top:auto;padding-top:12px;border-top:1px solid var(--border,#e2e8f0);display:flex;align-items:center;justify-content:space-between;gap:12px}
-.priceTag{font-size:18px;font-weight:700;color:#0f294a}
-.viewBtn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:6px 14px;border-radius:8px;background:#f97316;color:#ffffff;font-size:13px;font-weight:600;text-decoration:none}
-.viewBtn:hover{background:#ea580c}
+.fields{border:0;padding:0;display:grid;gap:var(--space-4);min-width:0}
+.hero{border-bottom:1px solid var(--border);padding-block:var(--space-3) var(--section-gap);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:var(--space-4)}
+.heroTitle{margin:0 0 var(--space-2);font-size:var(--ui-title);color:var(--text-primary)}
+.heroCopy{margin:0;max-width:620px;font-size:var(--ui-body);color:var(--text-secondary)}
+.heroActions{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.heroPrimary,.heroSecondary,.viewBtn{display:inline-flex;align-items:center;justify-content:center;min-height:var(--control-height);padding:var(--space-2) var(--space-4);border-radius:var(--radius-input);font-size:var(--ui-action);font-weight:600;text-decoration:none;border:1px solid var(--border)}
+.heroPrimary,.viewBtn{background:var(--accent-orange);border-color:var(--accent-orange);color:var(--button-ink)}
+.heroPrimary:hover,.viewBtn:hover{filter:brightness(.94)}
+.heroSecondary{background:var(--surface);color:var(--text-primary)}
+.heroSecondary:hover{background:var(--surface-hover)}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.searchBox{flex:1 1 260px;display:flex;align-items:center;gap:var(--space-2);border:1px solid var(--border);border-radius:var(--radius-input);padding-inline:var(--space-3);min-height:var(--control-height);background:var(--surface)}
+.searchInput{flex:1;min-width:0;border:0;font:inherit;font-size:var(--ui-body);color:var(--text-primary);background:transparent}
+.pills{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.pill{min-height:var(--control-height);padding:var(--space-2) var(--space-3);border-radius:var(--radius-input);border:1px solid var(--border);background:var(--surface);color:var(--text-primary);font:inherit;font-size:var(--ui-action);font-weight:600;cursor:pointer}
+.pillActive{background:var(--brand-highlight);border-color:var(--accent-orange);color:var(--text-primary)}
+.productCard{border-radius:var(--radius-card);border:1px solid var(--border);background:var(--surface);padding:var(--card-padding);display:flex;flex-direction:column;gap:var(--space-2)}
+.productKind{align-self:flex-start;color:var(--text-secondary);font-size:var(--ui-supporting)}
+.productTitle{margin:0;font-size:var(--ui-card-title);color:var(--text-primary)}
+.productSeller{margin:0;font-size:var(--ui-supporting);color:var(--text-secondary)}
+.productFooter{margin-top:auto;padding-top:var(--space-3);border-top:1px solid var(--border);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.priceTag{font-size:var(--ui-card-title);font-weight:600;color:var(--text-primary)}

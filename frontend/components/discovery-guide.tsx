@@ -13,7 +13,7 @@ export function DiscoveryGuide(){
   const content=copy.engagement;
   const selected=content[journey];
   return <UiSection  className={styles.guide} aria-label="Explore VISTRAH guidance">
-    <details><summary style={{cursor:"pointer",fontSize:"1.35rem",fontWeight:700,padding:"12px 0"}}>{content.title}</summary><div><p>{content.intro}</p>
+    <details><summary className={styles.summary}>{content.title}</summary><div><p>{content.intro}</p>
     <UiDiv  className={styles.choices} role="group" aria-label="Choose your starting point">
       {(['customer','provider'] as const).map(value=><button key={value} type="button" aria-pressed={journey===value} onClick={()=>setJourney(value)} className={journey===value?styles.selected:undefined}><UiText value={value==='customer'?content.customerLabel:content.providerLabel}/></button>)}
     </UiDiv>
@@ -22,7 +22,7 @@ export function DiscoveryGuide(){
       <ol className={styles.steps}>{selected.steps.map((step,index)=><li key={step.title}><span className={styles.milestonePill} aria-hidden="true">{milestones[index]??'Next'}</span><div><h4><UiText value={step.title}/></h4><p><UiText value={step.description}/></p></div></li>)}</ol>
       <Link className="button" href={journey==='customer'?'/services':'/seller/onboard'}>{selected.action}<ArrowRight size={18} aria-hidden="true"/></Link><p className={styles.note}>{selected.note}</p>
     </div>
-    </div></details><details><summary style={{cursor:"pointer",fontSize:"1.35rem",fontWeight:700,padding:"12px 0"}}>{content.shortcutsTitle}</summary><div className={styles.shortcuts}>{content.shortcuts.map(item=>{const target=shortcuts[item.key as keyof typeof shortcuts];return <Link key={item.key} href={target.href} className={styles.shortcut}><target.Icon size={24} aria-hidden="true"/><h4><UiText value={item.title}/></h4><p><UiText value={item.description}/></p><span>{item.action}<ArrowRight size={16} aria-hidden="true"/></span></Link>;})}</div>
-    </details><details><summary style={{cursor:"pointer",fontSize:"1.35rem",fontWeight:700,padding:"12px 0"}}>{content.faqTitle}</summary><div className={styles.faq}>{content.faq.map(item=><details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>
+    </div></details><details><summary className={styles.summary}>{content.shortcutsTitle}</summary><div className={styles.shortcuts}>{content.shortcuts.map(item=>{const target=shortcuts[item.key as keyof typeof shortcuts];return <Link key={item.key} href={target.href} className={styles.shortcut}><target.Icon size={24} aria-hidden="true"/><h4><UiText value={item.title}/></h4><p><UiText value={item.description}/></p><span>{item.action}<ArrowRight size={16} aria-hidden="true"/></span></Link>;})}</div>
+    </details><details><summary className={styles.summary}>{content.faqTitle}</summary><div className={styles.faq}>{content.faq.map(item=><details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>
     </details></UiSection>;
 }

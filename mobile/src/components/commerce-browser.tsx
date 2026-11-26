@@ -1,35 +1,26 @@
 import { Text, TextInput } from './typography';
 import { UiText, UiElement } from './localized-ui';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AddToCart } from './commerce-orders';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Action, Heading, Loading, ErrorPanel, MemberGate } from './ui';
 import { useResource } from '../lib/resource';
 import { useSession } from '../lib/session';
-import { useTheme } from '../lib/theme';
+import { useTheme, typography, spacing, radii, controlHeights, type ThemeColors } from '../lib/theme';
 import { ApiError } from '../lib/api';
 import { listingPrice, type CommerceListing, type ListingPage } from '../../../shared/commerce';
 
 export function CommerceBrowser() {
   const [packages, setPackages] = useState(false);
   const [query, setQuery] = useState('');
-  const { colors, mode } = useTheme();
-  const isDark = mode === 'dark';
+  const { colors } = useTheme();
+  const s = useMemo(() => makeStyles(colors), [colors]);
 
   return (
     <View style={{ gap: 16 }} testID="products-marketplace-screen">
-      <LinearGradient
-        colors={['#091B33', '#0F294A', '#163A66']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={s.hero}
-      >
-        <Text style={s.heroEyebrow}>
-          <UiText value="Discover. Connect. Grow." />
-        </Text>
+      <View style={s.hero}>
         <Text accessibilityRole="header" style={s.heroTitle}>
           <UiText value="Products" />
         </Text>
@@ -43,7 +34,7 @@ export function CommerceBrowser() {
             onPress={() => router.push('/commerce/cart')}
             style={({ pressed }) => [s.heroPrimaryBtn, { opacity: pressed ? 0.88 : 1 }]}
           >
-            <Feather name="shopping-cart" size={14} color="#ffffff" />
+            <Feather name="shopping-cart" size={14} color={colors.ink} />
             <Text style={s.heroPrimaryText}>
               <UiText value="Cart" />
             </Text>
@@ -53,20 +44,20 @@ export function CommerceBrowser() {
             onPress={() => router.push('/commerce/orders')}
             style={({ pressed }) => [s.heroSecondaryBtn, { opacity: pressed ? 0.88 : 1 }]}
           >
-            <Feather name="package" size={14} color="#ffffff" />
+            <Feather name="package" size={14} color={colors.text} />
             <Text style={s.heroSecondaryText}>
               <UiText value="Purchase orders" />
             </Text>
           </Pressable>
         </View>
-      </LinearGradient>
+      </View>
 
       <View
         style={[
           s.controlsCard,
           {
-            backgroundColor: isDark ? '#0f233d' : '#ffffff',
-            borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
           },
         ]}
       >
@@ -74,17 +65,17 @@ export function CommerceBrowser() {
           style={[
             s.searchBox,
             {
-              backgroundColor: isDark ? '#09192e' : '#f8fafc',
-              borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+              backgroundColor: colors.soft,
+              borderColor: colors.border,
             },
           ]}
         >
-          <Feather name="search" size={16} color="#F97316" />
+          <Feather name="search" size={16} color={colors.accent} />
           <TextInput
             value={query}
             onChangeText={setQuery}
             placeholder="Search products, sellers, or packages..."
-            placeholderTextColor={isDark ? '#94a3b8' : '#64748b'}
+            placeholderTextColor={colors.muted}
             accessibilityLabel="Search products"
             style={[s.searchInput, { color: colors.text }]}
           />
@@ -105,12 +96,12 @@ export function CommerceBrowser() {
               !packages
                 ? s.pillActive
                 : {
-                    backgroundColor: isDark ? '#09192e' : '#f8fafc',
-                    borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                    backgroundColor: colors.soft,
+                    borderColor: colors.border,
                   },
             ]}
           >
-            <Text style={[s.pillText, { color: !packages ? '#ffffff' : colors.text }]}>
+            <Text style={[s.pillText, { color: !packages ? colors.ink : colors.text }]}>
               <UiText value="Products" />
             </Text>
           </Pressable>
@@ -124,12 +115,12 @@ export function CommerceBrowser() {
               packages
                 ? s.pillActive
                 : {
-                    backgroundColor: isDark ? '#09192e' : '#f8fafc',
-                    borderColor: isDark ? '#1e3a5f' : '#cbd5e1',
+                    backgroundColor: colors.soft,
+                    borderColor: colors.border,
                   },
             ]}
           >
-            <Text style={[s.pillText, { color: packages ? '#ffffff' : colors.text }]}>
+            <Text style={[s.pillText, { color: packages ? colors.ink : colors.text }]}>
               <UiText value="Service packages" />
             </Text>
           </Pressable>
@@ -148,8 +139,8 @@ export function CommerceBrowser() {
 }
 
 function PublishedList({ packages, query = '' }: { packages: boolean; query?: string }) {
-  const { styles, colors, mode } = useTheme();
-  const isDark = mode === 'dark';
+  const { styles, colors } = useTheme();
+  const s = useMemo(() => makeStyles(colors), [colors]);
   const { user } = useSession();
   const [page, setPage] = useState(1);
   const result = useResource<ListingPage<CommerceListing>>(
@@ -170,7 +161,6 @@ function PublishedList({ packages, query = '' }: { packages: boolean; query?: st
         <ErrorPanel error={result.error} retry={result.retry} />
       ) : result.data ? (
         <>
-          <UiElement as={Heading} title={packages ? 'Service packages' : 'Products'} />
           {items.length ? (
             items.map(row => (
               <View
@@ -178,8 +168,8 @@ function PublishedList({ packages, query = '' }: { packages: boolean; query?: st
                 style={[
                   s.productCard,
                   {
-                    backgroundColor: isDark ? '#0f233d' : '#ffffff',
-                    borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
                   },
                 ]}
               >
@@ -189,7 +179,7 @@ function PublishedList({ packages, query = '' }: { packages: boolean; query?: st
                   </Text>
                 </View>
                 <Text style={[s.cardTitle, { color: colors.text }]}>{row.title}</Text>
-                <Text style={{ fontSize: 13, fontWeight: '600', color: colors.muted }}>
+                <Text style={{ fontSize: typography.body.fontSize, fontWeight: '600', color: colors.muted }}>
                   {row.business}
                 </Text>
                 <Text style={styles.text} numberOfLines={3}>
@@ -198,7 +188,7 @@ function PublishedList({ packages, query = '' }: { packages: boolean; query?: st
                 <View
                   style={[
                     s.cardFooter,
-                    { borderTopColor: isDark ? '#1e3a5f' : '#e2e8f0' },
+                    { borderTopColor: colors.border },
                   ]}
                 >
                   <Text style={[styles.tabular, s.priceText, { color: colors.text }]}>
@@ -223,13 +213,13 @@ function PublishedList({ packages, query = '' }: { packages: boolean; query?: st
               style={[
                 s.emptyCard,
                 {
-                  backgroundColor: isDark ? '#0f233d' : '#f8fafc',
-                  borderColor: isDark ? '#1e3a5f' : '#e2e8f0',
+                  backgroundColor: colors.surface,
+                  borderColor: colors.border,
                 },
               ]}
             >
-              <Feather name="shopping-bag" size={24} color="#F97316" />
-              <Text style={{ fontSize: 15, fontWeight: '700', color: colors.text }}>
+              <Feather name="shopping-bag" size={24} color={colors.accent} />
+              <Text style={{ fontSize: 15, fontWeight: '600', color: colors.text }}>
                 No matching {packages ? 'service packages' : 'products'} yet
               </Text>
               <Text style={[styles.muted, { textAlign: 'center' }]}>
@@ -315,29 +305,18 @@ export function CommerceDetail({ id }: { id: string }) {
 
 export { ClassifiedServices } from './customer-listing-results';
 
-const s = StyleSheet.create({
-  hero: {
-    borderRadius: 12,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: '#1E3A5F',
-    gap: 8,
-  },
+const makeStyles = (colors:ThemeColors) => StyleSheet.create({
+  hero: {paddingVertical:spacing.regular,borderBottomWidth:1,borderColor:colors.border,gap:spacing.fieldGap},
   heroEyebrow: {
-    fontSize: 13,
+    fontSize: typography.body.fontSize,
     fontWeight: '600',
-    color: '#FB923C',
+    color: colors.accent,
   },
-  heroTitle: {
-    fontSize: 24,
-    lineHeight: 30,
-    fontWeight: '800',
-    color: '#ffffff',
-  },
+  heroTitle: {...typography.title,color:colors.text},
   heroCopy: {
-    fontSize: 13.5,
+    fontSize: typography.body.fontSize,
     lineHeight: 20,
-    color: '#CBD5E1',
+    color: colors.muted,
   },
   heroActions: {
     flexDirection: 'row',
@@ -349,96 +328,96 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 40,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 8,
-    backgroundColor: '#F97316',
+    borderRadius: radii.input,
+    backgroundColor: colors.accent,
   },
   heroPrimaryText: {
-    color: '#ffffff',
-    fontSize: 13.5,
-    fontWeight: '700',
+    color: colors.ink,
+    fontSize: typography.body.fontSize,
+    fontWeight: '600',
   },
   heroSecondaryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    minHeight: 40,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: radii.input,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.25)',
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderColor: colors.border,
+    backgroundColor: colors.soft,
   },
   heroSecondaryText: {
-    color: '#ffffff',
-    fontSize: 13.5,
+    color: colors.text,
+    fontSize: typography.body.fontSize,
     fontWeight: '600',
   },
   controlsCard: {
-    borderRadius: 12,
+    borderRadius: radii.surface,
     borderWidth: 1,
     padding: 14,
-    gap: 12,
+    gap: spacing.regular,
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.fieldGap,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: radii.input,
     paddingHorizontal: 12,
-    minHeight: 42,
+    minHeight: controlHeights.standard,
   },
   searchInput: {
     flex: 1,
-    fontSize: 14,
+    fontSize: typography.body.fontSize,
     paddingVertical: 8,
   },
   pillRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: spacing.fieldGap,
   },
   pill: {
-    minHeight: 36,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 14,
     paddingVertical: 6,
-    borderRadius: 9999,
+    borderRadius: radii.action,
     borderWidth: 1,
     justifyContent: 'center',
   },
   pillActive: {
-    backgroundColor: '#0F294A',
-    borderColor: '#0F294A',
+    backgroundColor: colors.accent,
+    borderColor: colors.accent,
   },
   pillText: {
-    fontSize: 13,
+    fontSize: typography.body.fontSize,
     fontWeight: '600',
   },
   productCard: {
-    borderRadius: 12,
+    borderRadius: radii.surface,
     borderWidth: 1,
-    padding: 16,
-    gap: 8,
+    padding: spacing.cardPaddingCompact,
+    gap: spacing.fieldGap,
   },
   kindBadge: {
     alignSelf: 'flex-start',
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: 9999,
-    backgroundColor: '#FFF7ED',
+    borderRadius: radii.action,
+    backgroundColor: colors.soft,
   },
   kindBadgeText: {
-    fontSize: 11.5,
-    fontWeight: '700',
-    color: '#EA580C',
+    fontSize: typography.supporting.fontSize,
+    fontWeight: '600',
+    color: colors.accent,
   },
   cardTitle: {
-    fontSize: 16.5,
-    fontWeight: '700',
+    fontSize: typography.cardTitle.fontSize,
+    fontWeight: '600',
   },
   cardFooter: {
     marginTop: 6,
@@ -447,30 +426,30 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 12,
+    gap: spacing.regular,
   },
   priceText: {
-    fontSize: 16.5,
-    fontWeight: '800',
+    fontSize: typography.cardTitle.fontSize,
+    fontWeight: '600',
   },
   viewBtn: {
-    minHeight: 36,
+    minHeight: controlHeights.standard,
     paddingHorizontal: 14,
-    borderRadius: 8,
-    backgroundColor: '#F97316',
+    borderRadius: radii.input,
+    backgroundColor: colors.accent,
     alignItems: 'center',
     justifyContent: 'center',
   },
   viewBtnText: {
-    color: '#ffffff',
-    fontSize: 13,
-    fontWeight: '700',
+    color: colors.ink,
+    fontSize: typography.body.fontSize,
+    fontWeight: '600',
   },
   emptyCard: {
-    borderRadius: 12,
+    borderRadius: radii.surface,
     borderWidth: 1,
     padding: 24,
     alignItems: 'center',
-    gap: 8,
+    gap: spacing.fieldGap,
   },
 });

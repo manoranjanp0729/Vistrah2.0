@@ -46,11 +46,11 @@ test('mobile & shared enforce cohesive 12px/8px/9999px geometry and Discover. Co
   );
 
   const themeSrc = readFileSync(join(repoRoot, 'mobile', 'src', 'lib', 'theme.ts'), 'utf8');
-  assert.match(themeSrc, /input:\s*8\b/);
-  assert.match(themeSrc, /action:\s*8\b/);
-  assert.match(themeSrc, /surface:\s*12\b/);
-  assert.match(themeSrc, /pill:\s*9999\b/);
-  assert.match(themeSrc, /sectionPadding:\s*24\b/);
+  const tokens = JSON.parse(readFileSync(join(repoRoot, 'shared', 'ui-tokens.json'), 'utf8'));
+  assert.match(themeSrc, /ui-tokens\.json/);
+  assert.deepEqual(tokens.radii, {input:8, action:8, surface:12, pill:9999});
+  assert.equal(tokens.spacing.sectionPadding, 24);
+  assert.ok(tokens.controlHeights.standard >= 44);
 
   const copySrc = readFileSync(join(repoRoot, 'mobile', 'src', 'lib', 'interface-copy.ts'), 'utf8');
   assert.ok(copySrc.includes('Discover. Connect. Grow.'));

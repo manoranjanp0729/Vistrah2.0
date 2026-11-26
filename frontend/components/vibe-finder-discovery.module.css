@@ -1,26 +1,20 @@
 .page {
-  padding-block: 32px 64px;
+  max-width: var(--page-max-width);
+  width: 100%;
+  min-width: 0;
+  padding-block: var(--section-gap);
+  padding-inline: var(--page-gutter);
   display: grid;
-  gap: 24px;
+  gap: var(--section-gap);
 }
 
-.hero {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #091b33 0%, #0f294a 55%, #163a66 100%);
-  border: 1px solid #1e3a5f;
-  padding: clamp(24px, 4vw, 36px);
-  color: #ffffff;
-  display: grid;
-  gap: 16px;
-}
+.hero {padding-block:var(--space-3) var(--section-gap);border-bottom:1px solid var(--border);display:grid;gap:var(--space-4);color:var(--text-primary)}
 
 .heroEyebrow {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--ui-body);
   font-weight: 500;
-  color: #fb923c;
+  color: var(--accent-orange);
 }
 
 .heroTop {
@@ -33,17 +27,17 @@
 
 .heroTitle {
   margin: 4px 0 8px;
-  font-size: clamp(1.625rem, 3vw, 2.25rem);
+  font-size: var(--ui-title);
   line-height: 1.2;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .heroSubtitle {
   margin: 0;
   max-width: 640px;
-  font-size: 15px;
+  font-size: var(--ui-body);
   line-height: 1.55;
-  color: #cbd5e1;
+  color: var(--text-secondary);
 }
 
 .heroActions {
@@ -58,40 +52,38 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 42px;
+  min-height: var(--control-height);
   padding: 9px 16px;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: var(--radius-input);
+  font-size: var(--ui-body);
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
   border: 1px solid transparent;
 }
 
-.primaryBtn {
-  background: #f97316;
-  color: #ffffff;
-}
+.primaryBtn {background:var(--accent-orange);color:var(--button-ink)}
 
 .primaryBtn:hover {
-  background: #ea580c;
+  background: var(--accent-orange);
 }
 
 .secondaryHeroBtn {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.24);
-  color: #ffffff;
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text-primary);
 }
 
 .secondaryHeroBtn:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: var(--surface-hover);
 }
 
 .controlsCard {
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--border, #e2e8f0);
-  border-radius: 12px;
-  padding: 20px;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--card-padding);
   display: grid;
   gap: 16px;
 }
@@ -109,20 +101,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--border, #cbd5e1);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-input);
   padding: 0 12px;
-  min-height: 42px;
-  background: var(--surface, #ffffff);
+  min-height: var(--control-height);
+  background: var(--surface);
 }
 
 .searchInput {
   flex: 1;
   border: 0;
-  outline: none;
   font: inherit;
-  font-size: 14px;
-  color: var(--text-primary, #0f172a);
+  font-size: var(--ui-body);
+  color: var(--text-primary);
   background: transparent;
 }
 
@@ -137,14 +128,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 38px;
+  min-height: var(--control-height);
   padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid #0f294a;
-  background: #0f294a;
-  color: #ffffff;
+  border-radius: var(--radius-input);
+  border: 1px solid var(--accent-orange);
+  background: var(--accent-orange);
+  color: var(--button-ink);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--ui-body);
   font-weight: 600;
   cursor: pointer;
 }
@@ -163,9 +154,9 @@
 }
 
 .filterLabel {
-  font-size: 13px;
+  font-size: var(--ui-body);
   font-weight: 600;
-  color: #475569;
+  color: var(--text-secondary);
   margin-right: 4px;
 }
 
@@ -173,34 +164,34 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 36px;
+  min-height: var(--control-height);
   padding: 6px 14px;
-  border-radius: 9999px;
-  border: 1px solid var(--border, #cbd5e1);
-  background: var(--surface-soft, #f8fafc);
-  color: var(--text-primary, #0f294a);
+  border-radius: var(--radius-input);
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text-primary);
   font: inherit;
-  font-size: 13px;
+  font-size: var(--ui-body);
   font-weight: 600;
   cursor: pointer;
 }
 
 .chipActive {
-  background: #0f294a;
-  border-color: #0f294a;
-  color: #ffffff;
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: var(--button-ink);
 }
 
 .moodChipActive {
-  background: #f97316;
-  border-color: #ea580c;
-  color: #ffffff;
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+  color: var(--button-ink);
 }
 
 .moodSummary {
   margin: 0;
-  font-size: 14px;
-  color: var(--text-secondary, #475569);
+  font-size: var(--ui-body);
+  color: var(--text-secondary);
 }
 
 .resultsHeader {
@@ -213,15 +204,15 @@
 
 .resultsTitle {
   margin: 0;
-  font-size: 20px;
-  color: var(--text-primary, #0f294a);
+  font-size: var(--ui-heading);
+  color: var(--text-primary);
 }
 
 .resultsCount {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--ui-body);
   font-weight: 600;
-  color: var(--text-secondary, #64748b);
+  color: var(--text-secondary);
 }
 
 .grid {
@@ -231,9 +222,9 @@
 }
 
 .card {
-  border-radius: 12px;
-  border: 1px solid var(--border, #e2e8f0);
-  background: var(--surface, #ffffff);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: var(--surface);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -242,7 +233,7 @@
 .photoBox {
   position: relative;
   aspect-ratio: 16 / 10;
-  background: linear-gradient(135deg, #091b33 0%, #0f294a 60%, #163a66 100%);
+  background: var(--surface-soft);
   overflow: hidden;
 }
 
@@ -258,7 +249,7 @@
   height: 100%;
   display: grid;
   place-items: center;
-  color: #f97316;
+  color: var(--accent-orange);
 }
 
 .badgeStrip {
@@ -275,19 +266,19 @@
 .distanceBadge,
 .verifiedBadge {
   padding: 4px 10px;
-  border-radius: 9999px;
+  border-radius: var(--radius-input);
   font-size: 11.5px;
   font-weight: 600;
 }
 
 .distanceBadge {
-  background: #0f294a;
-  color: #ffffff;
+  background: var(--accent-orange);
+  color: var(--button-ink);
 }
 
 .verifiedBadge {
-  background: #ea580c;
-  color: #ffffff;
+  background: var(--accent-orange);
+  color: var(--button-ink);
 }
 
 .cardBody {
@@ -302,21 +293,21 @@
   margin: 0;
   font-size: 12.5px;
   font-weight: 600;
-  color: #ea580c;
+  color: var(--text-secondary);
 }
 
 .cardTitle {
   margin: 0;
-  font-size: 17px;
+  font-size: var(--ui-card-title);
   line-height: 1.3;
-  color: var(--text-primary, #0f294a);
+  color: var(--text-primary);
 }
 
 .cardMeta {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--ui-body);
   line-height: 1.45;
-  color: var(--text-secondary, #475569);
+  color: var(--text-secondary);
 }
 
 .ratingRow {
@@ -325,7 +316,7 @@
   gap: 5px;
   font-size: 12.5px;
   font-weight: 600;
-  color: #0f294a;
+  color: var(--text-primary);
 }
 
 .cardActions {
@@ -342,40 +333,45 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 36px;
+  min-height: var(--control-height);
   padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: var(--radius-input);
+  font-size: var(--ui-body);
   font-weight: 600;
   text-decoration: none;
 }
 
 .actionPrimary {
-  background: #f97316;
-  color: #ffffff;
+  background: var(--accent-orange);
+  color: var(--button-ink);
 }
 
 .actionPrimary:hover {
-  background: #ea580c;
+  background: var(--accent-orange);
 }
 
 .actionSecondary {
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  color: #0f294a;
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  color: var(--accent-orange);
 }
 
 .actionSecondary:hover {
-  background: #f1f5f9;
+  background: var(--accent-orange);
 }
 
 .emptyCard {
-  border-radius: 12px;
-  border: 1px solid var(--border, #e2e8f0);
-  background: #f8fafc;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
   padding: 32px 24px;
   text-align: center;
   display: grid;
   gap: 10px;
   justify-items: center;
+}
+
+@media(max-width:600px){
+  .moodRow,.radiusRow{flex-wrap:nowrap;overflow-x:auto;max-width:100%;min-width:0;padding-block:var(--space-1)}
+  .moodRow .chip,.radiusRow .chip,.filterLabel{flex-shrink:0}
 }

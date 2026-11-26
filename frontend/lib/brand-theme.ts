@@ -8,8 +8,6 @@ export function themeVariables(mode:'light'|'dark',accentId?:string):CSSProperti
   return {
     ...themeProperties(mode,accentId),
     '--hairline':mode==='dark'?'rgba(255, 255, 255, 0.08)':'rgba(15, 23, 42, 0.08)',
-    '--radius-card':'12px',
-    '--radius-input':'8px',
     '--font-feature-tnum':'"tnum"',
   } as CSSProperties;
 }

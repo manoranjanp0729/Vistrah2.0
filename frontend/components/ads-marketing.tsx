@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {marketingCopy} from '../../shared/ads-marketing';
 import {marketingServicePages,marketingServiceHref} from '../../shared/marketing-services';
-import {marketingVisuals} from '../../shared/marketing-visuals';
 import styles from './ads-marketing.module.css';
 
 export function AdsMarketing() {
@@ -19,15 +18,11 @@ export function AdsMarketing() {
       </div>
       <div className={styles.grid}>
         {marketingServicePages.map(card=>{
-          const visual = marketingVisuals[card.key as keyof typeof marketingVisuals];
-          const bg = visual?.paper || '#f8fafc';
-          const ink = visual?.ink || '#0f294a';
-          const accent = visual?.accent || '#f97316';
           return (
-            <Link className={styles.card} key={card.key} href={marketingServiceHref(card.slug)} style={{backgroundColor: bg, borderColor: accent + '30', color: ink}}>
+            <Link className={styles.card} key={card.key} href={marketingServiceHref(card.slug)}>
               <Image unoptimized src={`/images/ads-marketing/${card.photo}`} width={750} height={600} alt={card.title[locale]}/>
-              <h3 style={{color: ink}}>{card.title[locale]}</h3>
-              <span className={styles.arrow} style={{color: accent}} aria-hidden="true">{'\u2197'}</span>
+              <h3>{card.title[locale]}</h3>
+              <span className={styles.arrow} aria-hidden="true">{'\u2197'}</span>
             </Link>
           );
         })}

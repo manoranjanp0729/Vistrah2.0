@@ -1,4 +1,4 @@
-﻿// Extend app.json, retaining local EAS project linkage and native build settings.
+// Extend app.json, retaining local EAS project linkage and native build settings.
 module.exports = ({config}) => {
   require('./scripts/validate-build-environment.cjs').validateBuildEnvironment();
   const projectId=config.extra?.eas?.projectId;

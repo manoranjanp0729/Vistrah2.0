@@ -2,36 +2,34 @@ import {createContext,createElement,useContext,useEffect,useMemo,useState,type R
 import {Platform,StyleSheet} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import brandTheme from '../../../shared/brand-theme.json';
+import ui from '../../../shared/ui-tokens.json';
 import {themeAppearance} from '../../../shared/theme-appearance';
 
 export type ThemeMode='light'|'dark';
 export const accentPresets = brandTheme.accentPresets;
 export type AccentPreset = (typeof accentPresets)[number];
 export type AccentId = AccentPreset['id'];
-const palettes = brandTheme.palettes;
-type Palette = typeof palettes.dark;
+type Palette = typeof brandTheme.palettes.dark;
+export type ThemeColors=ReturnType<typeof themeAppearance>['colors'];
 
 export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',text:'#6d4524'},{background:'#eff6ff',text:'#0f294a'},{background:'#dfece3',text:'#294934'}];
 
 // Shared text hierarchy across the phone website and native screens.
 export const typography={
- title:{fontSize:24,lineHeight:29,letterSpacing:-0.6,fontWeight:'600'},
- heading:{fontSize:18,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
- sectionHeading:{fontSize:18,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
- cardTitle:{fontSize:14,lineHeight:17,letterSpacing:-0.21,fontWeight:'600'},
- body:{fontSize:14,lineHeight:21,fontWeight:'400'},
- supporting:{fontSize:12,lineHeight:18,fontWeight:'400'},
+ title:{fontSize:ui.typography.title,lineHeight:29,letterSpacing:-0.6,fontWeight:'600'},
+ heading:{fontSize:ui.typography.heading,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
+ sectionHeading:{fontSize:ui.typography.heading,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
+ cardTitle:{fontSize:ui.typography.cardTitle,lineHeight:22,letterSpacing:-0.21,fontWeight:'600'},
+ body:{fontSize:ui.typography.body,lineHeight:21,fontWeight:'400'},
+ supporting:{fontSize:ui.typography.supporting,lineHeight:18,fontWeight:'400'},
  label:{fontSize:10,lineHeight:14,letterSpacing:.6},
- action:{fontSize:13,lineHeight:18,fontWeight:'600'},
+ action:{fontSize:ui.typography.action,lineHeight:18,fontWeight:'600'},
  input:{fontSize:14},
  tabular:{fontVariant:['tabular-nums']},
 } as const;
 // Strict 4pt/8pt spatial rhythm across mobile and phone-web surfaces.
 // Keep control sizing and measured grid geometry independent.
-export const spacing={small:4,fieldGap:8,cardGap:8,elementGap:8,feedGap:12,regular:12,controlPadding:12,pagePadding:16,pagePaddingDesktop:24,cardPaddingCompact:16,cardPadding:20,pageGap:16,sectionGap:24,sectionPadding:24,pageBottom:24} as const;
-export const radii={input:8,action:8,surface:12,pill:9999} as const;
-export const controlHeights={pill:36,compact:44,standard:44,multiline:120} as const;
-export const layout={pageMaxWidth:900,borderWidth:1} as const;
+export const {spacing,radii,controlHeights,layout}=ui;
 
 const makeStyles=(colors:Palette)=>StyleSheet.create({
   page:{flex:1,backgroundColor:colors.background},

@@ -1,4 +1,12 @@
 import {AdminReviewFrame} from '@/components/admin-workspace';
-import {VAdsManagement} from '@/components/v-ads-management';
-export const metadata={title:'V Ads management'};
-export default function VAdsPage(){return <AdminReviewFrame><VAdsManagement/></AdminReviewFrame>;}
+import {AdminVAdsConsole} from '@/components/admin-v-ads-console';
+
+export const metadata = {title: 'V Ads · VISTRAH Admin'};
+
+export default function AdminVAdsPage() {
+  return (
+    <AdminReviewFrame>
+      <AdminVAdsConsole />
+    </AdminReviewFrame>
+  );
+}

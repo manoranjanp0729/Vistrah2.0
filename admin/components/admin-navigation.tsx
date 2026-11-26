@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {Activity,Globe,IndianRupee,LayoutDashboard,Search,ShieldCheck} from 'lucide-react';
+import {Building2,LayoutDashboard,Users,Video} from 'lucide-react';
 import {adminPrimaryDestinations,adminTaskGroups} from '../../shared/admin-dashboard';
 
 export const adminGroups = adminTaskGroups.map(group => ({
@@ -15,20 +15,19 @@ export const adminGroups = adminTaskGroups.map(group => ({
 
 const navIcons = {
   '': LayoutDashboard,
-  'business-audit': Search,
-  moderation: ShieldCheck,
-  pricing: IndianRupee,
-  homepage: Globe,
-  audit: Activity,
+  businesses: Building2,
+  'v-ads': Video,
+  users: Users,
 } as const;
 
 export function resolvePrimaryDestination(pathname: string) {
+  const clean = (pathname || '/').split('?')[0] || '/';
   const seg =
-    pathname === '/admin'
+    clean === '/' || clean === '/admin'
       ? ''
-      : pathname.startsWith('/admin/')
-        ? (pathname.split('/')[2] ?? '')
-        : (pathname.split('/')[1] ?? '');
+      : clean.startsWith('/admin/')
+        ? (clean.split('/')[2] ?? '')
+        : (clean.split('/')[1] ?? '');
   return (
     adminPrimaryDestinations.find(dest => dest.matches.includes(seg)) ??
     adminPrimaryDestinations[0]
@@ -36,7 +35,7 @@ export function resolvePrimaryDestination(pathname: string) {
 }
 
 export function AdminNavigation({onNavigate}:{onNavigate?:()=>void}) {
-  const path = usePathname() || '/admin';
+  const path = usePathname() || '/';
   const activeDest = resolvePrimaryDestination(path);
 
   return (

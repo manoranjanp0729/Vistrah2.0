@@ -1,12 +1,12 @@
 import {AdminReviewFrame} from '@/components/admin-workspace';
-import {AdminModerationHub} from '@/components/admin-moderation-hub';
+import {AdminVAdsConsole} from '@/components/admin-v-ads-console';
 
-export const metadata = {title: 'V Ads & Sellers · Vistrah Admin'};
+export const metadata = {title: 'V Ads · VISTRAH Admin'};
 
 export default function AdminModerationPage() {
   return (
     <AdminReviewFrame>
-      <AdminModerationHub />
+      <AdminVAdsConsole />
     </AdminReviewFrame>
   );
 }

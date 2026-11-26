@@ -93,7 +93,7 @@
 }
 
 .segmented button.active {
-  background: var(--accent-editorial, #173f35);
+  background: var(--accent-editorial, #0f294a);
   color: #ffffff;
 }
 
@@ -181,8 +181,8 @@
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--accent-editorial, #173f35);
-  background: var(--accent-editorial-soft, #ecf5f1);
+  color: var(--accent-editorial, #0f294a);
+  background: var(--accent-editorial-soft, #eff6ff);
   border-radius: 6px;
   padding: 2px 7px;
   width: fit-content;
@@ -279,19 +279,19 @@
 }
 
 .docBtn:hover {
-  border-color: var(--accent-editorial, #173f35);
+  border-color: var(--accent-editorial, #0f294a);
   background: var(--surface-soft);
 }
 
 .docBtnPrimary {
-  border-color: var(--accent-editorial, #173f35);
-  background: var(--accent-editorial, #173f35);
+  border-color: var(--accent-editorial, #0f294a);
+  background: var(--accent-editorial, #0f294a);
   color: #ffffff;
 }
 
 .docBtnPrimary:hover {
   opacity: 0.92;
-  background: var(--accent-editorial, #173f35);
+  background: var(--accent-editorial, #0f294a);
 }
 
 .inlineCreditEditor {
@@ -495,8 +495,8 @@
 
 .ctcRowHighlight td {
   font-weight: 700;
-  background: var(--accent-editorial-soft, #ecf5f1);
-  color: var(--accent-editorial, #173f35);
+  background: var(--accent-editorial-soft, #eff6ff);
+  color: var(--accent-editorial, #0f294a);
 }
 
 /* Print Toolbar & A4 Letterhead */

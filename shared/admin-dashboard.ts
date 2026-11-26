@@ -13,51 +13,35 @@ export type AdminPrimaryDestination = {
 export const adminPrimaryDestinations:readonly AdminPrimaryDestination[] = [
   {
     slug:'',
-    href:'/admin',
+    href:'/',
     label:'Overview',
-    eyebrow:'VISTRAH CONTROL CENTER',
-    description:'Live platform KPIs, actionable review queue, and 1-click access to every workspace tool.',
-    matches:[''],
+    eyebrow:'Operations Overview',
+    description:'Daily moderation queue and live marketplace pulse metrics.',
+    matches:['','overview'],
   },
   {
-    slug:'business-audit',
-    href:'/admin/business-audit',
-    label:'Business Growth Check',
-    eyebrow:'ONLINE PRESENCE & CUSTOMER GROWTH CHECK',
-    description:'Find VISTRAH & Google-listed shops across all 10 categories, see what they are missing online, build live growth plans, and track follow-ups.',
-    matches:['business-audit'],
+    slug:'businesses',
+    href:'/businesses',
+    label:'Businesses',
+    eyebrow:'Business Directory',
+    description:'Directory listings, verification status tabs, and provider onboarding.',
+    matches:['businesses','listings','providers','provider-applications','provider-services','ownership-claims','publication-drafts','commerce-listings'],
   },
   {
-    slug:'moderation',
-    href:'/admin/moderation',
-    label:'V Ads & Sellers',
-    eyebrow:'MODERATION & DIRECTORY',
-    description:'Review pending V Ads, geo-targeting revisions (024), seller verification, DPDP user consent, and internal HR records.',
-    matches:['moderation','employees','v-ads','providers','provider-applications','provider-services','ownership-claims','publication-drafts'],
+    slug:'v-ads',
+    href:'/v-ads',
+    label:'V Ads',
+    eyebrow:'Visual Ad Moderation',
+    description:'Review short-form video ads, advertiser channels, and local radius targeting.',
+    matches:['v-ads','moderation'],
   },
   {
-    slug:'pricing',
-    href:'/admin/pricing',
-    label:'Pricing',
-    eyebrow:'LIVE RATE CARD & PROMOS',
-    description:'Edit V Ads first-month-free promos, self-serve km rates, Studio agency pillars, and FAQs.',
-    matches:['pricing','memberships','offers','vistrah-services'],
-  },
-  {
-    slug:'homepage',
-    href:'/admin/homepage',
-    label:'Homepage',
-    eyebrow:'STOREFRONT PUBLISHING',
-    description:'Arrange, preview, and publish editorial homepage sections across web and mobile.',
-    matches:['homepage','edit-vistrah','catalogue'],
-  },
-  {
-    slug:'audit',
-    href:'/admin/audit',
-    label:'Audit & Health',
-    eyebrow:'COMPLIANCE & TELEMETRY',
-    description:'Immutable V Ads revision logs, DPDP Act 2023 consent/erasure ledger, administrative audit trail, and live health.',
-    matches:['audit','payments','workflows','job-sources','provider-requirements'],
+    slug:'users',
+    href:'/users',
+    label:'Users & Audits',
+    eyebrow:'Accounts & Growth Pipeline',
+    description:'Consumer accounts, Neighbourhood Recommendations, and Business Growth & Audit leads.',
+    matches:['users','business-audit','requests','audit','employees'],
   },
 ];
 
@@ -120,6 +104,7 @@ export type AdminOverview = {
   verified_users?:number;
   dpdp_consented_users?:number;
   anonymized_users?:number;
+  audit_leads?:number;
   needs_review?:NeedsReviewItem[];
 };
 export const adminSummary = [

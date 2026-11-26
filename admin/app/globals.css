@@ -1,18 +1,18 @@
 :root {
-  --brand-green-950:#173f35;
-  --brand-green-800:#245744;
-  --brand-green-700:#34745a;
-  --navy-950:#071a3d;
-  --navy-900:#0b1f5b;
-  --accent-orange:#ff8a00;
-  --page-background:#f7f9fc;
-  --surface:#fff;
-  --ivory:#f6f5ed;
-  --border:#dfe5ef;
-  --text-primary:#17231f;
-  --text-secondary:#5c6b64;
-  --text-warning:#806216;
-  --text-error:#923b33;
+  --brand-green-950:#0f294a;
+  --brand-green-800:#132f54;
+  --brand-green-700:#163a66;
+  --navy-950:#091b33;
+  --navy-900:#0f294a;
+  --accent-orange:#f97316;
+  --page-background:#f8fafc;
+  --surface:#ffffff;
+  --ivory:#f8fafc;
+  --border:#e2e8f0;
+  --text-primary:#0f172a;
+  --text-secondary:#475569;
+  --text-warning:#b45309;
+  --text-error:#b91c1c;
   --space-1:4px;
   --space-2:8px;
   --space-3:12px;
@@ -22,11 +22,11 @@
   --space-7:48px;
   --space-8:64px;
   --space-9:88px;
-  --radius-sm:6px;
+  --radius-sm:8px;
   --radius-md:12px;
-  --radius-lg:20px;
-  --shadow-sm:0 3px 16px #173f3507;
-  --shadow-md:0 12px 32px #173f350c;
+  --radius-lg:12px;
+  --shadow-sm:0 2px 10px rgba(15, 41, 74, 0.05);
+  --shadow-md:0 12px 28px rgba(15, 41, 74, 0.08);
   --breakpoint-mobile:390px;
   --breakpoint-tablet:768px;
   --breakpoint-laptop:1024px;
@@ -396,8 +396,8 @@ td strong { font-weight:var(--weight-medium) }
 .admin-sidebar nav>a { display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:6px;font-size:var(--type-secondary);color:#a6b7cc }
 .admin-sidebar nav>a svg { color:#8ca2bd }
 .admin-sidebar nav>a:hover { background:#ffffff09 }
-.admin-sidebar nav>a.active { background:#1f463f;color:#e9f1ed }
-.admin-sidebar nav>a.active svg { color:#c1d5c9 }
+.admin-sidebar nav>a.active { background:#132f54;color:#ffffff }
+.admin-sidebar nav>a.active svg { color:#f97316 }
 .nav-dot { margin-left:auto;width:4px;height:4px;background:#b1c9b6;border-radius:50% }
 .sidebar-bottom { margin-top:auto;padding:30px 18px 0;display:flex;align-items:center;gap:8px;font-size:var(--type-caption);letter-spacing:var(--tracking-label);flex-wrap:wrap;color:#a5b5c9 }
 .sidebar-bottom>span:last-child { display:block;width:100%;letter-spacing:var(--tracking-normal);font-size:var(--type-meta);color:#6f87a3;margin:3px 0 0 14px }
@@ -882,7 +882,7 @@ html { scroll-behavior:auto }
 .help-nav-row>a {flex:1;min-width:0}
 .admin-sidebar nav .help-nav-row>a {display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:6px;font-size:var(--type-secondary);color:#a6b7cc;line-height:var(--leading-ui)}
 .admin-sidebar nav .help-nav-row>a svg {flex-shrink:0;color:#8ca2bd}
-.admin-sidebar nav .help-nav-row>a.active {background:#1f463f;color:#e9f1ed}
+.admin-sidebar nav .help-nav-row>a.active {background:#132f54;color:#ffffff}
 .admin-sidebar nav .help-nav-row>a:hover {background:#ffffff09}
 .admin-sidebar .help-trigger {color:#c1d5c9}
 .admin-sidebar .help-trigger:hover {background:#ffffff15}
@@ -905,8 +905,8 @@ html { scroll-behavior:auto }
 
 /* WP05: local Leaflet coordinate map, with no external basemap by default. */
 .location-map.leaflet-container{height:360px;width:100%;margin:1rem 0;background:#edf2ef;background-image:linear-gradient(#d8e2dc 1px,transparent 1px),linear-gradient(90deg,#d8e2dc 1px,transparent 1px);background-size:32px 32px;z-index:0;border:1px solid #becfc3;border-radius:8px;}
-.location-marker{display:flex;align-items:center;justify-content:center;border:2px solid white;background:#174b35;color:white;border-radius:50%;font:bold 12px Arial;box-shadow:0 1px 4px #0005;}
-.customer-marker{background:#825d17;font-size:22px;}.selected-marker{background:#b03e1e;outline:3px solid #b03e1e;}.selected-provider{outline:3px solid #174b35;}.location-controls{margin:1rem 0;}.location-controls input{max-width:100%;}.location-map:focus-within{outline:2px solid #174b35;}
+.location-marker{display:flex;align-items:center;justify-content:center;border:2px solid white;background:#0f294a;color:white;border-radius:50%;font:bold 12px Arial;box-shadow:0 1px 4px #0005;}
+.customer-marker{background:#ea580c;font-size:22px;}.selected-marker{background:#b91c1c;outline:3px solid #b91c1c;}.selected-provider{outline:3px solid #0f294a;}.location-controls{margin:1rem 0;}.location-controls input{max-width:100%;}.location-map:focus-within{outline:2px solid #0f294a;}
 @media(max-width:600px){.location-map{height:300px;}}
 
 .request-address-consent input{flex:0 0 18px;width:18px;height:18px;padding:0;margin:0;}

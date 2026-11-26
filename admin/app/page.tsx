@@ -1,2 +1,12 @@
-import {redirect} from 'next/navigation';
-export default function Home(){redirect('/admin');}
+import {AdminReviewFrame} from '@/components/admin-workspace';
+import {AdminOverviewConsole} from '@/components/admin-overview';
+
+export const metadata = {title: 'Overview · VISTRAH Admin'};
+
+export default function HomePage() {
+  return (
+    <AdminReviewFrame>
+      <AdminOverviewConsole />
+    </AdminReviewFrame>
+  );
+}

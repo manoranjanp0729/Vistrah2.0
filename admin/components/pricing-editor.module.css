@@ -105,9 +105,9 @@
 }
 
 .bannerSuccess {
-  border-color: #34745a;
-  background: #eff7f3;
-  color: #173f35;
+  border-color: #bbf7d0;
+  background: #dcfce7;
+  color: #15803d;
   font-weight: 500;
 }
 
@@ -242,25 +242,25 @@
 }
 
 .statusActive {
-  background: #e8f2ec;
-  color: #173f35;
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .statusHidden {
-  background: #f3f4f6;
-  color: #647084;
+  background: #f1f5f9;
+  color: #475569;
 }
 
 .dirtyBadge {
-  background: #fff4e5;
-  color: #9a5200;
-  border: 1px solid #ffd599;
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
 }
 
 .pricePreview {
   font-size: 15px;
   font-weight: 700;
-  color: #173f35;
+  color: #0f294a;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1;
 }

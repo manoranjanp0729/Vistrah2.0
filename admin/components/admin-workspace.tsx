@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import {usePathname,useRouter} from 'next/navigation';
 import {useRef,useState,type ReactNode} from 'react';
-import {ArrowUpRight,ChevronDown,LogOut} from 'lucide-react';
+import {ArrowUpRight,LogOut} from 'lucide-react';
 import {adminPrimaryDestinations,adminTaskGroups} from '../../shared/admin-dashboard';
-import {AdminNavigation} from './admin-navigation';
+import {AdminNavigation,resolvePrimaryDestination} from './admin-navigation';
 import {useUser} from './customer';
 import {Notice} from './ui';
 import {api} from '@/lib/api';
@@ -24,21 +24,23 @@ export function AdminWorkspace({
   children: ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const mobileNav = useRef<HTMLDetailsElement>(null);
-  const quickToolsRef = useRef<HTMLDetailsElement>(null);
 
-  const primary = adminPrimaryDestinations.find(d => d.slug === section);
-  const subItem = adminTaskGroups.flatMap(g => g.items).find(i => i.slug === section);
-  const subGroup = adminTaskGroups.find(g => g.items.some(i => i.slug === section));
+  const exactPrimary = adminPrimaryDestinations.find(
+    d => d.slug === section || d.matches[0] === section,
+  );
+  const matchedPrimary = resolvePrimaryDestination(pathname || (section ? `/${section}` : '/'));
+  const subItem = exactPrimary
+    ? undefined
+    : adminTaskGroups.flatMap(g => g.items).find(i => i.slug === section);
 
-  const title = primary?.label ?? subItem?.label ?? 'Overview';
-  const eyebrow = primary?.eyebrow ?? (subGroup?.title ? subGroup.title.toUpperCase() : 'VISTRAH OPERATIONS');
+  const title = exactPrimary?.label ?? subItem?.label ?? matchedPrimary.label;
+  const eyebrow = exactPrimary?.eyebrow ?? matchedPrimary.eyebrow;
   const description =
-    primary?.description ??
-    subItem?.description ??
-    'Live platform KPIs, moderation queues, pricing, and editorial publishing.';
+    exactPrimary?.description ?? subItem?.description ?? matchedPrimary.description;
 
   async function logout() {
     setBusy(true);
@@ -57,9 +59,9 @@ export function AdminWorkspace({
   return (
     <div className="admin-app">
       <aside className="admin-sidebar admin-desktop-navigation">
-        <Link href="/admin" className="admin-brand">
+        <Link href="/" className="admin-brand">
           VISTRAH
-          <span>EDITORIAL ADMIN</span>
+          <span>Operations Console</span>
         </Link>
         <AdminNavigation />
         <div className="sidebar-bottom">
@@ -72,15 +74,15 @@ export function AdminWorkspace({
             <span>vistrah.in</span>
             <ArrowUpRight size={14} aria-hidden="true" />
           </a>
-          <span className="tabular-nums">DPDP 2023 · Sandbox Billing</span>
+          <span className="tabular-nums">Discover. Connect. Grow.</span>
         </div>
       </aside>
 
       <div className="admin-main">
         <header className="admin-topbar">
           <div className="admin-breadcrumb">
-            <Link href="/admin">Control Center</Link>
-            {section && (
+            <Link href="/">Overview</Link>
+            {section && title !== 'Overview' && (
               <>
                 <span aria-hidden="true">/</span>
                 <strong>{title}</strong>
@@ -89,31 +91,6 @@ export function AdminWorkspace({
           </div>
 
           <div className="admin-topbar-right">
-            <details className="admin-quick-tools" ref={quickToolsRef}>
-              <summary>
-                <span>All Tools</span>
-                <ChevronDown size={14} aria-hidden="true" />
-              </summary>
-              <div className="admin-quick-tools-panel">
-                {adminTaskGroups.map(group => (
-                  <div key={group.title} className="admin-quick-tools-col">
-                    <p>{group.title}</p>
-                    {group.items.map(tool => (
-                      <Link
-                        key={tool.slug}
-                        href={`/admin/${tool.slug}`}
-                        onClick={() => {
-                          if (quickToolsRef.current) quickToolsRef.current.open = false;
-                        }}
-                      >
-                        {tool.label}
-                      </Link>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </details>
-
             <div className="admin-identity">
               <span>
                 {user.name}
@@ -148,36 +125,7 @@ export function AdminWorkspace({
               <h1>{title}</h1>
               <p>{description}</p>
             </div>
-            <div className="button-row">
-              {section === 'homepage' && (
-                <>
-                  <Link href="/admin/edit-vistrah" className="button secondary">
-                    Page Sections (CMS)
-                  </Link>
-                  <a
-                    href={LIVE_SITE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="button secondary"
-                  >
-                    Open Live Site
-                    <ArrowUpRight size={15} />
-                  </a>
-                </>
-              )}
-              {section === 'pricing' && (
-                <a
-                  href={`${LIVE_SITE_URL}/pricing`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="button secondary"
-                >
-                  Open Live /pricing
-                  <ArrowUpRight size={15} />
-                </a>
-              )}
-              {actions}
-            </div>
+            {actions && <div className="button-row">{actions}</div>}
           </div>
 
           {error && <Notice error message={error} />}
@@ -188,13 +136,17 @@ export function AdminWorkspace({
   );
 }
 
-export function AdminShellSkeleton({message = 'Verifying administrator session…'}: {message?: string}) {
+export function AdminShellSkeleton({
+  message = 'Verifying administrator session…',
+}: {
+  message?: string;
+}) {
   return (
     <div className="admin-app">
       <aside className="admin-sidebar admin-desktop-navigation">
-        <Link href="/admin" className="admin-brand">
+        <Link href="/" className="admin-brand">
           VISTRAH
-          <span>EDITORIAL ADMIN</span>
+          <span>Operations Console</span>
         </Link>
         <AdminNavigation />
         <div className="sidebar-bottom">
@@ -207,7 +159,7 @@ export function AdminShellSkeleton({message = 'Verifying administrator session�
             <span>vistrah.in</span>
             <ArrowUpRight size={14} aria-hidden="true" />
           </a>
-          <span className="tabular-nums">DPDP 2023 · Sandbox Billing</span>
+          <span className="tabular-nums">Discover. Connect. Grow.</span>
         </div>
       </aside>
       <div className="admin-main">
@@ -230,7 +182,7 @@ export function AdminReviewFrame({
   actions?: ReactNode;
   children: ReactNode;
 }) {
-  const path = usePathname() || '/admin';
+  const path = usePathname() || '/';
   const {user, loading, error} = useUser();
   if (loading) {
     return <AdminShellSkeleton />;
@@ -258,12 +210,13 @@ export function AdminReviewFrame({
       </main>
     );
   }
+  const clean = path.split('?')[0] || '/';
   const section =
-    path === '/admin'
+    clean === '/' || clean === '/admin'
       ? ''
-      : path.startsWith('/admin/')
-        ? (path.split('/')[2] ?? '')
-        : (path.split('/')[1] ?? '');
+      : clean.startsWith('/admin/')
+        ? (clean.split('/')[2] ?? '')
+        : (clean.split('/')[1] ?? '');
   return (
     <AdminWorkspace user={user} section={section} actions={actions}>
       {children}

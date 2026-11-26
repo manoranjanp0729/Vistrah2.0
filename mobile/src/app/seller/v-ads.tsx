@@ -596,17 +596,17 @@ function WorkspaceScreen(){
       <View style={{gap:12}}>
       {/* Filter Tabs */}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8, paddingVertical: 2}}>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('ALL')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'ALL' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'ALL' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'ALL' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"All ("}/>{accountVideos.length})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('ALL')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 9999, backgroundColor: filter === 'ALL' ? (mode === 'light' ? '#F0FDFA' : 'rgba(13,148,136,0.22)') : colors.surface, borderWidth: 1, borderColor: filter === 'ALL' ? (mode === 'light' ? '#99F6E4' : '#2DD4BF') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'ALL' ? (mode === 'light' ? '#115E59' : '#99F6E4') : colors.text}}><UiText value={"All ("}/>{accountVideos.length})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('APPROVED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'APPROVED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'APPROVED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'APPROVED' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"● Approved ("}/>{accountVideos.filter(v=>v.status==='APPROVED').length})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('APPROVED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 9999, backgroundColor: filter === 'APPROVED' ? (mode === 'light' ? '#F0FDFA' : 'rgba(13,148,136,0.22)') : colors.surface, borderWidth: 1, borderColor: filter === 'APPROVED' ? (mode === 'light' ? '#99F6E4' : '#2DD4BF') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'APPROVED' ? (mode === 'light' ? '#115E59' : '#99F6E4') : colors.text}}><UiText value={"● Approved ("}/>{accountVideos.filter(v=>v.status==='APPROVED').length})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('PENDING')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'PENDING' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'PENDING' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'PENDING' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"⏳ Review ("}/>{pendingCount})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('PENDING')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 9999, backgroundColor: filter === 'PENDING' ? (mode === 'light' ? '#F0FDFA' : 'rgba(13,148,136,0.22)') : colors.surface, borderWidth: 1, borderColor: filter === 'PENDING' ? (mode === 'light' ? '#99F6E4' : '#2DD4BF') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'PENDING' ? (mode === 'light' ? '#115E59' : '#99F6E4') : colors.text}}><UiText value={"⏳ Review ("}/>{pendingCount})</Text>
         </Pressable>
-        <Pressable accessibilityRole="button" onPress={()=>setFilter('REJECTED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: filter === 'REJECTED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.surface, borderWidth: 1, borderColor: filter === 'REJECTED' ? (mode === 'light' ? '#0F294A' : '#F97316') : colors.border, opacity: pressed ? 0.75 : 1})}>
-          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'REJECTED' ? (mode === 'light' ? '#fff' : '#091526') : colors.text}}><UiText value={"⚠️ Changes ("}/>{rejectedCount})</Text>
+        <Pressable accessibilityRole="button" onPress={()=>setFilter('REJECTED')} style={({pressed})=>({minHeight: 36, justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 9999, backgroundColor: filter === 'REJECTED' ? (mode === 'light' ? '#F0FDFA' : 'rgba(13,148,136,0.22)') : colors.surface, borderWidth: 1, borderColor: filter === 'REJECTED' ? (mode === 'light' ? '#99F6E4' : '#2DD4BF') : colors.border, opacity: pressed ? 0.75 : 1})}>
+          <Text style={{fontSize: 12, fontWeight: '600', fontVariant: ['tabular-nums'], color: filter === 'REJECTED' ? (mode === 'light' ? '#115E59' : '#99F6E4') : colors.text}}><UiText value={"⚠️ Changes ("}/>{rejectedCount})</Text>
         </Pressable>
       </ScrollView>
 
@@ -943,8 +943,8 @@ function WorkspaceScreen(){
                     paddingVertical: 7,
                     borderRadius: 999,
                     borderWidth: 1,
-                    backgroundColor: selected ? '#0F294A' : colors.surface,
-                    borderColor: selected ? '#F97316' : colors.border,
+                    backgroundColor: selected ? '#0D9488' : colors.surface,
+                    borderColor: selected ? '#0D9488' : colors.border,
                   }}
                 >
                   <Text style={{fontSize: 12, fontWeight: '600', color: selected ? '#ffffff' : colors.text}}>
@@ -969,11 +969,11 @@ function WorkspaceScreen(){
                       paddingVertical: 6,
                       borderRadius: 999,
                       borderWidth: 1,
-                      backgroundColor: selected ? '#F97316' : colors.surface,
-                      borderColor: selected ? '#EA580C' : colors.border,
+                      backgroundColor: selected ? (mode === 'light' ? '#F0FDFA' : 'rgba(13,148,136,0.22)') : colors.surface,
+                      borderColor: selected ? (mode === 'light' ? '#99F6E4' : '#2DD4BF') : colors.border,
                     }}
                   >
-                    <Text style={{fontSize: 12, fontWeight: '600', color: selected ? '#ffffff' : colors.text}}>
+                    <Text style={{fontSize: 12, fontWeight: '600', color: selected ? (mode === 'light' ? '#115E59' : '#99F6E4') : colors.text}}>
                       {st.title}
                     </Text>
                   </Pressable>

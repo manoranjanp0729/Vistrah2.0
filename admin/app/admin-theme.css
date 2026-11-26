@@ -3,16 +3,23 @@
   color-scheme: light;
   --page-background: #f8fafc;
   --surface: #ffffff;
-  --surface-soft: #f1f5f9;
+  --surface-soft: #f0fdfa;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --border: #e2e8f0;
+  --secondary-border: #cbd5e1;
   --brand-navy: #0f294a;
-  --brand-navy-deep: #132f54;
-  --brand-orange: #f97316;
-  --brand-orange-strong: #ea580c;
-  --accent-editorial: #0f294a;
-  --accent-editorial-soft: #eff6ff;
+  --brand-navy-deep: #134e4a;
+  --brand-teal: #0d9488;
+  --brand-teal-hover: #0f766e;
+  --brand-teal-deep: #134e4a;
+  --brand-teal-tint: #f0fdfa;
+  --brand-teal-border: #99f6e4;
+  --brand-teal-border-soft: #ccfbf1;
+  --brand-teal-ink: #115e59;
+  --accent-editorial: #0d9488;
+  --accent-editorial-hover: #0f766e;
+  --accent-editorial-soft: #f0fdfa;
   --type-body: 0.875rem;
   --type-secondary: 0.8125rem;
   --type-meta: 0.75rem;
@@ -73,7 +80,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-  outline: 2px solid #0f294a;
+  outline: 2px solid #0d9488;
 }
 
 /* Shell: Flat 5-Destination Rail + Clean Topbar */
@@ -107,7 +114,7 @@ summary:focus-visible {
 
 .admin-brand span {
   display: block;
-  color: #ea580c;
+  color: #0f766e;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.01em;
@@ -156,15 +163,16 @@ summary:focus-visible {
 .admin-sidebar nav > a.admin-rail-link.active,
 .admin-mobile-navigation nav > a.admin-rail-link.active,
 .admin-rail-link.active {
-  background: #0f294a;
-  color: #ffffff;
+  background: #f0fdfa;
+  color: #0f766e;
+  border: 1px solid #ccfbf1;
   font-weight: 600;
 }
 
 .admin-sidebar nav > a.admin-rail-link.active svg,
 .admin-mobile-navigation nav > a.admin-rail-link.active svg,
 .admin-rail-link.active svg {
-  color: #f97316;
+  color: #0d9488;
 }
 
 .sidebar-bottom {
@@ -360,7 +368,7 @@ summary:focus-visible {
   font-weight: 600;
   letter-spacing: 0.01em;
   text-transform: none;
-  color: #ea580c;
+  color: #0f766e;
   margin: 0;
 }
 
@@ -391,21 +399,29 @@ summary:focus-visible {
   padding: 8px 14px;
   min-height: 38px;
   border-radius: 8px;
-  border: 1px solid var(--accent-editorial);
-  background: var(--accent-editorial);
+  border: 1px solid var(--accent-editorial, #0d9488);
+  background: var(--accent-editorial, #0d9488);
   color: #ffffff;
   text-decoration: none;
   cursor: pointer;
+  transition: background-color 0.14s ease, border-color 0.14s ease;
+}
+
+.button:hover:not(:disabled):not(.secondary):not(.danger-outline) {
+  background: var(--accent-editorial-hover, #0f766e);
+  border-color: var(--accent-editorial-hover, #0f766e);
 }
 
 .button.secondary {
-  background: var(--surface);
-  color: var(--text-primary);
-  border-color: var(--border);
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
 }
 
-.button.secondary:hover {
-  background: var(--surface-soft);
+.button.secondary:hover:not(:disabled) {
+  background: #f0fdfa;
+  border-color: #0d9488;
+  color: #0f766e;
 }
 
 .button:disabled {
@@ -806,9 +822,9 @@ a.editorial-kpi-cell:hover {
 }
 
 .editorial-chip.active {
-  border-color: #0f294a !important;
-  background: #0f294a !important;
-  color: #ffffff !important;
+  border-color: #99f6e4 !important;
+  background: #f0fdfa !important;
+  color: #115e59 !important;
 }
 
 .editorial-select {
@@ -1178,9 +1194,9 @@ a.editorial-kpi-cell:hover {
 .status-succeeded,
 .status-assigned,
 .status-in_progress {
-  background: #dcfce7;
-  color: #15803d;
-  border-color: #bbf7d0;
+  background: #f0fdfa;
+  color: #0f766e;
+  border-color: #99f6e4;
 }
 
 .status-rejected,
@@ -1574,8 +1590,8 @@ a.editorial-kpi-cell:hover {
 }
 
 .editorial-kpi-card:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  border-color: #99f6e4;
+  background: #f0fdfa;
 }
 
 .editorial-kpi-card strong {
@@ -1583,7 +1599,7 @@ a.editorial-kpi-cell:hover {
   font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.025em;
-  color: #0f294a;
+  color: #134e4a;
 }
 
 .editorial-cols-review {
@@ -1657,12 +1673,12 @@ a.editorial-kpi-cell:hover {
   gap: 5px;
   font-size: 0.78125rem;
   font-weight: 600;
-  color: #0f294a;
+  color: #0f766e;
   text-decoration: none;
 }
 
 .editorial-inline-link:hover {
-  color: #ea580c;
+  color: #0d9488;
 }
 
 .editorial-icon-inline {
@@ -1691,12 +1707,13 @@ html:not([data-theme="dark"]) body,
 html:not([data-theme="dark"]) .admin-app {
   --page-background: #f8fafc;
   --surface: #ffffff;
-  --surface-soft: #f1f5f9;
+  --surface-soft: #f0fdfa;
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --border: #e2e8f0;
-  --accent-editorial: #0f294a;
-  --accent-editorial-soft: #eff6ff;
+  --accent-editorial: #0d9488;
+  --accent-editorial-hover: #0f766e;
+  --accent-editorial-soft: #f0fdfa;
   background: #f8fafc;
   color: #0f172a;
 }

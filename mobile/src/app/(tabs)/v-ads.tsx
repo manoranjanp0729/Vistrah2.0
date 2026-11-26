@@ -544,9 +544,9 @@ function VAdsFeed({video,initialCategory,initialServiceType}:{video:string;initi
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={styles.page}>
     {Boolean(categoryFilter||serviceTypeFilter)&&(
-      <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,paddingHorizontal:14,paddingVertical:8,backgroundColor:mode==='light'?'#0F294A':'#132F54',borderBottomWidth:1,borderBottomColor:'rgba(249,115,22,0.4)'}}>
+      <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,paddingHorizontal:14,paddingVertical:8,backgroundColor:mode==='light'?'#134E4A':'#0f233d',borderBottomWidth:1,borderBottomColor:'rgba(45,212,191,0.35)'}}>
         <View style={{flexDirection:'row',alignItems:'center',gap:6,flex:1,minWidth:0}}>
-          <Feather name="video" size={13} color="#F97316"/>
+          <Feather name="video" size={13} color="#2DD4BF"/>
           <Text numberOfLines={1} style={{fontSize:12,fontWeight:'700',color:'#ffffff',flex:1}}>
             V Ads · {activeServiceTitle}
           </Text>

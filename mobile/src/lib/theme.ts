@@ -12,7 +12,7 @@ export type AccentId = AccentPreset['id'];
 type Palette = typeof brandTheme.palettes.dark;
 export type ThemeColors=ReturnType<typeof themeAppearance>['colors'];
 
-export const tones=[{background:'#e6edfb',text:'#213c5b'},{background:'#f9e8d6',text:'#6d4524'},{background:'#eff6ff',text:'#0f294a'},{background:'#dfece3',text:'#294934'}];
+export const tones=[{background:'#f0fdfa',text:'#115e59'},{background:'#ccfbf1',text:'#0f766e'},{background:'#eff6ff',text:'#0f294a'},{background:'#f1f5f9',text:'#0f172a'}];
 
 // Shared text hierarchy across the phone website and native screens.
 export const typography={

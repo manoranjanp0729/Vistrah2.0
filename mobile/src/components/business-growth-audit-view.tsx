@@ -411,8 +411,8 @@ export function MobileBusinessGrowthAuditView({
             style={[st.heroBtn, st.goldBtn]}
             onPress={openPrefilledFreeVAdFlow}
           >
-            <Feather name="video" size={13} color="#0f172a" />
-            <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#0f172a' }}>
+            <Feather name="video" size={13} color="#ffffff" />
+            <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#ffffff' }}>
               Create & Upload Free V Ad
             </Text>
           </Pressable>
@@ -1056,8 +1056,8 @@ export function MobileBusinessGrowthAuditView({
                 { flex: 1, minWidth: 160, justifyContent: 'center', minHeight: 40 },
               ]}
             >
-              <Feather name="download" size={14} color="#0f172a" />
-              <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#0f172a' }}>
+              <Feather name="download" size={14} color="#ffffff" />
+              <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#ffffff' }}>
                 {Platform.OS === 'web'
                   ? 'Download Printable QR Standee (SVG)'
                   : 'Share QR Standee Card'}
@@ -1095,9 +1095,9 @@ const st = StyleSheet.create({
   heroCard: {
     padding: 16,
     borderRadius: 12,
-    backgroundColor: '#0F294A',
+    backgroundColor: '#134E4A',
     borderWidth: 1,
-    borderColor: '#1E3A5F',
+    borderColor: 'rgba(45,212,191,0.35)',
     gap: 14,
   },
   heroTop: { flexDirection: 'row', alignItems: 'flex-start', gap: 12 },
@@ -1108,7 +1108,7 @@ const st = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(249,115,22,0.45)',
+    borderColor: 'rgba(45,212,191,0.45)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -1117,7 +1117,7 @@ const st = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 9999,
-    backgroundColor: 'rgba(249,115,22,0.2)',
+    backgroundColor: 'rgba(13,148,136,0.28)',
   },
   verifiedPill: {
     paddingHorizontal: 8,
@@ -1151,7 +1151,7 @@ const st = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
   heroBtnText: { fontSize: 12.5, fontWeight: '700', color: '#ffffff' },
-  goldBtn: { backgroundColor: '#F97316', borderColor: '#F97316' },
+  goldBtn: { backgroundColor: '#0D9488', borderColor: '#0D9488' },
   sectionCard: {
     padding: 16,
     borderRadius: 12,
@@ -1162,7 +1162,7 @@ const st = StyleSheet.create({
     fontSize: 13,
     fontWeight: '600',
     letterSpacing: 0,
-    color: '#EA580C',
+    color: '#0F766E',
   },
   scoreBanner: {
     flexDirection: 'row',
@@ -1170,7 +1170,7 @@ const st = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 14,
     borderRadius: 12,
-    backgroundColor: '#0F294A',
+    backgroundColor: '#134E4A',
   },
   progressTrack: {
     height: 8,
@@ -1178,7 +1178,7 @@ const st = StyleSheet.create({
     backgroundColor: 'rgba(148,163,184,0.25)',
     overflow: 'hidden',
   },
-  progressFill: { height: '100%', backgroundColor: '#F97316' },
+  progressFill: { height: '100%', backgroundColor: '#0D9488' },
   benchmarkBox: {
     flexDirection: 'row',
     alignItems: 'center',

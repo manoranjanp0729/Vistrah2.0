@@ -34,7 +34,7 @@ function VAdsCenterIcon({focused,mode,accent}:{focused:boolean;mode:'light'|'dar
           alignItems:'center',
           justifyContent:'center',
           borderWidth:focused?2:1.5,
-          borderColor:focused?(isLight?'#ffffff':'#F97316'):(isLight?'#cbd5e1':'#1e3a5f'),
+          borderColor:focused?(isLight?'#ffffff':'#2dd4bf'):(isLight?'#cbd5e1':'#1e3a5f'),
           shadowColor:accent,
           shadowOffset:{width:0,height:focused?3:1.5},
           shadowOpacity:focused?(isLight?0.28:0.38):(isLight?0.10:0.18),

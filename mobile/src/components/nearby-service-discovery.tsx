@@ -393,8 +393,8 @@ export function MobileNearbyServiceDiscovery({
                   paddingVertical: 7,
                   borderRadius: 999,
                   borderWidth: 1,
-                  backgroundColor: active ? '#0F294A' : surfaceSubtle,
-                  borderColor: active ? '#F97316' : surfaceBorder,
+                  backgroundColor: active ? '#0D9488' : surfaceSubtle,
+                  borderColor: active ? '#0D9488' : surfaceBorder,
                 }}
               >
                 <Text
@@ -431,15 +431,27 @@ export function MobileNearbyServiceDiscovery({
                 paddingVertical: 6,
                 borderRadius: 999,
                 borderWidth: 1,
-                backgroundColor: !normalizedTypeSlug ? '#F97316' : surfaceSubtle,
-                borderColor: !normalizedTypeSlug ? '#EA580C' : surfaceBorder,
+                backgroundColor: !normalizedTypeSlug
+                  ? isDark
+                    ? 'rgba(13,148,136,0.22)'
+                    : '#f0fdfa'
+                  : surfaceSubtle,
+                borderColor: !normalizedTypeSlug
+                  ? isDark
+                    ? '#2dd4bf'
+                    : '#99f6e4'
+                  : surfaceBorder,
               }}
             >
               <Text
                 style={{
                   fontSize: 12,
                   fontWeight: '700',
-                  color: !normalizedTypeSlug ? '#ffffff' : colors.text,
+                  color: !normalizedTypeSlug
+                    ? isDark
+                      ? '#99f6e4'
+                      : '#115e59'
+                    : colors.text,
                 }}
               >
                 All in {activeSector.shortTitle || activeSector.title}
@@ -467,15 +479,27 @@ export function MobileNearbyServiceDiscovery({
                     paddingVertical: 6,
                     borderRadius: 999,
                     borderWidth: 1,
-                    backgroundColor: active ? '#F97316' : surfaceSubtle,
-                    borderColor: active ? '#EA580C' : surfaceBorder,
+                    backgroundColor: active
+                      ? isDark
+                        ? 'rgba(13,148,136,0.22)'
+                        : '#f0fdfa'
+                      : surfaceSubtle,
+                    borderColor: active
+                      ? isDark
+                        ? '#2dd4bf'
+                        : '#99f6e4'
+                      : surfaceBorder,
                   }}
                 >
                   <Text
                     style={{
                       fontSize: 12,
                       fontWeight: '700',
-                      color: active ? '#ffffff' : colors.text,
+                      color: active
+                        ? isDark
+                          ? '#99f6e4'
+                          : '#115e59'
+                        : colors.text,
                     }}
                   >
                     {st.title}
@@ -514,16 +538,16 @@ export function MobileNearbyServiceDiscovery({
               style={({ pressed }) => [
                 s.locationPill,
                 {
-                  backgroundColor: isDark ? '#132F54' : '#fff7ed',
-                  borderColor: 'rgba(249,115,22,0.5)',
+                  backgroundColor: isDark ? 'rgba(13,148,136,0.18)' : '#f0fdfa',
+                  borderColor: isDark ? 'rgba(45,212,191,0.4)' : '#99f6e4',
                   opacity: pressed ? 0.85 : 1,
                 },
               ]}
             >
-              <Feather name="map-pin" size={12} color="#F97316" />
+              <Feather name="map-pin" size={12} color={isDark ? '#5eead4' : '#0f766e'} />
               <Text
                 numberOfLines={1}
-                style={[s.locationPillText, { color: isDark ? '#ffffff' : '#0F294A' }]}
+                style={[s.locationPillText, { color: isDark ? '#99f6e4' : '#0f766e' }]}
               >
                 {locCtx?.detecting
                   ? 'Locating…'
@@ -548,14 +572,14 @@ export function MobileNearbyServiceDiscovery({
               style={({ pressed }) => [
                 s.gpsBtn,
                 {
-                  backgroundColor: '#0F294A',
-                  borderColor: 'rgba(249,115,22,0.55)',
+                  backgroundColor: isDark ? '#0f233d' : '#ffffff',
+                  borderColor: isDark ? '#234876' : '#cbd5e1',
                   opacity: pressed ? 0.85 : 1,
                 },
               ]}
             >
-              <Feather name="video" size={12} color="#F97316" />
-              <Text style={s.gpsBtnText}>V Ads</Text>
+              <Feather name="video" size={12} color={isDark ? '#5eead4' : '#0f766e'} />
+              <Text style={[s.gpsBtnText, { color: isDark ? '#f8fafc' : '#0f172a' }]}>V Ads</Text>
             </Pressable>
 
             {locCtx && (
@@ -571,9 +595,9 @@ export function MobileNearbyServiceDiscovery({
                 style={({ pressed }) => [
                   s.gpsBtn,
                   {
-                    backgroundColor: '#F97316',
-                    borderColor: '#EA580C',
-                    opacity: locCtx.detecting ? 0.72 : pressed ? 0.85 : 1,
+                    backgroundColor: pressed ? '#0F766E' : '#0D9488',
+                    borderColor: pressed ? '#0F766E' : '#0D9488',
+                    opacity: locCtx.detecting ? 0.72 : 1,
                   },
                 ]}
               >
@@ -592,8 +616,8 @@ export function MobileNearbyServiceDiscovery({
             style={[
               s.gpsAlertRow,
               {
-                backgroundColor: isDark ? 'rgba(249,115,22,0.14)' : '#fff7ed',
-                borderColor: '#EA580C',
+                backgroundColor: isDark ? 'rgba(13,148,136,0.16)' : '#f0fdfa',
+                borderColor: isDark ? 'rgba(45,212,191,0.4)' : '#99f6e4',
               },
             ]}
           >
@@ -630,7 +654,7 @@ export function MobileNearbyServiceDiscovery({
                 accessibilityRole="radio"
                 accessibilityState={{ checked: active }}
                 onPress={() => setRadiusKm(r)}
-                style={[s.radiusChip, active && { backgroundColor: '#F97316' }]}
+                style={[s.radiusChip, active && { backgroundColor: '#0D9488' }]}
               >
                 <Text
                   style={[
@@ -654,12 +678,12 @@ export function MobileNearbyServiceDiscovery({
         style={[
           s.compactBanner,
           {
-            backgroundColor: isDark ? '#0F294A' : '#fff7ed',
-            borderColor: isDark ? 'rgba(249,115,22,0.42)' : '#fed7aa',
+            backgroundColor: isDark ? '#0f233d' : '#f0fdfa',
+            borderColor: isDark ? 'rgba(45,212,191,0.38)' : '#99f6e4',
           },
         ]}
       >
-        <Text style={[s.compactBannerText, { color: isDark ? '#ffffff' : '#0F294A' }]}>
+        <Text style={[s.compactBannerText, { color: isDark ? '#ffffff' : '#0f172a' }]}>
           <UiText value="Own a " />
           {serviceTitle}
           <UiText value=" business here?" />
@@ -751,14 +775,14 @@ export function MobileNearbyServiceDiscovery({
                 setPannedCenter(null);
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: '700', color: '#F97316' }}>
+              <Text style={{ fontSize: 12, fontWeight: '700', color: '#0D9488' }}>
                 <UiText value="Reset area" />
               </Text>
             </Pressable>
           )}
           {selectedId !== null && (
             <Pressable onPress={() => setSelectedId(null)}>
-              <Text style={{ fontSize: 12, fontWeight: '700', color: '#F97316' }}>
+              <Text style={{ fontSize: 12, fontWeight: '700', color: '#0D9488' }}>
                 <UiText value="Clear pin" />
               </Text>
             </Pressable>
@@ -771,12 +795,12 @@ export function MobileNearbyServiceDiscovery({
           style={[
             s.errorBox,
             {
-              backgroundColor: isDark ? '#132F54' : '#fff7ed',
-              borderColor: '#EA580C',
+              backgroundColor: isDark ? '#132F54' : '#fef2f2',
+              borderColor: '#fecaca',
             },
           ]}
         >
-          <Text style={{ fontSize: 13, color: isDark ? '#fed7aa' : '#9a3412' }}>{error}</Text>
+          <Text style={{ fontSize: 13, color: isDark ? '#fca5a5' : '#b91c1c' }}>{error}</Text>
         </View>
       )}
 
@@ -806,9 +830,9 @@ export function MobileNearbyServiceDiscovery({
                     paddingHorizontal: 12,
                     paddingVertical: 7,
                     borderRadius: 999,
-                    backgroundColor: '#F97316',
+                    backgroundColor: '#0D9488',
                     borderWidth: 1,
-                    borderColor: '#EA580C',
+                    borderColor: '#0F766E',
                   }}
                 >
                   <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
@@ -860,7 +884,7 @@ export function MobileNearbyServiceDiscovery({
               s.bizCard,
               {
                 backgroundColor: surfaceBg,
-                borderColor: isSelected ? '#F97316' : surfaceBorder,
+                borderColor: isSelected ? '#0D9488' : surfaceBorder,
                 borderWidth: isSelected ? 2 : 1,
                 opacity: pressed ? 0.94 : 1,
               },
@@ -912,7 +936,7 @@ export function MobileNearbyServiceDiscovery({
                 <View style={s.badgesRow}>
                   {isVistrah ? (
                     <View style={s.verifiedPill}>
-                      <Feather name="check-circle" size={11} color="#F97316" />
+                      <Feather name="check-circle" size={11} color="#0F766E" />
                       <Text style={s.verifiedText}>
                         {item.verification_status === 'VERIFIED'
                           ? 'VISTRAH Verified'
@@ -964,7 +988,7 @@ export function MobileNearbyServiceDiscovery({
               </Text>
             )}
 
-            {/* Direct Actions in VISTRAH Navy + Warm Orange Palette */}
+            {/* Direct Actions in Coastal Teal + Clean Secondary Palette */}
             <View style={s.actionRow}>
               {Boolean(callUrl) && (
                 <Pressable
@@ -974,10 +998,9 @@ export function MobileNearbyServiceDiscovery({
                   style={({ pressed }) => [
                     s.actionBtn,
                     {
-                      backgroundColor: '#F97316',
+                      backgroundColor: pressed ? '#0F766E' : '#0D9488',
                       borderWidth: 1,
-                      borderColor: '#EA580C',
-                      opacity: pressed ? 0.85 : 1,
+                      borderColor: pressed ? '#0F766E' : '#0D9488',
                     },
                   ]}
                 >
@@ -994,9 +1017,9 @@ export function MobileNearbyServiceDiscovery({
                   style={({ pressed }) => [
                     s.actionBtn,
                     {
-                      backgroundColor: isDark ? 'rgba(249,115,22,0.16)' : '#fff7ed',
+                      backgroundColor: isDark ? 'rgba(13,148,136,0.18)' : '#f0fdfa',
                       borderWidth: 1,
-                      borderColor: 'rgba(249,115,22,0.45)',
+                      borderColor: isDark ? 'rgba(45,212,191,0.4)' : '#99f6e4',
                       opacity: pressed ? 0.85 : 1,
                     },
                   ]}
@@ -1004,11 +1027,11 @@ export function MobileNearbyServiceDiscovery({
                   <Ionicons
                     name="logo-whatsapp"
                     size={14}
-                    color={isDark ? '#F97316' : '#EA580C'}
+                    color={isDark ? '#5eead4' : '#0F766E'}
                   />
                   <Text
                     style={{
-                      color: isDark ? '#F97316' : '#EA580C',
+                      color: isDark ? '#5eead4' : '#0F766E',
                       fontSize: 12.5,
                       fontWeight: '700',
                     }}
@@ -1025,15 +1048,15 @@ export function MobileNearbyServiceDiscovery({
                 style={({ pressed }) => [
                   s.actionBtn,
                   {
-                    backgroundColor: '#0F294A',
+                    backgroundColor: isDark ? '#132F54' : '#ffffff',
                     borderWidth: 1,
-                    borderColor: '#132F54',
+                    borderColor: isDark ? '#234876' : '#cbd5e1',
                     opacity: pressed ? 0.85 : 1,
                   },
                 ]}
               >
-                <Feather name="navigation" size={13} color="#ffffff" />
-                <Text style={{ color: '#ffffff', fontSize: 12.5, fontWeight: '600' }}>
+                <Feather name="navigation" size={13} color={isDark ? '#ffffff' : '#0f172a'} />
+                <Text style={{ color: isDark ? '#ffffff' : '#0f172a', fontSize: 12.5, fontWeight: '600' }}>
                   Directions
                 </Text>
               </Pressable>
@@ -1046,15 +1069,15 @@ export function MobileNearbyServiceDiscovery({
                   style={({ pressed }) => [
                     s.actionBtn,
                     {
-                      backgroundColor: '#0F294A',
+                      backgroundColor: isDark ? '#132F54' : '#ffffff',
                       borderWidth: 1,
-                      borderColor: '#132F54',
+                      borderColor: isDark ? '#234876' : '#cbd5e1',
                       opacity: pressed ? 0.85 : 1,
                     },
                   ]}
                 >
-                  <Feather name="globe" size={13} color="#ffffff" />
-                  <Text style={{ color: '#ffffff', fontSize: 12.5, fontWeight: '600' }}>
+                  <Feather name="globe" size={13} color={isDark ? '#ffffff' : '#0f172a'} />
+                  <Text style={{ color: isDark ? '#ffffff' : '#0f172a', fontSize: 12.5, fontWeight: '600' }}>
                     Website
                   </Text>
                 </Pressable>
@@ -1098,7 +1121,7 @@ export function MobileNearbyServiceDiscovery({
               s.sheetCard,
               {
                 backgroundColor: surfaceBg,
-                borderColor: isDark ? 'rgba(249,115,22,0.45)' : '#cbd5e1',
+                borderColor: isDark ? 'rgba(45,212,191,0.4)' : '#cbd5e1',
               },
             ]}
             onPress={() => {}}
@@ -1139,7 +1162,7 @@ export function MobileNearbyServiceDiscovery({
                     <Text style={{ fontSize: 13.5, fontWeight: '600', color: colors.text }}>
                       {opt.label}
                     </Text>
-                    <Feather name="chevron-right" size={15} color="#F97316" />
+                    <Feather name="chevron-right" size={15} color="#0D9488" />
                   </Pressable>
                 ))}
 
@@ -1288,9 +1311,9 @@ const s = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 999,
-    backgroundColor: '#F97316',
+    backgroundColor: '#0D9488',
     borderWidth: 1,
-    borderColor: '#EA580C',
+    borderColor: '#0F766E',
     elevation: 4,
   },
   searchHereText: {
@@ -1371,17 +1394,17 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingHorizontal: 7,
+    paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 999,
-    backgroundColor: 'rgba(249,115,22,0.14)',
+    backgroundColor: '#f0fdfa',
     borderWidth: 1,
-    borderColor: 'rgba(249,115,22,0.38)',
+    borderColor: '#99f6e4',
   },
   verifiedText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#F97316',
+    color: '#0f766e',
   },
   nearbyPlacePill: {
     flexDirection: 'row',
@@ -1400,15 +1423,15 @@ const s = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 999,
-    backgroundColor: '#0F294A',
+    backgroundColor: '#f0fdfa',
     borderWidth: 1,
-    borderColor: 'rgba(249,115,22,0.45)',
+    borderColor: '#99f6e4',
     flexShrink: 0,
   },
   distanceText: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#ffffff',
+    color: '#0f766e',
     fontVariant: ['tabular-nums'],
   },
   actionRow: {
@@ -1424,7 +1447,7 @@ const s = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 12,
     minHeight: 36,
-    borderRadius: 10,
+    borderRadius: 8,
   },
   primaryOnboardBtn: {
     flexDirection: 'row',
@@ -1432,10 +1455,10 @@ const s = StyleSheet.create({
     gap: 5,
     paddingHorizontal: 12,
     minHeight: 34,
-    borderRadius: 9,
-    backgroundColor: '#F97316',
+    borderRadius: 8,
+    backgroundColor: '#0D9488',
     borderWidth: 1,
-    borderColor: '#EA580C',
+    borderColor: '#0F766E',
   },
   sheetBackdrop: {
     flex: 1,

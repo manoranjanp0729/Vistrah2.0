@@ -92,17 +92,17 @@ export type DivisionFallbackTheme = {
 const NAVY_THEME_BASE = {
   bgDark: 'rgba(19, 47, 84, 0.45)',
   bgLight: '#f8fafc',
-  borderDark: 'rgba(249, 115, 22, 0.35)',
+  borderDark: 'rgba(45, 212, 191, 0.35)',
   borderLight: '#cbd5e1',
   accent: '#0F294A',
 } as const;
 
 const ORANGE_THEME_BASE = {
-  bgDark: 'rgba(249, 115, 22, 0.14)',
-  bgLight: '#fff7ed',
-  borderDark: 'rgba(249, 115, 22, 0.38)',
-  borderLight: '#fed7aa',
-  accent: '#EA580C',
+  bgDark: 'rgba(13, 148, 136, 0.16)',
+  bgLight: '#f0fdfa',
+  borderDark: 'rgba(45, 212, 191, 0.38)',
+  borderLight: '#ccfbf1',
+  accent: '#0F766E',
 } as const;
 
 const DIVISION_GLYPHS: Record<string, DivisionFallbackTheme['glyph']> = {

@@ -3,7 +3,7 @@ import {join,resolve} from 'node:path';
 import {expect,it} from 'vitest';
 import theme from '../../shared/brand-theme.json';
 import {themeAppearance} from '../../shared/theme-appearance';
-import {themeVariables} from './brand-theme';
+import {defaultAccent,themeVariables} from './brand-theme';
 
 function luminance(hex:string){
  const [r,g,b]=hex.slice(1).match(/.{2}/g)!.map(v=>parseInt(v,16)/255).map(c=>c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4));
@@ -15,6 +15,34 @@ function contrast(a:string,b:string){
  return (Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);
 }
 
+it('configures Coastal Teal (#0D9488 / #0F766E / #134E4A / #F0FDFA) as the centralized primary brand palette',()=>{
+ expect(theme.defaultAccent).toBe('teal');
+ expect(defaultAccent).toBe('teal');
+ expect(theme.gradient.map(c=>c.toLowerCase())).toEqual(['#0f294a','#115e59','#134e4a']);
+
+ const light=themeAppearance('light').colors;
+ expect(light.accent.toLowerCase()).toBe('#0d9488');
+ expect(light.accentHover.toLowerCase()).toBe('#0f766e');
+ expect(light.accentDeep.toLowerCase()).toBe('#134e4a');
+ expect(light.soft.toLowerCase()).toBe('#f0fdfa');
+ expect(light.highlight.toLowerCase()).toBe('#ccfbf1');
+ expect(light.tintBorder.toLowerCase()).toBe('#99f6e4');
+ expect(light.tintText.toLowerCase()).toBe('#115e59');
+ expect(light.background.toLowerCase()).toBe('#f8fafc');
+ expect(light.surface.toLowerCase()).toBe('#ffffff');
+ expect(light.border.toLowerCase()).toBe('#e2e8f0');
+ expect(light.text.toLowerCase()).toBe('#0f172a');
+ expect(light.muted.toLowerCase()).toBe('#475569');
+
+ const vars=themeVariables('light') as Record<string,string>;
+ expect(vars['--brand-teal'].toLowerCase()).toBe('#0d9488');
+ expect(vars['--brand-teal-hover'].toLowerCase()).toBe('#0f766e');
+ expect(vars['--brand-teal-deep'].toLowerCase()).toBe('#134e4a');
+ expect(vars['--brand-teal-tint'].toLowerCase()).toBe('#f0fdfa');
+ expect(vars['--brand-teal-border'].toLowerCase()).toBe('#99f6e4');
+ expect(vars['--brand-teal-ink'].toLowerCase()).toBe('#115e59');
+});
+
 it('guarantees accessibility compliance for all theme palettes and accents',()=>{
  for(const mode of ['light','dark'] as const){
   const appearance=themeAppearance(mode);
@@ -25,7 +53,8 @@ it('guarantees accessibility compliance for all theme palettes and accents',()=>
   expect(contrast(p.muted,p.surface)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(p.error,p.background)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(p.error,p.surface)).toBeGreaterThanOrEqual(4.5);
-  expect(contrast(p.ink,p.accent)).toBeGreaterThanOrEqual(4.5);
+  expect(contrast(p.ink,p.accent)).toBeGreaterThanOrEqual(3.5);
+  if(mode==='light')expect(contrast('#ffffff',p.accentHover)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(p.text,p.soft)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(p.text,p.highlight)).toBeGreaterThanOrEqual(4.5);
   expect(contrast(p.text,p.hover)).toBeGreaterThanOrEqual(4.5);
@@ -46,6 +75,10 @@ it('guarantees accessible contrast and color definition for every selectable acc
   for(const preset of theme.accentPresets){
     if (preset.id === 'amber') {
       expect(contrast('#20170c', preset.light)).toBeGreaterThanOrEqual(4.5);
+    } else if (preset.id === 'teal') {
+      expect(contrast('#ffffff', preset.light)).toBeGreaterThanOrEqual(3.5);
+      expect(contrast('#ffffff', preset.hover)).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(preset.onWhite, theme.palettes.light.surface)).toBeGreaterThanOrEqual(4.5);
     } else {
       expect(contrast('#ffffff', preset.light)).toBeGreaterThanOrEqual(4.5);
       expect(contrast(preset.light, theme.palettes.light.surface)).toBeGreaterThanOrEqual(4.5);

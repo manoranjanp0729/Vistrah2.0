@@ -60,46 +60,48 @@
   border-radius: 999px;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #ffffff;
-  background: #0F294A;
-  border: 1px solid rgba(249, 115, 22, 0.45);
+  color: #99f6e4;
+  background: rgba(13, 148, 136, 0.18);
+  border: 1px solid rgba(45, 212, 191, 0.38);
   text-decoration: none;
   transition: border-color 140ms ease, background 140ms ease;
 }
 
 :global(:root[data-theme='light']) .locationPill {
-  color: #0F294A;
-  background: #fff7ed;
-  border-color: rgba(249, 115, 22, 0.45);
+  color: #0f766e;
+  background: #f0fdfa;
+  border-color: #99f6e4;
 }
 
 .locationPill:hover {
-  border-color: #F97316;
+  border-color: #0d9488;
 }
 
 .gpsQuickBtn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.32);
-  background: transparent;
-  color: var(--text-secondary, #cbd5e1);
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid #0d9488;
+  background: #0d9488;
+  color: #ffffff;
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
 }
 
 :global(:root[data-theme='light']) .gpsQuickBtn {
-  color: #0F294A;
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  color: #ffffff;
+  border-color: #0d9488;
+  background: #0d9488;
 }
 
 .gpsQuickBtn:hover:not(:disabled) {
-  border-color: #F97316;
-  color: #F97316;
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #ffffff;
 }
 
 .gpsQuickBtn:disabled {
@@ -124,15 +126,16 @@
   gap: 10px;
   padding: 10px 14px;
   border-radius: 12px;
-  border: 1px solid #EA580C;
-  background: rgba(249, 115, 22, 0.14);
+  border: 1px solid #0d9488;
+  background: rgba(13, 148, 136, 0.16);
   color: var(--text-primary, #f8fafc);
   font-size: 0.83rem;
 }
 
 :global(:root[data-theme='light']) .gpsErrorBanner {
-  background: #fff7ed;
-  color: #0F294A;
+  background: #f0fdfa;
+  border-color: #99f6e4;
+  color: #0f172a;
 }
 
 .gpsErrorCopy {
@@ -144,12 +147,12 @@
 
 .gpsErrorAction {
   font-weight: 700;
-  color: #F97316;
+  color: #2dd4bf;
   text-decoration: underline;
 }
 
 :global(:root[data-theme='light']) .gpsErrorAction {
-  color: #EA580C;
+  color: #0f766e;
 }
 
 .gpsErrorDismiss {
@@ -200,11 +203,11 @@
 }
 
 :global(:root[data-theme='light']) .radiusBtn {
-  color: #0F294A;
+  color: #475569;
 }
 
 .radiusBtnActive {
-  background: #F97316;
+  background: #0d9488;
   color: #ffffff !important;
   font-weight: 700;
 }
@@ -216,18 +219,25 @@
   min-height: 36px;
   padding: 6px 14px;
   border-radius: 8px;
-  background: #0F294A;
-  color: #ffffff !important;
-  border: 1px solid rgba(249, 115, 22, 0.55);
+  background: #0f233d;
+  color: #f8fafc !important;
+  border: 1px solid #234876;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
-  transition: background 140ms ease, border-color 140ms ease;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+:global(:root[data-theme='light']) .vAdsFilterBtn {
+  background: #ffffff;
+  color: #0f172a !important;
+  border-color: #cbd5e1;
 }
 
 .vAdsFilterBtn:hover {
-  background: #132F54;
-  border-color: #F97316;
+  background: #f0fdfa;
+  border-color: #0d9488;
+  color: #0f766e !important;
 }
 
 .splitGrid {
@@ -271,18 +281,18 @@
   gap: 6px;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid #EA580C;
-  background: #F97316;
+  border: 1px solid #0f766e;
+  background: #0d9488;
   color: #ffffff;
   font-size: 0.8125rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 22px rgba(15, 41, 74, 0.28);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.22);
   transition: background 140ms ease, transform 140ms ease;
 }
 
 .searchHereBtn:hover {
-  background: #EA580C;
+  background: #0f766e;
   transform: translateY(-1px);
 }
 
@@ -319,16 +329,16 @@
 
 :global(:root[data-theme='light']) .businessCard {
   background: #ffffff;
-  border-color: #cbd5e1;
+  border-color: #e2e8f0;
 }
 
 .businessCard:hover {
-  border-color: #F97316;
+  border-color: #0d9488;
 }
 
 .businessCardSelected {
-  border-color: #F97316 !important;
-  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.24);
+  border-color: #0d9488 !important;
+  box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.2);
 }
 
 .cardTop {
@@ -362,14 +372,14 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  background: var(--div-bg-dark, rgba(249, 115, 22, 0.14));
-  border: 1px solid var(--div-border-dark, rgba(249, 115, 22, 0.35));
-  color: var(--div-accent, #EA580C);
+  background: var(--div-bg-dark, rgba(13, 148, 136, 0.16));
+  border: 1px solid var(--div-border-dark, rgba(45, 212, 191, 0.35));
+  color: var(--div-accent, #0f766e);
 }
 
 :global(:root[data-theme='light']) .fallbackTile {
-  background: var(--div-bg-light, #fff7ed);
-  border-color: var(--div-border-light, #fed7aa);
+  background: var(--div-bg-light, #f0fdfa);
+  border-color: var(--div-border-light, #ccfbf1);
 }
 
 .fallbackTileLabel {
@@ -418,37 +428,37 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 999px;
   font-size: 0.72rem;
   font-weight: 700;
-  color: #F97316;
-  background: rgba(249, 115, 22, 0.14);
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  color: #5eead4;
+  background: rgba(13, 148, 136, 0.18);
+  border: 1px solid rgba(45, 212, 191, 0.38);
 }
 
 :global(:root[data-theme='light']) .verifiedBadge {
-  color: #EA580C;
-  background: #fff7ed;
-  border-color: #fed7aa;
+  color: #0f766e;
+  background: #f0fdfa;
+  border-color: #99f6e4;
 }
 
 .nearbyPlaceBadge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 999px;
   font-size: 0.72rem;
-  font-weight: 700;
-  color: #ffffff;
-  background: #132F54;
+  font-weight: 600;
+  color: #e2e8f0;
+  background: #132f54;
   border: 1px solid rgba(148, 163, 184, 0.3);
 }
 
 :global(:root[data-theme='light']) .nearbyPlaceBadge {
-  color: #0F294A;
-  background: #f1f5f9;
+  color: #475569;
+  background: #f8fafc;
   border-color: #cbd5e1;
 }
 
@@ -459,14 +469,15 @@
   font-size: 0.78rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  background: #0F294A;
-  color: #ffffff;
-  border: 1px solid rgba(249, 115, 22, 0.45);
+  background: rgba(13, 148, 136, 0.2);
+  color: #99f6e4;
+  border: 1px solid rgba(45, 212, 191, 0.38);
 }
 
 :global(:root[data-theme='light']) .distanceBadge {
-  background: #0F294A;
-  color: #ffffff;
+  background: #f0fdfa;
+  color: #0f766e;
+  border-color: #99f6e4;
 }
 
 .metaLine {
@@ -518,52 +529,57 @@
 }
 
 :global(:root[data-theme='light']) .actionBtn {
-  color: #0F294A;
-  background: #f8fafc;
+  color: #0f172a;
+  background: #ffffff;
   border-color: #cbd5e1;
 }
 
 .actionBtn:hover {
-  border-color: #F97316;
+  border-color: #0d9488;
 }
 
 .callBtn {
-  background: #F97316 !important;
+  background: #0d9488 !important;
   color: #ffffff !important;
-  border-color: #EA580C !important;
+  border-color: #0d9488 !important;
+  border-radius: 8px;
 }
 
 .callBtn:hover {
-  background: #EA580C !important;
+  background: #0f766e !important;
+  border-color: #0f766e !important;
 }
 
 .secondaryNavyBtn {
-  background: #0F294A;
+  background: #132f54;
   color: #ffffff !important;
-  border-color: #132F54;
+  border-color: #234876;
+  border-radius: 8px;
 }
 
 :global(:root[data-theme='light']) .secondaryNavyBtn {
-  background: #0F294A;
-  color: #ffffff !important;
-  border-color: #0F294A;
+  background: #ffffff;
+  color: #0f172a !important;
+  border-color: #cbd5e1;
 }
 
 .secondaryNavyBtn:hover {
-  background: #132F54;
-  border-color: #F97316;
+  background: #f0fdfa;
+  border-color: #0d9488;
+  color: #0f766e !important;
 }
 
 .whatsappBtn {
-  background: rgba(249, 115, 22, 0.14);
-  color: #F97316 !important;
-  border-color: rgba(249, 115, 22, 0.42);
+  background: rgba(13, 148, 136, 0.16);
+  color: #5eead4 !important;
+  border-color: rgba(45, 212, 191, 0.4);
+  border-radius: 8px;
 }
 
 :global(:root[data-theme='light']) .whatsappBtn {
-  background: #fff7ed;
-  color: #EA580C !important;
-  border-color: #fdba74;
+  background: #f0fdfa;
+  color: #0f766e !important;
+  border-color: #99f6e4;
 }
 
 .moreWrap {
@@ -659,7 +675,7 @@
 }
 
 .moreMenuItem:hover {
-  background: rgba(249, 115, 22, 0.18);
+  background: rgba(13, 148, 136, 0.14);
 }
 
 .onboardCta {
@@ -668,17 +684,18 @@
   gap: 6px;
   padding: 9px 16px;
   min-height: 40px;
-  border-radius: 10px;
-  background: #F97316;
-  border: 1px solid #EA580C;
+  border-radius: 8px;
+  background: #0d9488;
+  border: 1px solid #0d9488;
   color: #ffffff !important;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 600;
   text-decoration: none;
 }
 
 .onboardCta:hover {
-  background: #EA580C;
+  background: #0f766e;
+  border-color: #0f766e;
 }
 
 .compactBanner {
@@ -689,13 +706,13 @@
   gap: 10px 14px;
   padding: 12px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(249, 115, 22, 0.4);
+  border: 1px solid rgba(45, 212, 191, 0.38);
   background: rgba(15, 41, 74, 0.55);
 }
 
 :global(:root[data-theme='light']) .compactBanner {
-  background: #fff7ed;
-  border-color: #fed7aa;
+  background: #f0fdfa;
+  border-color: #99f6e4;
 }
 
 .compactBannerText {
@@ -757,16 +774,17 @@
 .expandRadiusBtn {
   padding: 7px 14px;
   border-radius: 999px;
-  border: 1px solid #EA580C;
-  background: #F97316;
+  border: 1px solid #0d9488;
+  background: #0d9488;
   color: #ffffff;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .expandRadiusBtn:hover {
-  background: #EA580C;
+  background: #0f766e;
+  border-color: #0f766e;
 }
 
 .sectorFilterBar {
@@ -867,7 +885,7 @@
 }
 
 .sectorSearchHit:hover {
-  background: rgba(249, 115, 22, 0.16);
+  background: rgba(13, 148, 136, 0.14);
 }
 
 .sectorSearchPath {
@@ -902,18 +920,19 @@
 }
 
 :global(:root[data-theme='light']) .sectorPill {
-  color: #0F294A;
+  color: #475569;
   border-color: #cbd5e1;
-  background: #f8fafc;
+  background: #ffffff;
 }
 
 .sectorPill:hover {
-  border-color: #F97316;
+  border-color: #0d9488;
+  color: #0f766e;
 }
 
 .sectorPillActive {
-  background: #0F294A !important;
-  border-color: #F97316 !important;
+  background: #0d9488 !important;
+  border-color: #0d9488 !important;
   color: #ffffff !important;
 }
 
@@ -934,16 +953,23 @@
 
 :global(:root[data-theme='light']) .typeChip {
   background: #ffffff;
-  color: #0F294A;
-  border-color: #cbd5e1;
+  color: #475569;
+  border-color: #e2e8f0;
 }
 
 .typeChip:hover {
-  border-color: #F97316;
+  border-color: #0d9488;
+  color: #0f766e;
 }
 
 .typeChipActive {
-  background: #F97316 !important;
-  border-color: #EA580C !important;
-  color: #ffffff !important;
+  background: rgba(13, 148, 136, 0.22) !important;
+  border-color: #2dd4bf !important;
+  color: #99f6e4 !important;
+}
+
+:global(:root[data-theme='light']) .typeChipActive {
+  background: #f0fdfa !important;
+  border-color: #99f6e4 !important;
+  color: #115e59 !important;
 }

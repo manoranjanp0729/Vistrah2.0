@@ -45,8 +45,20 @@ function collectSourceFiles(dir: string, out: string[] = []): string[] {
   return out;
 }
 
-test('mobile/src and shared strictly follow VISTRAH Navy + Orange brand palette with zero purple tokens or hex/rgba shades', () => {
+test('mobile/src and shared configure Coastal Teal (#0D9488) as primary brand palette with zero purple/violet/indigo tokens or hex/rgba shades', () => {
   const repoRoot = resolve(__dirname, '../..');
+  const brandTheme = JSON.parse(readFileSync(join(repoRoot, 'shared', 'brand-theme.json'), 'utf8'));
+  assert.equal(brandTheme.defaultAccent, 'teal');
+  assert.equal(brandTheme.palettes.light.accent.toLowerCase(), '#0d9488');
+  assert.equal(brandTheme.palettes.light.accentHover.toLowerCase(), '#0f766e');
+  assert.equal(brandTheme.palettes.light.accentDeep.toLowerCase(), '#134e4a');
+  assert.equal(brandTheme.palettes.light.soft.toLowerCase(), '#f0fdfa');
+  assert.equal(brandTheme.palettes.light.highlight.toLowerCase(), '#ccfbf1');
+
+  const mobileThemeSrc = readFileSync(join(repoRoot, 'mobile', 'src', 'lib', 'theme.ts'), 'utf8');
+  assert.ok(mobileThemeSrc.includes('brandTheme.defaultAccent'));
+  assert.ok(mobileThemeSrc.includes('#f0fdfa'));
+
   const files = [
     ...collectSourceFiles(join(repoRoot, 'mobile', 'src')),
     ...collectSourceFiles(join(repoRoot, 'shared')),

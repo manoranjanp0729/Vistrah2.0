@@ -44,16 +44,16 @@
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  background: #F97316;
-  border: 2px solid #0F294A;
+  background: #0d9488;
+  border: 2px solid #134e4a;
 }
 
 .dotNavy {
   width: 10px;
   height: 10px;
   border-radius: 999px;
-  background: #0F294A;
-  border: 2px solid #F97316;
+  background: #0f294a;
+  border: 2px solid #2dd4bf;
 }
 
 .infoCard {
@@ -97,7 +97,7 @@
   margin: 0 0 8px;
   font-size: 12px;
   font-weight: 600;
-  color: #EA580C;
+  color: #0f766e;
 }
 
 .infoActions {
@@ -117,10 +117,15 @@
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
-  border: 1px solid #EA580C;
-  background: #F97316;
+  border: 1px solid #0d9488;
+  background: #0d9488;
   color: #ffffff;
   cursor: pointer;
+}
+
+.infoPrimaryBtn:hover {
+  background: #0f766e;
+  border-color: #0f766e;
 }
 
 .infoSecondaryLink {
@@ -133,8 +138,8 @@
   font-weight: 600;
   text-decoration: none;
   border: 1px solid #cbd5e1;
-  background: #f8fafc;
-  color: #0F294A;
+  background: #ffffff;
+  color: #0f172a;
   cursor: pointer;
 }
 
@@ -299,7 +304,7 @@
 
 .suggestionBtn:hover,
 .suggestionBtn:focus-visible {
-  background: rgba(249, 115, 22, 0.12);
+  background: #f0fdfa;
   outline: none;
 }
 
@@ -448,9 +453,9 @@
 }
 
 .cityChipActive {
-  background: #0F294A;
+  background: #0d9488;
   color: #ffffff;
-  border-color: #F97316;
+  border-color: #0d9488;
 }
 
 .centerPinOverlay {
@@ -531,8 +536,9 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #0F294A;
-  color: #F97316;
+  background: #f0fdfa;
+  border: 1px solid #ccfbf1;
+  color: #0f766e;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -615,7 +621,7 @@
 }
 
 .segmentBtnActive {
-  background: #F97316;
+  background: #0d9488;
   color: #ffffff;
 }
 
@@ -665,9 +671,9 @@
 .confirmPrimaryCta {
   width: 100%;
   min-height: 46px;
-  border-radius: 10px;
-  border: 1px solid #EA580C;
-  background: #F97316;
+  border-radius: 8px;
+  border: 1px solid #0d9488;
+  background: #0d9488;
   color: #ffffff;
   font-size: 15px;
   font-weight: 600;
@@ -676,6 +682,11 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+.confirmPrimaryCta:hover:not(:disabled) {
+  background: #0f766e;
+  border-color: #0f766e;
 }
 
 .confirmPrimaryCta:disabled {

@@ -75,8 +75,8 @@ function MobileGeminiLogo({ size = 16 }: { size?: number }) {
           'linearGradient',
           { id: gradId, x1: '0%', y1: '0%', x2: '100%', y2: '100%' },
           createElement('stop', { offset: '0%', stopColor: '#4285F4' }),
-          createElement('stop', { offset: '50%', stopColor: '#60A5FA' }),
-          createElement('stop', { offset: '100%', stopColor: '#F97316' }),
+          createElement('stop', { offset: '50%', stopColor: '#2DD4BF' }),
+          createElement('stop', { offset: '100%', stopColor: '#0D9488' }),
         ),
       ),
       createElement('path', { d: GEMINI_SPARK_PATH, fill: `url(#${gradId})` }),
@@ -432,7 +432,7 @@ export function MobileAskVistrahWidget() {
                   <View
                     style={[
                       s.userBubble,
-                      { backgroundColor: isDark ? '#f97316' : '#0f294a' },
+                      { backgroundColor: '#0D9488' },
                     ]}
                   >
                     <Text
@@ -440,7 +440,7 @@ export function MobileAskVistrahWidget() {
                         fontSize: 13,
                         lineHeight: 18,
                         color: '#ffffff',
-                        fontWeight: isDark ? '600' : '400',
+                        fontWeight: '500',
                       }}
                     >
                       {msg.content}
@@ -473,8 +473,8 @@ export function MobileAskVistrahWidget() {
                           style={[
                             s.actionChip,
                             {
-                              backgroundColor: isDark ? 'rgba(249,115,22,0.16)' : '#fff7ed',
-                              borderColor: 'rgba(249,115,22,0.55)',
+                              backgroundColor: isDark ? 'rgba(13,148,136,0.18)' : '#f0fdfa',
+                              borderColor: isDark ? 'rgba(45,212,191,0.45)' : '#99f6e4',
                             },
                           ]}
                         >
@@ -482,7 +482,7 @@ export function MobileAskVistrahWidget() {
                             style={{
                               fontSize: 12,
                               fontWeight: '700',
-                              color: isDark ? '#fed7aa' : '#ea580c',
+                              color: isDark ? '#99f6e4' : '#0f766e',
                             }}
                           >
                             {act.label}
@@ -490,7 +490,7 @@ export function MobileAskVistrahWidget() {
                           <Feather
                             name="arrow-up-right"
                             size={12}
-                            color={isDark ? '#fed7aa' : '#ea580c'}
+                            color={isDark ? '#99f6e4' : '#0f766e'}
                           />
                         </Pressable>
                       ))}
@@ -510,8 +510,8 @@ export function MobileAskVistrahWidget() {
                     style={[
                       s.starterChip,
                       {
-                        backgroundColor: isDark ? 'rgba(249,115,22,0.12)' : '#f8fafc',
-                        borderColor: isDark ? 'rgba(249,115,22,0.38)' : colors.border,
+                        backgroundColor: isDark ? 'rgba(13,148,136,0.12)' : '#f8fafc',
+                        borderColor: isDark ? 'rgba(45,212,191,0.32)' : colors.border,
                       },
                     ]}
                   >
@@ -567,10 +567,10 @@ export function MobileAskVistrahWidget() {
               accessibilityLabel="Send question"
               disabled={busy || !input.trim()}
               onPress={() => void sendQuestion(input)}
-              style={[
+              style={({ pressed }) => [
                 s.sendBtn,
                 {
-                  backgroundColor: '#f97316',
+                  backgroundColor: pressed ? '#0F766E' : '#0D9488',
                   opacity: busy || !input.trim() ? 0.45 : 1,
                 },
               ]}
@@ -654,13 +654,13 @@ const s = StyleSheet.create({
     paddingVertical: 8,
     borderTopLeftRadius: 999,
     borderBottomLeftRadius: 999,
-    backgroundColor: '#0f294a',
+    backgroundColor: '#0D9488',
     borderWidth: 1.5,
     borderRightWidth: 0,
-    borderColor: 'rgba(249,115,22,0.78)',
-    shadowColor: '#0f294a',
+    borderColor: '#0F766E',
+    shadowColor: '#134E4A',
     shadowOffset: { width: -2, height: 6 },
-    shadowOpacity: 0.34,
+    shadowOpacity: 0.28,
     shadowRadius: 12,
     elevation: 6,
   },
@@ -668,7 +668,7 @@ const s = StyleSheet.create({
     width: 3,
     height: 18,
     borderRadius: 999,
-    backgroundColor: 'rgba(249,115,22,0.72)',
+    backgroundColor: 'rgba(255,255,255,0.62)',
   },
   launcherTextCol: {
     flex: 1,
@@ -689,7 +689,7 @@ const s = StyleSheet.create({
     gap: 4,
   },
   poweredText: {
-    color: '#cbd5e1',
+    color: '#CCFBF1',
     fontSize: 8.5,
     fontWeight: '500',
     lineHeight: 11,
@@ -702,12 +702,12 @@ const s = StyleSheet.create({
     width: 332,
     maxWidth: '92%',
     maxHeight: 460,
-    borderRadius: 18,
+    borderRadius: 12,
     borderWidth: 1,
     overflow: 'hidden',
-    shadowColor: '#0f294a',
+    shadowColor: '#0f172a',
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.32,
+    shadowOpacity: 0.24,
     shadowRadius: 20,
     elevation: 8,
   },
@@ -717,9 +717,9 @@ const s = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 14,
     paddingVertical: 11,
-    backgroundColor: '#0f294a',
+    backgroundColor: '#134E4A',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(249,115,22,0.35)',
+    borderBottomColor: 'rgba(45,212,191,0.32)',
   },
   headerLeft: {
     flexDirection: 'row',
@@ -737,7 +737,7 @@ const s = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderWidth: 1,
-    borderColor: 'rgba(249,115,22,0.55)',
+    borderColor: 'rgba(45,212,191,0.45)',
     alignItems: 'center',
     justifyContent: 'center',
   },

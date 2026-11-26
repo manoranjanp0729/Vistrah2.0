@@ -249,8 +249,18 @@ describe('VISTRAH Admin Operations Console', () => {
     expect(vAdDrawerHtml).toContain('Reject with Note');
   });
 
-  it('enforces zero purple, zero border-l-4 stripes, zero forest green, and zero V-Essentials leftovers in admin/', () => {
+  it('configures Coastal Teal (#0D9488) as primary admin brand token and enforces zero purple, zero border-l-4 stripes, zero forest green, and zero V-Essentials leftovers in admin/', () => {
     const adminRoot = path.resolve(__dirname, '..');
+    const adminThemeCss = fs.readFileSync(path.join(adminRoot, 'app', 'admin-theme.css'), 'utf8');
+    const adminGlobalsCss = fs.readFileSync(path.join(adminRoot, 'app', 'globals.css'), 'utf8');
+
+    expect(adminThemeCss).toMatch(/--brand-teal:\s*#0d9488/i);
+    expect(adminThemeCss).toMatch(/--brand-teal-hover:\s*#0f766e/i);
+    expect(adminThemeCss).toMatch(/--brand-teal-deep:\s*#134e4a/i);
+    expect(adminThemeCss).toMatch(/--brand-teal-tint:\s*#f0fdfa/i);
+    expect(adminThemeCss).toMatch(/--accent-editorial:\s*#0d9488/i);
+    expect(adminGlobalsCss).toMatch(/--brand-teal:\s*#0d9488/i);
+
     const files = collectAdminFiles(adminRoot);
     expect(files.length).toBeGreaterThan(20);
 

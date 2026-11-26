@@ -1,27 +1,27 @@
 {
-  "gradient": ["#091B33", "#0F294A", "#163A66"],
-  "headerLight": ["#F1F5F9", "#EFF6FF", "#F8FAFC"],
-  "headerDark": ["#091B33", "#0F294A", "#132F54"],
-  "defaultAccent": "navy",
+  "gradient": ["#0f294a", "#115e59", "#134e4a"],
+  "headerLight": ["#f0fdfa", "#ccfbf1", "#f8fafc"],
+  "headerDark": ["#0f294a", "#115e59", "#134e4a"],
+  "defaultAccent": "teal",
   "accentPresets": [
-    { "id": "navy", "label": "VISTRAH Navy", "light": "#0f294a", "dark": "#fb923c" },
-    { "id": "orange", "label": "Warm Orange", "light": "#c2410c", "dark": "#fdba74" },
-    { "id": "cobalt", "label": "Deep Cobalt", "light": "#1d4ed8", "dark": "#93c5fd" },
-    { "id": "slate", "label": "Crisp Slate", "light": "#334155", "dark": "#e2e8f0" },
-    { "id": "teal", "label": "Coastal Teal", "light": "#0f5e59", "dark": "#5eead4" }
+    { "id": "teal", "label": "Coastal Teal", "light": "#0d9488", "hover": "#0f766e", "onWhite": "#0f766e", "dark": "#2dd4bf" },
+    { "id": "navy", "label": "VISTRAH Navy", "light": "#0f294a", "hover": "#132f54", "onWhite": "#0f294a", "dark": "#5eead4" },
+    { "id": "slate", "label": "Crisp Slate", "light": "#334155", "hover": "#1e293b", "onWhite": "#334155", "dark": "#e2e8f0" },
+    { "id": "cobalt", "label": "Deep Cobalt", "light": "#1d4ed8", "hover": "#1e40af", "onWhite": "#1d4ed8", "dark": "#93c5fd" },
+    { "id": "orange", "label": "Warm Amber", "light": "#c2410c", "hover": "#9a3412", "onWhite": "#c2410c", "dark": "#fdba74" }
   ],
   "palettes": {
     "light": {
       "background": "#f8fafc", "surface": "#ffffff", "border": "#e2e8f0",
-      "text": "#0f294a", "muted": "#475569", "accent": "#0f294a", "ink": "#ffffff",
-      "error": "#b91c1c", "tile": "#f1f5f9", "tileBorder": "#cbd5e1",
-      "soft": "#f1f5f9", "hover": "#e2e8f0", "highlight": "#fff7ed", "footer": "#f1f5f9"
+      "text": "#0f172a", "muted": "#475569", "accent": "#0d9488", "accentHover": "#0f766e", "accentDeep": "#134e4a", "ink": "#ffffff",
+      "error": "#b91c1c", "tile": "#f8fafc", "tileBorder": "#cbd5e1",
+      "soft": "#f0fdfa", "hover": "#f1f5f9", "highlight": "#ccfbf1", "tintBorder": "#99f6e4", "tintText": "#115e59", "footer": "#f8fafc"
     },
     "dark": {
       "background": "#091526", "surface": "#0f233d", "border": "#1e3a5f",
-      "text": "#f8fafc", "muted": "#cbd5e1", "accent": "#fb923c", "ink": "#091526",
+      "text": "#f8fafc", "muted": "#cbd5e1", "accent": "#2dd4bf", "accentHover": "#14b8a6", "accentDeep": "#134e4a", "ink": "#091526",
       "error": "#fca5a5", "tile": "#132f54", "tileBorder": "#234876",
-      "soft": "#0c1c33", "hover": "#16355c", "highlight": "#1d3f6e", "footer": "#091526"
+      "soft": "#0c2429", "hover": "#11383b", "highlight": "#134e4a", "tintBorder": "#115e59", "tintText": "#99f6e4", "footer": "#091526"
     }
   }
 }

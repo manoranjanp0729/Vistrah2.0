@@ -123,9 +123,9 @@ export function googleMapsDirectionsHref(latitude: number, longitude: number): s
 }
 
 function svgMarkerDataUrl(variant: 'center' | 'item' | 'selected'): string {
-  const fill = variant === 'center' ? '#F97316' : variant === 'selected' ? '#EA580C' : '#0F294A';
-  const stroke = variant === 'center' ? '#0F294A' : variant === 'selected' ? '#0F294A' : '#F97316';
-  const inner = variant === 'center' ? '#0F294A' : '#ffffff';
+  const fill = variant === 'center' ? '#0D9488' : variant === 'selected' ? '#0F766E' : '#0F294A';
+  const stroke = variant === 'center' ? '#0F294A' : variant === 'selected' ? '#0F294A' : '#2DD4BF';
+  const inner = '#ffffff';
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="44" viewBox="0 0 36 44"><path d="M18 2C9.716 2 3 8.716 3 17c0 10.75 15 25 15 25s15-14.25 15-25c0-8.284-6.716-15-15-15z" fill="${fill}" stroke="${stroke}" stroke-width="2.5"/><circle cx="18" cy="17" r="6" fill="${inner}"/></svg>`;
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 }
@@ -942,10 +942,10 @@ export function VistrahMap({
               <Circle
                 center={{ lat: safeCenter.latitude, lng: safeCenter.longitude }}
                 radius={radiusKm * 1000}
-                strokeColor="#0F294A"
-                strokeOpacity={0.65}
+                strokeColor="#134E4A"
+                strokeOpacity={0.72}
                 strokeWeight={1.6}
-                fillColor="#F97316"
+                fillColor="#0D9488"
                 fillOpacity={0.11}
                 clickable={false}
               />

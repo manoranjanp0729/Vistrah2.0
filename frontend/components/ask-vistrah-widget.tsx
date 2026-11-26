@@ -36,8 +36,8 @@ function GeminiLogo({ size = 16 }: { size?: number }) {
       <defs>
         <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#4285F4" />
-          <stop offset="55%" stopColor="#60A5FA" />
-          <stop offset="100%" stopColor="#F97316" />
+          <stop offset="55%" stopColor="#2DD4BF" />
+          <stop offset="100%" stopColor="#0D9488" />
         </linearGradient>
       </defs>
       <path d={GEMINI_SPARK_PATH} fill={`url(#${gradId})`} />

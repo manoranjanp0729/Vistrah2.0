@@ -280,10 +280,10 @@ export default function Services() {
 
         {/* PROGRESSIVE CONTEXTUAL HERO BANNER (50% TRANSPARENCY UNIFIED THEME) */}
         <LinearGradient
-          colors={['rgba(15, 41, 74, 0.5)', 'rgba(19, 47, 84, 0.5)']}
+          colors={['#0F294A', '#115E59', '#134E4A']}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          style={[s.hero, {backgroundColor: isDark ? 'rgba(15, 41, 74, 0.5)' : 'rgba(15, 41, 74, 0.5)', borderColor: 'rgba(249, 115, 22, 0.3)'}]}
+          style={[s.hero, {backgroundColor: '#134E4A', borderColor: 'rgba(45, 212, 191, 0.32)'}]}
         >
           <BannerGeometry/>
 
@@ -291,7 +291,7 @@ export default function Services() {
             <>
               <View style={s.heroBadgeRow}>
                 <LinearGradient
-                  colors={['#0F294A', '#132F54']}
+                  colors={['#0F294A', '#134E4A']}
                   start={{x: 0, y: 0}}
                   end={{x: 1, y: 0}}
                   style={s.heroBadge}
@@ -299,7 +299,7 @@ export default function Services() {
                   <Text style={s.heroBadgeText}>Vistrah Marketplace</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
-                  <Feather name="shield" size={11} color="#F97316" />
+                  <Feather name="shield" size={11} color="#2DD4BF" />
                   <Text style={[s.heroPillText,{color:banner.muted}]}>Verified Providers</Text>
                 </View>
               </View>
@@ -370,7 +370,7 @@ export default function Services() {
                   <Text style={s.heroBadgeText}>{subcategoryName.toUpperCase()}</Text>
                 </LinearGradient>
                 <View style={s.heroPill}>
-                  <Feather name="check-circle" size={11} color="#F97316" />
+                  <Feather name="check-circle" size={11} color="#2DD4BF" />
                   <Text style={[s.heroPillText,{color:banner.muted}]}>Direct Listings</Text>
                 </View>
               </View>
@@ -584,7 +584,7 @@ export default function Services() {
           <View style={{gap: 12}}>
             <View style={s.sectionHeader}>
               <View style={{flex: 1, minWidth: 0}}>
-                <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Service Types</Text>
+                <Text style={[s.sectionEyebrow, {color: '#0F766E'}]}>Service Types</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
                   {t('discovery.types')}
                 </Text>
@@ -655,7 +655,7 @@ export default function Services() {
           <View style={{gap: 12}}>
             <View style={s.sectionHeader}>
               <View style={{flex: 1, minWidth: 0}}>
-                <Text style={[s.sectionEyebrow, {color: '#EA580C'}]}>Available Services</Text>
+                <Text style={[s.sectionEyebrow, {color: '#0F766E'}]}>Available Services</Text>
                 <Text accessibilityRole="header" style={[s.sectionTitle, {color: colors.text}]}>
                   {t('discovery.types')}
                 </Text>
@@ -836,7 +836,7 @@ const s = StyleSheet.create({
     width: 140,
     height: 140,
     borderRadius: 70,
-    backgroundColor: '#F97316',
+    backgroundColor: '#0D9488',
     opacity: 0.2,
   },
   heroBadgeRow: {

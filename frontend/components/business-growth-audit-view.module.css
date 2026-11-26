@@ -17,8 +17,8 @@
   gap: 16px;
   padding: 20px;
   border-radius: 12px;
-  border: 1px solid rgba(249, 115, 22, 0.32);
-  background: linear-gradient(145deg, #091B33 0%, #0F294A 100%);
+  border: 1px solid rgba(45, 212, 191, 0.32);
+  background: linear-gradient(135deg, #0f294a 0%, #115e59 55%, #134e4a 100%);
   color: #f8fafc;
   box-shadow: var(--shadow-sm);
 }
@@ -164,18 +164,18 @@
 
 .actionBtn:hover {
   background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(249, 115, 22, 0.6);
+  border-color: rgba(45, 212, 191, 0.6);
 }
 
 .actionPrimaryGold {
-  background: #F97316;
-  border-color: #F97316;
+  background: #0d9488;
+  border-color: #0d9488;
   color: #ffffff;
 }
 
 .actionPrimaryGold:hover {
-  background: #EA580C;
-  border-color: #EA580C;
+  background: #0f766e;
+  border-color: #0f766e;
 }
 
 .actionWhatsApp {
@@ -206,11 +206,11 @@
   font-weight: 500;
   letter-spacing: normal;
   text-transform: none;
-  color: #ea580c;
+  color: #0f766e;
 }
 
 :global(:root[data-theme='dark']) .sectionEyebrow {
-  color: #fb923c;
+  color: #2dd4bf;
 }
 
 .sectionHeading {
@@ -239,9 +239,9 @@
   gap: 10px;
   padding: 18px;
   border-radius: 12px;
-  background: #0F294A;
+  background: #134e4a;
   color: #f8fafc;
-  border: 1px solid rgba(249, 115, 22, 0.35);
+  border: 1px solid rgba(45, 212, 191, 0.35);
   text-align: center;
 }
 

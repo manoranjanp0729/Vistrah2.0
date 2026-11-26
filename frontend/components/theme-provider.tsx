@@ -2,7 +2,7 @@
 import {UiSelect,UiButton} from "./localized-ui";
 import {useLanguage} from './language-provider';
 import {createContext,useId,useContext,useState,useEffect,type ReactNode} from 'react';
-import {themeVariables,accentPresets} from '@/lib/brand-theme';
+import {defaultAccent,themeVariables,accentPresets} from '@/lib/brand-theme';
 
 export type ThemeMode='light'|'dark';
 
@@ -17,7 +17,7 @@ const Context=createContext<ThemeContextType|null>(null);
 
 export function ThemeProvider({children,initialMode}:{children:ReactNode;initialMode:ThemeMode}){
  const [mode,updateMode]=useState<ThemeMode>(initialMode);
- const [accent,updateAccent]=useState<string>('navy');
+ const [accent,updateAccent]=useState<string>(defaultAccent);
 
  useEffect(()=>{
    try {

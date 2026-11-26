@@ -1,13 +1,18 @@
 :root {
-  --brand-green-950:#0f294a;
-  --brand-green-800:#132f54;
-  --brand-green-700:#163a66;
+  --brand-teal:#0d9488;
+  --brand-teal-hover:#0f766e;
+  --brand-teal-deep:#134e4a;
+  --brand-teal-tint:#f0fdfa;
+  --brand-teal-border:#99f6e4;
+  --brand-green-950:#0d9488;
+  --brand-green-800:#0f766e;
+  --brand-green-700:#115e59;
   --navy-950:#091b33;
   --navy-900:#0f294a;
-  --accent-orange:#f97316;
+  --accent-orange:#0d9488;
   --page-background:#f8fafc;
   --surface:#ffffff;
-  --ivory:#f8fafc;
+  --ivory:#f0fdfa;
   --border:#e2e8f0;
   --text-primary:#0f172a;
   --text-secondary:#475569;

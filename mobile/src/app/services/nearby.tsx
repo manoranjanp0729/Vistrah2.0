@@ -164,7 +164,7 @@ export default function NearbyServicesScreen() {
 
         {/* Unified 50%-Transparent VISTRAH Marketplace Hero Banner */}
         <LinearGradient
-          colors={['rgba(15, 41, 74, 0.5)', 'rgba(19, 47, 84, 0.5)']}
+          colors={['#0F294A', '#115E59', '#134E4A']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={heroStyles.hero}
@@ -172,7 +172,7 @@ export default function NearbyServicesScreen() {
           <BannerGeometry />
           <View style={heroStyles.heroBadgeRow}>
             <LinearGradient
-              colors={['#0F294A', '#132F54']}
+              colors={['#0F294A', '#134E4A']}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
               style={heroStyles.heroBadge}
@@ -180,7 +180,7 @@ export default function NearbyServicesScreen() {
               <Text style={heroStyles.heroBadgeText}>Vistrah Marketplace</Text>
             </LinearGradient>
             <View style={heroStyles.heroPill}>
-              <Feather name="map-pin" size={11} color="#F97316" />
+              <Feather name="map-pin" size={11} color="#2DD4BF" />
               <Text style={[heroStyles.heroPillText, { color: banner.muted }]}>
                 Nearby Discovery
               </Text>
@@ -231,9 +231,9 @@ const heroStyles = StyleSheet.create({
     borderRadius: 12,
     padding: 18,
     gap: 8,
-    backgroundColor: 'rgba(15, 41, 74, 0.5)',
+    backgroundColor: '#134E4A',
     borderWidth: 1,
-    borderColor: 'rgba(249, 115, 22, 0.3)',
+    borderColor: 'rgba(45, 212, 191, 0.32)',
   },
   heroBadgeRow: {
     flexDirection: 'row',
@@ -259,9 +259,9 @@ const heroStyles = StyleSheet.create({
     paddingHorizontal: 9,
     paddingVertical: 3,
     borderRadius: 999,
-    backgroundColor: 'rgba(15, 41, 74, 0.45)',
+    backgroundColor: 'rgba(19, 78, 74, 0.55)',
     borderWidth: 1,
-    borderColor: 'rgba(249, 115, 22, 0.35)',
+    borderColor: 'rgba(45, 212, 191, 0.35)',
   },
   heroPillText: {
     fontSize: 11,

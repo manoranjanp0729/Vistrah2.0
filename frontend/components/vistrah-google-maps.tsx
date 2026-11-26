@@ -14,7 +14,28 @@ import Link from 'next/link';
 import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, LocateFixed, MapPin, Navigation, Search, X } from 'lucide-react';
 import { api } from '@/lib/api';
-import { requestGps, validPoint, type NearbyProvider, type Point } from '@/lib/location';
+import {
+  locationProviders,
+  requestGps,
+  validPoint,
+  type LocationProviders,
+  type NearbyProvider,
+  type Point,
+} from '@/lib/location';
+import {
+  GPS_HARD_TIMEOUT_MS,
+  GPS_TIMEOUT_MESSAGE,
+} from '../../shared/live-geolocation';
+import {
+  detectGoogleMapDomError,
+  hasGoogleMapsAuthFailed,
+  subscribeGoogleMapsAuthFailure,
+} from '../../shared/google-map-web';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+  resolveAreaCityLabel,
+} from '../../shared/reverse-geocode-fallback';
 import {
   CUSTOMER_SEARCH_RADII,
   KARNATAKA_QUICK_CITIES,
@@ -92,6 +113,73 @@ export function GoogleMapLogoBadge() {
 }
 
 export const googleMapsWebApiKey = (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? '').trim();
+
+const OSM_FALLBACK_PROVIDERS: LocationProviders = {
+  tiles: locationProviders.tiles ?? {
+    id: 'osm',
+    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    attribution: '© OpenStreetMap contributors',
+  },
+  geocoder: locationProviders.geocoder,
+};
+
+function useGoogleMapsHealth(containerRef: React.RefObject<HTMLElement | null>): boolean {
+  const [failed, setFailed] = useState<boolean>(() => !googleMapsWebApiKey || hasGoogleMapsAuthFailed());
+
+  useEffect(() => {
+    if (!googleMapsWebApiKey) {
+      setFailed(true);
+      return;
+    }
+    if (typeof window !== 'undefined') {
+      const win = window as unknown as {
+        gm_authFailure?: () => void;
+        __vistrahGmHooked?: boolean;
+      };
+      if (!win.__vistrahGmHooked) {
+        win.__vistrahGmHooked = true;
+        const prev = win.gm_authFailure;
+        win.gm_authFailure = () => {
+          try {
+            prev?.();
+          } catch {
+            // Ignore upstream error
+          }
+          setFailed(true);
+        };
+      }
+    }
+
+    const unsub = subscribeGoogleMapsAuthFailure(() => setFailed(true));
+    const el = containerRef.current;
+    let observer: MutationObserver | null = null;
+    if (el && typeof MutationObserver === 'function') {
+      if (detectGoogleMapDomError(el)) {
+        setFailed(true);
+      } else {
+        observer = new MutationObserver(() => {
+          if (detectGoogleMapDomError(el)) {
+            setFailed(true);
+          }
+        });
+        observer.observe(el, { childList: true, subtree: true, characterData: true });
+      }
+    }
+    const timer = setTimeout(() => {
+      if (containerRef.current && detectGoogleMapDomError(containerRef.current)) {
+        setFailed(true);
+      }
+    }, 1500);
+
+    return () => {
+      clearTimeout(timer);
+      observer?.disconnect();
+      unsub();
+    };
+  }, [containerRef]);
+
+  return failed;
+}
 
 export type ResolvedPlace = {
   placeId?: string;
@@ -227,46 +315,52 @@ type BackendReverseGeocodeResponse = {
 };
 
 export async function reverseGeocodePoint(point: Point): Promise<ResolvedPlace | null> {
-  try {
-    const qs = new URLSearchParams({
-      lat: String(point.latitude),
-      lng: String(point.longitude),
-    });
-    const res = await api<BackendReverseGeocodeResponse>(`/maps/reverse-geocode?${qs.toString()}`);
-    if (validPoint(res)) {
-      return {
-        formattedAddress: res.formatted_address,
-        locality: res.locality,
-        city: res.city,
-        state: res.state,
-        postalCode: res.postal_code,
-        latitude: res.latitude,
-        longitude: res.longitude,
-      };
-    }
-  } catch {
-    try {
-      const pub = await api<{ items: Array<{ latitude: number; longitude: number; label: string; postal_code: string }> }>(
-        '/locations/geocode',
-        { method: 'POST', body: JSON.stringify({ latitude: point.latitude, longitude: point.longitude }) },
-      );
-      const top = pub.items?.[0];
-      if (top && validPoint(top)) {
-        return {
-          formattedAddress: top.label,
-          locality: top.label,
-          city: top.label.split(',').pop()?.trim() || '',
-          state: '',
-          postalCode: top.postal_code || '',
-          latitude: point.latitude,
-          longitude: point.longitude,
-        };
+  const resolved = await resolveAreaCityLabel(point, {
+    primaryResolver: async () => {
+      try {
+        const qs = new URLSearchParams({
+          lat: String(point.latitude),
+          lng: String(point.longitude),
+        });
+        const res = await api<BackendReverseGeocodeResponse>(`/maps/reverse-geocode?${qs.toString()}`);
+        if (validPoint(res)) {
+          return {
+            locality: res.locality,
+            city: res.city,
+            state: res.state,
+            postalCode: res.postal_code,
+            formattedAddress: res.formatted_address,
+          };
+        }
+      } catch {
+        const pub = await api<{ items: Array<{ latitude: number; longitude: number; label: string; postal_code: string }> }>(
+          '/locations/geocode',
+          { method: 'POST', body: JSON.stringify({ latitude: point.latitude, longitude: point.longitude }) },
+        );
+        const top = pub.items?.[0];
+        if (top && validPoint(top)) {
+          return {
+            locality: top.label,
+            city: top.label.split(',').pop()?.trim() || '',
+            state: '',
+            postalCode: top.postal_code || '',
+            formattedAddress: top.label,
+          };
+        }
       }
-    } catch {
-      // Graceful silent fallback when offline or unconfigured.
-    }
-  }
-  return null;
+      return null;
+    },
+  });
+
+  return {
+    formattedAddress: resolved.formattedAddress,
+    locality: resolved.locality,
+    city: resolved.city,
+    state: resolved.state,
+    postalCode: resolved.postalCode,
+    latitude: point.latitude,
+    longitude: point.longitude,
+  };
 }
 
 type SuggestionItem = {
@@ -789,6 +883,8 @@ export function VistrahMap({
   const safeCenter = validPoint(center) ? center : DEFAULT_INDIA_CENTER;
   const [activeMarkerId, setActiveMarkerId] = useState<string | number | null>(selectedId);
   const [reverseBusy, setReverseBusy] = useState(false);
+  const mapCanvasRef = useRef<HTMLDivElement | null>(null);
+  const googleFailed = useGoogleMapsHealth(mapCanvasRef);
 
   useEffect(() => {
     if (selectedId !== undefined) setActiveMarkerId(selectedId);
@@ -832,7 +928,8 @@ export function VistrahMap({
     return 9;
   }, [radiusKm]);
 
-  if (!googleMapsWebApiKey) {
+  if (!googleMapsWebApiKey || googleFailed) {
+    const localArea = lookupLocalAreaCity(safeCenter);
     const legacyItems: NearbyProvider[] = markers
       .filter((m): m is VistrahMapMarker & { id: number } => typeof m.id === 'number')
       .map(m => ({
@@ -852,8 +949,9 @@ export function VistrahMap({
       <div className={s.mapShell} style={{ ['--vistrah-map-height' as string]: `${height}px` }}>
         <div className={s.fallbackBanner}>
           <span>
-            <MapPin size={14} style={{ verticalAlign: 'text-bottom', marginRight: 4 }} aria-hidden="true" />
-            Interactive fallback map active.
+            <MapPin size={14} style={{ verticalAlign: 'text-bottom', marginRight: 4, color: '#0D9488' }} aria-hidden="true" />
+            {localArea?.locality || 'OpenStreetMap view'}
+            {radiusKm ? ` · ${radiusKm} km radius` : ''}
           </span>
           <a
             href={googleMapsDirectionsHref(safeCenter.latitude, safeCenter.longitude)}
@@ -867,6 +965,7 @@ export function VistrahMap({
         <LocationMap
           point={safeCenter}
           items={legacyItems}
+          providers={OSM_FALLBACK_PROVIDERS}
           selectedId={typeof activeMarkerId === 'number' ? activeMarkerId : null}
           onPin={p => {
             if (editable && !disabled) void handlePinUpdate(p);
@@ -911,7 +1010,7 @@ export function VistrahMap({
           </div>
         </div>
 
-        <div className={s.mapCanvas}>
+        <div className={s.mapCanvas} ref={mapCanvasRef}>
           <GoogleMapCanvas
             defaultCenter={{ lat: safeCenter.latitude, lng: safeCenter.longitude }}
             defaultZoom={defaultZoom}
@@ -1062,6 +1161,8 @@ export function MapFirstLocationPicker({
   const [gpsBusy, setGpsBusy] = useState(false);
   const [resolvingPin, setResolvingPin] = useState(false);
   const [gpsRecoveryMsg, setGpsRecoveryMsg] = useState('');
+  const stageViewportRef = useRef<HTMLDivElement | null>(null);
+  const stageGoogleFailed = useGoogleMapsHealth(stageViewportRef);
 
   const programmaticPanUntilRef = useRef<number>(0);
   const pendingIdleCenterRef = useRef<Point | null>(null);
@@ -1069,6 +1170,39 @@ export function MapFirstLocationPicker({
   useEffect(() => {
     latestValueRef.current = value;
   }, [value]);
+
+  // Auto-upgrade any stale coordinate-formatted locality ("12.892° N, 77.623° E") into clean Area, City ("Begur, Bengaluru")
+  useEffect(() => {
+    if (!isCoordinateFormattedLabel(value.locality) && !isCoordinateFormattedLabel(value.formattedAddress)) {
+      return;
+    }
+    let alive = true;
+    const instant = lookupLocalAreaCity(safePoint);
+    if (instant) {
+      onChange({
+        ...latestValueRef.current,
+        locality: instant.locality,
+        formattedAddress: instant.formattedAddress,
+        city: latestValueRef.current.city || instant.city,
+        state: latestValueRef.current.state || instant.state,
+        pincode: latestValueRef.current.pincode || instant.postalCode,
+      });
+    }
+    void reverseGeocodePoint(safePoint).then(resolved => {
+      if (!alive || !resolved || isCoordinateFormattedLabel(resolved.locality)) return;
+      onChange({
+        ...latestValueRef.current,
+        locality: resolved.locality,
+        formattedAddress: resolved.formattedAddress || resolved.locality,
+        city: resolved.city || latestValueRef.current.city,
+        state: resolved.state || latestValueRef.current.state,
+        pincode: resolved.postalCode || latestValueRef.current.pincode,
+      });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [onChange, safePoint.latitude, safePoint.longitude, value.formattedAddress, value.locality]);
 
   const defaultZoom = useMemo(() => {
     const r = value.radiusKm;
@@ -1089,30 +1223,32 @@ export function MapFirstLocationPicker({
       }
       setResolvingPin(true);
       try {
-        const resolved = await reverseGeocodePoint({ latitude: roundedLat, longitude: roundedLon });
+        const pt = { latitude: roundedLat, longitude: roundedLon };
+        const localGuess = lookupLocalAreaCity(pt);
+        const resolved = await reverseGeocodePoint(pt);
         const latest = latestValueRef.current;
-        if (resolved) {
-          onChange({
-            ...latest,
-            latitude: roundedLat,
-            longitude: roundedLon,
-            locality: resolved.locality || latest.locality || 'Pinned location',
-            formattedAddress: resolved.formattedAddress || resolved.locality || latest.formattedAddress,
-            city: resolved.city || latest.city,
-            state: resolved.state || latest.state,
-            pincode: resolved.postalCode || latest.pincode,
-            source: sourceKind,
-          });
-        } else {
-          onChange({
-            ...latest,
-            latitude: roundedLat,
-            longitude: roundedLon,
-            locality: latest.locality || `${roundedLat.toFixed(4)}, ${roundedLon.toFixed(4)}`,
-            formattedAddress: latest.formattedAddress || `Pinned at ${roundedLat.toFixed(4)}, ${roundedLon.toFixed(4)}`,
-            source: sourceKind,
-          });
-        }
+        const cleanLocality =
+          (resolved?.locality && !isCoordinateFormattedLabel(resolved.locality) ? resolved.locality : '') ||
+          localGuess?.locality ||
+          latest.locality ||
+          'Bengaluru';
+        const cleanFormatted =
+          (resolved?.formattedAddress && !isCoordinateFormattedLabel(resolved.formattedAddress)
+            ? resolved.formattedAddress
+            : '') ||
+          localGuess?.formattedAddress ||
+          cleanLocality;
+        onChange({
+          ...latest,
+          latitude: roundedLat,
+          longitude: roundedLon,
+          locality: cleanLocality,
+          formattedAddress: cleanFormatted,
+          city: resolved?.city || localGuess?.city || latest.city,
+          state: resolved?.state || localGuess?.state || latest.state,
+          pincode: resolved?.postalCode || localGuess?.postalCode || latest.pincode,
+          source: sourceKind,
+        });
       } finally {
         setResolvingPin(false);
       }
@@ -1133,25 +1269,45 @@ export function MapFirstLocationPicker({
     if (disabled || busy || gpsBusy) return;
     setGpsBusy(true);
     setGpsRecoveryMsg('');
+    const safetyTimer = setTimeout(() => {
+      setGpsBusy(false);
+    }, GPS_HARD_TIMEOUT_MS);
     try {
-      const fix = await requestGps(
-        typeof navigator !== 'undefined' ? navigator.geolocation : undefined,
-        typeof navigator !== 'undefined' ? navigator.permissions : undefined,
-      );
+      const fix = await Promise.race([
+        requestGps(
+          typeof navigator !== 'undefined' ? navigator.geolocation : undefined,
+          typeof navigator !== 'undefined' ? navigator.permissions : undefined,
+        ),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error(GPS_TIMEOUT_MESSAGE)), GPS_HARD_TIMEOUT_MS),
+        ),
+      ]);
       programmaticPanUntilRef.current = Date.now() + 1400;
-      const resolved = await reverseGeocodePoint(fix.point);
       const roundedLat = Number(fix.point.latitude.toFixed(6));
       const roundedLon = Number(fix.point.longitude.toFixed(6));
-      const fallbackLabel = `${roundedLat.toFixed(3)}° N, ${roundedLon.toFixed(3)}° E`;
+      const pt = { latitude: roundedLat, longitude: roundedLon };
+      const localGuess = lookupLocalAreaCity(pt);
+      const resolved = await reverseGeocodePoint(pt);
+      const cleanLocality =
+        (resolved?.locality && !isCoordinateFormattedLabel(resolved.locality) ? resolved.locality : '') ||
+        localGuess?.locality ||
+        resolved?.locality ||
+        'Bengaluru';
+      const cleanAddress =
+        (resolved?.formattedAddress && !isCoordinateFormattedLabel(resolved.formattedAddress)
+          ? resolved.formattedAddress
+          : '') ||
+        localGuess?.formattedAddress ||
+        cleanLocality;
       const committed: SelectedLocation = {
         ...latestValueRef.current,
         latitude: roundedLat,
         longitude: roundedLon,
-        locality: resolved?.locality || fallbackLabel,
-        formattedAddress: resolved?.formattedAddress || `GPS (${Math.round(fix.accuracy)}m accuracy)`,
-        city: resolved?.city || '',
-        state: resolved?.state || '',
-        pincode: resolved?.postalCode || '',
+        locality: cleanLocality,
+        formattedAddress: cleanAddress,
+        city: resolved?.city || localGuess?.city || '',
+        state: resolved?.state || localGuess?.state || 'Karnataka',
+        pincode: resolved?.postalCode || localGuess?.postalCode || '',
         source: 'gps',
       };
       onChange(committed);
@@ -1163,6 +1319,7 @@ export function MapFirstLocationPicker({
       );
       setDrawerOpen(true);
     } finally {
+      clearTimeout(safetyTimer);
       setGpsBusy(false);
     }
   }
@@ -1174,37 +1331,50 @@ export function MapFirstLocationPicker({
     return hit?.id ?? '';
   }, [safePoint.latitude, safePoint.longitude]);
 
+  const localDisplayFallback = useMemo(
+    () => lookupLocalAreaCity(safePoint),
+    [safePoint.latitude, safePoint.longitude],
+  );
+  const displayLocality =
+    value.locality && !isCoordinateFormattedLabel(value.locality)
+      ? value.locality
+      : localDisplayFallback?.locality || value.locality || 'Select your area on the map';
+  const displayFormattedAddress =
+    value.formattedAddress && !isCoordinateFormattedLabel(value.formattedAddress)
+      ? value.formattedAddress
+      : localDisplayFallback?.formattedAddress || displayLocality;
+
   return (
     <div className={s.stageCard}>
-      <div className={s.stageMapViewport}>
-        {/* Floating Top Search + Quick-Select Karnataka City Chips */}
-        <div className={s.floatingTopBar}>
-          <div className={s.floatingSearchBox}>
-            <PlaceAutocompleteInput
-              floating
-              placeholder="Search area, street, landmark, or PIN code..."
-              disabled={disabled || busy}
-              preferBackendDetails={preferBackendDetails}
-              onSelectPlace={place => {
-                setGpsRecoveryMsg('');
-                programmaticPanUntilRef.current = Date.now() + 1200;
-                const committed: SelectedLocation = {
-                  ...latestValueRef.current,
-                  latitude: Number(place.latitude.toFixed(6)),
-                  longitude: Number(place.longitude.toFixed(6)),
-                  locality: place.locality || place.city || 'Selected area',
-                  formattedAddress: place.formattedAddress || place.locality,
-                  city: place.city,
-                  state: place.state,
-                  pincode: place.postalCode || latestValueRef.current.pincode,
-                  source: 'google',
-                };
-                onChange(committed);
-                onQuickCommit?.(committed);
-              }}
-            />
-          </div>
+      {/* Clean Top Controls Bar Positioned Above the Map (Zero Overlapping Text) */}
+      <div className={s.stageTopControls}>
+        <div className={s.floatingSearchBox}>
+          <PlaceAutocompleteInput
+            floating
+            placeholder="Search area, street, landmark, or PIN code..."
+            disabled={disabled || busy}
+            preferBackendDetails={preferBackendDetails}
+            onSelectPlace={place => {
+              setGpsRecoveryMsg('');
+              programmaticPanUntilRef.current = Date.now() + 1200;
+              const committed: SelectedLocation = {
+                ...latestValueRef.current,
+                latitude: Number(place.latitude.toFixed(6)),
+                longitude: Number(place.longitude.toFixed(6)),
+                locality: place.locality || place.city || 'Selected area',
+                formattedAddress: place.formattedAddress || place.locality,
+                city: place.city,
+                state: place.state,
+                pincode: place.postalCode || latestValueRef.current.pincode,
+                source: 'google',
+              };
+              onChange(committed);
+              onQuickCommit?.(committed);
+            }}
+          />
+        </div>
 
+        <div className={s.stageQuickRow}>
           <div className={s.cityChipRail} role="group" aria-label="Quick select Karnataka cities">
             {KARNATAKA_QUICK_CITIES.map(city => (
               <button
@@ -1218,10 +1388,22 @@ export function MapFirstLocationPicker({
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Map Canvas or Graceful Fallback */}
-        {googleMapsWebApiKey ? (
+          <button
+            type="button"
+            className={s.gpsPrimaryPill}
+            disabled={disabled || busy || gpsBusy}
+            onClick={() => void triggerCurrentGps()}
+          >
+            <Navigation size={14} aria-hidden="true" />
+            {gpsBusy ? 'Locating…' : 'Use Current GPS'}
+          </button>
+        </div>
+      </div>
+
+      <div className={s.stageMapViewport} ref={stageViewportRef}>
+        {/* Map Canvas or Clean Interactive OpenStreetMap Fallback */}
+        {googleMapsWebApiKey && !stageGoogleFailed ? (
           <VistrahMapsProvider>
             <GoogleMapCanvas
               style={{ width: '100%', height: '100%' }}
@@ -1255,23 +1437,23 @@ export function MapFirstLocationPicker({
               <MapViewportSync
                 center={safePoint}
                 radiusKm={value.radiusKm}
-                padding={{ top: 96, right: 12, bottom: 8, left: 8 }}
+                padding={{ top: 12, right: 12, bottom: 12, left: 12 }}
               />
               {value.radiusKm > 0 && (
                 <Circle
                   center={{ lat: safePoint.latitude, lng: safePoint.longitude }}
                   radius={value.radiusKm * 1000}
-                  strokeColor="#0f172a"
-                  strokeOpacity={0.6}
-                  strokeWeight={1.5}
-                  fillColor="#d4af37"
-                  fillOpacity={0.13}
+                  strokeColor="#0F766E"
+                  strokeOpacity={0.72}
+                  strokeWeight={1.6}
+                  fillColor="#0D9488"
+                  fillOpacity={0.14}
                   clickable={false}
                 />
               )}
             </GoogleMapCanvas>
 
-            {/* Center-Locked VISTRAH Navy & Gold Pin */}
+            {/* Center-Locked VISTRAH Coastal Teal Pin */}
             <div className={s.centerPinOverlay} aria-hidden="true">
               <span className={s.centerPinTooltip}>
                 {resolvingPin ? 'Locating pin…' : mode === 'seller' ? 'Move map to place business pin' : 'Move map to adjust pin'}
@@ -1279,11 +1461,11 @@ export function MapFirstLocationPicker({
               <svg width="40" height="48" viewBox="0 0 36 44">
                 <path
                   d="M18 2C9.716 2 3 8.716 3 17c0 10.75 15 25 15 25s15-14.25 15-25c0-8.284-6.716-15-15-15z"
-                  fill="#0f172a"
-                  stroke="#d4af37"
+                  fill="#0D9488"
+                  stroke="#FFFFFF"
                   strokeWidth="2.5"
                 />
-                <circle cx="18" cy="17" r="6" fill="#d4af37" />
+                <circle cx="18" cy="17" r="6" fill="#FFFFFF" />
               </svg>
             </div>
           </VistrahMapsProvider>
@@ -1291,26 +1473,15 @@ export function MapFirstLocationPicker({
           <div className={s.fallbackMapWrap}>
             <LocationMap
               point={safePoint}
+              providers={OSM_FALLBACK_PROVIDERS}
               onPin={p => {
                 if (!disabled && !busy) void applyPointAndResolve(p, 'manual');
               }}
               onView={() => {}}
               onSelect={() => {}}
             />
-            {value.source === 'google' && <GoogleMapLogoBadge />}
           </div>
         )}
-
-        {/* Floating Use Current GPS Button */}
-        <button
-          type="button"
-          className={s.floatingGpsBtn}
-          disabled={disabled || busy || gpsBusy}
-          onClick={() => void triggerCurrentGps()}
-        >
-          <Navigation size={15} aria-hidden="true" />
-          {gpsBusy ? 'Detecting GPS…' : 'Use Current GPS'}
-        </button>
       </div>
 
       {/* Bottom Confirmation Card */}
@@ -1328,17 +1499,14 @@ export function MapFirstLocationPicker({
             </span>
             <div>
               <h3 className={s.resolvedTitle}>
-                {resolvingPin ? 'Updating locality…' : value.locality || 'Select your area on the map'}
+                {resolvingPin ? 'Updating locality…' : displayLocality}
               </h3>
               <p className={s.resolvedAddress}>
-                {value.formattedAddress || 'Pan the map, search an address, or tap a city chip above.'}
+                {displayFormattedAddress || 'Tap the map, search an address, or choose a Karnataka city chip above.'}
               </p>
               <div className={s.metaPills}>
                 {value.pincode && <span className={s.metaPill}>PIN {value.pincode}</span>}
                 <span className={s.metaPill}>{value.radiusKm} km {mode === 'seller' ? 'coverage' : 'radius'}</span>
-                <span className={s.metaPill}>
-                  {safePoint.latitude.toFixed(4)}° N, {safePoint.longitude.toFixed(4)}° E
-                </span>
               </div>
             </div>
           </div>
@@ -1460,8 +1628,14 @@ export function MapFirstLocationPicker({
           <button
             type="button"
             className={s.confirmPrimaryCta}
-            disabled={disabled || busy || value.locality.trim().length < 2}
-            onClick={() => onConfirm(value)}
+            disabled={disabled || busy || displayLocality.trim().length < 2}
+            onClick={() =>
+              onConfirm({
+                ...value,
+                locality: displayLocality,
+                formattedAddress: displayFormattedAddress || displayLocality,
+              })
+            }
           >
             <MapPin size={17} aria-hidden="true" />
             {busy ? 'Saving…' : confirmLabel}

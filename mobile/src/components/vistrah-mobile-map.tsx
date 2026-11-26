@@ -8,6 +8,7 @@ import {googleMapsDirectionsUrl,googleMapsEnabled} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
 import {MobileGoogleLogoBadge} from './google-attribution';
 import type {GooglePoint} from '../../../shared/google-location';
+import {lookupLocalAreaCity,resolveAreaCityLabel} from '../../../shared/reverse-geocode-fallback';
 
 export type MobileMapMarker={
   id:string|number;
@@ -55,43 +56,46 @@ function deltaForRadius(radiusKm?:number):number{
 }
 
 export async function reverseGeocodeMobilePoint(point:GooglePoint):Promise<ResolvedMobilePlace|null>{
-  try{
-    const qs=new URLSearchParams({lat:String(point.latitude),lng:String(point.longitude)});
-    const res=await api<{formatted_address:string;locality:string;city:string;state:string;postal_code:string;latitude:number;longitude:number}>(
-      `/maps/reverse-geocode?${qs.toString()}`,
-    );
-    return {
-      formattedAddress:res.formatted_address,
-      locality:res.locality,
-      city:res.city,
-      state:res.state,
-      postalCode:res.postal_code,
-      latitude:res.latitude,
-      longitude:res.longitude,
-    };
-  }catch{
-    try{
-      const pub=await api<{items:Array<{latitude:number;longitude:number;label:string;postal_code:string}>}>(
-        '/locations/geocode',
-        {method:'POST',body:JSON.stringify({latitude:point.latitude,longitude:point.longitude})},
-      );
-      const top=pub.items?.[0];
-      if(top){
+  const resolved=await resolveAreaCityLabel(point,{
+    primaryResolver:async()=>{
+      try{
+        const qs=new URLSearchParams({lat:String(point.latitude),lng:String(point.longitude)});
+        const res=await api<{formatted_address:string;locality:string;city:string;state:string;postal_code:string;latitude:number;longitude:number}>(
+          `/maps/reverse-geocode?${qs.toString()}`,
+        );
         return {
-          formattedAddress:top.label,
+          locality:res.locality,
+          city:res.city,
+          state:res.state,
+          postalCode:res.postal_code,
+          formattedAddress:res.formatted_address,
+        };
+      }catch{
+        const pub=await api<{items:Array<{latitude:number;longitude:number;label:string;postal_code:string}>}>(
+          '/locations/geocode',
+          {method:'POST',body:JSON.stringify({latitude:point.latitude,longitude:point.longitude})},
+        );
+        const top=pub.items?.[0];
+        if(!top)return null;
+        return {
           locality:top.label,
           city:top.label.split(',').pop()?.trim()||'',
           state:'',
           postalCode:top.postal_code||'',
-          latitude:point.latitude,
-          longitude:point.longitude,
+          formattedAddress:top.label,
         };
       }
-    }catch{
-      // Silent fallback when offline or unconfigured.
-    }
-  }
-  return null;
+    },
+  });
+  return {
+    formattedAddress:resolved.formattedAddress,
+    locality:resolved.locality,
+    city:resolved.city,
+    state:resolved.state,
+    postalCode:resolved.postalCode,
+    latitude:point.latitude,
+    longitude:point.longitude,
+  };
 }
 
 export function VistrahMobileMap({
@@ -149,11 +153,12 @@ export function VistrahMobileMap({
   }
 
   if(!googleMapsEnabled){
+    const localArea=lookupLocalAreaCity(safeCenter);
     return (
       <View style={[styles.card,{position:'relative',minHeight:height,justifyContent:'center',paddingBottom:38,gap:8}]}>
-        <Text style={styles.label}>MAP STAGE · INTERACTIVE FALLBACK</Text>
-        <Text style={[styles.muted,styles.tabular]}>
-          Center: {safeCenter.latitude.toFixed(4)}° N, {safeCenter.longitude.toFixed(4)}° E{radiusKm?` · ${radiusKm} km`:''}
+        <Text style={[styles.label,{color:'#0D9488'}]}>PINNED NEIGHBOURHOOD</Text>
+        <Text style={styles.heading}>
+          {localArea?.locality||'Bengaluru'}{radiusKm?` · ${radiusKm} km`:''}
         </Text>
         <Text style={styles.muted}>
           Tap a Karnataka city chip above, use GPS, or edit street/PIN below.

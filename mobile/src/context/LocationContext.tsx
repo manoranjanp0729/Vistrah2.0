@@ -14,7 +14,9 @@ import * as SecureStore from 'expo-secure-store';
 import { useSession } from '../lib/session';
 import { api } from '../lib/api';
 import {
+  GPS_HARD_TIMEOUT_MS,
   GPS_MOVEMENT_THRESHOLD_METERS,
+  GPS_TIMEOUT_MESSAGE,
   NATIVE_GPS_DENIED_MESSAGE,
   acquireNativeExpoGpsFix,
   createDebouncedMovementWatcher,
@@ -28,6 +30,11 @@ import {
   type GeoPoint,
   type GpsFix,
 } from '../../../shared/live-geolocation';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+  resolveAreaCityLabel,
+} from '../../../shared/reverse-geocode-fallback';
 import { isValidCoordinatePair, type SelectedLocation } from '../../../shared/selected-location';
 
 export const LOCATION_STORAGE_KEY = 'vistrah.selected_location.v1';
@@ -115,11 +122,14 @@ function clampCustomerRadius(r: number | undefined): 2 | 5 | 10 | 25 {
 
 export function selectedToLegacyLocation(sel: SelectedLocation | null): Location | null {
   if (!sel || !isValidCoordinatePair(sel.latitude, sel.longitude)) return null;
+  const pt = { latitude: sel.latitude, longitude: sel.longitude };
+  const rawLabel = (sel.locality || sel.city || '').trim();
+  const upgradedLabel =
+    !rawLabel || isCoordinateFormattedLabel(rawLabel)
+      ? lookupLocalAreaCity(pt)?.locality || rawLabel || formatCoordinateFallbackLabel(pt)
+      : rawLabel;
   return {
-    label:
-      sel.locality ||
-      sel.city ||
-      formatCoordinateFallbackLabel({ latitude: sel.latitude, longitude: sel.longitude }),
+    label: upgradedLabel,
     latitude: sel.latitude,
     longitude: sel.longitude,
     radius: clampCustomerRadius(sel.radiusKm),
@@ -153,16 +163,25 @@ function parseStoredLocation(raw: string | null): SelectedLocation | null {
     const parsed = JSON.parse(raw) as Partial<SelectedLocation>;
     if (typeof parsed.latitude !== 'number' || typeof parsed.longitude !== 'number') return null;
     if (!isValidCoordinatePair(parsed.latitude, parsed.longitude)) return null;
-    const locality = String(parsed.locality || parsed.city || '').trim();
-    if (!locality) return null;
+    const rawLocality = String(parsed.locality || parsed.city || '').trim();
+    if (!rawLocality) return null;
+    const localUpgrade = isCoordinateFormattedLabel(rawLocality)
+      ? lookupLocalAreaCity({ latitude: parsed.latitude, longitude: parsed.longitude })
+      : null;
+    const locality = localUpgrade?.locality || rawLocality;
+    const rawFormatted = String(parsed.formattedAddress || locality);
+    const formattedAddress =
+      isCoordinateFormattedLabel(rawFormatted) && localUpgrade
+        ? localUpgrade.formattedAddress
+        : rawFormatted;
     return {
       latitude: parsed.latitude,
       longitude: parsed.longitude,
-      formattedAddress: String(parsed.formattedAddress || locality),
+      formattedAddress,
       locality,
-      city: String(parsed.city || ''),
-      state: String(parsed.state || 'Karnataka'),
-      pincode: String(parsed.pincode || ''),
+      city: String(parsed.city || localUpgrade?.city || ''),
+      state: String(parsed.state || localUpgrade?.state || 'Karnataka'),
+      pincode: String(parsed.pincode || localUpgrade?.postalCode || ''),
       landmark: String(parsed.landmark || ''),
       radiusKm: typeof parsed.radiusKm === 'number' && parsed.radiusKm > 0 ? parsed.radiusKm : 5,
       source: parsed.source,
@@ -177,46 +196,43 @@ async function reverseGeocodeWithOfflineFallback(
   lon: number,
   radiusKm = 5,
 ): Promise<SelectedLocation> {
-  const coordLabel = formatCoordinateFallbackLabel({ latitude: lat, longitude: lon });
-  try {
-    const res = await api<{
-      formatted_address: string;
-      locality: string;
-      city: string;
-      state: string;
-      postal_code: string;
-      latitude: number;
-      longitude: number;
-    }>(
-      `/maps/reverse-geocode?lat=${encodeURIComponent(String(lat))}&lng=${encodeURIComponent(String(lon))}`,
-    );
-    const locality = (res.locality || res.city || coordLabel).trim();
-    return {
-      latitude: lat,
-      longitude: lon,
-      formattedAddress: res.formatted_address || locality,
-      locality,
-      city: res.city || '',
-      state: res.state || 'Karnataka',
-      pincode: res.postal_code || '',
-      landmark: '',
-      radiusKm,
-      source: 'gps',
-    };
-  } catch {
-    return {
-      latitude: lat,
-      longitude: lon,
-      formattedAddress: coordLabel,
-      locality: coordLabel,
-      city: '',
-      state: '',
-      pincode: '',
-      landmark: '',
-      radiusKm,
-      source: 'gps',
-    };
-  }
+  const resolved = await resolveAreaCityLabel(
+    { latitude: lat, longitude: lon },
+    {
+      primaryResolver: async () => {
+        const res = await api<{
+          formatted_address: string;
+          locality: string;
+          city: string;
+          state: string;
+          postal_code: string;
+          latitude: number;
+          longitude: number;
+        }>(
+          `/maps/reverse-geocode?lat=${encodeURIComponent(String(lat))}&lng=${encodeURIComponent(String(lon))}`,
+        );
+        return {
+          locality: res.locality,
+          city: res.city,
+          state: res.state,
+          postalCode: res.postal_code,
+          formattedAddress: res.formatted_address,
+        };
+      },
+    },
+  );
+  return {
+    latitude: lat,
+    longitude: lon,
+    formattedAddress: resolved.formattedAddress || resolved.locality,
+    locality: resolved.locality,
+    city: resolved.city || '',
+    state: resolved.state || 'Karnataka',
+    pincode: resolved.postalCode || '',
+    landmark: '',
+    radiusKm,
+    source: 'gps',
+  };
 }
 
 async function acquirePlatformGpsFix(): Promise<GpsFix> {
@@ -261,23 +277,29 @@ export function LocationProvider({ children }: { children: ReactNode }) {
     async (fix: GpsFix, expectedGen?: number): Promise<SelectedLocation | null> => {
       const lat = Number(fix.point.latitude.toFixed(6));
       const lon = Number(fix.point.longitude.toFixed(6));
-      const coordLabel = formatCoordinateFallbackLabel({ latitude: lat, longitude: lon });
+      const pt = { latitude: lat, longitude: lon };
+      const coordLabel = formatCoordinateFallbackLabel(pt);
+      const localGuess = lookupLocalAreaCity(pt);
+      const existingCleanLocality =
+        selectedLocation?.locality && !isCoordinateFormattedLabel(selectedLocation.locality)
+          ? selectedLocation.locality
+          : '';
 
-      // Immediate coordinate update so map & nearby listings query update without waiting on reverse-geocoding
+      // Immediate coordinate + clean neighbourhood update so map & nearby listings query never flash raw degree coordinates
       const provisional: SelectedLocation = {
         latitude: lat,
         longitude: lon,
-        formattedAddress: coordLabel,
-        locality: selectedLocation?.locality || coordLabel,
-        city: selectedLocation?.city || '',
-        state: selectedLocation?.state || 'Karnataka',
-        pincode: selectedLocation?.pincode || '',
+        formattedAddress: localGuess?.formattedAddress || existingCleanLocality || coordLabel,
+        locality: localGuess?.locality || existingCleanLocality || coordLabel,
+        city: localGuess?.city || selectedLocation?.city || '',
+        state: localGuess?.state || selectedLocation?.state || 'Karnataka',
+        pincode: localGuess?.postalCode || selectedLocation?.pincode || '',
         landmark: '',
         radiusKm: radiusKmRef.current,
         source: 'gps',
       };
-      activePointRef.current = { latitude: lat, longitude: lon };
-      watcherRef.current?.updateAnchor({ latitude: lat, longitude: lon });
+      activePointRef.current = pt;
+      watcherRef.current?.updateAnchor(pt);
       setSelectedState(provisional);
       setLocationRevision(r => r + 1);
 
@@ -330,8 +352,18 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       manualLockRef.current = false;
       setGpsError('');
       setDetecting(true);
+      let safetyTimer: ReturnType<typeof setTimeout> | null = setTimeout(() => {
+        if (gen === generationRef.current) {
+          setDetecting(false);
+        }
+      }, GPS_HARD_TIMEOUT_MS);
       try {
-        const fix = await acquirePlatformGpsFix();
+        const fix = await Promise.race([
+          acquirePlatformGpsFix(),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error(GPS_TIMEOUT_MESSAGE)), GPS_HARD_TIMEOUT_MS),
+          ),
+        ]);
         if (gen !== generationRef.current) return null;
         const applied = await applyGpsFixToState(fix, gen);
         if (gen === generationRef.current && !manualLockRef.current) {
@@ -352,6 +384,10 @@ export function LocationProvider({ children }: { children: ReactNode }) {
         }
         return null;
       } finally {
+        if (safetyTimer !== null) {
+          clearTimeout(safetyTimer);
+          safetyTimer = null;
+        }
         if (gen === generationRef.current) {
           setDetecting(false);
         }
@@ -443,8 +479,16 @@ export function LocationProvider({ children }: { children: ReactNode }) {
       }
 
       setDetecting(true);
+      const bootSafetyTimer = setTimeout(() => {
+        if (alive) setDetecting(false);
+      }, GPS_HARD_TIMEOUT_MS);
       try {
-        const fix = await acquirePlatformGpsFix();
+        const fix = await Promise.race([
+          acquirePlatformGpsFix(),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error(GPS_TIMEOUT_MESSAGE)), GPS_HARD_TIMEOUT_MS),
+          ),
+        ]);
         if (!alive || manualLockRef.current || bootGen !== generationRef.current) return;
         await applyGpsFixToState(fix, bootGen);
         if (alive && !manualLockRef.current) {
@@ -456,6 +500,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
           ensureLiveWatcher({ latitude: stored.latitude, longitude: stored.longitude });
         }
       } finally {
+        clearTimeout(bootSafetyTimer);
         if (alive) setDetecting(false);
       }
     })();

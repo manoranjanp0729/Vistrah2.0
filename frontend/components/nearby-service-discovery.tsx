@@ -33,6 +33,10 @@ import {
 } from 'lucide-react';
 import { api } from '@/lib/api';
 import { LatestSearch, validPoint, type Point } from '@/lib/location';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+} from '../../shared/reverse-geocode-fallback';
 import { searchMarketplaceEntries } from '@/lib/marketplace-taxonomy';
 import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../shared/flagship-sectors';
 import {
@@ -145,10 +149,17 @@ export function NearbyServiceDiscovery({
   const activePoint = useMemo(() => {
     const src = locCtx?.active ?? locCtx?.draft;
     if (src && validPoint(src)) {
+      const rawLoc = (src.locality || '').trim();
+      const upgraded =
+        !rawLoc || isCoordinateFormattedLabel(rawLoc)
+          ? lookupLocalAreaCity({ latitude: src.latitude, longitude: src.longitude })?.locality ||
+            rawLoc ||
+            'Bengaluru'
+          : rawLoc;
       return {
         latitude: src.latitude,
         longitude: src.longitude,
-        locality: src.locality || 'Bengaluru',
+        locality: upgraded,
       };
     }
     return {
@@ -439,7 +450,7 @@ export function NearbyServiceDiscovery({
           <div className={s.locationPillRow}>
             <Link href="/location" className={s.locationPill} aria-label="Change active location">
               <MapPin size={14} aria-hidden="true" />
-              <span>{locCtx?.detecting ? 'Locating…' : displayLocality}</span>
+              <span>{displayLocality}</span>
             </Link>
             {locCtx && (
               <button

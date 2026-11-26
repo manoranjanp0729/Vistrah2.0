@@ -37,7 +37,8 @@ test('Google Maps attribution assets, Powered by Google autocomplete footer, and
  assert.ok(whitePng.subarray(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])));
  const pickerSource=readFileSync(new URL('../src/components/map-first-location-picker.tsx',import.meta.url),'utf8');
  assert.ok(pickerSource.includes('<MobilePoweredByGoogle'));
- assert.ok(pickerSource.includes('bottom:38'));
+ assert.ok(pickerSource.includes('Use Current GPS'));
+ assert.equal(pickerSource.includes("position:'absolute'"),false);
  const mapSource=readFileSync(new URL('../src/components/vistrah-mobile-map.tsx',import.meta.url),'utf8');
  assert.ok(mapSource.includes('mapPadding='));
  assert.ok(mapSource.includes('<MobileGoogleLogoBadge'));

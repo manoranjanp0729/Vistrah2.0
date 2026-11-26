@@ -20,7 +20,9 @@ import { googleMapsWebKey } from './google-location-picker';
 import { MapFirstLocationPicker, reverseGeocodePoint } from './vistrah-google-maps';
 import { googlePlaces, googlePrivacy } from '../../shared/google-location';
 import {
+  GPS_HARD_TIMEOUT_MS,
   GPS_MOVEMENT_THRESHOLD_METERS,
+  GPS_TIMEOUT_MESSAGE,
   createDebouncedMovementWatcher,
   formatCoordinateFallbackLabel,
   haversineDistanceMeters,
@@ -29,6 +31,10 @@ import {
   type GeolocationPermissionsLike,
   type GpsFix,
 } from '../../shared/live-geolocation';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+} from '../../shared/reverse-geocode-fallback';
 import {
   DEFAULT_SELECTED_LOCATION,
   isValidCoordinatePair,
@@ -69,16 +75,25 @@ function readStoredWebLocation(): SelectedLocation | null {
     const parsed = JSON.parse(raw) as Partial<SelectedLocation>;
     if (typeof parsed.latitude !== 'number' || typeof parsed.longitude !== 'number') return null;
     if (!isValidCoordinatePair(parsed.latitude, parsed.longitude)) return null;
-    const locality = String(parsed.locality || parsed.city || '').trim();
-    if (!locality) return null;
+    const rawLocality = String(parsed.locality || parsed.city || '').trim();
+    if (!rawLocality) return null;
+    const localUpgrade = isCoordinateFormattedLabel(rawLocality)
+      ? lookupLocalAreaCity({ latitude: parsed.latitude, longitude: parsed.longitude })
+      : null;
+    const locality = localUpgrade?.locality || rawLocality;
+    const rawFormatted = String(parsed.formattedAddress || locality);
+    const formattedAddress =
+      isCoordinateFormattedLabel(rawFormatted) && localUpgrade
+        ? localUpgrade.formattedAddress
+        : rawFormatted;
     return {
       latitude: parsed.latitude,
       longitude: parsed.longitude,
-      formattedAddress: String(parsed.formattedAddress || locality),
+      formattedAddress,
       locality,
-      city: String(parsed.city || ''),
-      state: String(parsed.state || 'Karnataka'),
-      pincode: String(parsed.pincode || ''),
+      city: String(parsed.city || localUpgrade?.city || ''),
+      state: String(parsed.state || localUpgrade?.state || 'Karnataka'),
+      pincode: String(parsed.pincode || localUpgrade?.postalCode || ''),
       landmark: String(parsed.landmark || ''),
       radiusKm: typeof parsed.radiusKm === 'number' && parsed.radiusKm > 0 ? parsed.radiusKm : 5,
       source: parsed.source,
@@ -169,9 +184,15 @@ async function resolveHumanReadableGpsLocation(
     }
   }
 
-  const finalLocality = locality || fallbackLabel;
+  const localFallback = lookupLocalAreaCity({ latitude: lat, longitude: lon });
+  const finalLocality =
+    (locality && !isCoordinateFormattedLabel(locality) ? locality : '') ||
+    localFallback?.locality ||
+    locality ||
+    fallbackLabel;
   const finalAddress =
-    formattedAddress ||
+    (formattedAddress && !isCoordinateFormattedLabel(formattedAddress) ? formattedAddress : '') ||
+    localFallback?.formattedAddress ||
     (accuracy > 0 ? `${finalLocality} (GPS ~${Math.round(accuracy)}m)` : finalLocality);
 
   const selected: SelectedLocation = {
@@ -179,9 +200,9 @@ async function resolveHumanReadableGpsLocation(
     longitude: lon,
     locality: finalLocality,
     formattedAddress: finalAddress,
-    city: city || finalLocality.split(',').pop()?.trim() || '',
-    state: state || 'Karnataka',
-    pincode: postalCode,
+    city: city || localFallback?.city || finalLocality.split(',').pop()?.trim() || '',
+    state: state || localFallback?.state || 'Karnataka',
+    pincode: postalCode || localFallback?.postalCode || '',
     landmark: '',
     radiusKm,
     source: 'gps',
@@ -229,15 +250,19 @@ function useLocationState() {
     async (fix: GpsFix, showUserMessage: boolean, expectedGen?: number) => {
       const lat = Number(fix.point.latitude.toFixed(6));
       const lon = Number(fix.point.longitude.toFixed(6));
-      const coordFallback = formatCoordinateFallbackLabel({ latitude: lat, longitude: lon });
+      const pt = { latitude: lat, longitude: lon };
+      const coordFallback = formatCoordinateFallbackLabel(pt);
+      const localGuess = lookupLocalAreaCity(pt);
+      const existingCleanLocality =
+        active?.locality && !isCoordinateFormattedLabel(active.locality) ? active.locality : '';
 
-      // Apply immediate coordinate update first so map center + radius query never wait on reverse-geocoding
+      // Apply immediate coordinate + neighbourhood update first so map center + radius query never flash raw degree coordinates
       const immediateCustomer: CustomerLocation = {
         latitude: lat,
         longitude: lon,
-        locality: activePointRef.current ? (active?.locality || coordFallback) : coordFallback,
-        postal_code: '',
-        address: coordFallback,
+        locality: localGuess?.locality || existingCleanLocality || coordFallback,
+        postal_code: localGuess?.postalCode || '',
+        address: localGuess?.formattedAddress || existingCleanLocality || coordFallback,
         landmark: '',
         source: 'gps',
       };
@@ -359,8 +384,16 @@ function useLocationState() {
       if (stored && permState !== 'granted') return;
 
       setDetecting(true);
+      const bootSafetyTimer = setTimeout(() => {
+        if (alive) setDetecting(false);
+      }, GPS_HARD_TIMEOUT_MS);
       try {
-        const fix = await requestGps(navigator.geolocation, getBrowserPermissions());
+        const fix = await Promise.race([
+          requestGps(navigator.geolocation, getBrowserPermissions()),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error(GPS_TIMEOUT_MESSAGE)), GPS_HARD_TIMEOUT_MS),
+          ),
+        ]);
         if (!alive || manualLockRef.current || bootGen !== gpsGeneration.current) return;
         await applyGpsFix(fix, false, bootGen);
         if (alive && !manualLockRef.current) {
@@ -372,6 +405,7 @@ function useLocationState() {
           ensureLiveWatcherStarted({ latitude: stored.latitude, longitude: stored.longitude });
         }
       } finally {
+        clearTimeout(bootSafetyTimer);
         if (alive) setDetecting(false);
       }
     })();
@@ -513,11 +547,22 @@ function useLocationState() {
     setMessage('');
     setBusy(true);
     setDetecting(true);
+    const safetyTimer = setTimeout(() => {
+      if (generation === gpsGeneration.current) {
+        setBusy(false);
+        setDetecting(false);
+      }
+    }, GPS_HARD_TIMEOUT_MS);
     try {
-      const fix = await requestGps(
-        typeof navigator !== 'undefined' ? navigator.geolocation : undefined,
-        getBrowserPermissions(),
-      );
+      const fix = await Promise.race([
+        requestGps(
+          typeof navigator !== 'undefined' ? navigator.geolocation : undefined,
+          getBrowserPermissions(),
+        ),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error(GPS_TIMEOUT_MESSAGE)), GPS_HARD_TIMEOUT_MS),
+        ),
+      ]);
       if (generation !== gpsGeneration.current) return;
       await applyGpsFix(fix, true, generation);
       if (generation === gpsGeneration.current && !manualLockRef.current) {
@@ -528,6 +573,7 @@ function useLocationState() {
         setError((e as Error).message);
       }
     } finally {
+      clearTimeout(safetyTimer);
       if (generation === gpsGeneration.current) {
         setBusy(false);
         setDetecting(false);

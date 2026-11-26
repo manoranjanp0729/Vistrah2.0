@@ -1,7 +1,7 @@
 .root {
   position: fixed;
   inset: 0;
-  z-index: 950;
+  z-index: 650;
   pointer-events: none;
 }
 
@@ -9,7 +9,7 @@
   position: fixed;
   right: 0;
   bottom: 96px;
-  z-index: 950;
+  z-index: 650;
   pointer-events: auto;
   touch-action: none;
   user-select: none;
@@ -96,16 +96,22 @@
 }
 
 .launcherSparkWrap {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.34);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   transform: translateX(0);
-  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.16s ease;
 }
 
 .launcherPeek .launcherSparkWrap {
   transform: translateX(-97px);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .launcherDragging .launcherSparkWrap,
@@ -117,7 +123,7 @@
   position: fixed;
   right: 16px;
   bottom: 88px;
-  z-index: 952;
+  z-index: 660;
   pointer-events: auto;
   width: min(372px, calc(100vw - 28px));
   max-height: min(540px, calc(100vh - 120px));

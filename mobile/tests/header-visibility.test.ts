@@ -32,6 +32,8 @@ test('shouldShowMainHeader allows only Home ("/" and "/app/") and suppresses all
     '/app/products',
     '/app/vibe-finder',
     '/app/v-ads',
+    '/location',
+    '/app/location',
   ];
   for (const route of innerRoutes) {
     assert.equal(shouldShowMainHeader(route), false, `Expected header hidden on ${route}`);
@@ -53,7 +55,8 @@ test('mobile Stack and Tabs configure headerShown: false everywhere except the H
     'utf8',
   );
   assert.ok(tabsLayout.includes('screenOptions={{headerShown:false'));
-  assert.ok(tabsLayout.includes('<Tabs.Screen name="index" options={{headerShown:true,header:()=> <AppHeader/>'));
+  assert.ok(tabsLayout.includes('const showHomeHeader=shouldShowMainHeader(pathname);'));
+  assert.ok(tabsLayout.includes('<Tabs.Screen name="index" options={{headerShown:showHomeHeader,header:()=> showHomeHeader?<AppHeader/>:null'));
   assert.ok(tabsLayout.includes('<Tabs.Screen name="products" options={{headerShown:false'));
   assert.ok(tabsLayout.includes('<Tabs.Screen name="vibe-finder" options={{headerShown:false'));
   assert.ok(tabsLayout.includes('<Tabs.Screen name="account" options={{headerShown:false'));
@@ -78,4 +81,14 @@ test('mobile Stack and Tabs configure headerShown: false everywhere except the H
     'utf8',
   );
   assert.ok(nearbySrc.includes("edges={['top', 'left', 'right']}"));
+  assert.equal(nearbySrc.includes('BannerGeometry'), false);
+
+  const locationPickerSrc = readFileSync(
+    join(repoRoot, 'mobile', 'src', 'components', 'map-first-location-picker.tsx'),
+    'utf8',
+  );
+  assert.ok(locationPickerSrc.includes('#0D9488'));
+  assert.ok(locationPickerSrc.includes('#0F766E'));
+  assert.equal(locationPickerSrc.toLowerCase().includes('#d4af37'), false);
+  assert.equal(locationPickerSrc.toLowerCase().includes('#0f172a'), false);
 });

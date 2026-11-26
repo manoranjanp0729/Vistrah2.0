@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import {
   GPS_FALLBACK_OPTIONS,
+  GPS_HARD_TIMEOUT_MS,
   GPS_HIGH_ACCURACY_OPTIONS,
+  GPS_TIMEOUT_MESSAGE,
   NATIVE_GPS_DENIED_MESSAGE,
   acquireNativeExpoGpsFix,
   createDebouncedMovementWatcher,
@@ -11,6 +13,11 @@ import {
   requestBrowserGpsFix,
   type ExpoLocationPositionLike,
 } from '../../shared/live-geolocation.ts';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+  resolveAreaCityLabel,
+} from '../../shared/reverse-geocode-fallback.ts';
 import { buildNearbyListingsPath } from '../../shared/nearby-services.ts';
 
 test('mobile native & web Use GPS handles permission denial, >5s last-known fallback, and >=50m watchPosition cleanup', async t => {
@@ -138,4 +145,58 @@ test('mobile native & web Use GPS handles permission denial, >5s last-known fall
   assert.ok(nearbySrc.includes('requestCurrentGps'));
   assert.ok(nearbySrc.includes('Use GPS'));
   assert.ok(nearbySrc.includes('buildNearbyListingsPath'));
+
+  // 6. Reverse-geocoding fallback formats (12.892, 77.623) as "Begur, Bengaluru" (never raw 12.892° N, 77.623° E)
+  assert.equal(isCoordinateFormattedLabel('12.892° N, 77.623° E'), true);
+  assert.equal(isCoordinateFormattedLabel('Begur, Bengaluru'), false);
+  const localBegur = lookupLocalAreaCity({ latitude: 12.892, longitude: 77.623 });
+  assert.ok(localBegur);
+  assert.equal(localBegur.locality, 'Begur, Bengaluru');
+
+  const resolvedWhenGoogleDenied = await resolveAreaCityLabel(
+    { latitude: 12.892, longitude: 77.623 },
+    {
+      primaryResolver: async () => {
+        throw new Error('REQUEST_DENIED');
+      },
+      fetchImpl: (async () =>
+        ({
+          ok: true,
+          json: async () => ({
+            address: {
+              suburb: 'Begur',
+              city: 'Bangalore',
+              state: 'Karnataka',
+              postcode: '560068',
+            },
+          }),
+        }) as Response) as unknown as typeof fetch,
+    },
+  );
+  assert.equal(resolvedWhenGoogleDenied.locality, 'Begur, Bengaluru');
+  assert.equal(isCoordinateFormattedLabel(resolvedWhenGoogleDenied.locality), false);
+
+  const resolvedWhenOffline = await resolveAreaCityLabel(
+    { latitude: 12.892, longitude: 77.623 },
+    {
+      primaryResolver: async () => {
+        throw new Error('OVER_QUERY_LIMIT');
+      },
+      fetchImpl: (async () => {
+        throw new Error('Offline');
+      }) as unknown as typeof fetch,
+    },
+  );
+  assert.equal(resolvedWhenOffline.locality, 'Begur, Bengaluru');
+
+  // 7. Hard 8s timeout guarantees stalled geolocation never hangs infinitely on "Locating..."
+  assert.equal(GPS_HARD_TIMEOUT_MS, 8000);
+  const hungPromise = requestBrowserGpsFix({
+    getCurrentPosition: () => {
+      // Simulates hung browser geolocation that never invokes callback
+    },
+  });
+  await Promise.resolve();
+  t.mock.timers.tick(8000);
+  await assert.rejects(hungPromise, new RegExp(GPS_TIMEOUT_MESSAGE.slice(0, 18)));
 });

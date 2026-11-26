@@ -5,15 +5,21 @@ import {Feather} from '@expo/vector-icons';
 import {Text,TextInput} from './typography';
 import {Field} from './ui';
 import {api} from '../lib/api';
-import {googleMapsDirectionsUrl} from '../lib/google-maps';
+import {googleMapsDirectionsUrl,googleMapsEnabled} from '../lib/google-maps';
 import {useTheme} from '../lib/theme';
 import {MobileGoogleWordmark,MobilePoweredByGoogle} from './google-attribution';
 import {VistrahMobileMap,reverseGeocodeMobilePoint} from './vistrah-mobile-map';
 import {
+  GPS_HARD_TIMEOUT_MS,
+  GPS_TIMEOUT_MESSAGE,
   acquireNativeExpoGpsFix,
   requestBrowserGpsFix,
   type GeolocationPermissionsLike,
 } from '../../../shared/live-geolocation';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+} from '../../../shared/reverse-geocode-fallback';
 import {
   CUSTOMER_SEARCH_RADII,
   KARNATAKA_QUICK_CITIES,
@@ -58,7 +64,7 @@ export function MobileMapFirstLocationPicker({
   const {colors,styles,mode:themeMode}=useTheme();
   const isDark=themeMode==='dark';
   const {height:winHeight}=useWindowDimensions();
-  const mapStageHeight=Math.min(480,Math.max(320,Math.round((winHeight||720)*0.55)));
+  const mapStageHeight=Math.min(400,Math.max(260,Math.round((winHeight||720)*0.42)));
   const radiiList=radiusOptions??(mode==='seller'?SELLER_COVERAGE_RADII:CUSTOMER_SEARCH_RADII);
 
   const [searchQuery,setSearchQuery]=useState('');
@@ -73,6 +79,38 @@ export function MobileMapFirstLocationPicker({
   const latestRef=useRef(value);
   useEffect(()=>{latestRef.current=value;},[value]);
   useEffect(()=>()=>{if(debounceRef.current)clearTimeout(debounceRef.current);},[]);
+
+  // Auto-upgrade any stale raw coordinate label (e.g. "12.892° N, 77.623° E") into clean Area, City ("Begur, Bengaluru")
+  useEffect(()=>{
+    if(!isCoordinateFormattedLabel(value.locality)&&!isCoordinateFormattedLabel(value.formattedAddress)){
+      return;
+    }
+    let alive=true;
+    const pt={latitude:value.latitude,longitude:value.longitude};
+    const instant=lookupLocalAreaCity(pt);
+    if(instant){
+      onChange({
+        ...latestRef.current,
+        locality:instant.locality,
+        formattedAddress:instant.formattedAddress,
+        city:latestRef.current.city||instant.city,
+        state:latestRef.current.state||instant.state,
+        pincode:latestRef.current.pincode||instant.postalCode,
+      });
+    }
+    void reverseGeocodeMobilePoint(pt).then(resolved=>{
+      if(!alive||!resolved||isCoordinateFormattedLabel(resolved.locality))return;
+      onChange({
+        ...latestRef.current,
+        locality:resolved.locality,
+        formattedAddress:resolved.formattedAddress||resolved.locality,
+        city:resolved.city||latestRef.current.city,
+        state:resolved.state||latestRef.current.state,
+        pincode:resolved.postalCode||latestRef.current.pincode,
+      });
+    });
+    return ()=>{alive=false;};
+  },[value.latitude,value.longitude]);
 
   function ensureSessionToken():string{
     if(!sessionTokenRef.current){
@@ -191,29 +229,48 @@ export function MobileMapFirstLocationPicker({
     if(disabled||busy||gpsBusy)return;
     setGpsBusy(true);
     setGpsRecovery('');
+    const hardTimer=setTimeout(()=>{
+      setGpsBusy(false);
+    },GPS_HARD_TIMEOUT_MS);
     try{
-      const fix=Platform.OS==='web'
-        ? await requestBrowserGpsFix(
-            typeof navigator!=='undefined'?navigator.geolocation:undefined,
-            typeof navigator!=='undefined'
-              ? ((navigator as unknown as {permissions?:GeolocationPermissionsLike}).permissions??null)
-              : null,
-          )
-        : await acquireNativeExpoGpsFix(GPS);
+      const fix=await Promise.race([
+        Platform.OS==='web'
+          ? requestBrowserGpsFix(
+              typeof navigator!=='undefined'?navigator.geolocation:undefined,
+              typeof navigator!=='undefined'
+                ? ((navigator as unknown as {permissions?:GeolocationPermissionsLike}).permissions??null)
+                : null,
+              GPS_HARD_TIMEOUT_MS,
+            )
+          : acquireNativeExpoGpsFix(GPS,{hardTimeoutMs:GPS_HARD_TIMEOUT_MS}),
+        new Promise<never>((_,reject)=>
+          setTimeout(()=>reject(new Error(GPS_TIMEOUT_MESSAGE)),GPS_HARD_TIMEOUT_MS),
+        ),
+      ]);
       const pt=fix.point;
-      const accMeters=Math.round(fix.accuracy);
-
+      const localGuess=lookupLocalAreaCity(pt);
       const resolved=await reverseGeocodeMobilePoint(pt);
-      const fallbackLabel=`${pt.latitude.toFixed(3)}° N, ${pt.longitude.toFixed(3)}° E`;
+      const cleanLocality=
+        (resolved?.locality&&!isCoordinateFormattedLabel(resolved.locality)?resolved.locality:'')||
+        localGuess?.locality||
+        resolved?.locality||
+        'Bengaluru';
+      const cleanAddress=
+        (resolved?.formattedAddress&&!isCoordinateFormattedLabel(resolved.formattedAddress)
+          ? resolved.formattedAddress
+          : '')||
+        localGuess?.formattedAddress||
+        cleanLocality;
+
       const committed:SelectedLocation={
         ...latestRef.current,
         latitude:pt.latitude,
         longitude:pt.longitude,
-        locality:resolved?.locality||fallbackLabel,
-        formattedAddress:resolved?.formattedAddress||(accMeters?`GPS (~${accMeters}m)`:fallbackLabel),
-        city:resolved?.city||'',
-        state:resolved?.state||'',
-        pincode:resolved?.postalCode||'',
+        locality:cleanLocality,
+        formattedAddress:cleanAddress,
+        city:resolved?.city||localGuess?.city||'',
+        state:resolved?.state||localGuess?.state||'Karnataka',
+        pincode:resolved?.postalCode||localGuess?.postalCode||'',
         source:'gps',
       };
       onChange(committed);
@@ -226,6 +283,7 @@ export function MobileMapFirstLocationPicker({
       }
       setDrawerOpen(true);
     }finally{
+      clearTimeout(hardTimer);
       setGpsBusy(false);
     }
   }
@@ -246,10 +304,155 @@ export function MobileMapFirstLocationPicker({
     return match?.id??'';
   },[value.latitude,value.longitude]);
 
+  const localDisplayFallback=useMemo(
+    ()=>lookupLocalAreaCity({latitude:value.latitude,longitude:value.longitude}),
+    [value.latitude,value.longitude],
+  );
+  const displayLocality=
+    value.locality&&!isCoordinateFormattedLabel(value.locality)
+      ? value.locality
+      : localDisplayFallback?.locality||value.locality||'Select area on map';
+  const displayFormattedAddress=
+    value.formattedAddress&&!isCoordinateFormattedLabel(value.formattedAddress)
+      ? value.formattedAddress
+      : localDisplayFallback?.formattedAddress||displayLocality;
+
   return (
     <View style={{borderRadius:16,overflow:'hidden',borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface}}>
-      {/* Map Stage with Floating Search, Karnataka City Chips, Center Pin & Floating GPS */}
-      <View style={{position:'relative',height:mapStageHeight}}>
+      {/* Clean Top Controls Bar Positioned Above the Map (Zero Overlapping Text) */}
+      <View style={{padding:12,gap:10,borderBottomWidth:1,borderBottomColor:colors.border,backgroundColor:colors.surface,zIndex:20}}>
+        <View
+          style={{
+            flexDirection:'row',
+            alignItems:'center',
+            gap:8,
+            paddingHorizontal:12,
+            paddingVertical:6,
+            borderRadius:10,
+            backgroundColor:isDark?'#1E293B':'#F8FAFC',
+            borderWidth:1,
+            borderColor:colors.border,
+          }}
+        >
+          <Feather name="search" size={16} color="#0D9488"/>
+          <TextInput
+            value={searchQuery}
+            editable={!disabled&&!busy}
+            placeholder="Search area, street, landmark, or PIN code..."
+            placeholderTextColor="#64748B"
+            returnKeyType="search"
+            onSubmitEditing={()=>void runDirectSearch()}
+            onChangeText={t=>{
+              setSearchQuery(t);
+              if(debounceRef.current)clearTimeout(debounceRef.current);
+              debounceRef.current=setTimeout(()=>void fetchAutocomplete(t),280);
+            }}
+            style={{flex:1,fontSize:14,color:colors.text,minHeight:34,paddingVertical:2}}
+          />
+          {searchQuery?(
+            <Pressable onPress={()=>{setSearchQuery('');setSuggestions([]);}} hitSlop={8}>
+              <Feather name="x" size={16} color="#64748B"/>
+            </Pressable>
+          ):googleMapsEnabled?(
+            <View
+              pointerEvents="none"
+              accessible
+              accessibilityLabel="Powered by Google"
+              style={{
+                flexDirection:'row',
+                alignItems:'center',
+                gap:4,
+                paddingHorizontal:6,
+                paddingVertical:3,
+                borderRadius:6,
+                backgroundColor:'rgba(15,23,42,0.04)',
+              }}
+            >
+              <Text style={{fontSize:10,fontWeight:'500',color:'#5f6368'}}>Powered by</Text>
+              <MobileGoogleWordmark height={12} dark={isDark}/>
+            </View>
+          ):null}
+        </View>
+
+        {suggestions.length>0&&(
+          <View
+            style={{
+              borderRadius:10,
+              backgroundColor:isDark?'#1E293B':'#FFFFFF',
+              borderWidth:1,
+              borderColor:colors.border,
+              overflow:'hidden',
+            }}
+          >
+            {suggestions.slice(0,5).map(item=>(
+              <Pressable
+                key={item.place_id}
+                onPress={()=>void selectSuggestion(item)}
+                style={{paddingHorizontal:12,paddingVertical:9,borderBottomWidth:1,borderBottomColor:colors.border}}
+              >
+                <Text style={{fontSize:13,fontWeight:'700',color:colors.text}}>{item.main_text}</Text>
+                {Boolean(item.secondary_text)&&<Text style={{fontSize:11,color:colors.muted}}>{item.secondary_text}</Text>}
+              </Pressable>
+            ))}
+            {googleMapsEnabled&&<MobilePoweredByGoogle dark={isDark}/>}
+          </View>
+        )}
+
+        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,flexWrap:'wrap'}}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{flexGrow:1,flexShrink:1}}
+            contentContainerStyle={{gap:6,paddingRight:4,alignItems:'center'}}
+          >
+            {KARNATAKA_QUICK_CITIES.map(city=>{
+              const active=activeCityId===city.id;
+              return (
+                <Pressable
+                  key={city.id}
+                  disabled={disabled||busy}
+                  onPress={()=>pickPreset(city)}
+                  style={({pressed})=>({
+                    paddingHorizontal:12,
+                    paddingVertical:7,
+                    borderRadius:999,
+                    backgroundColor:active?(pressed?'#0F766E':'#0D9488'):(isDark?'#1E293B':'#FFFFFF'),
+                    borderWidth:1,
+                    borderColor:active?'#0F766E':colors.border,
+                  })}
+                >
+                  <Text style={{fontSize:12,fontWeight:'700',color:active?'#FFFFFF':colors.text}}>{city.label}</Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+
+          <Pressable
+            disabled={disabled||busy||gpsBusy}
+            onPress={()=>void handleCurrentGps()}
+            style={({pressed})=>({
+              flexDirection:'row',
+              alignItems:'center',
+              gap:6,
+              paddingHorizontal:13,
+              paddingVertical:8,
+              borderRadius:999,
+              backgroundColor:pressed&&!gpsBusy?'#0F766E':'#0D9488',
+              borderWidth:1,
+              borderColor:'#0F766E',
+              opacity:disabled||busy||gpsBusy?0.78:1,
+            })}
+          >
+            <Feather name="navigation" size={13} color="#FFFFFF"/>
+            <Text style={{fontSize:12,fontWeight:'700',color:'#FFFFFF'}}>
+              {gpsBusy?'Locating…':'Use Current GPS'}
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+
+      {/* Interactive Map Stage (Google Maps when healthy, OpenStreetMap slippy tiles on fallback) */}
+      <View style={{position:'relative',minHeight:mapStageHeight}}>
         <VistrahMobileMap
           center={{latitude:value.latitude,longitude:value.longitude}}
           radiusKm={value.radiusKm}
@@ -258,10 +461,18 @@ export function MobileMapFirstLocationPicker({
           disabled={disabled||busy}
           height={mapStageHeight}
           onPinChange={pt=>{
+            const instant=lookupLocalAreaCity(pt);
             onChange({
               ...latestRef.current,
               latitude:pt.latitude,
               longitude:pt.longitude,
+              ...(instant?{
+                locality:instant.locality,
+                formattedAddress:instant.formattedAddress,
+                city:instant.city,
+                state:instant.state,
+                pincode:instant.postalCode||latestRef.current.pincode,
+              }:{}),
               source:'google',
             });
           }}
@@ -279,164 +490,36 @@ export function MobileMapFirstLocationPicker({
             });
           }}
         />
-
-        {/* Floating Top Search + Quick Karnataka City Chips */}
-        <View style={{position:'absolute',top:10,left:10,right:10,gap:8,zIndex:30}}>
-          <View
-            style={{
-              flexDirection:'row',
-              alignItems:'center',
-              gap:8,
-              paddingHorizontal:12,
-              paddingVertical:6,
-              borderRadius:12,
-              backgroundColor:'#ffffff',
-              borderWidth:1,
-              borderColor:'rgba(15,23,42,0.14)',
-            }}
-          >
-            <Feather name="search" size={16} color="#475569"/>
-            <TextInput
-              value={searchQuery}
-              editable={!disabled&&!busy}
-              placeholder="Search area, street, landmark, or PIN code..."
-              placeholderTextColor="#64748b"
-              returnKeyType="search"
-              onSubmitEditing={()=>void runDirectSearch()}
-              onChangeText={t=>{
-                setSearchQuery(t);
-                if(debounceRef.current)clearTimeout(debounceRef.current);
-                debounceRef.current=setTimeout(()=>void fetchAutocomplete(t),280);
-              }}
-              style={{flex:1,fontSize:14,color:'#0f172a',minHeight:34,paddingVertical:2}}
-            />
-            {searchQuery?(
-              <Pressable onPress={()=>{setSearchQuery('');setSuggestions([]);}} hitSlop={8}>
-                <Feather name="x" size={16} color="#64748b"/>
-              </Pressable>
-            ):(
-              <View
-                pointerEvents="none"
-                accessible
-                accessibilityLabel="Powered by Google"
-                style={{
-                  flexDirection:'row',
-                  alignItems:'center',
-                  gap:4,
-                  paddingHorizontal:6,
-                  paddingVertical:3,
-                  borderRadius:6,
-                  backgroundColor:'rgba(15,23,42,0.04)',
-                }}
-              >
-                <Text style={{fontSize:10,fontWeight:'500',color:'#5f6368'}}>Powered by</Text>
-                <MobileGoogleWordmark height={12} dark={false}/>
-              </View>
-            )}
-          </View>
-
-          {suggestions.length>0&&(
-            <View
-              style={{
-                borderRadius:12,
-                backgroundColor:isDark?'#18181b':'#ffffff',
-                borderWidth:1,
-                borderColor:isDark?'rgba(255,255,255,0.14)':'rgba(15,23,42,0.14)',
-                overflow:'hidden',
-              }}
-            >
-              {suggestions.slice(0,5).map(item=>(
-                <Pressable
-                  key={item.place_id}
-                  onPress={()=>void selectSuggestion(item)}
-                  style={{paddingHorizontal:12,paddingVertical:9,borderBottomWidth:1,borderBottomColor:isDark?'rgba(255,255,255,0.08)':'#f1f5f9'}}
-                >
-                  <Text style={{fontSize:13,fontWeight:'700',color:isDark?'#f8fafc':'#0f172a'}}>{item.main_text}</Text>
-                  {Boolean(item.secondary_text)&&<Text style={{fontSize:11,color:isDark?'#94a3b8':'#64748b'}}>{item.secondary_text}</Text>}
-                </Pressable>
-              ))}
-              <MobilePoweredByGoogle dark={isDark}/>
-            </View>
-          )}
-
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap:6,paddingRight:8}}>
-            {KARNATAKA_QUICK_CITIES.map(city=>{
-              const active=activeCityId===city.id;
-              return (
-                <Pressable
-                  key={city.id}
-                  disabled={disabled||busy}
-                  onPress={()=>pickPreset(city)}
-                  style={{
-                    paddingHorizontal:12,
-                    paddingVertical:6,
-                    borderRadius:999,
-                    backgroundColor:active?'#0f172a':'rgba(255,255,255,0.95)',
-                    borderWidth:1,
-                    borderColor:active?'#d4af37':'rgba(15,23,42,0.16)',
-                  }}
-                >
-                  <Text style={{fontSize:12,fontWeight:'700',color:active?'#f8e7b0':'#0f172a'}}>{city.label}</Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-        </View>
-
-        {/* Floating Use Current GPS Button — positioned above Google Maps bottom attribution strip */}
-        <Pressable
-          disabled={disabled||busy||gpsBusy}
-          onPress={()=>void handleCurrentGps()}
-          style={{
-            position:'absolute',
-            right:12,
-            bottom:38,
-            flexDirection:'row',
-            alignItems:'center',
-            gap:6,
-            paddingHorizontal:14,
-            paddingVertical:9,
-            borderRadius:999,
-            backgroundColor:'#ffffff',
-            borderWidth:1,
-            borderColor:'rgba(15,23,42,0.18)',
-          }}
-        >
-          <Feather name="navigation" size={14} color="#0f172a"/>
-          <Text style={{fontSize:12,fontWeight:'700',color:'#0f172a'}}>
-            {gpsBusy?'Detecting GPS…':'Use Current GPS'}
-          </Text>
-        </Pressable>
       </View>
 
       {/* Bottom Confirmation Card */}
       <View style={{padding:16,gap:12,borderTopWidth:1,borderTopColor:colors.border}}>
         {Boolean(gpsRecovery)&&(
-          <View style={{padding:10,borderRadius:10,backgroundColor:'#fef3c7',borderWidth:1,borderColor:'#f59e0b'}}>
-            <Text style={{fontSize:12,color:'#92400e'}}>{gpsRecovery}</Text>
+          <View style={{padding:10,borderRadius:10,backgroundColor:'#FEF3C7',borderWidth:1,borderColor:'#F59E0B'}}>
+            <Text style={{fontSize:12,color:'#92400E'}}>{gpsRecovery}</Text>
           </View>
         )}
 
         <View style={{flexDirection:'row',alignItems:'flex-start',justifyContent:'space-between',gap:10}}>
           <View style={{flexDirection:'row',alignItems:'flex-start',gap:10,flex:1}}>
-            <View style={{width:34,height:34,borderRadius:10,backgroundColor:'#0f172a',alignItems:'center',justifyContent:'center',marginTop:2}}>
-              <Feather name="map-pin" size={16} color="#d4af37"/>
+            <View style={{width:36,height:36,borderRadius:10,backgroundColor:isDark?'#134E4A':'#F0FDFA',borderWidth:1,borderColor:isDark?'#0F766E':'#99F6E4',alignItems:'center',justifyContent:'center',marginTop:2}}>
+              <Feather name="map-pin" size={16} color={isDark?'#5EEAD4':'#0D9488'}/>
             </View>
             <View style={{flex:1,gap:2}}>
               <Text style={[styles.heading,{fontSize:16}]}>
-                {searching?'Updating locality…':value.locality||'Select area on map'}
+                {searching?'Updating locality…':displayLocality}
               </Text>
               <Text style={[styles.muted,{fontSize:13}]}>
-                {value.formattedAddress||'Pan the map, search above, or tap a Karnataka city chip.'}
+                {displayFormattedAddress||'Tap the map, search above, or choose a Karnataka city chip.'}
               </Text>
               <View style={{flexDirection:'row',flexWrap:'wrap',gap:6,marginTop:4}}>
                 {Boolean(value.pincode)&&(
-                  <View style={{paddingHorizontal:8,paddingVertical:2,borderRadius:999,backgroundColor:colors.soft}}>
-                    <Text style={[styles.muted,styles.tabular,{fontSize:11,fontWeight:'600'}]}>PIN {value.pincode}</Text>
+                  <View style={{paddingHorizontal:8,paddingVertical:2,borderRadius:999,backgroundColor:'#F0FDFA',borderWidth:1,borderColor:'#CCFBF1'}}>
+                    <Text style={[styles.tabular,{fontSize:11,fontWeight:'600',color:'#115E59'}]}>PIN {value.pincode}</Text>
                   </View>
                 )}
-                <View style={{paddingHorizontal:8,paddingVertical:2,borderRadius:999,backgroundColor:colors.soft}}>
-                  <Text style={[styles.muted,styles.tabular,{fontSize:11,fontWeight:'600'}]}>
+                <View style={{paddingHorizontal:8,paddingVertical:2,borderRadius:999,backgroundColor:'#F0FDFA',borderWidth:1,borderColor:'#CCFBF1'}}>
+                  <Text style={[styles.tabular,{fontSize:11,fontWeight:'600',color:'#115E59'}]}>
                     {value.radiusKm} km {mode==='seller'?'coverage':'radius'}
                   </Text>
                 </View>
@@ -448,11 +531,11 @@ export function MobileMapFirstLocationPicker({
             onPress={()=>void Linking.openURL(googleMapsDirectionsUrl(value.latitude,value.longitude))}
             style={{paddingHorizontal:10,paddingVertical:6,borderRadius:8,borderWidth:1,borderColor:colors.border}}
           >
-            <Text style={{fontSize:11,fontWeight:'700',color:colors.text}}>Maps ↗</Text>
+            <Text style={{fontSize:11,fontWeight:'700',color:'#0D9488'}}>Maps ↗</Text>
           </Pressable>
         </View>
 
-        {/* Segmented Radius Selector */}
+        {/* Segmented Radius Selector (Coastal Teal #0D9488) */}
         <View style={{gap:6,paddingTop:8,borderTopWidth:1,borderTopColor:colors.border}}>
           <Text style={[styles.label,{fontSize:11}]}>
             {mode==='seller'?'COVERAGE RADIUS':'NEARBY SEARCH RADIUS'}
@@ -465,18 +548,18 @@ export function MobileMapFirstLocationPicker({
                   key={km}
                   disabled={disabled||busy}
                   onPress={()=>onChange({...value,radiusKm:km})}
-                  style={{
+                  style={({pressed})=>({
                     flex:1,
                     minWidth:64,
-                    paddingVertical:8,
+                    paddingVertical:9,
                     borderRadius:8,
                     alignItems:'center',
-                    backgroundColor:active?'#0f172a':colors.soft,
+                    backgroundColor:active?(pressed?'#0F766E':'#0D9488'):colors.soft,
                     borderWidth:1,
-                    borderColor:active?'#d4af37':colors.border,
-                  }}
+                    borderColor:active?'#0F766E':colors.border,
+                  })}
                 >
-                  <Text style={[styles.tabular,{fontSize:12,fontWeight:'700',color:active?'#f8e7b0':colors.text}]}>
+                  <Text style={[styles.tabular,{fontSize:12,fontWeight:'700',color:active?'#FFFFFF':colors.text}]}>
                     {km} km
                   </Text>
                 </Pressable>
@@ -490,9 +573,9 @@ export function MobileMapFirstLocationPicker({
           onPress={()=>setDrawerOpen(o=>!o)}
           style={{flexDirection:'row',alignItems:'center',gap:6,paddingVertical:4}}
         >
-          <Feather name="edit-3" size={14} color={colors.text}/>
-          <Text style={{fontSize:13,fontWeight:'700',color:colors.text}}>Edit street / landmark / PIN</Text>
-          <Feather name={drawerOpen?'chevron-up':'chevron-down'} size={15} color={colors.text}/>
+          <Feather name="edit-3" size={14} color="#0D9488"/>
+          <Text style={{fontSize:13,fontWeight:'700',color:'#0D9488'}}>Edit street / landmark / PIN</Text>
+          <Feather name={drawerOpen?'chevron-up':'chevron-down'} size={15} color="#0D9488"/>
         </Pressable>
 
         {drawerOpen&&(
@@ -500,9 +583,9 @@ export function MobileMapFirstLocationPicker({
             <Field
               label="Locality / Area *"
               editable={!disabled&&!busy}
-              value={value.locality}
+              value={displayLocality==='Select area on map'?'':displayLocality}
               maxLength={150}
-              placeholder="e.g. Indiranagar, Tarikere"
+              placeholder="e.g. Begur, Bengaluru"
               onChangeText={t=>onChange({...value,locality:t,source:value.source==='google'?'google':'manual'})}
             />
             <Field
@@ -511,13 +594,13 @@ export function MobileMapFirstLocationPicker({
               value={value.pincode}
               maxLength={6}
               keyboardType="number-pad"
-              placeholder="e.g. 560038"
+              placeholder="e.g. 560068"
               onChangeText={t=>onChange({...value,pincode:t.replace(/\D/g,'').slice(0,6)})}
             />
             <Field
               label="Street / Building / Address"
               editable={!disabled&&!busy}
-              value={value.formattedAddress}
+              value={displayFormattedAddress}
               maxLength={500}
               onChangeText={t=>onChange({...value,formattedAddress:t})}
             />
@@ -536,21 +619,32 @@ export function MobileMapFirstLocationPicker({
 
         {onConfirm&&(
           <Pressable
-            disabled={disabled||busy||value.locality.trim().length<2}
-            onPress={()=>onConfirm(value)}
-            style={{
+            disabled={disabled||busy||displayLocality.trim().length<2}
+            onPress={()=>
+              onConfirm({
+                ...value,
+                locality:displayLocality,
+                formattedAddress:displayFormattedAddress||displayLocality,
+              })
+            }
+            style={({pressed})=>({
               minHeight:46,
               borderRadius:10,
-              backgroundColor:disabled||busy||value.locality.trim().length<2?'#94a3b8':'#0f172a',
+              backgroundColor:
+                disabled||busy||displayLocality.trim().length<2
+                  ? '#94A3B8'
+                  : pressed
+                    ? '#0F766E'
+                    : '#0D9488',
               alignItems:'center',
               justifyContent:'center',
               flexDirection:'row',
               gap:8,
               paddingHorizontal:16,
-            }}
+            })}
           >
-            <Feather name="check-circle" size={16} color="#d4af37"/>
-            <Text style={{color:'#ffffff',fontSize:15,fontWeight:'700'}}>
+            <Feather name="check-circle" size={16} color="#FFFFFF"/>
+            <Text style={{color:'#FFFFFF',fontSize:15,fontWeight:'700'}}>
               {busy?'Saving…':confirmLabel}
             </Text>
           </Pressable>

@@ -3,6 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import {ChevronDown,MapPin,X} from 'lucide-react';
 import {LocationChooser,useOptionalCustomerLocation} from './customer-location';
 import {useLanguage} from './language-provider';
+import {isCoordinateFormattedLabel,lookupLocalAreaCity} from '../../shared/reverse-geocode-fallback';
 
 export function AccountLocation({compactHeader=false}:{compactHeader?:boolean}){
   const {t}=useLanguage();
@@ -20,7 +21,12 @@ export function AccountLocation({compactHeader=false}:{compactHeader?:boolean}){
 
   if(!loc)return null;
 
-  const pillText=active?.locality||(detecting?'Locating…':'Select Location');
+  const rawLocality=(active?.locality||'').trim();
+  const upgradedLocality=
+    active&&(!rawLocality||isCoordinateFormattedLabel(rawLocality))
+      ? lookupLocalAreaCity({latitude:active.latitude,longitude:active.longitude})?.locality||rawLocality
+      : rawLocality;
+  const pillText=upgradedLocality||(detecting?'Locating…':'Select Location');
 
   return (
     <>
@@ -50,7 +56,7 @@ export function AccountLocation({compactHeader=false}:{compactHeader?:boolean}){
             : undefined
         }
       >
-        <MapPin size={15} style={{flexShrink:0,color:'#F97316'}} aria-hidden="true"/>
+        <MapPin size={15} style={{flexShrink:0,color:'#0D9488'}} aria-hidden="true"/>
         <span style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{pillText}</span>
         <ChevronDown size={14} style={{flexShrink:0,opacity:0.65}} aria-hidden="true"/>
       </button>

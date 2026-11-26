@@ -16,6 +16,7 @@ import {
 } from './location';
 import {
   GPS_FALLBACK_OPTIONS,
+  GPS_HARD_TIMEOUT_MS,
   GPS_HIGH_ACCURACY_OPTIONS,
   GPS_PERMISSION_BLOCKED_MESSAGE,
   GPS_TIMEOUT_MESSAGE,
@@ -23,6 +24,11 @@ import {
   haversineDistanceMeters,
   shouldAutoSyncStoredLocation,
 } from '../../shared/live-geolocation';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+  resolveAreaCityLabel,
+} from '../../shared/reverse-geocode-fallback';
 import { buildNearbyListingsPath } from '../../shared/nearby-services';
 
 vi.mock('next/link', () => ({
@@ -285,5 +291,59 @@ describe('location privacy, Use GPS recovery, and live movement watcher', () => 
     gate.cancel();
     reject(new Error('late provider failure'));
     expect(await pending).toEqual({ current: false });
+  });
+
+  it('formats (12.892, 77.623) as Begur, Bengaluru via Nominatim + local Karnataka lookup on Google failure and enforces an 8s GPS timeout', async () => {
+    expect(GPS_HARD_TIMEOUT_MS).toBe(8000);
+    expect(isCoordinateFormattedLabel('12.892° N, 77.623° E')).toBe(true);
+    expect(lookupLocalAreaCity({ latitude: 12.892, longitude: 77.623 })?.locality).toBe(
+      'Begur, Bengaluru',
+    );
+
+    const nominatimFallback = await resolveAreaCityLabel(
+      { latitude: 12.892, longitude: 77.623 },
+      {
+        primaryResolver: async () => {
+          throw new Error('REQUEST_DENIED');
+        },
+        fetchImpl: (async () =>
+          ({
+            ok: true,
+            json: async () => ({
+              address: {
+                suburb: 'Begur',
+                city: 'Bengaluru Urban',
+                state: 'Karnataka',
+                postcode: '560068',
+              },
+            }),
+          }) as Response) as unknown as typeof fetch,
+      },
+    );
+    expect(nominatimFallback.locality).toBe('Begur, Bengaluru');
+    expect(nominatimFallback.locality).not.toContain('°');
+
+    const offlineGazetteerFallback = await resolveAreaCityLabel(
+      { latitude: 12.892, longitude: 77.623 },
+      {
+        primaryResolver: async () => {
+          throw new Error('OVER_QUERY_LIMIT');
+        },
+        fetchImpl: (async () => {
+          throw new Error('Network offline');
+        }) as unknown as typeof fetch,
+      },
+    );
+    expect(offlineGazetteerFallback.locality).toBe('Begur, Bengaluru');
+
+    vi.useFakeTimers();
+    const stalled = requestGps({
+      getCurrentPosition: () => {
+        // Stalled browser GPS never invoking callback
+      },
+    });
+    const assertion = expect(stalled).rejects.toThrow(GPS_TIMEOUT_MESSAGE);
+    await vi.advanceTimersByTimeAsync(8000);
+    await assertion;
   });
 });

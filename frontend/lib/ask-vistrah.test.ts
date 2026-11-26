@@ -160,6 +160,19 @@ describe('Astra movable & auto-hiding launcher, static hero, and borderless card
     vi.advanceTimersByTime(ASTRA_AUTO_HIDE_MS);
     expect(ctrl.getState().isPeek).toBe(true);
 
+    // Touch tap while tucked (without hover) expands smoothly to show Astra + sparkle first before opening chat
+    ctrl.pointerDown({ pointerId: 4, clientX: 795, clientY: 330, viewportHeight: 800 });
+    expect(ctrl.getState().isPeek).toBe(false);
+    expect(ctrl.getState().open).toBe(false);
+    ctrl.pointerUp({ pointerId: 4, clientX: 795, clientY: 330, viewportHeight: 800 }, storage);
+    expect(ctrl.click()).toBe(false);
+    expect(ctrl.getState().isPeek).toBe(false);
+    expect(ctrl.getState().open).toBe(false);
+
+    // Re-enter peek after 2.5s idle
+    vi.advanceTimersByTime(ASTRA_AUTO_HIDE_MS);
+    expect(ctrl.getState().isPeek).toBe(true);
+
     // Leftward drag <= -28px pulls out and pops open Astra chat panel
     ctrl.pointerDown({ pointerId: 5, clientX: 795, clientY: 330, viewportHeight: 800 });
     expect(ctrl.getState().isPeek).toBe(false);

@@ -54,7 +54,7 @@ function getWebSessionStorage() {
   }
 }
 
-function MobileGeminiLogo({ size = 16 }: { size?: number }) {
+function MobileGeminiLogo({ size = 16, onTeal = false }: { size?: number; onTeal?: boolean }) {
   const gradId = useId();
   if (Platform.OS === 'web') {
     return createElement(
@@ -74,9 +74,9 @@ function MobileGeminiLogo({ size = 16 }: { size?: number }) {
         createElement(
           'linearGradient',
           { id: gradId, x1: '0%', y1: '0%', x2: '100%', y2: '100%' },
-          createElement('stop', { offset: '0%', stopColor: '#4285F4' }),
-          createElement('stop', { offset: '50%', stopColor: '#2DD4BF' }),
-          createElement('stop', { offset: '100%', stopColor: '#0D9488' }),
+          createElement('stop', { offset: '0%', stopColor: onTeal ? '#FFFFFF' : '#2DD4BF' }),
+          createElement('stop', { offset: '55%', stopColor: onTeal ? '#F0FDFA' : '#14B8A6' }),
+          createElement('stop', { offset: '100%', stopColor: onTeal ? '#CCFBF1' : '#0D9488' }),
         ),
       ),
       createElement('path', { d: GEMINI_SPARK_PATH, fill: `url(#${gradId})` }),
@@ -87,7 +87,7 @@ function MobileGeminiLogo({ size = 16 }: { size?: number }) {
       source={GEMINI_SPARK_PNG}
       accessibilityLabel="Google Gemini"
       resizeMode="contain"
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, ...(onTeal ? { tintColor: '#FFFFFF' } : {}) }}
     />
   );
 }
@@ -164,6 +164,7 @@ export function MobileAskVistrahWidget() {
   const [isHovered, setIsHovered] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isPeek, setIsPeek] = useState(false);
+  const [wakeTick, setWakeTick] = useState(0);
   const [messages, setMessages] = useState<AskVistrahMessage[]>([ASTRA_WELCOME]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
@@ -215,7 +216,7 @@ export function MobileAskVistrahWidget() {
       animatePeek(true);
     }, ASTRA_AUTO_HIDE_MS);
     return () => clearTimeout(timer);
-  }, [animatePeek, isDragging, isHovered, open]);
+  }, [animatePeek, isDragging, isHovered, open, wakeTick]);
 
   const closeChat = useCallback(() => {
     setOpen(false);
@@ -390,7 +391,7 @@ export function MobileAskVistrahWidget() {
             s.panel,
             {
               backgroundColor: isDark ? '#0f172a' : '#ffffff',
-              borderColor: isDark ? 'rgba(249,115,22,0.4)' : 'rgba(15,41,74,0.16)',
+              borderColor: isDark ? 'rgba(45,212,191,0.4)' : '#cbd5e1',
             },
           ]}
         >
@@ -605,7 +606,13 @@ export function MobileAskVistrahWidget() {
           onHoverOut={() => setIsHovered(false)}
           onPress={() => {
             if (Date.now() < suppressPressUntilRef.current) return;
+            if (isPeek && !open) {
+              animatePeek(false);
+              setWakeTick(n => n + 1);
+              return;
+            }
             animatePeek(false);
+            setWakeTick(n => n + 1);
             setOpen(v => !v);
           }}
           style={({ pressed }) => [s.launcher, { opacity: pressed ? 0.92 : 1 }]}
@@ -619,8 +626,8 @@ export function MobileAskVistrahWidget() {
               {GEMINI_BRAND_LABEL}
             </Text>
           </Animated.View>
-          <Animated.View style={{ transform: [{ translateX: sparkCounterX }] }}>
-            <MobileGeminiLogo size={18} />
+          <Animated.View style={[s.launcherSparkPill, { transform: [{ translateX: sparkCounterX }] }]}>
+            <MobileGeminiLogo size={18} onTeal />
           </Animated.View>
         </Pressable>
       </Animated.View>
@@ -635,12 +642,12 @@ const s = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    zIndex: 900,
+    zIndex: 650,
   },
   launcherAnchor: {
     position: 'absolute',
     right: 0,
-    zIndex: 901,
+    zIndex: 651,
   },
   launcher: {
     width: ASTRA_LAUNCHER_WIDTH_PX,
@@ -694,11 +701,21 @@ const s = StyleSheet.create({
     fontWeight: '500',
     lineHeight: 11,
   },
+  launcherSparkPill: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.38)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   panel: {
     position: 'absolute',
     right: 12,
     bottom: 92,
-    zIndex: 902,
+    zIndex: 660,
     width: 332,
     maxWidth: '92%',
     maxHeight: 460,

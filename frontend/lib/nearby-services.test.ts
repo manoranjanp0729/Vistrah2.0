@@ -1,6 +1,8 @@
+import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import { CustomerLocationProvider } from '../components/customer-location';
 import { LanguageProvider } from '../components/language-provider';
 import { NearbyServiceDiscovery } from '../components/nearby-service-discovery';
 import { safeDestination } from './destinations';
@@ -229,5 +231,38 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     for (const r of [2, 5, 10, 25, 50]) {
       expect(html).toContain(`${r} km`);
     }
+
+    const withLocationHtml = renderToStaticMarkup(
+      createElement(
+        LanguageProvider,
+        null,
+        createElement(
+          CustomerLocationProvider,
+          null,
+          createElement(NearbyServiceDiscovery, {
+            categorySlug: 'restaurants-and-dining',
+            categoryTitle: 'Restaurants & Dining',
+            typeSlug: 'restaurant',
+            serviceTitle: 'Restaurant',
+          }),
+        ),
+      ),
+    );
+    expect(withLocationHtml).toContain('Restaurant');
+    expect(withLocationHtml).toContain('Bengaluru');
+    expect(withLocationHtml).toContain('Use GPS');
+
+    const nearbySrc = readFileSync(
+      new URL('../components/nearby-service-discovery.tsx', import.meta.url),
+      'utf8',
+    );
+    const nearbyCss = readFileSync(
+      new URL('../components/nearby-service-discovery.module.css', import.meta.url),
+      'utf8',
+    );
+    expect((nearbySrc.match(/Locating…/g) ?? []).length).toBe(1);
+    expect(nearbyCss).toContain('word-break: normal;');
+    expect(nearbyCss).toContain('overflow-wrap: normal;');
+    expect(nearbyCss).toContain('#0d9488');
   });
 });

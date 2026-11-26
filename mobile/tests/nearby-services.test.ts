@@ -123,4 +123,18 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
   const layout = readFileSync(new URL('../src/app/_layout.tsx', import.meta.url), 'utf8');
   assert.ok(layout.includes('name="services/nearby"'));
   assert.ok(layout.includes('name="services/index"'));
+
+  // Nearby Services header stacks full-width service title without mid-word breaking, zero duplicate Locating… pills, and Coastal Teal #0D9488
+  const nearbyDiscoverySrc = readFileSync(
+    new URL('../src/components/nearby-service-discovery.tsx', import.meta.url),
+    'utf8',
+  );
+  assert.ok(nearbyDiscoverySrc.includes("flexDirection: 'column'"));
+  assert.ok(nearbyDiscoverySrc.includes("wordBreak: 'normal', overflowWrap: 'normal'"));
+  assert.equal(
+    (nearbyDiscoverySrc.match(/Locating…/g) ?? []).length,
+    1,
+    'Expected exactly 1 Locating… label (only on Use GPS button, never duplicated on location pill)',
+  );
+  assert.ok(nearbyDiscoverySrc.includes('#0D9488'));
 });

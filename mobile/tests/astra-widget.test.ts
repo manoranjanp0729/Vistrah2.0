@@ -96,4 +96,6 @@ test('mobile Astra widget wires PanResponder Y-drag clamping, 2.5s auto-hide pee
   assert.ok(mobileSrc.includes('ASTRA_PEEK_COUNTER_SHIFT_PX'));
   assert.ok(mobileSrc.includes('-ASTRA_PEEK_COUNTER_SHIFT_PX'));
   assert.ok(mobileSrc.includes('MobileGeminiLogo size={18}'));
+  assert.ok(mobileSrc.includes('if (isPeek && !open)'));
+  assert.ok(mobileSrc.includes('zIndex: 650'));
 });

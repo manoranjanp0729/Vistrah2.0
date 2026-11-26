@@ -23,19 +23,24 @@
 
 .toolbarTitleGroup {
   display: grid;
-  gap: 4px;
-  min-width: 200px;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
 }
 
 .toolbarHeading {
   margin: 0;
-  font-size: 1.125rem;
+  width: 100%;
+  font-size: 1.1875rem;
+  line-height: 1.3;
   font-weight: 700;
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
+  word-break: normal;
+  overflow-wrap: normal;
   color: var(--text-primary, #f8fafc);
 }
 

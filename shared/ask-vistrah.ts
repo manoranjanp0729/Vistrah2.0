@@ -194,6 +194,7 @@ export function createAstraLauncherController(options: AstraLauncherControllerOp
     startTop: number;
     mode: 'y' | 'x' | null;
     openedBySwipe: boolean;
+    wokeFromPeek: boolean;
   } | null = null;
 
   function emit() {
@@ -303,6 +304,7 @@ export function createAstraLauncherController(options: AstraLauncherControllerOp
     }) {
       if (ev.viewportHeight) viewportHeight = ev.viewportHeight;
       suppressClickUntil = 0;
+      const wokeFromPeek = state.isPeek && !state.open && !state.isHovered;
       activePointer = {
         pointerId: ev.pointerId,
         startX: ev.clientX,
@@ -310,6 +312,7 @@ export function createAstraLauncherController(options: AstraLauncherControllerOp
         startTop: state.topPx,
         mode: null,
         openedBySwipe: false,
+        wokeFromPeek,
       };
       state = { ...state, isPeek: false };
       clearIdleTimer();
@@ -423,8 +426,12 @@ export function createAstraLauncherController(options: AstraLauncherControllerOp
           pullX: 0,
         };
       } else {
+        if (ptr.wokeFromPeek) {
+          suppressClickUntil = Date.now() + 450;
+        }
         state = {
           ...state,
+          isPeek: false,
           isDraggingY: false,
           isDraggingX: false,
           pullX: 0,
@@ -450,6 +457,16 @@ export function createAstraLauncherController(options: AstraLauncherControllerOp
     click(): boolean {
       if (suppressClickUntil > Date.now()) {
         suppressClickUntil = 0;
+        return false;
+      }
+      if (state.isPeek && !state.open) {
+        state = {
+          ...state,
+          isPeek: false,
+          pullX: 0,
+        };
+        syncIdleTimer();
+        emit();
         return false;
       }
       const nextOpen = !state.open;

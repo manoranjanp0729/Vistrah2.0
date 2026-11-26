@@ -30,16 +30,17 @@ export type BrowserGeolocationLike = Pick<Geolocation, 'getCurrentPosition'> &
 
 export const GPS_MOVEMENT_THRESHOLD_METERS = 50;
 export const GPS_WATCH_DEBOUNCE_MS = 1000;
+export const GPS_HARD_TIMEOUT_MS = 8000;
 
 export const GPS_HIGH_ACCURACY_OPTIONS: PositionOptions = {
   enableHighAccuracy: true,
-  timeout: 10000,
+  timeout: 4500,
   maximumAge: 0,
 };
 
 export const GPS_FALLBACK_OPTIONS: PositionOptions = {
   enableHighAccuracy: false,
-  timeout: 8000,
+  timeout: 3500,
   maximumAge: 30000,
 };
 
@@ -113,8 +114,34 @@ function getSinglePosition(
   geolocation: Pick<Geolocation, 'getCurrentPosition'>,
   options: PositionOptions,
 ): Promise<GeolocationPosition> {
+  const timeoutMs =
+    typeof options.timeout === 'number' && options.timeout > 0
+      ? options.timeout
+      : GPS_HARD_TIMEOUT_MS;
+
   return new Promise((resolve, reject) => {
-    geolocation.getCurrentPosition(resolve, reject, options);
+    let settled = false;
+    const watchdog = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      reject({ code: 3, message: GPS_TIMEOUT_MESSAGE } as GeolocationPositionError);
+    }, timeoutMs);
+
+    geolocation.getCurrentPosition(
+      pos => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(watchdog);
+        resolve(pos);
+      },
+      err => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(watchdog);
+        reject(err);
+      },
+      options,
+    );
   });
 }
 
@@ -133,50 +160,70 @@ function validateGeolocationPosition(pos: GeolocationPosition): GpsFix {
 export async function requestBrowserGpsFix(
   geolocation: Pick<Geolocation, 'getCurrentPosition'> | undefined,
   permissions?: GeolocationPermissionsLike | null,
+  hardTimeoutMs: number = GPS_HARD_TIMEOUT_MS,
 ): Promise<GpsFix> {
   if (!geolocation || typeof geolocation.getCurrentPosition !== 'function') {
     throw new Error(GPS_UNAVAILABLE_MESSAGE);
   }
 
-  const permState = await queryGeolocationPermissionState(permissions);
-  if (permState === 'denied') {
-    throw new Error(GPS_PERMISSION_BLOCKED_MESSAGE);
-  }
+  let ceilingTimer: ReturnType<typeof setTimeout> | null = null;
+  const runLookup = async (): Promise<GpsFix> => {
+    const permState = await Promise.race([
+      queryGeolocationPermissionState(permissions),
+      new Promise<GeolocationPermissionState>(resolve =>
+        setTimeout(() => resolve('unknown'), 1200),
+      ),
+    ]);
+    if (permState === 'denied') {
+      throw new Error(GPS_PERMISSION_BLOCKED_MESSAGE);
+    }
+
+    try {
+      const highAccPos = await getSinglePosition(geolocation, GPS_HIGH_ACCURACY_OPTIONS);
+      return validateGeolocationPosition(highAccPos);
+    } catch (firstErr) {
+      if (
+        firstErr instanceof Error &&
+        firstErr.message.startsWith('GPS returned an invalid position')
+      ) {
+        throw firstErr;
+      }
+      const code = (firstErr as GeolocationPositionError | undefined)?.code;
+      if (code === 1) {
+        throw new Error(GPS_PERMISSION_DENIED_MESSAGE);
+      }
+      if (code === 3) {
+        // High-accuracy hardware GPS timed out (common on indoor desktops/laptops) -> retry once with network/Wi-Fi accuracy
+        try {
+          const fallbackPos = await getSinglePosition(geolocation, GPS_FALLBACK_OPTIONS);
+          return validateGeolocationPosition(fallbackPos);
+        } catch (retryErr) {
+          if (
+            retryErr instanceof Error &&
+            retryErr.message.startsWith('GPS returned an invalid position')
+          ) {
+            throw retryErr;
+          }
+          const retryCode = (retryErr as GeolocationPositionError | undefined)?.code;
+          if (retryCode === 1) {
+            throw new Error(GPS_PERMISSION_DENIED_MESSAGE);
+          }
+          throw new Error(GPS_TIMEOUT_MESSAGE);
+        }
+      }
+      throw new Error('GPS was denied or unavailable. Enter your location and adjust the manual pin.');
+    }
+  };
 
   try {
-    const highAccPos = await getSinglePosition(geolocation, GPS_HIGH_ACCURACY_OPTIONS);
-    return validateGeolocationPosition(highAccPos);
-  } catch (firstErr) {
-    if (
-      firstErr instanceof Error &&
-      firstErr.message.startsWith('GPS returned an invalid position')
-    ) {
-      throw firstErr;
-    }
-    const code = (firstErr as GeolocationPositionError | undefined)?.code;
-    if (code === 1) {
-      throw new Error(GPS_PERMISSION_DENIED_MESSAGE);
-    }
-    if (code === 3) {
-      // High-accuracy hardware GPS timed out (common on indoor desktops/laptops) -> retry once with network/Wi-Fi accuracy
-      try {
-        const fallbackPos = await getSinglePosition(geolocation, GPS_FALLBACK_OPTIONS);
-        return validateGeolocationPosition(fallbackPos);
-      } catch (retryErr) {
-        if (
-          retryErr instanceof Error &&
-          retryErr.message.startsWith('GPS returned an invalid position')
-        ) {
-          throw retryErr;
-        }
-        const retryCode = (retryErr as GeolocationPositionError | undefined)?.code;
-        if (retryCode === 1) {
-          throw new Error(GPS_PERMISSION_DENIED_MESSAGE);
-        }
-        throw new Error(GPS_TIMEOUT_MESSAGE);
-      }
-    }
-    throw new Error('GPS was denied or unavailable. Enter your location and adjust the manual pin.');
+    return await Promise.race([
+      runLookup(),
+      new Promise<never>((_, reject) => {
+        ceilingTimer = setTimeout(() => reject(new Error(GPS_TIMEOUT_MESSAGE)), hardTimeoutMs);
+      }),
+    ]);
+  } finally {
+    if (ceilingTimer !== null) clearTimeout(ceilingTimer);
   }
 }
 
@@ -286,8 +333,8 @@ export async function acquireNativeExpoGpsFix(
   expoLocation: ExpoLocationModuleLike,
   options?: { fastFallbackAfterMs?: number; hardTimeoutMs?: number },
 ): Promise<GpsFix> {
-  const fastFallbackAfterMs = options?.fastFallbackAfterMs ?? 5000;
-  const hardTimeoutMs = options?.hardTimeoutMs ?? 9000;
+  const fastFallbackAfterMs = options?.fastFallbackAfterMs ?? 4500;
+  const hardTimeoutMs = options?.hardTimeoutMs ?? GPS_HARD_TIMEOUT_MS;
 
   const perm = await expoLocation.requestForegroundPermissionsAsync();
   if (perm.status !== 'granted') {

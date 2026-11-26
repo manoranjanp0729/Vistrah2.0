@@ -1,12 +1,13 @@
 import {Text,useAppFont} from '../../components/typography';
 import {UiElement} from "../../components/localized-ui";
 import {useLanguage} from '../../lib/language';
-import {Tabs} from 'expo-router';
+import {Tabs,usePathname} from 'expo-router';
 import {Image,Platform,Pressable,View} from 'react-native';
 import {LinearGradient} from 'expo-linear-gradient';
 import {AppHeader} from '../../components/app-header';
 import Feather from '@expo/vector-icons/Feather';
 import {useTheme} from '../../lib/theme';
+import {shouldShowMainHeader} from '../../../../shared/header-visibility';
 
 const vCircleSize=72.5;
 // The standalone V clips its right arm. Use the complete wordmark's V with
@@ -62,10 +63,10 @@ function VAdsCenterIcon({focused,mode,accent}:{focused:boolean;mode:'light'|'dar
   );
 }
 
-export default function TabLayout(){const labelFont=useAppFont(500);const {colors,mode}=useTheme();const {copy,t,locale}=useLanguage();
+export default function TabLayout(){const labelFont=useAppFont(500);const {colors,mode}=useTheme();const {copy,t,locale}=useLanguage();const pathname=usePathname();const showHomeHeader=shouldShowMainHeader(pathname);
 
   return <Tabs backBehavior="history" screenOptions={{headerShown:false,sceneStyle:{backgroundColor:colors.background,paddingBottom:14},tabBarStyle:{backgroundColor:colors.footer,borderTopColor:mode==='light'?'#cbd5e1':'#1e3a5f',borderTopWidth:.5,borderTopLeftRadius:18,borderTopRightRadius:18,overflow:'visible'},tabBarItemStyle:{minHeight:44},tabBarIconStyle:{width:48,height:28},tabBarLabelStyle:{fontFamily:labelFont,fontSize:11,lineHeight:locale==='en'?14:16,fontWeight:Platform.OS==='web'?'500':'normal'},tabBarLabelPosition:'below-icon',tabBarActiveTintColor:colors.accent,tabBarInactiveTintColor:mode==='light'?'#69758A':'#a3aec1'}}>
-    <Tabs.Screen name="index" options={{headerShown:true,header:()=> <AppHeader/>,title:copy.nav.discover,tabBarIcon:({color})=><Feather name="home" color={color} size={20}/>}}/>
+    <Tabs.Screen name="index" options={{headerShown:showHomeHeader,header:()=> showHomeHeader?<AppHeader/>:null,title:copy.nav.discover,tabBarIcon:({color})=><Feather name="home" color={color} size={20}/>}}/>
     <Tabs.Screen name="products" options={{headerShown:false,title:copy.nav.products,tabBarIcon:({color})=><Feather name="shopping-bag" color={color} size={20}/>}}/>
     <Tabs.Screen name="v-ads" options={{
       headerShown:false,

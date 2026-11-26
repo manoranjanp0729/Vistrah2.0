@@ -11,6 +11,7 @@ import {UiElement} from './localized-ui';
 import {BackButton} from './back-button';
 import {SettingsButton} from './settings-button';
 import {shouldShowMainHeader} from '../../../shared/header-visibility';
+import {isCoordinateFormattedLabel,lookupLocalAreaCity} from '../../../shared/reverse-geocode-fallback';
 
 export function AppHeader({showBack=false}:{showBack?:boolean}){
   const {colors,mode,headerGradient}=useTheme();
@@ -21,7 +22,12 @@ export function AppHeader({showBack=false}:{showBack?:boolean}){
   if(!shouldShowMainHeader(pathname))return null;
 
   const activePlace=locCtx?.selectedLocation;
-  const pillLabel=activePlace?.locality||activePlace?.city||(locCtx?.detecting?'Locating…':'Select Location');
+  const rawPlaceLabel=(activePlace?.locality||activePlace?.city||'').trim();
+  const upgradedPlaceLabel=
+    activePlace&&(!rawPlaceLabel||isCoordinateFormattedLabel(rawPlaceLabel))
+      ? lookupLocalAreaCity({latitude:activePlace.latitude,longitude:activePlace.longitude})?.locality||rawPlaceLabel
+      : rawPlaceLabel;
+  const pillLabel=upgradedPlaceLabel||(locCtx?.detecting?'Locating…':'Select Location');
 
   return (
     <View style={{paddingTop:insets.top,backgroundColor:colors.background,zIndex:1,borderBottomLeftRadius:12,borderBottomRightRadius:12,overflow:'hidden'}}>

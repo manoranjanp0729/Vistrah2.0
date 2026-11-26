@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Image, Linking, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, Linking, Modal, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { router } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -11,6 +11,10 @@ import { useSession } from '../lib/session';
 import { useTheme } from '../lib/theme';
 import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../../shared/flagship-sectors';
 import type { GooglePoint } from '../../../shared/google-location';
+import {
+  isCoordinateFormattedLabel,
+  lookupLocalAreaCity,
+} from '../../../shared/reverse-geocode-fallback';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
@@ -136,10 +140,17 @@ export function MobileNearbyServiceDiscovery({
       Math.abs(sel.latitude) <= 90 &&
       Math.abs(sel.longitude) <= 180
     ) {
+      const rawLoc = (sel.locality || sel.city || '').trim();
+      const upgraded =
+        !rawLoc || isCoordinateFormattedLabel(rawLoc)
+          ? lookupLocalAreaCity({ latitude: sel.latitude, longitude: sel.longitude })?.locality ||
+            rawLoc ||
+            'Bengaluru'
+          : rawLoc;
       return {
         latitude: sel.latitude,
         longitude: sel.longitude,
-        locality: sel.locality || sel.city || 'Selected area',
+        locality: upgraded,
         hasCustomLocation: true,
       };
     }
@@ -522,15 +533,24 @@ export function MobileNearbyServiceDiscovery({
         ]}
       >
         <View style={s.headerTopRow}>
-          <View style={{ flex: 1, minWidth: 0, gap: 3 }}>
-            <Text accessibilityRole="header" style={[s.title, { color: colors.text }]}>
+          <View style={s.titleRowWrap}>
+            <Text
+              accessibilityRole="header"
+              style={[
+                s.title,
+                { color: colors.text },
+                Platform.OS === 'web'
+                  ? ({ wordBreak: 'normal', overflowWrap: 'normal' } as object)
+                  : null,
+              ]}
+            >
               <UiText value="Nearby " />
               {serviceTitle}
             </Text>
             <Text style={{ fontSize: 12, color: colors.muted }}>{categoryTitle}</Text>
           </View>
 
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flexShrink: 1 }}>
+          <View style={s.headerActionsRow}>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel="Change search location"
@@ -549,11 +569,9 @@ export function MobileNearbyServiceDiscovery({
                 numberOfLines={1}
                 style={[s.locationPillText, { color: isDark ? '#99f6e4' : '#0f766e' }]}
               >
-                {locCtx?.detecting
-                  ? 'Locating…'
-                  : activePoint.hasCustomLocation || customCenter
-                    ? displayLocality
-                    : `${displayLocality} · Change`}
+                {activePoint.hasCustomLocation || customCenter
+                  ? displayLocality
+                  : `${displayLocality} · Change`}
               </Text>
             </Pressable>
 
@@ -1213,13 +1231,23 @@ const s = StyleSheet.create({
     gap: 12,
   },
   headerTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'stretch',
     gap: 10,
   },
+  titleRowWrap: {
+    width: '100%',
+    gap: 2,
+  },
+  headerActionsRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: 8,
+  },
   title: {
-    fontSize: 17,
+    fontSize: 18,
+    lineHeight: 24,
     fontWeight: '700',
     letterSpacing: -0.3,
   },
@@ -1227,11 +1255,11 @@ const s = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 11,
+    paddingVertical: 7,
     borderRadius: 999,
     borderWidth: 1,
-    maxWidth: 175,
+    maxWidth: 220,
   },
   locationPillText: {
     fontSize: 12,

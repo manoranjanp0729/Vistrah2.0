@@ -21,7 +21,7 @@ import s from './ask-vistrah-widget.module.css';
 
 const SESSION_KEY = 'vistrah.astra_chat.v1';
 
-function GeminiLogo({ size = 16 }: { size?: number }) {
+function GeminiLogo({ size = 16, onTeal = false }: { size?: number; onTeal?: boolean }) {
   const gradId = useId();
   return (
     <svg
@@ -35,9 +35,19 @@ function GeminiLogo({ size = 16 }: { size?: number }) {
     >
       <defs>
         <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#4285F4" />
-          <stop offset="55%" stopColor="#2DD4BF" />
-          <stop offset="100%" stopColor="#0D9488" />
+          {onTeal ? (
+            <>
+              <stop offset="0%" stopColor="#FFFFFF" />
+              <stop offset="60%" stopColor="#F0FDFA" />
+              <stop offset="100%" stopColor="#CCFBF1" />
+            </>
+          ) : (
+            <>
+              <stop offset="0%" stopColor="#0D9488" />
+              <stop offset="55%" stopColor="#14B8A6" />
+              <stop offset="100%" stopColor="#0F766E" />
+            </>
+          )}
         </linearGradient>
       </defs>
       <path d={GEMINI_SPARK_PATH} fill={`url(#${gradId})`} />
@@ -395,7 +405,7 @@ export function AskVistrahWidget({
           <span className={s.launcherPowered}>{GEMINI_BRAND_LABEL}</span>
         </span>
         <span className={s.launcherSparkWrap}>
-          <GeminiLogo size={18} />
+          <GeminiLogo size={18} onTeal />
         </span>
       </button>
     </div>

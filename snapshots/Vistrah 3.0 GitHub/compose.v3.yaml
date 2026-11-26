@@ -1,0 +1,12 @@
+# Optional V3-only overrides. The base compose.yaml already uses isolated V3 defaults.
+# Use: docker compose --env-file .env.v3 -f compose.yaml -f compose.v3.yaml up -d --build
+name: vistrah30
+services:
+  api:
+    environment:
+      SOURCE_NETWORK_ENABLED: "false"
+      REMOTIVE_ENABLED: "false"
+  worker:
+    profiles: ["v3-worker-opt-in"]
+    environment:
+      SOURCE_NETWORK_ENABLED: "false"

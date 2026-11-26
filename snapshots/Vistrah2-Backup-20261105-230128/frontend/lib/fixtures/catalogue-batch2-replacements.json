@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "evidence": {
+    "baselineCommit": "2c1d80fa06ebacc34a20881bf160c840787f2d83",
+    "provenanceManifest": "artifacts/catalogue-batch2/input/batch2-ready-manifest.json",
+    "provenanceSha256": "20d5f2f889c2974e05da3ce88a4378de2b0268a9d5cef22bfdd0104d14b4c277",
+    "preBatchManifestSha256": "60a5f1b150e8823f1be1778603182cb3fe1cce9523fdcd155c3bc83cc6925fdb"
+  },
+  "items": [
+    {
+      "id": "subcategory/food-and-dining/caf-s-and-beverages",
+      "previousPhoto": "cafe",
+      "photo": "catalogue-batch2-food-and-dining--caf-s-and-beverages",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--food-and-dining--caf-s-and-beverages.webp",
+        "alt": "Photograph illustrating Cafés & Beverages",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 104884,
+        "sha256": "2ba4aa211d20ec7b9c99c35be015adb1d77ae1e7338d881fc8bf1d7df3d784a2",
+        "originalSha256": "2ba4aa211d20ec7b9c99c35be015adb1d77ae1e7338d881fc8bf1d7df3d784a2",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--food-and-dining--caf-s-and-beverages.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--food-and-dining--caf-s-and-beverages.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/home-and-everyday-services/appliance-services",
+      "previousPhoto": "air-conditioning",
+      "photo": "catalogue-batch2-home-and-everyday-services--appliance-services",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--home-and-everyday-services--appliance-services.webp",
+        "alt": "Photograph illustrating Appliance Services",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 58720,
+        "sha256": "34eb3d89720e4f2011708c4ad47da7af3f9a2951807ccda50c00cc39235f2d1c",
+        "originalSha256": "34eb3d89720e4f2011708c4ad47da7af3f9a2951807ccda50c00cc39235f2d1c",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--home-and-everyday-services--appliance-services.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--home-and-everyday-services--appliance-services.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/fashion-and-clothing",
+      "previousPhoto": "clothes",
+      "photo": "catalogue-batch2-shopping-and-local-retail--fashion-and-clothing",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--shopping-and-local-retail--fashion-and-clothing.webp",
+        "alt": "Photograph illustrating Fashion & Clothing",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 116214,
+        "sha256": "3ae9c7bcbb25f907ce3669e72551f722127d1cfce5e27f7e7f56098cf54c15fd",
+        "originalSha256": "3ae9c7bcbb25f907ce3669e72551f722127d1cfce5e27f7e7f56098cf54c15fd",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--shopping-and-local-retail--fashion-and-clothing.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--shopping-and-local-retail--fashion-and-clothing.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/beauty-fashion-and-lifestyle/spa-and-relaxation",
+      "previousPhoto": "spa",
+      "photo": "catalogue-batch2-beauty-fashion-and-lifestyle--spa-and-relaxation",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--beauty-fashion-and-lifestyle--spa-and-relaxation.webp",
+        "alt": "Photograph illustrating Spa & Relaxation",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 49554,
+        "sha256": "673b52f12786510aae0b6724437f0f31728f38624f8b71ef70ab9798d0b22b44",
+        "originalSha256": "673b52f12786510aae0b6724437f0f31728f38624f8b71ef70ab9798d0b22b44",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--beauty-fashion-and-lifestyle--spa-and-relaxation.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--beauty-fashion-and-lifestyle--spa-and-relaxation.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/automobiles/vehicle-dealers-and-showrooms",
+      "previousPhoto": "automobiles",
+      "photo": "catalogue-batch2-automobiles--vehicle-dealers-and-showrooms",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--automobiles--vehicle-dealers-and-showrooms.webp",
+        "alt": "Photograph illustrating Vehicle Dealers & Showrooms",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 70692,
+        "sha256": "d8da6dac5313532df86fb5c4d72cf0a106e8d41b53f43f9f4413621e38a249f2",
+        "originalSha256": "d8da6dac5313532df86fb5c4d72cf0a106e8d41b53f43f9f4413621e38a249f2",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--automobiles--vehicle-dealers-and-showrooms.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--automobiles--vehicle-dealers-and-showrooms.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/rental-services/furniture-rentals",
+      "previousPhoto": "interior",
+      "photo": "catalogue-batch2-rental-services--furniture-rentals",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--rental-services--furniture-rentals.webp",
+        "alt": "Photograph illustrating Furniture Rentals",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 102520,
+        "sha256": "3967fb28010d2f013a27f6f4a372eff6cb158b9841498874d2825053e0a7abe6",
+        "originalSha256": "3967fb28010d2f013a27f6f4a372eff6cb158b9841498874d2825053e0a7abe6",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--rental-services--furniture-rentals.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--rental-services--furniture-rentals.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/transport-and-transfers",
+      "previousPhoto": "airplane",
+      "photo": "catalogue-batch2-travel-stay-and-experiences--transport-and-transfers",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--travel-stay-and-experiences--transport-and-transfers.webp",
+        "alt": "Photograph illustrating Transport & Transfers",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 64504,
+        "sha256": "b4adf9b8b72c23963cc3b35e403ff3677a7c223a1a6b13ee978837ae6da72bac",
+        "originalSha256": "b4adf9b8b72c23963cc3b35e403ff3677a7c223a1a6b13ee978837ae6da72bac",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--travel-stay-and-experiences--transport-and-transfers.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--travel-stay-and-experiences--transport-and-transfers.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/diagnostic-services",
+      "previousPhoto": "lab",
+      "photo": "catalogue-batch2-health-fitness-and-wellness--diagnostic-services",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--health-fitness-and-wellness--diagnostic-services.webp",
+        "alt": "Photograph illustrating Diagnostic Services",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 50912,
+        "sha256": "70a367e30a9f95d81c2bdd55de9a82c4eda5ddfdf80c1c42bede2250b971d3f1",
+        "originalSha256": "70a367e30a9f95d81c2bdd55de9a82c4eda5ddfdf80c1c42bede2250b971d3f1",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--health-fitness-and-wellness--diagnostic-services.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--health-fitness-and-wellness--diagnostic-services.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/education-and-skills/professional-courses",
+      "previousPhoto": "technology",
+      "photo": "catalogue-batch2-education-and-skills--professional-courses",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--education-and-skills--professional-courses.webp",
+        "alt": "Photograph illustrating Professional Courses",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 49596,
+        "sha256": "a449f8c4d4dbcbf059526c465ed21f2c99aaef76edbc357cbca8815def18e142",
+        "originalSha256": "a449f8c4d4dbcbf059526c465ed21f2c99aaef76edbc357cbca8815def18e142",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--education-and-skills--professional-courses.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--education-and-skills--professional-courses.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    },
+    {
+      "id": "subcategory/jobs-and-careers/jobs-by-experience",
+      "previousPhoto": "interview",
+      "photo": "catalogue-batch2-jobs-and-careers--jobs-by-experience",
+      "asset": {
+        "src": "/images/marketplace/catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
+        "alt": "Photograph illustrating Jobs by Experience",
+        "position": "50% 50%",
+        "fit": "cover",
+        "width": 900,
+        "height": 600,
+        "bytes": 52740,
+        "sha256": "4156e2285c572bcde728c5b4ceb5acf0e69a44d1e47c59b90feaac52b1cbbcf3",
+        "originalSha256": "4156e2285c572bcde728c5b4ceb5acf0e69a44d1e47c59b90feaac52b1cbbcf3",
+        "source": "user-supplied:vistrah-batch2/catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
+        "provenance": {
+          "kind": "original-ai-generated",
+          "origin": "ChatGPT VISTRAH Batch 2",
+          "filename": "catalogue-batch2--jobs-and-careers--jobs-by-experience.webp",
+          "reviewedOn": "2026-10-20"
+        }
+      }
+    }
+  ]
+}

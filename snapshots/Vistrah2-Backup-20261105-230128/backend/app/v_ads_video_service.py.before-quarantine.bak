@@ -1,0 +1,55 @@
+﻿"""Validate a private candidate video before immutable storage.
+
+This is a development service, not a public upload endpoint.
+The caller must enforce private staging and upload limits.
+"""
+from pathlib import Path
+
+from .v_ads_video_validation import (
+    MAX_VIDEO_BYTES,
+    VideoValidationError,
+    validate_video,
+)
+from .v_ads_video_storage import VideoStorage
+
+
+def store_video_candidate(
+    candidate_path: Path,
+    storage: VideoStorage,
+) -> dict:
+    candidate_path = Path(candidate_path)
+
+    # Reject oversized files before probing or reading their contents.
+    if not candidate_path.is_file():
+        raise VideoValidationError("Candidate video does not exist")
+
+    if not 1 <= candidate_path.stat().st_size <= MAX_VIDEO_BYTES:
+        raise VideoValidationError("Video size exceeds allowed limits")
+
+    # First create a private immutable copy using bounded streaming.
+    stored = storage.store_validated_file(candidate_path)
+
+    # Validate the exact bytes that were stored, not the changing source.
+    stored_path = storage._path(stored.key)
+
+    try:
+        metadata = validate_video(stored_path)
+
+        if metadata["size_bytes"] != stored.size:
+            raise VideoValidationError("Stored video size mismatch")
+
+    except Exception:
+        # A stored object may already be shared through content-addressing.
+        # Do not automatically delete it without reference tracking.
+        raise
+
+    return {
+        "storage_key": stored.key,
+        "sha256": stored.sha256,
+        "size_bytes": stored.size,
+        "duration_seconds": metadata["duration_seconds"],
+        "width": metadata["width"],
+        "height": metadata["height"],
+    }
+
+

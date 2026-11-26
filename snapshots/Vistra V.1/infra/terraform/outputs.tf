@@ -1,0 +1,12 @@
+output "vpc_id" { value = aws_vpc.staging.id }
+output "alb_dns_name" { value = aws_lb.staging.dns_name }
+output "staging_url" { value = local.staging_url }
+output "api_public_url" { value = local.api_public_url }
+output "web_ecr_repository_url" { value = aws_ecr_repository.web.repository_url }
+output "api_ecr_repository_url" { value = aws_ecr_repository.api.repository_url }
+output "rds_endpoint" { value = aws_db_instance.staging.address }
+output "rds_port" { value = aws_db_instance.staging.port }
+output "ecs_cluster_name" { value = aws_ecs_cluster.staging.name }
+output "web_service_name" { value = aws_ecs_service.web.name }
+output "api_service_name" { value = aws_ecs_service.api.name }
+output "ecs_task_execution_role_arn" { value = aws_iam_role.ecs_execution.arn }

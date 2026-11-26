@@ -1,0 +1,30 @@
+.guide{display:grid;gap:20px;color:var(--text-primary)}
+.guide h2,.guide h3,.guide h4,.guide p{margin:0}
+.guide header{display:grid;gap:8px}
+.guide h2{font-size:clamp(24px,3vw,34px);line-height:1.15}
+.guide h3{font-size:clamp(20px,2.4vw,28px);line-height:1.25}
+.guide h4{font-size:16px;line-height:1.4}
+.guide p{color:var(--text-secondary);line-height:1.6}
+.choices{display:flex;gap:10px;flex-wrap:wrap}
+.choices button{min-height:48px;padding:12px 20px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-primary);font:inherit;font-weight:600;cursor:pointer}
+.choices button.selected{background:var(--accent-orange);border-color:var(--accent-orange);color:#20170c}
+.choices button:focus-visible,.shortcut:focus-visible,.faq summary:focus-visible{outline:3px solid var(--accent-orange);outline-offset:4px}
+.journey{display:grid;gap:16px;padding:clamp(20px,4vw,36px);border:1px solid var(--border);border-radius:24px;background:var(--surface)}
+.journey .eyebrow{font-size:11px;letter-spacing:1px;font-weight:600;color:var(--text-primary)}
+.journey>a{justify-self:start}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:4px 0;padding:0;list-style:none}
+.steps li{display:flex;align-items:flex-start;gap:12px}
+.steps li>span{font-size:12px;font-weight:700;flex-shrink:0;border-bottom:2px solid var(--accent-orange);padding-bottom:4px}
+.steps li>div{display:grid;gap:6px}
+.steps p{font-size:13px}
+.journey .note{font-size:12px}
+.shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.shortcut{display:grid;gap:10px;padding:20px;background:var(--surface);border:1px solid var(--border);border-radius:20px;text-decoration:none;color:var(--text-primary)}
+.shortcut:hover{border-color:var(--accent-orange)}
+.shortcut p{font-size:13px}
+.shortcut>span{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;align-self:end}
+.faq{display:grid;gap:12px}
+.faq details{border-bottom:1px solid var(--border);padding:8px 0 16px}
+.faq summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600;line-height:1.5}
+.faq details p{font-size:14px;padding:4px 0}
+@media(max-width:680px){.steps,.shortcuts{grid-template-columns:1fr}.choices button{flex:1;min-width:140px;padding:12px}.shortcut{gap:8px}}

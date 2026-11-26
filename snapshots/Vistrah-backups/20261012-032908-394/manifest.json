@@ -1,0 +1,22 @@
+﻿{
+    "source_commit":  "92b95e02e48a5c8ecc9f240230bd225a122fd334",
+    "original_revision":  "006",
+    "target_revision":  "011",
+    "api_image":  "sha256:ddc94864dedaf224de21f5203bd09cb5d05bd1561a1e1d79f9fa214a7fc85ce2",
+    "api_backup_tag":  "vistrah-api:before-location-20261012-032908-394",
+    "worker_image":  "sha256:fb4fd47f567cd124623fc2d406371e0ef02319effe6d00a3d9f9617dcd6aa0e0",
+    "worker_backup_tag":  "vistrah-worker:before-location-20261012-032908-394",
+    "api_recovery":  {
+                         "image":  "sha256:ddc94864dedaf224de21f5203bd09cb5d05bd1561a1e1d79f9fa214a7fc85ce2",
+                         "method":  "original-image-tag",
+                         "tag":  "vistrah-api:before-location-20261012-032908-394"
+                     },
+    "worker_recovery":  {
+                            "image":  "sha256:b629e4bec6d48a63b76c2aa7b3142bdac023e2e4450ef461a12ec5b8b77d7bb5",
+                            "method":  "container-snapshot",
+                            "tag":  "vistrah-worker:before-location-20261012-032908-394"
+                        },
+    "database_container":  "c20d66e7f7a2d8447eb08790a5f439a27e132c793030ba66f1f5d387b415ae98",
+    "created_at":  "2026-10-12T03:29:11.5934714+05:30",
+    "database_backup_sha256":  "17cdfcb44dc7f89efbb7b15c0111dfb6620953f063a41a6435e1cc237761506a"
+}

@@ -1,0 +1,3 @@
+import {CommerceDetail} from '@/components/commerce';
+export const metadata={title:'Listing details'};
+export default async function ListingPage({params}:{params:Promise<{id:string}>}){const {id}=await params;return <CommerceDetail id={id}/>;}

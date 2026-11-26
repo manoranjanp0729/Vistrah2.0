@@ -1,0 +1,28 @@
+{
+  "name": "vistra-web",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "lucide-react": "^1.52.0",
+    "next": "15.5.27",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.3",
+    "@types/react-dom": "^19.0.2",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "15.5.27",
+    "typescript": "^5.7.2"
+  },
+  "overrides": {
+    "postcss": "^8.5.29"
+  }
+}

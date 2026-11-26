@@ -1,0 +1,20 @@
+# Local normal-runtime V Ads activation (authorized 21 October 2026).
+# Use: docker compose -p vistrah20 -f compose.yaml -f compose.api-runtime.yaml -f compose.v-ads.local.yaml up -d --no-deps --no-build api
+# Direct Uvicorn only; never migrates/seeds on startup. Media volume is API-only.
+services:
+  api:
+    image: vistrah20-api:v-ads-20261021
+    pull_policy: never
+    command: [uvicorn, app.main:app, --host, 0.0.0.0, --port, '8000', --workers, '1']
+    environment:
+      SEED_CATALOGUE: 'false'
+      V_ADS_MEDIA_ENABLED: '1'
+      V_ADS_PRIVATE_ROOT: /data/v-ads
+      V_ADS_MIN_FREE_BYTES: '1073741824'
+    volumes:
+      - v_ads_private:/data/v-ads
+volumes:
+  v_ads_private:
+    external: true
+    name: vistrah20_v_ads_private
+

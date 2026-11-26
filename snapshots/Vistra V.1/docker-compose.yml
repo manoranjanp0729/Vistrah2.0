@@ -1,0 +1,55 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: vistra
+      POSTGRES_USER: vistra
+      POSTGRES_PASSWORD: vistra
+    ports:
+      - "${VISTRAH_DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vistra -d vistra"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./backend/api
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    environment:
+      DATABASE_URL: postgresql+psycopg://vistra:vistra@db:5432/vistra
+      APP_ENV: development
+      JWT_SECRET: local-development-only-change-me
+      CORS_ORIGINS: ${VISTRAH_CORS_ORIGINS:-http://localhost:3000}
+      PAYMENTS_MODE: sandbox
+      PAYMENT_GATEWAY: sandbox
+      PAYMENT_WEBHOOK_SECRET: ${VISTRAH_PAYMENT_WEBHOOK_SECRET:-}
+    ports:
+      - "${VISTRAH_API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api/v1}
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+    ports:
+      - "${VISTRAH_WEB_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

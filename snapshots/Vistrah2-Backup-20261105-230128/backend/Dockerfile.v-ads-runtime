@@ -1,0 +1,29 @@
+# PREPARATION ONLY. Supply a reviewed immutable python:3.12-slim image digest.
+# Build/publish and runtime replacement require separate approval.
+ARG PYTHON_BASE_IMAGE
+FROM ${PYTHON_BASE_IMAGE}
+WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+COPY backend/requirements.txt backend/requirements.lock ./
+RUN pip install --no-cache-dir -r requirements.lock
+COPY backend/app/ ./app/
+COPY backend/migrations/ ./migrations/
+COPY backend/alembic.ini ./alembic.ini
+COPY shared/ /shared/
+RUN groupadd --gid 1000 app \
+    && useradd --uid 1000 --gid 1000 --create-home app \
+    && mkdir -p /data/v-ads \
+    && chown -R app:app /data \
+    && chmod 0700 /data/v-ads
+USER 1000:1000
+ENV CATALOGUE_FILE=/shared/catalogue.json \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    SEED_CATALOGUE=false \
+    V_ADS_MEDIA_ENABLED=0 \
+    V_ADS_PRIVATE_ROOT=/data/v-ads \
+    V_ADS_MIN_FREE_BYTES=1073741824
+ENTRYPOINT ["python", "-m", "app.v_ads_readiness", "--exec"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]

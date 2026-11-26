@@ -1,0 +1,46 @@
+.page { min-height: 70vh; padding: 36px 20px 80px; background: #f7faf8; color: #17241d; }
+.container { max-width: 1120px; margin: 0 auto; }
+.breadcrumb { display: flex; gap: 10px; color: #758179; font-size: 14px; margin: 0 0 28px; }
+.breadcrumb a, .historyHeading a, .checkoutCard > a { color: #08613c; text-decoration: none; font-weight: 700; }
+.hero { display: grid; grid-template-columns: minmax(0,1.3fr) minmax(280px,.7fr); gap: 32px; align-items: center; padding: clamp(26px,5vw,58px); border-radius: 24px; background: linear-gradient(120deg,#073b27,#125c3d); color: #fff; }
+.eyebrow { margin: 0 0 12px; color: #a7dfbd; font-size: 12px; font-weight: 800; letter-spacing: .15em; }
+.hero h1 { max-width: 600px; margin: 0 0 16px; font-size: clamp(34px,5vw,58px); line-height: 1.04; letter-spacing: -.035em; }
+.hero > div:first-child > p:not(.eyebrow) { max-width: 600px; color: #e0eee5; line-height: 1.7; }
+.notice { padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.1); font-size: 14px; }
+.planCard { padding: 25px; border-radius: 18px; background: #fff; color: #17241d; box-shadow: 0 18px 40px rgba(0,0,0,.12); }
+.planLabel { color: #607168; font-size: 11px; font-weight: 800; letter-spacing: .14em; }
+.planCard h2 { margin: 12px 0 6px; font-size: 22px; }
+.price { margin: 8px 0 22px; color: #073b27; font-size: 36px; font-weight: 850; }
+.price span { color: #738077; font-size: 14px; font-weight: 500; }
+.planCard small { display: block; margin-top: 12px; color: #738077; }
+.primaryButton, .secondaryButton { min-height: 46px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; padding: 0 18px; border: 0; border-radius: 9px; font: inherit; font-size: 14px; font-weight: 800; cursor: pointer; text-decoration: none; }
+.primaryButton { width: 100%; background: #08613c; color: white; }
+.primaryButton:disabled, .secondaryButton:disabled { opacity: .55; cursor: wait; }
+.secondaryButton { background: #edf5ef; color: #075334; }
+.statusCard, .benefits, .history { margin-top: 24px; padding: 26px; border: 1px solid #e0e8e3; border-radius: 18px; background: #fff; }
+.statusCard { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; align-items: center; }
+.statusCard h2 { margin: 0; font-size: 22px; }
+.statusCard .eyebrow { color: #528167; }
+.statusCard dl { display: flex; flex-wrap: wrap; gap: 26px; margin: 0; }
+.statusCard dt { color: #718077; font-size: 12px; }
+.statusCard dd { margin: 4px 0 0; font-weight: 700; }
+.textButton { border: 0; padding: 8px 0; color: #9a3026; background: none; font: inherit; font-weight: 700; cursor: pointer; }
+.benefits h2, .history h2 { margin: 0 0 14px; font-size: 22px; }
+.benefits ul { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 30px; margin: 0; padding-left: 20px; color: #526158; line-height: 1.6; }
+.historyHeading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.tableWrap { overflow-x: auto; }
+.tableWrap table { width: 100%; border-collapse: collapse; text-align: left; }
+.tableWrap th, .tableWrap td { padding: 12px; border-bottom: 1px solid #e7ede9; white-space: nowrap; }
+.tableWrap th { color: #637168; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.footnote { margin: 20px 2px 0; color: #76827b; font-size: 13px; line-height: 1.6; }
+.error, .success { margin: 18px 0 0; padding: 12px 14px; border-radius: 10px; }
+.error { color: #932a22; background: #fff0ee; border: 1px solid #ffd4cf; }
+.success { color: #075334; background: #ecf8ef; border: 1px solid #cce9d3; }
+.checkoutPage { min-height: 75vh; display: grid; place-items: center; padding: 30px 18px; background: #f7faf8; color: #17241d; }
+.checkoutCard { width: min(100%,560px); box-sizing: border-box; padding: clamp(24px,5vw,42px); border: 1px solid #e0e8e3; border-radius: 20px; background: white; box-shadow: 0 18px 44px rgba(7,59,39,.09); }
+.checkoutCard h1 { margin: 0 0 14px; font-size: 34px; }
+.checkoutCard > p { color: #526158; line-height: 1.6; }
+.checkoutCard .eyebrow { color: #528167; }
+.checkoutCard .notice { color: #075334; background: #edf7ef; }
+.checkoutActions { display: grid; gap: 10px; margin: 22px 0; }
+@media (max-width: 760px) { .hero { grid-template-columns: 1fr; } .benefits ul { grid-template-columns: 1fr; } .statusCard dl { width: 100%; justify-content: space-between; } }

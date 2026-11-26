@@ -1,0 +1,18 @@
+# Local normal-runtime V Ads API image (authorized 21 October 2026).
+# Reuses the cached FFmpeg-capable dev image (identical requirements.lock),
+# so no network/base download is needed. No migrate/seed in CMD.
+FROM vistrah-vads-dev:local
+USER root
+RUN rm -rf /app/app /app/migrations /app/tests
+COPY backend/app/ /app/app/
+COPY backend/migrations/ /app/migrations/
+COPY backend/alembic.ini /app/alembic.ini
+COPY shared/ /shared/
+RUN mkdir -p /data/v-ads && chown -R app:app /data && chmod 0700 /data/v-ads
+USER app
+ENV CATALOGUE_FILE=/shared/catalogue.json \
+    PYTHONUNBUFFERED=1 \
+    SEED_CATALOGUE=false \
+    V_ADS_PRIVATE_ROOT=/data/v-ads
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+

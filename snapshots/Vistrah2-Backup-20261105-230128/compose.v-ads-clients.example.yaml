@@ -1,0 +1,8 @@
+# PREPARATION ONLY; explicit client rollout approval required.
+services:
+  web:
+    image: ${V_ADS_WEB_IMAGE:?Set an approved immutable website image}
+    pull_policy: never
+  admin:
+    image: ${V_ADS_ADMIN_IMAGE:?Set an approved immutable separate admin image}
+    pull_policy: never

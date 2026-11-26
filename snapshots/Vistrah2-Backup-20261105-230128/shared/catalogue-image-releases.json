@@ -1,0 +1,3475 @@
+{
+  "version": 1,
+  "batch": "user-supplied-first25",
+  "sourceArchiveSha256": "570e160d6d0c6e7c32ec2dff6bed6a0ae218f1bb1226782f5600da03a8abddfc",
+  "reviewedOn": "2026-10-20",
+  "items": [
+    {
+      "id": "subcategory/food-and-dining/restaurants-and-dining",
+      "photo": "catalogue-first25-food-and-dining--restaurants-and-dining",
+      "previousPhoto": "restaurant",
+      "sha256": "6005741603d80991992d755a1b6cbef171218aca5fbdc6a36c895e180ce07b14",
+      "verified": true
+    },
+    {
+      "id": "subcategory/home-and-everyday-services/cleaning-services",
+      "photo": "catalogue-first25-home-and-everyday-services--cleaning-services",
+      "previousPhoto": "cleaning",
+      "sha256": "72f20b636913498c61892fcf63ccd784eb664c15268790e6ea46508ec5b26fb0",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/grocery-and-daily-needs",
+      "photo": "catalogue-first25-shopping-and-local-retail--grocery-and-daily-needs",
+      "previousPhoto": "grocery",
+      "sha256": "3ba421dca89977f0efc34c152da7a6b7e5b1df7d90f8fdc4362ecaf3b43ea591",
+      "verified": true
+    },
+    {
+      "id": "subcategory/beauty-fashion-and-lifestyle/salons-and-haircare",
+      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--salons-and-haircare",
+      "previousPhoto": "barber",
+      "sha256": "b8bd7e5979314112202a277eb9bb0a879bc7e8a8d0ae54779583d211e48b126d",
+      "verified": true
+    },
+    {
+      "id": "subcategory/automobiles/new-vehicles",
+      "photo": "catalogue-first25-automobiles--new-vehicles",
+      "previousPhoto": "automobiles",
+      "sha256": "771a5ae204afb125cd7e56e283c584395bbba7ff9cae13684c50dee0d2267f80",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/residential-property-rentals",
+      "photo": "catalogue-first25-rental-services--residential-property-rentals",
+      "previousPhoto": "rental-keys",
+      "sha256": "823c7edc9d135a7c7679c1c9fbffb9d4fc5627174b146d1d47c05cbd2a57c8c5",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/hotels-and-accommodation",
+      "photo": "catalogue-first25-travel-stay-and-experiences--hotels-and-accommodation",
+      "previousPhoto": "hotel",
+      "sha256": "1fa90efd1b7c8efb5ffe82c41d738f9ac7cece2b2e04d267f95c118d714de5a5",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/hospitals-and-clinics",
+      "photo": "catalogue-first25-health-fitness-and-wellness--hospitals-and-clinics",
+      "previousPhoto": "doctor",
+      "sha256": "2eb0f7fcf744df8c2fdabb5c5eef1aac680b8b55b3f1e2819a7741783ac888e3",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/schools-and-academic-education",
+      "photo": "catalogue-first25-education-and-skills--schools-and-academic-education",
+      "previousPhoto": "education-and-skills",
+      "sha256": "d7e44bb5b41cdb1839ae0806b1d3582b128d8f37d5ecffc6b49db1ff50758fc8",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/jobs-by-industry",
+      "photo": "catalogue-first25-jobs-and-careers--jobs-by-industry",
+      "previousPhoto": "career-workplace",
+      "sha256": "06da9b3a0bbfd58fc616c8a4c8bb3924dabf6de628b9645aaffc8f489d9e57bf",
+      "verified": true
+    },
+    {
+      "id": "subcategory/professional-services/legal-services",
+      "photo": "catalogue-first25-professional-services--legal-services",
+      "previousPhoto": "professional-advice",
+      "sha256": "d450f59a009b74d3b6af6dc14883496e1a6f9748dc4268a2636afbe5f46e56fc",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/venues",
+      "photo": "catalogue-first25-events-and-celebrations--venues",
+      "previousPhoto": "restaurant",
+      "sha256": "1d7c9ebfdfcf93c89030f029f812f749b8b1963102a9a5d4ed07a526df8a8185",
+      "verified": true
+    },
+    {
+      "id": "subcategory/pet-care/veterinary-services",
+      "photo": "catalogue-first25-pet-care--veterinary-services",
+      "previousPhoto": "vet-dog",
+      "sha256": "8c6e0dd72eeaf4f0402492e2ed39d971ef3ce4c66f2e96094377a53aa2308789",
+      "verified": true
+    },
+    {
+      "id": "subcategory/food-and-dining/quick-bites-and-street-food",
+      "photo": "catalogue-first25-food-and-dining--quick-bites-and-street-food",
+      "previousPhoto": "burger",
+      "sha256": "c475dc107a0e29b0cf3dd0e21bcf24ae34ab92ca2dd3086e677242d02a9a3adc",
+      "verified": true
+    },
+    {
+      "id": "subcategory/home-and-everyday-services/repairs-and-maintenance",
+      "photo": "catalogue-first25-home-and-everyday-services--repairs-and-maintenance",
+      "previousPhoto": "home-and-everyday-services",
+      "sha256": "6316ea496a0172c2e4e73b7537942e9a6876b28eb3ab4d6741d8c2d47a6447ab",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/electronics",
+      "photo": "catalogue-first25-shopping-and-local-retail--electronics",
+      "previousPhoto": "technology",
+      "sha256": "b2d1631a29300a5ff0f0ad3d0e56dc95ad6bdff97da08534b4f70680960e5d17",
+      "verified": true
+    },
+    {
+      "id": "subcategory/beauty-fashion-and-lifestyle/beauty-and-skincare",
+      "photo": "catalogue-first25-beauty-fashion-and-lifestyle--beauty-and-skincare",
+      "previousPhoto": "makeup",
+      "sha256": "75fdb6ddfc9c14af7b8579ab1e91fb07aa2cbf213d4bc0dea707fc36bd32c462",
+      "verified": true
+    },
+    {
+      "id": "subcategory/automobiles/used-vehicles",
+      "photo": "catalogue-first25-automobiles--used-vehicles",
+      "previousPhoto": "automobiles",
+      "sha256": "bf504daf1062822375211f9c072440c5b14ae798a2974cdd356c2bd9d7bf841c",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/vehicle-rentals",
+      "photo": "catalogue-first25-rental-services--vehicle-rentals",
+      "previousPhoto": "automobiles",
+      "sha256": "7e6ddd0ac639405cb5716e98f69a869eab14c30699018e7beb058748ce65f9ae",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/travel-planning",
+      "photo": "catalogue-first25-travel-stay-and-experiences--travel-planning",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "c747fed61782a566d19ac19027bb8a78edb08804675221772812e2edfe01b3df",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/doctors-and-specialists",
+      "photo": "catalogue-first25-health-fitness-and-wellness--doctors-and-specialists",
+      "previousPhoto": "doctor",
+      "sha256": "8a58335d3205d4f1996c50a66a8b71320490b2542b25bfeeea75501bc9f11d16",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/tutors-and-coaching",
+      "photo": "catalogue-first25-education-and-skills--tutors-and-coaching",
+      "previousPhoto": "books",
+      "sha256": "8f53846fd689e392c2fa3f539cb7c59579aac926e80e3a0036817edbcbf4f480",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/jobs-by-employment-type",
+      "photo": "catalogue-first25-jobs-and-careers--jobs-by-employment-type",
+      "previousPhoto": "career-workplace",
+      "sha256": "214c7af7054cca2f5e5f5c5911728af469bf6046d288439102a186aa96d22af3",
+      "verified": true
+    },
+    {
+      "id": "subcategory/professional-services/business-consulting",
+      "photo": "catalogue-first25-professional-services--business-consulting",
+      "previousPhoto": "consultation",
+      "sha256": "17facea86f476f41135fe5b0cb3a23c01b23d304bcf20776046d2237af6253b1",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/weddings",
+      "photo": "catalogue-first25-events-and-celebrations--weddings",
+      "previousPhoto": "wedding",
+      "sha256": "77b95a7e5aa9e003ecc43853e531de353526baebb28328fb3ce00ff941a0ddcd",
+      "verified": true
+    }
+  ],
+  "subcategoryUniquenessItems": [
+    {
+      "id": "subcategory/professional-services/design-and-creative-services",
+      "photo": "catalogue-batch2-professional-services--design-and-creative-services",
+      "previousPhoto": "architecture",
+      "sha256": "b029f30919e78db5a61d485cac2f0fb2d65cbc46c1a11e36a81e56b2e062c6cc",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/birthday-and-private-parties",
+      "photo": "catalogue-batch2-events-and-celebrations--birthday-and-private-parties",
+      "previousPhoto": "celebration",
+      "sha256": "7abc84821d59cccae4dff1dcf83ae283923810c80c62abee740a61cda0ce376f",
+      "verified": true
+    },
+    {
+      "id": "subcategory/pet-care/grooming",
+      "photo": "catalogue-batch2-pet-care--grooming",
+      "previousPhoto": "pet-grooming",
+      "sha256": "f3d6c8ad4f613822a654559e527a2d100a79b4a2c0297a4b4dde7034a969b4d8",
+      "verified": true
+    },
+    {
+      "id": "subcategory/food-and-dining/food-delivery-and-takeaway",
+      "photo": "catalogue-batch2-food-and-dining--food-delivery-and-takeaway",
+      "previousPhoto": "chef",
+      "sha256": "4ba6539a249f005467febaad4aeb7e97ed32e8f2a39dd0aa81b8c09460282a84",
+      "verified": true
+    },
+    {
+      "id": "subcategory/home-and-everyday-services/home-installation",
+      "photo": "catalogue-batch2-home-and-everyday-services--home-installation",
+      "previousPhoto": "electrical",
+      "sha256": "4577610b82308d017943a59818061f3cd3242522377d5c1dc0021eaad2d7efaf",
+      "verified": true
+    },
+    {
+      "id": "subcategory/food-and-dining/home-cooked-food",
+      "photo": "pizza",
+      "previousPhoto": "food-and-dining",
+      "sha256": "17815bb76e58b8663d86cc94f986295805e49f6b9b56124d49837d3c7ab3b690",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/home-and-furniture",
+      "photo": "home-purchase",
+      "previousPhoto": "interior",
+      "sha256": "2be3d300563c35345881500e8f0e50e8c4dd0788af94d846f66f2c27a91eb455",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/specialty-stores",
+      "photo": "cafe",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "5e199309242c81d18e8cc7ff3db703784dc1898c50611a9b139bc143e0ad09f7",
+      "verified": true
+    },
+    {
+      "id": "subcategory/shopping-and-local-retail/shopping-deals",
+      "photo": "makeup",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "91cd6074fee9d8dcb5bc9333833d107e523cebad661bf430200c414d6658affe",
+      "verified": true
+    },
+    {
+      "id": "subcategory/automobiles/spare-parts-and-accessories",
+      "photo": "motorcycle",
+      "previousPhoto": "mechanic",
+      "sha256": "1025a2dbacb02104e41d35108b1cf2a8825b629af64115f35c96bd5ecfe42acc",
+      "verified": true
+    },
+    {
+      "id": "subcategory/automobiles/roadside-assistance",
+      "photo": "building-inspection",
+      "previousPhoto": "mechanic",
+      "sha256": "a8f6d1f4574ac135eaab25890739f501c7346b080b79c5e4692e10d565a643b5",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/tools-and-construction-equipment",
+      "photo": "site-contractors",
+      "previousPhoto": "construction-equipment",
+      "sha256": "f61ca81f20034cb912217eddca3c6210878c0985afef85e0c58cb1b84c9f0d3f",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/fashion-and-occasion-rentals",
+      "photo": "wedding",
+      "previousPhoto": "clothes",
+      "sha256": "bcd6c79decb2c12cb174d2b5c1943646309bf25cbbbc76da546f3515a5dd4152",
+      "verified": true
+    },
+    {
+      "id": "subcategory/rental-services/electronics-and-gadget-rentals",
+      "photo": "development-operations",
+      "previousPhoto": "technology",
+      "sha256": "0aee3155831015f3b3ef2c05633064c964952d51a154f7576a2d783e88cd67e1",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/tours-and-guided-experiences",
+      "photo": "glass-enclosure",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "a8c9b7cb05851604e81c50f028013cac74ea388b7edf63f284dd93a4ee1125f6",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/adventure-activities",
+      "photo": "outdoor",
+      "previousPhoto": "cycling",
+      "sha256": "4a54e76a16cdb80d8a6dc23c79f17e4ab7b7dbb7bdf74568c737b46e34214f19",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/attractions-and-entertainment",
+      "photo": "digital-display",
+      "previousPhoto": "events",
+      "sha256": "48967b72ac4b9ce3d25395ee4a3328d689f43f0f3aa8d8e6748cd507066ece19",
+      "verified": true
+    },
+    {
+      "id": "subcategory/travel-stay-and-experiences/travel-assistance",
+      "photo": "airplane",
+      "previousPhoto": "registration-paperwork",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/pharmacies-and-medical-supplies",
+      "photo": "lab",
+      "previousPhoto": "pharmacy",
+      "sha256": "9cec0420ebfa3e55d2f6eb6b8d88c48feae57676af6d17beb415ef291758a2b0",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/yoga-and-mind-body-fitness",
+      "photo": "spa",
+      "previousPhoto": "health-fitness-and-wellness",
+      "sha256": "b84a2a8adce6e6d15ba2397908a04d8e744751b055014db110a84f14ef1cdac7",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/sports-coaching-and-facilities",
+      "photo": "physio-care",
+      "previousPhoto": "football",
+      "sha256": "e020548e886bfcfeba91b2caee76420e621d756cde2c497360bd9a7d254e4d37",
+      "verified": true
+    },
+    {
+      "id": "subcategory/health-fitness-and-wellness/nutrition-and-diet",
+      "photo": "tea",
+      "previousPhoto": "food-and-dining",
+      "sha256": "fd4d40b17652e978184f90d0aa9dd7d8dd95edda66142dfa527147837350b376",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/vocational-training",
+      "photo": "carpentry",
+      "previousPhoto": "printing",
+      "sha256": "fd63b8d07766341633d0bd92dfd96c845fecee1497b3a7e64167707254ca9b04",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/language-learning",
+      "photo": "collaboration",
+      "previousPhoto": "books",
+      "sha256": "0ed2a464a9cd24d9fa807783b4b33bcb0047c93d7bb926080bbfab12a72901fa",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/creative-skills",
+      "photo": "wall-painting",
+      "previousPhoto": "printing",
+      "sha256": "9a9828ab104fae6bc1e0e9a1c28b51fd4057b0a2980b92ca3adc5db6ddb23a33",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/certifications-and-exam-preparation",
+      "photo": "application-desk",
+      "previousPhoto": "books",
+      "sha256": "5a790a54326a343133a821bf5abfcbcf7705493363a1d7e7b398ca42eb543f96",
+      "verified": true
+    },
+    {
+      "id": "subcategory/education-and-skills/online-learning",
+      "photo": "software-review",
+      "previousPhoto": "technology",
+      "sha256": "d7ec477b84da0df065b49eb2443bfaaab47af9e2af5140f060dabeaf81ae5854",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/gig-and-freelance-work",
+      "photo": "business-launch",
+      "previousPhoto": "technology",
+      "sha256": "93b7a384b3870283cc3e2d984c8b47959f575cd00cd498f45fcaa1e92e265312",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/employer-profiles",
+      "photo": "office-process",
+      "previousPhoto": "career-workplace",
+      "sha256": "7ca089c81bca2182d66ee1244196c8bb47e432b1a13617b75f2d47199e02bc8a",
+      "verified": true
+    },
+    {
+      "id": "subcategory/jobs-and-careers/career-support",
+      "photo": "professional-profile",
+      "previousPhoto": "resume",
+      "sha256": "b7ab2b2205d604f8106a9f85b85cca5d41160316f4c8839ee7c2b19f4c6ecf6a",
+      "verified": true
+    },
+    {
+      "id": "subcategory/professional-services/financial-services",
+      "photo": "property-sale",
+      "previousPhoto": "finance",
+      "sha256": "121cf52a50b5d5faeb7df1879a9c71ce005eeb4a891699e985069531528bb11c",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/corporate-events",
+      "photo": "tender-review",
+      "previousPhoto": "events",
+      "sha256": "eb3ceec144c0f3cd4a1eef6217dbae13252c3200c5aa446ad8f70b199d8d9502",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/event-professionals",
+      "photo": "digital-analytics",
+      "previousPhoto": "media-production",
+      "sha256": "2eb118af1a5deeefdd4e8b206399a548ac9b6e5bfdbf314a5d082314caa0a3ee",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/decorations-and-equipment",
+      "photo": "restaurant",
+      "previousPhoto": "celebration",
+      "sha256": "f3dceba21e9b52e6e8bf0b859ccb0a5ad1f0d7c9cd5256868fdcde8d9f0e960f",
+      "verified": true
+    },
+    {
+      "id": "subcategory/events-and-celebrations/tickets-and-experiences",
+      "photo": "billboard",
+      "previousPhoto": "events",
+      "sha256": "8696ba1940ce3108cd0d029f7394a30a8281137f61d9a0f7096c889bcd62703b",
+      "verified": true
+    },
+    {
+      "id": "subcategory/pet-care/pet-walking-and-sitting",
+      "photo": "pet-bath",
+      "previousPhoto": "dog-walking",
+      "sha256": "e1e82394ea54a7533ec96d9a419bb29c972d306f5fabbd3d56e6cab2f8ee3ad8",
+      "verified": true
+    },
+    {
+      "id": "subcategory/pet-care/pet-adoption-and-welfare",
+      "photo": "vet-cat",
+      "previousPhoto": "pet-care",
+      "sha256": "7a94bf0a782ce0b9fb5fa179fd93651a1f9d90a811ee5e6df60191a29512ccd6",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/restaurants-and-dining/fine-dining",
+      "photo": "accountant-consultation",
+      "previousPhoto": "restaurant",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/restaurants-and-dining/casual-dining",
+      "photo": "accounting-calculation",
+      "previousPhoto": "chef",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/restaurants-and-dining/buffet-restaurants",
+      "photo": "air-conditioning",
+      "previousPhoto": "restaurant",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/restaurants-and-dining/specialty-cuisine-restaurants",
+      "photo": "airplane",
+      "previousPhoto": "chef",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/restaurants-and-dining/cloud-kitchens",
+      "photo": "architecture",
+      "previousPhoto": "restaurant",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/quick-bites-and-street-food/fast-food",
+      "photo": "accountant-consultation",
+      "previousPhoto": "burger",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/quick-bites-and-street-food/street-food",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pizza",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/quick-bites-and-street-food/rolls-and-wraps",
+      "photo": "air-conditioning",
+      "previousPhoto": "pizza",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/quick-bites-and-street-food/snacks-and-chaats",
+      "photo": "airplane",
+      "previousPhoto": "burger",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/caf-s-and-beverages/juice-shops",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cafe",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/caf-s-and-beverages/milkshakes-and-smoothies",
+      "photo": "accounting-calculation",
+      "previousPhoto": "coffee",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/caf-s-and-beverages/mocktails",
+      "photo": "air-conditioning",
+      "previousPhoto": "tea",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/caf-s-and-beverages/dessert-caf-s",
+      "photo": "airplane",
+      "previousPhoto": "cafe",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/food-delivery-and-takeaway/pickup-and-takeaway",
+      "photo": "accountant-consultation",
+      "previousPhoto": "food-and-dining",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/food-delivery-and-takeaway/late-night-food",
+      "photo": "accounting-calculation",
+      "previousPhoto": "chef",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/food-delivery-and-takeaway/breakfast-delivery",
+      "photo": "air-conditioning",
+      "previousPhoto": "food-and-dining",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/food-delivery-and-takeaway/lunch-and-dinner-meals",
+      "photo": "airplane",
+      "previousPhoto": "chef",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/food-delivery-and-takeaway/daily-meal-providers",
+      "photo": "architecture",
+      "previousPhoto": "food-and-dining",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/sweets-and-desserts/bakeries",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cake",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/sweets-and-desserts/cakes-and-pastries",
+      "photo": "accounting-calculation",
+      "previousPhoto": "cake",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/sweets-and-desserts/sweets",
+      "photo": "air-conditioning",
+      "previousPhoto": "cake",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/sweets-and-desserts/chocolates",
+      "photo": "airplane",
+      "previousPhoto": "cake",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/sweets-and-desserts/custom-cakes",
+      "photo": "architecture",
+      "previousPhoto": "cake",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/sweets-and-desserts/desserts",
+      "photo": "automobiles",
+      "previousPhoto": "cake",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/catering-and-bulk-orders/home-catering",
+      "photo": "accountant-consultation",
+      "previousPhoto": "chef",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/catering-and-bulk-orders/corporate-catering",
+      "photo": "accounting-calculation",
+      "previousPhoto": "chef",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/catering-and-bulk-orders/wedding-catering",
+      "photo": "air-conditioning",
+      "previousPhoto": "chef",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/catering-and-bulk-orders/party-catering",
+      "photo": "airplane",
+      "previousPhoto": "chef",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/catering-and-bulk-orders/bulk-food-orders",
+      "photo": "architecture",
+      "previousPhoto": "chef",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/home-cooked-food/homemade-meals",
+      "photo": "accountant-consultation",
+      "previousPhoto": "food-and-dining",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/home-cooked-food/homemade-snacks",
+      "photo": "accounting-calculation",
+      "previousPhoto": "food-and-dining",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/home-cooked-food/specialty-homemade-food",
+      "photo": "air-conditioning",
+      "previousPhoto": "food-and-dining",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/grocery-and-food-essentials/fruits-and-vegetables",
+      "photo": "accountant-consultation",
+      "previousPhoto": "grocery",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/grocery-and-food-essentials/meat-and-seafood",
+      "photo": "accounting-calculation",
+      "previousPhoto": "grocery",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/grocery-and-food-essentials/dairy-products",
+      "photo": "air-conditioning",
+      "previousPhoto": "food-and-dining",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/grocery-and-food-essentials/organic-food",
+      "photo": "airplane",
+      "previousPhoto": "grocery",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/food-and-dining/grocery-and-food-essentials/specialty-ingredients",
+      "photo": "architecture",
+      "previousPhoto": "food-and-dining",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/cleaning-services/bathroom-cleaning",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cleaning",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/cleaning-services/kitchen-cleaning",
+      "photo": "accounting-calculation",
+      "previousPhoto": "cleaning-care",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/cleaning-services/sofa-and-carpet-cleaning",
+      "photo": "air-conditioning",
+      "previousPhoto": "cleaning",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/cleaning-services/water-tank-cleaning",
+      "photo": "airplane",
+      "previousPhoto": "cleaning-care",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/cleaning-services/move-in-and-move-out-cleaning",
+      "photo": "architecture",
+      "previousPhoto": "cleaning",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/repairs-and-maintenance/plumbing",
+      "photo": "accountant-consultation",
+      "previousPhoto": "home-and-everyday-services",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/repairs-and-maintenance/masonry",
+      "photo": "accounting-calculation",
+      "previousPhoto": "electrical",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/repairs-and-maintenance/door-and-lock-repairs",
+      "photo": "air-conditioning",
+      "previousPhoto": "carpentry",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/repairs-and-maintenance/general-handyman-services",
+      "photo": "airplane",
+      "previousPhoto": "home-and-everyday-services",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/appliance-services/microwave-repair",
+      "photo": "accountant-consultation",
+      "previousPhoto": "air-conditioning",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/appliance-services/television-repair",
+      "photo": "accounting-calculation",
+      "previousPhoto": "computer-repair",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/appliance-services/water-purifier-servicing",
+      "photo": "airplane",
+      "previousPhoto": "electrical",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/appliance-services/home-appliance-installation",
+      "photo": "architecture",
+      "previousPhoto": "air-conditioning",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-installation/curtain-installation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "interior",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-installation/tv-mounting",
+      "photo": "accounting-calculation",
+      "previousPhoto": "home-and-everyday-services",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-installation/cctv-installation",
+      "photo": "air-conditioning",
+      "previousPhoto": "interior",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-installation/wi-fi-setup",
+      "photo": "airplane",
+      "previousPhoto": "home-and-everyday-services",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-installation/smart-home-installation",
+      "photo": "architecture",
+      "previousPhoto": "electrical",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/laundry-and-care/dry-cleaning",
+      "photo": "accountant-consultation",
+      "previousPhoto": "laundry",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/laundry-and-care/ironing",
+      "photo": "accounting-calculation",
+      "previousPhoto": "laundry",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/laundry-and-care/bag-cleaning",
+      "photo": "air-conditioning",
+      "previousPhoto": "cleaning",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/laundry-and-care/carpet-cleaning",
+      "photo": "airplane",
+      "previousPhoto": "cleaning",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/pest-control/cockroach-control",
+      "photo": "accountant-consultation",
+      "previousPhoto": "pest",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/pest-control/termite-treatment",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pest-care",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/pest-control/mosquito-control",
+      "photo": "air-conditioning",
+      "previousPhoto": "pest",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-improvement/home-renovation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "architecture",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-improvement/bathroom-renovation",
+      "photo": "accounting-calculation",
+      "previousPhoto": "interior",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-improvement/false-ceilings",
+      "photo": "air-conditioning",
+      "previousPhoto": "construction",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/home-improvement/waterproofing",
+      "photo": "airplane",
+      "previousPhoto": "interior",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/gardening-and-outdoor-care/plant-care",
+      "photo": "accountant-consultation",
+      "previousPhoto": "garden",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/gardening-and-outdoor-care/landscaping",
+      "photo": "accounting-calculation",
+      "previousPhoto": "outdoor",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/gardening-and-outdoor-care/tree-trimming",
+      "photo": "air-conditioning",
+      "previousPhoto": "garden",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/gardening-and-outdoor-care/balcony-garden-setup",
+      "photo": "airplane",
+      "previousPhoto": "outdoor",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/moving-and-relocation/packers-and-movers",
+      "photo": "accountant-consultation",
+      "previousPhoto": "moving",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/moving-and-relocation/local-shifting",
+      "photo": "accounting-calculation",
+      "previousPhoto": "moving",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/moving-and-relocation/intercity-relocation",
+      "photo": "air-conditioning",
+      "previousPhoto": "moving",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/moving-and-relocation/office-relocation",
+      "photo": "airplane",
+      "previousPhoto": "moving",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/domestic-help/housekeeping",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cleaning",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/domestic-help/elderly-assistance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "cleaning",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/domestic-help/caretaker-services",
+      "photo": "air-conditioning",
+      "previousPhoto": "chef",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/home-and-everyday-services/domestic-help/part-time-domestic-help",
+      "photo": "airplane",
+      "previousPhoto": "home-maintenance",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/grocery-and-daily-needs/convenience-stores",
+      "photo": "accountant-consultation",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/grocery-and-daily-needs/grocery-delivery",
+      "photo": "accounting-calculation",
+      "previousPhoto": "grocery",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/grocery-and-daily-needs/fruits-and-vegetables",
+      "photo": "air-conditioning",
+      "previousPhoto": "grocery",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/grocery-and-daily-needs/household-essentials",
+      "photo": "airplane",
+      "previousPhoto": "grocery",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/electronics/computers-and-laptops",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/electronics/audio-equipment",
+      "photo": "accounting-calculation",
+      "previousPhoto": "technology",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/electronics/gaming-devices",
+      "photo": "air-conditioning",
+      "previousPhoto": "servers",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/electronics/electronic-accessories",
+      "photo": "airplane",
+      "previousPhoto": "technology",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/fashion-and-clothing/women-s-clothing",
+      "photo": "accountant-consultation",
+      "previousPhoto": "clothes",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/fashion-and-clothing/children-s-clothing",
+      "photo": "accounting-calculation",
+      "previousPhoto": "clothes",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/fashion-and-clothing/casual-wear",
+      "photo": "air-conditioning",
+      "previousPhoto": "clothes",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/fashion-and-clothing/formal-wear",
+      "photo": "airplane",
+      "previousPhoto": "beauty-fashion-and-lifestyle",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/fashion-and-clothing/footwear",
+      "photo": "architecture",
+      "previousPhoto": "clothes",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/fashion-and-clothing/bags-and-accessories",
+      "photo": "automobiles",
+      "previousPhoto": "beauty-fashion-and-lifestyle",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/home-and-furniture/home-d-cor",
+      "photo": "accountant-consultation",
+      "previousPhoto": "interior",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/home-and-furniture/kitchenware",
+      "photo": "accounting-calculation",
+      "previousPhoto": "property",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/home-and-furniture/lighting",
+      "photo": "air-conditioning",
+      "previousPhoto": "interior",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/home-and-furniture/bedding",
+      "photo": "airplane",
+      "previousPhoto": "property",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/home-and-furniture/storage-products",
+      "photo": "architecture",
+      "previousPhoto": "interior",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/health-and-personal-care-products/skincare",
+      "photo": "accountant-consultation",
+      "previousPhoto": "pharmacy",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/health-and-personal-care-products/personal-hygiene",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pharmacy",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/health-and-personal-care-products/general-wellness-products",
+      "photo": "air-conditioning",
+      "previousPhoto": "pharmacy",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/books-gifts-and-stationery/office-stationery",
+      "photo": "accountant-consultation",
+      "previousPhoto": "books",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/books-gifts-and-stationery/gifts",
+      "photo": "accounting-calculation",
+      "previousPhoto": "books",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/books-gifts-and-stationery/personalized-gifts",
+      "photo": "air-conditioning",
+      "previousPhoto": "celebration",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/specialty-stores/sports-stores",
+      "photo": "accountant-consultation",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/specialty-stores/automobile-accessories",
+      "photo": "accounting-calculation",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/specialty-stores/hardware-stores",
+      "photo": "air-conditioning",
+      "previousPhoto": "clothes",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/specialty-stores/hobby-and-collectible-stores",
+      "photo": "airplane",
+      "previousPhoto": "books",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/local-manufacturers-and-sellers/handmade-products",
+      "photo": "accountant-consultation",
+      "previousPhoto": "printing",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/local-manufacturers-and-sellers/custom-made-products",
+      "photo": "accounting-calculation",
+      "previousPhoto": "printing",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/local-manufacturers-and-sellers/small-business-products",
+      "photo": "air-conditioning",
+      "previousPhoto": "vendor-logistics",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/shopping-deals/discounts-and-offers",
+      "photo": "accountant-consultation",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/shopping-deals/new-arrivals",
+      "photo": "accounting-calculation",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/shopping-deals/clearance-sales",
+      "photo": "air-conditioning",
+      "previousPhoto": "clothes",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/shopping-and-local-retail/shopping-deals/local-store-promotions",
+      "photo": "airplane",
+      "previousPhoto": "shopping-and-local-retail",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/salons-and-haircare/men-s-salons",
+      "photo": "accountant-consultation",
+      "previousPhoto": "barber",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/salons-and-haircare/women-s-salons",
+      "photo": "accounting-calculation",
+      "previousPhoto": "beauty-fashion-and-lifestyle",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/salons-and-haircare/unisex-salons",
+      "photo": "air-conditioning",
+      "previousPhoto": "barber",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/salons-and-haircare/haircuts-and-styling",
+      "photo": "airplane",
+      "previousPhoto": "barber",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/salons-and-haircare/hair-treatments",
+      "photo": "architecture",
+      "previousPhoto": "barber",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/salons-and-haircare/hair-spas",
+      "photo": "automobiles",
+      "previousPhoto": "barber",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/beauty-and-skincare/facials",
+      "photo": "accountant-consultation",
+      "previousPhoto": "makeup",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/beauty-and-skincare/manicure-and-pedicure",
+      "photo": "accounting-calculation",
+      "previousPhoto": "makeup",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/beauty-and-skincare/bridal-beauty-packages",
+      "photo": "air-conditioning",
+      "previousPhoto": "spa",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/spa-and-relaxation/relaxation-massage",
+      "photo": "accountant-consultation",
+      "previousPhoto": "spa",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/spa-and-relaxation/wellness-spa-packages",
+      "photo": "accounting-calculation",
+      "previousPhoto": "spa",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/makeup-and-styling/party-makeup",
+      "photo": "accountant-consultation",
+      "previousPhoto": "makeup",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/makeup-and-styling/professional-makeup",
+      "photo": "accounting-calculation",
+      "previousPhoto": "makeup",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/makeup-and-styling/personal-styling",
+      "photo": "air-conditioning",
+      "previousPhoto": "makeup",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/makeup-and-styling/wardrobe-consultation",
+      "photo": "airplane",
+      "previousPhoto": "makeup-artist",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/fashion-services/tailoring",
+      "photo": "accountant-consultation",
+      "previousPhoto": "clothes",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/fashion-services/alterations",
+      "photo": "accounting-calculation",
+      "previousPhoto": "beauty-fashion-and-lifestyle",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/fashion-services/custom-clothing",
+      "photo": "air-conditioning",
+      "previousPhoto": "clothes",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/fashion-services/embroidery",
+      "photo": "airplane",
+      "previousPhoto": "beauty-fashion-and-lifestyle",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/fashion-services/clothing-repair",
+      "photo": "architecture",
+      "previousPhoto": "clothes",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/jewellery-stores",
+      "photo": "accountant-consultation",
+      "previousPhoto": "jewellery",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/custom-jewellery",
+      "photo": "accounting-calculation",
+      "previousPhoto": "jewellery",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/jewellery-repair",
+      "photo": "air-conditioning",
+      "previousPhoto": "jewellery",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/jewellery-and-accessories/accessories-styling",
+      "photo": "airplane",
+      "previousPhoto": "jewellery",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/photography-and-personal-portfolios/portrait-photography",
+      "photo": "accountant-consultation",
+      "previousPhoto": "media-production",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/photography-and-personal-portfolios/professional-headshots",
+      "photo": "accounting-calculation",
+      "previousPhoto": "media-production",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/tattoos-and-body-art/body-art",
+      "photo": "accountant-consultation",
+      "previousPhoto": "tattoo",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/beauty-fashion-and-lifestyle/tattoos-and-body-art/piercing-services",
+      "photo": "accounting-calculation",
+      "previousPhoto": "tattoo-care",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/new-vehicles/cars",
+      "photo": "accountant-consultation",
+      "previousPhoto": "automobiles",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/new-vehicles/scooters",
+      "photo": "accounting-calculation",
+      "previousPhoto": "motorcycle",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/new-vehicles/electric-two-wheelers",
+      "photo": "air-conditioning",
+      "previousPhoto": "electrical",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/used-vehicles/used-cars",
+      "photo": "accountant-consultation",
+      "previousPhoto": "automobiles",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/used-vehicles/used-scooters",
+      "photo": "accounting-calculation",
+      "previousPhoto": "motorcycle",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/used-vehicles/used-commercial-vehicles",
+      "photo": "air-conditioning",
+      "previousPhoto": "motorcycle",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/used-vehicles/certified-pre-owned-vehicles",
+      "photo": "airplane",
+      "previousPhoto": "automobiles",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-dealers-and-showrooms/car-dealerships",
+      "photo": "accountant-consultation",
+      "previousPhoto": "automobiles",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-dealers-and-showrooms/commercial-vehicle-dealers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "automobiles",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-servicing-and-repairs/scheduled-servicing",
+      "photo": "accountant-consultation",
+      "previousPhoto": "mechanic",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-servicing-and-repairs/engine-repairs",
+      "photo": "accounting-calculation",
+      "previousPhoto": "mechanic",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-servicing-and-repairs/brake-repairs",
+      "photo": "air-conditioning",
+      "previousPhoto": "mechanic",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-servicing-and-repairs/battery-services",
+      "photo": "airplane",
+      "previousPhoto": "mechanic",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-servicing-and-repairs/tyre-replacement",
+      "photo": "architecture",
+      "previousPhoto": "mechanic",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/car-care-and-detailing/exterior-detailing",
+      "photo": "accountant-consultation",
+      "previousPhoto": "car-wash",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/car-care-and-detailing/paint-protection",
+      "photo": "accounting-calculation",
+      "previousPhoto": "car-wash",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/spare-parts-and-accessories/batteries",
+      "photo": "accountant-consultation",
+      "previousPhoto": "motorcycle",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/spare-parts-and-accessories/engine-parts",
+      "photo": "accounting-calculation",
+      "previousPhoto": "mechanic",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/spare-parts-and-accessories/helmets",
+      "photo": "air-conditioning",
+      "previousPhoto": "motorcycle",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/spare-parts-and-accessories/vehicle-accessories",
+      "photo": "airplane",
+      "previousPhoto": "mechanic",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/spare-parts-and-accessories/audio-systems",
+      "photo": "architecture",
+      "previousPhoto": "motorcycle",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/spare-parts-and-accessories/seat-covers",
+      "photo": "barber",
+      "previousPhoto": "mechanic",
+      "sha256": "252e41745a7cfd6c9a50d9ba438f65805ce447d7e8548bf0465f03f71416bee6",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-insurance-and-finance/vehicle-insurance-providers",
+      "photo": "accountant-consultation",
+      "previousPhoto": "finance",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-insurance-and-finance/vehicle-loans",
+      "photo": "air-conditioning",
+      "previousPhoto": "accounting-calculation",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/vehicle-insurance-and-finance/insurance-renewal-assistance",
+      "photo": "airplane",
+      "previousPhoto": "finance",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/driving-and-vehicle-documentation/driving-lessons",
+      "photo": "accountant-consultation",
+      "previousPhoto": "automobiles",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/driving-and-vehicle-documentation/vehicle-registration-assistance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "automobiles",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/driving-and-vehicle-documentation/vehicle-inspection",
+      "photo": "air-conditioning",
+      "previousPhoto": "registration-paperwork",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/driving-and-vehicle-documentation/pre-purchase-inspection",
+      "photo": "airplane",
+      "previousPhoto": "automobiles",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/roadside-assistance/flat-tyre-assistance",
+      "photo": "accountant-consultation",
+      "previousPhoto": "mechanic",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/roadside-assistance/battery-jump-start",
+      "photo": "accounting-calculation",
+      "previousPhoto": "mechanic",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/commercial-and-fleet-services/fleet-management",
+      "photo": "accountant-consultation",
+      "previousPhoto": "truck",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/automobiles/commercial-and-fleet-services/vehicle-leasing-enquiries",
+      "photo": "accounting-calculation",
+      "previousPhoto": "automobiles",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/residential-property-rentals/independent-floors",
+      "photo": "accountant-consultation",
+      "previousPhoto": "rental-keys",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/residential-property-rentals/rooms",
+      "photo": "accounting-calculation",
+      "previousPhoto": "property",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/residential-property-rentals/pg-accommodation",
+      "photo": "air-conditioning",
+      "previousPhoto": "rental-keys",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/residential-property-rentals/shared-accommodation",
+      "photo": "airplane",
+      "previousPhoto": "property",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/residential-property-rentals/short-term-residential-stays",
+      "photo": "architecture",
+      "previousPhoto": "rental-keys",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/commercial-property-rentals/shops",
+      "photo": "accountant-consultation",
+      "previousPhoto": "commercial-building",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/commercial-property-rentals/warehouses",
+      "photo": "accounting-calculation",
+      "previousPhoto": "property-documents",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/commercial-property-rentals/industrial-spaces",
+      "photo": "air-conditioning",
+      "previousPhoto": "spa",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/commercial-property-rentals/commercial-kitchens",
+      "photo": "airplane",
+      "previousPhoto": "property-documents",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/commercial-property-rentals/meeting-rooms",
+      "photo": "architecture",
+      "previousPhoto": "commercial-building",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/vehicle-rentals/self-drive-cars",
+      "photo": "accountant-consultation",
+      "previousPhoto": "automobiles",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/vehicle-rentals/chauffeur-driven-cars",
+      "photo": "accounting-calculation",
+      "previousPhoto": "automobiles",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/vehicle-rentals/scooters",
+      "photo": "air-conditioning",
+      "previousPhoto": "motorcycle",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/vehicle-rentals/vans",
+      "photo": "airplane",
+      "previousPhoto": "automobiles",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/vehicle-rentals/commercial-vehicles",
+      "photo": "architecture",
+      "previousPhoto": "motorcycle",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/furniture-rentals/sofas",
+      "photo": "accountant-consultation",
+      "previousPhoto": "interior",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/furniture-rentals/wardrobes",
+      "photo": "accounting-calculation",
+      "previousPhoto": "interior",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/furniture-rentals/office-furniture",
+      "photo": "air-conditioning",
+      "previousPhoto": "interior",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/electronics-and-gadget-rentals/desktop-computers",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/electronics-and-gadget-rentals/cameras",
+      "photo": "accounting-calculation",
+      "previousPhoto": "technology",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/electronics-and-gadget-rentals/gaming-consoles",
+      "photo": "air-conditioning",
+      "previousPhoto": "technology",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/electronics-and-gadget-rentals/speakers",
+      "photo": "airplane",
+      "previousPhoto": "computer-repair",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/electronics-and-gadget-rentals/smartphones",
+      "photo": "architecture",
+      "previousPhoto": "technology",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/electronics-and-gadget-rentals/event-display-equipment",
+      "photo": "automobiles",
+      "previousPhoto": "computer-repair",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/home-appliance-rentals/refrigerators",
+      "photo": "accountant-consultation",
+      "previousPhoto": "air-conditioning",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/home-appliance-rentals/water-purifiers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "laundry",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/home-appliance-rentals/televisions",
+      "photo": "airplane",
+      "previousPhoto": "air-conditioning",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/home-appliance-rentals/kitchen-appliances",
+      "photo": "architecture",
+      "previousPhoto": "laundry",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/event-and-party-rentals/sound-systems",
+      "photo": "accountant-consultation",
+      "previousPhoto": "celebration",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/event-and-party-rentals/lighting",
+      "photo": "accounting-calculation",
+      "previousPhoto": "events",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/event-and-party-rentals/projectors",
+      "photo": "air-conditioning",
+      "previousPhoto": "restaurant",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/event-and-party-rentals/stages",
+      "photo": "airplane",
+      "previousPhoto": "celebration",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/tools-and-construction-equipment/generators",
+      "photo": "accountant-consultation",
+      "previousPhoto": "construction-equipment",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/tools-and-construction-equipment/scaffolding",
+      "photo": "accounting-calculation",
+      "previousPhoto": "construction",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/tools-and-construction-equipment/construction-machinery",
+      "photo": "air-conditioning",
+      "previousPhoto": "construction-equipment",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/tools-and-construction-equipment/ladders",
+      "photo": "airplane",
+      "previousPhoto": "construction",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/travel-and-adventure-equipment/camping-tents",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cycling",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/travel-and-adventure-equipment/trekking-equipment",
+      "photo": "accounting-calculation",
+      "previousPhoto": "outdoor",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/travel-and-adventure-equipment/hiking-gear",
+      "photo": "air-conditioning",
+      "previousPhoto": "cycling",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/travel-and-adventure-equipment/travel-accessories",
+      "photo": "airplane",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/fashion-and-occasion-rentals/wedding-outfits",
+      "photo": "accountant-consultation",
+      "previousPhoto": "wedding",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/fashion-and-occasion-rentals/traditional-attire",
+      "photo": "accounting-calculation",
+      "previousPhoto": "clothes",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/fashion-and-occasion-rentals/handbags",
+      "photo": "air-conditioning",
+      "previousPhoto": "clothes",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/fashion-and-occasion-rentals/costumes",
+      "photo": "airplane",
+      "previousPhoto": "jewellery",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/sports-and-recreation-rentals/sports-equipment",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cycling",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/sports-and-recreation-rentals/adventure-equipment",
+      "photo": "accounting-calculation",
+      "previousPhoto": "football",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/sports-and-recreation-rentals/recreational-equipment",
+      "photo": "air-conditioning",
+      "previousPhoto": "cycling",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/business-and-industrial-rentals/industrial-machinery",
+      "photo": "accountant-consultation",
+      "previousPhoto": "vendor-logistics",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/business-and-industrial-rentals/material-handling-equipment",
+      "photo": "accounting-calculation",
+      "previousPhoto": "vendor-logistics",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/business-and-industrial-rentals/generators",
+      "photo": "air-conditioning",
+      "previousPhoto": "construction-equipment",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/business-and-industrial-rentals/commercial-equipment",
+      "photo": "airplane",
+      "previousPhoto": "vendor-logistics",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/rental-services/other-rentals/specialty-equipment",
+      "photo": "accountant-consultation",
+      "previousPhoto": "rental-keys",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/hotels-and-accommodation/resorts",
+      "photo": "accountant-consultation",
+      "previousPhoto": "hotel",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/hotels-and-accommodation/hostels",
+      "photo": "accounting-calculation",
+      "previousPhoto": "hotel",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/hotels-and-accommodation/homestays",
+      "photo": "air-conditioning",
+      "previousPhoto": "hotel",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/hotels-and-accommodation/guesthouses",
+      "photo": "airplane",
+      "previousPhoto": "hotel",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/hotels-and-accommodation/serviced-apartments",
+      "photo": "architecture",
+      "previousPhoto": "hotel",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-planning/travel-agencies",
+      "photo": "accountant-consultation",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-planning/international-tours",
+      "photo": "accounting-calculation",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-planning/group-trips",
+      "photo": "air-conditioning",
+      "previousPhoto": "planning",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-planning/family-holidays",
+      "photo": "architecture",
+      "previousPhoto": "airplane",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-planning/honeymoon-packages",
+      "photo": "automobiles",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/transport-and-transfers/private-drivers",
+      "photo": "accountant-consultation",
+      "previousPhoto": "airplane",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/transport-and-transfers/tourist-vehicles",
+      "photo": "accounting-calculation",
+      "previousPhoto": "automobiles",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/transport-and-transfers/group-transportation",
+      "photo": "air-conditioning",
+      "previousPhoto": "truck",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/tours-and-guided-experiences/city-tours",
+      "photo": "accountant-consultation",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/tours-and-guided-experiences/cultural-tours",
+      "photo": "accounting-calculation",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/tours-and-guided-experiences/nature-tours",
+      "photo": "air-conditioning",
+      "previousPhoto": "outdoor",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/tours-and-guided-experiences/guided-treks",
+      "photo": "airplane",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/tours-and-guided-experiences/wildlife-experiences",
+      "photo": "architecture",
+      "previousPhoto": "outdoor",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/tours-and-guided-experiences/local-food-tours",
+      "photo": "automobiles",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/adventure-activities/trekking",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cycling",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/adventure-activities/camping-experiences",
+      "photo": "accounting-calculation",
+      "previousPhoto": "outdoor",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/adventure-activities/water-sports",
+      "photo": "air-conditioning",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/adventure-activities/adventure-sports",
+      "photo": "airplane",
+      "previousPhoto": "cycling",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/adventure-activities/outdoor-excursions",
+      "photo": "architecture",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/attractions-and-entertainment/museums",
+      "photo": "accountant-consultation",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/attractions-and-entertainment/theme-parks",
+      "photo": "accounting-calculation",
+      "previousPhoto": "events",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/attractions-and-entertainment/water-parks",
+      "photo": "air-conditioning",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/attractions-and-entertainment/recreational-attractions",
+      "photo": "airplane",
+      "previousPhoto": "events",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/attractions-and-entertainment/sightseeing-experiences",
+      "photo": "architecture",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-assistance/visa-consultation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "airplane",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-assistance/travel-documentation-assistance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "registration-paperwork",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-assistance/itinerary-planning",
+      "photo": "air-conditioning",
+      "previousPhoto": "airplane",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/travel-stay-and-experiences/travel-assistance/travel-concierge-services",
+      "photo": "architecture",
+      "previousPhoto": "registration-paperwork",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/hospitals-and-clinics/multispecialty-hospitals",
+      "photo": "accountant-consultation",
+      "previousPhoto": "doctor",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/hospitals-and-clinics/specialty-clinics",
+      "photo": "accounting-calculation",
+      "previousPhoto": "doctor",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/hospitals-and-clinics/dental-clinics",
+      "photo": "air-conditioning",
+      "previousPhoto": "doctor",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/hospitals-and-clinics/eye-clinics",
+      "photo": "airplane",
+      "previousPhoto": "doctor",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/doctors-and-specialists/orthopedic-specialists",
+      "photo": "accountant-consultation",
+      "previousPhoto": "doctor",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/doctors-and-specialists/cardiologists",
+      "photo": "accounting-calculation",
+      "previousPhoto": "lab",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/doctors-and-specialists/other-medical-specialists",
+      "photo": "air-conditioning",
+      "previousPhoto": "doctor",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/diagnostic-services/blood-tests",
+      "photo": "accountant-consultation",
+      "previousPhoto": "lab",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/diagnostic-services/imaging-centres",
+      "photo": "accounting-calculation",
+      "previousPhoto": "lab",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/diagnostic-services/home-sample-collection",
+      "photo": "air-conditioning",
+      "previousPhoto": "lab",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/pharmacies-and-medical-supplies/pharmacies",
+      "photo": "accountant-consultation",
+      "previousPhoto": "pharmacy",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/pharmacies-and-medical-supplies/mobility-aids",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pharmacy",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/fitness-centres/gyms",
+      "photo": "accountant-consultation",
+      "previousPhoto": "gym",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/fitness-centres/personal-trainers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "gym",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/fitness-centres/strength-training",
+      "photo": "air-conditioning",
+      "previousPhoto": "gym",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/yoga-studios",
+      "photo": "accountant-consultation",
+      "previousPhoto": "health-fitness-and-wellness",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/meditation-classes",
+      "photo": "accounting-calculation",
+      "previousPhoto": "health-fitness-and-wellness",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/pilates",
+      "photo": "air-conditioning",
+      "previousPhoto": "health-fitness-and-wellness",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/yoga-and-mind-body-fitness/breathing-and-relaxation-classes",
+      "photo": "airplane",
+      "previousPhoto": "spa",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/sports-coaching-and-facilities/swimming",
+      "photo": "accountant-consultation",
+      "previousPhoto": "football",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/sports-coaching-and-facilities/cricket",
+      "photo": "accounting-calculation",
+      "previousPhoto": "football",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/sports-coaching-and-facilities/tennis",
+      "photo": "air-conditioning",
+      "previousPhoto": "cycling",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/sports-coaching-and-facilities/sports-coaching",
+      "photo": "airplane",
+      "previousPhoto": "football",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/sports-coaching-and-facilities/sports-grounds-and-courts",
+      "photo": "architecture",
+      "previousPhoto": "cycling",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/physiotherapy",
+      "photo": "accountant-consultation",
+      "previousPhoto": "physio",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/sports-rehabilitation",
+      "photo": "accounting-calculation",
+      "previousPhoto": "physio-care",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/physiotherapy-and-rehabilitation/mobility-training",
+      "photo": "air-conditioning",
+      "previousPhoto": "physio",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/nutrition-and-diet/meal-planning",
+      "photo": "accountant-consultation",
+      "previousPhoto": "food-and-dining",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/nutrition-and-diet/sports-nutrition-consultation",
+      "photo": "accounting-calculation",
+      "previousPhoto": "grocery",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/mental-wellbeing/licensed-mental-health-professionals",
+      "photo": "accountant-consultation",
+      "previousPhoto": "consultation",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/mental-wellbeing/psychology-services",
+      "photo": "accounting-calculation",
+      "previousPhoto": "health-fitness-and-wellness",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/health-fitness-and-wellness/mental-wellbeing/stress-management-programmes",
+      "photo": "air-conditioning",
+      "previousPhoto": "consultation",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/schools-and-academic-education/schools",
+      "photo": "accountant-consultation",
+      "previousPhoto": "education-and-skills",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/schools-and-academic-education/daycare-and-early-learning",
+      "photo": "accounting-calculation",
+      "previousPhoto": "education-and-skills",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/schools-and-academic-education/after-school-programmes",
+      "photo": "air-conditioning",
+      "previousPhoto": "books",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/schools-and-academic-education/academic-enrichment",
+      "photo": "airplane",
+      "previousPhoto": "education-and-skills",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/tutors-and-coaching/home-tutors",
+      "photo": "accountant-consultation",
+      "previousPhoto": "education-and-skills",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/tutors-and-coaching/online-tutors",
+      "photo": "accounting-calculation",
+      "previousPhoto": "education-and-skills",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/tutors-and-coaching/school-subject-tuition",
+      "photo": "air-conditioning",
+      "previousPhoto": "education-and-skills",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/tutors-and-coaching/entrance-exam-preparation",
+      "photo": "airplane",
+      "previousPhoto": "books",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/tutors-and-coaching/language-tutoring",
+      "photo": "architecture",
+      "previousPhoto": "books",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/professional-courses/data-analytics",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/professional-courses/artificial-intelligence",
+      "photo": "accounting-calculation",
+      "previousPhoto": "books",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/professional-courses/digital-marketing",
+      "photo": "air-conditioning",
+      "previousPhoto": "technology",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/professional-courses/business-and-finance",
+      "photo": "airplane",
+      "previousPhoto": "books",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/vocational-training/automotive-training",
+      "photo": "accountant-consultation",
+      "previousPhoto": "electrical",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/vocational-training/beauty-training",
+      "photo": "accounting-calculation",
+      "previousPhoto": "printing",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/language-learning/indian-languages",
+      "photo": "accountant-consultation",
+      "previousPhoto": "education-and-skills",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/language-learning/foreign-languages",
+      "photo": "accounting-calculation",
+      "previousPhoto": "books",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/language-learning/spoken-language-courses",
+      "photo": "air-conditioning",
+      "previousPhoto": "education-and-skills",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/language-learning/business-communication",
+      "photo": "airplane",
+      "previousPhoto": "books",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/creative-skills/graphic-design",
+      "photo": "accountant-consultation",
+      "previousPhoto": "media-production",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/creative-skills/dance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "media-production",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/creative-skills/drawing-and-painting",
+      "photo": "air-conditioning",
+      "previousPhoto": "wall-painting",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/creative-skills/writing",
+      "photo": "airplane",
+      "previousPhoto": "printing",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/career-development/professional-mentoring",
+      "photo": "accountant-consultation",
+      "previousPhoto": "resume",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/career-development/communication-skills",
+      "photo": "accounting-calculation",
+      "previousPhoto": "interview",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/career-development/leadership-training",
+      "photo": "air-conditioning",
+      "previousPhoto": "career-workplace",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/certifications-and-exam-preparation/professional-examination-preparation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "books",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/certifications-and-exam-preparation/practice-tests",
+      "photo": "accounting-calculation",
+      "previousPhoto": "books",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/certifications-and-exam-preparation/exam-coaching",
+      "photo": "air-conditioning",
+      "previousPhoto": "books",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/online-learning/workshops",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/online-learning/webinars",
+      "photo": "accounting-calculation",
+      "previousPhoto": "collaboration",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/education-and-skills/online-learning/individual-mentoring",
+      "photo": "air-conditioning",
+      "previousPhoto": "technology",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/cloud-and-devops",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/banking-and-finance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "construction",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/customer-support",
+      "photo": "air-conditioning",
+      "previousPhoto": "technology",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/retail",
+      "photo": "airplane",
+      "previousPhoto": "career-workplace",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/manufacturing",
+      "photo": "architecture",
+      "previousPhoto": "technology",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/logistics-and-transportation",
+      "photo": "automobiles",
+      "previousPhoto": "chef",
+      "sha256": "78acd089c291a203ca32f1b50b6e488627340c1f773357cb1aa63fc680284da6",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/education",
+      "photo": "barber",
+      "previousPhoto": "career-workplace",
+      "sha256": "252e41745a7cfd6c9a50d9ba438f65805ce447d7e8548bf0465f03f71416bee6",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-industry/administration-and-hr",
+      "photo": "beauty-fashion-and-lifestyle",
+      "previousPhoto": "technology",
+      "sha256": "55f32388151024cfbee1e0e731084e7c9c672252dfdb7844d176aa94cd850aa5",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-employment-type/temporary",
+      "photo": "accountant-consultation",
+      "previousPhoto": "career-workplace",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-employment-type/internship",
+      "photo": "accounting-calculation",
+      "previousPhoto": "interview",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-employment-type/freelance",
+      "photo": "air-conditioning",
+      "previousPhoto": "career-workplace",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-employment-type/remote-work",
+      "photo": "airplane",
+      "previousPhoto": "interview",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-experience/team-leaders",
+      "photo": "accountant-consultation",
+      "previousPhoto": "interview",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-experience/managers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "resume",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/jobs-by-experience/senior-professionals",
+      "photo": "air-conditioning",
+      "previousPhoto": "career-workplace",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/government-and-public-sector/government-vacancies",
+      "photo": "accountant-consultation",
+      "previousPhoto": "job-search",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/government-and-public-sector/public-sector-recruitment",
+      "photo": "accounting-calculation",
+      "previousPhoto": "registration-paperwork",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/gig-and-freelance-work/software-development-projects",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/gig-and-freelance-work/marketing-projects",
+      "photo": "accounting-calculation",
+      "previousPhoto": "media-production",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/gig-and-freelance-work/local-gig-work",
+      "photo": "air-conditioning",
+      "previousPhoto": "planning",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/gig-and-freelance-work/skilled-trades-assignments",
+      "photo": "airplane",
+      "previousPhoto": "technology",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/employer-profiles/work-environment",
+      "photo": "accountant-consultation",
+      "previousPhoto": "career-workplace",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/employer-profiles/open-positions",
+      "photo": "accounting-calculation",
+      "previousPhoto": "collaboration",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/employer-profiles/recruitment-events",
+      "photo": "air-conditioning",
+      "previousPhoto": "career-workplace",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/career-support/portfolio-building",
+      "photo": "accountant-consultation",
+      "previousPhoto": "resume",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/career-support/job-search-assistance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "interview",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/recruitment-services/recruitment-agencies",
+      "photo": "accountant-consultation",
+      "previousPhoto": "interview",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/jobs-and-careers/recruitment-services/employer-hiring-campaigns",
+      "photo": "accounting-calculation",
+      "previousPhoto": "professional-advice",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/legal-services/legal-consultation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "construction-contract",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/legal-services/business-legal-services",
+      "photo": "accounting-calculation",
+      "previousPhoto": "construction-contract",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/legal-services/property-legal-assistance",
+      "photo": "air-conditioning",
+      "previousPhoto": "construction-contract",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/accounting-and-taxation/chartered-accountants",
+      "photo": "accounting-calculation",
+      "previousPhoto": "bookkeeping",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/accounting-and-taxation/tax-filing",
+      "photo": "air-conditioning",
+      "previousPhoto": "bookkeeping",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/accounting-and-taxation/payroll-services",
+      "photo": "airplane",
+      "previousPhoto": "bookkeeping",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/accounting-and-taxation/financial-statement-preparation",
+      "photo": "architecture",
+      "previousPhoto": "finance",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/business-consulting/business-registration-assistance",
+      "photo": "accountant-consultation",
+      "previousPhoto": "market-analysis",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/business-consulting/operations-consulting",
+      "photo": "accounting-calculation",
+      "previousPhoto": "business-registration",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/business-consulting/process-improvement",
+      "photo": "air-conditioning",
+      "previousPhoto": "consultation",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/marketing-and-branding/branding-consultation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "marketing",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/marketing-and-branding/market-research",
+      "photo": "accounting-calculation",
+      "previousPhoto": "digital-display",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/marketing-and-branding/social-media-consulting",
+      "photo": "air-conditioning",
+      "previousPhoto": "printing",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/it-and-technology-services/website-development",
+      "photo": "accountant-consultation",
+      "previousPhoto": "technology",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/it-and-technology-services/software-development",
+      "photo": "accounting-calculation",
+      "previousPhoto": "technology",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/it-and-technology-services/cloud-consulting",
+      "photo": "air-conditioning",
+      "previousPhoto": "technology",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/it-and-technology-services/devops-consulting",
+      "photo": "airplane",
+      "previousPhoto": "servers",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/it-and-technology-services/cybersecurity-consulting",
+      "photo": "architecture",
+      "previousPhoto": "technology",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/design-and-creative-services/illustration",
+      "photo": "accountant-consultation",
+      "previousPhoto": "architecture",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/design-and-creative-services/video-editing",
+      "photo": "accounting-calculation",
+      "previousPhoto": "media-production",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/design-and-creative-services/animation",
+      "photo": "air-conditioning",
+      "previousPhoto": "printing",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/real-estate-professionals/property-valuation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "property-documents",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/real-estate-professionals/property-management",
+      "photo": "accounting-calculation",
+      "previousPhoto": "property-appraisal",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/real-estate-professionals/commercial-real-estate-consulting",
+      "photo": "air-conditioning",
+      "previousPhoto": "property-documents",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/financial-services/loan-consultation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "finance",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/financial-services/business-finance-consultation",
+      "photo": "air-conditioning",
+      "previousPhoto": "accounting-calculation",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/documentation-and-administrative-services/translation",
+      "photo": "accountant-consultation",
+      "previousPhoto": "documents",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/documentation-and-administrative-services/virtual-assistance",
+      "photo": "accounting-calculation",
+      "previousPhoto": "registration-paperwork",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/engineering-and-technical-consultancy/structural-consultancy",
+      "photo": "accountant-consultation",
+      "previousPhoto": "construction-estimate",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/engineering-and-technical-consultancy/surveying",
+      "photo": "accounting-calculation",
+      "previousPhoto": "engineering-team",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/professional-services/engineering-and-technical-consultancy/technical-inspections",
+      "photo": "air-conditioning",
+      "previousPhoto": "architecture",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/venues/party-halls",
+      "photo": "accountant-consultation",
+      "previousPhoto": "hotel",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/venues/conference-halls",
+      "photo": "accounting-calculation",
+      "previousPhoto": "restaurant",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/weddings/wedding-decorators",
+      "photo": "accountant-consultation",
+      "previousPhoto": "wedding",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/weddings/wedding-photographers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "wedding",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/weddings/wedding-entertainment",
+      "photo": "air-conditioning",
+      "previousPhoto": "wedding",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/weddings/wedding-invitation-services",
+      "photo": "airplane",
+      "previousPhoto": "wedding",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/birthday-and-private-parties/party-decorations",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cake",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/birthday-and-private-parties/party-entertainers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "celebration",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/corporate-events/seminars",
+      "photo": "accountant-consultation",
+      "previousPhoto": "events",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/corporate-events/product-launches",
+      "photo": "accounting-calculation",
+      "previousPhoto": "collaboration",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/corporate-events/team-building-events",
+      "photo": "air-conditioning",
+      "previousPhoto": "events",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-professionals/videographers",
+      "photo": "accountant-consultation",
+      "previousPhoto": "media-production",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-professionals/singers",
+      "photo": "accounting-calculation",
+      "previousPhoto": "media-production",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-professionals/hosts-and-emcees",
+      "photo": "air-conditioning",
+      "previousPhoto": "chef",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-professionals/performers",
+      "photo": "airplane",
+      "previousPhoto": "media-production",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-professionals/event-coordinators",
+      "photo": "architecture",
+      "previousPhoto": "events",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/decorations-and-equipment/floral-decorations",
+      "photo": "accountant-consultation",
+      "previousPhoto": "celebration",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/decorations-and-equipment/sound-systems",
+      "photo": "accounting-calculation",
+      "previousPhoto": "celebration",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/decorations-and-equipment/event-backdrops",
+      "photo": "air-conditioning",
+      "previousPhoto": "celebration",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/tickets-and-experiences/festivals",
+      "photo": "accountant-consultation",
+      "previousPhoto": "events",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/tickets-and-experiences/exhibitions",
+      "photo": "accounting-calculation",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/tickets-and-experiences/workshops",
+      "photo": "air-conditioning",
+      "previousPhoto": "events",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/tickets-and-experiences/community-events",
+      "photo": "airplane",
+      "previousPhoto": "travel-stay-and-experiences",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/tickets-and-experiences/other-ticketed-events",
+      "photo": "architecture",
+      "previousPhoto": "events",
+      "sha256": "61cb6f0a316f4adabf3a9249e5a380b95da175f653e3e0121b3af1c2fb1f1960",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-planning-services/invitations",
+      "photo": "accountant-consultation",
+      "previousPhoto": "planning",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-planning-services/event-transportation",
+      "photo": "accounting-calculation",
+      "previousPhoto": "planning",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/events-and-celebrations/event-planning-services/event-staffing",
+      "photo": "air-conditioning",
+      "previousPhoto": "media-production",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/veterinary-services/vaccination-services",
+      "photo": "accountant-consultation",
+      "previousPhoto": "vet-dog",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/veterinary-services/veterinary-consultations",
+      "photo": "accounting-calculation",
+      "previousPhoto": "vet-cat",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/veterinary-services/emergency-veterinary-care",
+      "photo": "air-conditioning",
+      "previousPhoto": "vet-dog",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/grooming/hair-trimming",
+      "photo": "accountant-consultation",
+      "previousPhoto": "pet-grooming",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/grooming/nail-trimming",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pet-grooming",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/grooming/mobile-grooming",
+      "photo": "air-conditioning",
+      "previousPhoto": "pet-grooming",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/boarding-and-daycare/pet-boarding",
+      "photo": "accountant-consultation",
+      "previousPhoto": "cat",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/boarding-and-daycare/pet-daycare",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pet-care",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/boarding-and-daycare/overnight-pet-care",
+      "photo": "air-conditioning",
+      "previousPhoto": "cat",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/boarding-and-daycare/in-home-pet-sitting",
+      "photo": "airplane",
+      "previousPhoto": "pet-care",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/training/puppy-training",
+      "photo": "accountant-consultation",
+      "previousPhoto": "dog-walking",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/training/obedience-training",
+      "photo": "accounting-calculation",
+      "previousPhoto": "dog-walking",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/training/specialised-training",
+      "photo": "air-conditioning",
+      "previousPhoto": "dog-walking",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-walking-and-sitting/home-visits",
+      "photo": "accountant-consultation",
+      "previousPhoto": "dog-walking",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-walking-and-sitting/pet-companionship-services",
+      "photo": "accounting-calculation",
+      "previousPhoto": "cat",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-supplies/bedding",
+      "photo": "accountant-consultation",
+      "previousPhoto": "pet-care",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-supplies/collars-and-leashes",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pet-food",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-supplies/grooming-products",
+      "photo": "air-conditioning",
+      "previousPhoto": "pet-grooming",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-supplies/pet-accessories",
+      "photo": "airplane",
+      "previousPhoto": "pet-care",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-adoption-and-welfare/adoption-organisations",
+      "photo": "accountant-consultation",
+      "previousPhoto": "pet-care",
+      "sha256": "189021aa3cc646d2d99a47723bcbfefb43c4eece48844df95a60a1537992b6ad",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-adoption-and-welfare/rescue-groups",
+      "photo": "accounting-calculation",
+      "previousPhoto": "pet-care",
+      "sha256": "913affa55ddb4386b5bd5622af43d768304d2697b3c0226268504da8b1942ffd",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-adoption-and-welfare/lost-and-found-pets",
+      "photo": "air-conditioning",
+      "previousPhoto": "cat",
+      "sha256": "75947d4692d3540d036ee07e29d4044973e4622268bd57030ee69610aff0ed06",
+      "verified": true
+    },
+    {
+      "id": "type/pet-care/pet-adoption-and-welfare/animal-welfare-organisations",
+      "photo": "airplane",
+      "previousPhoto": "pet-care",
+      "sha256": "2cb242d053b33afbdbf4cf23f9dd6a74520d045b25a6dd231f46e7ff353a38c5",
+      "verified": true
+    }
+  ]
+}

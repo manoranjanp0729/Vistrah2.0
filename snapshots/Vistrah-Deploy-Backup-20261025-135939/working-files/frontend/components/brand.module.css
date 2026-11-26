@@ -1,0 +1,4 @@
+.dark,.light,.alwaysLight{width:210px;height:52px;object-fit:contain;flex-shrink:0}
+.light,.hidden{display:none}
+:global(html[data-theme='light']) .dark{display:none}
+:global(html[data-theme='light']) .light{display:block}

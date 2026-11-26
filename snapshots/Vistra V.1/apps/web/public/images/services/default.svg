@@ -1,0 +1,19 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <circle cx="945" cy="132" r="210" fill="#EAF5EE" fill-opacity="0.85"/>
+  <circle cx="255" cy="565" r="260" fill="#D7EAD9" fill-opacity="0.82"/>
+  <path d="M233 442.5C233 343.127 312.127 264 411.5 264H520.5C619.873 264 699 343.127 699 442.5V472.5C699 571.873 619.873 651 520.5 651H411.5C312.127 651 233 571.873 233 472.5V442.5Z" fill="white" fill-opacity="0.9"/>
+  <path d="M341 398C341 359.34 372.34 328 411 328H525C563.66 328 595 359.34 595 398V430C595 468.66 563.66 500 525 500H411C372.34 500 341 468.66 341 430V398Z" fill="#0D5F40"/>
+  <path d="M404 283H532C581.951 283 622 323.049 622 373V373H314V373C314 323.049 354.049 283 404 283Z" fill="#173F35"/>
+  <path d="M385 248L432 203H504L552 248H385Z" fill="#0D5F40"/>
+  <path d="M759 228H1008V446H759V228Z" fill="#FFFFFF" fill-opacity="0.16"/>
+  <path d="M791 274H976V308H791V274ZM791 334H976V368H791V334ZM791 394H922V428H791V394Z" fill="#0D5F40" fill-opacity="0.9"/>
+  <text x="114" y="140" fill="#173F35" font-family="Arial, sans-serif" font-size="58" font-weight="700" letter-spacing="10">VISTRAH</text>
+  <text x="114" y="198" fill="#3D564C" font-family="Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="4">SERVICE SOLUTIONS</text>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="675" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F1F9F3"/>
+      <stop offset="1" stop-color="#E4F0E8"/>
+    </linearGradient>
+  </defs>
+</svg>

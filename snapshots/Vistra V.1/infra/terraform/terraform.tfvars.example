@@ -1,0 +1,22 @@
+# Copy to terraform.tfvars only after reviewing all values. Never place secrets here.
+aws_region = "ap-south-1"
+name_prefix = "vistrah-staging"
+vpc_cidr = "10.20.0.0/16"
+db_name = "vistrah"
+db_username = "vistrah_admin"
+db_instance_class = "db.t4g.micro"
+db_allocated_storage_gb = 20
+db_backup_retention_days = 7
+db_deletion_protection = true
+db_final_snapshot_identifier = "vistrah-staging-final-snapshot"
+desired_count = 1
+log_retention_days = 14
+
+# Supply immutable image URIs after pushing the reviewed staging builds.
+# web_image = "123456789012.dkr.ecr.ap-south-1.amazonaws.com/vistrah-staging-web:staging-20261008"
+# api_image = "123456789012.dkr.ecr.ap-south-1.amazonaws.com/vistrah-staging-api:staging-20261008"
+
+# Keep blank until the staging domain and hosted zone are confirmed.
+# staging_hostname = "staging.vistrah.com"
+# route53_hosted_zone_id = "Z0123456789EXAMPLE"
+# web_build_api_url = "https://staging.vistrah.com/api/v1"

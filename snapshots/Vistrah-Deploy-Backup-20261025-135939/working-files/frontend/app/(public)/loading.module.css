@@ -1,0 +1,5 @@
+.loading{min-height:65vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:32px;background:var(--page-background);color:var(--text-secondary)}
+.loading p{margin:0;font-size:14px;text-align:center}
+.spinner{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--accent-orange);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.spinner{animation:none}}

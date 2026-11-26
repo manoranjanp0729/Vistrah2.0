@@ -1,0 +1,45 @@
+/* Self-hosted VISTRAH typography; no runtime font-provider requests.
+ * Sources and SIL Open Font Licenses: public/fonts/*-OFL.txt.
+ * Variable fonts retain the existing 400/500/600/700 weight hierarchy.
+ */
+@font-face {
+  font-family: 'Vistrah Montserrat';
+  src: url('/app/fonts/Montserrat.ttf') format('truetype'), url('/fonts/Montserrat.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vistrah Montserrat';
+  src: url('/app/fonts/Montserrat-Italic.ttf') format('truetype'), url('/fonts/Montserrat-Italic.ttf') format('truetype');
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vistrah Kannada';
+  src: url('/app/fonts/NotoSansKannada.ttf') format('truetype'), url('/fonts/NotoSansKannada.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Vistrah Devanagari';
+  src: url('/app/fonts/NotoSansDevanagari.ttf') format('truetype'), url('/fonts/NotoSansDevanagari.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  --vistrah-font: 'Vistrah Montserrat', 'Vistrah Kannada', 'Vistrah Devanagari', sans-serif;
+}
+html, body, button, input, textarea, select {
+  font-family: var(--vistrah-font);
+}
+/* React Native Web's base Text/TextInput styles reset the inherited font.
+ * Override only those defaults. Preserve explicit font families (especially
+ * Feather icon glyphs and monospace diagnostics), including nested Text.
+ */
+:is([class*='css-text-'], [class*='css-textinput-']):not([class*='r-fontFamily-']):not([style*='font-family']) {
+  font-family: var(--vistrah-font);
+}

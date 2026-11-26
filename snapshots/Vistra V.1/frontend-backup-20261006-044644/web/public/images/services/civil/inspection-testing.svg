@@ -1,0 +1,51 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#073b27"/>
+      <stop offset="100%" stop-color="#176044"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4ead7"/>
+      <stop offset="100%" stop-color="#d8c29b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#bg)"/>
+
+  <circle cx="1030" cy="90" r="230" fill="#ffffff" opacity=".06"/>
+  <circle cx="160" cy="650" r="300" fill="#ffffff" opacity=".04"/>
+
+  <rect x="650" y="95" width="430" height="330" rx="28"
+        fill="url(#panel)" opacity=".96"/>
+
+  <rect x="700" y="145" width="330" height="180" rx="16"
+        fill="#073b27" opacity=".95"/>
+
+  <path d="M725 285 L785 220 L845 260 L910 175 L1005 285"
+        fill="none" stroke="#f4ead7" stroke-width="12"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="790" cy="205" r="18" fill="#d8a94d"/>
+  <rect x="725" y="350" width="150" height="14" rx="7" fill="#073b27" opacity=".35"/>
+  <rect x="725" y="380" width="250" height="14" rx="7" fill="#073b27" opacity=".2"/>
+
+  <text x="90" y="230"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="62"
+        font-weight="800"
+        fill="#ffffff">Inspection & Testing</text>
+
+  <text x="94" y="285"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="26"
+        fill="#dcebe4">Technical inspection and verification</text>
+
+  <rect x="94" y="335" width="110" height="6" rx="3" fill="#d8a94d"/>
+
+  <text x="94" y="600"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="18"
+        letter-spacing="5"
+        fill="#ffffff"
+        opacity=".55">VISTRAH</text>
+</svg>

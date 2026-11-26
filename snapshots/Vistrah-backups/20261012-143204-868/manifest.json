@@ -1,0 +1,22 @@
+﻿{
+    "source_commit":  "b05310aa507f041d22395d0c1e014905cf343833",
+    "original_revision":  "011",
+    "target_revision":  "012",
+    "api_image":  "sha256:f13dfeb27457e5621da4215e4883d038ab7d4e1a5857860c4c6d2536b7961ac3",
+    "api_backup_tag":  "vistrah-api:before-employer-jobs-20261012-143204-868",
+    "worker_image":  "sha256:46aee6d3269ac01ab755abacb9888d0b042f204e9915ade972f824a48561c544",
+    "worker_backup_tag":  "vistrah-worker:before-employer-jobs-20261012-143204-868",
+    "api_recovery":  {
+                         "image":  "sha256:f13dfeb27457e5621da4215e4883d038ab7d4e1a5857860c4c6d2536b7961ac3",
+                         "method":  "original-image-tag",
+                         "tag":  "vistrah-api:before-employer-jobs-20261012-143204-868"
+                     },
+    "worker_recovery":  {
+                            "image":  "sha256:46aee6d3269ac01ab755abacb9888d0b042f204e9915ade972f824a48561c544",
+                            "method":  "original-image-tag",
+                            "tag":  "vistrah-worker:before-employer-jobs-20261012-143204-868"
+                        },
+    "database_container":  "c20d66e7f7a2d8447eb08790a5f439a27e132c793030ba66f1f5d387b415ae98",
+    "created_at":  "2026-10-12T14:32:06.6420586+05:30",
+    "database_backup_sha256":  "788fefc1a91127313bb23f0e276afa36182dda877593c4add8c4526114147419"
+}

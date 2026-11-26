@@ -1,0 +1,1946 @@
+﻿"use client";
+
+import { useEffect, useState } from "react";
+
+const API =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+
+type Section =
+  | "overview"
+  | "sources"
+  | "jobs"
+  | "records"
+  | "providers"
+  | "services"
+  | "review"
+  | "website"
+  | "settings"
+  | "audit";
+
+const sections: { id: Section; label: string; icon: string }[] = [
+  { id: "overview", label: "Overview", icon: "◈" },
+  { id: "sources", label: "Data Sources", icon: "◎" },
+  { id: "jobs", label: "Acquisition Jobs", icon: "↻" },
+  { id: "records", label: "Source Records", icon: "▤" },
+  { id: "providers", label: "Providers", icon: "♙" },
+  { id: "services", label: "Provider Services", icon: "◇" },
+  { id: "review", label: "Review & Approval", icon: "✓" },
+  { id: "website", label: "Website Editor", icon: "✎" },
+  { id: "settings", label: "System Settings", icon: "⚙" },
+  { id: "audit", label: "Audit Logs", icon: "≡" },
+];
+
+const endpoints: Record<string, string> = {
+  overview: "/admin/overview",
+  sources: "/admin/data-sources",
+  jobs: "/admin/acquisition-jobs",
+  records: "/admin/source-records",
+  providers: "/admin/providers",
+  services: "/admin/provider-services",
+  review: "/admin/review-queue",
+  audit: "/admin/audit-logs",
+};
+
+function getToken() {
+  if (typeof window === "undefined") return "";
+
+  const keys = [
+    "access_token",
+    "token",
+    "vistrah_access_token",
+    "auth_token",
+  ];
+
+  for (const key of keys) {
+    const value = localStorage.getItem(key);
+    if (value && value.split(".").length === 3) return value;
+  }
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key) continue;
+    const value = localStorage.getItem(key);
+    if (value && value.split(".").length === 3) return value;
+  }
+
+  return "";
+}
+
+function getUser() {
+  if (typeof window === "undefined") return null;
+
+  const keys = ["user", "vistrah_user", "currentUser"];
+
+  for (const key of keys) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.role) return parsed;
+      }
+    } catch {}
+  }
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key) continue;
+
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+      const parsed = JSON.parse(raw);
+
+      if (parsed?.role) return parsed;
+      if (parsed?.user?.role) return parsed.user;
+    } catch {}
+  }
+
+  return null;
+}
+
+async function api(path: string, options: RequestInit = {}) {
+  const token = getToken();
+
+  const response = await fetch(`${API}${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options.headers || {}),
+    },
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || `Request failed: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+function Card({
+  title,
+  value,
+  subtitle,
+}: {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+}) {
+  return (
+    <div className="stat-card">
+      <div className="stat-title">{title}</div>
+      <div className="stat-value">{value}</div>
+      {subtitle && <div className="stat-subtitle">{subtitle}</div>}
+    </div>
+  );
+}
+
+function EmptyState({ text = "No records available" }) {
+  return (
+    <div className="empty">
+      <div className="empty-icon">◇</div>
+      <div>{text}</div>
+    </div>
+  );
+}
+
+function DataTable({
+  data,
+  columns,
+}: {
+  data: any[];
+  columns: { key: string; label: string }[];
+}) {
+  if (!data?.length) return <EmptyState />;
+
+  return (
+    <div className="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            {columns.map((c) => (
+              <th key={c.key}>{c.label}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, index) => (
+            <tr key={row.id || index}>
+              {columns.map((c) => (
+                <td key={c.key}>
+                  {typeof row[c.key] === "object"
+                    ? JSON.stringify(row[c.key])
+                    : String(row[c.key] ?? "-")}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default function AdminPage() {
+  const [active, setActive] = useState<Section>("overview");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [data, setData] = useState<any>({});
+  const [showSourceForm, setShowSourceForm] = useState(false);
+  const [editingSource, setEditingSource] = useState<any>(null);
+  const [editingRecord, setEditingRecord] = useState<any>(null);
+  const [editingProvider, setEditingProvider] = useState<any>(null);
+  const [editSaving, setEditSaving] = useState(false);
+  const [showManualRecordForm, setShowManualRecordForm] = useState(false);
+  const [manualRecordSaving, setManualRecordSaving] = useState(false);
+  const [manualRecordSource, setManualRecordSource] = useState<any>(null);
+  const [manualRecordForm, setManualRecordForm] = useState({
+    provider_name: "",
+    phone: "",
+    email: "",
+    website: "",
+    address: "",
+    city: "",
+    state: "",
+    description: "",
+  });
+  const [sourceSaving, setSourceSaving] = useState(false);
+  const [sourceForm, setSourceForm] = useState({
+    name: "",
+    source_type: "WEB",
+    collection_method: "MANUAL",
+    base_url: "",
+    description: "",
+    status: "ACTIVE",
+  });
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const current = getUser();
+    setUser(current);
+
+    if (!current || !["ADMIN", "SUPER_ADMIN"].includes(current.role)) {
+      window.location.href = "/login";
+      return;
+    }
+
+    loadSection("overview");
+  }, []);
+
+  async function loadSection(section: Section) {
+    setActive(section);
+    setMobileOpen(false);
+    setError("");
+
+    if (!endpoints[section]) return;
+
+    try {
+      setLoading(true);
+      const result = await api(endpoints[section]);
+      setData((prev: any) => ({ ...prev, [section]: result }));
+    } catch (err: any) {
+      setError(err?.message || "Unable to load data");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (!user || !["ADMIN", "SUPER_ADMIN"].includes(user.role)) {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          display: "grid",
+          placeItems: "center",
+          fontFamily: "Arial, sans-serif",
+        }}
+      >
+        Checking administrator access...
+      </main>
+    );
+  }
+
+  const overview = data.overview || {};
+
+  const stats = overview.stats || overview;
+
+  async function createSource() {
+    if (!sourceForm.name.trim()) {
+      setError("Source name is required");
+      return;
+    }
+
+    try {
+      setSourceSaving(true);
+      setError("");
+
+      await api("/admin/data-sources", {
+        method: "POST",
+        body: JSON.stringify(sourceForm),
+      });
+
+      setSourceForm({
+        name: "",
+        source_type: "WEB",
+        collection_method: "MANUAL",
+        base_url: "",
+        description: "",
+        status: "ACTIVE",
+      });
+
+      setShowSourceForm(false);
+      await loadSection("sources");
+    } catch (err: any) {
+      setError(err?.message || "Unable to create source");
+    } finally {
+      setSourceSaving(false);
+    }
+  }
+
+  async function runSource(sourceId: string) {
+    try {
+      setError("");
+
+      await api("/admin/acquisition-jobs", {
+        method: "POST",
+        body: JSON.stringify({
+          data_source_id: sourceId,
+        }),
+      });
+
+      await loadSection("sources");
+    } catch (err: any) {
+      setError(err?.message || "Unable to start acquisition job");
+    }
+  }
+  async function createManualRecord() {
+    if (!manualRecordSource?.id) {
+      setError("Select a data source first");
+      return;
+    }
+
+    if (!manualRecordForm.provider_name.trim()) {
+      setError("Provider name is required");
+      return;
+    }
+
+    try {
+      setManualRecordSaving(true);
+      setError("");
+
+      await api("/admin/source-records/manual", {
+        method: "POST",
+        body: JSON.stringify({
+          data_source_id: manualRecordSource.id,
+          ...manualRecordForm,
+        }),
+      });
+
+      setManualRecordForm({
+        provider_name: "",
+        phone: "",
+        email: "",
+        website: "",
+        address: "",
+        city: "",
+        state: "",
+        description: "",
+      });
+
+      setShowManualRecordForm(false);
+      setManualRecordSource(null);
+
+      await loadSection("sources");
+      await loadSection("records");
+      await loadSection("providers");
+      await loadSection("review");
+    } catch (err: any) {
+      setError(err?.message || "Unable to create provider record");
+    } finally {
+      setManualRecordSaving(false);
+    }
+  }
+  async function updateSource() {
+    if (!editingSource?.id) return;
+
+    try {
+      setEditSaving(true);
+      setError("");
+
+      await api(`/admin/data-sources/${editingSource.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(editingSource),
+      });
+
+      setEditingSource(null);
+      await loadSection("sources");
+    } catch (err: any) {
+      setError(err?.message || "Unable to update source");
+    } finally {
+      setEditSaving(false);
+    }
+  }
+
+  async function updateRecord() {
+    if (!editingRecord?.id) return;
+
+    try {
+      setEditSaving(true);
+      setError("");
+
+      await api(`/admin/source-records/${editingRecord.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(editingRecord),
+      });
+
+      setEditingRecord(null);
+      await loadSection("records");
+    } catch (err: any) {
+      setError(err?.message || "Unable to update source record");
+    } finally {
+      setEditSaving(false);
+    }
+  }
+
+  async function updateProvider() {
+    if (!editingProvider?.id) return;
+
+    try {
+      setEditSaving(true);
+      setError("");
+
+      await api(`/admin/providers/${editingProvider.id}`, {
+        method: "PATCH",
+        body: JSON.stringify(editingProvider),
+      });
+
+      setEditingProvider(null);
+      await loadSection("providers");
+    } catch (err: any) {
+      setError(err?.message || "Unable to update provider");
+    } finally {
+      setEditSaving(false);
+    }
+  }
+  const renderOverview = () => (
+    <>
+      <div className="page-heading">
+        <div>
+          <div className="eyebrow">ADMINISTRATION</div>
+          <h1>VISTRAH Control Center</h1>
+          <p>Manage data acquisition, providers, services and publishing.</p>
+        </div>
+        <a href="/" className="admin-badge">HOME</a>
+      </div>
+
+      <div className="stats-grid">
+        <Card title="Total Users" value={stats.total_users ?? 0} />
+        <Card title="Active Services" value={stats.active_services ?? 0} />
+        <Card title="Providers" value={stats.providers ?? 0} />
+        <Card
+          title="Pending Providers"
+          value={stats.pending_providers ?? 0}
+        />
+        <Card
+          title="Provider Services"
+          value={stats.provider_services ?? 0}
+        />
+        <Card title="Pending Reviews" value={stats.pending_reviews ?? 0} />
+        <Card title="Running Jobs" value={stats.running_jobs ?? 0} />
+        <Card title="Failed Jobs" value={stats.failed_jobs ?? 0} />
+      </div>
+
+      <div className="panel">
+        <div className="panel-header">
+          <div>
+            <h2>Data Acquisition Pipeline</h2>
+            <p>Controlled flow from approved sources to published providers.</p>
+          </div>
+        </div>
+
+        <div className="pipeline">
+          {[
+            ["01", "Approved Sources"],
+            ["02", "Collection Jobs"],
+            ["03", "Source Records"],
+            ["04", "Validation"],
+            ["05", "Review"],
+            ["06", "Publish"],
+          ].map(([number, label], index) => (
+            <div className="pipeline-item" key={label}>
+              <div className="pipeline-number">{number}</div>
+              <strong>{label}</strong>
+              {index < 5 && <span className="pipeline-arrow">→</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="panel">
+          <div className="panel-header">
+            <div>
+              <h2>System Status</h2>
+              <p>Core VISTRAH services</p>
+            </div>
+          </div>
+
+          {[
+            ["API", "Operational"],
+            ["Database", "Operational"],
+            ["Authentication", "Operational"],
+            ["Admin APIs", "Protected"],
+          ].map(([name, status]) => (
+            <div className="status-row" key={name}>
+              <span>{name}</span>
+              <span className="status">
+                <i /> {status}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div className="panel">
+          <div className="panel-header">
+            <div>
+              <h2>Quick Actions</h2>
+              <p>Common administration tasks</p>
+            </div>
+          </div>
+
+          <div className="quick-actions">
+            <button onClick={() => loadSection("sources")}>
+              Manage Sources
+            </button>
+            <button onClick={() => loadSection("providers")}>
+              Manage Providers
+            </button>
+            <button onClick={() => loadSection("review")}>
+              Review Queue
+            </button>
+            <button onClick={() => loadSection("audit")}>
+              View Audit Logs
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  const renderTableSection = (
+    title: string,
+    description: string,
+    section: Section,
+    columns: { key: string; label: string }[]
+  ) => {
+    const result = data[section];
+    const items =
+      result?.items ||
+      result?.data ||
+      result?.records ||
+      result?.providers ||
+      result?.sources ||
+      result?.jobs ||
+      result?.reviews ||
+      result?.audit_logs ||
+      [];
+
+    return (
+      <>
+        <div className="page-heading">
+          <div>
+            <div className="eyebrow">VISTRAH ADMIN</div>
+            <h1>{title}</h1>
+            <p>{description}</p>
+          </div>
+          <button className="refresh" onClick={() => loadSection(section)}>
+            ↻ Refresh
+          </button>
+        </div>
+
+        <div className="panel">
+          <DataTable data={items} columns={columns} />
+        </div>
+      </>
+    );
+  };
+
+  const renderModule = () => {
+    if (active === "overview") return renderOverview();
+
+    if (active === "sources") {
+      const result = data.sources || {};
+      const sources = result.items || result.sources || result.data || [];
+
+      return (
+        <>
+          <div className="page-heading">
+            <div>
+              <div className="eyebrow">DATA ACQUISITION</div>
+              <h1>Data Sources</h1>
+              <p>Manage approved sources used by VISTRAH acquisition workflows.</p>
+            </div>
+
+            <button
+              className="refresh"
+              onClick={() => setShowSourceForm(true)}
+            >
+              + Add Source
+            </button>
+          </div>
+
+          {showSourceForm && (
+            <div className="source-form-overlay">
+              <div className="source-form">
+                <div className="source-form-header">
+                  <div>
+                    <h2>Add Data Source</h2>
+                    <p>Create an approved source for VISTRAH acquisition.</p>
+                  </div>
+                  <button
+                    className="close-form"
+                    onClick={() => setShowSourceForm(false)}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                <div className="form-grid">
+                  <label>
+                    Source Name
+                    <input
+                      value={sourceForm.name}
+                      onChange={(e) =>
+                        setSourceForm({ ...sourceForm, name: e.target.value })
+                      }
+                      placeholder="Example: Karnataka Service Directory"
+                    />
+                  </label>
+
+                  <label>
+                    Source Type
+                    <select
+                      value={sourceForm.source_type}
+                      onChange={(e) =>
+                        setSourceForm({
+                          ...sourceForm,
+                          source_type: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="WEB">Web</option>
+                      <option value="API">API</option>
+                      <option value="DIRECTORY">Directory</option>
+                      <option value="PARTNER">Partner</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Collection Method
+                    <select
+                      value={sourceForm.collection_method}
+                      onChange={(e) =>
+                        setSourceForm({
+                          ...sourceForm,
+                          collection_method: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="MANUAL">Manual</option>
+                      <option value="API">API Connector</option>
+                      <option value="CRAWLER">Crawler</option>
+                      <option value="IMPORT">Import</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Status
+                    <select
+                      value={sourceForm.status}
+                      onChange={(e) =>
+                        setSourceForm({
+                          ...sourceForm,
+                          status: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="ACTIVE">Active</option>
+                      <option value="INACTIVE">Inactive</option>
+                    </select>
+                  </label>
+
+                  <label className="full">
+                    Base URL
+                    <input
+                      value={sourceForm.base_url}
+                      onChange={(e) =>
+                        setSourceForm({
+                          ...sourceForm,
+                          base_url: e.target.value,
+                        })
+                      }
+                      placeholder="https://example.com"
+                    />
+                  </label>
+
+                  <label className="full">
+                    Description
+                    <textarea
+                      value={sourceForm.description}
+                      onChange={(e) =>
+                        setSourceForm({
+                          ...sourceForm,
+                          description: e.target.value,
+                        })
+                      }
+                      placeholder="Describe what information this source provides."
+                    />
+                  </label>
+                </div>
+
+                <div className="form-actions">
+                  <button
+                    className="cancel-button"
+                    onClick={() => setShowSourceForm(false)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    className="save-button"
+                    onClick={createSource}
+                    disabled={sourceSaving}
+                  >
+                    {sourceSaving ? "Saving..." : "Create Source"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showManualRecordForm && (
+            <div className="source-form-overlay">
+              <div className="source-form">
+                <div className="source-form-header">
+                  <div>
+                    <h2>Add Provider Record</h2>
+                    <p>Manually add a provider collected from this source.</p>
+                  </div>
+                  <button className="close-form" onClick={() => setShowManualRecordForm(false)}>×</button>
+                </div>
+
+                <div className="manual-source-banner">
+                  Source: <strong>{manualRecordSource?.name}</strong>
+                </div>
+
+                <div className="form-grid">
+                  <label className="full">
+                    Provider Name *
+                    <input value={manualRecordForm.provider_name} onChange={(e) => setManualRecordForm({...manualRecordForm, provider_name: e.target.value})} placeholder="Example: ABC Tax Consultants" />
+                  </label>
+
+                  <label>
+                    Phone
+                    <input value={manualRecordForm.phone} onChange={(e) => setManualRecordForm({...manualRecordForm, phone: e.target.value})} placeholder="+91..." />
+                  </label>
+
+                  <label>
+                    Email
+                    <input value={manualRecordForm.email} onChange={(e) => setManualRecordForm({...manualRecordForm, email: e.target.value})} placeholder="provider@example.com" />
+                  </label>
+
+                  <label className="full">
+                    Website
+                    <input value={manualRecordForm.website} onChange={(e) => setManualRecordForm({...manualRecordForm, website: e.target.value})} placeholder="https://..." />
+                  </label>
+
+                  <label className="full">
+                    Address
+                    <input value={manualRecordForm.address} onChange={(e) => setManualRecordForm({...manualRecordForm, address: e.target.value})} placeholder="Full provider address" />
+                  </label>
+
+                  <label>
+                    City
+                    <input value={manualRecordForm.city} onChange={(e) => setManualRecordForm({...manualRecordForm, city: e.target.value})} placeholder="Bengaluru" />
+                  </label>
+
+                  <label>
+                    State
+                    <input value={manualRecordForm.state} onChange={(e) => setManualRecordForm({...manualRecordForm, state: e.target.value})} placeholder="Karnataka" />
+                  </label>
+
+                  <label className="full">
+                    Description
+                    <textarea value={manualRecordForm.description} onChange={(e) => setManualRecordForm({...manualRecordForm, description: e.target.value})} placeholder="Services, specialties, or notes." />
+                  </label>
+                </div>
+
+                <div className="form-actions">
+                  <button className="cancel-button" onClick={() => setShowManualRecordForm(false)}>Cancel</button>
+                  <button className="save-button" onClick={createManualRecord} disabled={manualRecordSaving}>
+                    {manualRecordSaving ? "Saving..." : "Create Provider Record"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {editingSource && (
+            <div className="source-form-overlay">
+              <div className="source-form">
+                <div className="source-form-header">
+                  <div>
+                    <h2>Edit Data Source</h2>
+                    <p>Update source configuration.</p>
+                  </div>
+                  <button className="close-form" onClick={() => setEditingSource(null)}>×</button>
+                </div>
+
+                <div className="form-grid">
+                  <label>
+                    Source Name
+                    <input value={editingSource.name || ""} onChange={(e) => setEditingSource({...editingSource,name:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Source Type
+                    <select value={editingSource.source_type || "WEB"} onChange={(e) => setEditingSource({...editingSource,source_type:e.target.value})}>
+                      <option value="WEB">Web</option>
+                      <option value="API">API</option>
+                      <option value="DIRECTORY">Directory</option>
+                      <option value="PARTNER">Partner</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Collection Method
+                    <select value={editingSource.collection_method || "MANUAL"} onChange={(e) => setEditingSource({...editingSource,collection_method:e.target.value})}>
+                      <option value="MANUAL">Manual</option>
+                      <option value="API">API Connector</option>
+                      <option value="CRAWLER">Crawler</option>
+                      <option value="IMPORT">Import</option>
+                    </select>
+                  </label>
+
+                  <label>
+                    Status
+                    <select value={editingSource.status || "ACTIVE"} onChange={(e) => setEditingSource({...editingSource,status:e.target.value})}>
+                      <option value="ACTIVE">Active</option>
+                      <option value="INACTIVE">Inactive</option>
+                    </select>
+                  </label>
+
+                  <label className="full">
+                    Base URL
+                    <input value={editingSource.base_url || ""} onChange={(e) => setEditingSource({...editingSource,base_url:e.target.value})} />
+                  </label>
+
+                  <label className="full">
+                    Description
+                    <textarea value={editingSource.description || ""} onChange={(e) => setEditingSource({...editingSource,description:e.target.value})} />
+                  </label>
+                </div>
+
+                <div className="form-actions">
+                  <button className="cancel-button" onClick={() => setEditingSource(null)}>Cancel</button>
+                  <button className="save-button" onClick={updateSource} disabled={editSaving}>
+                    {editSaving ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {editingRecord && (
+            <div className="source-form-overlay">
+              <div className="source-form">
+                <div className="source-form-header">
+                  <div>
+                    <h2>Edit Source Record</h2>
+                    <p>Correct normalized provider information without changing raw source data.</p>
+                  </div>
+                  <button className="close-form" onClick={() => setEditingRecord(null)}>×</button>
+                </div>
+
+                <div className="form-grid">
+                  <label className="full">
+                    Provider Name
+                    <input value={editingRecord.provider_name || ""} onChange={(e) => setEditingRecord({...editingRecord,provider_name:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Phone
+                    <input value={editingRecord.phone || ""} onChange={(e) => setEditingRecord({...editingRecord,phone:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Email
+                    <input value={editingRecord.email || ""} onChange={(e) => setEditingRecord({...editingRecord,email:e.target.value})} />
+                  </label>
+
+                  <label className="full">
+                    Website
+                    <input value={editingRecord.website || ""} onChange={(e) => setEditingRecord({...editingRecord,website:e.target.value})} />
+                  </label>
+
+                  <label className="full">
+                    Address
+                    <input value={editingRecord.address || ""} onChange={(e) => setEditingRecord({...editingRecord,address:e.target.value})} />
+                  </label>
+
+                  <label>
+                    City
+                    <input value={editingRecord.city || ""} onChange={(e) => setEditingRecord({...editingRecord,city:e.target.value})} />
+                  </label>
+
+                  <label>
+                    State
+                    <input value={editingRecord.state || ""} onChange={(e) => setEditingRecord({...editingRecord,state:e.target.value})} />
+                  </label>
+
+                  <label className="full">
+                    Description
+                    <textarea value={editingRecord.description || ""} onChange={(e) => setEditingRecord({...editingRecord,description:e.target.value})} />
+                  </label>
+                </div>
+
+                <div className="form-actions">
+                  <button className="cancel-button" onClick={() => setEditingRecord(null)}>Cancel</button>
+                  <button className="save-button" onClick={updateRecord} disabled={editSaving}>
+                    {editSaving ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          {editingProvider && (
+            <div className="source-form-overlay">
+              <div className="source-form">
+                <div className="source-form-header">
+                  <div>
+                    <h2>Edit Provider</h2>
+                    <p>Update the normalized provider profile.</p>
+                  </div>
+                  <button className="close-form" onClick={() => setEditingProvider(null)}>×</button>
+                </div>
+
+                <div className="form-grid">
+                  <label>
+                    Provider Name
+                    <input value={editingProvider.name || ""} onChange={(e) => setEditingProvider({...editingProvider,name:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Provider Type
+                    <input value={editingProvider.provider_type || ""} onChange={(e) => setEditingProvider({...editingProvider,provider_type:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Phone
+                    <input value={editingProvider.phone || ""} onChange={(e) => setEditingProvider({...editingProvider,phone:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Email
+                    <input value={editingProvider.email || ""} onChange={(e) => setEditingProvider({...editingProvider,email:e.target.value})} />
+                  </label>
+
+                  <label className="full">
+                    Website
+                    <input value={editingProvider.website || ""} onChange={(e) => setEditingProvider({...editingProvider,website:e.target.value})} />
+                  </label>
+
+                  <label className="full">
+                    Address
+                    <input value={editingProvider.address || ""} onChange={(e) => setEditingProvider({...editingProvider,address:e.target.value})} />
+                  </label>
+
+                  <label>
+                    City
+                    <input value={editingProvider.city || ""} onChange={(e) => setEditingProvider({...editingProvider,city:e.target.value})} />
+                  </label>
+
+                  <label>
+                    State
+                    <input value={editingProvider.state || ""} onChange={(e) => setEditingProvider({...editingProvider,state:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Country
+                    <input value={editingProvider.country || "India"} onChange={(e) => setEditingProvider({...editingProvider,country:e.target.value})} />
+                  </label>
+
+                  <label>
+                    Status
+                    <select value={editingProvider.status || "PENDING"} onChange={(e) => setEditingProvider({...editingProvider,status:e.target.value})}>
+                      <option value="PENDING">Pending</option>
+                      <option value="ACTIVE">Active</option>
+                      <option value="INACTIVE">Inactive</option>
+                    </select>
+                  </label>
+
+                  <label className="full">
+                    Description
+                    <textarea value={editingProvider.description || ""} onChange={(e) => setEditingProvider({...editingProvider,description:e.target.value})} />
+                  </label>
+                </div>
+
+                <div className="form-actions">
+                  <button className="cancel-button" onClick={() => setEditingProvider(null)}>Cancel</button>
+                  <button className="save-button" onClick={updateProvider} disabled={editSaving}>
+                    {editSaving ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="panel">
+            {sources.length === 0 ? (
+              <EmptyState text="No data sources configured yet. Add your first approved source." />
+            ) : (
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Type</th>
+                      <th>Method</th>
+                      <th>Status</th>
+                      <th>Last Run</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sources.map((source: any) => (
+                      <tr key={source.id}>
+                        <td>
+                          <strong>{source.name}</strong>
+                          {source.base_url && (
+                            <small className="source-url">{source.base_url}</small>
+                          )}
+                        </td>
+                        <td>{source.source_type || "-"}</td>
+                        <td>{source.collection_method || "-"}</td>
+                        <td>
+                          <span
+                            className={
+                              source.status === "ACTIVE"
+                                ? "source-status active"
+                                : "source-status inactive"
+                            }
+                          >
+                            {source.status || "-"}
+                          </span>
+                        </td>
+                        <td>
+                          {source.last_run_at
+                            ? new Date(source.last_run_at).toLocaleString()
+                            : "Never"}
+                        </td>
+                        <td>
+                          <div className="source-actions">
+                            {String(source.collection_method || "").toUpperCase() === "MANUAL" && (
+                              <button
+                                className="record-button"
+                                disabled={source.status !== "ACTIVE"}
+                                onClick={() => {
+                                  setManualRecordSource(source);
+                                  setShowManualRecordForm(true);
+                                }}
+                              >
+                                + Add Record
+                              </button>
+                            )}
+                            <button
+                              className="edit-button"
+                              onClick={() => setEditingSource({ ...source })}
+                            >
+                              Edit
+                            </button>
+
+                            <button
+                              className="run-button"
+                              disabled={source.status !== "ACTIVE"}
+                              onClick={() => runSource(source.id)}
+                            >
+                              ▶ Run Now
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </>
+      );
+    }
+    if (active === "jobs")
+      return renderTableSection(
+        "Acquisition Jobs",
+        "Collection jobs executed against approved sources.",
+        "jobs",
+        [
+          { key: "id", label: "ID" },
+          { key: "status", label: "Status" },
+          { key: "records_found", label: "Found" },
+          { key: "records_created", label: "Created" },
+          { key: "records_updated", label: "Updated" },
+          { key: "records_failed", label: "Failed" },
+        ]
+      );
+
+    if (active === "records")
+      return renderTableSection(
+        "Source Records",
+        "Raw and normalized evidence collected from external sources.",
+        "records",
+        [
+          { key: "external_id", label: "External ID" },
+          { key: "source_url", label: "Source URL" },
+          { key: "status", label: "Status" },
+          { key: "collected_at", label: "Collected" },
+        ]
+      );
+
+    if (active === "providers")
+      return renderTableSection(
+        "Provider Management",
+        "Review and manage service providers entering VISTRAH.",
+        "providers",
+        [
+          { key: "name", label: "Provider" },
+          { key: "provider_type", label: "Type" },
+          { key: "city", label: "City" },
+          { key: "status", label: "Status" },
+          { key: "verified", label: "Verified" },
+        ]
+      );
+
+    if (active === "services")
+      return renderTableSection(
+        "Provider Services",
+        "Services offered by individual providers.",
+        "services",
+        [
+          { key: "provider_id", label: "Provider" },
+          { key: "service_id", label: "Service" },
+          { key: "price", label: "Price" },
+          { key: "price_unit", label: "Unit" },
+          { key: "status", label: "Status" },
+        ]
+      );
+
+    if (active === "review")
+      return renderTableSection(
+        "Review & Approval",
+        "Human review queue before information becomes publishable.",
+        "review",
+        [
+          { key: "review_type", label: "Review Type" },
+          { key: "status", label: "Status" },
+          { key: "decision", label: "Decision" },
+          { key: "assigned_to", label: "Assigned To" },
+          { key: "reviewer_notes", label: "Notes" },
+        ]
+      );
+
+    if (active === "audit")
+      return renderTableSection(
+        "Audit Logs",
+        "Administrative actions and system changes.",
+        "audit",
+        [
+          { key: "action", label: "Action" },
+          { key: "entity_type", label: "Entity" },
+          { key: "entity_id", label: "Entity ID" },
+          { key: "user_id", label: "User" },
+          { key: "created_at", label: "Created" },
+        ]
+      );
+
+    if (active === "website")
+      return (
+        <>
+          <div className="page-heading">
+            <div>
+              <div className="eyebrow">CONTENT MANAGEMENT</div>
+              <h1>Website Editor</h1>
+              <p>Manage VISTRAH website content and media.</p>
+            </div>
+          </div>
+
+          <div className="feature-grid">
+            <div className="feature-card">
+              <span>◈</span>
+              <h3>Homepage</h3>
+              <p>Manage hero content, categories and featured services.</p>
+              <button>Module Ready</button>
+            </div>
+
+            <div className="feature-card">
+              <span>▧</span>
+              <h3>Image Library</h3>
+              <p>Upload and organize provider and service images.</p>
+              <button>Module Ready</button>
+            </div>
+
+            <div className="feature-card">
+              <span>✎</span>
+              <h3>Service Content</h3>
+              <p>Edit descriptions and presentation of published services.</p>
+              <button>Module Ready</button>
+            </div>
+          </div>
+        </>
+      );
+
+    return (
+      <>
+        <div className="page-heading">
+          <div>
+            <div className="eyebrow">CONFIGURATION</div>
+            <h1>System Settings</h1>
+            <p>Security, acquisition, permissions and platform configuration.</p>
+          </div>
+        </div>
+
+        <div className="feature-grid">
+          {[
+            ["Permissions", "Administrator roles and access control."],
+            ["Source Configuration", "Approved collection source settings."],
+            ["AI Provider", "Classification and extraction configuration."],
+            ["Schedules", "Acquisition job scheduling."],
+            ["Security", "Authentication and security controls."],
+            ["Audit", "Administrative activity tracking."],
+          ].map(([title, description]) => (
+            <div className="feature-card" key={title}>
+              <span>⚙</span>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              <button>Configuration Ready</button>
+            </div>
+          ))}
+        </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="admin-shell">
+      <style jsx global>{`
+        * {
+          box-sizing: border-box;
+        }
+
+        body {
+          margin: 0;
+          background: #f6f7f9;
+        }
+
+        .admin-shell {
+          min-height: 100vh;
+          display: flex;
+          color: #17211b;
+          font-family:
+            Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", sans-serif;
+        }
+
+        .sidebar {
+          width: 265px;
+          background: #10261d;
+          color: white;
+          min-height: 100vh;
+          position: fixed;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          z-index: 50;
+          padding: 25px 16px;
+          overflow-y: auto;
+        }
+
+        .brand {
+          padding: 8px 12px 28px;
+          border-bottom: 1px solid rgba(255,255,255,.1);
+          margin-bottom: 20px;
+         text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 10px 30px; }
+
+        .brand-name {
+          font-size: 25px;
+          font-weight: 800;
+          letter-spacing: 2px;
+         color:#f4eedf; text-align:center; margin:0; }
+
+        .brand-sub {
+          color: #a8b9b0;
+          font-size: 11px;
+          margin-top: 5px;
+          letter-spacing: 1.2px;
+          text-transform: uppercase;
+         display:none; }
+
+        .nav-label {
+          color: #71877c;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 1.4px;
+          padding: 8px 12px;
+          text-transform: uppercase;
+        }
+
+        .nav-item {
+          width: 100%;
+          border: 0;
+          background: transparent;
+          color: #bdcbc4;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 11px 12px;
+          margin: 2px 0;
+          border-radius: 8px;
+          cursor: pointer;
+          text-align: left;
+          font-size: 13px;
+        }
+
+        .nav-item:hover {
+          background: rgba(255,255,255,.07);
+          color: white;
+        }
+
+        .nav-item.active {
+          background: #d9ad5b;
+          color: #17211b;
+          font-weight: 700;
+        }
+
+        .nav-icon {
+          width: 20px;
+          text-align: center;
+          font-size: 16px;
+        }
+
+        .main {
+          margin-left: 265px;
+          width: calc(100% - 265px);
+          min-height: 100vh;
+          padding: 34px;
+        }
+
+        .mobile-bar {
+          display: none;
+        }
+
+        .page-heading {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 20px;
+          margin-bottom: 28px;
+        }
+
+        .eyebrow {
+          font-size: 10px;
+          letter-spacing: 1.8px;
+          font-weight: 800;
+          color: #9b7840;
+          margin-bottom: 7px;
+        }
+
+        h1 {
+          font-size: 29px;
+          margin: 0 0 6px;
+          letter-spacing: -.7px;
+        }
+
+        .page-heading p {
+          margin: 0;
+          color: #6d7872;
+          font-size: 14px;
+        }
+
+        .admin-badge {
+          background: #10261d;
+          color: white;
+          border-radius: 20px;
+          padding: 9px 15px;
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 1px;
+         text-decoration:none; cursor:pointer; }
+
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 15px;
+          margin-bottom: 20px;
+        }
+
+        .stat-card,
+        .panel,
+        .feature-card {
+          background: white;
+          border: 1px solid #e5e9e7;
+          border-radius: 12px;
+          box-shadow: 0 2px 10px rgba(20,35,28,.035);
+        }
+
+        .stat-card {
+          padding: 19px;
+        }
+
+        .stat-title {
+          color: #758079;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .stat-value {
+          font-size: 28px;
+          font-weight: 800;
+          margin-top: 8px;
+        }
+
+        .stat-subtitle {
+          color: #9b7840;
+          font-size: 11px;
+          margin-top: 5px;
+        }
+
+        .panel {
+          margin-bottom: 20px;
+          overflow: hidden;
+        }
+
+        .panel-header {
+          padding: 20px 22px;
+          border-bottom: 1px solid #edf0ee;
+        }
+
+        .panel-header h2 {
+          font-size: 16px;
+          margin: 0 0 5px;
+        }
+
+        .panel-header p {
+          margin: 0;
+          color: #78827d;
+          font-size: 12px;
+        }
+
+        .pipeline {
+          padding: 25px 20px;
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 8px;
+        }
+
+        .pipeline-item {
+          position: relative;
+          text-align: center;
+          padding: 8px;
+        }
+
+        .pipeline-number {
+          width: 38px;
+          height: 38px;
+          display: grid;
+          place-items: center;
+          margin: auto auto 9px;
+          border-radius: 50%;
+          background: #edf3ef;
+          color: #426252;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .pipeline-item strong {
+          font-size: 11px;
+          display: block;
+        }
+
+        .pipeline-arrow {
+          position: absolute;
+          right: -7px;
+          top: 20px;
+          color: #b2bbb6;
+        }
+
+        .two-col {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+
+        .status-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 14px 20px;
+          border-bottom: 1px solid #edf0ee;
+          font-size: 13px;
+        }
+
+        .status {
+          color: #3f7255;
+          font-size: 12px;
+          font-weight: 700;
+        }
+
+        .status i {
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #4b8d63;
+          margin-right: 5px;
+        }
+
+        .quick-actions {
+          padding: 18px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+
+        button {
+          font-family: inherit;
+        }
+
+        .quick-actions button,
+        .feature-card button,
+        .refresh {
+          border: 1px solid #d9e0dc;
+          background: white;
+          border-radius: 7px;
+          padding: 10px 12px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 650;
+        }
+
+        .quick-actions button:hover,
+        .feature-card button:hover,
+        .refresh:hover {
+          background: #f1f5f2;
+        }
+
+        .refresh {
+          background: #10261d;
+          color: white;
+          border-color: #10261d;
+        }
+
+        .table-wrap {
+          overflow-x: auto;
+        }
+
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 12px;
+        }
+
+        th {
+          background: #f7f9f8;
+          color: #65716a;
+          text-align: left;
+          font-size: 10px;
+          letter-spacing: .6px;
+          text-transform: uppercase;
+          padding: 13px 16px;
+          white-space: nowrap;
+        }
+
+        td {
+          padding: 14px 16px;
+          border-top: 1px solid #edf0ee;
+          white-space: nowrap;
+          max-width: 300px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .empty {
+          min-height: 220px;
+          display: grid;
+          place-items: center;
+          align-content: center;
+          gap: 10px;
+          color: #89938e;
+          font-size: 13px;
+        }
+
+        .empty-icon {
+          font-size: 30px;
+          color: #c4cdc8;
+        }
+
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 18px;
+        }
+
+        .feature-card {
+          padding: 25px;
+        }
+
+        .feature-card > span {
+          font-size: 24px;
+          color: #9b7840;
+        }
+
+        .feature-card h3 {
+          margin: 16px 0 7px;
+          font-size: 16px;
+        }
+
+        .feature-card p {
+          min-height: 42px;
+          margin: 0 0 18px;
+          color: #748079;
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .error {
+          background: #fff0ef;
+          color: #9a4037;
+          border: 1px solid #f0cbc7;
+          border-radius: 8px;
+          padding: 12px 15px;
+          margin-bottom: 18px;
+          font-size: 12px;
+        }
+
+        .loading {
+          color: #7b8580;
+          font-size: 12px;
+          margin-bottom: 15px;
+        }
+
+        .source-form-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(10, 25, 18, .45);
+          z-index: 100;
+          display: grid;
+          place-items: center;
+          padding: 20px;
+        }
+
+        .source-form {
+          width: min(720px, 100%);
+          max-height: 90vh;
+          overflow-y: auto;
+          background: white;
+          border-radius: 14px;
+          box-shadow: 0 20px 60px rgba(0,0,0,.2);
+        }
+
+        .source-form-header {
+          display: flex;
+          justify-content: space-between;
+          padding: 22px;
+          border-bottom: 1px solid #edf0ee;
+        }
+
+        .source-form-header h2 {
+          margin: 0 0 5px;
+          font-size: 18px;
+        }
+
+        .source-form-header p {
+          margin: 0;
+          color: #78827d;
+          font-size: 12px;
+        }
+
+        .close-form {
+          border: 0;
+          background: transparent;
+          font-size: 26px;
+          color: #77827c;
+          cursor: pointer;
+        }
+
+        .form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+          padding: 22px;
+        }
+
+        .form-grid label {
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+          color: #56635c;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .form-grid label.full {
+          grid-column: 1 / -1;
+        }
+
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+          width: 100%;
+          border: 1px solid #dce3df;
+          border-radius: 7px;
+          padding: 10px 11px;
+          font: inherit;
+          font-size: 12px;
+          color: #17211b;
+          background: white;
+          outline: none;
+        }
+
+        .form-grid textarea {
+          min-height: 90px;
+          resize: vertical;
+        }
+
+        .form-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+          padding: 18px 22px;
+          border-top: 1px solid #edf0ee;
+        }
+
+        .cancel-button,
+        .save-button {
+          border-radius: 7px;
+          padding: 10px 16px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .cancel-button {
+          border: 1px solid #d9e0dc;
+          background: white;
+        }
+
+        .save-button {
+          border: 1px solid #10261d;
+          background: #10261d;
+          color: white;
+        }
+
+        .save-button:disabled {
+          opacity: .6;
+        }
+
+        .source-actions {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          flex-wrap: wrap;
+        }
+
+        .record-button {
+          border: 1px solid #234f3a;
+          background: #234f3a;
+          color: white;
+          border-radius: 6px;
+          padding: 7px 10px;
+          cursor: pointer;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .record-button:disabled {
+          opacity: .45;
+          cursor: not-allowed;
+        }
+
+        .manual-source-banner {
+          margin: 0 22px;
+          padding: 10px 12px;
+          border-radius: 7px;
+          background: #f3f7f4;
+          color: #56635c;
+          font-size: 11px;
+        }
+        .source-url {
+          display: block;
+          margin-top: 4px;
+          color: #89938e;
+          font-size: 10px;
+          max-width: 240px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .source-status {
+          display: inline-block;
+          padding: 4px 8px;
+          border-radius: 20px;
+          font-size: 10px;
+          font-weight: 800;
+        }
+
+        .source-status.active {
+          color: #3f7255;
+          background: #edf6ef;
+        }
+
+        .source-status.inactive {
+          color: #8b6b35;
+          background: #fbf3df;
+        }
+
+        .edit-button {
+          border: 1px solid #d9e0dc;
+          background: white;
+          color: #304d3d;
+          border-radius: 6px;
+          padding: 7px 10px;
+          cursor: pointer;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .edit-button:hover {
+          background: #f3f7f4;
+        }
+        .run-button {
+          border: 1px solid #d9e0dc;
+          background: white;
+          border-radius: 6px;
+          padding: 7px 10px;
+          cursor: pointer;
+          font-size: 11px;
+          font-weight: 700;
+          color: #304d3d;
+        }
+
+        .run-button:disabled {
+          opacity: .45;
+          cursor: not-allowed;
+        }
+        @media (max-width: 1100px) {
+          .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .pipeline {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          .pipeline-arrow {
+            display: none;
+          }
+
+          .feature-grid {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        @media (max-width: 760px) {
+          .sidebar {
+            transform: translateX(-100%);
+            transition: transform .2s ease;
+          }
+
+          .sidebar.open {
+            transform: translateX(0);
+          }
+
+          .main {
+            margin-left: 0;
+            width: 100%;
+            padding: 75px 15px 25px;
+          }
+
+          .mobile-bar {
+            display: flex;
+            position: fixed;
+            z-index: 40;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 58px;
+            background: #10261d;
+            color: white;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+          }
+
+          .mobile-bar button {
+            background: transparent;
+            color: white;
+            border: 0;
+            font-size: 22px;
+          }
+
+          .stats-grid,
+          .two-col,
+          .feature-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .pipeline {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .page-heading {
+            flex-direction: column;
+          }
+
+          h1 {
+            font-size: 24px;
+          }
+        }
+      `}</style>
+
+      <div className={`sidebar ${mobileOpen ? "open" : ""}`}>
+        <div className="brand">
+          <div className="brand-name">VISTRAH</div>
+          
+        </div>
+
+        <div className="nav-label">Control Center</div>
+
+        {sections.map((item) => (
+          <button
+            key={item.id}
+            className={`nav-item ${active === item.id ? "active" : ""}`}
+            onClick={() => loadSection(item.id)}
+          >
+            <span className="nav-icon">{item.icon}</span>
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mobile-bar">
+        <strong>VISTRAH ADMIN</strong>
+        <button onClick={() => setMobileOpen(!mobileOpen)}>☰</button>
+      </div>
+
+      <main className="main">
+        {error && <div className="error">{error}</div>}
+        {loading && <div className="loading">Loading VISTRAH data...</div>}
+        {renderModule()}
+      </main>
+    </div>
+  );
+}
+
+
+
+
+
+
+

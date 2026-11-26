@@ -1,0 +1,309 @@
+﻿import React, {useEffect, useRef, useState} from 'react';
+import {useIsFocused} from '@react-navigation/native';
+import {router} from 'expo-router';
+import {
+  AppState, FlatList, Pressable, Share, StyleSheet, Text,
+  TextInput, View, type LayoutChangeEvent,
+} from 'react-native';
+import {Feather} from '@expo/vector-icons';
+import {useVideoPlayer, VideoView} from 'expo-video';
+import {useTheme} from '../../lib/theme';
+
+const baseUrl = (
+  process.env.EXPO_PUBLIC_V_ADS_VIDEO_BASE_URL ||
+  process.env.EXPO_PUBLIC_WEB_URL ||
+  ''
+).replace(/\/$/, '');
+
+const reels = [
+  {
+    id: 'users',
+    account: 'VISTRAH Official',
+    title: 'VISTRAH for Users',
+    description: 'Discover services for your everyday needs. Services. Simplified.',
+    url: `${baseUrl}/videos/v-ads/optimized/Vistrah%20Users.mp4`,
+  },
+  {
+    id: 'business',
+    account: 'VISTRAH Official',
+    title: 'VISTRAH for Businesses',
+    description: 'Present your services and expand your opportunities with VISTRAH.',
+    url: `${baseUrl}/videos/v-ads/optimized/Vistrah%20Business.mp4`,
+  },
+];
+
+type Reel = typeof reels[number];
+
+function ReelCard({reel, active, height}: {
+  reel: Reel;
+  active: boolean;
+  height: number;
+}) {
+  const {colors} = useTheme();
+  const screenFocused = useIsFocused();
+  const [appActive, setAppActive] = useState(AppState.currentState === 'active');
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', state => {
+      setAppActive(state === 'active');
+    });
+    return () => subscription.remove();
+  }, []);
+  const [liked, setLiked] = useState(false);
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [comments, setComments] = useState<string[]>([]);
+  const [draft, setDraft] = useState('');
+  const [muted, setMuted] = useState(false);
+  const [showPlayIcon, setShowPlayIcon] = useState(false);
+  const iconTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (iconTimer.current) clearTimeout(iconTimer.current);
+    };
+  }, []);
+
+  function togglePlayback() {
+    setPaused(previous => !previous);
+    setShowPlayIcon(true);
+    if (iconTimer.current) clearTimeout(iconTimer.current);
+    iconTimer.current = setTimeout(() => {
+      setShowPlayIcon(false);
+      iconTimer.current = null;
+    }, 1500);
+  }
+  const [paused, setPaused] = useState(false);
+
+  const player = useVideoPlayer(reel.url, instance => {
+    instance.loop = true;
+    instance.muted = false;
+  });
+
+  useEffect(() => {
+    if (active && !commentsOpen && !paused && screenFocused && appActive) {
+      player.play();
+    } else {
+      player.pause();
+    }
+    return () => player.pause();
+  }, [active, commentsOpen, paused, player, screenFocused, appActive]);
+
+  function toggleSound() {
+    player.muted = !muted;
+    setMuted(!muted);
+  }
+
+  function addComment() {
+    const message = draft.trim();
+    if (!message) return;
+    setComments(previous => [...previous, message]);
+    setDraft('');
+  }
+
+  return (
+    <View style={[s.reel, {height}]}>
+      <VideoView
+        player={player}
+        style={StyleSheet.absoluteFill}
+        contentFit="cover"
+        nativeControls={false}
+        fullscreenOptions={{enable: true}}
+      />
+
+      <Pressable
+        style={s.videoTapArea}
+        onPress={togglePlayback}
+        accessibilityRole="button"
+        accessibilityLabel={paused ? 'Play video' : 'Pause video'}
+      >
+        {showPlayIcon && <View style={s.playButton}>
+          <Feather
+            name={paused ? 'play' : 'pause'}
+            size={29}
+            color="#FFFFFF"
+          />
+        </View>}
+      </Pressable>
+
+      <View style={s.topBar}>
+        <Text style={s.heading}>V Ads</Text>
+        <View style={s.sponsored}>
+          <Text style={s.sponsoredText}>VISTRAH</Text>
+        </View>
+      </View>
+
+      <View style={s.rightActions}>
+        <Pressable style={s.action} onPress={() => setLiked(!liked)}>
+          <Feather name="heart" size={28} color={liked ? '#FF685B' : '#FFFFFF'} />
+          <Text style={s.actionText}>{liked ? 'Liked' : 'Like'}</Text>
+        </Pressable>
+        <Pressable style={s.action} onPress={() => setCommentsOpen(!commentsOpen)}>
+          <Feather name="message-circle" size={28} color="#FFFFFF" />
+          <Text style={s.actionText}>{comments.length || 'Comment'}</Text>
+        </Pressable>
+        <Pressable style={s.action} onPress={() => void Share.share({message: reel.url})}>
+          <Feather name="share-2" size={27} color="#FFFFFF" />
+          <Text style={s.actionText}>Share</Text>
+        </Pressable>
+        <Pressable style={s.action} onPress={toggleSound}>
+          <Feather name={muted ? 'volume-x' : 'volume-2'} size={27} color="#FFFFFF" />
+          <Text style={s.actionText}>Sound</Text>
+        </Pressable>
+      </View>
+
+      <View style={s.details}>
+        <Pressable
+          style={s.accountRow}
+          onPress={() => router.push('/advertiser-profile')}
+          accessibilityRole="button"
+          accessibilityLabel="Open VISTRAH Official advertiser profile"
+        >
+          <View style={s.avatar}>
+            <Text style={s.avatarText}>V</Text>
+          </View>
+          <View>
+            <Text style={s.account}>{reel.account}</Text>
+            <Text style={s.adLabel}>Official video</Text>
+          </View>
+        </Pressable>
+        <Text style={s.title}>{reel.title}</Text>
+        <Text style={s.description}>{reel.description}</Text>
+      </View>
+
+      {commentsOpen && (
+        <View style={[s.commentPanel, {borderColor: colors.border}]}>
+          <View style={s.commentHeader}>
+            <Text style={s.commentTitle}>Comments</Text>
+            <Pressable onPress={() => setCommentsOpen(false)}>
+              <Feather name="x" color="#FFFFFF" size={23} />
+            </Pressable>
+          </View>
+          <FlatList
+            data={comments}
+            keyExtractor={(_, index) => String(index)}
+            style={s.commentList}
+            ListEmptyComponent={
+              <Text style={s.commentHint}>Be the first to comment.</Text>
+            }
+            renderItem={({item}) => <Text style={s.comment}>{item}</Text>}
+          />
+          <View style={s.commentInputRow}>
+            <TextInput
+              style={s.commentInput}
+              placeholder="Add a comment..."
+              placeholderTextColor="#B8B8B8"
+              value={draft}
+              onChangeText={setDraft}
+              maxLength={300}
+            />
+            <Pressable onPress={addComment} accessibilityLabel="Post comment">
+              <Feather name="send" size={22} color="#F9AA45" />
+            </Pressable>
+          </View>
+          <Text style={s.demoNote}>Demo comments are not saved online.</Text>
+        </View>
+      )}
+    </View>
+  );
+}
+
+export default function VAds() {
+  const {styles} = useTheme();
+  const [height, setHeight] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  function onLayout(event: LayoutChangeEvent) {
+    const nextHeight = event.nativeEvent.layout.height;
+    if (nextHeight > 0) setHeight(nextHeight);
+  }
+
+  return (
+    <View style={styles.page} onLayout={onLayout}>
+      {height > 0 && (
+        <FlatList
+          data={reels}
+          keyExtractor={item => item.id}
+          pagingEnabled
+          showsVerticalScrollIndicator={false}
+          decelerationRate="fast"
+          getItemLayout={(_, index) => ({
+            length: height,
+            offset: height * index,
+            index,
+          })}
+          onMomentumScrollEnd={event => {
+            const index = Math.round(event.nativeEvent.contentOffset.y / height);
+            setActiveIndex(Math.max(0, Math.min(reels.length - 1, index)));
+          }}
+          renderItem={({item, index}) => (
+            <ReelCard reel={item} active={activeIndex === index} height={height} />
+          )}
+        />
+      )}
+    </View>
+  );
+}
+
+const s = StyleSheet.create({
+  reel: {backgroundColor: '#080B11', overflow: 'hidden'},
+  videoTapArea: {
+    position: 'absolute',
+    left: 65,
+    right: 65,
+    top: '25%',
+    bottom: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playButton: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    backgroundColor: 'rgba(0,0,0,0.40)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topBar: {
+    position: 'absolute', top: 15, left: 17, right: 17,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+  },
+  heading: {color: '#FFFFFF', fontSize: 20, fontWeight: '700'},
+  sponsored: {backgroundColor: '#F9AA45', borderRadius: 12, paddingHorizontal: 10, paddingVertical: 5},
+  sponsoredText: {color: '#20170C', fontSize: 11, fontWeight: '800'},
+  rightActions: {position: 'absolute', right: 12, bottom: 125, gap: 22},
+  action: {alignItems: 'center', gap: 5, width: 57},
+  actionText: {color: '#FFFFFF', fontSize: 10, fontWeight: '600'},
+  details: {position: 'absolute', left: 16, right: 77, bottom: 24, gap: 9},
+  accountRow: {flexDirection: 'row', alignItems: 'center', gap: 10},
+  avatar: {
+    width: 40, height: 40, borderRadius: 20,
+    backgroundColor: '#F9AA45', alignItems: 'center', justifyContent: 'center',
+  },
+  avatarText: {color: '#11243F', fontSize: 24, fontWeight: '800'},
+  account: {color: '#FFFFFF', fontSize: 14, fontWeight: '700'},
+  adLabel: {color: '#E5E5E5', fontSize: 11},
+  title: {color: '#FFFFFF', fontSize: 16, fontWeight: '700'},
+  description: {color: '#FFFFFF', fontSize: 13, lineHeight: 19},
+  commentPanel: {
+    position: 'absolute', bottom: 0, left: 0, right: 0,
+    height: '55%', backgroundColor: '#171B25',
+    borderTopWidth: 1, borderTopLeftRadius: 22,
+    borderTopRightRadius: 22, padding: 16, gap: 10,
+  },
+  commentHeader: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
+  commentTitle: {color: '#FFFFFF', fontWeight: '700', fontSize: 16},
+  commentList: {flex: 1},
+  commentHint: {color: '#B8B8B8', marginTop: 18},
+  comment: {color: '#FFFFFF', marginVertical: 7},
+  commentInputRow: {flexDirection: 'row', alignItems: 'center', gap: 12},
+  commentInput: {
+    flex: 1, backgroundColor: '#303643', borderRadius: 22,
+    color: '#FFFFFF', paddingHorizontal: 15, paddingVertical: 10,
+  },
+  demoNote: {color: '#B8B8B8', fontSize: 10},
+});
+
+
+
+
+

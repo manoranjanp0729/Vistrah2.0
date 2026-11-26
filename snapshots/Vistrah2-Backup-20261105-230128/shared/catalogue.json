@@ -1,0 +1,1321 @@
+[
+  {
+    "slug": "jobs-careers",
+    "title": "Jobs & Careers",
+    "description": "Build your next chapter with practical career support.",
+    "image": "/images/career.svg",
+    "services": [
+      {
+        "slug": "resume-building",
+        "title": "Resume Building",
+        "description": "Get resume building assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/career.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Prepare your current resume, work history and the roles you are targeting.",
+          "Bring examples of achievements, certifications and skills you want to highlight.",
+          "For resume building, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "job-application-assistance",
+        "title": "Job Application Assistance",
+        "description": "Get job application assistance assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/career.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your current resume, work history and the roles you are targeting.",
+          "Bring examples of achievements, certifications and skills you want to highlight.",
+          "For job application assistance, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "linkedin-profile",
+        "title": "LinkedIn Profile",
+        "description": "Get linkedin profile assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/career.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your current resume, work history and the roles you are targeting.",
+          "Bring examples of achievements, certifications and skills you want to highlight.",
+          "For linkedin profile, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "interview-preparation",
+        "title": "Interview Preparation",
+        "description": "Get interview preparation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/career.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your current resume, work history and the roles you are targeting.",
+          "Bring examples of achievements, certifications and skills you want to highlight.",
+          "For interview preparation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "career-consultation",
+        "title": "Career Consultation",
+        "description": "Get career consultation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/career.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your current resume, work history and the roles you are targeting.",
+          "Bring examples of achievements, certifications and skills you want to highlight.",
+          "For career consultation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "job-search-assistance",
+        "title": "Job Search Assistance",
+        "description": "Get job search assistance assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/career.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your current resume, work history and the roles you are targeting.",
+          "Bring examples of achievements, certifications and skills you want to highlight.",
+          "For job search assistance, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  },
+  {
+    "slug": "real-estate",
+    "title": "Real Estate",
+    "description": "Find your place. Get guidance on buying, selling and renting.",
+    "image": "/images/property.svg",
+    "services": [
+      {
+        "slug": "property-search",
+        "title": "Property Search",
+        "description": "Get property search assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/property.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Prepare the property address, requirements and documents you want reviewed.",
+          "Record your budget, location preferences and questions for the consultation.",
+          "For property search, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "property-verification",
+        "title": "Property Verification",
+        "description": "Get property verification assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/property.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the property address, requirements and documents you want reviewed.",
+          "Record your budget, location preferences and questions for the consultation.",
+          "For property verification, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "property-valuation",
+        "title": "Property Valuation",
+        "description": "Get property valuation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/property.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the property address, requirements and documents you want reviewed.",
+          "Record your budget, location preferences and questions for the consultation.",
+          "For property valuation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "buy-property",
+        "title": "Buy Property",
+        "description": "Get buy property assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/property.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the property address, requirements and documents you want reviewed.",
+          "Record your budget, location preferences and questions for the consultation.",
+          "For buy property, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "sell-property",
+        "title": "Sell Property",
+        "description": "Get sell property assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/property.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the property address, requirements and documents you want reviewed.",
+          "Record your budget, location preferences and questions for the consultation.",
+          "For sell property, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "rental-assistance",
+        "title": "Rental Assistance",
+        "description": "Get rental assistance assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/property.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the property address, requirements and documents you want reviewed.",
+          "Record your budget, location preferences and questions for the consultation.",
+          "For rental assistance, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  },
+  {
+    "slug": "civil-construction",
+    "title": "Civil & Construction",
+    "description": "From the first drawing to the finishing detail, bring your project to life.",
+    "image": "/images/construction.svg",
+    "services": [
+      {
+        "slug": "residential-construction",
+        "title": "Residential Construction",
+        "description": "Get residential construction assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For residential construction, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "commercial-construction",
+        "title": "Commercial Construction",
+        "description": "Get commercial construction assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For commercial construction, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "architecture-design",
+        "title": "Architecture & Design",
+        "description": "Get architecture & design assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For architecture & design, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "civil-engineering",
+        "title": "Civil Engineering",
+        "description": "Get civil engineering assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For civil engineering, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "estimation-boq",
+        "title": "Estimation & BOQ",
+        "description": "Get estimation & boq assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For estimation & boq, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "tenders",
+        "title": "Tenders",
+        "description": "Get tenders assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For tenders, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "contracts-documentation",
+        "title": "Contracts & Documentation",
+        "description": "Get contracts & documentation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For contracts & documentation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "contractors-subcontractors",
+        "title": "Contractors & Subcontractors",
+        "description": "Get contractors & subcontractors assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For contractors & subcontractors, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "inspection-verification",
+        "title": "Inspection & Verification",
+        "description": "Get inspection & verification assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For inspection & verification, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "equipment-materials",
+        "title": "Equipment & Materials",
+        "description": "Get equipment & materials assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/construction.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare the site location, available drawings and intended project scope.",
+          "List preferred materials, approximate dimensions and the proposed timeline.",
+          "For equipment & materials, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": [
+      {
+        "slug": "outdoor-lifestyle-design",
+        "title": "Outdoor & Lifestyle Design",
+        "description": "Thoughtful spaces for life outdoors, with roofing, pergolas and glass solutions.",
+        "services": [
+          {
+            "slug": "retractable-roofing",
+            "title": "Retractable Roofing",
+            "description": "Explore retractable roofing with assistance on design requirements, site suitability and provider options.",
+            "includes": [
+              "Site and project requirements",
+              "Design and material options",
+              "Provider introductions when available",
+              "A scope and quotation before purchase"
+            ],
+            "image": "/images/outdoor.svg",
+            "popular": false,
+            "active": true,
+            "member_information": [
+              "Prepare the site location, available drawings and intended project scope.",
+              "List preferred materials, approximate dimensions and the proposed timeline.",
+              "For retractable roofing, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+              "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+              "Do not share passwords, card details or payment PINs in a service requirement."
+            ]
+          },
+          {
+            "slug": "bioclimatic-pergolas",
+            "title": "Bioclimatic Pergolas",
+            "description": "Explore bioclimatic pergolas with assistance on design requirements, site suitability and provider options.",
+            "includes": [
+              "Site and project requirements",
+              "Design and material options",
+              "Provider introductions when available",
+              "A scope and quotation before purchase"
+            ],
+            "image": "/images/outdoor.svg",
+            "popular": false,
+            "active": true,
+            "member_information": [
+              "Prepare the site location, available drawings and intended project scope.",
+              "List preferred materials, approximate dimensions and the proposed timeline.",
+              "For bioclimatic pergolas, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+              "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+              "Do not share passwords, card details or payment PINs in a service requirement."
+            ]
+          },
+          {
+            "slug": "glass-systems",
+            "title": "Glass Systems",
+            "description": "Explore glass systems with assistance on design requirements, site suitability and provider options.",
+            "includes": [
+              "Site and project requirements",
+              "Design and material options",
+              "Provider introductions when available",
+              "A scope and quotation before purchase"
+            ],
+            "image": "/images/outdoor.svg",
+            "popular": false,
+            "active": true,
+            "member_information": [
+              "Prepare the site location, available drawings and intended project scope.",
+              "List preferred materials, approximate dimensions and the proposed timeline.",
+              "For glass systems, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+              "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+              "Do not share passwords, card details or payment PINs in a service requirement."
+            ]
+          },
+          {
+            "slug": "outdoor-structures",
+            "title": "Outdoor Structures",
+            "description": "Explore outdoor structures with assistance on design requirements, site suitability and provider options.",
+            "includes": [
+              "Site and project requirements",
+              "Design and material options",
+              "Provider introductions when available",
+              "A scope and quotation before purchase"
+            ],
+            "image": "/images/outdoor.svg",
+            "popular": false,
+            "active": true,
+            "member_information": [
+              "Prepare the site location, available drawings and intended project scope.",
+              "List preferred materials, approximate dimensions and the proposed timeline.",
+              "For outdoor structures, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+              "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+              "Do not share passwords, card details or payment PINs in a service requirement."
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "marketing",
+    "title": "Marketing",
+    "description": "Make your business visible with considered creative and marketing support.",
+    "image": "/images/marketing.svg",
+    "services": [
+      {
+        "slug": "digital-marketing",
+        "title": "Digital Marketing",
+        "description": "Get digital marketing assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For digital marketing, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "outdoor-advertising",
+        "title": "Outdoor Advertising",
+        "description": "Get outdoor advertising assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For outdoor advertising, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "led-digital-displays",
+        "title": "LED & Digital Displays",
+        "description": "Get led & digital displays assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For led & digital displays, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "signage-branding",
+        "title": "Signage & Branding",
+        "description": "Get signage & branding assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For signage & branding, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "print-advertising",
+        "title": "Print Advertising",
+        "description": "Get print advertising assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For print advertising, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "events-promotions",
+        "title": "Events & Promotions",
+        "description": "Get events & promotions assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For events & promotions, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "media-advertising",
+        "title": "Media Advertising",
+        "description": "Get media advertising assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For media advertising, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "marketing-consultation",
+        "title": "Marketing Consultation",
+        "description": "Get marketing consultation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/marketing.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your business profile, target audience and campaign objectives.",
+          "Share existing brand assets and the channels you would like to consider.",
+          "For marketing consultation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  },
+  {
+    "slug": "tax-compliance",
+    "title": "Tax & Compliance",
+    "description": "Navigate filings, registrations and compliance with professional assistance.",
+    "image": "/images/finance.svg",
+    "services": [
+      {
+        "slug": "income-tax-return-filing",
+        "title": "Income Tax Return Filing",
+        "description": "Get income tax return filing assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/finance.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "List the filings, registrations or questions for which you need assistance.",
+          "Prepare a list of relevant documents; discuss secure sharing during consultation.",
+          "For income tax return filing, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "gst-registration",
+        "title": "GST Registration",
+        "description": "Get gst registration assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/finance.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "List the filings, registrations or questions for which you need assistance.",
+          "Prepare a list of relevant documents; discuss secure sharing during consultation.",
+          "For gst registration, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "gst-filing",
+        "title": "GST Filing",
+        "description": "Get gst filing assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/finance.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "List the filings, registrations or questions for which you need assistance.",
+          "Prepare a list of relevant documents; discuss secure sharing during consultation.",
+          "For gst filing, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "business-registration",
+        "title": "Business Registration",
+        "description": "Get business registration assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/finance.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "List the filings, registrations or questions for which you need assistance.",
+          "Prepare a list of relevant documents; discuss secure sharing during consultation.",
+          "For business registration, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "tds-compliance",
+        "title": "TDS Compliance",
+        "description": "Get tds compliance assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/finance.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "List the filings, registrations or questions for which you need assistance.",
+          "Prepare a list of relevant documents; discuss secure sharing during consultation.",
+          "For tds compliance, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "tax-consultation",
+        "title": "Tax Consultation",
+        "description": "Get tax consultation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/finance.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "List the filings, registrations or questions for which you need assistance.",
+          "Prepare a list of relevant documents; discuss secure sharing during consultation.",
+          "For tax consultation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  },
+  {
+    "slug": "it-technology",
+    "title": "IT & Technology",
+    "description": "Build, improve and support the technology behind your business.",
+    "image": "/images/technology.svg",
+    "services": [
+      {
+        "slug": "website-development",
+        "title": "Website Development",
+        "description": "Get website development assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/technology.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Describe your users, the problem to solve and your current systems.",
+          "List required features, integrations, approximate budget and desired timeline.",
+          "For website development, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "mobile-app-development",
+        "title": "Mobile App Development",
+        "description": "Get mobile app development assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/technology.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Describe your users, the problem to solve and your current systems.",
+          "List required features, integrations, approximate budget and desired timeline.",
+          "For mobile app development, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "cloud-services",
+        "title": "Cloud Services",
+        "description": "Get cloud services assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/technology.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Describe your users, the problem to solve and your current systems.",
+          "List required features, integrations, approximate budget and desired timeline.",
+          "For cloud services, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "devops-services",
+        "title": "DevOps Services",
+        "description": "Get devops services assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/technology.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Describe your users, the problem to solve and your current systems.",
+          "List required features, integrations, approximate budget and desired timeline.",
+          "For devops services, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "it-support",
+        "title": "IT Support",
+        "description": "Get it support assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/technology.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Describe your users, the problem to solve and your current systems.",
+          "List required features, integrations, approximate budget and desired timeline.",
+          "For it support, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "software-consultation",
+        "title": "Software Consultation",
+        "description": "Get software consultation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/technology.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Describe your users, the problem to solve and your current systems.",
+          "List required features, integrations, approximate budget and desired timeline.",
+          "For software consultation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  },
+  {
+    "slug": "business-services",
+    "title": "Business Services",
+    "description": "Practical support for starting, running and growing a business.",
+    "image": "/images/business.svg",
+    "services": [
+      {
+        "slug": "business-setup",
+        "title": "Business Setup",
+        "description": "Get business setup assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/business.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Prepare a description of your business, current stage and assistance needed.",
+          "List desired outcomes, constraints and existing process documentation.",
+          "For business setup, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "business-consultation",
+        "title": "Business Consultation",
+        "description": "Get business consultation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/business.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare a description of your business, current stage and assistance needed.",
+          "List desired outcomes, constraints and existing process documentation.",
+          "For business consultation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "market-research",
+        "title": "Market Research",
+        "description": "Get market research assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/business.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare a description of your business, current stage and assistance needed.",
+          "List desired outcomes, constraints and existing process documentation.",
+          "For market research, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "documentation-services",
+        "title": "Documentation Services",
+        "description": "Get documentation services assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/business.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare a description of your business, current stage and assistance needed.",
+          "List desired outcomes, constraints and existing process documentation.",
+          "For documentation services, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "vendor-assistance",
+        "title": "Vendor Assistance",
+        "description": "Get vendor assistance assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/business.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare a description of your business, current stage and assistance needed.",
+          "List desired outcomes, constraints and existing process documentation.",
+          "For vendor assistance, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "business-process-support",
+        "title": "Business Process Support",
+        "description": "Get business process support assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/business.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare a description of your business, current stage and assistance needed.",
+          "List desired outcomes, constraints and existing process documentation.",
+          "For business process support, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  },
+  {
+    "slug": "local-professional-services",
+    "title": "Local & Professional Services",
+    "description": "Everyday expertise for a home and life that run smoothly.",
+    "image": "/images/home.svg",
+    "services": [
+      {
+        "slug": "home-services",
+        "title": "Home Services",
+        "description": "Get home services assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": true,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For home services, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "ac-service-repair",
+        "title": "AC Service & Repair",
+        "description": "Get ac service & repair assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For ac service & repair, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "electrical-services",
+        "title": "Electrical Services",
+        "description": "Get electrical services assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For electrical services, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "plumbing-services",
+        "title": "Plumbing Services",
+        "description": "Get plumbing services assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For plumbing services, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "pest-control",
+        "title": "Pest Control",
+        "description": "Get pest control assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For pest control, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "professional-consultation",
+        "title": "Professional Consultation",
+        "description": "Get professional consultation assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For professional consultation, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      },
+      {
+        "slug": "interior-design",
+        "title": "Interior Design",
+        "description": "Get interior design assistance tailored to your requirements. VISTRAH helps you clarify your needs and coordinate the next steps.",
+        "includes": [
+          "A discussion of your requirements",
+          "Guidance on scope and available options",
+          "A clear proposal before any service purchase",
+          "Coordination and request status updates"
+        ],
+        "image": "/images/home.svg",
+        "popular": false,
+        "active": true,
+        "member_information": [
+          "Prepare your address, the issue to resolve and suitable times for a visit.",
+          "Share approximate dimensions or equipment details when relevant.",
+          "For interior design, ask for an itemized scope, deliverables and exclusions before agreeing to proceed.",
+          "Confirm the delivery responsibilities, timeline and how changes to scope will be handled.",
+          "Do not share passwords, card details or payment PINs in a service requirement."
+        ]
+      }
+    ],
+    "subcategories": []
+  }
+]

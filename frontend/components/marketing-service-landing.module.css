@@ -45,7 +45,7 @@
 .delivery svg,.brief li svg{flex-shrink:0;color:var(--accent-orange);margin-top:2px}
 .process{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding:0;list-style:none;margin:0}
 .process li{border-top:1px solid var(--hairline,var(--border));padding-top:16px}
-.process li>span{display:inline-block;color:var(--accent-orange);font-size:12px;font-weight:700;margin-bottom:8px}
+.process li>span{display:inline-block;color:var(--accent-orange);font-size:12px;font-weight:500;margin-bottom:8px}
 .brief{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;padding:24px;color:var(--text-primary);margin-top:32px}
 .brief .kicker{color:var(--text-secondary)}
 .contact{display:grid;justify-items:start;gap:12px}

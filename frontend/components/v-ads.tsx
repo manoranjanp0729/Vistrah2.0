@@ -325,7 +325,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
           <button
             type="button"
             onClick={()=>{setOpen(false);setProductDetailsOpen(true);}}
-            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:500,fontSize:13,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value={"Explore Product"}/>{adMeta.product_price ? ` · ${adMeta.product_price}` : ''}</span>
@@ -333,7 +333,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser.id)}
-            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:500,fontSize:13,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value={"Explore Brand"}/></span>
@@ -372,7 +372,7 @@ function ReelCard({reel,root,authenticated}:{reel:Reel;root:RefObject<HTMLDivEle
 
           <div style={{padding:'12px 0',borderTop:'1px solid var(--hairline,var(--border))',borderBottom:'1px solid var(--hairline,var(--border))',display:'grid',gap:4}}>
             <small style={{fontWeight:600,color:'var(--text-secondary)',textTransform:'uppercase',fontSize:11,letterSpacing:'0.04em'}}><UiText value={"Price Details"}/></small>
-            <div style={{fontSize:20,fontWeight:700,color:'#e11d48',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
+            <div style={{fontSize:20,fontWeight:500,color:'#e11d48',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>{productMeta.product_price || 'Available on enquiry / order'}</div>
           </div>
 
           <div style={{padding:'0 0 12px',borderBottom:'1px solid var(--hairline,var(--border))',display:'grid',gap:4}}>
@@ -414,7 +414,7 @@ export function VAdsAdvertiser({id}:{id:string}) {
   useEffect(()=>{let alive=true;client.profile(id).then(result=>{if(alive){setData(result);setError('');}}).catch(e=>{if(alive)setError(e.message);});return()=>{alive=false;};},[id,version]);
   return <div className={s.page}><Link href="/v-ads"><UiText value={"Back to V Ads"}/></Link>{error?<div role="alert"><UiText value={error}/> <button className="button secondary" onClick={()=>setVersion(v=>v+1)}><UiText value={"Retry"}/></button></div>:!data?<p role="status"><UiText value={"Loading advertiser…"}/></p>:<><section className={s.panel} style={{display:'grid',gap:8}}>
     <div style={{display:'flex',alignItems:'center',gap:12}}>
-      <div style={{width:48,height:48,borderRadius:12,background:'#F9AA45',color:'#11243F',display:'grid',placeItems:'center',fontSize:22,fontWeight:700}}>V</div>
+      <div style={{width:48,height:48,borderRadius:12,background:'#F9AA45',color:'#11243F',display:'grid',placeItems:'center',fontSize:22,fontWeight:500}}>V</div>
       <div>
         <h1 style={{margin:0,fontSize:22,fontWeight:600,letterSpacing:'-0.025em',display:'flex',alignItems:'center',gap:6}}>
           <span>{data.name}</span>
@@ -433,7 +433,7 @@ export function VAdsAdvertiser({id}:{id:string}) {
         <div key={product.id} className={s.editorialRow}>
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8}}>
             <h3 style={{margin:0,fontSize:16,fontWeight:600,letterSpacing:'-0.015em'}}>{product.title}</h3>
-            <span style={{fontSize:16,fontWeight:700,color:'#e11d48',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>{listingPrice(product.unit_price_paise)}</span>
+            <span style={{fontSize:16,fontWeight:500,color:'#e11d48',fontVariantNumeric:'tabular-nums',fontFeatureSettings:'"tnum" 1'}}>{listingPrice(product.unit_price_paise)}</span>
           </div>
           {Boolean(product.description)&&<p style={{margin:0,fontSize:13,lineHeight:1.5,color:'var(--text-secondary)'}}>{product.description}</p>}
           <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10,flexWrap:'wrap',paddingTop:4}}>

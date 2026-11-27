@@ -150,7 +150,7 @@
 
 .freeZero {
   font-size: clamp(30px, 3.2vw, 38px);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.1;
   letter-spacing: -0.025em;
   color: var(--accent-orange);
@@ -186,7 +186,7 @@
 .optionFreeBadge {
   display: inline-block;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent-orange);
@@ -215,7 +215,7 @@
 
 .ledgerFreeBanner strong {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.1;
   letter-spacing: -0.025em;
   color: var(--accent-orange);
@@ -227,7 +227,7 @@
   padding-top: 12px;
   padding-bottom: 4px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -398,7 +398,7 @@
 
 .optionValue {
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.015em;
 }
@@ -486,7 +486,7 @@
 
 .ledgerTotalRow strong {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.025em;
   color: var(--accent-orange);
@@ -722,7 +722,7 @@
 
 .pillarStep {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent-orange);

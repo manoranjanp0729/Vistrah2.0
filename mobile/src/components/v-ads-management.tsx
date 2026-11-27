@@ -51,24 +51,24 @@ export function VideoManagement({video,onChanged}:{video:SellerVideo;onChanged:(
     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
       <Text style={[styles.heading,{fontSize:14}]}><UiText value={"Ad Analytics & Performance"}/></Text>
       <View style={{paddingHorizontal:8,paddingVertical:3,borderRadius:8,backgroundColor:video.status==='APPROVED'?'#16a34a20':'#ca8a0420'}}>
-        <Text style={{fontSize:11,fontWeight:'700',color:video.status==='APPROVED'?'#16a34a':'#ca8a04'}}>{video.status}</Text>
+        <Text style={{fontSize:11,fontWeight:'600',color:video.status==='APPROVED'?'#16a34a':'#ca8a04'}}>{video.status}</Text>
       </View>
     </View>
     <View style={{flexDirection:'row',gap:8}}>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,fontVariant:['tabular-nums']}}>{views.toLocaleString()}</Text>
+        <Text style={{fontSize:16,fontWeight:'500',color:styles.text.color,fontVariant:['tabular-nums']}}>{views.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Views"}/></Text>
       </View>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,fontVariant:['tabular-nums']}}>{likes.toLocaleString()}</Text>
+        <Text style={{fontSize:16,fontWeight:'500',color:styles.text.color,fontVariant:['tabular-nums']}}>{likes.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Likes"}/></Text>
       </View>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:styles.text.color,fontVariant:['tabular-nums']}}>{comments.toLocaleString()}</Text>
+        <Text style={{fontSize:16,fontWeight:'500',color:styles.text.color,fontVariant:['tabular-nums']}}>{comments.toLocaleString()}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Comments"}/></Text>
       </View>
       <View style={{flex:1,padding:8,borderRadius:10,backgroundColor:styles.card.backgroundColor,borderWidth:1,borderColor:styles.card.borderColor,alignItems:'center'}}>
-        <Text style={{fontSize:16,fontWeight:'700',color:'#16a34a',fontVariant:['tabular-nums']}}>{engagementRate}</Text>
+        <Text style={{fontSize:16,fontWeight:'500',color:'#16a34a',fontVariant:['tabular-nums']}}>{engagementRate}</Text>
         <Text style={[styles.muted,{fontSize:10}]}><UiText value={"Engagement"}/></Text>
       </View>
     </View>

@@ -463,7 +463,7 @@ export function MobileNearbyServiceDiscovery({
                 <Text
                   style={{
                     fontSize: 12,
-                    fontWeight: '700',
+                    fontWeight: '500',
                     color: active ? '#ffffff' : colors.text,
                   }}
                 >
@@ -509,7 +509,7 @@ export function MobileNearbyServiceDiscovery({
               <Text
                 style={{
                   fontSize: 12,
-                  fontWeight: '700',
+                  fontWeight: '500',
                   color: !normalizedTypeSlug
                     ? isDark
                       ? '#99f6e4'
@@ -557,7 +557,7 @@ export function MobileNearbyServiceDiscovery({
                   <Text
                     style={{
                       fontSize: 12,
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: active
                         ? isDark
                           ? '#99f6e4'
@@ -734,7 +734,7 @@ export function MobileNearbyServiceDiscovery({
                     s.radiusChipText,
                     {
                       color: active ? '#ffffff' : colors.muted,
-                      fontWeight: active ? '700' : '600',
+                      fontWeight: active ? '500' : '600',
                     },
                   ]}
                 >
@@ -780,7 +780,7 @@ export function MobileNearbyServiceDiscovery({
             <Text
               style={{
                 fontSize: 12,
-                fontWeight: '700',
+                fontWeight: '500',
                 color: cityWide ? '#ffffff' : isDark ? '#99F6E4' : '#0F766E',
               }}
             >
@@ -873,7 +873,7 @@ export function MobileNearbyServiceDiscovery({
             <UiText value="Searching nearby businesses…" />
           ) : (
             <>
-              <Text style={{ fontWeight: '700', color: colors.text }}>{items.length}</Text>{' '}
+              <Text style={{ fontWeight: '500', color: colors.text }}>{items.length}</Text>{' '}
               <UiText
                 value={
                   cityWide || responseCityWide
@@ -896,14 +896,14 @@ export function MobileNearbyServiceDiscovery({
                 setPannedCenter(null);
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: '700', color: '#0D9488' }}>
+              <Text style={{ fontSize: 12, fontWeight: '500', color: '#0D9488' }}>
                 <UiText value="Reset area" />
               </Text>
             </Pressable>
           )}
           {selectedId !== null && (
             <Pressable onPress={() => setSelectedId(null)}>
-              <Text style={{ fontSize: 12, fontWeight: '700', color: '#0D9488' }}>
+              <Text style={{ fontSize: 12, fontWeight: '500', color: '#0D9488' }}>
                 <UiText value="Clear pin" />
               </Text>
             </Pressable>
@@ -948,7 +948,7 @@ export function MobileNearbyServiceDiscovery({
               backgroundColor: pressed ? '#0F766E' : '#0D9488',
             })}
           >
-            <Text style={{ color: '#ffffff', fontSize: 11.5, fontWeight: '700' }}>
+            <Text style={{ color: '#ffffff', fontSize: 11.5, fontWeight: '500' }}>
               {cityWide ? `Use ${radiusKm} km radius` : 'Show All in City'}
             </Text>
           </Pressable>
@@ -1003,7 +1003,7 @@ export function MobileNearbyServiceDiscovery({
                     borderColor: '#0F766E',
                   }}
                 >
-                  <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
+                  <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '500' }}>
                     Try {nextRadius} km
                   </Text>
                 </Pressable>
@@ -1020,7 +1020,7 @@ export function MobileNearbyServiceDiscovery({
                   borderColor: '#0F766E',
                 }}
               >
-                <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
+                <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '500' }}>
                   Show All in City
                 </Text>
               </Pressable>
@@ -1193,7 +1193,7 @@ export function MobileNearbyServiceDiscovery({
                   ]}
                 >
                   <Feather name="phone" size={13} color="#ffffff" />
-                  <Text style={{ color: '#ffffff', fontSize: 12.5, fontWeight: '700' }}>Call</Text>
+                  <Text style={{ color: '#ffffff', fontSize: 12.5, fontWeight: '500' }}>Call</Text>
                 </Pressable>
               )}
 
@@ -1221,7 +1221,7 @@ export function MobileNearbyServiceDiscovery({
                     style={{
                       color: isDark ? '#5eead4' : '#0F766E',
                       fontSize: 12.5,
-                      fontWeight: '700',
+                      fontWeight: '500',
                     }}
                   >
                     WhatsApp
@@ -1319,7 +1319,7 @@ export function MobileNearbyServiceDiscovery({
                 <View style={s.sheetHeader}>
                   <Text
                     numberOfLines={1}
-                    style={{ fontSize: 15, fontWeight: '700', color: colors.text, flex: 1 }}
+                    style={{ fontSize: 15, fontWeight: '500', color: colors.text, flex: 1 }}
                   >
                     {activeMoreItem.company || activeMoreItem.name}
                   </Text>
@@ -1365,7 +1365,7 @@ export function MobileNearbyServiceDiscovery({
                     },
                   ]}
                 >
-                  <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>Close</Text>
+                  <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>Close</Text>
                 </Pressable>
               </>
             )}
@@ -1416,10 +1416,10 @@ const s = StyleSheet.create({
     gap: 8,
   },
   title: {
-    fontSize: 18,
-    lineHeight: 24,
-    fontWeight: '700',
-    letterSpacing: -0.3,
+    fontSize: 20,
+    lineHeight: 26,
+    fontWeight: '600',
+    letterSpacing: -0.2,
   },
   locationPill: {
     flexDirection: 'row',
@@ -1433,7 +1433,7 @@ const s = StyleSheet.create({
   },
   locationPillText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '500',
     flexShrink: 1,
   },
   gpsBtn: {
@@ -1447,8 +1447,8 @@ const s = StyleSheet.create({
   },
   gpsBtnText: {
     color: '#ffffff',
-    fontSize: 11.5,
-    fontWeight: '700',
+    fontSize: 12,
+    fontWeight: '500',
   },
   gpsAlertRow: {
     flexDirection: 'row',
@@ -1491,7 +1491,7 @@ const s = StyleSheet.create({
   },
   compactBannerText: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '500',
     flexShrink: 1,
   },
   searchHereWrap: {
@@ -1517,7 +1517,7 @@ const s = StyleSheet.create({
   searchHereText: {
     color: '#ffffff',
     fontSize: 12.5,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   listMetaRow: {
     flexDirection: 'row',
@@ -1568,7 +1568,7 @@ const s = StyleSheet.create({
   },
   fallbackLabel: {
     fontSize: 9.5,
-    fontWeight: '700',
+    fontWeight: '500',
     letterSpacing: 0.5,
   },
   titleDistanceRow: {
@@ -1578,9 +1578,9 @@ const s = StyleSheet.create({
     gap: 6,
   },
   bizTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-    letterSpacing: -0.2,
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
   },
   badgesRow: {
     flexDirection: 'row',
@@ -1601,7 +1601,7 @@ const s = StyleSheet.create({
   },
   verifiedText: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '500',
     color: '#0f766e',
   },
   nearbyPlacePill: {
@@ -1615,7 +1615,7 @@ const s = StyleSheet.create({
   },
   nearbyPlaceText: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   distancePill: {
     paddingHorizontal: 8,
@@ -1628,7 +1628,7 @@ const s = StyleSheet.create({
   },
   distanceText: {
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '500',
     color: '#0f766e',
     fontVariant: ['tabular-nums'],
   },
@@ -1699,7 +1699,7 @@ const s = StyleSheet.create({
   },
   primaryOnboardText: {
     fontSize: 12,
-    fontWeight: '700',
+    fontWeight: '500',
     color: '#ffffff',
   },
 });

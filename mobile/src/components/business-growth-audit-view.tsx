@@ -339,7 +339,7 @@ export function MobileBusinessGrowthAuditView({
             ) : (
               <View style={{ alignItems: 'center', gap: 4 }}>
                 <Feather name="award" size={24} color="#fde68a" />
-                <Text style={{ fontSize: 10, fontWeight: '800', color: '#fde68a' }}>
+                <Text style={{ fontSize: 10, fontWeight: '500', color: '#fde68a' }}>
                   {business.is_claimed ? 'VISTRAH' : 'LOCAL'}
                 </Text>
               </View>
@@ -349,7 +349,7 @@ export function MobileBusinessGrowthAuditView({
           <View style={{ flex: 1, gap: 6 }}>
             <View style={st.badgeRow}>
               <View style={st.sectorPill}>
-                <Text style={{ fontSize: 11, fontWeight: '700', color: '#fde68a' }}>
+                <Text style={{ fontSize: 11, fontWeight: '500', color: '#fde68a' }}>
                   {flagship_sector.shortTitle} · {business.service_title}
                 </Text>
               </View>
@@ -357,7 +357,7 @@ export function MobileBusinessGrowthAuditView({
                 <Text
                   style={{
                     fontSize: 11,
-                    fontWeight: '700',
+                    fontWeight: '500',
                     color: business.is_claimed ? '#6ee7b7' : '#bae6fd',
                   }}
                 >
@@ -365,7 +365,7 @@ export function MobileBusinessGrowthAuditView({
                 </Text>
               </View>
               <View style={st.ratingPill}>
-                <Text style={{ fontSize: 11, fontWeight: '700', color: '#fde047' }}>
+                <Text style={{ fontSize: 11, fontWeight: '500', color: '#fde047' }}>
                   ★ {business.rating ? business.rating.toFixed(1) : '4.7'}
                 </Text>
               </View>
@@ -412,7 +412,7 @@ export function MobileBusinessGrowthAuditView({
             onPress={openPrefilledFreeVAdFlow}
           >
             <Feather name="video" size={13} color="#ffffff" />
-            <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#ffffff' }}>
+            <Text style={{ fontSize: 12.5, fontWeight: '500', color: '#ffffff' }}>
               Create & Upload Free V Ad
             </Text>
           </Pressable>
@@ -422,7 +422,7 @@ export function MobileBusinessGrowthAuditView({
       {/* MODULE 2: Online Visibility Score & Nearby Comparison */}
       <View style={[st.sectionCard, cardSurface]}>
         <Text style={st.eyebrow}>YOUR ONLINE PRESENCE & CUSTOMER GROWTH CHECK</Text>
-        <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+        <Text style={{ fontSize: 16, fontWeight: '500', color: colors.text }}>
           How Easy Customers Can Find You (0–100)
         </Text>
         <View style={st.scoreBanner}>
@@ -430,16 +430,16 @@ export function MobileBusinessGrowthAuditView({
             <Text style={{ fontSize: 12, color: '#94a3b8', fontWeight: '600' }}>
               Now: {live.audit.baseline_score}/100 ({getScoreTierLabel(live.audit.baseline_score)})
             </Text>
-            <Text style={{ fontSize: 28, fontWeight: '800', color: '#fde68a' }}>
+            <Text style={{ fontSize: 28, fontWeight: '500', color: '#fde68a' }}>
               {live.simulation.projected_score} / 100
             </Text>
-            <Text style={{ fontSize: 12, fontWeight: '700', color: '#e2e8f0' }}>
+            <Text style={{ fontSize: 12, fontWeight: '500', color: '#e2e8f0' }}>
               With Plan: {getScoreTierLabel(live.simulation.projected_score)}
             </Text>
           </View>
           {live.simulation.score_gain > 0 && (
             <View style={st.verifiedPill}>
-              <Text style={{ fontSize: 12, fontWeight: '800', color: '#6ee7b7' }}>
+              <Text style={{ fontSize: 12, fontWeight: '500', color: '#6ee7b7' }}>
                 +{live.simulation.score_gain} pts
               </Text>
             </View>
@@ -458,7 +458,7 @@ export function MobileBusinessGrowthAuditView({
         <View style={st.benchmarkBox}>
           <Feather name="trending-up" size={16} color="#2563eb" />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 12.5, fontWeight: '700', color: colors.text }}>
+            <Text style={{ fontSize: 12.5, fontWeight: '500', color: colors.text }}>
               How Nearby Businesses Compare ({competitor_benchmark.locality})
             </Text>
             <Text style={{ fontSize: 12, color: colors.muted }}>
@@ -468,13 +468,13 @@ export function MobileBusinessGrowthAuditView({
           </View>
         </View>
 
-        <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
+        <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>
           What You Are Missing Right Now ({live.audit.identified_gaps.length}):
         </Text>
         <View style={st.badgeRow}>
           {live.audit.identified_gaps.map(gap => (
             <View key={gap.pillar_id} style={st.gapPill}>
-              <Text style={{ fontSize: 11.5, fontWeight: '700', color: '#dc2626' }}>
+              <Text style={{ fontSize: 11.5, fontWeight: '500', color: '#dc2626' }}>
                 {gap.summary} (-{gap.missing_points} pts)
               </Text>
             </View>
@@ -482,7 +482,7 @@ export function MobileBusinessGrowthAuditView({
         </View>
 
         <View style={{ gap: 8, paddingTop: 4 }}>
-          <Text style={{ fontSize: 12, fontWeight: '700', color: colors.muted }}>
+          <Text style={{ fontSize: 12, fontWeight: '500', color: colors.muted }}>
             Already have a website or social page? Paste below to update your score live:
           </Text>
           <TextInput
@@ -512,7 +512,7 @@ export function MobileBusinessGrowthAuditView({
       {/* MODULE 3: Interactive Plan Picker & Live Total Cost */}
       <View style={[st.sectionCard, cardSurface]}>
         <Text style={st.eyebrow}>BUILD YOUR PLAN</Text>
-        <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+        <Text style={{ fontSize: 16, fontWeight: '500', color: colors.text }}>
           Pick What You Want to Improve
         </Text>
         <Text style={{ fontSize: 12.5, color: colors.muted }}>
@@ -560,11 +560,11 @@ export function MobileBusinessGrowthAuditView({
                             : colors.muted
                       }
                     />
-                    <Text style={{ fontSize: 13.5, fontWeight: '700', color: colors.text, flex: 1 }}>
+                    <Text style={{ fontSize: 13.5, fontWeight: '500', color: colors.text, flex: 1 }}>
                       {pillar.product_title}
                     </Text>
                   </View>
-                  <Text style={{ fontSize: 11.5, fontWeight: '800', color: '#b45309' }}>
+                  <Text style={{ fontSize: 11.5, fontWeight: '500', color: '#b45309' }}>
                     +{pillar.max_points} pts
                   </Text>
                 </View>
@@ -573,14 +573,14 @@ export function MobileBusinessGrowthAuditView({
                   <Text
                     style={{
                       fontSize: 12,
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: pillar.billing_type === 'free_forever' ? '#10b981' : colors.text,
                     }}
                   >
                     {pillar.billing_label}
                   </Text>
                   {pillar.active_in_baseline && (
-                    <Text style={{ fontSize: 11, fontWeight: '800', color: '#10b981' }}>
+                    <Text style={{ fontSize: 11, fontWeight: '500', color: '#10b981' }}>
                       • Already Done ✓
                     </Text>
                   )}
@@ -605,7 +605,7 @@ export function MobileBusinessGrowthAuditView({
               >
                 <View style={{ gap: 2 }}>
                   <Text style={st.eyebrow}>OTHER PERKS</Text>
-                  <Text style={{ fontSize: 14.5, fontWeight: '800', color: colors.text }}>
+                  <Text style={{ fontSize: 14.5, fontWeight: '500', color: colors.text }}>
                     Other Perks (Free on VISTRAH)
                   </Text>
                   <Text style={{ fontSize: 12, color: colors.muted }}>
@@ -627,7 +627,7 @@ export function MobileBusinessGrowthAuditView({
                     }}
                   >
                     <View style={{ gap: 2 }}>
-                      <Text style={{ fontSize: 13, fontWeight: '800', color: '#059669' }}>
+                      <Text style={{ fontSize: 13, fontWeight: '500', color: '#059669' }}>
                         Free Local Area Ads (V Ads) — ₹0 — Free Forever
                       </Text>
                       <Text style={{ fontSize: 12, color: colors.muted }}>
@@ -648,7 +648,7 @@ export function MobileBusinessGrowthAuditView({
                       ]}
                     >
                       <Feather name="video" size={14} color="#ffffff" />
-                      <Text style={{ fontSize: 13, fontWeight: '800', color: '#ffffff' }}>
+                      <Text style={{ fontSize: 13, fontWeight: '500', color: '#ffffff' }}>
                         Upload Your Free V Ad Now
                       </Text>
                     </Pressable>
@@ -662,18 +662,18 @@ export function MobileBusinessGrowthAuditView({
         {/* Your Selected Plan & Total Cost */}
         <View style={st.cartCard}>
           <Text style={st.eyebrow}>YOUR SELECTED PLAN & TOTAL COST</Text>
-          <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
+          <Text style={{ fontSize: 15, fontWeight: '500', color: colors.text }}>
             Your Selected Plan & Total Cost
           </Text>
           <View style={st.cartRow}>
             <Text style={{ fontSize: 13, color: colors.text }}>One-Time Setup Total</Text>
-            <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
+            <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>
               {formatInr(live.cart.oneTimeTotalInr)}
             </Text>
           </View>
           <View style={st.cartRow}>
             <Text style={{ fontSize: 13, color: colors.text }}>Monthly Services Total</Text>
-            <Text style={{ fontSize: 13, fontWeight: '800', color: colors.text }}>
+            <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>
               {formatInr(live.cart.monthlyTotalInr)} / mo
             </Text>
           </View>
@@ -681,7 +681,7 @@ export function MobileBusinessGrowthAuditView({
             <Text style={{ fontSize: 13, color: colors.text }}>
               Other Perks ({live.cart.freeItemsCount} included)
             </Text>
-            <Text style={{ fontSize: 13, fontWeight: '800', color: '#10b981' }}>
+            <Text style={{ fontSize: 13, fontWeight: '500', color: '#10b981' }}>
               ₹0 — Free Forever
             </Text>
           </View>
@@ -700,7 +700,7 @@ export function MobileBusinessGrowthAuditView({
                 Include 18% GST
               </Text>
             </View>
-            <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text }}>
+            <Text style={{ fontSize: 13, fontWeight: '500', color: colors.text }}>
               {formatInr(live.cart.gstAmountInr)}
             </Text>
           </Pressable>
@@ -711,10 +711,10 @@ export function MobileBusinessGrowthAuditView({
               { paddingTop: 8, borderTopWidth: 1, borderTopColor: 'rgba(148,163,184,0.3)' },
             ]}
           >
-            <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
+            <Text style={{ fontSize: 15, fontWeight: '500', color: colors.text }}>
               Total to Start
             </Text>
-            <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+            <Text style={{ fontSize: 16, fontWeight: '500', color: colors.text }}>
               {formatInr(live.cart.grandTotalWithGstInr)}
             </Text>
           </View>
@@ -738,7 +738,7 @@ export function MobileBusinessGrowthAuditView({
                     <Text
                       style={{
                         fontSize: 11,
-                        fontWeight: '700',
+                        fontWeight: '500',
                         color: leadStatus === opt.value ? '#fde68a' : colors.text,
                       }}
                     >
@@ -765,7 +765,7 @@ export function MobileBusinessGrowthAuditView({
             onPress={() => void handleSaveProposal()}
             style={[st.heroBtn, st.goldBtn, { justifyContent: 'center', minHeight: 42 }]}
           >
-            <Text style={{ fontSize: 13.5, fontWeight: '800', color: '#0f172a' }}>
+            <Text style={{ fontSize: 13.5, fontWeight: '500', color: '#0f172a' }}>
               {savingLead
                 ? 'Saving Proposal…'
                 : viewerMode === 'admin'
@@ -790,7 +790,7 @@ export function MobileBusinessGrowthAuditView({
               ]}
             >
               <Ionicons name="logo-whatsapp" size={15} color="#ffffff" />
-              <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#ffffff' }}>
+              <Text style={{ fontSize: 12.5, fontWeight: '500', color: '#ffffff' }}>
                 Send Proposal on WhatsApp
               </Text>
             </Pressable>
@@ -810,14 +810,14 @@ export function MobileBusinessGrowthAuditView({
               ]}
             >
               <Feather name="printer" size={14} color="#fde68a" />
-              <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#fde68a' }}>
+              <Text style={{ fontSize: 12.5, fontWeight: '500', color: '#fde68a' }}>
                 Print / Save PDF Proposal
               </Text>
             </Pressable>
           </View>
 
           {Boolean(leadFeedback) && (
-            <Text style={{ fontSize: 12, fontWeight: '700', color: '#10b981' }}>
+            <Text style={{ fontSize: 12, fontWeight: '500', color: '#10b981' }}>
               {leadFeedback}
             </Text>
           )}
@@ -829,7 +829,7 @@ export function MobileBusinessGrowthAuditView({
         <View style={st.pillarHeader}>
           <View style={{ flex: 1, gap: 2 }}>
             <Text style={st.eyebrow}>{websitePreview.pattern_title.toUpperCase()}</Text>
-            <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+            <Text style={{ fontSize: 16, fontWeight: '500', color: colors.text }}>
               Sample Website Made for Your Business
             </Text>
             <Text style={{ fontSize: 12, color: colors.muted }}>
@@ -853,7 +853,7 @@ export function MobileBusinessGrowthAuditView({
                 <Text
                   style={{
                     fontSize: 11.5,
-                    fontWeight: '700',
+                    fontWeight: '500',
                     color: viewport === vp ? '#fde68a' : colors.text,
                   }}
                 >
@@ -874,13 +874,13 @@ export function MobileBusinessGrowthAuditView({
             <Text style={{ fontSize: 11, color: '#cbd5e1' }}>
               https://{websitePreview.domain_preview}
             </Text>
-            <Text style={{ fontSize: 11, color: '#fde68a', fontWeight: '700' }}>
+            <Text style={{ fontSize: 11, color: '#fde68a', fontWeight: '500' }}>
               {websitePreview.contact_phone_display}
             </Text>
           </View>
           <View style={{ padding: 14, gap: 10, backgroundColor: '#f8fafc' }}>
             <View style={{ padding: 14, borderRadius: 12, backgroundColor: '#0f172a', gap: 6 }}>
-              <Text style={{ fontSize: 14.5, fontWeight: '800', color: '#ffffff' }}>
+              <Text style={{ fontSize: 14.5, fontWeight: '500', color: '#ffffff' }}>
                 {websitePreview.personalized_headline}
               </Text>
               <Text style={{ fontSize: 12, color: '#cbd5e1' }}>
@@ -895,7 +895,7 @@ export function MobileBusinessGrowthAuditView({
                   backgroundColor: '#d4af37',
                 }}
               >
-                <Text style={{ fontSize: 12, fontWeight: '800', color: '#0f172a' }}>
+                <Text style={{ fontSize: 12, fontWeight: '500', color: '#0f172a' }}>
                   {websitePreview.conversion_cta} →
                 </Text>
               </View>
@@ -912,7 +912,7 @@ export function MobileBusinessGrowthAuditView({
                   backgroundColor: '#ffffff',
                 }}
               >
-                <Text style={{ fontSize: 10, fontWeight: '800', color: '#b45309' }}>
+                <Text style={{ fontSize: 10, fontWeight: '500', color: '#b45309' }}>
                   WHAT IT SHOWS {idx + 1}
                 </Text>
                 <Text style={{ fontSize: 12.5, fontWeight: '600', color: '#0f172a' }}>{sec}</Text>
@@ -921,10 +921,10 @@ export function MobileBusinessGrowthAuditView({
           </View>
         </View>
 
-        <Text style={{ fontSize: 15, fontWeight: '800', color: colors.text }}>
+        <Text style={{ fontSize: 15, fontWeight: '500', color: colors.text }}>
           Simple 3-Step Plan to Get More Customers
         </Text>
-        <Text style={{ fontSize: 12.5, fontWeight: '700', color: '#b45309' }}>
+        <Text style={{ fontSize: 12.5, fontWeight: '600', color: '#b45309' }}>
           {websitePreview.vertical_strategy.plan_heading}
         </Text>
         <Text style={{ fontSize: 12.5, color: colors.muted }}>
@@ -932,7 +932,7 @@ export function MobileBusinessGrowthAuditView({
         </Text>
         {websitePreview.vertical_strategy.funnel_steps.map((stepText, idx) => (
           <Text key={stepText} style={{ fontSize: 12.5, color: colors.text }}>
-            <Text style={{ fontWeight: '800', color: '#b45309' }}>Step {idx + 1}: </Text>
+            <Text style={{ fontWeight: '500', color: '#b45309' }}>Step {idx + 1}: </Text>
             {stepText}
           </Text>
         ))}
@@ -943,13 +943,13 @@ export function MobileBusinessGrowthAuditView({
           style={[st.heroBtn, st.goldBtn, { justifyContent: 'center', minHeight: 42 }]}
         >
           <Feather name="globe" size={14} color="#0f172a" />
-          <Text style={{ fontSize: 13.5, fontWeight: '800', color: '#0f172a' }}>
+          <Text style={{ fontSize: 13.5, fontWeight: '500', color: '#0f172a' }}>
             {requestingWebsite ? 'Submitting Request…' : 'Request This Website (₹4,999)'}
           </Text>
         </Pressable>
 
         {Boolean(websiteFeedback) && (
-          <Text style={{ fontSize: 12, fontWeight: '700', color: '#10b981' }}>
+          <Text style={{ fontSize: 12, fontWeight: '500', color: '#10b981' }}>
             {websiteFeedback}
           </Text>
         )}
@@ -959,7 +959,7 @@ export function MobileBusinessGrowthAuditView({
       {showQrStandee && qrMatrix && (
         <View style={[st.sectionCard, cardSurface]}>
           <Text style={st.eyebrow}>SHOPFRONT COUNTERTOP STANDEE</Text>
-          <Text style={{ fontSize: 16, fontWeight: '800', color: colors.text }}>
+          <Text style={{ fontSize: 16, fontWeight: '500', color: colors.text }}>
             VISTRAH Verified QR Card
           </Text>
           <Text style={{ fontSize: 12.5, color: colors.muted }}>
@@ -984,7 +984,7 @@ export function MobileBusinessGrowthAuditView({
             <Text
               style={{
                 fontSize: 10,
-                fontWeight: '800',
+                fontWeight: '500',
                 letterSpacing: 1.4,
                 color: '#d4af37',
               }}
@@ -995,7 +995,7 @@ export function MobileBusinessGrowthAuditView({
               numberOfLines={2}
               style={{
                 fontSize: 16,
-                fontWeight: '800',
+                fontWeight: '500',
                 color: '#ffffff',
                 textAlign: 'center',
               }}
@@ -1003,7 +1003,7 @@ export function MobileBusinessGrowthAuditView({
               {businessDisplayName}
             </Text>
             <View style={st.sectorPill}>
-              <Text style={{ fontSize: 11, fontWeight: '700', color: '#fde68a' }}>
+              <Text style={{ fontSize: 11, fontWeight: '500', color: '#fde68a' }}>
                 {flagship_sector.shortTitle}
                 {business.city ? ` · ${business.city}` : ''}
               </Text>
@@ -1036,7 +1036,7 @@ export function MobileBusinessGrowthAuditView({
               ))}
             </View>
 
-            <Text style={{ fontSize: 11.5, fontWeight: '800', color: '#fde68a' }}>
+            <Text style={{ fontSize: 11.5, fontWeight: '500', color: '#fde68a' }}>
               SCAN FOR LIVE OFFERS & V ADS
             </Text>
             <Text
@@ -1057,7 +1057,7 @@ export function MobileBusinessGrowthAuditView({
               ]}
             >
               <Feather name="download" size={14} color="#ffffff" />
-              <Text style={{ fontSize: 12.5, fontWeight: '800', color: '#ffffff' }}>
+              <Text style={{ fontSize: 12.5, fontWeight: '500', color: '#ffffff' }}>
                 {Platform.OS === 'web'
                   ? 'Download Printable QR Standee (SVG)'
                   : 'Share QR Standee Card'}
@@ -1079,7 +1079,7 @@ export function MobileBusinessGrowthAuditView({
               ]}
             >
               <Feather name="external-link" size={14} color="#ffffff" />
-              <Text style={{ fontSize: 12.5, fontWeight: '700', color: '#ffffff' }}>
+              <Text style={{ fontSize: 12.5, fontWeight: '500', color: '#ffffff' }}>
                 Preview Public Listing
               </Text>
             </Pressable>
@@ -1137,7 +1137,7 @@ const st = StyleSheet.create({
     borderRadius: 9999,
     backgroundColor: 'rgba(250,204,21,0.18)',
   },
-  heroTitle: { fontSize: 18, fontWeight: '800', color: '#ffffff' },
+  heroTitle: { fontSize: 18, fontWeight: '600', color: '#ffffff' },
   actionRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   heroBtn: {
     flexDirection: 'row',
@@ -1150,7 +1150,7 @@ const st = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.22)',
     backgroundColor: 'rgba(255,255,255,0.08)',
   },
-  heroBtnText: { fontSize: 12.5, fontWeight: '700', color: '#ffffff' },
+  heroBtnText: { fontSize: 12.5, fontWeight: '500', color: '#ffffff' },
   goldBtn: { backgroundColor: '#0D9488', borderColor: '#0D9488' },
   sectionCard: {
     padding: 16,

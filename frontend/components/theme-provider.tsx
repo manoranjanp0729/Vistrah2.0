@@ -66,7 +66,7 @@ export function ThemeSettings(){
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,marginBottom:8}}>
         <h2 id={id+'-title'} style={{margin:0,flex:1,minWidth:0}}>{t('settings.themeColor')}</h2>
         <div role="group" aria-label={t('settings.darkTheme')} style={{display:'flex',flexShrink:0,padding:2,borderRadius:11,border:'1px solid var(--border)',background:'var(--surface-soft)'}}>
-          {(['light','dark'] as const).map(mode=><UiButton key={mode} type="button" aria-pressed={theme.mode===mode} onClick={()=>theme.setMode(mode)} style={{minHeight:36,padding:'6px 12px',lineHeight:'20px',border:0,borderRadius:7,cursor:'pointer',font:'inherit',fontSize:12,fontWeight:theme.mode===mode?700:500,background:theme.mode===mode?'var(--surface)':'transparent',color:theme.mode===mode?'var(--text-primary)':'var(--text-muted)',boxShadow:theme.mode===mode?'0 1px 3px rgba(0,0,0,0.12)':'none'}}>{t('settings.'+mode)}</UiButton>)}
+          {(['light','dark'] as const).map(mode=><UiButton key={mode} type="button" aria-pressed={theme.mode===mode} onClick={()=>theme.setMode(mode)} style={{minHeight:36,padding:'6px 12px',lineHeight:'20px',border:0,borderRadius:7,cursor:'pointer',font:'inherit',fontSize:12,fontWeight:theme.mode===mode?500:500,background:theme.mode===mode?'var(--surface)':'transparent',color:theme.mode===mode?'var(--text-primary)':'var(--text-muted)',boxShadow:theme.mode===mode?'0 1px 3px rgba(0,0,0,0.12)':'none'}}>{t('settings.'+mode)}</UiButton>)}
         </div>
       </div>
       <p id={id+'-help'}>{t('settings.themeColorHelp')}</p>

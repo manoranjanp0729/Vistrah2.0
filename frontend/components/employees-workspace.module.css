@@ -494,7 +494,7 @@
 }
 
 .ctcRowHighlight td {
-  font-weight: 700;
+  font-weight: 500;
   background: var(--accent-editorial-soft, #ecf5f1);
   color: var(--accent-editorial, #173f35);
 }
@@ -576,7 +576,7 @@
 
 .brandMark {
   font-size: 16pt;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -0.03em;
   color: #0f172a;
   line-height: 1.05;
@@ -610,7 +610,7 @@
 
 .docHeading {
   font-size: 12pt;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: #0f172a;
   text-transform: uppercase;
@@ -718,7 +718,7 @@
 
 .printRowTotal td {
   background: #ecf5f1;
-  font-weight: 700;
+  font-weight: 500;
   color: #0f172a;
 }
 

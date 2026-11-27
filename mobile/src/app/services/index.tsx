@@ -939,7 +939,10 @@ const s = StyleSheet.create({
     flexShrink: 0,
   },
   flowCardTitle: {
-    ...typography.cardTitle,
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
+    letterSpacing: -0.15,
   },
   // Level 4 Journey Card
   journeyCard: {

@@ -467,7 +467,7 @@ function SellerWorkspace({
 
           {adType==='PRODUCT' ? (
             <div style={{display:'grid',gap:10,padding:14,borderRadius:12,border:'1px solid var(--border)',background:'var(--surface-soft,#f8fafc)'}}>
-              <span style={{fontSize:12,fontWeight:700,color:'#e11d48',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Product Details & Purchasing Options"}/></span>
+              <span style={{fontSize:12,fontWeight:500,color:'#e11d48',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Product Details & Purchasing Options"}/></span>
               <label>
                 <span style={{fontWeight:600}}><UiText value={"Product Name"}/></span>
                 <UiInput maxLength={100} placeholder="E.g., Pure Kanchipuram Silk Saree" value={productName} onChange={event=>setProductName(event.target.value)}/>
@@ -487,7 +487,7 @@ function SellerWorkspace({
             </div>
           ) : (
             <div style={{display:'grid',gap:10,padding:14,borderRadius:12,border:'1px solid var(--border)',background:'var(--surface-soft,#f8fafc)'}}>
-              <span style={{fontSize:12,fontWeight:700,color:'#0F294A',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Brand Details & Products Available"}/></span>
+              <span style={{fontSize:12,fontWeight:500,color:'#0F294A',textTransform:'uppercase',letterSpacing:'0.5px'}}><UiText value={"Brand Details & Products Available"}/></span>
               <label>
                 <span style={{fontWeight:600}}><UiText value={"Products & Services Available"}/></span>
                 <UiTextarea maxLength={200} placeholder="E.g., Custom tailoring, silk sarees, bridal accessories, fabric dyes" value={productsAvailable} onChange={event=>setProductsAvailable(event.target.value)}/>
@@ -567,11 +567,11 @@ function RestrictedStudioTool({
       <div style={{width:54,height:54,borderRadius:27,background:'rgba(15,41,74,0.1)',color:'#0F294A',display:'grid',placeItems:'center'}}>
         {icon==='video'?<Video size={26}/>:<PlusCircle size={26}/>}
       </div>
-      <h2 style={{margin:0,fontSize:18,fontWeight:700}}><UiText value={title}/></h2>
+      <h2 style={{margin:0,fontSize:18,fontWeight:600}}><UiText value={title}/></h2>
       <p style={{margin:0,fontSize:13,color:'var(--text-secondary)',maxWidth:420,lineHeight:1.5}}>
         <UiText value={description}/>
       </p>
-      <Link href="/login?next=%2Fseller%2Fv-ads" style={{marginTop:6,padding:'10px 24px',borderRadius:10,background:'#0F294A',color:'#fff',fontWeight:700,fontSize:13,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}}>
+      <Link href="/login?next=%2Fseller%2Fv-ads" style={{marginTop:6,padding:'10px 24px',borderRadius:10,background:'#0F294A',color:'#fff',fontWeight:500,fontSize:13,textDecoration:'none',display:'inline-flex',alignItems:'center',gap:6}}>
         <Lock size={14}/>
         <UiText value="Sign in / Register"/>
       </Link>
@@ -770,7 +770,7 @@ function PublicAdCard({reel}:{reel:Reel}){
     >
       <div className={s.videoCardHeader}>
         <div>
-          <span style={{fontSize:11,fontWeight:700,letterSpacing:'0.5px',textTransform:'uppercase',color:'#0F294A'}}>
+          <span style={{fontSize:11,fontWeight:600,letterSpacing:'0.5px',textTransform:'uppercase',color:'#0F294A'}}>
             {advertiserName}
           </span>
           <h3 className={s.videoTitle} style={{marginTop:2}}>{reel.title}</h3>
@@ -799,7 +799,7 @@ function PublicAdCard({reel}:{reel:Reel}){
               description: cleanDesc,
               meta: reelMeta,
             })}
-            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:500,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value="Explore Product"/>{reelMeta.product_price ? ` · ${reelMeta.product_price}` : ''}</span>
@@ -807,7 +807,7 @@ function PublicAdCard({reel}:{reel:Reel}){
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(reel.advertiser?.id || '')}
-            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:500,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -1089,7 +1089,7 @@ function SellerVideoCard({
               description: cleanDesc,
               meta: videoMeta,
             })}
-            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
+            style={{background:'#e11d48',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:500,fontSize:12.5,fontVariantNumeric:'tabular-nums',display:'inline-flex',alignItems:'center',gap:6,cursor:'pointer'}}
           >
             <ShoppingBag size={14}/>
             <span><UiText value="Explore Product"/>{videoMeta.product_price ? ` · ${videoMeta.product_price}` : ''}</span>
@@ -1097,7 +1097,7 @@ function SellerVideoCard({
         ) : (
           <Link
             href={'/v-ads/advertisers/'+encodeURIComponent(video.advertiser_id || '')}
-            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:700,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
+            style={{background:'#0F294A',color:'#fff',minHeight:36,padding:'6px 14px',borderRadius:20,border:0,fontWeight:500,fontSize:12.5,display:'inline-flex',alignItems:'center',gap:6,textDecoration:'none'}}
           >
             <Briefcase size={14}/>
             <span><UiText value="Explore Brand"/></span>
@@ -1330,16 +1330,16 @@ function StudioWebProductModal({
           </div>
 
           <div style={{padding: 12, borderRadius: 10, background: 'rgba(225,29,72,0.08)', border: '1px solid rgba(225,29,72,0.3)', display: 'grid', gap: 2}}>
-            <small style={{fontWeight: 700, color: '#e11d48', textTransform: 'uppercase', fontSize: 10.5, letterSpacing: '0.5px'}}>
+            <small style={{fontWeight: 500, color: '#e11d48', textTransform: 'uppercase', fontSize: 10.5, letterSpacing: '0.5px'}}>
               <UiText value="Price Details"/>
             </small>
-            <div style={{fontSize: 20, fontWeight: 800, color: '#e11d48', fontVariantNumeric: 'tabular-nums'}}>
+            <div style={{fontSize: 20, fontWeight: 500, color: '#e11d48', fontVariantNumeric: 'tabular-nums'}}>
               {meta.product_price || 'Available on enquiry / order'}
             </div>
           </div>
 
           <div style={{padding: 12, borderRadius: 10, background: 'rgba(22,163,74,0.08)', border: '1px solid rgba(22,163,74,0.3)', display: 'grid', gap: 2}}>
-            <div style={{display: 'flex', alignItems: 'center', gap: 6, color: '#16a34a', fontWeight: 700, fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.5px'}}>
+            <div style={{display: 'flex', alignItems: 'center', gap: 6, color: '#16a34a', fontWeight: 500, fontSize: 10.5, textTransform: 'uppercase', letterSpacing: '0.5px'}}>
               <Truck size={13}/>
               <span><UiText value="Delivery Options"/></span>
             </div>
@@ -1349,7 +1349,7 @@ function StudioWebProductModal({
           </div>
 
           <div style={{padding: 12, borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border)', display: 'grid', gap: 4}}>
-            <small style={{fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-secondary)'}}>
+            <small style={{fontWeight: 500, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-secondary)'}}>
               <UiText value="Where Product is Used in this Ad"/>
             </small>
             <div style={{fontSize: 13, lineHeight: 1.5}}>
@@ -1360,7 +1360,7 @@ function StudioWebProductModal({
           {Boolean(meta.product_id) && (
             <Link
               href={'/commerce/' + encodeURIComponent(meta.product_id!)}
-              style={{padding: '10px 16px', borderRadius: 10, background: '#e11d48', color: '#fff', textAlign: 'center', textDecoration: 'none', fontWeight: 700, fontSize: 14}}
+              style={{padding: '10px 16px', borderRadius: 10, background: '#e11d48', color: '#fff', textAlign: 'center', textDecoration: 'none', fontWeight: 500, fontSize: 14}}
             >
               <UiText value="View Full Product Page & Order"/>
             </Link>

@@ -397,7 +397,7 @@ function ReelCard({reel, active, height}: {
 
           <ScrollView style={{flex: 1}} contentContainerStyle={{gap: 14, paddingBottom: 24}}>
             <View style={{gap: 4}}>
-              <Text style={{fontSize: 18, fontWeight: '800', color: colors.text}}>
+              <Text style={{fontSize: 18, fontWeight: '500', color: colors.text}}>
                 {productMeta.product_name || reel.title}
               </Text>
               <Pressable
@@ -419,10 +419,10 @@ function ReelCard({reel, active, height}: {
 
             {/* Price Details */}
             <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fff7ed' : '#132f54', borderWidth: 1, borderColor: '#fdba74', gap: 4}}>
-              <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
+              <Text style={{fontSize: 11, fontWeight: '500', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
-              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3', fontVariant: ['tabular-nums']}}>
+              <Text style={{fontSize: 20, fontWeight: '500', color: mode === 'light' ? '#9f1239' : '#fecdd3', fontVariant: ['tabular-nums']}}>
                 {productMeta.product_price || 'Available on request / order'}
               </Text>
             </View>
@@ -431,7 +431,7 @@ function ReelCard({reel, active, height}: {
             <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f0fdf4' : '#142a1b', borderWidth: 1, borderColor: '#86efac', gap: 4}}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
                 <Feather name="truck" size={14} color="#16a34a"/>
-                <Text style={{fontSize: 11, fontWeight: '700', color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5}}>
+                <Text style={{fontSize: 11, fontWeight: '500', color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5}}>
                   <UiText value="Delivery Options" />
                 </Text>
               </View>
@@ -444,7 +444,7 @@ function ReelCard({reel, active, height}: {
             <View style={{padding: 12, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: 6}}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
                 <Feather name="play-circle" size={14} color={colors.accent}/>
-                <Text style={{fontSize: 11.5, fontWeight: '700', color: colors.text, textTransform: 'uppercase', letterSpacing: 0.5}}>
+                <Text style={{fontSize: 11.5, fontWeight: '500', color: colors.text, textTransform: 'uppercase', letterSpacing: 0.5}}>
                   <UiText value="Where Product is Used in this Ad" />
                 </Text>
               </View>
@@ -547,7 +547,7 @@ function VAdsFeed({video,initialCategory,initialServiceType}:{video:string;initi
       <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8,paddingHorizontal:14,paddingVertical:8,backgroundColor:mode==='light'?'#134E4A':'#0f233d',borderBottomWidth:1,borderBottomColor:'rgba(45,212,191,0.35)'}}>
         <View style={{flexDirection:'row',alignItems:'center',gap:6,flex:1,minWidth:0}}>
           <Feather name="video" size={13} color="#2DD4BF"/>
-          <Text numberOfLines={1} style={{fontSize:12,fontWeight:'700',color:'#ffffff',flex:1}}>
+          <Text numberOfLines={1} style={{fontSize:12,fontWeight:'500',color:'#ffffff',flex:1}}>
             V Ads · {activeServiceTitle}
           </Text>
         </View>
@@ -558,7 +558,7 @@ function VAdsFeed({video,initialCategory,initialServiceType}:{video:string;initi
           style={{flexDirection:'row',alignItems:'center',gap:4,paddingHorizontal:10,paddingVertical:4,borderRadius:999,backgroundColor:'rgba(255,255,255,0.14)'}}
         >
           <Feather name="x" size={12} color="#ffffff"/>
-          <Text style={{fontSize:11,fontWeight:'700',color:'#ffffff'}}>All V Ads</Text>
+          <Text style={{fontSize:11,fontWeight:'500',color:'#ffffff'}}>All V Ads</Text>
         </Pressable>
       </View>
     )}
@@ -682,7 +682,7 @@ const s = StyleSheet.create({
   },
   spotlightBadgeText: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: '500',
     letterSpacing: 0.8,
     color: '#FFFFFF',
     textTransform: 'uppercase',
@@ -702,7 +702,7 @@ const s = StyleSheet.create({
   exploreProductText: {
     color: '#FFFFFF',
     fontSize: 12.5,
-    fontWeight: '700',
+    fontWeight: '500',
     fontVariant: ['tabular-nums'],
   },
   exploreBrandBtn: {
@@ -720,7 +720,7 @@ const s = StyleSheet.create({
   exploreBrandText: {
     color: '#FFFFFF',
     fontSize: 12.5,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   sellerBadge: {
     flexDirection: 'row',
@@ -736,7 +736,7 @@ const s = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.30)',
     marginTop: 2,
   },
-  sellerBadgeText: {color: '#FFFFFF', fontSize: 12, fontWeight: '700'},
+  sellerBadgeText: {color: '#FFFFFF', fontSize: 12, fontWeight: '500'},
   accountRow: {flexDirection: 'row', alignItems: 'center', gap: 10},
   avatar: {
     width: 38,
@@ -751,7 +751,7 @@ const s = StyleSheet.create({
   account: {
     color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: '700',
+    fontWeight: '500',
     textShadowColor: 'rgba(0,0,0,0.7)',
     textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 2,
@@ -764,7 +764,7 @@ const s = StyleSheet.create({
   title: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '800',
+    fontWeight: '500',
     lineHeight: 20,
     letterSpacing: -0.24,
     textShadowColor: 'rgba(0,0,0,0.8)',
@@ -805,7 +805,7 @@ const s = StyleSheet.create({
     marginBottom: 4,
   },
   commentHeader: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'},
-  commentTitle: {fontWeight: '700', fontSize: 16, letterSpacing: -0.24},
+  commentTitle: {fontWeight: '600', fontSize: 16, letterSpacing: -0.24},
   commentList: {flex: 1},
   commentHint: {marginTop: 16, fontSize: 13},
   comment: {marginVertical: 6, fontSize: 13.5, lineHeight: 20},

@@ -148,7 +148,7 @@ export default function MobileContactScreen() {
             { borderColor: colors.border, opacity: pressed ? 0.85 : 1 },
           ]}
         >
-          <Text style={{ fontSize: 13.5, fontWeight: '700', color: colors.accent }}>
+          <Text style={{ fontSize: 13.5, fontWeight: '500', color: colors.accent }}>
             Join Vistrah — Free 3-Step Onboarding
           </Text>
           <Feather name="arrow-right" size={15} color={colors.accent} />

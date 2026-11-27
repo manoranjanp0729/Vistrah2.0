@@ -549,7 +549,7 @@ export function BusinessGrowthAuditView({
                 What You Are Missing Right Now ({live.audit.identified_gaps.length}):
               </strong>
               {live.audit.identified_gaps.length === 0 ? (
-                <p style={{ margin: 0, fontSize: '0.85rem', color: '#10b981', fontWeight: 700 }}>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#10b981', fontWeight: 500 }}>
                   Great job! Everything is set up (100/100 — Top Choice in Your Area).
                 </p>
               ) : (
@@ -738,7 +738,7 @@ export function BusinessGrowthAuditView({
           <aside className={s.quoteCart} aria-label="Your Selected Plan & Total Cost">
             <div>
               <p className={s.sectionEyebrow}>YOUR SELECTED PLAN & TOTAL COST</p>
-              <h3 style={{ margin: '4px 0 0', fontSize: '1.05rem', fontWeight: 800 }}>
+              <h3 style={{ margin: '4px 0 0', fontSize: '1.05rem', fontWeight: 500 }}>
                 Your Selected Plan & Total Cost
               </h3>
               <div style={{ fontSize: '0.82rem', opacity: 0.82, marginTop: 2 }}>
@@ -975,7 +975,7 @@ export function BusinessGrowthAuditView({
                     background: '#0f172a',
                     color: '#fde68a',
                     fontSize: '0.75rem',
-                    fontWeight: 700,
+                    fontWeight: 500,
                   }}
                 >
                   {websitePreview.contact_phone_display}
@@ -1013,7 +1013,7 @@ export function BusinessGrowthAuditView({
                       borderRadius: 9,
                       background: '#d4af37',
                       color: '#0f172a',
-                      fontWeight: 800,
+                      fontWeight: 500,
                       fontSize: '0.82rem',
                     }}
                   >
@@ -1031,7 +1031,7 @@ export function BusinessGrowthAuditView({
                     <div
                       style={{
                         fontSize: '0.7rem',
-                        fontWeight: 800,
+                        fontWeight: 500,
                         color: '#b45309',
                         marginBottom: 4,
                       }}
@@ -1049,10 +1049,10 @@ export function BusinessGrowthAuditView({
         {/* Simple 3-Step Plan to Get More Customers + One-Click Request This Website */}
         <div style={{ display: 'grid', gap: 12, paddingTop: 6 }}>
           <div>
-            <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 800 }}>
+            <h3 style={{ margin: 0, fontSize: '1.08rem', fontWeight: 500 }}>
               Simple 3-Step Plan to Get More Customers
             </h3>
-            <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#b45309', marginTop: 2 }}>
+            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#b45309', marginTop: 2 }}>
               {websitePreview.vertical_strategy.plan_heading}
             </div>
             <p className={s.pillarSummaryText} style={{ marginTop: 4 }}>
@@ -1063,7 +1063,7 @@ export function BusinessGrowthAuditView({
           <div className={s.strategyGrid}>
             {websitePreview.vertical_strategy.funnel_steps.map((stepText, idx) => (
               <div key={stepText} className={s.funnelStepCard}>
-                <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#b45309' }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: 500, color: '#b45309' }}>
                   STEP {idx + 1}
                 </span>
                 <strong>{stepText}</strong>
@@ -1097,7 +1097,7 @@ export function BusinessGrowthAuditView({
           </div>
 
           {websiteFeedback && (
-            <p style={{ margin: 0, fontSize: '0.84rem', fontWeight: 700, color: '#10b981' }}>
+            <p style={{ margin: 0, fontSize: '0.84rem', fontWeight: 500, color: '#10b981' }}>
               {websiteFeedback}
             </p>
           )}
@@ -1119,7 +1119,7 @@ export function BusinessGrowthAuditView({
               <span
                 style={{
                   fontSize: '0.7rem',
-                  fontWeight: 800,
+                  fontWeight: 500,
                   letterSpacing: '0.14em',
                   color: '#d4af37',
                 }}
@@ -1143,7 +1143,7 @@ export function BusinessGrowthAuditView({
                 </svg>
               </div>
 
-              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#fde68a' }}>
+              <span style={{ fontSize: '0.78rem', fontWeight: 500, color: '#fde68a' }}>
                 Scan for Live Offers, V Ads & Direct Call
               </span>
               <span style={{ fontSize: '0.68rem', color: '#94a3b8', wordBreak: 'break-all' }}>

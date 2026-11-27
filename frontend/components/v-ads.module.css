@@ -31,7 +31,7 @@
 .tabButton{flex:1;min-height:44px;padding:8px 12px;border-radius:8px;border:1px solid transparent;background:transparent;font-size:13px;font-weight:600;color:var(--text-secondary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:color .15s ease,background .15s ease}
 .tabButton:hover{color:var(--text-primary)}
 .tabButtonActive{background:var(--surface)!important;color:var(--accent-orange,#0F294A)!important;border-color:var(--border)!important;box-shadow:none}
-.tabBadge{padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;background:var(--border);color:var(--text-primary)}
+.tabBadge{padding:2px 8px;border-radius:8px;font-size:11px;font-weight:500;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;background:var(--border);color:var(--text-primary)}
 .tabButtonActive .tabBadge{background:var(--brand-teal-tint,#f0fdfa);color:var(--brand-teal-ink,#0f766e)}
 
 .statsGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -47,9 +47,9 @@
 .videoCard{background:var(--surface);border:1px solid var(--border);box-shadow:none;border-radius:var(--radius-md,12px);padding:20px;display:grid;gap:12px}
 .videoCardHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .videoTitle{margin:0;font-size:16px;font-weight:600;line-height:1.2;letter-spacing:-.015em;color:var(--text-primary)}
-.badgeLive{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:#e6f4ea;color:#137333;font-size:11px;font-weight:700;white-space:nowrap}
-.badgePending{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:#fef7e0;color:#b06000;font-size:11px;font-weight:700;white-space:nowrap}
-.badgeRejected{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:#fce8e6;color:#c5221f;font-size:11px;font-weight:700;white-space:nowrap}
+.badgeLive{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:#e6f4ea;color:#137333;font-size:11px;font-weight:500;white-space:nowrap}
+.badgePending{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:#fef7e0;color:#b06000;font-size:11px;font-weight:500;white-space:nowrap}
+.badgeRejected{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:8px;background:#fce8e6;color:#c5221f;font-size:11px;font-weight:500;white-space:nowrap}
 .engagementBar{display:flex;gap:16px;align-items:center;padding:10px 0;border-top:1px solid var(--hairline,var(--border));border-bottom:1px solid var(--hairline,var(--border));font-size:12px;color:var(--text-secondary)}
 .engagementItem{display:flex;align-items:center;gap:4px;font-weight:600;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;color:var(--text-primary)}
 .tipsCard{background:transparent;border:0;border-top:1px solid var(--hairline,var(--border));border-radius:0;padding:20px 0 0;display:flex;flex-direction:column;gap:8px}

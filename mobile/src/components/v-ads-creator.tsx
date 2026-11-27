@@ -330,7 +330,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               }}
             >
               <Text
-                style={{ fontSize: 11, fontWeight: '700', color: '#16a34a' }}
+                style={{ fontSize: 11, fontWeight: '500', color: '#16a34a' }}
               >
                 <UiText value="12s Vertical MP4" />
               </Text>
@@ -432,7 +432,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                     <Text
                       style={{
                         fontSize: 10,
-                        fontWeight: '800',
+                        fontWeight: '500',
                         color: template.themeColor,
                       }}
                     >
@@ -493,7 +493,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               backgroundColor: colors.soft,
             }}
           >
-            <Text style={{ fontSize: 11, fontWeight: '700', color: colors.text }}>
+            <Text style={{ fontSize: 11, fontWeight: '500', color: colors.text }}>
               {images.length} / 4
             </Text>
           </View>
@@ -743,7 +743,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                   <Text
                     style={{
                       fontSize: 13,
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: isSelected ? colors.accent : colors.text,
                     }}
                   >
@@ -851,7 +851,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 numberOfLines={1}
                 style={{
                   fontSize: 9,
-                  fontWeight: '800',
+                  fontWeight: '500',
                   color: '#fff',
                   letterSpacing: 0.5,
                 }}
@@ -863,7 +863,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               numberOfLines={1}
               style={{
                 fontSize: 10,
-                fontWeight: '700',
+                fontWeight: '500',
                 color: '#fff',
                 maxWidth: 110,
               }}
@@ -886,7 +886,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
               numberOfLines={2}
               style={{
                 fontSize: 15,
-                fontWeight: '800',
+                fontWeight: '500',
                 color: '#fff',
                 lineHeight: 18,
               }}
@@ -935,7 +935,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
                 gap: 4,
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: '700', color: '#fff' }}>
+              <Text style={{ fontSize: 12, fontWeight: '500', color: '#fff' }}>
                 {cta.toUpperCase()}
               </Text>
               <Feather name="arrow-right" size={12} color="#fff" />
@@ -959,7 +959,7 @@ export function VAdsCreator({ account, onSubmitted }: VAdsCreatorProps) {
             <Text
               style={{
                 fontSize: 7.5,
-                fontWeight: '700',
+                fontWeight: '500',
                 color: 'rgba(255,255,255,0.4)',
                 textAlign: 'center',
                 letterSpacing: 1,

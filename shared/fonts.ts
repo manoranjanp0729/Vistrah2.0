@@ -1,5 +1,5 @@
 export type FontLocale = 'en' | 'kn' | 'hi';
-export type FontWeight = 400 | 500 | 600 | 700;
+export type FontWeight = 400 | 500 | 600;
 
 /**
  * Five selectable Latin display/UI fonts normalized against Inter's advance width

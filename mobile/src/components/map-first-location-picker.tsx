@@ -390,7 +390,7 @@ export function MobileMapFirstLocationPicker({
                 onPress={()=>void selectSuggestion(item)}
                 style={{paddingHorizontal:12,paddingVertical:9,borderBottomWidth:1,borderBottomColor:colors.border}}
               >
-                <Text style={{fontSize:13,fontWeight:'700',color:colors.text}}>{item.main_text}</Text>
+                <Text style={{fontSize:13,fontWeight:'500',color:colors.text}}>{item.main_text}</Text>
                 {Boolean(item.secondary_text)&&<Text style={{fontSize:11,color:colors.muted}}>{item.secondary_text}</Text>}
               </Pressable>
             ))}
@@ -421,7 +421,7 @@ export function MobileMapFirstLocationPicker({
                     borderColor:active?'#0F766E':colors.border,
                   })}
                 >
-                  <Text style={{fontSize:12,fontWeight:'700',color:active?'#FFFFFF':colors.text}}>{city.label}</Text>
+                  <Text style={{fontSize:12,fontWeight:'500',color:active?'#FFFFFF':colors.text}}>{city.label}</Text>
                 </Pressable>
               );
             })}
@@ -444,7 +444,7 @@ export function MobileMapFirstLocationPicker({
             })}
           >
             <Feather name="navigation" size={13} color="#FFFFFF"/>
-            <Text style={{fontSize:12,fontWeight:'700',color:'#FFFFFF'}}>
+            <Text style={{fontSize:12,fontWeight:'500',color:'#FFFFFF'}}>
               {gpsBusy?'Locating…':'Use Current GPS'}
             </Text>
           </Pressable>
@@ -531,7 +531,7 @@ export function MobileMapFirstLocationPicker({
             onPress={()=>void Linking.openURL(googleMapsDirectionsUrl(value.latitude,value.longitude))}
             style={{paddingHorizontal:10,paddingVertical:6,borderRadius:8,borderWidth:1,borderColor:colors.border}}
           >
-            <Text style={{fontSize:11,fontWeight:'700',color:'#0D9488'}}>Maps ↗</Text>
+            <Text style={{fontSize:11,fontWeight:'500',color:'#0D9488'}}>Maps ↗</Text>
           </Pressable>
         </View>
 
@@ -559,7 +559,7 @@ export function MobileMapFirstLocationPicker({
                     borderColor:active?'#0F766E':colors.border,
                   })}
                 >
-                  <Text style={[styles.tabular,{fontSize:12,fontWeight:'700',color:active?'#FFFFFF':colors.text}]}>
+                  <Text style={[styles.tabular,{fontSize:12,fontWeight:'500',color:active?'#FFFFFF':colors.text}]}>
                     {km} km
                   </Text>
                 </Pressable>
@@ -574,7 +574,7 @@ export function MobileMapFirstLocationPicker({
           style={{flexDirection:'row',alignItems:'center',gap:6,paddingVertical:4}}
         >
           <Feather name="edit-3" size={14} color="#0D9488"/>
-          <Text style={{fontSize:13,fontWeight:'700',color:'#0D9488'}}>Edit street / landmark / PIN</Text>
+          <Text style={{fontSize:13,fontWeight:'500',color:'#0D9488'}}>Edit street / landmark / PIN</Text>
           <Feather name={drawerOpen?'chevron-up':'chevron-down'} size={15} color="#0D9488"/>
         </Pressable>
 
@@ -644,7 +644,7 @@ export function MobileMapFirstLocationPicker({
             })}
           >
             <Feather name="check-circle" size={16} color="#FFFFFF"/>
-            <Text style={{color:'#FFFFFF',fontSize:15,fontWeight:'700'}}>
+            <Text style={{color:'#FFFFFF',fontSize:15,fontWeight:'500'}}>
               {busy?'Saving…':confirmLabel}
             </Text>
           </Pressable>

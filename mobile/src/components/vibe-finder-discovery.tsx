@@ -530,14 +530,16 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   hero: {paddingVertical:spacing.regular,borderBottomWidth:1,borderColor:colors.border,gap:spacing.fieldGap},
   heroEyebrow: {
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '500',
     color: colors.accent,
   },
-  heroTitle: {...typography.title,color:colors.text},
+  heroTitle: { ...typography.screenTitle, color: colors.text },
   heroSubtitle: {
     fontSize: typography.body.fontSize,
-    lineHeight: 20,
+    lineHeight: typography.body.lineHeight,
+    fontWeight: '400',
     color: colors.muted,
   },
   heroActionRow: {
@@ -558,8 +560,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   primaryBtnText: {
     color: colors.ink,
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: typography.control.fontSize,
+    lineHeight: typography.control.lineHeight,
+    fontWeight: '500',
   },
   secondaryHeroBtn: {
     flexDirection: 'row',
@@ -574,8 +577,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   secondaryHeroBtnText: {
     color: colors.text,
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: typography.control.fontSize,
+    lineHeight: typography.control.lineHeight,
+    fontWeight: '500',
   },
   controlsCard: {
     borderRadius: radii.surface,
@@ -604,8 +608,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
     gap: 10,
   },
   localityText: {
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: typography.control.fontSize,
+    lineHeight: typography.control.lineHeight,
+    fontWeight: '500',
     flexShrink: 1,
   },
   gpsBtn: {
@@ -621,7 +626,7 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   gpsBtnText: {
     color: colors.ink,
     fontSize: typography.supporting.fontSize,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   pillsScroll: {
     flexDirection: 'row',
@@ -649,11 +654,12 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   pillText: {
     fontSize: typography.supporting.fontSize,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   moodSubtitle: {
     fontSize: typography.body.fontSize,
-    lineHeight: 18,
+    lineHeight: typography.body.lineHeight,
+    fontWeight: '400',
   },
   resultsHeader: {
     flexDirection: 'row',
@@ -663,11 +669,12 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   resultsTitle: {
     fontSize: 18,
+    lineHeight: 24,
     fontWeight: '600',
   },
   resultsCount: {
     fontSize: typography.supporting.fontSize,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   emptyCard: {
     borderRadius: radii.surface,
@@ -724,7 +731,8 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   badgeText: {
     color: '#0f766e',
     fontSize: 11,
-    fontWeight: '600',
+    lineHeight: 16,
+    fontWeight: '500',
   },
   cardBody: {
     padding: 14,
@@ -732,16 +740,19 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   cardCategory: {
     fontSize: 12,
-    fontWeight: '600',
+    lineHeight: 16,
+    fontWeight: '500',
     color: colors.accent,
   },
   cardTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
   },
   cardMeta: {
-    fontSize: typography.body.fontSize,
+    fontSize: 12.5,
     lineHeight: 18,
+    fontWeight: '400',
   },
   cardActions: {
     flexDirection: 'row',
@@ -761,7 +772,7 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   actionPrimaryText: {
     color: colors.ink,
     fontSize: typography.supporting.fontSize,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   actionSecondary: {
     flexDirection: 'row',
@@ -774,6 +785,6 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   actionSecondaryText: {
     fontSize: typography.supporting.fontSize,
-    fontWeight: '600',
+    fontWeight: '500',
   },
 });

@@ -196,10 +196,10 @@ export function AdminPricingTab() {
         }}
       >
         <View>
-          <Text style={{fontSize: 11, fontWeight: '700', letterSpacing: 1, color: textSecondary}}>
+          <Text style={{fontSize: 11, fontWeight: '500', letterSpacing: 1, color: textSecondary}}>
             LIVE STOREFRONT PRICING DB
           </Text>
-          <Text style={{fontSize: 16, fontWeight: '700', color: textPrimary, fontVariant: ['tabular-nums']}}>
+          <Text style={{fontSize: 16, fontWeight: '500', color: textPrimary, fontVariant: ['tabular-nums']}}>
             {sections.length} sections · {items.length} rate cards
           </Text>
         </View>
@@ -274,7 +274,7 @@ export function AdminPricingTab() {
             gap: 10,
           }}
         >
-          <Text style={{fontSize: 11, fontWeight: '700', letterSpacing: 1, color: textSecondary}}>
+          <Text style={{fontSize: 11, fontWeight: '500', letterSpacing: 1, color: textSecondary}}>
             HERO & FREE FOREVER PLATFORM BANNER
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -347,7 +347,7 @@ export function AdminPricingTab() {
         const secItems = items.filter(i => i.section_id === sec.id);
         return (
           <View key={sec.id} style={{gap: 10}}>
-            <Text style={{fontSize: 14, fontWeight: '700', color: textPrimary, marginTop: 4}}>
+            <Text style={{fontSize: 14, fontWeight: '500', color: textPrimary, marginTop: 4}}>
               {sec.title}
             </Text>
             {secItems.map(item => {
@@ -373,7 +373,7 @@ export function AdminPricingTab() {
                       <Text
                         style={{
                           fontSize: 12,
-                          fontWeight: '700',
+                          fontWeight: '500',
                           color: accent,
                           fontVariant: ['tabular-nums'],
                         }}

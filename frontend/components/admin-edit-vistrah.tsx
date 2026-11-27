@@ -595,7 +595,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <Layers size={20} style={{ color: '#e5a93c' }} />
-              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Vistrah Pages & Section Architecture</h2>
+              <h2 style={{ margin: 0, fontSize: 18, fontWeight: 600 }}>Vistrah Pages & Section Architecture</h2>
             </div>
             <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--muted, #94a3b8)' }}>
               Select a page to configure sections, select layout variations, toggle feature inclusions, and manage running photos.
@@ -629,7 +629,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                   borderRadius: 8,
                   border: isActive ? '2px solid #e5a93c' : '1px solid var(--border, #333d52)',
                   background: isActive ? 'rgba(229,169,60,0.12)' : 'transparent',
-                  fontWeight: isActive ? 700 : 500,
+                  fontWeight: isActive ? 500 : 500,
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -642,7 +642,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                     borderRadius: 4,
                     background: isLive ? '#166534' : '#854d0e',
                     color: '#fff',
-                    fontWeight: 700,
+                    fontWeight: 500,
                   }}
                 >
                   {editorPageStatus(p)}
@@ -670,7 +670,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 16 }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                  <h1 style={{ margin: 0, fontSize: 24, fontWeight: 800 }}>{currentPage.name}</h1>
+                  <h1 style={{ margin: 0, fontSize: 24, fontWeight: 600 }}>{currentPage.name}</h1>
                   <span
                     style={{
                       background: currentPage.status === 'LIVE' ? '#15803d' : '#a16207',
@@ -678,7 +678,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                       padding: '4px 10px',
                       borderRadius: 6,
                       fontSize: 12,
-                      fontWeight: 700,
+                      fontWeight: 500,
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: 4,
@@ -762,7 +762,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                     background: '#16a34a',
                     borderColor: '#16a34a',
                     color: '#fff',
-                    fontWeight: 700,
+                    fontWeight: 500,
                   }}
                 >
                   Make It Live
@@ -899,7 +899,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                      <span style={{ fontSize: 11, textTransform: 'uppercase', color: '#e5a93c', fontWeight: 700 }}>
+                      <span style={{ fontSize: 11, textTransform: 'uppercase', color: '#e5a93c', fontWeight: 500 }}>
                         {idx + 1}. {sec.name} ({sec.variation})
                       </span>
                       <span style={{ fontSize: 10, background: '#1e293b', padding: '2px 6px', borderRadius: 4 }}>
@@ -1064,7 +1064,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                           style={{
                             background: '#e5a93c',
                             color: '#000',
-                            fontWeight: 800,
+                            fontWeight: 500,
                             fontSize: 12,
                             padding: '2px 8px',
                             borderRadius: 6,
@@ -1078,7 +1078,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                           onChange={(e) => updateSection(section.id, { name: e.target.value })}
                           style={{
                             fontSize: 18,
-                            fontWeight: 700,
+                            fontWeight: 600,
                             border: '1px solid transparent',
                             background: 'transparent',
                             color: '#fff',
@@ -1161,7 +1161,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                       {/* 1. Variations Selector */}
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                          <label style={{ fontSize: 13, fontWeight: 700, color: '#e5a93c' }}>
+                          <label style={{ fontSize: 13, fontWeight: 500, color: '#e5a93c' }}>
                             Variations ({(section.available_variations || []).length} available)
                           </label>
                           <button
@@ -1228,7 +1228,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                                     {v.name}
                                   </strong>
                                   {v.badge && (
-                                    <span style={{ fontSize: 9, background: '#e5a93c', color: '#000', padding: '1px 5px', borderRadius: 4, fontWeight: 700 }}>
+                                    <span style={{ fontSize: 9, background: '#e5a93c', color: '#000', padding: '1px 5px', borderRadius: 4, fontWeight: 500 }}>
                                       {v.badge}
                                     </span>
                                   )}
@@ -1245,7 +1245,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                       {/* 2. Feature Inclusions */}<p>Page content can control its call to action. Location, verification, pricing, accounts and payments retain their existing app workflows; design feature definitions do not enable those capabilities.</p>
                       <div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                          <label style={{ fontSize: 13, fontWeight: 700, color: '#e5a93c' }}>
+                          <label style={{ fontSize: 13, fontWeight: 500, color: '#e5a93c' }}>
                             Feature Inclusions & Capabilities
                           </label>
                           <button
@@ -1335,7 +1335,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10, flexWrap: 'wrap', gap: 8 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                             <ImageIcon size={16} style={{ color: '#e5a93c' }} />
-                            <label style={{ fontSize: 13, fontWeight: 700, color: '#e5a93c' }}>
+                            <label style={{ fontSize: 13, fontWeight: 500, color: '#e5a93c' }}>
                               Current Running Photos ({(section.images || []).length})
                             </label>
                             <span style={{ fontSize: 11, color: '#38bdf8', background: 'rgba(56,189,248,0.1)', padding: '2px 8px', borderRadius: 4 }}>
@@ -1396,7 +1396,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                                 </strong>
 
                                 <div style={{ marginTop: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                  <span style={{ fontSize: 11, color: '#e5a93c', fontWeight: 700 }}>
+                                  <span style={{ fontSize: 11, color: '#e5a93c', fontWeight: 500 }}>
                                     Resolution: {img.resolution || (img.width && img.height ? `${img.width} × ${img.height} px` : 'Detected on change')}
                                   </span>
                                   <span style={{ fontSize: 11, color: 'var(--muted, #94a3b8)' }}>
@@ -1462,7 +1462,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
               boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
             }}
           >
-            <h2 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 700 }}>Add New Vistrah Page</h2>
+            <h2 style={{ margin: '0 0 8px', fontSize: 18, fontWeight: 600 }}>Add New Vistrah Page</h2>
             <p style={{ margin: '0 0 16px', fontSize: 13, color: 'var(--muted, #94a3b8)' }}>
               Define a new page, assign sections, variations, and make it live across Vistrah.
             </p>
@@ -1588,7 +1588,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
               boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
             }}
           >
-            <h2 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 700 }}>
+            <h2 style={{ margin: '0 0 6px', fontSize: 18, fontWeight: 600 }}>
               {photoModal.isNew ? 'Add New Section Photo' : 'Change Section Photo & Inspect Resolution'}
             </h2>
             <p style={{ margin: '0 0 16px', fontSize: 13, color: 'var(--muted, #94a3b8)' }}>
@@ -1744,7 +1744,7 @@ export function AdminEditVistrah({ actorId }: { actorId?: number }) {
                   type="button"
                   className="button"
                   onClick={applyPhotoModal}
-                  style={{ background: '#e5a93c', color: '#000', fontWeight: 700 }}
+                  style={{ background: '#e5a93c', color: '#000', fontWeight: 500 }}
                 >
                   {photoModal.isNew ? 'Add Photo to Section' : 'Apply Replacement'}
                 </button>

@@ -3,5 +3,5 @@
   "radii": {"input":8,"action":8,"surface":12,"pill":9999},
   "controlHeights": {"pill":44,"compact":44,"standard":44,"multiline":120},
   "layout": {"pageMaxWidth":1080,"borderWidth":1},
-  "typography": {"title":24,"heading":18,"cardTitle":16,"body":14,"supporting":12,"action":13}
+  "typography": {"title":20,"heading":18,"cardTitle":14,"body":13,"supporting":12,"action":13}
 }

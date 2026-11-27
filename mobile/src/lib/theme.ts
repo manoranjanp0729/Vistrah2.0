@@ -4,6 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import brandTheme from '../../../shared/brand-theme.json';
 import ui from '../../../shared/ui-tokens.json';
 import {themeAppearance} from '../../../shared/theme-appearance';
+import {typographyTokens} from '../../../shared/typography';
 
 export type ThemeMode='light'|'dark';
 export const accentPresets = brandTheme.accentPresets;
@@ -14,17 +15,21 @@ export type ThemeColors=ReturnType<typeof themeAppearance>['colors'];
 
 export const tones=[{background:'#f0fdfa',text:'#115e59'},{background:'#ccfbf1',text:'#0f766e'},{background:'#eff6ff',text:'#0f294a'},{background:'#f1f5f9',text:'#0f172a'}];
 
-// Shared text hierarchy across the phone website and native screens.
+// Shared Swiggy/Myntra consumer-app text hierarchy across phone-web and native screens.
 export const typography={
- title:{fontSize:ui.typography.title,lineHeight:29,letterSpacing:-0.6,fontWeight:'600'},
- heading:{fontSize:ui.typography.heading,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
- sectionHeading:{fontSize:ui.typography.heading,lineHeight:22,letterSpacing:-0.45,fontWeight:'600'},
- cardTitle:{fontSize:ui.typography.cardTitle,lineHeight:22,letterSpacing:-0.21,fontWeight:'600'},
- body:{fontSize:ui.typography.body,lineHeight:21,fontWeight:'400'},
- supporting:{fontSize:ui.typography.supporting,lineHeight:18,fontWeight:'400'},
- label:{fontSize:10,lineHeight:14,letterSpacing:.6},
- action:{fontSize:ui.typography.action,lineHeight:18,fontWeight:'600'},
- input:{fontSize:14},
+ screenTitle:{fontSize:typographyTokens.screenTitle.fontSize,lineHeight:typographyTokens.screenTitle.lineHeight,letterSpacing:-0.3,fontWeight:typographyTokens.screenTitle.fontWeight},
+ sectionTitle:{fontSize:typographyTokens.sectionTitle.fontSize,lineHeight:typographyTokens.sectionTitle.lineHeight,letterSpacing:-0.25,fontWeight:typographyTokens.sectionTitle.fontWeight},
+ title:{fontSize:typographyTokens.screenTitle.fontSize,lineHeight:typographyTokens.screenTitle.lineHeight,letterSpacing:-0.3,fontWeight:typographyTokens.screenTitle.fontWeight},
+ heading:{fontSize:typographyTokens.sectionTitle.fontSize,lineHeight:typographyTokens.sectionTitle.lineHeight,letterSpacing:-0.25,fontWeight:typographyTokens.sectionTitle.fontWeight},
+ sectionHeading:{fontSize:typographyTokens.sectionTitle.fontSize,lineHeight:typographyTokens.sectionTitle.lineHeight,letterSpacing:-0.25,fontWeight:typographyTokens.sectionTitle.fontWeight},
+ cardTitle:{fontSize:typographyTokens.cardTitle.fontSize,lineHeight:typographyTokens.cardTitle.lineHeight,letterSpacing:-0.15,fontWeight:typographyTokens.cardTitle.fontWeight},
+ body:{fontSize:typographyTokens.body.fontSize,lineHeight:typographyTokens.body.lineHeight,fontWeight:typographyTokens.body.fontWeight},
+ control:{fontSize:typographyTokens.control.fontSize,lineHeight:typographyTokens.control.lineHeight,fontWeight:typographyTokens.control.fontWeight},
+ caption:{fontSize:typographyTokens.caption.fontSize,lineHeight:typographyTokens.caption.lineHeight,fontWeight:typographyTokens.caption.fontWeight},
+ supporting:{fontSize:typographyTokens.caption.fontSize,lineHeight:typographyTokens.caption.lineHeight,fontWeight:typographyTokens.caption.fontWeight},
+ label:{fontSize:typographyTokens.caption.minFontSize,lineHeight:typographyTokens.caption.lineHeight,letterSpacing:.4,fontWeight:typographyTokens.caption.mediumWeight},
+ action:{fontSize:typographyTokens.control.fontSize,lineHeight:typographyTokens.control.lineHeight,fontWeight:typographyTokens.control.fontWeight},
+ input:{fontSize:typographyTokens.control.fontSize,lineHeight:typographyTokens.control.lineHeight,fontWeight:typographyTokens.body.fontWeight},
  tabular:{fontVariant:['tabular-nums']},
 } as const;
 // Strict 4pt/8pt spatial rhythm across mobile and phone-web surfaces.

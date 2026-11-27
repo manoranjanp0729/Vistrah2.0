@@ -27,7 +27,7 @@ export function AdsMarketing(){
      <UiElement as={Image} source={images[index]} accessibilityLabel={t('marketing.'+photoKeys[index])} resizeMode="cover" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%'}}/>
     </View>
     <View style={{padding:12,gap:4}}>
-     <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.cardTitle,{fontSize:15,lineHeight:20,fontWeight:'600',color:colors.text}]}>{card.title[locale]}</Text>
+     <Text numberOfLines={2} ellipsizeMode="tail" style={[styles.cardTitle,{fontSize:14,lineHeight:20,fontWeight:'500',color:colors.text}]}>{card.title[locale]}</Text>
     </View>
    </UiElement>)}
   </View>

@@ -77,10 +77,10 @@ function FeatureBannerButton({
           <Feather name={icon} size={22} color="#FFFFFF" />
         </View>
         <View style={{flex: 1, gap: 2}}>
-          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: banner.muted, textTransform: 'uppercase'}}>
+          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '500', color: banner.muted, textTransform: 'uppercase'}}>
             <UiText value={badgeText}/>
           </Text>
-          <Text style={{fontSize: 16, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2}}>
+          <Text style={{fontSize: 16, fontWeight: '500', color: '#FFFFFF', letterSpacing: 0.2}}>
             <UiText value={title}/>
           </Text>
           <Text numberOfLines={1} style={{fontSize: 12, color: banner.muted, fontWeight: '500'}}>

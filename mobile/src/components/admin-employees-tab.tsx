@@ -322,12 +322,12 @@ function buildPrintableHtmlDocument({
     .sheet { width: 100%; max-width: 190mm; margin: 0 auto; }
     .page-break { break-before: page; page-break-before: always; padding-top: 2mm; }
     .letterhead { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid #0f172a; padding-bottom: 10px; margin-bottom: 12px; }
-    .brand-mark { font-size: 16pt; font-weight: 800; letter-spacing: -0.03em; }
-    .brand-legal { font-size: 7.5pt; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #334155; }
+    .brand-mark { font-size: 16pt; font-weight: 600; letter-spacing: -0.03em; }
+    .brand-legal { font-size: 7.5pt; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #334155; }
     .letterhead-right { text-align: right; font-size: 8pt; color: #334155; }
     .ref-strip { display: flex; justify-content: space-between; font-size: 8.5pt; color: #334155; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
     .recipient { margin-bottom: 10px; font-size: 9pt; }
-    .doc-heading { font-size: 11.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin: 8px 0 10px; }
+    .doc-heading { font-size: 11.5pt; font-weight: 600; text-transform: uppercase; letter-spacing: -0.02em; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; margin: 8px 0 10px; }
     .clauses { display: flex; flex-direction: column; gap: 7px; margin: 8px 0 14px; }
     .clause { font-size: 8.9pt; color: #1e293b; margin: 0; }
     .meta-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; margin: 8px 0 12px; font-size: 8.5pt; }
@@ -338,8 +338,8 @@ function buildPrintableHtmlDocument({
     .ctc-table th, .ctc-table td { border: 1px solid #cbd5e1; padding: 5px 8px; text-align: right; }
     .ctc-table th:first-child, .ctc-table td:first-child { text-align: left; }
     .ctc-table th { background: #f1f5f9; font-size: 7.5pt; text-transform: uppercase; letter-spacing: 0.05em; }
-    .ctc-table tr.band td { background: #f8fafc; font-weight: 600; }
-    .ctc-table tr.total td { background: #ecf5f1; font-weight: 700; }
+    .ctc-table tr.band td { background: #f8fafc; font-weight: 500; }
+    .ctc-table tr.total td { background: #ecf5f1; font-weight: 600; }
     .muted { color: #475569; font-weight: 400; }
     .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 18px; padding-top: 10px; border-top: 1px solid #cbd5e1; font-size: 8.5pt; }
     .sig-space { height: 32px; border-bottom: 1px dashed #94a3b8; margin-bottom: 4px; }
@@ -698,7 +698,7 @@ export function AdminEmployeesTab() {
                     backgroundColor: accent,
                   }}
                 >
-                  <Text style={{color: '#ffffff', fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: '#ffffff', fontSize: 12, fontWeight: '500'}}>
                     Print / Save A4 PDF
                   </Text>
                 </Pressable>
@@ -794,14 +794,14 @@ export function AdminEmployeesTab() {
             }}
           >
             <View>
-              <Text style={{color: '#0f172a', fontSize: 18, fontWeight: '800'}}>
+              <Text style={{color: '#0f172a', fontSize: 18, fontWeight: '600'}}>
                 VISTRAH
               </Text>
               <Text
                 style={{
                   color: '#475569',
                   fontSize: 10,
-                  fontWeight: '700',
+                  fontWeight: '500',
                   letterSpacing: 1,
                 }}
               >
@@ -809,7 +809,7 @@ export function AdminEmployeesTab() {
               </Text>
             </View>
             <View style={{alignItems: 'flex-end'}}>
-              <Text style={{color: '#0f172a', fontSize: 11, fontWeight: '700'}}>
+              <Text style={{color: '#0f172a', fontSize: 11, fontWeight: '500'}}>
                 Bengaluru, Karnataka, India
               </Text>
               <Text style={{color: '#475569', fontSize: 11}}>
@@ -818,7 +818,7 @@ export function AdminEmployeesTab() {
             </View>
           </View>
 
-          <Text style={{color: '#0f172a', fontSize: 14, fontWeight: '700'}}>
+          <Text style={{color: '#0f172a', fontSize: 14, fontWeight: '500'}}>
             {letterKind === 'appointment'
               ? `LETTER OF APPOINTMENT — ${activeLetterEmp.designation.toUpperCase()}`
               : letterKind === 'salary'
@@ -871,7 +871,7 @@ export function AdminEmployeesTab() {
                 style={{
                   color: '#0f172a',
                   fontSize: 12,
-                  fontWeight: '700',
+                  fontWeight: '500',
                   fontVariant: ['tabular-nums'],
                 }}
               >
@@ -885,14 +885,14 @@ export function AdminEmployeesTab() {
                 HRA: {formatInrWhole(letterBreakdown.earnings.hra.monthlyInr)}/mo · Special:{' '}
                 {formatInrWhole(letterBreakdown.earnings.specialAllowance.monthlyInr)}/mo
               </Text>
-              <Text style={{color: '#0f172a', fontSize: 12, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+              <Text style={{color: '#0f172a', fontSize: 12, fontWeight: '500', fontVariant: ['tabular-nums']}}>
                 Gross: {formatInrWhole(letterBreakdown.gross.monthlyInr)}/mo (
                 {formatInrWhole(letterBreakdown.gross.annualInr)}/yr)
               </Text>
               <Text style={{color: '#334155', fontSize: 12, fontVariant: ['tabular-nums']}}>
                 Employer PF: {formatInrWhole(letterBreakdown.employerContributions.employerPf.monthlyInr)}/mo · Employee PF: −{formatInrWhole(letterBreakdown.deductions.employeePf.monthlyInr)}/mo · PT: −{formatInrWhole(letterBreakdown.deductions.professionalTax.monthlyInr)}/mo
               </Text>
-              <Text style={{color: '#14532d', fontSize: 13, fontWeight: '800', fontVariant: ['tabular-nums']}}>
+              <Text style={{color: '#14532d', fontSize: 13, fontWeight: '500', fontVariant: ['tabular-nums']}}>
                 Net In-Hand: {formatInrWhole(letterBreakdown.netInHand.monthlyInr)}/mo · Total CTC:{' '}
                 {formatInrWhole(letterBreakdown.totalCtc.annualInr)}/yr
               </Text>
@@ -925,7 +925,7 @@ export function AdminEmployeesTab() {
               ← Back to Directory
             </Text>
           </Pressable>
-          <Text style={{color: textSecondary, fontSize: 12, fontWeight: '700'}}>
+          <Text style={{color: textSecondary, fontSize: 12, fontWeight: '500'}}>
             {editingId !== null ? `Editing ${employeeCode}` : `New Record (${employeeCode})`}
           </Text>
         </View>
@@ -944,10 +944,10 @@ export function AdminEmployeesTab() {
           }}
         >
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-            <Text style={{color: textPrimary, fontSize: 14, fontWeight: '700'}}>
+            <Text style={{color: textPrimary, fontSize: 14, fontWeight: '500'}}>
               2026 Indian Labour Code CTC Preview
             </Text>
-            <Text style={{color: accent, fontSize: 11, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+            <Text style={{color: accent, fontSize: 11, fontWeight: '500', fontVariant: ['tabular-nums']}}>
               Basic {formBreakdown.basicShareOfCtcPct}% CTC
             </Text>
           </View>
@@ -956,7 +956,7 @@ export function AdminEmployeesTab() {
             {formatInrWhole(formBreakdown.earnings.hra.monthlyInr)}/mo · Special:{' '}
             {formatInrWhole(formBreakdown.earnings.specialAllowance.monthlyInr)}/mo
           </Text>
-          <Text style={{color: textPrimary, fontSize: 12, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+          <Text style={{color: textPrimary, fontSize: 12, fontWeight: '500', fontVariant: ['tabular-nums']}}>
             Gross: {formatInrWhole(formBreakdown.gross.monthlyInr)}/mo · Deductions: −
             {formatInrWhole(formBreakdown.deductions.totalMonthlyInr)}/mo · Net In-Hand:{' '}
             {formatInrWhole(formBreakdown.netInHand.monthlyInr)}/mo (
@@ -975,7 +975,7 @@ export function AdminEmployeesTab() {
             gap: 10,
           }}
         >
-          <Text style={{color: textPrimary, fontSize: 15, fontWeight: '700'}}>
+          <Text style={{color: textPrimary, fontSize: 15, fontWeight: '500'}}>
             {editingId !== null ? 'Edit Employee Profile' : 'Add Internal Employee'}
           </Text>
 
@@ -1102,7 +1102,7 @@ export function AdminEmployeesTab() {
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : textPrimary, fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? '#fff' : textPrimary, fontSize: 12, fontWeight: '500'}}>
                     {st === 'active' ? 'Active' : 'Relieved'}
                   </Text>
                 </Pressable>
@@ -1133,7 +1133,7 @@ export function AdminEmployeesTab() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{color: '#fff', fontSize: 13, fontWeight: '700'}}>
+              <Text style={{color: '#fff', fontSize: 13, fontWeight: '500'}}>
                 {busy ? 'Saving…' : editingId !== null ? 'Save Employee' : 'Create Employee'}
               </Text>
             </Pressable>
@@ -1154,7 +1154,7 @@ export function AdminEmployeesTab() {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{color: '#dc2626', fontSize: 12, fontWeight: '700'}}>Delete</Text>
+                <Text style={{color: '#dc2626', fontSize: 12, fontWeight: '500'}}>Delete</Text>
               </Pressable>
             )}
           </View>
@@ -1181,18 +1181,18 @@ export function AdminEmployeesTab() {
         }}
       >
         <View style={{flex: 1, minWidth: 130, padding: 12, borderRightWidth: 1, borderRightColor: border}}>
-          <Text style={{color: textSecondary, fontSize: 10, fontWeight: '700', letterSpacing: 0.8}}>
+          <Text style={{color: textSecondary, fontSize: 10, fontWeight: '500', letterSpacing: 0.8}}>
             ACTIVE STAFF
           </Text>
-          <Text style={{color: textPrimary, fontSize: 20, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+          <Text style={{color: textPrimary, fontSize: 20, fontWeight: '500', fontVariant: ['tabular-nums']}}>
             {summary.active} / {summary.total}
           </Text>
         </View>
         <View style={{flex: 1, minWidth: 150, padding: 12}}>
-          <Text style={{color: textSecondary, fontSize: 10, fontWeight: '700', letterSpacing: 0.8}}>
+          <Text style={{color: textSecondary, fontSize: 10, fontWeight: '500', letterSpacing: 0.8}}>
             ACTIVE ANNUAL CTC
           </Text>
-          <Text style={{color: textPrimary, fontSize: 18, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+          <Text style={{color: textPrimary, fontSize: 18, fontWeight: '500', fontVariant: ['tabular-nums']}}>
             {formatInrWhole(summary.active_annual_ctc_inr)}
           </Text>
         </View>
@@ -1240,7 +1240,7 @@ export function AdminEmployeesTab() {
             backgroundColor: accent,
           }}
         >
-          <Text style={{color: '#fff', fontSize: 12, fontWeight: '700'}}>+ Add Employee</Text>
+          <Text style={{color: '#fff', fontSize: 12, fontWeight: '500'}}>+ Add Employee</Text>
         </Pressable>
       </View>
 
@@ -1266,7 +1266,7 @@ export function AdminEmployeesTab() {
             gap: 8,
           }}
         >
-          <Text style={{color: textPrimary, fontSize: 14, fontWeight: '700'}}>
+          <Text style={{color: textPrimary, fontSize: 14, fontWeight: '500'}}>
             No employee records yet
           </Text>
           <Text style={{color: textSecondary, fontSize: 12, textAlign: 'center'}}>
@@ -1294,15 +1294,15 @@ export function AdminEmployeesTab() {
               }}
             >
               <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                <Text style={{color: accent, fontSize: 11, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+                <Text style={{color: accent, fontSize: 11, fontWeight: '500', fontVariant: ['tabular-nums']}}>
                   {emp.employee_code} · {emp.status.toUpperCase()}
                 </Text>
-                <Text style={{color: textPrimary, fontSize: 13, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+                <Text style={{color: textPrimary, fontSize: 13, fontWeight: '500', fontVariant: ['tabular-nums']}}>
                   {formatInrWhole(calc.totalCtc.annualInr)}/yr
                 </Text>
               </View>
 
-              <Text style={{color: textPrimary, fontSize: 15, fontWeight: '700'}}>
+              <Text style={{color: textPrimary, fontSize: 15, fontWeight: '500'}}>
                 {emp.full_name}
               </Text>
               <Text style={{color: textSecondary, fontSize: 12}}>

@@ -501,8 +501,8 @@ export default function AdminDashboard() {
             gap: 8,
           }}
         >
-          <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 11, fontWeight: '700', letterSpacing: 1.4}}><UiText value={"EDITORIAL ADMIN"}/></Text>
-          <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 22, fontWeight: '700'}}><UiText value={"Administrator sign-in"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 11, fontWeight: '600', letterSpacing: 1.4}}><UiText value={"EDITORIAL ADMIN"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 22, fontWeight: '600'}}><UiText value={"Administrator sign-in"}/></Text>
           <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 13, lineHeight: 19}}><UiText value={"Sign in with your authorized administrator account to access platform controls."}/></Text>
         </View>
         <Pressable
@@ -533,8 +533,8 @@ export default function AdminDashboard() {
             gap: 8,
           }}
         >
-          <Text style={{color: '#dc2626', fontSize: 11, fontWeight: '700', letterSpacing: 1.4}}><UiText value={"ACCESS DENIED"}/></Text>
-          <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 20, fontWeight: '700'}}><UiText value={"Administrator access required"}/></Text>
+          <Text style={{color: '#dc2626', fontSize: 11, fontWeight: '600', letterSpacing: 1.4}}><UiText value={"ACCESS DENIED"}/></Text>
+          <Text style={{color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight, fontSize: 20, fontWeight: '600'}}><UiText value={"Administrator access required"}/></Text>
           <Text style={{color: mode === 'dark' ? adminTheme.mutedDark : adminTheme.mutedLight, fontSize: 13, lineHeight: 19}}><UiText value={"This customer account cannot access the Vistrah Administration control center."}/></Text>
         </View>
       </Page>
@@ -615,7 +615,7 @@ export default function AdminDashboard() {
         }}
       >
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Text style={{color: textSec, fontSize: 11, fontWeight: '700', letterSpacing: 1.3}}>
+          <Text style={{color: textSec, fontSize: 11, fontWeight: '500', letterSpacing: 1.3}}>
             <UiText value={"EDITORIAL ADMIN · CONTROL CENTER"}/>
           </Text>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
@@ -626,7 +626,7 @@ export default function AdminDashboard() {
           </View>
         </View>
 
-        <Text accessibilityRole="header" style={{color: textPri, fontSize: 22, fontWeight: '700', letterSpacing: -0.4}}>
+        <Text accessibilityRole="header" style={{color: textPri, fontSize: 22, fontWeight: '500', letterSpacing: -0.4}}>
           <UiText value={activePrimary.label}/>
         </Text>
         <Text style={{color: textSec, fontSize: 13, lineHeight: 19}}>
@@ -676,7 +676,7 @@ export default function AdminDashboard() {
                   <Text
                     style={{
                       fontSize: 10,
-                      fontWeight: '700',
+                      fontWeight: '500',
                       color: '#173f35',
                       fontVariant: ['tabular-nums'],
                     }}
@@ -715,11 +715,11 @@ export default function AdminDashboard() {
                   gap: 6,
                 }}
               >
-                <Text style={{fontSize: 12, fontWeight: active ? '700' : '500', color: textPri}}>
+                <Text style={{fontSize: 12, fontWeight: active ? '500' : '500', color: textPri}}>
                   {sub.label}
                 </Text>
                 {Boolean(sub.badge && sub.badge > 0) && (
-                  <Text style={{fontSize: 11, fontWeight: '700', color: activeAccent, fontVariant: ['tabular-nums']}}>
+                  <Text style={{fontSize: 11, fontWeight: '500', color: activeAccent, fontVariant: ['tabular-nums']}}>
                     {sub.badge}
                   </Text>
                 )}
@@ -789,7 +789,7 @@ export default function AdminDashboard() {
                     }}
                   >
                     <Text style={{fontSize: 11, fontWeight: '600', color: textSec}}>{kpi.label}</Text>
-                    <Text style={{fontSize: 22, fontWeight: '700', color: textPri, fontVariant: ['tabular-nums']}}>
+                    <Text style={{fontSize: 22, fontWeight: '500', color: textPri, fontVariant: ['tabular-nums']}}>
                       {kpi.value}
                     </Text>
                     <Text style={{fontSize: 11, color: textSec, fontVariant: ['tabular-nums']}}>
@@ -812,10 +812,10 @@ export default function AdminDashboard() {
               >
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                   <View>
-                    <Text style={{fontSize: 10, fontWeight: '700', letterSpacing: 1, color: textSec}}>
+                    <Text style={{fontSize: 10, fontWeight: '500', letterSpacing: 1, color: textSec}}>
                       ACTIONABLE QUEUE
                     </Text>
-                    <Text style={{fontSize: 16, fontWeight: '700', color: textPri}}>Needs Review Now</Text>
+                    <Text style={{fontSize: 16, fontWeight: '500', color: textPri}}>Needs Review Now</Text>
                   </View>
                   <Pressable onPress={overviewResult.retry} style={{padding: 4}}>
                     <Text style={{color: activeAccent, fontSize: 12, fontWeight: '600'}}>Refresh ↺</Text>
@@ -847,7 +847,7 @@ export default function AdminDashboard() {
                           <Text style={{fontSize: 13, fontWeight: '600', color: textPri}}>{q.label}</Text>
                           <Text style={{fontSize: 12, color: textSec}}>{q.detail}</Text>
                         </View>
-                        <Text style={{fontSize: 13, fontWeight: '700', color: activeAccent, fontVariant: ['tabular-nums']}}>
+                        <Text style={{fontSize: 13, fontWeight: '500', color: activeAccent, fontVariant: ['tabular-nums']}}>
                           {q.count} →
                         </Text>
                       </Pressable>
@@ -886,7 +886,7 @@ export default function AdminDashboard() {
                       <Text style={{fontSize: 14, fontWeight: '600', color: textPri}}>{card.title}</Text>
                       <Text style={{fontSize: 12, color: textSec}}>{card.desc}</Text>
                     </View>
-                    <Text style={{fontSize: 14, fontWeight: '700', color: activeAccent}}>→</Text>
+                    <Text style={{fontSize: 14, fontWeight: '500', color: activeAccent}}>→</Text>
                   </Pressable>
                 ))}
               </View>
@@ -906,7 +906,7 @@ export default function AdminDashboard() {
                       style={[styles.row, {justifyContent: 'space-between', paddingVertical: 6}]}
                     >
                       <Text style={[styles.heading, {fontSize: 14}]}><UiText value={group.title}/></Text>
-                      <Text style={[styles.text, {fontWeight: '700', color: activeAccent}]}>{visible ? '−' : '+'}</Text>
+                      <Text style={[styles.text, {fontWeight: '600', color: activeAccent}]}>{visible ? '−' : '+'}</Text>
                     </Pressable>
                     {visible &&
                       group.items.map(item => (
@@ -948,7 +948,7 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"Customer Enquiries"}/></Text>
             <Pressable onPress={loadRequests} style={{padding: 6}}>
-              <Text style={{color: colors.accent, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: colors.accent, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 
@@ -969,7 +969,7 @@ export default function AdminDashboard() {
                     backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '500'}}>
                     {status.replace('_', ' ')}
                   </Text>
                 </Pressable>
@@ -1011,7 +1011,7 @@ export default function AdminDashboard() {
                         #{req.id} · {req.service_title}
                       </Text>
                       <View style={{backgroundColor: statusColor + '20', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, borderWidth: 1, borderColor: statusColor + '40'}}>
-                        <Text style={{color: statusColor, fontSize: 11, fontWeight: '800'}}>
+                        <Text style={{color: statusColor, fontSize: 11, fontWeight: '500'}}>
                           {req.status.replace('_', ' ')}
                         </Text>
                       </View>
@@ -1039,7 +1039,7 @@ export default function AdminDashboard() {
                                   colors={accentGradient}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"Start review"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"Start review"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                               <Pressable
@@ -1060,7 +1060,7 @@ export default function AdminDashboard() {
                                   colors={accentGradient}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"Mark assigned"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"Mark assigned"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                               <Pressable
@@ -1081,7 +1081,7 @@ export default function AdminDashboard() {
                                   colors={accentGradient}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"Start work"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"Start work"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                               <Pressable
@@ -1102,7 +1102,7 @@ export default function AdminDashboard() {
                                   colors={adminTheme.approveGradient}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Complete"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✓ Complete"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                               <Pressable
@@ -1130,7 +1130,7 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"V Ads Moderation"}/></Text>
             <Pressable onPress={loadVAds} style={{padding: 6}}>
-              <Text style={{color: colors.accent, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: colors.accent, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 
@@ -1146,7 +1146,7 @@ export default function AdminDashboard() {
                 backgroundColor: vAdsSubTab === 'videos' ? adminTheme.accent : 'transparent',
               }}
             >
-              <Text style={{color: vAdsSubTab === 'videos' ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontWeight: '700', fontSize: 13}}>
+              <Text style={{color: vAdsSubTab === 'videos' ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontWeight: '500', fontSize: 13}}>
                 <UiText value={"Video Ads "}/></Text>
             </Pressable>
             <Pressable
@@ -1159,7 +1159,7 @@ export default function AdminDashboard() {
                 backgroundColor: vAdsSubTab === 'advertisers' ? adminTheme.accent : 'transparent',
               }}
             >
-              <Text style={{color: vAdsSubTab === 'advertisers' ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontWeight: '700', fontSize: 13}}>
+              <Text style={{color: vAdsSubTab === 'advertisers' ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontWeight: '500', fontSize: 13}}>
                 <UiText value={"Advertiser Channels "}/></Text>
             </Pressable>
           </View>
@@ -1184,7 +1184,7 @@ export default function AdminDashboard() {
                     backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '500'}}>
                     {st}
                   </Text>
                 </Pressable>
@@ -1217,7 +1217,7 @@ export default function AdminDashboard() {
                         <Text style={{
                           color: vid.status === 'APPROVED' ? '#065f46' : vid.status === 'PENDING' ? '#92400e' : '#991b1b',
                           fontSize: 11,
-                          fontWeight: '700',
+                          fontWeight: '500',
                         }}>
                           {vid.status}
                         </Text>
@@ -1232,7 +1232,7 @@ export default function AdminDashboard() {
                         end={{x: 1, y: 1}}
                         style={{paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}
                       >
-                        <Text style={{color: '#fff', fontSize: 10, fontWeight: '800'}}>
+                        <Text style={{color: '#fff', fontSize: 10, fontWeight: '500'}}>
                           ▷ {vid.advertiser?.name || 'VISTRAH'}
                         </Text>
                       </LinearGradient>
@@ -1262,7 +1262,7 @@ export default function AdminDashboard() {
                                   colors={[adminTheme.approveGradient[0], adminTheme.approveGradient[1]]}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve ad"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✓ Approve ad"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                               <Pressable
@@ -1273,7 +1273,7 @@ export default function AdminDashboard() {
                                   colors={[adminTheme.rejectGradient[0], adminTheme.rejectGradient[1]]}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                             </>
@@ -1283,7 +1283,7 @@ export default function AdminDashboard() {
                               onPress={() => removeVideo(vid.id, vid.status)}
                               style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12, borderColor: '#fca5a5'}]}
                             >
-                              <Text style={{color: '#ef4444', fontWeight: '700', fontSize: 12}}><UiText value={"Remove ad"}/></Text>
+                              <Text style={{color: '#ef4444', fontWeight: '500', fontSize: 12}}><UiText value={"Remove ad"}/></Text>
                             </Pressable>
                           )}
                         </>
@@ -1304,7 +1304,7 @@ export default function AdminDashboard() {
                 <View key={acc.id} style={[styles.card, {gap: 10, borderColor: colors.border}]}>
                   <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                     <Text style={[styles.heading, {fontSize: 16}]}>{acc.name}</Text>
-                    <Text style={{color: colors.accent, fontWeight: '700', fontSize: 12}}>@{acc.handle}</Text>
+                    <Text style={{color: colors.accent, fontWeight: '600', fontSize: 12}}>@{acc.handle}</Text>
                   </View>
                   <Text style={[styles.text, {fontSize: 13, lineHeight: 18}]}>{acc.description || 'No business description provided.'}</Text>
 
@@ -1323,7 +1323,7 @@ export default function AdminDashboard() {
                               colors={[adminTheme.approveGradient[0], adminTheme.approveGradient[1]]}
                               style={{paddingVertical: 9, paddingHorizontal: 16}}
                             >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve channel"}/></Text>
+                              <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✓ Approve channel"}/></Text>
                             </LinearGradient>
                           </Pressable>
                           <Pressable
@@ -1334,7 +1334,7 @@ export default function AdminDashboard() {
                               colors={[adminTheme.rejectGradient[0], adminTheme.rejectGradient[1]]}
                               style={{paddingVertical: 9, paddingHorizontal: 16}}
                             >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
+                              <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                             </LinearGradient>
                           </Pressable>
                         </>
@@ -1354,7 +1354,7 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"Commerce Listings"}/></Text>
             <Pressable onPress={loadCommerce} style={{padding: 6}}>
-              <Text style={{color: colors.accent, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: colors.accent, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 
@@ -1375,7 +1375,7 @@ export default function AdminDashboard() {
                     backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '500'}}>
                     {st}
                   </Text>
                 </Pressable>
@@ -1396,7 +1396,7 @@ export default function AdminDashboard() {
                 <View key={item.id} style={[styles.card, {gap: 10, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
                   <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                     <Text style={[styles.heading, {fontSize: 16, flex: 1, color: mode === 'dark' ? adminTheme.textDark : adminTheme.textLight}]}><UiText value={item.title}/></Text>
-                    <Text style={{fontSize: 17, fontWeight: '800', color: adminTheme.accentEmerald}}>
+                    <Text style={{fontSize: 17, fontWeight: '500', color: adminTheme.accentEmerald}}>
                       ₹{(item.unit_price_paise / 100).toFixed(2)}
                     </Text>
                   </View>
@@ -1418,7 +1418,7 @@ export default function AdminDashboard() {
                               colors={adminTheme.approveGradient}
                               style={{paddingVertical: 9, paddingHorizontal: 16}}
                             >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Approve listing"}/></Text>
+                              <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✓ Approve listing"}/></Text>
                             </LinearGradient>
                           </Pressable>
                           <Pressable
@@ -1429,7 +1429,7 @@ export default function AdminDashboard() {
                               colors={adminTheme.rejectGradient}
                               style={{paddingVertical: 9, paddingHorizontal: 16}}
                             >
-                              <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
+                              <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                             </LinearGradient>
                           </Pressable>
                         </>
@@ -1449,7 +1449,7 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"Providers & Businesses"}/></Text>
             <Pressable onPress={loadProviders} style={{padding: 6}}>
-              <Text style={{color: colors.accent, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: colors.accent, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 
@@ -1470,7 +1470,7 @@ export default function AdminDashboard() {
                     backgroundColor: active ? adminTheme.accent : (mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight),
                   }}
                 >
-                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '700'}}>
+                  <Text style={{color: active ? '#fff' : (mode === 'dark' ? adminTheme.textDark : adminTheme.textLight), fontSize: 12, fontWeight: '500'}}>
                     <UiText value={st === 'ALL' ? 'All Businesses' : st}/>
                   </Text>
                 </Pressable>
@@ -1515,7 +1515,7 @@ export default function AdminDashboard() {
                           style={{
                             color: prov.verification_status === 'VERIFIED' ? '#065f46' : '#92400e',
                             fontSize: 11,
-                            fontWeight: '800',
+                            fontWeight: '500',
                           }}
                         >
                           {prov.verification_status}
@@ -1548,7 +1548,7 @@ export default function AdminDashboard() {
                                   colors={adminTheme.approveGradient}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✓ Verify provider"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✓ Verify provider"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                               <Pressable
@@ -1559,7 +1559,7 @@ export default function AdminDashboard() {
                                   colors={adminTheme.rejectGradient}
                                   style={{paddingVertical: 9, paddingHorizontal: 16}}
                                 >
-                                  <Text style={{color: '#fff', fontWeight: '700', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
+                                  <Text style={{color: '#fff', fontWeight: '500', fontSize: 12}}><UiText value={"✕ Reject"}/></Text>
                                 </LinearGradient>
                               </Pressable>
                             </>
@@ -1568,7 +1568,7 @@ export default function AdminDashboard() {
                             onPress={() => toggleProviderActive(prov.id, !prov.active)}
                             style={[styles.card, {paddingVertical: 9, paddingHorizontal: 14, borderRadius: 12}]}
                           >
-                            <Text style={{color: colors.text, fontWeight: '700', fontSize: 12}}>
+                            <Text style={{color: colors.text, fontWeight: '500', fontSize: 12}}>
                               <UiText value={prov.active ? 'Deactivate' : 'Activate'}/>
                             </Text>
                           </Pressable>
@@ -1589,7 +1589,7 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"Activity & Audit Trail"}/></Text>
             <Pressable onPress={loadAudits} style={{padding: 6}}>
-              <Text style={{color: colors.accent, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: colors.accent, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 
@@ -1604,7 +1604,7 @@ export default function AdminDashboard() {
               <View key={item.id} style={[styles.card, {gap: 8, borderColor: mode === 'dark' ? adminTheme.borderDark : adminTheme.borderLight, backgroundColor: mode === 'dark' ? adminTheme.cardDark : adminTheme.cardLight, borderWidth: 1, borderRadius: 18}]}>
                 <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
                   <View style={{backgroundColor: adminTheme.accent + '20', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8}}>
-                    <Text style={{color: adminTheme.accentLight, fontSize: 11, fontWeight: '800'}}>
+                    <Text style={{color: adminTheme.accentLight, fontSize: 11, fontWeight: '500'}}>
                       {item.action.replace(/_/g, ' ')}
                     </Text>
                   </View>
@@ -1633,7 +1633,7 @@ export default function AdminDashboard() {
           <View style={[styles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
             <Text style={[styles.heading, {fontSize: 18}]}><UiText value={"Service Catalogue"}/></Text>
             <Pressable onPress={loadCategories} style={{padding: 6}}>
-              <Text style={{color: adminTheme.accentLight, fontWeight: '700'}}><UiText value={"Refresh ↺"}/></Text>
+              <Text style={{color: adminTheme.accentLight, fontWeight: '600'}}><UiText value={"Refresh ↺"}/></Text>
             </Pressable>
           </View>
 

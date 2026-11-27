@@ -131,7 +131,7 @@ export default function Settings() {
             {!!fonts.error&&<Text accessibilityRole="alert" style={{color:colors.error,fontSize:12}}>{t(fonts.error)}</Text>}
             {fonts.loadError&&<Pressable accessibilityRole="button" onPress={fonts.retry} style={{minHeight:44,justifyContent:'center'}}><Text style={{color:colors.accent}}>{t('common.retry')}</Text></Pressable>}
             <Pressable accessibilityRole="button" accessibilityLabel={t('settings.fontLicenses')} accessibilityState={{expanded:showLicenses}} onPress={()=>setShowLicenses(value=>!value)} style={{minHeight:44,justifyContent:'center'}}><Text style={{color:colors.muted,fontSize:12}}>{t('settings.fontLicenses')}</Text></Pressable>
-            {showLicenses&&fontLicenses.map(notice=><View key={notice.name} style={{gap:8}}><Text style={{color:colors.text,fontWeight:'700'}}>{notice.name}</Text><Text selectable style={{color:colors.muted,fontSize:11,lineHeight:16}}>{notice.license}</Text></View>)}
+            {showLicenses&&fontLicenses.map(notice=><View key={notice.name} style={{gap:8}}><Text style={{color:colors.text,fontWeight:'500'}}>{notice.name}</Text><Text selectable style={{color:colors.muted,fontSize:11,lineHeight:16}}>{notice.license}</Text></View>)}
           </View>
 
           {/* App Theme & Light/Dark Mode Section */}
@@ -187,7 +187,7 @@ export default function Settings() {
                           s.segmentText,
                           {
                             color: selected ? colors.text : colors.muted,
-                            fontWeight: selected ? '700' : '500',
+                            fontWeight: selected ? '500' : '500',
                           },
                         ]}
                       >
@@ -325,7 +325,7 @@ function SettingsDropdown({
                     s.dropdownItemText,
                     {
                       color: isSelected ? colors.accent : colors.text,
-                      fontWeight: isSelected ? '700' : '500',
+                      fontWeight: isSelected ? '500' : '500',
                       ...(option.fontFamily?{fontFamily:option.fontFamily,fontWeight:'normal' as const,...(option.opticalScale&&option.opticalScale!==1?{fontSize:Math.round(13*option.opticalScale*100)/100}:{})}:{}),
                     },
                   ]}
@@ -372,14 +372,14 @@ const s = StyleSheet.create({
   },
   headerEyebrow: {
     fontSize: 10,
-    fontWeight: '800',
+    fontWeight: '600',
     letterSpacing: 1.2,
   },
   headerTitle: {
     fontSize: 19,
     lineHeight: 23,
     letterSpacing: -0.48,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   closeButton: {
     width: 36,
@@ -408,7 +408,7 @@ const s = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     letterSpacing: -0.24,
-    fontWeight: '700',
+    fontWeight: '500',
   },
   sectionHelp: {
     fontSize: 12,

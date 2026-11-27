@@ -219,7 +219,7 @@ export function BusinessAuditExplorer() {
             gap: 12,
           }}
         >
-          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
+          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 500 }}>
             <span>1. Business Category (10 Sectors)</span>
             <select
               value={sectorSlug}
@@ -238,7 +238,7 @@ export function BusinessAuditExplorer() {
             </select>
           </label>
 
-          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
+          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 500 }}>
             <span>2. Search Specific Service</span>
             <input
               type="search"
@@ -249,7 +249,7 @@ export function BusinessAuditExplorer() {
             />
           </label>
 
-          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
+          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 500 }}>
             <span>3. Service Type</span>
             <select
               value={serviceType}
@@ -265,7 +265,7 @@ export function BusinessAuditExplorer() {
             </select>
           </label>
 
-          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 700 }}>
+          <label style={{ display: 'grid', gap: 4, fontSize: '0.8rem', fontWeight: 500 }}>
             <span>4. City / Area</span>
             <input
               type="text"
@@ -391,7 +391,7 @@ export function BusinessAuditExplorer() {
                       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8 }}>
                         <Link
                           href={buildAdminBusinessHref(item)}
-                          style={{ fontSize: '1.05rem', fontWeight: 800, textDecoration: 'none' }}
+                          style={{ fontSize: '1.05rem', fontWeight: 500, textDecoration: 'none' }}
                         >
                           {item.business_name}
                         </Link>
@@ -404,7 +404,7 @@ export function BusinessAuditExplorer() {
                               padding: '2px 8px',
                               borderRadius: 999,
                               fontSize: '0.72rem',
-                              fontWeight: 700,
+                              fontWeight: 500,
                               background: 'rgba(16,185,129,0.14)',
                               color: '#047857',
                             }}
@@ -420,7 +420,7 @@ export function BusinessAuditExplorer() {
                               padding: '2px 8px',
                               borderRadius: 999,
                               fontSize: '0.72rem',
-                              fontWeight: 700,
+                              fontWeight: 500,
                               background: 'rgba(56,189,248,0.16)',
                               color: '#0369a1',
                             }}
@@ -433,7 +433,7 @@ export function BusinessAuditExplorer() {
                             padding: '2px 8px',
                             borderRadius: 999,
                             fontSize: '0.72rem',
-                            fontWeight: 700,
+                            fontWeight: 500,
                             background: item.website_url
                               ? 'rgba(16,185,129,0.12)'
                               : 'rgba(239,68,68,0.12)',
@@ -449,7 +449,7 @@ export function BusinessAuditExplorer() {
                               padding: '2px 8px',
                               borderRadius: 999,
                               fontSize: '0.72rem',
-                              fontWeight: 700,
+                              fontWeight: 500,
                               background: 'rgba(212,175,55,0.2)',
                               color: '#92400e',
                             }}
@@ -479,7 +479,7 @@ export function BusinessAuditExplorer() {
                           borderRadius: 10,
                           background: '#0f172a',
                           color: '#fde68a',
-                          fontWeight: 800,
+                          fontWeight: 500,
                           fontSize: '0.88rem',
                           fontVariantNumeric: 'tabular-nums',
                         }}
@@ -579,7 +579,7 @@ export function BusinessAuditExplorer() {
                         style={{
                           padding: '6px 10px',
                           borderRadius: 8,
-                          fontWeight: 700,
+                          fontWeight: 500,
                           border: '1px solid rgba(148,163,184,0.5)',
                         }}
                       >

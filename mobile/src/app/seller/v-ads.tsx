@@ -277,7 +277,7 @@ function StudioProductDetailsModal({
               <View style={{width: 32, height: 32, borderRadius: 16, backgroundColor: mode === 'light' ? '#fff7ed' : '#132f54', alignItems: 'center', justifyContent: 'center'}}>
                 <Feather name="shopping-bag" size={16} color="#e11d48"/>
               </View>
-              <Text numberOfLines={1} style={{fontSize: 16, fontWeight: '700', color: colors.text, flex: 1}}>
+              <Text numberOfLines={1} style={{fontSize: 16, fontWeight: '500', color: colors.text, flex: 1}}>
                 <UiText value="Product Details" />
               </Text>
             </View>
@@ -288,7 +288,7 @@ function StudioProductDetailsModal({
 
           <ScrollView style={{flexShrink: 1}} contentContainerStyle={{gap: 14, paddingBottom: 24}}>
             <View style={{gap: 4}}>
-              <Text style={{fontSize: 18, fontWeight: '800', color: colors.text}}>
+              <Text style={{fontSize: 18, fontWeight: '500', color: colors.text}}>
                 {meta.product_name || title}
               </Text>
               {Boolean(advertiserId) && (
@@ -312,10 +312,10 @@ function StudioProductDetailsModal({
 
             {/* Price Details */}
             <View style={{padding: 16, borderRadius: 14, backgroundColor: mode === 'light' ? '#fff7ed' : '#132f54', borderWidth: 1, borderColor: '#fdba74', gap: 4}}>
-              <Text style={{fontSize: 11, fontWeight: '700', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
+              <Text style={{fontSize: 11, fontWeight: '500', color: '#e11d48', textTransform: 'uppercase', letterSpacing: 0.5}}>
                 <UiText value="Price Details" />
               </Text>
-              <Text style={{fontSize: 20, fontWeight: '800', color: mode === 'light' ? '#9f1239' : '#fecdd3', fontVariant: ['tabular-nums']}}>
+              <Text style={{fontSize: 20, fontWeight: '500', color: mode === 'light' ? '#9f1239' : '#fecdd3', fontVariant: ['tabular-nums']}}>
                 {meta.product_price || 'Available on request / order'}
               </Text>
             </View>
@@ -324,7 +324,7 @@ function StudioProductDetailsModal({
             <View style={{padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f0fdf4' : '#142a1b', borderWidth: 1, borderColor: '#86efac', gap: 4}}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
                 <Feather name="truck" size={14} color="#16a34a"/>
-                <Text style={{fontSize: 11, fontWeight: '700', color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5}}>
+                <Text style={{fontSize: 11, fontWeight: '500', color: '#16a34a', textTransform: 'uppercase', letterSpacing: 0.5}}>
                   <UiText value="Delivery Options" />
                 </Text>
               </View>
@@ -337,7 +337,7 @@ function StudioProductDetailsModal({
             <View style={{padding: 12, borderRadius: 14, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: 6}}>
               <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
                 <Feather name="play-circle" size={14} color={colors.accent}/>
-                <Text style={{fontSize: 11.5, fontWeight: '700', color: colors.text, textTransform: 'uppercase', letterSpacing: 0.5}}>
+                <Text style={{fontSize: 11.5, fontWeight: '500', color: colors.text, textTransform: 'uppercase', letterSpacing: 0.5}}>
                   <UiText value="Where Product is Used in this Ad" />
                 </Text>
               </View>
@@ -478,10 +478,10 @@ function WorkspaceScreen(){
           <Feather name="video" size={22} color="#FFFFFF" />
         </View>
         <View style={{flex: 1, gap: 2}}>
-          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '700', color: '#fdba74', textTransform: 'uppercase'}}>
+          <Text style={{fontSize: 9, letterSpacing: 1.2, fontWeight: '500', color: '#fdba74', textTransform: 'uppercase'}}>
             <UiText value="CREATOR STUDIO · ₹0 FREE FOREVER"/>
           </Text>
-          <Text style={{fontSize: 17, fontWeight: '800', color: '#FFFFFF', letterSpacing: 0.2}}>
+          <Text style={{fontSize: 17, fontWeight: '500', color: '#FFFFFF', letterSpacing: 0.2}}>
             <UiText value="V Ads Studio"/>
           </Text>
           <Text numberOfLines={1} style={{fontSize: 12, color: '#e2e8f0', fontWeight: '500'}}>
@@ -511,13 +511,13 @@ function WorkspaceScreen(){
             </View>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10, backgroundColor: mode === 'light' ? '#e6f4ea' : '#122b1b', borderWidth: 1, borderColor: mode === 'light' ? '#bbf7d0' : '#1e3a24'}}>
               <Feather name="check-circle" size={12} color="#16a34a"/>
-              <Text style={{fontSize: 11, fontWeight: '700', color: '#16a34a'}}><UiText value={"Verified"}/></Text>
+              <Text style={{fontSize: 11, fontWeight: '500', color: '#16a34a'}}><UiText value={"Verified"}/></Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', gap: 10, paddingTop: 2}}>
             <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel="Watch V Ads tab" onPress={()=>router.dismissTo('/(tabs)/v-ads')} style={({pressed})=>({flex: 1, minHeight: 40, paddingHorizontal: 14, borderRadius: 12, backgroundColor: colors.surface, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, borderWidth: 1, borderColor: colors.border, opacity: pressed ? 0.75 : 1})}>
               <Feather name="play" size={13} color={colors.accent}/>
-              <Text style={{fontSize: 13, fontWeight: '700', color: colors.accent}}><UiText value={"Watch Reels"}/></Text>
+              <Text style={{fontSize: 13, fontWeight: '500', color: colors.accent}}><UiText value={"Watch Reels"}/></Text>
               <Feather name="arrow-right" size={13} color={colors.accent}/>
             </UiElement>
             <UiElement as={Pressable} accessibilityRole="button" accessibilityLabel="Refresh studio" disabled={busy} onPress={()=>{setHistory([]);setPage(1);setHistoryMore(null);resource.retry();}} style={({pressed})=>({minHeight: 40, paddingHorizontal: 14, borderRadius: 12, backgroundColor: colors.surface, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, borderWidth: 1, borderColor: colors.border, opacity: pressed ? 0.75 : 1})}>
@@ -536,7 +536,7 @@ function WorkspaceScreen(){
             <Feather name="globe" size={20} color={colors.accent}/>
           </View>
           <View style={{flex: 1, minWidth: 0}}>
-            <Text style={{fontSize: 14, fontWeight: '700', color: colors.text}}><UiText value="Public V Ads Studio"/></Text>
+            <Text style={{fontSize: 14, fontWeight: '500', color: colors.text}}><UiText value="Public V Ads Studio"/></Text>
             <Text style={[styles.muted, {fontSize: 12}]}><UiText value="Browse community ads. Sign in for creator & upload tools."/></Text>
           </View>
         </View>
@@ -553,7 +553,7 @@ function WorkspaceScreen(){
             opacity: pressed ? 0.8 : 1,
           })}
         >
-          <Text style={{fontSize: 12, fontWeight: '700', color: colors.ink}}><UiText value="Sign in"/></Text>
+          <Text style={{fontSize: 12, fontWeight: '500', color: colors.ink}}><UiText value="Sign in"/></Text>
         </UiElement>
       </View>
     )}
@@ -566,18 +566,18 @@ function WorkspaceScreen(){
     <View style={{flexDirection: 'row', backgroundColor: mode === 'light' ? '#f1f5f9' : '#091526', padding: 4, borderRadius: 14, gap: 4}}>
       <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel={`My V Ads tab (${accountVideos.length})`} accessibilityState={{selected: studioTab === 'ads'}} onPress={()=>setStudioTab('ads')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'ads' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'ads' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'ads' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="video" size={14} color={studioTab === 'ads' ? colors.accent : colors.muted}/>
-        <Text style={{fontSize: 13, fontWeight: studioTab === 'ads' ? '700' : '500', color: studioTab === 'ads' ? colors.text : colors.muted}}><UiText value={"My V Ads"}/></Text>
+        <Text style={{fontSize: 13, fontWeight: studioTab === 'ads' ? '500' : '500', color: studioTab === 'ads' ? colors.text : colors.muted}}><UiText value={"My V Ads"}/></Text>
         <View style={{paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, backgroundColor: studioTab === 'ads' ? (mode === 'light' ? '#e2e8f0' : '#1e3a5f') : (mode === 'light' ? '#e2e8f0' : '#132f54')}}>
-          <Text style={{fontSize: 11, fontWeight: '700', fontVariant: ['tabular-nums'], color: studioTab === 'ads' ? colors.text : colors.muted}}>{accountVideos.length}</Text>
+          <Text style={{fontSize: 11, fontWeight: '500', fontVariant: ['tabular-nums'], color: studioTab === 'ads' ? colors.text : colors.muted}}>{accountVideos.length}</Text>
         </View>
       </UiElement>
       <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel="Upload V Ad tab" accessibilityState={{selected: studioTab === 'upload'}} onPress={()=>setStudioTab('upload')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'upload' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'upload' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'upload' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="plus-circle" size={14} color={studioTab === 'upload' ? colors.accent : colors.muted}/>
-        <Text style={{fontSize: 13, fontWeight: studioTab === 'upload' ? '700' : '500', color: studioTab === 'upload' ? colors.text : colors.muted}}><UiText value={"+ Upload"}/></Text>
+        <Text style={{fontSize: 13, fontWeight: studioTab === 'upload' ? '500' : '500', color: studioTab === 'upload' ? colors.text : colors.muted}}><UiText value={"+ Upload"}/></Text>
       </UiElement>
       <UiElement as={Pressable} accessibilityRole="tab" accessibilityLabel="Public V Ads tab" accessibilityState={{selected: studioTab === 'public'}} onPress={()=>setStudioTab('public')} style={({pressed})=>({flex: 1, minHeight: 44, borderRadius: 10, backgroundColor: studioTab === 'public' ? colors.surface : 'transparent', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 6, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: studioTab === 'public' ? 0.08 : 0, shadowRadius: 2, elevation: studioTab === 'public' ? 2 : 0, opacity: pressed ? 0.75 : 1})}>
         <Feather name="globe" size={14} color={studioTab === 'public' ? colors.accent : colors.muted}/>
-        <Text style={{fontSize: 13, fontWeight: studioTab === 'public' ? '700' : '500', color: studioTab === 'public' ? colors.text : colors.muted}}><UiText value={"Public V Ads"}/></Text>
+        <Text style={{fontSize: 13, fontWeight: studioTab === 'public' ? '500' : '500', color: studioTab === 'public' ? colors.text : colors.muted}}><UiText value={"Public V Ads"}/></Text>
       </UiElement>
     </View>
 
@@ -634,10 +634,10 @@ function WorkspaceScreen(){
               style={{alignSelf:'flex-start',flexDirection:'row',alignItems:'center',gap:6,paddingVertical:6,paddingHorizontal:10,borderRadius:20,maxWidth:'70%'}}
             >
               <Feather name="play" size={11} color="#fff"/>
-              <Text numberOfLines={1} style={{fontSize:10,fontWeight:'700',letterSpacing:1,color:'#fff'}}>{badgeLabel}</Text>
+              <Text numberOfLines={1} style={{fontSize:10,fontWeight:'500',letterSpacing:1,color:'#fff'}}>{badgeLabel}</Text>
             </LinearGradient>
             <View style={{paddingHorizontal:8,paddingVertical:4,borderRadius:8,backgroundColor:statusBg,borderWidth:1,borderColor:statusColor+'30'}}>
-              <Text style={{fontSize:11,fontWeight:'700',color:statusColor}}><UiText value={statusText}/></Text>
+              <Text style={{fontSize:11,fontWeight:'500',color:statusColor}}><UiText value={statusText}/></Text>
             </View>
           </View>
 
@@ -678,7 +678,7 @@ function WorkspaceScreen(){
                       accessibilityLabel="Explore Product"
                     >
                       <Feather name="shopping-bag" size={13} color="#FFFFFF"/>
-                      <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+                      <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '500', fontVariant: ['tabular-nums']}}>
                         <UiText value="Explore Product"/>
                         {videoMeta.product_price ? ` · ${videoMeta.product_price}` : ''}
                       </Text>
@@ -702,7 +702,7 @@ function WorkspaceScreen(){
                       accessibilityLabel="Explore Brand"
                     >
                       <Feather name="briefcase" size={13} color="#FFFFFF"/>
-                      <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700'}}>
+                      <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '600'}}>
                         <UiText value="Explore Brand"/>
                       </Text>
                       <Feather name="arrow-right" size={12} color="#FFFFFF"/>
@@ -723,7 +723,7 @@ function WorkspaceScreen(){
           </View>}
 
           {Boolean(video.review_reason)&&<View style={{padding:12,borderRadius:14,backgroundColor:mode==='light'?'#fff3cd':'#2c2411',gap:3,borderWidth:1,borderColor:'#ffeeba'}}>
-            <Text style={{fontSize:11,fontWeight:'700',color:'#856404'}}><UiText value={"Admin Feedback:"}/></Text>
+            <Text style={{fontSize:11,fontWeight:'500',color:'#856404'}}><UiText value={"Admin Feedback:"}/></Text>
             <Text style={{fontSize:12.5,color:colors.text}}>{video.review_reason}</Text>
           </View>}
 
@@ -849,7 +849,7 @@ function WorkspaceScreen(){
 
         {/* Ad Type Selector: Product Ad vs Brand Ad */}
         <View style={{gap: 8}}>
-          <Text style={{fontSize: 13, fontWeight: '700', color: colors.text}}>
+          <Text style={{fontSize: 13, fontWeight: '600', color: colors.text}}>
             <UiText value="2. Select Ad Type" />
           </Text>
           <View style={{flexDirection: 'row', gap: 10}}>
@@ -869,7 +869,7 @@ function WorkspaceScreen(){
               }}
             >
               <Feather name="shopping-bag" size={20} color={adType === 'PRODUCT' ? '#e11d48' : colors.muted} />
-              <Text style={{fontSize: 13, fontWeight: '700', color: adType === 'PRODUCT' ? '#e11d48' : colors.text}}>
+              <Text style={{fontSize: 13, fontWeight: '500', color: adType === 'PRODUCT' ? '#e11d48' : colors.text}}>
                 <UiText value="Product Ad" />
               </Text>
               <Text style={{fontSize: 10.5, color: colors.muted, textAlign: 'center'}}>
@@ -893,7 +893,7 @@ function WorkspaceScreen(){
               }}
             >
               <Feather name="briefcase" size={20} color={adType === 'BRAND' ? colors.accent : colors.muted} />
-              <Text style={{fontSize: 13, fontWeight: '700', color: adType === 'BRAND' ? colors.accent : colors.text}}>
+              <Text style={{fontSize: 13, fontWeight: '600', color: adType === 'BRAND' ? colors.accent : colors.text}}>
                 <UiText value="Brand Ad" />
               </Text>
               <Text style={{fontSize: 10.5, color: colors.muted, textAlign: 'center'}}>
@@ -905,7 +905,7 @@ function WorkspaceScreen(){
 
         {adType === 'PRODUCT' ? (
           <View style={{gap: 10, padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f8fafc' : '#0f233d', borderWidth: 1, borderColor: colors.border}}>
-            <Text style={{fontSize: 12, fontWeight: '700', color: colors.accent, letterSpacing: 0.5, textTransform: 'uppercase'}}>
+            <Text style={{fontSize: 12, fontWeight: '500', color: colors.accent, letterSpacing: 0.5, textTransform: 'uppercase'}}>
               <UiText value="Product Details & Purchasing Options" />
             </Text>
             <UiElement as={Field} label="Product Name" placeholder="E.g., Pure Kanchipuram Silk Saree" value={productName} onChangeText={setProductName} maxLength={100} />
@@ -915,7 +915,7 @@ function WorkspaceScreen(){
           </View>
         ) : (
           <View style={{gap: 10, padding: 12, borderRadius: 14, backgroundColor: mode === 'light' ? '#f8fafc' : '#0f233d', borderWidth: 1, borderColor: colors.border}}>
-            <Text style={{fontSize: 12, fontWeight: '700', color: colors.accent, letterSpacing: 0.5, textTransform: 'uppercase'}}>
+            <Text style={{fontSize: 12, fontWeight: '600', color: colors.accent, letterSpacing: 0.5, textTransform: 'uppercase'}}>
               <UiText value="Brand Details & Catalog Available" />
             </Text>
             <UiElement as={Field} label="Products & Services Available" placeholder="E.g., Custom tailoring, silk sarees, bridal accessories, fabric dyes" value={productsAvailable} onChangeText={setProductsAvailable} multiline maxLength={200} />
@@ -923,7 +923,7 @@ function WorkspaceScreen(){
         )}
 
         <View style={{gap: 8}}>
-          <Text style={{fontSize: 13, fontWeight: '700', color: colors.text}}>
+          <Text style={{fontSize: 13, fontWeight: '500', color: colors.text}}>
             <UiText value="Category & Service Type (Optional)" />
           </Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{gap: 8}}>
@@ -1172,7 +1172,7 @@ function PublicFeedView() {
                   }}
                 >
                   <Feather name="globe" size={11} color="#fff" />
-                  <Text numberOfLines={1} style={{fontSize: 10, fontWeight: '700', letterSpacing: 1, color: '#fff'}}>
+                  <Text numberOfLines={1} style={{fontSize: 10, fontWeight: '500', letterSpacing: 1, color: '#fff'}}>
                     {advertiserLabel}
                   </Text>
                 </LinearGradient>
@@ -1190,7 +1190,7 @@ function PublicFeedView() {
                   }}
                 >
                   <Feather name="check-circle" size={11} color="#16a34a" />
-                  <Text style={{fontSize: 11, fontWeight: '700', color: '#16a34a'}}>
+                  <Text style={{fontSize: 11, fontWeight: '500', color: '#16a34a'}}>
                     <UiText value="Live Public Ad" />
                   </Text>
                 </View>
@@ -1233,7 +1233,7 @@ function PublicFeedView() {
                     accessibilityLabel="Explore Product"
                   >
                     <Feather name="shopping-bag" size={13} color="#FFFFFF"/>
-                    <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700', fontVariant: ['tabular-nums']}}>
+                    <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '500', fontVariant: ['tabular-nums']}}>
                       <UiText value="Explore Product"/>
                       {reelMeta.product_price ? ` · ${reelMeta.product_price}` : ''}
                     </Text>
@@ -1257,7 +1257,7 @@ function PublicFeedView() {
                     accessibilityLabel="Explore Brand"
                   >
                     <Feather name="briefcase" size={13} color="#FFFFFF"/>
-                    <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '700'}}>
+                    <Text style={{color: '#FFFFFF', fontSize: 12.5, fontWeight: '600'}}>
                       <UiText value="Explore Brand"/>
                     </Text>
                     <Feather name="arrow-right" size={12} color="#FFFFFF"/>
@@ -1389,7 +1389,7 @@ function RestrictedStudioTool({
         })}
       >
         <Feather name="log-in" size={15} color={colors.ink}/>
-        <Text style={{fontSize: 13, fontWeight: '700', color: colors.ink}}>
+        <Text style={{fontSize: 13, fontWeight: '500', color: colors.ink}}>
           <UiText value="Sign in / Register"/>
         </Text>
       </UiElement>

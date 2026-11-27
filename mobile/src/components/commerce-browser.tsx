@@ -336,8 +336,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   heroPrimaryText: {
     color: colors.ink,
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: '500',
   },
   heroSecondaryBtn: {
     flexDirection: 'row',
@@ -353,8 +354,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   heroSecondaryText: {
     color: colors.text,
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: '500',
   },
   controlsCard: {
     borderRadius: radii.surface,
@@ -373,7 +375,8 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: typography.body.fontSize,
+    fontSize: 13,
+    fontWeight: '400',
     paddingVertical: 8,
   },
   pillRow: {
@@ -394,8 +397,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
     borderColor: colors.accent,
   },
   pillText: {
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: '500',
   },
   productCard: {
     borderRadius: radii.surface,
@@ -411,13 +415,15 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
     backgroundColor: colors.soft,
   },
   kindBadgeText: {
-    fontSize: typography.supporting.fontSize,
-    fontWeight: '600',
+    fontSize: 11.5,
+    lineHeight: 16,
+    fontWeight: '500',
     color: colors.accent,
   },
   cardTitle: {
-    fontSize: typography.cardTitle.fontSize,
-    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
   },
   cardFooter: {
     marginTop: 6,
@@ -429,8 +435,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
     gap: spacing.regular,
   },
   priceText: {
-    fontSize: typography.cardTitle.fontSize,
-    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: '500',
   },
   viewBtn: {
     minHeight: controlHeights.standard,
@@ -442,8 +449,9 @@ const makeStyles = (colors:ThemeColors) => StyleSheet.create({
   },
   viewBtnText: {
     color: colors.ink,
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: '500',
   },
   emptyCard: {
     borderRadius: radii.surface,

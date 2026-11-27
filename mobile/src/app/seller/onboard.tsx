@@ -492,7 +492,7 @@ function MobileSelfOnboardingForm({
                   ]}
                 >
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={[styles.text, { fontWeight: '700', flex: 1 }]}>{bt.title}</Text>
+                    <Text style={[styles.text, { fontWeight: '500', flex: 1 }]}>{bt.title}</Text>
                     <Feather
                       name={chosen ? 'check-circle' : 'plus-circle'}
                       size={20}
@@ -638,7 +638,7 @@ function MobileSelfOnboardingForm({
 
           {regulatedTypes.length > 0 ? (
             <View style={[styles.card, { gap: 10 }]}>
-              <Text style={[styles.text, { fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontWeight: '500' }]}>
                 Optional Licence / Registration (for Verified badge)
               </Text>
               <Text style={styles.muted}>

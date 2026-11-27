@@ -482,7 +482,7 @@ export function MobileAskVistrahWidget() {
                           <Text
                             style={{
                               fontSize: 12,
-                              fontWeight: '700',
+                              fontWeight: '500',
                               color: isDark ? '#99f6e4' : '#0f766e',
                             }}
                           >
@@ -687,7 +687,7 @@ const s = StyleSheet.create({
   launcherTitle: {
     color: '#ffffff',
     fontSize: 13.5,
-    fontWeight: '700',
+    fontWeight: '500',
     lineHeight: 16,
   },
   poweredRow: {
@@ -761,7 +761,7 @@ const s = StyleSheet.create({
   headerTitle: {
     color: '#ffffff',
     fontSize: 14.5,
-    fontWeight: '700',
+    fontWeight: '500',
     lineHeight: 18,
   },
   headerSubtitle: {

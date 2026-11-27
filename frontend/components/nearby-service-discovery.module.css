@@ -31,9 +31,9 @@
 .toolbarHeading {
   margin: 0;
   width: 100%;
-  font-size: 1.1875rem;
-  line-height: 1.3;
-  font-weight: 700;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
@@ -151,7 +151,7 @@
 }
 
 .gpsErrorAction {
-  font-weight: 700;
+  font-weight: 500;
   color: #2dd4bf;
   text-decoration: underline;
 }
@@ -214,7 +214,7 @@
 .radiusBtnActive {
   background: #0d9488;
   color: #ffffff !important;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .cityWideToggleBtn {
@@ -228,7 +228,7 @@
   background: rgba(13, 148, 136, 0.16);
   color: #99f6e4;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
 }
@@ -277,7 +277,7 @@
   padding: 4px 11px;
   border-radius: 999px;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: background 140ms ease, border-color 140ms ease;
 }
@@ -360,7 +360,7 @@
   background: #0d9488;
   color: #ffffff;
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   box-shadow: 0 8px 22px rgba(15, 23, 42, 0.22);
   transition: background 140ms ease, transform 140ms ease;
@@ -459,7 +459,7 @@
 
 .fallbackTileLabel {
   font-size: 0.62rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.92;
@@ -481,9 +481,10 @@
 
 .businessName {
   margin: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--text-primary, #f8fafc);
 }
 
@@ -506,7 +507,7 @@
   padding: 2px 9px;
   border-radius: 999px;
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #5eead4;
   background: rgba(13, 148, 136, 0.18);
   border: 1px solid rgba(45, 212, 191, 0.38);
@@ -542,7 +543,7 @@
   padding: 4px 10px;
   border-radius: 999px;
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   background: rgba(13, 148, 136, 0.2);
   color: #99f6e4;
@@ -557,9 +558,10 @@
 
 .metaLine {
   margin: 0;
-  font-size: 0.84rem;
+  font-size: 12.5px;
+  font-weight: 400;
   color: var(--text-secondary, #cbd5e1);
-  line-height: 1.45;
+  line-height: 18px;
 }
 
 :global(:root[data-theme='light']) .metaLine {
@@ -568,8 +570,9 @@
 
 .description {
   margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19px;
   color: var(--text-primary, #e2e8f0);
 }
 
@@ -702,7 +705,7 @@
 
 .morePopoverTitle {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.02em;
   overflow: hidden;
   text-overflow: ellipsis;

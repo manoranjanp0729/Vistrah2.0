@@ -78,7 +78,7 @@ test('mobile Ads & Marketing cards lock a 4:3 landscape frame, compact padding, 
   assert.match(adsSource, /position:\s*'absolute',\s*top:\s*0,\s*left:\s*0,\s*width:\s*'100%',\s*height:\s*'100%'/);
   assert.match(adsSource, /padding:\s*12/);
   assert.match(adsSource, /numberOfLines=\{2\}/);
-  assert.match(adsSource, /fontSize:\s*15,\s*lineHeight:\s*20/);
+  assert.match(adsSource, /fontSize:\s*14,\s*lineHeight:\s*20,\s*fontWeight:\s*'500'/);
 });
 
 test('mobile PhotoCard and service category grids enforce 4:3 landscape frames without downscaled thumbnails', () => {

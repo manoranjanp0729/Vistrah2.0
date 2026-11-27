@@ -52,10 +52,10 @@ export default function AdvertiserProfile() {
           >
             <View style={{flex: 1, gap: 6}}>
               <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8}}>
-                <Text numberOfLines={1} style={{fontSize: 15, fontWeight: '700', color: colors.text, flex: 1}}>
+                <Text numberOfLines={1} style={{fontSize: 15, fontWeight: '500', color: colors.text, flex: 1}}>
                   {product.title}
                 </Text>
-                <Text style={{fontSize: 15, fontWeight: '800', color: '#e11d48'}}>
+                <Text style={{fontSize: 15, fontWeight: '500', color: '#e11d48'}}>
                   {listingPrice(product.unit_price_paise)}
                 </Text>
               </View>
@@ -117,11 +117,11 @@ const s = StyleSheet.create({
     backgroundColor: '#F9AA45',
     alignItems: 'center', justifyContent: 'center',
   },
-  avatarText: {fontSize: 44, fontWeight: '800', color: '#11243F'},
-  name: {fontSize: 22, fontWeight: '700'},
+  avatarText: {fontSize: 44, fontWeight: '600', color: '#11243F'},
+  name: {fontSize: 22, fontWeight: '500'},
   subtitle: {fontSize: 13},
   description: {fontSize: 14, lineHeight: 22, textAlign: 'center'},
-  section: {fontSize: 18, fontWeight: '700'},
+  section: {fontSize: 18, fontWeight: '500'},
   videoCard: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
     padding: 18, borderWidth: 1, borderRadius: 16,

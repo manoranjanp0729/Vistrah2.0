@@ -145,7 +145,7 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
           </Text>
         </View>
         <Pressable onPress={() => void loadHomepage()} style={{ padding: 6 }}>
-          <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>Refresh ↺</Text>
+          <Text style={{ color: adminTheme.accentLight, fontWeight: '500' }}>Refresh ↺</Text>
         </Pressable>
       </View>
 
@@ -167,14 +167,14 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
           disabled={busy || !dirty}
           style={{ flex: 1, padding: 12, borderRadius: 10, backgroundColor: dirty ? '#3b82f6' : '#64748b', alignItems: 'center' }}
         >
-          <Text style={{ color: '#fff', fontWeight: '700' }}>Save Draft</Text>
+          <Text style={{ color: '#fff', fontWeight: '500' }}>Save Draft</Text>
         </Pressable>
         <Pressable
           onPress={() => void handlePublish()}
           disabled={busy}
           style={{ flex: 1, padding: 12, borderRadius: 10, backgroundColor: '#16a34a', alignItems: 'center' }}
         >
-          <Text style={{ color: '#fff', fontWeight: '800' }}>⚡ Publish Live</Text>
+          <Text style={{ color: '#fff', fontWeight: '500' }}>⚡ Publish Live</Text>
         </Pressable>
       </View>
 
@@ -205,10 +205,10 @@ export function AdminHomepageTab({ adminTheme }: { adminTheme: AdminTheme }) {
 
               <View style={{ flexDirection: 'row', gap: 6 }}>
                 <Pressable onPress={() => moveSection(idx, -1)} disabled={idx === 0} style={{ padding: 6, opacity: idx === 0 ? 0.3 : 1 }}>
-                  <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>▲</Text>
+                  <Text style={{ color: adminTheme.accentLight, fontWeight: '500' }}>▲</Text>
                 </Pressable>
                 <Pressable onPress={() => moveSection(idx, 1)} disabled={idx === draft.layout.sections.length - 1} style={{ padding: 6, opacity: idx === draft.layout.sections.length - 1 ? 0.3 : 1 }}>
-                  <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>▼</Text>
+                  <Text style={{ color: adminTheme.accentLight, fontWeight: '500' }}>▼</Text>
                 </Pressable>
               </View>
             </View>
@@ -259,7 +259,7 @@ export function AdminMembershipsTab({ adminTheme }: { adminTheme: AdminTheme }) 
           </Text>
         </View>
         <Pressable onPress={() => void loadMemberships()} style={{ padding: 6 }}>
-          <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>Refresh ↺</Text>
+          <Text style={{ color: adminTheme.accentLight, fontWeight: '500' }}>Refresh ↺</Text>
         </Pressable>
       </View>
 
@@ -294,12 +294,12 @@ export function AdminMembershipsTab({ adminTheme }: { adminTheme: AdminTheme }) 
                 {m.business_name || `Business #${m.user_id}`}
               </Text>
               <View style={{ backgroundColor: '#e5a93c25', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}>
-                <Text style={{ color: '#e5a93c', fontWeight: '800', fontSize: 11 }}>{m.tier || 'MEMBER'}</Text>
+                <Text style={{ color: '#e5a93c', fontWeight: '500', fontSize: 11 }}>{m.tier || 'MEMBER'}</Text>
               </View>
             </View>
 
             <Text style={[styles.muted, { fontSize: 12 }]}>
-              Status: <Text style={{ color: '#22c55e', fontWeight: '700' }}>{m.status || 'ACTIVE'}</Text> · Quota: {m.job_posts_remaining ?? 'Unlimited'} jobs
+              Status: <Text style={{ color: '#22c55e', fontWeight: '500' }}>{m.status || 'ACTIVE'}</Text> · Quota: {m.job_posts_remaining ?? 'Unlimited'} jobs
             </Text>
           </View>
         ))
@@ -348,7 +348,7 @@ export function AdminVistrahServicesTab({ adminTheme }: { adminTheme: AdminTheme
           </Text>
         </View>
         <Pressable onPress={() => void loadPackages()} style={{ padding: 6 }}>
-          <Text style={{ color: adminTheme.accentLight, fontWeight: '700' }}>Refresh ↺</Text>
+          <Text style={{ color: adminTheme.accentLight, fontWeight: '500' }}>Refresh ↺</Text>
         </Pressable>
       </View>
 
@@ -383,12 +383,12 @@ export function AdminVistrahServicesTab({ adminTheme }: { adminTheme: AdminTheme
                 {pkg.title}
               </Text>
               <View style={{ backgroundColor: '#15803d25', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 }}>
-                <Text style={{ color: '#22c55e', fontWeight: '800', fontSize: 11 }}>{pkg.status}</Text>
+                <Text style={{ color: '#22c55e', fontWeight: '500', fontSize: 11 }}>{pkg.status}</Text>
               </View>
             </View>
 
             <Text style={[styles.muted, { fontSize: 12 }]}>
-              Price: <Text style={{ color: '#e5a93c', fontWeight: '700' }}>₹{(pkg.unit_price_paise / 100).toFixed(2)}</Text> · Business: {pkg.business}
+              Price: <Text style={{ color: '#e5a93c', fontWeight: '500' }}>₹{(pkg.unit_price_paise / 100).toFixed(2)}</Text> · Business: {pkg.business}
             </Text>
           </View>
         ))

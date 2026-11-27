@@ -208,11 +208,11 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   <View style={[s.mockupHeader, {backgroundColor: surfaceSoft, borderBottomColor: hairline}]}>
                     <View style={[s.spamMockRow, {backgroundColor: surface, borderColor: hairline}]}>
                       <Text style={{fontSize: 12, color: textSecondary}}>Unknown Lead Broker #1</Text>
-                      <Text style={{fontSize: 11, fontWeight: '700', color: '#ef4444'}}>SPAM ×5</Text>
+                      <Text style={{fontSize: 11, fontWeight: '500', color: '#ef4444'}}>SPAM ×5</Text>
                     </View>
                     <View style={[s.spamMockRow, {backgroundColor: surface, borderColor: hairline}]}>
                       <Text style={{fontSize: 12, color: textSecondary}}>Pin: Last updated 2021</Text>
-                      <Text style={{fontSize: 11, fontWeight: '700', color: '#ef4444'}}>STALE</Text>
+                      <Text style={{fontSize: 11, fontWeight: '500', color: '#ef4444'}}>STALE</Text>
                     </View>
                   </View>
                   <View style={s.cardBody}>
@@ -232,15 +232,15 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                   <View style={[s.mockupHeader, {backgroundColor: surfaceSoft, borderBottomColor: hairline}]}>
                     <View style={[s.verifiedMockBox, {backgroundColor: surface, borderColor: hairline}]}>
                       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <Text style={{fontSize: 12, fontWeight: '700', color: '#10b981'}}>
+                        <Text style={{fontSize: 12, fontWeight: '500', color: '#10b981'}}>
                           ✓ Verified Owner · 2.4 km
                         </Text>
-                        <Text style={{fontSize: 11, fontWeight: '700', color: textSecondary}}>9:16 Live</Text>
+                        <Text style={{fontSize: 11, fontWeight: '500', color: textSecondary}}>9:16 Live</Text>
                       </View>
                       <View style={{flexDirection: 'row', gap: 6, flexWrap: 'wrap'}}>
                         <View style={s.greenPill}>
                           <Feather name="phone" size={11} color="#052e16" />
-                          <Text style={{fontSize: 11, fontWeight: '700', color: '#052e16'}}>Call Direct</Text>
+                          <Text style={{fontSize: 11, fontWeight: '500', color: '#052e16'}}>Call Direct</Text>
                         </View>
                         <View style={[s.outlinePill, {borderColor: hairline}]}>
                           <Text style={{fontSize: 11, fontWeight: '600', color: textPrimary}}>WhatsApp</Text>
@@ -321,7 +321,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                         {item.step} · {item.badge}
                       </Text>
                       <View style={[s.outlinePill, {backgroundColor: surface, borderColor: hairline}]}>
-                        <Text style={{fontSize: 11.5, fontWeight: '700', color: textPrimary, fontVariant: ['tabular-nums']}}>
+                        <Text style={{fontSize: 11.5, fontWeight: '500', color: textPrimary, fontVariant: ['tabular-nums']}}>
                           {item.price}
                         </Text>
                       </View>
@@ -368,7 +368,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                       <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                         <Text style={[s.eyebrow, {color: textSecondary}]}>{pillar.tag}</Text>
                         <View style={[s.outlinePill, {backgroundColor: surface, borderColor: hairline}]}>
-                          <Text style={{fontSize: 11, fontWeight: '700', color: textPrimary, fontVariant: ['tabular-nums']}}>
+                          <Text style={{fontSize: 11, fontWeight: '500', color: textPrimary, fontVariant: ['tabular-nums']}}>
                             {pillar.price}
                           </Text>
                         </View>
@@ -390,7 +390,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                             }}
                           >
                             <Feather name="play" size={14} color={textPrimary} />
-                            <Text style={{fontSize: 9, fontWeight: '700', color: textPrimary}}>9:16</Text>
+                            <Text style={{fontSize: 9, fontWeight: '500', color: textPrimary}}>9:16</Text>
                           </View>
                           <View
                             style={{
@@ -404,7 +404,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                               justifyContent: 'space-between',
                             }}
                           >
-                            <Text style={{fontSize: 20, fontWeight: '700', color: textPrimary}}>Aa.</Text>
+                            <Text style={{fontSize: 20, fontWeight: '600', color: textPrimary}}>Aa.</Text>
                             <View style={{flexDirection: 'row', gap: 5}}>
                               {['#0F294A', '#F97316', '#132F54', '#EA580C'].map(sw => (
                                 <View key={sw} style={{width: 16, height: 7, borderRadius: 3, backgroundColor: sw}} />
@@ -444,7 +444,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                               Mobile-First UI
                             </Text>
                             <View style={s.greenPill}>
-                              <Text style={{fontSize: 10.5, fontWeight: '700', color: '#052e16'}}>
+                              <Text style={{fontSize: 10.5, fontWeight: '500', color: '#052e16'}}>
                                 WhatsApp Lead →
                               </Text>
                             </View>
@@ -463,8 +463,8 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                               gap: 2,
                             }}
                           >
-                            <Text style={{fontSize: 9.5, fontWeight: '700', color: textSecondary}}>STUDIO FEE</Text>
-                            <Text style={{fontSize: 12.5, fontWeight: '700', color: textPrimary, fontVariant: ['tabular-nums']}}>
+                            <Text style={{fontSize: 9.5, fontWeight: '500', color: textSecondary}}>STUDIO FEE</Text>
+                            <Text style={{fontSize: 12.5, fontWeight: '500', color: textPrimary, fontVariant: ['tabular-nums']}}>
                               ₹4,999+/mo
                             </Text>
                           </View>
@@ -479,8 +479,8 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                               gap: 2,
                             }}
                           >
-                            <Text style={{fontSize: 9.5, fontWeight: '700', color: textSecondary}}>AD SPEND</Text>
-                            <Text style={{fontSize: 12.5, fontWeight: '700', color: '#10b981', fontVariant: ['tabular-nums']}}>
+                            <Text style={{fontSize: 9.5, fontWeight: '500', color: textSecondary}}>AD SPEND</Text>
+                            <Text style={{fontSize: 12.5, fontWeight: '500', color: '#10b981', fontVariant: ['tabular-nums']}}>
                               0% Markup
                             </Text>
                           </View>
@@ -496,7 +496,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                         {pillar.tiers.map(t => (
                           <View key={t.label} style={{flexDirection: 'row', justifyContent: 'space-between', gap: 8}}>
                             <Text style={{fontSize: 12, color: textSecondary, flex: 1}}>{t.label}</Text>
-                            <Text style={{fontSize: 12, fontWeight: '700', color: textPrimary, fontVariant: ['tabular-nums']}}>
+                            <Text style={{fontSize: 12, fontWeight: '500', color: textPrimary, fontVariant: ['tabular-nums']}}>
                               {t.rate}
                             </Text>
                           </View>
@@ -545,7 +545,7 @@ export function HeroStoryPage({storyKey}: {storyKey: HeroBannerKey}) {
                     ]}
                   >
                     <Text style={{fontSize: 11.5, fontWeight: '600', color: textSecondary}}>{row.zone}</Text>
-                    <Text style={{fontSize: 14, fontWeight: '700', color: '#10b981', fontVariant: ['tabular-nums']}}>
+                    <Text style={{fontSize: 14, fontWeight: '500', color: '#10b981', fontVariant: ['tabular-nums']}}>
                       {row.month1}
                     </Text>
                     <Text style={{fontSize: 11, color: textSecondary, fontVariant: ['tabular-nums']}}>
@@ -700,7 +700,7 @@ const s = StyleSheet.create({
   },
   statVal: {
     fontSize: 19,
-    fontWeight: '700',
+    fontWeight: '600',
     letterSpacing: -0.4,
     fontVariant: ['tabular-nums'],
   },
@@ -812,7 +812,7 @@ const s = StyleSheet.create({
   },
   numTag: {
     fontSize: 11.5,
-    fontWeight: '700',
+    fontWeight: '500',
     fontVariant: ['tabular-nums'],
   },
   bottomBar: {

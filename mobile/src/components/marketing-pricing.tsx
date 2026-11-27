@@ -132,7 +132,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
     justifyContent:'center',
    }}
   >
-   <Text style={{color:selected?colors.text:colors.muted,fontWeight:selected?'700':'500',fontSize:13}}>{label}</Text>
+   <Text style={{color:selected?colors.text:colors.muted,fontWeight:selected?'500':'500',fontSize:13}}>{label}</Text>
   </Pressable>
  );
 
@@ -227,7 +227,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        <View style={{padding:14,borderRadius:12,borderWidth:1,borderColor:colors.border,backgroundColor:colors.surface,gap:8}}>
         <Text style={styles.label}>{promo.anchorBadge}</Text>
         <View style={{flexDirection:'row',alignItems:'baseline',gap:8,flexWrap:'wrap'}}>
-         <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'700',color:colors.accent,letterSpacing:-0.6}]}>{promo.anchorPriceLabel}</Text>
+         <Text style={[styles.tabular,{fontSize:28,lineHeight:32,fontWeight:'500',color:colors.accent,letterSpacing:-0.6}]}>{promo.anchorPriceLabel}</Text>
          <Text style={[styles.heading,{fontSize:16}]}>{promo.anchorTitle}</Text>
         </View>
         <Text style={styles.muted}>{promo.anchorSummary}</Text>
@@ -312,7 +312,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
             }}
            >
             <Text style={[styles.tabular,{color:colors.accent,fontWeight:'600',fontSize:11}]}>{tier.promoBadge||'₹0 Free Forever'}</Text>
-            <Text style={[styles.tabular,{color:colors.text,fontWeight:'700',fontSize:15}]}>{tier.label}</Text>
+            <Text style={[styles.tabular,{color:colors.text,fontWeight:'500',fontSize:15}]}>{tier.label}</Text>
             <Text style={[styles.tabular,{color:colors.muted,fontSize:11}]}>₹0 / Free Forever · {tier.zoneLabel}</Text>
            </Pressable>
           );
@@ -325,10 +325,10 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         <Text style={[styles.label,{marginBottom:4}]}>Self-Serve Platform Summary</Text>
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingVertical:10,borderBottomWidth:1,borderColor:colors.border}}>
          <View style={{flex:1,gap:2}}>
-          <Text style={{color:colors.text,fontWeight:'700',fontSize:15}}>₹0 / Free Forever</Text>
+          <Text style={{color:colors.text,fontWeight:'500',fontSize:15}}>₹0 / Free Forever</Text>
           <Text style={[styles.muted,styles.tabular,{fontSize:11}]}>Free for any radius on VISTRAH ({selectedTier.label} · {boostEstimate.reachFormatted} est. monthly views)</Text>
          </View>
-         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:26,letterSpacing:-0.55}]}>₹0</Text>
+         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'500',fontSize:26,letterSpacing:-0.55}]}>₹0</Text>
         </View>
 
         {[
@@ -343,7 +343,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         ))}
         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'baseline',gap:12,paddingTop:10}}>
          <Text style={{color:colors.text,fontWeight:'600',fontSize:14}}>Due today &amp; every month</Text>
-         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:22,letterSpacing:-0.45}]}>₹0</Text>
+         <Text style={[styles.tabular,{color:colors.accent,fontWeight:'500',fontSize:22,letterSpacing:-0.45}]}>₹0</Text>
         </View>
        </View>
 
@@ -415,7 +415,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
        >
         <Feather name={(selectedCategory?.icon??'grid') as React.ComponentProps<typeof Feather>['name']} size={19} color={colors.accent}/>
         <View style={{flex:1,gap:2}}>
-         <Text style={[styles.label,{fontWeight:'700'}]}>CATEGORY FILTER</Text>
+         <Text style={[styles.label,{fontWeight:'500'}]}>CATEGORY FILTER</Text>
          <Text style={[styles.heading,{fontSize:14}]}>{selectedCategory?.name??'All categories'}</Text>
         </View>
         <Feather name="chevron-down" size={19} color={colors.accent}/>
@@ -488,7 +488,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
                <Text style={[styles.heading,{flex:1,fontSize:16}]}>{item.name}</Text>
                <Feather name="arrow-up-right" size={17} color={colors.accent}/>
               </View>
-              <Text style={[styles.tabular,{color:colors.accent,fontWeight:'700',fontSize:16}]}>{servicePrice(item)}</Text>
+              <Text style={[styles.tabular,{color:colors.accent,fontWeight:'500',fontSize:16}]}>{servicePrice(item)}</Text>
               <Text style={[styles.muted,{fontSize:12}]}>{feeLabel(item)}</Text>
               <Text numberOfLines={2} style={styles.muted}>Deliverables: {item.deliverables.slice(0,3).join(' · ')}</Text>
              </Pressable>
@@ -566,7 +566,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
         style={{padding:12,borderRadius:8,borderWidth:1,borderColor:colors.border,backgroundColor:colors.soft,flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:8}}
        >
         <View style={{flex:1,gap:2}}>
-         <Text style={[styles.label,{fontWeight:'700'}]}>PRIMARY SERVICE / VERTICAL</Text>
+         <Text style={[styles.label,{fontWeight:'500'}]}>PRIMARY SERVICE / VERTICAL</Text>
          <Text style={[styles.heading,{fontSize:14}]}>{activeQuoteService.name} — {servicePrice(activeQuoteService)}</Text>
         </View>
         <Feather name="chevron-down" size={18} color={colors.accent}/>
@@ -679,7 +679,7 @@ export function MarketingPricing({serviceId,initialPackage=''}:{serviceId?:strin
       <View style={{borderTopWidth:1,borderColor:colors.border,marginTop:4}}>
        {PRICING_COMPARISON_ROWS.map(row=>(
         <View key={row.criteria} style={{paddingVertical:12,borderBottomWidth:1,borderColor:colors.border,gap:4}}>
-         <Text style={{color:colors.text,fontWeight:'700',fontSize:13}}>{row.criteria}</Text>
+         <Text style={{color:colors.text,fontWeight:'500',fontSize:13}}>{row.criteria}</Text>
          <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>₹0 Business Listing (Free Forever): </Text>{row.free}</Text>
          <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>Self-Serve V Ads (Free Any Radius): </Text>{row.boosts}</Text>
          <Text style={[styles.muted,styles.tabular]}><Text style={{color:colors.text,fontWeight:'600'}}>Studio, Website &amp; Automation: </Text>{row.studio}</Text>

@@ -32,10 +32,10 @@ export default function EmployeesScreen() {
             gap: 8,
           }}
         >
-          <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 11, fontWeight: '700'}}>
+          <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 11, fontWeight: '500'}}>
             VISTRAH EDITORIAL ADMIN
           </Text>
-          <Text style={{color: isDark ? '#f8fafc' : '#0f172a', fontSize: 20, fontWeight: '700'}}>
+          <Text style={{color: isDark ? '#f8fafc' : '#0f172a', fontSize: 20, fontWeight: '600'}}>
             Administrator access required
           </Text>
           <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 13}}>
@@ -53,7 +53,7 @@ export default function EmployeesScreen() {
                 alignItems: 'center',
               }}
             >
-              <Text style={{color: '#fff', fontSize: 13, fontWeight: '700'}}>Sign in →</Text>
+              <Text style={{color: '#fff', fontSize: 13, fontWeight: '500'}}>Sign in →</Text>
             </Pressable>
           )}
         </View>
@@ -64,10 +64,10 @@ export default function EmployeesScreen() {
   return (
     <Page>
       <View style={{gap: 4, marginBottom: 4}}>
-        <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 11, fontWeight: '700', letterSpacing: 1.1}}>
+        <Text style={{color: isDark ? '#94a3b8' : '#475569', fontSize: 11, fontWeight: '500', letterSpacing: 1.1}}>
           Vistrah India Pvt Limited · INTERNAL HR
         </Text>
-        <Text style={{color: isDark ? '#f8fafc' : '#0f172a', fontSize: 22, fontWeight: '700'}}>
+        <Text style={{color: isDark ? '#f8fafc' : '#0f172a', fontSize: 22, fontWeight: '600'}}>
           Employees &amp; HR Letter Generator
         </Text>
       </View>

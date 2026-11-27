@@ -4,6 +4,7 @@ Simplified v2 slugs and bookmarks remain accepted on read through
 `shared/marketplace-legacy-map.json` so existing links keep resolving cleanly.
 """
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 
@@ -63,20 +64,32 @@ def _resolve_current(category_slug: str, subcategory_slug: str, listing_type_slu
     return None
 
 
+def _norm_slug(value: str | None) -> str:
+    if not value or not isinstance(value, str):
+        return ""
+    cleaned = value.strip().lower().replace("&", " and ").replace("'", "").replace("\u2019", "")
+    return re.sub(r"[^a-z0-9]+", "-", cleaned).strip("-")
+
+
 def canonical_selection(category_slug: str, subcategory_slug: str, listing_type_slug: str):
     """Return the current `(category, subcategory, listing_type)` slugs for a current, v3, or v2 selection."""
-    if _resolve_current(category_slug, subcategory_slug, listing_type_slug):
-        return category_slug, subcategory_slug, listing_type_slug
+    cat_norm = _norm_slug(category_slug)
+    sub_norm = _norm_slug(subcategory_slug)
+    lt_norm = _norm_slug(listing_type_slug)
+    if _resolve_current(cat_norm, sub_norm, lt_norm):
+        return cat_norm, sub_norm, lt_norm
+    lm = legacy_map()
+    mapped_cat = lm.get("categories", {}).get(cat_norm, cat_norm)
+    if _resolve_current(mapped_cat, sub_norm, lt_norm):
+        return mapped_cat, sub_norm, lt_norm
     current_cats = {c["slug"] for c in master_taxonomy()["categories"]}
-    if category_slug not in current_cats:
+    if mapped_cat not in current_cats:
         for cat in master_taxonomy()["categories"]:
             for sub in cat["subcategories"]:
-                if sub["slug"] == subcategory_slug:
-                    if any(lt["slug"] == listing_type_slug for lt in sub["listing_types"]):
-                        return cat["slug"], sub["slug"], listing_type_slug
-    mapped = legacy_map().get("subcategories", {}).get(subcategory_slug) or legacy_map().get(
-        "subcategories", {}
-    ).get(listing_type_slug)
+                if sub["slug"] == sub_norm:
+                    if any(lt["slug"] == lt_norm for lt in sub["listing_types"]):
+                        return cat["slug"], sub["slug"], lt_norm
+    mapped = lm.get("subcategories", {}).get(sub_norm) or lm.get("subcategories", {}).get(lt_norm)
     if mapped and len(mapped) >= 3:
         new_cat, new_sub, new_lt = mapped[0], mapped[1], mapped[2]
         if _resolve_current(new_cat, new_sub, new_lt):

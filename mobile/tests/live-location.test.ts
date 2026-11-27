@@ -189,14 +189,14 @@ test('mobile native & web Use GPS handles permission denial, >5s last-known fall
   );
   assert.equal(resolvedWhenOffline.locality, 'Begur, Bengaluru');
 
-  // 7. Hard 8s timeout guarantees stalled geolocation never hangs infinitely on "Locating..."
-  assert.equal(GPS_HARD_TIMEOUT_MS, 8000);
+  // 7. Hard 6s timeout guarantees stalled geolocation never hangs infinitely on "Locating..."
+  assert.equal(GPS_HARD_TIMEOUT_MS, 6000);
   const hungPromise = requestBrowserGpsFix({
     getCurrentPosition: () => {
       // Simulates hung browser geolocation that never invokes callback
     },
   });
   await Promise.resolve();
-  t.mock.timers.tick(8000);
+  t.mock.timers.tick(6000);
   await assert.rejects(hungPromise, new RegExp(GPS_TIMEOUT_MESSAGE.slice(0, 18)));
 });

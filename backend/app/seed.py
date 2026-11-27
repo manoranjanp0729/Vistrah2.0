@@ -48,4 +48,10 @@ def seed(db, with_catalogue=True):
 
 if __name__ == '__main__':
     with SessionLocal() as db:
-        seed(db, os.getenv('SEED_CATALOGUE', 'true').lower() == 'true')
+        seed_cat = os.getenv('SEED_CATALOGUE', 'true').lower() == 'true'
+        seed(db, seed_cat)
+        from .http_security import is_production_env
+        if not is_production_env() and os.getenv('SEED_DEV_LISTINGS', 'true').lower() == 'true':
+            from .bengaluru_seed_listings import seed_bengaluru_dev_listings
+            seed_bengaluru_dev_listings(db)
+            db.commit()

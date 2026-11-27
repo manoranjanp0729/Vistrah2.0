@@ -217,6 +217,76 @@
   font-weight: 700;
 }
 
+.cityWideToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 212, 191, 0.42);
+  background: rgba(13, 148, 136, 0.16);
+  color: #99f6e4;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+:global(:root[data-theme='light']) .cityWideToggleBtn {
+  background: #f0fdfa;
+  border-color: #99f6e4;
+  color: #0f766e;
+}
+
+.cityWideToggleBtn:hover {
+  border-color: #0d9488;
+}
+
+.cityWideToggleBtnActive {
+  background: #0d9488 !important;
+  border-color: #0d9488 !important;
+  color: #ffffff !important;
+}
+
+.expandedRadiusBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(45, 212, 191, 0.42);
+  background: rgba(13, 148, 136, 0.16);
+  color: #ccfbf1;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+:global(:root[data-theme='light']) .expandedRadiusBanner {
+  background: #f0fdfa;
+  border-color: #99f6e4;
+  color: #115e59;
+}
+
+.expandedRadiusToggle {
+  border: 1px solid #0d9488;
+  background: #0d9488;
+  color: #ffffff;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.expandedRadiusToggle:hover {
+  background: #0f766e;
+  border-color: #0f766e;
+}
+
 .vAdsFilterBtn {
   display: inline-flex;
   align-items: center;

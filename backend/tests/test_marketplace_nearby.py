@@ -611,3 +611,172 @@ def test_strict_category_service_type_and_exact_radius_filtering_nearest_first(
     )
     assert r_2km.status_code == 200
     assert [it["id"] for it in r_2km.json()["items"]] == [cafe_1km.id]
+
+
+def test_auto_radius_expansion_null_coordinate_city_fallback_and_legacy_slugs(
+    client, seeded, db, monkeypatch
+):
+    maps_proxy_routes.clear_maps_proxy_state()
+    monkeypatch.delenv("GOOGLE_MAPS_SERVER_API_KEY", raising=False)
+
+    apply_business_catalogue(seeded)
+    seeded.commit()
+
+    owner_headers = seller(client, "fallback-nearby-owner@example.com")
+    owner_id = client.get("/me", headers=owner_headers).json()["id"]
+
+    cat_health = db.scalar(select(Category).where(Category.slug == "hospitals-and-labs"))
+    svc_dental = db.scalar(
+        select(Service).where(Service.category_id == cat_health.id, Service.slug == "dental-clinics")
+    )
+
+    # User is in Begur, Bengaluru (12.8837, 77.6258)
+    begur_lat, begur_lng = 12.8837, 77.6258
+
+    # Nearest GPS-pinned dental clinic is ~11.2 km north in Indiranagar (outside 5 km, inside 15 km)
+    indiranagar_dental, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_dental.id,
+        category_id=cat_health.id,
+        company="Indiranagar Smile Care",
+        lat=begur_lat + math.degrees(11.2 / EARTH_KM),
+        lng=begur_lng,
+    )
+    indiranagar_dental.location = "Indiranagar, Bengaluru"
+    indiranagar_dental.address = "100 Feet Road, Indiranagar, Bengaluru"
+
+    # Verified Bengaluru clinic with NULL coordinates (must appear AFTER GPS-pinned matches, never dropped!)
+    null_blr_dental, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_dental.id,
+        category_id=cat_health.id,
+        company="HSR Heritage Dental",
+        lat=begur_lat,
+        lng=begur_lng,
+    )
+    null_blr_dental.latitude = None
+    null_blr_dental.longitude = None
+    null_blr_dental.location = "HSR Layout, Bengaluru"
+    null_blr_dental.address = "27th Main Road, HSR Layout, Bengaluru"
+
+    # Unrelated city's null-coordinate clinic (Mysuru) must NOT leak into Bengaluru search
+    null_mysuru_dental, _ = _make_approved_business(
+        db,
+        owner_id=owner_id,
+        service_id=svc_dental.id,
+        category_id=cat_health.id,
+        company="Mysuru Palace Dental",
+        lat=12.3051,
+        lng=76.6551,
+    )
+    null_mysuru_dental.latitude = None
+    null_mysuru_dental.longitude = None
+    null_mysuru_dental.location = "Mysuru"
+    null_mysuru_dental.address = "Sayyaji Rao Road, Mysuru"
+    db.commit()
+
+    # 1. Requesting tight 5 km radius automatically expands to 15 km and appends city-matched null-coord listing
+    r_exp = client.get(
+        "/api/marketplace/listings",
+        params={
+            "category": "hospitals-and-labs",
+            "service_type": "dental-clinics",
+            "lat": begur_lat,
+            "lng": begur_lng,
+            "radius_km": 5,
+        },
+    )
+    assert r_exp.status_code == 200
+    body_exp = r_exp.json()
+    assert body_exp["requested_radius_km"] == 5.0
+    assert body_exp["expanded_radius"] is True
+    assert body_exp["effective_radius_km"] == 15.0
+    assert [it["id"] for it in body_exp["items"]] == [indiranagar_dental.id, null_blr_dental.id]
+    assert body_exp["items"][0]["distance_km"] > 10.0
+    assert body_exp["items"][0]["has_exact_coordinates"] is True
+    assert body_exp["items"][1]["distance_km"] is None
+    assert body_exp["items"][1]["latitude"] is None
+    assert body_exp["items"][1]["has_exact_coordinates"] is False
+
+    # 2. Legacy category/service-type aliases & mixed case/punctuation resolve identically without empty results
+    for legacy_cat, legacy_type in [
+        ("health-and-fitness", "dentists"),
+        ("Hospitals & Labs", "Dental Care"),
+        ("HEALTH-FITNESS-AND-WELLNESS", "DENTAL_CLINICS"),
+    ]:
+        r_alias = client.get(
+            "/api/marketplace/listings",
+            params={
+                "category": legacy_cat,
+                "service_type": legacy_type,
+                "lat": begur_lat,
+                "lng": begur_lng,
+                "radius_km": 25,
+            },
+        )
+        assert r_alias.status_code == 200, (legacy_cat, legacy_type, r_alias.text)
+        alias_body = r_alias.json()
+        assert alias_body["category"]["slug"] == "hospitals-and-labs"
+        assert alias_body["business_type"]["slug"] == "dental-clinics"
+        assert [it["id"] for it in alias_body["items"]] == [indiranagar_dental.id, null_blr_dental.id]
+
+    # 3. Explicit Show All in City (`city_wide=true`) returns city-wide metadata + all Bengaluru matches
+    r_city = client.get(
+        "/api/marketplace/listings",
+        params={
+            "category": "hospitals-and-labs",
+            "service_type": "dental-clinics",
+            "lat": begur_lat,
+            "lng": begur_lng,
+            "radius_km": 5,
+            "city_wide": "true",
+        },
+    )
+    assert r_city.status_code == 200
+    city_body = r_city.json()
+    assert city_body["city_wide"] is True
+    assert city_body["expanded_radius"] is True
+    assert [it["id"] for it in city_body["items"]] == [indiranagar_dental.id, null_blr_dental.id]
+
+
+def test_bengaluru_dev_seed_populates_all_10_categories_and_8_neighbourhoods(
+    client, seeded, db, monkeypatch
+):
+    from app.bengaluru_seed_listings import BENGALURU_NEIGHBOURHOODS, seed_bengaluru_dev_listings
+    from app.business_catalogue import business_types
+
+    maps_proxy_routes.clear_maps_proxy_state()
+    monkeypatch.delenv("GOOGLE_MAPS_SERVER_API_KEY", raising=False)
+
+    summary = seed_bengaluru_dev_listings(db)
+    db.commit()
+    assert summary["providers_created"] >= 60
+    assert summary["services_linked"] >= 60
+
+    # Idempotent re-run creates 0 duplicates
+    again = seed_bengaluru_dev_listings(db)
+    assert again["already_seeded"] is True
+    assert again["providers_created"] == 0
+
+    blr_lat, blr_lng = 12.9716, 77.5946
+    seen_locations: set[str] = set()
+    for cat in business_types()["categories"]:
+        r_cat = client.get(
+            "/api/marketplace/listings",
+            params={
+                "category": cat["slug"],
+                "lat": blr_lat,
+                "lng": blr_lng,
+                "radius_km": 25,
+            },
+        )
+        assert r_cat.status_code == 200
+        items = r_cat.json()["items"]
+        assert len(items) >= 5, f"Expected rich Bengaluru seed results for {cat['slug']}"
+        for it in items:
+            seen_locations.add(it["location"])
+
+    for hood in BENGALURU_NEIGHBOURHOODS:
+        assert str(hood["locality"]) in seen_locations

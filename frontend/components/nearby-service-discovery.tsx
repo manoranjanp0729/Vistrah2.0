@@ -40,10 +40,12 @@ import {
 import { searchMarketplaceEntries } from '@/lib/marketplace-taxonomy';
 import { FLAGSHIP_SECTORS, getFlagshipSector } from '../../shared/flagship-sectors';
 import {
+  DEFAULT_NEARBY_RADIUS_KM,
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
   buildNearbyListingsPath,
   formatDistanceAway,
+  formatExpandedRadiusNotice,
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   nearbyServicesUrl,
@@ -70,6 +72,8 @@ import {
   type VistrahMapMarker,
 } from './vistrah-google-maps';
 import s from './nearby-service-discovery.module.css';
+
+const EMPTY_NEARBY_ITEMS: NearbyBusinessItem[] = [];
 
 function approxDistanceKm(a: Point, b: Point): number {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
@@ -184,8 +188,9 @@ export function NearbyServiceDiscovery({
   const displayLocality = customCenter ? 'Moved map area' : activePoint.locality;
 
   const [radiusKm, setRadiusKm] = useState<NearbyDiscoveryRadius>(() =>
-    normalizeNearbyRadius(locCtx?.radius ?? 10),
+    normalizeNearbyRadius(locCtx?.radius ?? DEFAULT_NEARBY_RADIUS_KM),
   );
+  const [cityWide, setCityWide] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map' | 'split'>('split');
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [openMoreKey, setOpenMoreKey] = useState<string | null>(null);
@@ -229,14 +234,20 @@ export function NearbyServiceDiscovery({
 
   const [state, setState] = useState<{
     key: string;
+    scopeKey: string;
     items: NearbyBusinessItem[];
     hasGooglePlaces: boolean;
+    expandedRadius: boolean;
+    effectiveRadiusKm: number | null;
+    responseCityWide: boolean;
     error: string;
   } | null>(null);
 
   const searchRunner = useRef(new LatestSearch());
   const normalizedTypeSlug = (typeSlug || '').trim();
-  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${normalizedTypeSlug}:${queryCenter.latitude.toFixed(5)}:${queryCenter.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
+  const scopeKey = `${categorySlug}:${subcategorySlug || ''}:${normalizedTypeSlug}`;
+  const cityHint = activePoint.locality.split(',').pop()?.trim() || 'Bengaluru';
+  const requestKey = `${scopeKey}:${queryCenter.latitude.toFixed(5)}:${queryCenter.longitude.toFixed(5)}:${radiusKm}:${cityWide ? 'city' : 'rad'}:${locCtx?.locationRevision ?? 0}`;
 
   useEffect(() => {
     let alive = true;
@@ -247,6 +258,8 @@ export function NearbyServiceDiscovery({
       latitude: queryCenter.latitude,
       longitude: queryCenter.longitude,
       radiusKm,
+      cityWide,
+      city: cityHint,
     });
     searchRunner.current
       .run(signal => api<NearbyServicesResponse>(path, { signal }))
@@ -255,11 +268,18 @@ export function NearbyServiceDiscovery({
           const nextItems = res.value.items ?? [];
           setState({
             key: requestKey,
+            scopeKey,
             items: nextItems,
             hasGooglePlaces: Boolean(
               res.value.has_google_places ||
                 nextItems.some(item => item.source === 'google_places'),
             ),
+            expandedRadius: Boolean(res.value.expanded_radius),
+            effectiveRadiusKm:
+              typeof res.value.effective_radius_km === 'number'
+                ? res.value.effective_radius_km
+                : null,
+            responseCityWide: Boolean(res.value.city_wide),
             error: '',
           });
           setSelectedId(prev =>
@@ -271,8 +291,12 @@ export function NearbyServiceDiscovery({
         if (alive) {
           setState({
             key: requestKey,
+            scopeKey,
             items: [],
             hasGooglePlaces: false,
+            expandedRadius: false,
+            effectiveRadiusKm: null,
+            responseCityWide: false,
             error: (err as Error).message || 'Could not load nearby businesses.',
           });
         }
@@ -290,32 +314,63 @@ export function NearbyServiceDiscovery({
     queryCenter.latitude,
     queryCenter.longitude,
     radiusKm,
+    cityWide,
+    cityHint,
+    scopeKey,
     requestKey,
   ]);
 
-  const loading = state?.key !== requestKey;
-  const items = state?.key === requestKey ? state.items : [];
-  const hasGooglePlaces = state?.key === requestKey ? state.hasGooglePlaces : false;
+  const sameScope = state?.scopeKey === scopeKey;
+  const loading = state?.key !== requestKey && (!sameScope || state.items.length === 0);
+  const items = sameScope ? state.items : EMPTY_NEARBY_ITEMS;
+  const hasGooglePlaces = sameScope ? state.hasGooglePlaces : false;
+  const expandedRadius = sameScope ? state.expandedRadius : false;
+  const effectiveRadiusKm = sameScope ? state.effectiveRadiusKm : null;
+  const responseCityWide = sameScope ? state.responseCityWide : false;
   const error = state?.key === requestKey ? state.error : '';
+  const expandedNotice = formatExpandedRadiusNotice({
+    count: items.length,
+    requestedRadiusKm: radiusKm,
+    effectiveRadiusKm,
+    expandedRadius,
+    cityWide: responseCityWide,
+    userToggledCityWide: cityWide,
+    locality: displayLocality,
+  });
+  const mapRadiusKm =
+    cityWide || responseCityWide
+      ? 50
+      : expandedRadius && typeof effectiveRadiusKm === 'number'
+        ? Math.min(50, Math.max(radiusKm, effectiveRadiusKm))
+        : radiusKm;
 
   const markers = useMemo<VistrahMapMarker[]>(
     () =>
-      items.map(item => ({
-        id: item.id,
-        latitude: item.latitude,
-        longitude: item.longitude,
-        title: item.company || item.name,
-        subtitle: item.location || item.address,
-        description: item.description || item.service_title,
-        distanceKm: item.distance_km,
-        badge: item.source === 'vistrah' ? 'VISTRAH Verified' : 'Nearby Place',
-        actionLabel: 'Directions',
-        actionHref: googleMapsDirectionsHrefForPin(
-          item.latitude,
-          item.longitude,
-          item.directions_url,
-        ),
-      })),
+      items
+        .filter(
+          (item): item is NearbyBusinessItem & { latitude: number; longitude: number } =>
+            typeof item.latitude === 'number' &&
+            typeof item.longitude === 'number' &&
+            Number.isFinite(item.latitude) &&
+            Number.isFinite(item.longitude),
+        )
+        .map(item => ({
+          id: item.id,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          title: item.company || item.name,
+          subtitle: item.location || item.address,
+          description: item.description || item.service_title,
+          distanceKm: item.distance_km ?? undefined,
+          badge: item.source === 'vistrah' ? 'VISTRAH Verified' : 'Nearby Place',
+          actionLabel: 'Directions',
+          actionHref: googleMapsDirectionsHrefForPin(
+            item.latitude,
+            item.longitude,
+            item.directions_url,
+            `${item.company || item.name}, ${item.address || item.location}`,
+          ),
+        })),
     [items],
   );
 
@@ -494,14 +549,27 @@ export function NearbyServiceDiscovery({
               <button
                 key={r}
                 type="button"
-                aria-pressed={radiusKm === r}
-                className={`${s.radiusBtn} ${radiusKm === r ? s.radiusBtnActive : ''}`}
-                onClick={() => setRadiusKm(r)}
+                aria-pressed={!cityWide && radiusKm === r}
+                className={`${s.radiusBtn} ${!cityWide && radiusKm === r ? s.radiusBtnActive : ''}`}
+                onClick={() => {
+                  setCityWide(false);
+                  setRadiusKm(r);
+                }}
               >
                 {r} km
               </button>
             ))}
           </div>
+          <button
+            type="button"
+            aria-pressed={cityWide}
+            data-show-all-city="true"
+            className={`${s.cityWideToggleBtn} ${cityWide ? s.cityWideToggleBtnActive : ''}`}
+            onClick={() => setCityWide(prev => !prev)}
+          >
+            <MapPin size={13} aria-hidden="true" />
+            <UiText value="Show All in City" />
+          </button>
           <Link
             href={nearbyVAdsUrl({
               category: categorySlug,
@@ -570,7 +638,7 @@ export function NearbyServiceDiscovery({
             )}
             <VistrahMap
               center={{ latitude: queryCenter.latitude, longitude: queryCenter.longitude }}
-              radiusKm={radiusKm}
+              radiusKm={mapRadiusKm}
               markers={markers}
               selectedId={selectedId}
               height={420}
@@ -605,9 +673,13 @@ export function NearbyServiceDiscovery({
                     <strong>{items.length}</strong>{' '}
                     <UiText
                       value={
-                        items.length === 1
-                          ? `listing within ${radiusKm} km (nearest first)`
-                          : `listings within ${radiusKm} km (nearest first)`
+                        cityWide || responseCityWide
+                          ? items.length === 1
+                            ? 'listing across city (nearest first)'
+                            : 'listings across city (nearest first)'
+                          : items.length === 1
+                            ? `listing within ${Math.round(effectiveRadiusKm ?? radiusKm)} km (nearest first)`
+                            : `listings within ${Math.round(effectiveRadiusKm ?? radiusKm)} km (nearest first)`
                       }
                     />
                   </>
@@ -624,6 +696,23 @@ export function NearbyServiceDiscovery({
               )}
             </div>
 
+            {expandedNotice && (
+              <div
+                className={s.expandedRadiusBanner}
+                role="status"
+                data-expanded-radius-banner="true"
+              >
+                <span>{expandedNotice}</span>
+                <button
+                  type="button"
+                  className={s.expandedRadiusToggle}
+                  onClick={() => setCityWide(prev => !prev)}
+                >
+                  <UiText value={cityWide ? `Use ${radiusKm} km radius` : 'Show All in City'} />
+                </button>
+              </div>
+            )}
+
             {error && (
               <div className={s.statusBox} role="alert">
                 {error}
@@ -637,20 +726,28 @@ export function NearbyServiceDiscovery({
                     value={`No listings found within ${radiusKm} km — try expanding your radius`}
                   />
                 </p>
-                {largerRadii.length > 0 && (
-                  <div className={s.emptyRadiusActions}>
-                    {largerRadii.map(nextRadius => (
-                      <button
-                        key={nextRadius}
-                        type="button"
-                        className={s.expandRadiusBtn}
-                        onClick={() => setRadiusKm(nextRadius)}
-                      >
-                        Try {nextRadius} km
-                      </button>
-                    ))}
-                  </div>
-                )}
+                <div className={s.emptyRadiusActions}>
+                  {largerRadii.map(nextRadius => (
+                    <button
+                      key={nextRadius}
+                      type="button"
+                      className={s.expandRadiusBtn}
+                      onClick={() => {
+                        setCityWide(false);
+                        setRadiusKm(nextRadius);
+                      }}
+                    >
+                      Try {nextRadius} km
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    className={s.expandRadiusBtn}
+                    onClick={() => setCityWide(true)}
+                  >
+                    Show All in City
+                  </button>
+                </div>
               </div>
             )}
 
@@ -672,6 +769,7 @@ export function NearbyServiceDiscovery({
                     item.latitude,
                     item.longitude,
                     item.directions_url,
+                    `${item.company || item.name}, ${item.address || item.location}`,
                   );
                   const websiteUrl = websiteExternalHref(item.website_url);
                   const isMoreOpen = openMoreKey === itemKey;
@@ -728,7 +826,7 @@ export function NearbyServiceDiscovery({
                           <div className={s.titleDistanceRow}>
                             <h3 className={s.businessName}>{item.company || item.name}</h3>
                             <span className={s.distanceBadge}>
-                              {formatDistanceAway(item.distance_km)}
+                              {formatDistanceAway(item.distance_km, item.location)}
                             </span>
                           </div>
 

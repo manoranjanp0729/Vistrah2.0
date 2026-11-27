@@ -10,8 +10,10 @@ import {
   NEARBY_DISCOVERY_RADII,
   buildContactPrefillMailto,
   buildListingMoreOptions,
+  buildNearbyListingsPath,
   buildNearbyMarketplacePath,
   formatDistanceAway,
+  formatExpandedRadiusNotice,
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   googleMapsHybridSearchHref,
@@ -39,6 +41,46 @@ describe('In-app Nearby Services Map + Listings contract', () => {
 
     expect(formatDistanceAway(1.24)).toBe('1.2 km away');
     expect(formatDistanceAway(18.6)).toBe('19 km away');
+    expect(formatDistanceAway(null, 'HSR Layout, Bengaluru')).toBe('In HSR Layout');
+    expect(formatDistanceAway(null)).toBe('In your city');
+
+    expect(
+      formatExpandedRadiusNotice({
+        count: 4,
+        requestedRadiusKm: 5,
+        effectiveRadiusKm: 25,
+        expandedRadius: true,
+        locality: 'Begur, Bengaluru',
+      }),
+    ).toBe('Showing 4 places within 25 km (none within 5 km)');
+    expect(
+      formatExpandedRadiusNotice({
+        count: 7,
+        requestedRadiusKm: 10,
+        effectiveRadiusKm: 100,
+        expandedRadius: true,
+        cityWide: true,
+        userToggledCityWide: true,
+        locality: 'Begur, Bengaluru',
+      }),
+    ).toBe('Showing all 7 places in Bengaluru');
+
+    expect(
+      buildNearbyListingsPath({
+        category: 'hospitals-and-labs',
+        serviceType: 'dental-clinics',
+        latitude: 12.8837,
+        longitude: 77.6258,
+        radiusKm: 10,
+        cityWide: true,
+        city: 'Bengaluru',
+      }),
+    ).toBe(
+      '/marketplace/listings?category=hospitals-and-labs&lat=12.883700&lng=77.625800&radius_km=10&service_type=dental-clinics&business_type=dental-clinics&city_wide=true&city=Bengaluru',
+    );
+    expect(
+      googleMapsDirectionsHrefForPin(null, null, null, 'HSR Heritage Dental, Bengaluru'),
+    ).toBe('https://www.google.com/maps/search/?api=1&query=HSR%20Heritage%20Dental%2C%20Bengaluru');
 
     expect(phoneCallHref('+91 98450-11111')).toBe('tel:+919845011111');
     expect(phoneCallHref('080 2221 9988')).toBe('tel:08022219988');
@@ -251,6 +293,8 @@ describe('In-app Nearby Services Map + Listings contract', () => {
     expect(withLocationHtml).toContain('Restaurant');
     expect(withLocationHtml).toContain('Bengaluru');
     expect(withLocationHtml).toContain('Use GPS');
+    expect(withLocationHtml).toContain('Show All in City');
+    expect(withLocationHtml).toContain('data-show-all-city="true"');
 
     const nearbySrc = readFileSync(
       new URL('../components/nearby-service-discovery.tsx', import.meta.url),

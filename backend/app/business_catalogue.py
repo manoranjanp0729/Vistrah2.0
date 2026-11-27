@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from functools import lru_cache
 from pathlib import Path
 
@@ -51,16 +52,54 @@ def business_types() -> dict:
     return data
 
 
+def normalize_taxonomy_slug(raw: str | None) -> str:
+    if not raw or not isinstance(raw, str):
+        return ""
+    cleaned = raw.strip().lower()
+    if not cleaned:
+        return ""
+    cleaned = cleaned.replace("&", " and ").replace("'", "").replace("\u2019", "")
+    cleaned = re.sub(r"[^a-z0-9]+", "-", cleaned).strip("-")
+    return cleaned
+
+
 @lru_cache(maxsize=1)
-def _type_lookup_maps() -> tuple[dict[str, tuple[dict, dict]], dict[tuple[str, str], tuple[dict, dict]]]:
+def _type_lookup_maps() -> tuple[
+    dict[str, tuple[dict, dict]],
+    dict[tuple[str, str], tuple[dict, dict]],
+    dict[str, tuple[dict, dict]],
+]:
     by_slug: dict[str, tuple[dict, dict]] = {}
     by_cat_and_lt: dict[tuple[str, str], tuple[dict, dict]] = {}
+    by_title_slug: dict[str, tuple[dict, dict]] = {}
     for cat in business_types()["categories"]:
         for bt in cat["types"]:
             by_slug[bt["slug"]] = (cat, bt)
             lt_slug = bt.get("listing_type_slug") or bt["slug"]
             by_cat_and_lt.setdefault((cat["slug"], lt_slug), (cat, bt))
-    return by_slug, by_cat_and_lt
+            norm_title = normalize_taxonomy_slug(bt.get("title", ""))
+            if norm_title:
+                by_title_slug.setdefault(norm_title, (cat, bt))
+    return by_slug, by_cat_and_lt, by_title_slug
+
+
+def resolve_canonical_category_slug(raw_category: str | None) -> str | None:
+    norm = normalize_taxonomy_slug(raw_category)
+    if not norm:
+        return None
+    cats = business_types()["categories"]
+    for cat in cats:
+        if cat["slug"] == norm or normalize_taxonomy_slug(cat["title"]) == norm:
+            return cat["slug"]
+    mapped = legacy_map().get("categories", {}).get(norm)
+    if mapped:
+        return mapped
+    # Singular/plural fallback on category slug
+    if norm.endswith("s") and norm[:-1] in {c["slug"] for c in cats}:
+        return norm[:-1]
+    if f"{norm}s" in {c["slug"] for c in cats}:
+        return f"{norm}s"
+    return None
 
 
 def find_business_type(
@@ -70,34 +109,58 @@ def find_business_type(
     subcategory_slug: str | None = None,
     db=None,
 ) -> tuple[dict, dict] | None:
-    by_slug, by_cat_and_lt = _type_lookup_maps()
+    norm_type = normalize_taxonomy_slug(type_slug)
+    if not norm_type:
+        return None
+    norm_cat = normalize_taxonomy_slug(category_slug) if category_slug else None
+    norm_sub = normalize_taxonomy_slug(subcategory_slug) if subcategory_slug else None
+    resolved_cat = resolve_canonical_category_slug(category_slug) if category_slug else None
+
+    by_slug, by_cat_and_lt, by_title_slug = _type_lookup_maps()
     lm = legacy_map()
 
-    if category_slug and subcategory_slug:
-        triple_u = lm.get("triples", {}).get(f"{category_slug}/{subcategory_slug}/{type_slug}")
+    def _category_compatible(hit_cat_slug: str) -> bool:
+        if not norm_cat:
+            return True
+        return hit_cat_slug == norm_cat or hit_cat_slug == resolved_cat
+
+    if norm_cat and norm_sub:
+        triple_u = lm.get("triples", {}).get(f"{norm_cat}/{norm_sub}/{norm_type}")
         if triple_u and triple_u in by_slug:
             return by_slug[triple_u]
 
-    if type_slug in by_slug:
-        hit_cat, hit_bt = by_slug[type_slug]
-        if not category_slug or category_slug == hit_cat["slug"] or lm.get("categories", {}).get(category_slug) == hit_cat["slug"]:
-            return hit_cat, hit_bt
+    for candidate in (
+        norm_type,
+        norm_type[:-1] if norm_type.endswith("s") and len(norm_type) > 3 else "",
+        f"{norm_type}s",
+    ):
+        if not candidate:
+            continue
+        if candidate in by_slug:
+            hit_cat, hit_bt = by_slug[candidate]
+            if _category_compatible(hit_cat["slug"]):
+                return hit_cat, hit_bt
+        if candidate in by_title_slug:
+            hit_cat, hit_bt = by_title_slug[candidate]
+            if _category_compatible(hit_cat["slug"]):
+                return hit_cat, hit_bt
 
-    if category_slug:
-        resolved_cat = lm.get("categories", {}).get(category_slug, category_slug)
-        cat_lt_hit = by_cat_and_lt.get((resolved_cat, type_slug))
+    if resolved_cat:
+        cat_lt_hit = by_cat_and_lt.get((resolved_cat, norm_type))
         if cat_lt_hit:
             return cat_lt_hit
 
-    mapped_v2 = lm.get("subcategories", {}).get(type_slug)
+    mapped_v2 = lm.get("subcategories", {}).get(norm_type)
     if mapped_v2 and len(mapped_v2) >= 4:
         u_slug = mapped_v2[3]
         if u_slug in by_slug:
-            return by_slug[u_slug]
+            hit_cat, hit_bt = by_slug[u_slug]
+            if _category_compatible(hit_cat["slug"]):
+                return hit_cat, hit_bt
 
     if db is not None:
         from .business_service_types import find_dynamic_type
-        return find_dynamic_type(db, type_slug, category_slug)
+        return find_dynamic_type(db, norm_type, resolved_cat or norm_cat)
     return None
 
 

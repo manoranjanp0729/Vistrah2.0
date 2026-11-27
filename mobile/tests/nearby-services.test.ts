@@ -5,8 +5,12 @@ import { backFallback } from '../src/lib/navigation-policy.ts';
 import {
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
+  buildNearbyListingsPath,
   buildNearbyMarketplacePath,
+  formatDistanceAway,
+  formatExpandedRadiusNotice,
   getDivisionFallbackTheme,
+  googleMapsDirectionsHrefForPin,
   phoneCallHref,
   resolveListingPhotoUri,
   websiteExternalHref,
@@ -137,4 +141,33 @@ test('mobile services tab and /services/nearby wire in-app map + synchronized li
     'Expected exactly 1 Locating… label (only on Use GPS button, never duplicated on location pill)',
   );
   assert.ok(nearbyDiscoverySrc.includes('#0D9488'));
+  assert.ok(nearbyDiscoverySrc.includes('Show All in City'));
+  assert.ok(nearbyDiscoverySrc.includes('nearby-expanded-radius-banner'));
+
+  assert.equal(formatDistanceAway(null, 'Koramangala, Bengaluru'), 'In Koramangala');
+  assert.equal(
+    formatExpandedRadiusNotice({
+      count: 3,
+      requestedRadiusKm: 5,
+      effectiveRadiusKm: 15,
+      expandedRadius: true,
+      locality: 'Begur, Bengaluru',
+    }),
+    'Showing 3 places within 15 km (none within 5 km)',
+  );
+  assert.equal(
+    buildNearbyListingsPath({
+      category: 'restaurants-and-dining',
+      serviceType: 'cafes',
+      latitude: 12.9716,
+      longitude: 77.5946,
+      radiusKm: 10,
+      cityWide: true,
+    }),
+    '/marketplace/listings?category=restaurants-and-dining&lat=12.971600&lng=77.594600&radius_km=10&service_type=cafes&business_type=cafes&city_wide=true',
+  );
+  assert.equal(
+    googleMapsDirectionsHrefForPin(null, null, null, 'Namma Cafes, Koramangala'),
+    'https://www.google.com/maps/search/?api=1&query=Namma%20Cafes%2C%20Koramangala',
+  );
 });

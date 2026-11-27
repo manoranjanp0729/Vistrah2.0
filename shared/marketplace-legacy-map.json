@@ -1,7 +1,1105 @@
 {
   "version": 6,
-  "categories": {},
-  "subcategories": {},
+  "categories": {
+    "food-and-dining": "restaurants-and-dining",
+    "hospitality-restaurants-and-cafes": "restaurants-and-dining",
+    "restaurants": "restaurants-and-dining",
+    "dining": "restaurants-and-dining",
+    "food-beverages": "restaurants-and-dining",
+    "cafes-and-restaurants": "restaurants-and-dining",
+    "travel-and-stay": "hotels-and-stay",
+    "travel-stay-and-experiences": "hotels-and-stay",
+    "hospitality-and-stays": "hotels-and-stay",
+    "accommodations": "hotels-and-stay",
+    "lodging": "hotels-and-stay",
+    "automobiles-and-garages": "vehicle-rentals",
+    "vehicles": "vehicle-rentals",
+    "automobiles": "vehicle-rentals",
+    "rental-services": "vehicle-rentals",
+    "transport-and-rentals": "vehicle-rentals",
+    "car-and-bike-rentals": "vehicle-rentals",
+    "events-and-weddings": "event-management",
+    "events-weddings-and-media": "event-management",
+    "events-and-celebrations": "event-management",
+    "weddings-and-events": "event-management",
+    "health-and-fitness": "hospitals-and-labs",
+    "health-fitness-and-wellness": "hospitals-and-labs",
+    "healthcare": "hospitals-and-labs",
+    "medical-and-diagnostics": "hospitals-and-labs",
+    "hospitals-clinics-and-labs": "hospitals-and-labs",
+    "pet-care": "hospitals-and-labs",
+    "education-and-coaching": "education-and-skills",
+    "overseas-education-and-skill-academies": "education-and-skills",
+    "coaching-and-tuitions": "education-and-skills",
+    "training-and-skills": "education-and-skills",
+    "jobs-and-careers": "education-and-skills",
+    "salons-bridal-and-wellness": "salons-and-beauty-parlour",
+    "beauty-and-personal-care": "salons-and-beauty-parlour",
+    "beauty-fashion-and-lifestyle": "salons-and-beauty-parlour",
+    "wellness-and-spas": "salons-and-beauty-parlour",
+    "grooming-and-salons": "salons-and-beauty-parlour",
+    "civil-construction-and-contractors": "civil-and-construction",
+    "property-and-construction": "civil-and-construction",
+    "construction-and-materials": "civil-and-construction",
+    "real-estate-and-property": "civil-and-construction",
+    "interior-design-and-exteriors": "civil-and-construction",
+    "home-services": "civil-and-construction",
+    "home-and-everyday-services": "civil-and-construction",
+    "professional-services": "civil-and-construction",
+    "legal-tax-and-business-compliance": "civil-and-construction",
+    "it-media-and-printing": "civil-and-construction",
+    "shopping-and-local-retail": "civil-and-construction",
+    "shops-and-retail": "civil-and-construction",
+    "agriculture-and-farming": "civil-and-construction",
+    "automobiles-and-ev": "fuel-and-charging-stations",
+    "ev-and-fuel": "fuel-and-charging-stations",
+    "fuel-stations": "fuel-and-charging-stations",
+    "charging-stations": "fuel-and-charging-stations",
+    "entertainment-and-nightlife": "vibe-finder",
+    "events-and-experiences": "vibe-finder",
+    "sports-and-recreation": "vibe-finder",
+    "leisure-and-vibes": "vibe-finder"
+  },
+  "subcategories": {
+    "restaurants": [
+      "restaurants-and-dining",
+      "restaurant",
+      "restaurant",
+      "restaurant"
+    ],
+    "fine-dining": [
+      "restaurants-and-dining",
+      "restaurant",
+      "restaurant",
+      "restaurant"
+    ],
+    "mess-and-dhaba": [
+      "restaurants-and-dining",
+      "restaurant",
+      "restaurant",
+      "restaurant"
+    ],
+    "darshini": [
+      "restaurants-and-dining",
+      "restaurant",
+      "restaurant",
+      "restaurant"
+    ],
+    "hotels-and-restaurants": [
+      "restaurants-and-dining",
+      "restaurant",
+      "restaurant",
+      "restaurant"
+    ],
+    "cafe": [
+      "restaurants-and-dining",
+      "cafes",
+      "cafes",
+      "cafes"
+    ],
+    "coffee-shops": [
+      "restaurants-and-dining",
+      "cafes",
+      "cafes",
+      "cafes"
+    ],
+    "cafes-and-bakeries": [
+      "restaurants-and-dining",
+      "cafes",
+      "cafes",
+      "cafes"
+    ],
+    "pub": [
+      "restaurants-and-dining",
+      "pubs",
+      "pubs",
+      "pubs"
+    ],
+    "bars-and-pubs": [
+      "restaurants-and-dining",
+      "pubs",
+      "pubs",
+      "pubs"
+    ],
+    "lounges-and-pubs": [
+      "restaurants-and-dining",
+      "pubs",
+      "pubs",
+      "pubs"
+    ],
+    "microbreweries": [
+      "restaurants-and-dining",
+      "pubs",
+      "pubs",
+      "pubs"
+    ],
+    "street-food-and-quick-bites": [
+      "restaurants-and-dining",
+      "street-food",
+      "street-food",
+      "street-food"
+    ],
+    "fast-food": [
+      "restaurants-and-dining",
+      "street-food",
+      "street-food",
+      "street-food"
+    ],
+    "chaat-and-snacks": [
+      "restaurants-and-dining",
+      "street-food",
+      "street-food",
+      "street-food"
+    ],
+    "bakery": [
+      "restaurants-and-dining",
+      "bakeries-and-desserts",
+      "bakeries-and-desserts",
+      "bakeries-and-desserts"
+    ],
+    "bakeries": [
+      "restaurants-and-dining",
+      "bakeries-and-desserts",
+      "bakeries-and-desserts",
+      "bakeries-and-desserts"
+    ],
+    "desserts": [
+      "restaurants-and-dining",
+      "bakeries-and-desserts",
+      "bakeries-and-desserts",
+      "bakeries-and-desserts"
+    ],
+    "cloud-kitchens": [
+      "restaurants-and-dining",
+      "cloud-kitchens-and-tiffins",
+      "cloud-kitchens-and-tiffins",
+      "cloud-kitchens-and-tiffins"
+    ],
+    "tiffin-services": [
+      "restaurants-and-dining",
+      "cloud-kitchens-and-tiffins",
+      "cloud-kitchens-and-tiffins",
+      "cloud-kitchens-and-tiffins"
+    ],
+    "tiffins": [
+      "restaurants-and-dining",
+      "cloud-kitchens-and-tiffins",
+      "cloud-kitchens-and-tiffins",
+      "cloud-kitchens-and-tiffins"
+    ],
+    "juice-bars": [
+      "restaurants-and-dining",
+      "juice-and-ice-cream-bars",
+      "juice-and-ice-cream-bars",
+      "juice-and-ice-cream-bars"
+    ],
+    "ice-cream-parlours": [
+      "restaurants-and-dining",
+      "juice-and-ice-cream-bars",
+      "juice-and-ice-cream-bars",
+      "juice-and-ice-cream-bars"
+    ],
+    "hotel": [
+      "hotels-and-stay",
+      "hotels",
+      "hotels",
+      "hotels"
+    ],
+    "business-hotels": [
+      "hotels-and-stay",
+      "hotels",
+      "hotels",
+      "hotels"
+    ],
+    "homestay": [
+      "hotels-and-stay",
+      "homestays",
+      "homestays",
+      "homestays"
+    ],
+    "villas-and-homestays": [
+      "hotels-and-stay",
+      "homestays",
+      "homestays",
+      "homestays"
+    ],
+    "resort": [
+      "hotels-and-stay",
+      "resorts",
+      "resorts",
+      "resorts"
+    ],
+    "nature-resorts": [
+      "hotels-and-stay",
+      "resorts",
+      "resorts",
+      "resorts"
+    ],
+    "pg": [
+      "hotels-and-stay",
+      "pgs-and-hostels",
+      "pgs-and-hostels",
+      "pgs-and-hostels"
+    ],
+    "pgs": [
+      "hotels-and-stay",
+      "pgs-and-hostels",
+      "pgs-and-hostels",
+      "pgs-and-hostels"
+    ],
+    "hostels": [
+      "hotels-and-stay",
+      "pgs-and-hostels",
+      "pgs-and-hostels",
+      "pgs-and-hostels"
+    ],
+    "paying-guest": [
+      "hotels-and-stay",
+      "pgs-and-hostels",
+      "pgs-and-hostels",
+      "pgs-and-hostels"
+    ],
+    "serviced-apartments": [
+      "hotels-and-stay",
+      "service-apartments",
+      "service-apartments",
+      "service-apartments"
+    ],
+    "lodges": [
+      "hotels-and-stay",
+      "guest-houses-and-lodges",
+      "guest-houses-and-lodges",
+      "guest-houses-and-lodges"
+    ],
+    "guest-houses": [
+      "hotels-and-stay",
+      "guest-houses-and-lodges",
+      "guest-houses-and-lodges",
+      "guest-houses-and-lodges"
+    ],
+    "car-rentals": [
+      "vehicle-rentals",
+      "cars",
+      "cars",
+      "cars"
+    ],
+    "self-drive-cars": [
+      "vehicle-rentals",
+      "cars",
+      "cars",
+      "cars"
+    ],
+    "car-hire": [
+      "vehicle-rentals",
+      "cars",
+      "cars",
+      "cars"
+    ],
+    "bike-rentals": [
+      "vehicle-rentals",
+      "bikes",
+      "bikes",
+      "bikes"
+    ],
+    "two-wheeler-rentals": [
+      "vehicle-rentals",
+      "bikes",
+      "bikes",
+      "bikes"
+    ],
+    "scooter-rentals": [
+      "vehicle-rentals",
+      "bikes",
+      "bikes",
+      "bikes"
+    ],
+    "tempo-travellers": [
+      "vehicle-rentals",
+      "tempo-travellers-and-vans",
+      "tempo-travellers-and-vans",
+      "tempo-travellers-and-vans"
+    ],
+    "van-rentals": [
+      "vehicle-rentals",
+      "tempo-travellers-and-vans",
+      "tempo-travellers-and-vans",
+      "tempo-travellers-and-vans"
+    ],
+    "cabs": [
+      "vehicle-rentals",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis"
+    ],
+    "taxis": [
+      "vehicle-rentals",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis"
+    ],
+    "airport-taxi": [
+      "vehicle-rentals",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis"
+    ],
+    "outstation-cabs": [
+      "vehicle-rentals",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis",
+      "outstation-cabs-and-taxis"
+    ],
+    "mini-trucks": [
+      "vehicle-rentals",
+      "goods-and-mini-trucks",
+      "goods-and-mini-trucks",
+      "goods-and-mini-trucks"
+    ],
+    "packers-and-movers": [
+      "vehicle-rentals",
+      "goods-and-mini-trucks",
+      "goods-and-mini-trucks",
+      "goods-and-mini-trucks"
+    ],
+    "goods-transport": [
+      "vehicle-rentals",
+      "goods-and-mini-trucks",
+      "goods-and-mini-trucks",
+      "goods-and-mini-trucks"
+    ],
+    "weddings": [
+      "event-management",
+      "wedding",
+      "wedding",
+      "wedding"
+    ],
+    "wedding-planners": [
+      "event-management",
+      "wedding",
+      "wedding",
+      "wedding"
+    ],
+    "wedding-planning": [
+      "event-management",
+      "wedding",
+      "wedding",
+      "wedding"
+    ],
+    "birthday-parties": [
+      "event-management",
+      "birthday",
+      "birthday",
+      "birthday"
+    ],
+    "birthday-planners": [
+      "event-management",
+      "birthday",
+      "birthday",
+      "birthday"
+    ],
+    "party-planners": [
+      "event-management",
+      "birthday",
+      "birthday",
+      "birthday"
+    ],
+    "banquet-halls": [
+      "event-management",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues"
+    ],
+    "marriage-halls": [
+      "event-management",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues"
+    ],
+    "convention-halls": [
+      "event-management",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues"
+    ],
+    "event-venues": [
+      "event-management",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues",
+      "banquet-and-event-venues"
+    ],
+    "catering": [
+      "event-management",
+      "catering-and-live-counters",
+      "catering-and-live-counters",
+      "catering-and-live-counters"
+    ],
+    "caterers": [
+      "event-management",
+      "catering-and-live-counters",
+      "catering-and-live-counters",
+      "catering-and-live-counters"
+    ],
+    "photographers": [
+      "event-management",
+      "photography-and-videography",
+      "photography-and-videography",
+      "photography-and-videography"
+    ],
+    "event-photography": [
+      "event-management",
+      "photography-and-videography",
+      "photography-and-videography",
+      "photography-and-videography"
+    ],
+    "videography": [
+      "event-management",
+      "photography-and-videography",
+      "photography-and-videography",
+      "photography-and-videography"
+    ],
+    "hospital": [
+      "hospitals-and-labs",
+      "hospitals",
+      "hospitals",
+      "hospitals"
+    ],
+    "multispeciality-hospitals": [
+      "hospitals-and-labs",
+      "hospitals",
+      "hospitals",
+      "hospitals"
+    ],
+    "clinic": [
+      "hospitals-and-labs",
+      "clinics",
+      "clinics",
+      "clinics"
+    ],
+    "general-physicians": [
+      "hospitals-and-labs",
+      "clinics",
+      "clinics",
+      "clinics"
+    ],
+    "polyclinics": [
+      "hospitals-and-labs",
+      "clinics",
+      "clinics",
+      "clinics"
+    ],
+    "clinics-and-polyclinics": [
+      "hospitals-and-labs",
+      "clinics",
+      "clinics",
+      "clinics"
+    ],
+    "diagnostic-labs": [
+      "hospitals-and-labs",
+      "laboratory",
+      "laboratory",
+      "laboratory"
+    ],
+    "diagnostics": [
+      "hospitals-and-labs",
+      "laboratory",
+      "laboratory",
+      "laboratory"
+    ],
+    "pathology-labs": [
+      "hospitals-and-labs",
+      "laboratory",
+      "laboratory",
+      "laboratory"
+    ],
+    "labs": [
+      "hospitals-and-labs",
+      "laboratory",
+      "laboratory",
+      "laboratory"
+    ],
+    "medical-labs": [
+      "hospitals-and-labs",
+      "laboratory",
+      "laboratory",
+      "laboratory"
+    ],
+    "dentists": [
+      "hospitals-and-labs",
+      "dental-clinics",
+      "dental-clinics",
+      "dental-clinics"
+    ],
+    "dental-care": [
+      "hospitals-and-labs",
+      "dental-clinics",
+      "dental-clinics",
+      "dental-clinics"
+    ],
+    "dental": [
+      "hospitals-and-labs",
+      "dental-clinics",
+      "dental-clinics",
+      "dental-clinics"
+    ],
+    "physiotherapy": [
+      "hospitals-and-labs",
+      "physiotherapy-and-rehab",
+      "physiotherapy-and-rehab",
+      "physiotherapy-and-rehab"
+    ],
+    "physio": [
+      "hospitals-and-labs",
+      "physiotherapy-and-rehab",
+      "physiotherapy-and-rehab",
+      "physiotherapy-and-rehab"
+    ],
+    "rehab-centres": [
+      "hospitals-and-labs",
+      "physiotherapy-and-rehab",
+      "physiotherapy-and-rehab",
+      "physiotherapy-and-rehab"
+    ],
+    "eye-clinics": [
+      "hospitals-and-labs",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics"
+    ],
+    "skin-clinics": [
+      "hospitals-and-labs",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics"
+    ],
+    "dermatology": [
+      "hospitals-and-labs",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics"
+    ],
+    "ophthalmology": [
+      "hospitals-and-labs",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics",
+      "eye-and-skin-clinics"
+    ],
+    "school": [
+      "education-and-skills",
+      "schools",
+      "schools",
+      "schools"
+    ],
+    "cbse-icse-schools": [
+      "education-and-skills",
+      "schools",
+      "schools",
+      "schools"
+    ],
+    "college": [
+      "education-and-skills",
+      "colleges",
+      "colleges",
+      "colleges"
+    ],
+    "degree-colleges": [
+      "education-and-skills",
+      "colleges",
+      "colleges",
+      "colleges"
+    ],
+    "pu-colleges": [
+      "education-and-skills",
+      "colleges",
+      "colleges",
+      "colleges"
+    ],
+    "university": [
+      "education-and-skills",
+      "universities",
+      "universities",
+      "universities"
+    ],
+    "coaching-institutes": [
+      "education-and-skills",
+      "institutes",
+      "institutes",
+      "institutes"
+    ],
+    "skill-institutes": [
+      "education-and-skills",
+      "institutes",
+      "institutes",
+      "institutes"
+    ],
+    "training-centres": [
+      "education-and-skills",
+      "institutes",
+      "institutes",
+      "institutes"
+    ],
+    "tuition": [
+      "education-and-skills",
+      "tuitions",
+      "tuitions",
+      "tuitions"
+    ],
+    "home-tuitions": [
+      "education-and-skills",
+      "tuitions",
+      "tuitions",
+      "tuitions"
+    ],
+    "tutoring": [
+      "education-and-skills",
+      "tuitions",
+      "tuitions",
+      "tuitions"
+    ],
+    "exam-coaching": [
+      "education-and-skills",
+      "competitive-exam-coaching",
+      "competitive-exam-coaching",
+      "competitive-exam-coaching"
+    ],
+    "ias-neet-jee-coaching": [
+      "education-and-skills",
+      "competitive-exam-coaching",
+      "competitive-exam-coaching",
+      "competitive-exam-coaching"
+    ],
+    "music-classes": [
+      "education-and-skills",
+      "music-dance-and-arts",
+      "music-dance-and-arts",
+      "music-dance-and-arts"
+    ],
+    "dance-classes": [
+      "education-and-skills",
+      "music-dance-and-arts",
+      "music-dance-and-arts",
+      "music-dance-and-arts"
+    ],
+    "art-classes": [
+      "education-and-skills",
+      "music-dance-and-arts",
+      "music-dance-and-arts",
+      "music-dance-and-arts"
+    ],
+    "preschools": [
+      "education-and-skills",
+      "preschools-and-daycare",
+      "preschools-and-daycare",
+      "preschools-and-daycare"
+    ],
+    "daycare": [
+      "education-and-skills",
+      "preschools-and-daycare",
+      "preschools-and-daycare",
+      "preschools-and-daycare"
+    ],
+    "play-schools": [
+      "education-and-skills",
+      "preschools-and-daycare",
+      "preschools-and-daycare",
+      "preschools-and-daycare"
+    ],
+    "kindergarten": [
+      "education-and-skills",
+      "preschools-and-daycare",
+      "preschools-and-daycare",
+      "preschools-and-daycare"
+    ],
+    "salon": [
+      "salons-and-beauty-parlour",
+      "salons",
+      "salons",
+      "salons"
+    ],
+    "unisex-salons": [
+      "salons-and-beauty-parlour",
+      "salons",
+      "salons",
+      "salons"
+    ],
+    "hair-salons": [
+      "salons-and-beauty-parlour",
+      "salons",
+      "salons",
+      "salons"
+    ],
+    "beauty-parlours": [
+      "salons-and-beauty-parlour",
+      "beauty-parlour",
+      "beauty-parlour",
+      "beauty-parlour"
+    ],
+    "ladies-parlour": [
+      "salons-and-beauty-parlour",
+      "beauty-parlour",
+      "beauty-parlour",
+      "beauty-parlour"
+    ],
+    "spa": [
+      "salons-and-beauty-parlour",
+      "spas",
+      "spas",
+      "spas"
+    ],
+    "wellness-spas": [
+      "salons-and-beauty-parlour",
+      "spas",
+      "spas",
+      "spas"
+    ],
+    "ayurvedic-spa": [
+      "salons-and-beauty-parlour",
+      "spas",
+      "spas",
+      "spas"
+    ],
+    "saunas": [
+      "salons-and-beauty-parlour",
+      "sauna",
+      "sauna",
+      "sauna"
+    ],
+    "steam-and-sauna": [
+      "salons-and-beauty-parlour",
+      "sauna",
+      "sauna",
+      "sauna"
+    ],
+    "bridal-makeup": [
+      "salons-and-beauty-parlour",
+      "bridal-makeup-and-mehendi",
+      "bridal-makeup-and-mehendi",
+      "bridal-makeup-and-mehendi"
+    ],
+    "mehendi-artists": [
+      "salons-and-beauty-parlour",
+      "bridal-makeup-and-mehendi",
+      "bridal-makeup-and-mehendi",
+      "bridal-makeup-and-mehendi"
+    ],
+    "barbers": [
+      "salons-and-beauty-parlour",
+      "mens-grooming-and-barbers",
+      "mens-grooming-and-barbers",
+      "mens-grooming-and-barbers"
+    ],
+    "barber-shops": [
+      "salons-and-beauty-parlour",
+      "mens-grooming-and-barbers",
+      "mens-grooming-and-barbers",
+      "mens-grooming-and-barbers"
+    ],
+    "mens-salon": [
+      "salons-and-beauty-parlour",
+      "mens-grooming-and-barbers",
+      "mens-grooming-and-barbers",
+      "mens-grooming-and-barbers"
+    ],
+    "nail-studios": [
+      "salons-and-beauty-parlour",
+      "nail-and-lash-studios",
+      "nail-and-lash-studios",
+      "nail-and-lash-studios"
+    ],
+    "lash-studios": [
+      "salons-and-beauty-parlour",
+      "nail-and-lash-studios",
+      "nail-and-lash-studios",
+      "nail-and-lash-studios"
+    ],
+    "nail-art": [
+      "salons-and-beauty-parlour",
+      "nail-and-lash-studios",
+      "nail-and-lash-studios",
+      "nail-and-lash-studios"
+    ],
+    "residential-construction": [
+      "civil-and-construction",
+      "residential",
+      "residential",
+      "residential"
+    ],
+    "civil-contractors": [
+      "civil-and-construction",
+      "residential",
+      "residential",
+      "residential"
+    ],
+    "home-builders": [
+      "civil-and-construction",
+      "residential",
+      "residential",
+      "residential"
+    ],
+    "commercial-construction": [
+      "civil-and-construction",
+      "commercial",
+      "commercial",
+      "commercial"
+    ],
+    "commercial-contractors": [
+      "civil-and-construction",
+      "commercial",
+      "commercial",
+      "commercial"
+    ],
+    "plumbers": [
+      "civil-and-construction",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs"
+    ],
+    "electricians": [
+      "civil-and-construction",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs"
+    ],
+    "plumbing": [
+      "civil-and-construction",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs"
+    ],
+    "electrical-repairs": [
+      "civil-and-construction",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs"
+    ],
+    "handyman": [
+      "civil-and-construction",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs",
+      "plumbing-and-electrical-repairs"
+    ],
+    "painting": [
+      "civil-and-construction",
+      "waterproofing-and-painting",
+      "waterproofing-and-painting",
+      "waterproofing-and-painting"
+    ],
+    "painters": [
+      "civil-and-construction",
+      "waterproofing-and-painting",
+      "waterproofing-and-painting",
+      "waterproofing-and-painting"
+    ],
+    "waterproofing": [
+      "civil-and-construction",
+      "waterproofing-and-painting",
+      "waterproofing-and-painting",
+      "waterproofing-and-painting"
+    ],
+    "architects": [
+      "civil-and-construction",
+      "architecture-and-interiors",
+      "architecture-and-interiors",
+      "architecture-and-interiors"
+    ],
+    "interior-designers": [
+      "civil-and-construction",
+      "architecture-and-interiors",
+      "architecture-and-interiors",
+      "architecture-and-interiors"
+    ],
+    "architecture-and-structural": [
+      "civil-and-construction",
+      "architecture-and-interiors",
+      "architecture-and-interiors",
+      "architecture-and-interiors"
+    ],
+    "interiors": [
+      "civil-and-construction",
+      "architecture-and-interiors",
+      "architecture-and-interiors",
+      "architecture-and-interiors"
+    ],
+    "petrol-bunks": [
+      "fuel-and-charging-stations",
+      "petrol-pumps",
+      "petrol-pumps",
+      "petrol-pumps"
+    ],
+    "fuel-pumps": [
+      "fuel-and-charging-stations",
+      "petrol-pumps",
+      "petrol-pumps",
+      "petrol-pumps"
+    ],
+    "lpg-cng": [
+      "fuel-and-charging-stations",
+      "auto-gas",
+      "auto-gas",
+      "auto-gas"
+    ],
+    "cng-stations": [
+      "fuel-and-charging-stations",
+      "auto-gas",
+      "auto-gas",
+      "auto-gas"
+    ],
+    "auto-lpg": [
+      "fuel-and-charging-stations",
+      "auto-gas",
+      "auto-gas",
+      "auto-gas"
+    ],
+    "ev-charging-stations": [
+      "fuel-and-charging-stations",
+      "ev-charging",
+      "ev-charging",
+      "ev-charging"
+    ],
+    "ev-charging-and-service-stations": [
+      "fuel-and-charging-stations",
+      "ev-charging",
+      "ev-charging",
+      "ev-charging"
+    ],
+    "car-wash": [
+      "fuel-and-charging-stations",
+      "car-and-bike-wash-detailing",
+      "car-and-bike-wash-detailing",
+      "car-and-bike-wash-detailing"
+    ],
+    "bike-wash": [
+      "fuel-and-charging-stations",
+      "car-and-bike-wash-detailing",
+      "car-and-bike-wash-detailing",
+      "car-and-bike-wash-detailing"
+    ],
+    "auto-detailing": [
+      "fuel-and-charging-stations",
+      "car-and-bike-wash-detailing",
+      "car-and-bike-wash-detailing",
+      "car-and-bike-wash-detailing"
+    ],
+    "tyre-shops": [
+      "fuel-and-charging-stations",
+      "tyre-battery-and-puncture-care",
+      "tyre-battery-and-puncture-care",
+      "tyre-battery-and-puncture-care"
+    ],
+    "battery-shops": [
+      "fuel-and-charging-stations",
+      "tyre-battery-and-puncture-care",
+      "tyre-battery-and-puncture-care",
+      "tyre-battery-and-puncture-care"
+    ],
+    "puncture-repair": [
+      "fuel-and-charging-stations",
+      "tyre-battery-and-puncture-care",
+      "tyre-battery-and-puncture-care",
+      "tyre-battery-and-puncture-care"
+    ],
+    "ev-service": [
+      "fuel-and-charging-stations",
+      "ev-service-and-battery-swap",
+      "ev-service-and-battery-swap",
+      "ev-service-and-battery-swap"
+    ],
+    "battery-swap": [
+      "fuel-and-charging-stations",
+      "ev-service-and-battery-swap",
+      "ev-service-and-battery-swap",
+      "ev-service-and-battery-swap"
+    ],
+    "cinemas": [
+      "vibe-finder",
+      "theatres",
+      "theatres",
+      "theatres"
+    ],
+    "movie-theatres": [
+      "vibe-finder",
+      "theatres",
+      "theatres",
+      "theatres"
+    ],
+    "multiplexes": [
+      "vibe-finder",
+      "theatres",
+      "theatres",
+      "theatres"
+    ],
+    "events": [
+      "vibe-finder",
+      "social-events",
+      "social-events",
+      "social-events"
+    ],
+    "meetups": [
+      "vibe-finder",
+      "social-events",
+      "social-events",
+      "social-events"
+    ],
+    "workshops": [
+      "vibe-finder",
+      "social-events",
+      "social-events",
+      "social-events"
+    ],
+    "gaming-zones": [
+      "vibe-finder",
+      "gaming-and-bowling-zones",
+      "gaming-and-bowling-zones",
+      "gaming-and-bowling-zones"
+    ],
+    "bowling-alleys": [
+      "vibe-finder",
+      "gaming-and-bowling-zones",
+      "gaming-and-bowling-zones",
+      "gaming-and-bowling-zones"
+    ],
+    "arcade": [
+      "vibe-finder",
+      "gaming-and-bowling-zones",
+      "gaming-and-bowling-zones",
+      "gaming-and-bowling-zones"
+    ],
+    "sports-turfs": [
+      "vibe-finder",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas"
+    ],
+    "badminton-courts": [
+      "vibe-finder",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas"
+    ],
+    "cricket-turf": [
+      "vibe-finder",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas"
+    ],
+    "box-cricket": [
+      "vibe-finder",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas",
+      "turf-and-sports-arenas"
+    ],
+    "comedy-clubs": [
+      "vibe-finder",
+      "live-music-and-comedy-clubs",
+      "live-music-and-comedy-clubs",
+      "live-music-and-comedy-clubs"
+    ],
+    "live-music": [
+      "vibe-finder",
+      "live-music-and-comedy-clubs",
+      "live-music-and-comedy-clubs",
+      "live-music-and-comedy-clubs"
+    ]
+  },
   "triples": {},
   "catalogue_services": {},
   "retained_catalogue_categories": []

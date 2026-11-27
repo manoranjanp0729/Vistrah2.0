@@ -1,8 +1,9 @@
 export const NEARBY_DISCOVERY_RADII = [2, 5, 10, 25, 50] as const;
 export type NearbyDiscoveryRadius = (typeof NEARBY_DISCOVERY_RADII)[number];
+export const DEFAULT_NEARBY_RADIUS_KM: NearbyDiscoveryRadius = 10;
 
 export function normalizeNearbyRadius(value?: number | null): NearbyDiscoveryRadius {
-  if (typeof value !== 'number' || !Number.isFinite(value)) return 10;
+  if (typeof value !== 'number' || !Number.isFinite(value)) return DEFAULT_NEARBY_RADIUS_KM;
   if (value <= 2) return 2;
   if (value <= 5) return 5;
   if (value <= 10) return 10;
@@ -27,9 +28,10 @@ export type NearbyBusinessItem = {
   description: string;
   address: string;
   location: string;
-  latitude: number;
-  longitude: number;
-  distance_km: number;
+  latitude: number | null;
+  longitude: number | null;
+  distance_km: number | null;
+  has_exact_coordinates?: boolean;
   coverage_radius_km: number | null;
   verification_status: string;
   phone: string;
@@ -60,8 +62,13 @@ export type ListingMoreOptionItem = {
 
 export type NearbyServicesResponse = {
   category: { slug: string; title: string };
+  subcategory?: { slug: string; title: string } | null;
   business_type: { slug: string; title: string } | null;
   radius_km: number;
+  requested_radius_km?: number;
+  effective_radius_km?: number | null;
+  expanded_radius?: boolean;
+  city_wide?: boolean;
   total: number;
   has_google_places?: boolean;
   items: NearbyBusinessItem[];
@@ -234,6 +241,8 @@ export function buildNearbyMarketplacePath(params: {
   latitude: number;
   longitude: number;
   radiusKm: number;
+  cityWide?: boolean;
+  city?: string;
 }): string {
   const qs = new URLSearchParams({
     category: params.category,
@@ -248,6 +257,12 @@ export function buildNearbyMarketplacePath(params: {
   if (activeType) {
     qs.set('service_type', activeType);
     qs.set('business_type', activeType);
+  }
+  if (params.cityWide) {
+    qs.set('city_wide', 'true');
+  }
+  if (params.city && params.city.trim()) {
+    qs.set('city', params.city.trim());
   }
   return `/marketplace/nearby?${qs.toString()}`;
 }
@@ -260,6 +275,8 @@ export function buildNearbyListingsPath(params: {
   latitude: number;
   longitude: number;
   radiusKm: number;
+  cityWide?: boolean;
+  city?: string;
 }): string {
   const qs = new URLSearchParams({
     category: params.category,
@@ -275,14 +292,56 @@ export function buildNearbyListingsPath(params: {
     qs.set('service_type', activeType);
     qs.set('business_type', activeType);
   }
+  if (params.cityWide) {
+    qs.set('city_wide', 'true');
+  }
+  if (params.city && params.city.trim()) {
+    qs.set('city', params.city.trim());
+  }
   return `/marketplace/listings?${qs.toString()}`;
 }
 
-export function formatDistanceAway(distanceKm: number): string {
-  if (!Number.isFinite(distanceKm) || distanceKm < 0) return '';
+export function formatDistanceAway(
+  distanceKm: number | null | undefined,
+  fallbackLocality?: string | null,
+): string {
+  if (distanceKm == null || typeof distanceKm !== 'number' || !Number.isFinite(distanceKm) || distanceKm < 0) {
+    const cleanFallback = (fallbackLocality || '').trim();
+    if (cleanFallback) {
+      const shortArea = cleanFallback.split(',')[0]?.trim() || cleanFallback;
+      return `In ${shortArea}`;
+    }
+    return 'In your city';
+  }
   if (distanceKm < 0.1) return '< 0.1 km away';
   if (distanceKm < 10) return `${distanceKm.toFixed(1)} km away`;
   return `${Math.round(distanceKm)} km away`;
+}
+
+export function formatExpandedRadiusNotice(params: {
+  count: number;
+  requestedRadiusKm: number;
+  effectiveRadiusKm?: number | null;
+  expandedRadius?: boolean;
+  cityWide?: boolean;
+  userToggledCityWide?: boolean;
+  locality?: string | null;
+}): string | null {
+  if (params.count <= 0) return null;
+  const noun = params.count === 1 ? 'place' : 'places';
+  const rawCity = (params.locality || '').split(',').pop()?.trim();
+  const cityLabel =
+    rawCity && rawCity !== 'Moved map area' && rawCity.length >= 2 ? rawCity : 'Bengaluru';
+
+  if (params.userToggledCityWide) {
+    return `Showing all ${params.count} ${noun} in ${cityLabel}`;
+  }
+  if (!params.expandedRadius) return null;
+  if (params.cityWide) {
+    return `Showing ${params.count} ${noun} across ${cityLabel} (none within ${params.requestedRadiusKm} km)`;
+  }
+  const eff = Math.round(params.effectiveRadiusKm ?? 25);
+  return `Showing ${params.count} ${noun} within ${eff} km (none within ${params.requestedRadiusKm} km)`;
 }
 
 export function phoneCallHref(rawPhone: string | null | undefined): string | null {
@@ -340,14 +399,24 @@ export function whatsappChatHref(
 }
 
 export function googleMapsDirectionsHrefForPin(
-  latitude: number,
-  longitude: number,
+  latitude: number | null | undefined,
+  longitude: number | null | undefined,
   directionsUrl?: string | null,
+  fallbackQuery?: string | null,
 ): string {
   if (directionsUrl && /^https:\/\/(?:www\.)?google\.com\/maps\//.test(directionsUrl)) {
     return directionsUrl;
   }
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${latitude},${longitude}`)}`;
+  if (
+    typeof latitude === 'number' &&
+    typeof longitude === 'number' &&
+    Number.isFinite(latitude) &&
+    Number.isFinite(longitude)
+  ) {
+    return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${latitude},${longitude}`)}`;
+  }
+  const query = (fallbackQuery || 'Bengaluru').trim();
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
 export function googleMapsHybridSearchHref(

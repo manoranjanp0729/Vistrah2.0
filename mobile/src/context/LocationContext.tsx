@@ -183,7 +183,7 @@ function parseStoredLocation(raw: string | null): SelectedLocation | null {
       state: String(parsed.state || localUpgrade?.state || 'Karnataka'),
       pincode: String(parsed.pincode || localUpgrade?.postalCode || ''),
       landmark: String(parsed.landmark || ''),
-      radiusKm: typeof parsed.radiusKm === 'number' && parsed.radiusKm > 0 ? parsed.radiusKm : 5,
+      radiusKm: typeof parsed.radiusKm === 'number' && parsed.radiusKm > 0 ? parsed.radiusKm : 10,
       source: parsed.source,
     };
   } catch {
@@ -194,7 +194,7 @@ function parseStoredLocation(raw: string | null): SelectedLocation | null {
 async function reverseGeocodeWithOfflineFallback(
   lat: number,
   lon: number,
-  radiusKm = 5,
+  radiusKm = 10,
 ): Promise<SelectedLocation> {
   const resolved = await resolveAreaCityLabel(
     { latitude: lat, longitude: lon },
@@ -258,11 +258,11 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   const generationRef = useRef(0);
   const manualLockRef = useRef(false);
   const activePointRef = useRef<GeoPoint | null>(null);
-  const radiusKmRef = useRef<number>(5);
+  const radiusKmRef = useRef<number>(10);
   const watcherRef = useRef<{ stop: () => void; updateAnchor: (pt: GeoPoint) => void } | null>(null);
   const previousUserIdRef = useRef<number | null | undefined>(undefined);
 
-  radiusKmRef.current = selectedLocation?.radiusKm ?? 5;
+  radiusKmRef.current = selectedLocation?.radiusKm ?? 10;
 
   const stopLiveWatcher = useCallback(() => {
     watcherRef.current?.stop();
@@ -595,7 +595,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
               state: 'Karnataka',
               pincode: pt.postal_code || '',
               landmark: pt.landmark || '',
-              radiusKm: 5,
+              radiusKm: 10,
               source: 'manual',
             };
             activePointRef.current = { latitude: pt.latitude, longitude: pt.longitude };

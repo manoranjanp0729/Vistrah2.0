@@ -16,10 +16,12 @@ import {
   lookupLocalAreaCity,
 } from '../../../shared/reverse-geocode-fallback';
 import {
+  DEFAULT_NEARBY_RADIUS_KM,
   NEARBY_DISCOVERY_RADII,
   buildListingMoreOptions,
   buildNearbyListingsPath,
   formatDistanceAway,
+  formatExpandedRadiusNotice,
   getDivisionFallbackTheme,
   googleMapsDirectionsHrefForPin,
   normalizeNearbyRadius,
@@ -43,6 +45,8 @@ const DEFAULT_MOBILE_POINT = {
   longitude: 77.5946,
   locality: 'Bengaluru',
 };
+
+const EMPTY_NEARBY_ITEMS: NearbyBusinessItem[] = [];
 
 function approxDistanceKm(a: GooglePoint, b: GooglePoint): number {
   const toRad = (deg: number) => (deg * Math.PI) / 180;
@@ -175,8 +179,9 @@ export function MobileNearbyServiceDiscovery({
   const displayLocality = customCenter ? 'Moved map area' : activePoint.locality;
 
   const [radiusKm, setRadiusKm] = useState<NearbyDiscoveryRadius>(() =>
-    normalizeNearbyRadius(locCtx?.selectedLocation?.radiusKm ?? 10),
+    normalizeNearbyRadius(locCtx?.selectedLocation?.radiusKm ?? DEFAULT_NEARBY_RADIUS_KM),
   );
+  const [cityWide, setCityWide] = useState(false);
   const [selectedId, setSelectedId] = useState<string | number | null>(null);
   const [activeMoreItem, setActiveMoreItem] = useState<NearbyBusinessItem | null>(null);
   const [failedPhotos, setFailedPhotos] = useState<Record<string, boolean>>({});
@@ -208,13 +213,19 @@ export function MobileNearbyServiceDiscovery({
 
   const [state, setState] = useState<{
     key: string;
+    scopeKey: string;
     items: NearbyBusinessItem[];
     hasGooglePlaces: boolean;
+    expandedRadius: boolean;
+    effectiveRadiusKm: number | null;
+    responseCityWide: boolean;
     error: string;
   } | null>(null);
 
   const normalizedTypeSlug = (typeSlug || '').trim();
-  const requestKey = `${categorySlug}:${subcategorySlug || ''}:${normalizedTypeSlug}:${queryCenter.latitude.toFixed(5)}:${queryCenter.longitude.toFixed(5)}:${radiusKm}:${locCtx?.locationRevision ?? 0}`;
+  const scopeKey = `${categorySlug}:${subcategorySlug || ''}:${normalizedTypeSlug}`;
+  const cityHint = activePoint.locality.split(',').pop()?.trim() || 'Bengaluru';
+  const requestKey = `${scopeKey}:${queryCenter.latitude.toFixed(5)}:${queryCenter.longitude.toFixed(5)}:${radiusKm}:${cityWide ? 'city' : 'rad'}:${locCtx?.locationRevision ?? 0}`;
 
   useEffect(() => {
     let alive = true;
@@ -225,6 +236,8 @@ export function MobileNearbyServiceDiscovery({
       latitude: queryCenter.latitude,
       longitude: queryCenter.longitude,
       radiusKm,
+      cityWide,
+      city: cityHint,
     });
     api<NearbyServicesResponse>(path)
       .then(res => {
@@ -232,10 +245,15 @@ export function MobileNearbyServiceDiscovery({
         const nextItems = res.items ?? [];
         setState({
           key: requestKey,
+          scopeKey,
           items: nextItems,
           hasGooglePlaces: Boolean(
             res.has_google_places || nextItems.some(item => item.source === 'google_places'),
           ),
+          expandedRadius: Boolean(res.expanded_radius),
+          effectiveRadiusKm:
+            typeof res.effective_radius_km === 'number' ? res.effective_radius_km : null,
+          responseCityWide: Boolean(res.city_wide),
           error: '',
         });
         setSelectedId(prev =>
@@ -246,8 +264,12 @@ export function MobileNearbyServiceDiscovery({
         if (!alive) return;
         setState({
           key: requestKey,
+          scopeKey,
           items: [],
           hasGooglePlaces: false,
+          expandedRadius: false,
+          effectiveRadiusKm: null,
+          responseCityWide: false,
           error: (err as Error).message || 'Could not load nearby businesses.',
         });
       });
@@ -262,24 +284,54 @@ export function MobileNearbyServiceDiscovery({
     queryCenter.latitude,
     queryCenter.longitude,
     radiusKm,
+    cityWide,
+    cityHint,
+    scopeKey,
     requestKey,
   ]);
 
-  const loading = state?.key !== requestKey;
-  const items = state?.key === requestKey ? state.items : [];
-  const hasGooglePlaces = state?.key === requestKey ? state.hasGooglePlaces : false;
+  const sameScope = state?.scopeKey === scopeKey;
+  const loading = state?.key !== requestKey && (!sameScope || state.items.length === 0);
+  const items = sameScope ? state.items : EMPTY_NEARBY_ITEMS;
+  const hasGooglePlaces = sameScope ? state.hasGooglePlaces : false;
+  const expandedRadius = sameScope ? state.expandedRadius : false;
+  const effectiveRadiusKm = sameScope ? state.effectiveRadiusKm : null;
+  const responseCityWide = sameScope ? state.responseCityWide : false;
   const error = state?.key === requestKey ? state.error : '';
+  const expandedNotice = formatExpandedRadiusNotice({
+    count: items.length,
+    requestedRadiusKm: radiusKm,
+    effectiveRadiusKm,
+    expandedRadius,
+    cityWide: responseCityWide,
+    userToggledCityWide: cityWide,
+    locality: displayLocality,
+  });
+  const mapRadiusKm =
+    cityWide || responseCityWide
+      ? 50
+      : expandedRadius && typeof effectiveRadiusKm === 'number'
+        ? Math.min(50, Math.max(radiusKm, effectiveRadiusKm))
+        : radiusKm;
 
   const markers = useMemo<MobileMapMarker[]>(
     () =>
-      items.map(item => ({
-        id: item.id,
-        latitude: item.latitude,
-        longitude: item.longitude,
-        title: item.company || item.name,
-        subtitle: item.location || item.address,
-        distanceKm: item.distance_km,
-      })),
+      items
+        .filter(
+          (item): item is NearbyBusinessItem & { latitude: number; longitude: number } =>
+            typeof item.latitude === 'number' &&
+            typeof item.longitude === 'number' &&
+            Number.isFinite(item.latitude) &&
+            Number.isFinite(item.longitude),
+        )
+        .map(item => ({
+          id: item.id,
+          latitude: item.latitude,
+          longitude: item.longitude,
+          title: item.company || item.name,
+          subtitle: item.location || item.address,
+          distanceKm: item.distance_km ?? undefined,
+        })),
     [items],
   );
 
@@ -665,13 +717,16 @@ export function MobileNearbyServiceDiscovery({
           ]}
         >
           {NEARBY_DISCOVERY_RADII.map(r => {
-            const active = radiusKm === r;
+            const active = !cityWide && radiusKm === r;
             return (
               <Pressable
                 key={r}
                 accessibilityRole="radio"
                 accessibilityState={{ checked: active }}
-                onPress={() => setRadiusKm(r)}
+                onPress={() => {
+                  setCityWide(false);
+                  setRadiusKm(r);
+                }}
                 style={[s.radiusChip, active && { backgroundColor: '#0D9488' }]}
               >
                 <Text
@@ -688,6 +743,50 @@ export function MobileNearbyServiceDiscovery({
               </Pressable>
             );
           })}
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityState={{ selected: cityWide }}
+            testID="nearby-show-all-city"
+            onPress={() => setCityWide(prev => !prev)}
+            style={({ pressed }) => ({
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 5,
+              paddingHorizontal: 12,
+              paddingVertical: 7,
+              borderRadius: 999,
+              borderWidth: 1,
+              backgroundColor: cityWide
+                ? '#0D9488'
+                : isDark
+                  ? 'rgba(13,148,136,0.18)'
+                  : '#F0FDFA',
+              borderColor: cityWide
+                ? '#0D9488'
+                : isDark
+                  ? 'rgba(45,212,191,0.4)'
+                  : '#99F6E4',
+              opacity: pressed ? 0.88 : 1,
+            })}
+          >
+            <Feather
+              name="map-pin"
+              size={12}
+              color={cityWide ? '#ffffff' : isDark ? '#99F6E4' : '#0F766E'}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: '700',
+                color: cityWide ? '#ffffff' : isDark ? '#99F6E4' : '#0F766E',
+              }}
+            >
+              Show All in City
+            </Text>
+          </Pressable>
         </View>
       </View>
 
@@ -748,7 +847,7 @@ export function MobileNearbyServiceDiscovery({
         )}
         <VistrahMobileMap
           center={{ latitude: queryCenter.latitude, longitude: queryCenter.longitude }}
-          radiusKm={radiusKm}
+          radiusKm={mapRadiusKm}
           markers={markers}
           selectedId={selectedId}
           hideSelectedCard
@@ -777,9 +876,13 @@ export function MobileNearbyServiceDiscovery({
               <Text style={{ fontWeight: '700', color: colors.text }}>{items.length}</Text>{' '}
               <UiText
                 value={
-                  items.length === 1
-                    ? `listing within ${radiusKm} km (nearest first)`
-                    : `listings within ${radiusKm} km (nearest first)`
+                  cityWide || responseCityWide
+                    ? items.length === 1
+                      ? 'listing across city (nearest first)'
+                      : 'listings across city (nearest first)'
+                    : items.length === 1
+                      ? `listing within ${Math.round(effectiveRadiusKm ?? radiusKm)} km (nearest first)`
+                      : `listings within ${Math.round(effectiveRadiusKm ?? radiusKm)} km (nearest first)`
                 }
               />
             </>
@@ -807,6 +910,50 @@ export function MobileNearbyServiceDiscovery({
           )}
         </View>
       </View>
+
+      {Boolean(expandedNotice) && (
+        <View
+          testID="nearby-expanded-radius-banner"
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 8,
+            paddingHorizontal: 14,
+            paddingVertical: 10,
+            borderRadius: 999,
+            borderWidth: 1,
+            backgroundColor: isDark ? 'rgba(13,148,136,0.18)' : '#F0FDFA',
+            borderColor: isDark ? 'rgba(45,212,191,0.4)' : '#99F6E4',
+          }}
+        >
+          <Text
+            style={{
+              flexShrink: 1,
+              fontSize: 12.5,
+              fontWeight: '600',
+              color: isDark ? '#CCFBF1' : '#115E59',
+            }}
+          >
+            {expandedNotice}
+          </Text>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setCityWide(prev => !prev)}
+            style={({ pressed }) => ({
+              paddingHorizontal: 11,
+              paddingVertical: 5,
+              borderRadius: 999,
+              backgroundColor: pressed ? '#0F766E' : '#0D9488',
+            })}
+          >
+            <Text style={{ color: '#ffffff', fontSize: 11.5, fontWeight: '700' }}>
+              {cityWide ? `Use ${radiusKm} km radius` : 'Show All in City'}
+            </Text>
+          </Pressable>
+        </View>
+      )}
 
       {Boolean(error) && (
         <View
@@ -843,7 +990,10 @@ export function MobileNearbyServiceDiscovery({
                 <Pressable
                   key={nextRadius}
                   accessibilityRole="button"
-                  onPress={() => setRadiusKm(nextRadius)}
+                  onPress={() => {
+                    setCityWide(false);
+                    setRadiusKm(nextRadius);
+                  }}
                   style={{
                     paddingHorizontal: 12,
                     paddingVertical: 7,
@@ -858,6 +1008,22 @@ export function MobileNearbyServiceDiscovery({
                   </Text>
                 </Pressable>
               ))}
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => setCityWide(true)}
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 7,
+                  borderRadius: 999,
+                  backgroundColor: '#0D9488',
+                  borderWidth: 1,
+                  borderColor: '#0F766E',
+                }}
+              >
+                <Text style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
+                  Show All in City
+                </Text>
+              </Pressable>
             </View>
           )}
         </View>
@@ -876,17 +1042,19 @@ export function MobileNearbyServiceDiscovery({
               item.company || item.name,
             )
           : null;
-        const directionsUrl = isVistrah
-          ? googleMapsDirectionsUrl(
-              item.latitude,
-              item.longitude,
-              item.company || item.name,
-            )
-          : googleMapsDirectionsHrefForPin(
-              item.latitude,
-              item.longitude,
-              item.directions_url,
-            );
+        const directionsUrl =
+          isVistrah && typeof item.latitude === 'number' && typeof item.longitude === 'number'
+            ? googleMapsDirectionsUrl(
+                item.latitude,
+                item.longitude,
+                item.company || item.name,
+              )
+            : googleMapsDirectionsHrefForPin(
+                item.latitude,
+                item.longitude,
+                item.directions_url,
+                `${item.company || item.name}, ${item.address || item.location}`,
+              );
         const websiteUrl = websiteExternalHref(item.website_url);
         const photoUri = !failedPhotos[itemKey]
           ? resolveListingPhotoUri(item.photo_url, safeApiBase)
@@ -947,7 +1115,9 @@ export function MobileNearbyServiceDiscovery({
                     {item.company || item.name}
                   </Text>
                   <View style={s.distancePill}>
-                    <Text style={s.distanceText}>{formatDistanceAway(item.distance_km)}</Text>
+                    <Text style={s.distanceText}>
+                      {formatDistanceAway(item.distance_km, item.location)}
+                    </Text>
                   </View>
                 </View>
 

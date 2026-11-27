@@ -95,7 +95,7 @@ function readStoredWebLocation(): SelectedLocation | null {
       state: String(parsed.state || localUpgrade?.state || 'Karnataka'),
       pincode: String(parsed.pincode || localUpgrade?.postalCode || ''),
       landmark: String(parsed.landmark || ''),
-      radiusKm: typeof parsed.radiusKm === 'number' && parsed.radiusKm > 0 ? parsed.radiusKm : 5,
+      radiusKm: typeof parsed.radiusKm === 'number' && parsed.radiusKm > 0 ? parsed.radiusKm : 10,
       source: parsed.source,
     };
   } catch {
@@ -217,7 +217,7 @@ async function resolveHumanReadableGpsLocation(
 function useLocationState() {
   const [draft, setDraft] = useState<CustomerLocation>(emptyLocation);
   const [active, setActive] = useState<CustomerLocation | null>(null);
-  const [radius, setRadiusState] = useState<Radius>(5);
+  const [radius, setRadiusState] = useState<Radius>(10);
   const [detecting, setDetecting] = useState(false);
   const [locationRevision, setLocationRevision] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -231,7 +231,7 @@ function useLocationState() {
   const identityEpoch = useRef(0);
   const manualLockRef = useRef(false);
   const activePointRef = useRef<Point | null>(null);
-  const radiusRef = useRef<Radius>(5);
+  const radiusRef = useRef<Radius>(10);
   const watcherRef = useRef<{ stop: () => void; updateAnchor: (point: Point) => void } | null>(null);
   const path = usePathname();
 
@@ -330,7 +330,7 @@ function useLocationState() {
         stopGpsWatcher();
         setActive(null);
         setDraft(emptyLocation);
-        setRadiusState(5);
+        setRadiusState(10);
         setMessage('');
         setError('');
         writeStoredWebLocation(null);
@@ -349,7 +349,7 @@ function useLocationState() {
     if (stored) {
       const nextRadius = (radii as readonly number[]).includes(stored.radiusKm)
         ? (stored.radiusKm as Radius)
-        : 5;
+        : 10;
       const cust = selectedToCustomer(stored);
       hasEdits.current = true;
       radiusRef.current = nextRadius;

@@ -30,17 +30,17 @@ export type BrowserGeolocationLike = Pick<Geolocation, 'getCurrentPosition'> &
 
 export const GPS_MOVEMENT_THRESHOLD_METERS = 50;
 export const GPS_WATCH_DEBOUNCE_MS = 1000;
-export const GPS_HARD_TIMEOUT_MS = 8000;
+export const GPS_HARD_TIMEOUT_MS = 6000;
 
 export const GPS_HIGH_ACCURACY_OPTIONS: PositionOptions = {
   enableHighAccuracy: true,
-  timeout: 4500,
+  timeout: 3500,
   maximumAge: 0,
 };
 
 export const GPS_FALLBACK_OPTIONS: PositionOptions = {
   enableHighAccuracy: false,
-  timeout: 3500,
+  timeout: 2500,
   maximumAge: 30000,
 };
 
@@ -333,7 +333,7 @@ export async function acquireNativeExpoGpsFix(
   expoLocation: ExpoLocationModuleLike,
   options?: { fastFallbackAfterMs?: number; hardTimeoutMs?: number },
 ): Promise<GpsFix> {
-  const fastFallbackAfterMs = options?.fastFallbackAfterMs ?? 4500;
+  const fastFallbackAfterMs = options?.fastFallbackAfterMs ?? 3500;
   const hardTimeoutMs = options?.hardTimeoutMs ?? GPS_HARD_TIMEOUT_MS;
 
   const perm = await expoLocation.requestForegroundPermissionsAsync();

@@ -293,8 +293,8 @@ describe('location privacy, Use GPS recovery, and live movement watcher', () => 
     expect(await pending).toEqual({ current: false });
   });
 
-  it('formats (12.892, 77.623) as Begur, Bengaluru via Nominatim + local Karnataka lookup on Google failure and enforces an 8s GPS timeout', async () => {
-    expect(GPS_HARD_TIMEOUT_MS).toBe(8000);
+  it('formats (12.892, 77.623) as Begur, Bengaluru via Nominatim + local Karnataka lookup on Google failure and enforces a 6s GPS timeout', async () => {
+    expect(GPS_HARD_TIMEOUT_MS).toBe(6000);
     expect(isCoordinateFormattedLabel('12.892° N, 77.623° E')).toBe(true);
     expect(lookupLocalAreaCity({ latitude: 12.892, longitude: 77.623 })?.locality).toBe(
       'Begur, Bengaluru',
@@ -343,7 +343,7 @@ describe('location privacy, Use GPS recovery, and live movement watcher', () => 
       },
     });
     const assertion = expect(stalled).rejects.toThrow(GPS_TIMEOUT_MESSAGE);
-    await vi.advanceTimersByTimeAsync(8000);
+    await vi.advanceTimersByTimeAsync(6000);
     await assertion;
   });
 });

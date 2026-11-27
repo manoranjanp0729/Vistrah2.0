@@ -12,13 +12,13 @@ import {useTheme} from './theme-provider';
 
 export function MarketingServiceOverview(){
  const {locale}=useLanguage();
- return <div className={styles.overview}>{marketingServicePages.map(page=><Link href={marketingServiceHref(page.slug)} key={page.slug} id={page.key} className={styles.overviewCard}><Image unoptimized src={`/images/ads-marketing/${page.photo}`} alt={page.title[locale]} width={700} height={440}/><div><h2>{page.title[locale]}</h2><p>{page.headline[locale]}</p><span>{labels.explore[locale]}<ArrowUpRight size={18}/></span></div></Link>)}</div>;
+ return <div className={styles.overview}>{marketingServicePages.map(page=><Link href={marketingServiceHref(page.slug)} key={page.slug} id={page.key} className={styles.overviewCard}><Image unoptimized src={`/images/ads-marketing/${page.photo}`} alt={page.title[locale]} width={1200} height={900}/><div><h2>{page.title[locale]}</h2><p>{page.headline[locale]}</p><span>{labels.explore[locale]}<ArrowUpRight size={18}/></span></div></Link>)}</div>;
 }
 
 export function MarketingServiceLanding({slug}:{slug:string}){
  const {locale}=useLanguage();const {mode,accent}=useTheme();const page=getMarketingService(slug);
  if(!page)return null;
- const index=marketingServicePages.indexOf(page);const icons=[Compass,Palette,Play,Send];const visual=themedMarketingVisuals(page.key,themeAppearance(mode,accent).colors.accent);
+ const icons=[Compass,Palette,Play,Send];const visual=themedMarketingVisuals(page.key,themeAppearance(mode,accent).colors.accent);
  return <article className={`container ${styles.page}`} style={{'--service-accent':'var(--accent-orange)','--service-paper':visual.paper,'--service-wash':visual.wash,'--service-ink':visual.ink,'--service-dark':visual.dark} as CSSProperties}>
   <nav className={styles.trail} aria-label={page.title[locale]}><Link href="/marketing-solutions" className={styles.back}><ArrowLeft size={16}/>{labels.back[locale]}</Link><ChevronRight size={14} aria-hidden="true"/><span aria-current="page">{page.title[locale]}</span></nav>
   <section className={styles.hero}>

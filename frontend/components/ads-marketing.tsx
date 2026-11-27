@@ -20,9 +20,13 @@ export function AdsMarketing() {
         {marketingServicePages.map(card=>{
           return (
             <Link className={styles.card} key={card.key} href={marketingServiceHref(card.slug)}>
-              <Image unoptimized src={`/images/ads-marketing/${card.photo}`} width={750} height={600} alt={card.title[locale]}/>
-              <h3>{card.title[locale]}</h3>
-              <span className={styles.arrow} aria-hidden="true">{'\u2197'}</span>
+              <div className={styles.mediaFrame} data-aspect-ratio="4/3">
+                <Image unoptimized src={`/images/ads-marketing/${card.photo}`} width={1200} height={900} alt={card.title[locale]} className={styles.cardImage}/>
+              </div>
+              <div className={styles.cardBody}>
+                <h3>{card.title[locale]}</h3>
+                <span className={styles.arrow} aria-hidden="true">{'\u2197'}</span>
+              </div>
             </Link>
           );
         })}

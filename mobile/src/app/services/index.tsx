@@ -627,7 +627,7 @@ export default function Services() {
                   >
                     <View style={s.flowGridPhoto}>
                       <Image
-                        source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
+                        source={nativeMarketplacePhoto(itemId)}
                         resizeMode="cover"
                         accessibilityLabel={nativeMarketplaceAlt(itemId) ?? type.title}
                         style={[StyleSheet.absoluteFill,s.flowImage]}
@@ -687,7 +687,7 @@ export default function Services() {
                   >
                     <View style={s.flowGridPhoto}>
                       <Image
-                        source={croppedPhoto(nativeMarketplacePhoto(itemId),'wide')}
+                        source={nativeMarketplacePhoto(itemId)}
                         resizeMode="cover"
                         accessibilityLabel={nativeMarketplaceAlt(itemId) ?? sub.title}
                         style={[StyleSheet.absoluteFill,s.flowImage]}
@@ -913,8 +913,8 @@ const s = StyleSheet.create({
   },
 
   flowGrid:{flexDirection:'row',flexWrap:'wrap',gap:12,alignItems:'stretch'},
-  flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,flexGrow:1},
-  flowGridPhoto:{width:'100%',aspectRatio:16/9,borderRadius:12,overflow:'hidden',backgroundColor:'#eeeeeed9',flexShrink:0},
+  flowGridCard:{flexDirection:'column',alignItems:'stretch',gap:8,padding:12,flexGrow:1},
+  flowGridPhoto:{width:'100%',aspectRatio:4/3,position:'relative',borderRadius:10,overflow:'hidden',backgroundColor:'#eeeeeed9',flexShrink:0},
   flowImage:{width:'100%',height:'100%'},
   // Flow Cards (Subcategories & Listing Types)
   flowCard: {
